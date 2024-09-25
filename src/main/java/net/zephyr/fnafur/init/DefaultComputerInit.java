@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultComputerInit implements ComputerData.Initializer {
+
     @Override
     public List<Wallpaper> getWallpapers() {
         List<Wallpaper> wallpapers = new ArrayList<>();
