@@ -1,0 +1,56 @@
+{
+  "cam_open": {
+    "subtitle": "sounds.fnafur.cam_open",
+    "sounds": [
+      "fnafur:cameras/cam_open"
+    ]
+  },
+  "cam_close": {
+    "subtitle": "sounds.fnafur.cam_close",
+    "sounds": [
+      "fnafur:cameras/cam_close"
+    ]
+  },
+  "cam_switch": {
+    "subtitle": "sounds.fnafur.cam_switch",
+    "sounds": [
+      "fnafur:cameras/cam_switch"
+    ]
+  },
+  "cam_nv_on": {
+    "subtitle": "sounds.fnafur.cam_nv_on",
+    "sounds": [
+      "fnafur:cameras/cam_nv_on"
+    ]
+  },
+  "cam_nv_off": {
+    "subtitle": "sounds.fnafur.cam_nv_off",
+    "sounds": [
+      "fnafur:cameras/cam_nv_off"
+    ]
+  },
+  "click_press": {
+    "subtitle": "sounds.fnafur.click_press",
+    "sounds": [
+      "fnafur:computer/click_press"
+    ]
+  },
+  "click_release": {
+    "subtitle": "sounds.fnafur.click_release",
+    "sounds": [
+      "fnafur:computer/click_release"
+    ]
+  },
+  "casual_bongos": {
+    "subtitle": "sounds.fnafur.casual_bongos",
+    "sounds": [
+      "fnafur:songs/casual_bongos"
+    ]
+  },
+  "zephyr_jumpscare": {
+    "subtitle": "sounds.fnafur.zephyr_jumpscare",
+    "sounds": [
+      "fnafur:jumpscares/zephyr_jumpscare"
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "fnafur_demo_checker": {
+    "can_recolor": true,
+    "overlay": "",
+    "textures": [
+      "block/layers/fnafur_demo_checker_rgb0",
+      "block/layers/fnafur_demo_checker_rgb1"
+    ]
+  },
+  "fnafur_demo_walltiles": {
+    "can_recolor": true,
+    "overlay": "",
+    "textures": [
+      "block/layers/fnafur_demo_walltiles_rgb0",
+      "block/layers/fnafur_demo_walltiles_rgb1",
+      "block/layers/fnafur_demo_walltiles_rgb2"
+    ]
+  },
+  "fnafur_demo_walltiles_top": {
+    "can_recolor": true,
+    "overlay": "",
+    "textures": [
+      "block/layers/fnafur_demo_walltiles_top_rgb0",
+      "block/layers/fnafur_demo_walltiles_top_rgb1",
+      "block/layers/fnafur_demo_walltiles_top_rgb2"
+    ]
+  },
+  "fnafur_demo_walltiles_bottom": {
+    "can_recolor": true,
+    "overlay": "",
+    "textures": [
+      "block/layers/fnafur_demo_walltiles_bottom_rgb0",
+      "block/layers/fnafur_demo_walltiles_bottom_rgb1",
+      "block/layers/fnafur_demo_walltiles_bottom_rgb2"
+    ]
+  },
+  "fnafur_demo_wall0": {
+    "can_recolor": false,
+    "overlay": "",
+    "textures": [
+      "block/layers/fnafur_demo_wall0"
+    ]
+  },
+  "fnafur_demo_wall1": {
+    "can_recolor": false,
+    "overlay": "",
+    "textures": [
+      "block/layers/fnafur_demo_wall1"
+    ]
+  },
+  "fnafur_demo_wall2": {
+    "can_recolor": false,
+    "overlay": "",
+    "textures": [
+      "block/layers/fnafur_demo_wall2"
+    ]
+  },
+  "fnafur_demo_ceiling": {
+    "can_recolor": false,
+    "overlay": "",
+    "textures": [
+      "block/layers/fnafur_demo_ceiling"
+    ]
+  },
+  "fnafur_demo_vent": {
+    "can_recolor": false,
+    "overlay": "",
+    "textures": [
+      "block/layers/fnafur_demo_vent"
+    ]
+  },
+  "fnafur_demo_walltiles2_bottom": {
+    "can_recolor": true,
+    "overlay": "block/layers/fnafur_demo_walltiles2_bottom",
+    "textures": [
+      "block/layers/fnafur_demo_walltiles2_bottom_rgb0"
+    ]
+  },
+  "fnafur_demo_walltiles2_top": {
+    "can_recolor": true,
+    "overlay": "block/layers/fnafur_demo_walltiles2_top",
+    "textures": [
+      "block/layers/fnafur_demo_walltiles2_top_rgb0"
+    ]
+  }
+}

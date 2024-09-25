@@ -1,0 +1,36 @@
+{
+  "can_crawl": false,
+  "crawl_height": 1,
+  "skins": [
+    {
+      "name": "entity.fnafur.cl_fred.default",
+      "icon": "fnafur:textures/entity/classic/cl_fred/icons/default.png",
+      "icon_outline": "fnafur:textures/gui/skins/default_outline.png",
+      "texture": "fnafur:textures/entity/classic/cl_fred/cl_fred.png",
+      "glow_texture": "fnafur:textures/entity/classic/cl_fred/cl_fred_glow.png",
+      "geo": "fnafur:geo/entity/classic/cl_fred/cl_fred.geo.json",
+      "animations": "fnafur:animations/entity/classic/cl_fred/cl_fred.animation.json",
+      "kill_screen_id": "death_default"
+    },
+    {
+      "name": "entity.fnafur.cl_fred.yellow_bear",
+      "icon": "fnafur:textures/entity/classic/cl_fred/icons/default.png",
+      "icon_outline": "fnafur:textures/gui/skins/default_outline.png",
+      "texture": "fnafur:textures/entity/classic/cl_fred/yellow_bear.png",
+      "glow_texture": "fnafur:textures/entity/classic/cl_fred/cl_fred_glow.png",
+      "geo": "fnafur:geo/entity/classic/cl_fred/cl_fred.geo.json",
+      "animations": "fnafur:animations/entity/classic/cl_fred/cl_fred.animation.json",
+      "kill_screen_id": "death_default"
+    },
+    {
+      "name": "entity.fnafur.cl_fred.shadow_freddy_light",
+      "icon": "fnafur:textures/entity/classic/cl_fred/icons/default.png",
+      "icon_outline": "fnafur:textures/gui/skins/default_outline.png",
+      "texture": "fnafur:textures/entity/classic/cl_fred/shadow_freddy_light.png",
+      "glow_texture": "fnafur:textures/entity/classic/cl_fred/cl_fred_glow.png",
+      "geo": "fnafur:geo/entity/classic/cl_fred/cl_fred.geo.json",
+      "animations": "fnafur:animations/entity/classic/cl_fred/cl_fred.animation.json",
+      "kill_screen_id": "death_default"
+    }
+  ]
+}

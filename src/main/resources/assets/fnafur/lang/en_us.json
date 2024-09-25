@@ -1,0 +1,204 @@
+{
+  "fnafur.mod_name": "fnafur",
+  "fnafur.computer_category.classic": "Classics",
+
+  "fnafur.symbol.wrench": "§c§l🔧",
+  "fnafur.symbol.paintbrush": "§a§l🖌",
+  "fnafur.symbol.tapemeasure": "§e§l📏",
+  "fnafur.symbol.coin": "§7§l●",
+  "fnafur.symbol.floppy_disk": "§d§l💾",
+  "fnafur.symbol.computer": "§6§l🖥",
+
+  "key.fnafur.crawl": "Crawl",
+
+  "block.fnafur.computer": "Computer",
+
+  "block.fnafur.layered_block": "Layered Block",
+  "block.fnafur.layered_block.description.0.length": "3",
+  "block.fnafur.layered_block.description.0.0": "§b§lClick §ron a side of this block with",
+  "block.fnafur.layered_block.description.0.1": "the §a§lPaint Brush §rselected to start",
+  "block.fnafur.layered_block.description.0.2": "§bediting the texture of the selected side!",
+  "block.fnafur.layered_block.description.1.length": "5",
+  "block.fnafur.layered_block.description.1.0": "§b§lClick §ron a side of this block with",
+  "block.fnafur.layered_block.description.1.1": "the §e§lTape Measure §rselected to §bcopy",
+  "block.fnafur.layered_block.description.1.2": "§bthe texture of the selected side.",
+  "block.fnafur.layered_block.description.1.3": "§b§lClick §ron a different side to paste it,",
+  "block.fnafur.layered_block.description.1.4": "and §b§lShift-Click §rto §aclear the §6'clipboard'§r.",
+
+  "block.fnafur.camera": "Security Camera",
+  "block.fnafur.camera.description.0.length": "2",
+  "block.fnafur.camera.description.0.0": "§b§lClick §ron this block with the §c§lWrench",
+  "block.fnafur.camera.description.0.1": "to start §bediting its behavior.",
+
+  "item.fnafur.default_description": "Hold %s to show more.",
+
+  "item.fnafur.tablet": "Tablet",
+  "item.fnafur.tablet.description.0.length": "6",
+  "item.fnafur.tablet.description.0.0": "§b§lEquip this item in your Off Hand §rand",
+  "item.fnafur.tablet.description.0.1": "the §e§lTape Measure §b§lin your Main Hand §rto",
+  "item.fnafur.tablet.description.0.2": "start drawing the map for this Camera System.",
+  "item.fnafur.tablet.description.0.3": "§b§lClick once §ron a block to §bset the first point,",
+  "item.fnafur.tablet.description.0.4": "and §b§lclick again §rto §bset the second point",
+  "item.fnafur.tablet.description.0.5": "§bof a line.",
+
+  "item.fnafur.floppy_disk": "Floppy Disk",
+  "item.fnafur.floppy_disk.wrong_entity": "§cEntity does not match the currently saved Entity Type.",
+  "item.fnafur.floppy_disk.entity_updated": "§aEntity AI Successfully updated.",
+  "item.fnafur.floppy_disk.entity_name": "§3Currently saved: %s",
+  "item.fnafur.floppy_disk.description.0.length": "3",
+  "item.fnafur.floppy_disk.description.0.0": "§rThis item §bholds a custom entity's AI.",
+  "item.fnafur.floppy_disk.description.0.1": "§b§lINSERT §rthis item into the §6§lCOMPUTER",
+  "item.fnafur.floppy_disk.description.0.2": "to start §bcustomizing the AI stored on it.",
+
+  "item.fnafur.wrench": "Wrench",
+  "item.fnafur.paintbrush": "Paint Brush",
+  "item.fnafur.paintbrush.map_cam.line1": "Camera Map Coloring...",
+  "item.fnafur.paintbrush.map_cam.line2": "§b§lClick on a line §bto change its color.",
+
+  "item.fnafur.tapemeasure": "Tape Measure",
+  "fnafur.tapemeasure.reset": "§cLayer data cleared.",
+  "item.fnafur.tapemeasure.map_cam.line1": "Camera Mapping...",
+  "item.fnafur.tapemeasure.map_cam.line2": "§b§lClick on a block §bto start drawing a line, §b§lClick again §rto confirm.",
+  "item.fnafur.tapemeasure.map_cam.line3": "§3§o(Click again while sneaking to cancel it...)",
+  "item.fnafur.tapemeasure.map_cam.line4": "§6§lClick on a line while sneaking §6to remove it.",
+
+  "item.fnafur.deathcoin": "Death Coin",
+  "item.fnafur.deathcoin.description.0.length": "4",
+  "item.fnafur.deathcoin.description.0.0": "§b§lPUNCH §ran entity with this item",
+  "item.fnafur.deathcoin.description.0.1": "to make it §c§lVANISH§r. This can only",
+  "item.fnafur.deathcoin.description.0.2": "be done §bonce §ras the item will be",
+  "item.fnafur.deathcoin.description.0.3": "deleted if you use it.",
+
+  "item.fnafur.illusion_disc": "Illusion Disc",
+  "item.fnafur.illusion_disc.entity_updated": "§aEntity Data Successfully updated.",
+  "item.fnafur.illusion_disc.description.0.length": "4",
+  "item.fnafur.illusion_disc.description.0.0": "§rThis item §bmakes you become",
+  "item.fnafur.illusion_disc.description.0.1": "§lSOMEONE OR SOMETHING ELSE §rwhen EQUIPPED.",
+  "item.fnafur.illusion_disc.description.0.2": "§b§lClick §ron an entity with an",
+  "item.fnafur.illusion_disc.description.0.3": "§d§lIllusion Disc §rto copy its data.",
+  "item.fnafur.illusion_disc.description.1.length": "2",
+  "item.fnafur.illusion_disc.description.1.0": "§b§lINSERT §rthis item into the §6§lCOMPUTER",
+  "item.fnafur.illusion_disc.description.1.1": "to §bpick an Entity to replicate.",
+
+  "item.fnafur.zephyr_spawn": "Pile of goo",
+  "item.fnafur.zephyr_spawn.description.0.length": "2",
+  "item.fnafur.zephyr_spawn.description.0.0": "§b§lClick §ron this entity with a",
+  "item.fnafur.zephyr_spawn.description.0.1": "§d§lFloppy Disk §rto give it an AI.",
+
+  "entity.fnafur.skin_screen.confirm": "Save & Close",
+  "entity.fnafur.zephyr": "Zephyr",
+  "entity.fnafur.zephyr.default": "Blue Outfit",
+  "entity.fnafur.zephyr.default.description": "The classic, the default, the usual.",
+  "entity.fnafur.zephyr.neon": "Neon Outfit",
+  "entity.fnafur.zephyr.neon.description": "Quirked up dark boi with a little bit of 80s swag.",
+
+  "entity.fnafur.cl_fred": "Freddy Fazbear",
+  "entity.fnafur.cl_fred.default": "Normal",
+  "entity.fnafur.cl_fred.default.description": "The classic, the default, the original.",
+
+  "death.fnafur.back": "Back",
+  "death.fnafur.confirm": "Confirm",
+  "death.fnafur.game_over": "§lGAME OVER",
+
+  "death.fnafur.default_death": "You died...",
+  "death.fnafur.stabbed.by": "You were stabbed by %s...",
+
+  "fnafur.creative": "fnafur",
+
+  "fnafur.commands.money": "%s currently owns §a§lF$%d§r.",
+  "fnafur.commands.money.set": "%s now owns §a§lF$%d§r.",
+
+  "fnafur.screens.camera_edit.tooltip": "Hold %s to show helpful tips and info.",
+  "fnafur.screens.camera_edit.renameAction": "Pick a name for your Action button.",
+
+  "fnafur.screens.camera_edit.speed.title": "§lPanning Speed (%s§l)",
+  "fnafur.screens.camera_edit.speed.description0": "§6Scroll/Click §7to change the speed",
+  "fnafur.screens.camera_edit.speed.description1": "§7(Left = SLOW | Right = FAST).",
+
+  "fnafur.screens.camera_edit.rotation.title": "§lCamera Angle (%s§l)",
+  "fnafur.screens.camera_edit.rotation.description0": "§6Click and Drag §7to change the angle.",
+  "fnafur.screens.camera_edit.rotation.description1": "§7(Left = DOWN | Right = UP).",
+
+  "fnafur.screens.camera_edit.range.title": "§lCamera Angle Range (%s§l)",
+  "fnafur.screens.camera_edit.range.description0": "§6Click and Drag §7to change the angle.",
+  "fnafur.screens.camera_edit.range.description1": "§7The angle is locked between the two sliders.",
+  "fnafur.screens.camera_edit.range.description2": "§7(Left = DOWN | Right = UP).",
+
+  "fnafur.screens.camera_edit.mode0.title": "§lSet Angle (%s§l)",
+  "fnafur.screens.camera_edit.mode0.description0": "§7The camera is §6locked at the set angle.",
+
+  "fnafur.screens.camera_edit.mode1.title": "§lPanning (%s§l)",
+  "fnafur.screens.camera_edit.mode1.description0": "§7The camera §6pans §7between §6two preset angles§7.",
+  "fnafur.screens.camera_edit.mode1.description1": "§7Use the §6dual slider §7below to set the range.",
+
+  "fnafur.screens.camera_edit.mode2.title": "§lSlider (%s§l)",
+  "fnafur.screens.camera_edit.mode2.description0": "§7The §6player §7using the camera can §6change its angle§7.",
+  "fnafur.screens.camera_edit.mode2.description1": "§7Use the §6dual slider §7below to set the range.",
+
+  "fnafur.screens.camera_edit.name.title": "§lName",
+  "fnafur.screens.camera_edit.name.description0": "§7Change the §6name §7of the camera.",
+
+  "fnafur.screens.camera_edit.flashlight.title": "§lTOGGLE Flashlight",
+  "fnafur.screens.camera_edit.flashlight.description0": "§6Allow/Deny §7the use of the §6Flashlight§7.",
+
+  "fnafur.screens.camera_edit.action.title": "§lTOGGLE Action Button",
+  "fnafur.screens.camera_edit.action.description0": "§6Allow/Deny §7the §6Action Button§7.",
+  "fnafur.screens.camera_edit.action.description1": "§7The button triggers §6Redstone §7behind the camera.",
+
+  "fnafur.screens.camera_edit.nightvision.title": "§lTOGGLE Night Vision",
+  "fnafur.screens.camera_edit.nightvision.description0": "§7Change the behavior of the §6Night Vision§7.",
+  "fnafur.screens.camera_edit.nightvision.description1": "§73 possible modes: §6OFF | TOGGLE | ON§7.",
+  "fnafur.screens.camera_edit.nightvision.description2": "§7TOGGLE mode allows the player to toggle it.",
+
+  "fnafur.screens.camera_edit.power.title": "§lPower button",
+  "fnafur.screens.camera_edit.power.description0": "§6Enable/Disable §7the §6Video feed§7.",
+  "fnafur.screens.camera_edit.power.description1": "§7If OFF, only Audio will go through the camera.",
+
+  "fnafur.screens.camera_tablet.default_name": "Unnamed Camera",
+  "fnafur.screens.camera_tablet.default_action_name": "Trigger Redstone",
+
+  "fnafur.screens.camera_tablet.no_visual": "-CAMERA DISABLED-",
+  "fnafur.screens.camera_tablet.audio_only": "AUDIO ONLY",
+  "fnafur.screens.camera_tablet.no_cams": "-NO CONNECTION-",
+  "fnafur.screens.camera_tablet.no_cams_desc": "PLEASE CONNECT AT LEAST ONE CAMERA",
+
+  "fnafur.screens.computer_code.no_floppy_disk": "NO DISK FOUND",
+  "fnafur.screens.computer_code.no_entity": "NO ENTITY SELECTED",
+  "fnafur.screens.computer_code.no_behavior": "NO BEHAVIOR SELECTED",
+  "fnafur.screens.computer_code.edit_number": "PLEASE TYPE A NUMBER.",
+  "fnafur.screens.computer_code.edit_number.esc": "Press ESC to close WITHOUT SAVING.",
+  "fnafur.screens.computer_code.edit_number.ent": "Press ENTER to SAVE and close.",
+
+  "fnafur.computer.demo_subcategory": "DEMO",
+
+  "fnafur.computer.behavior.stage": "STAGE MODE",
+  "fnafur.computer.behavior.statue": "STATUE MODE",
+  "fnafur.computer.behavior.moving": "WANDERING MODE",
+  "fnafur.computer.behavior.custom_path": "CUSTOM PATH [WIP]",
+  "fnafur.computer.behavior.controllable": "CONTROLLABLE [WIP]",
+
+  "fnafur.computer.behavior.option.animation": "Animation",
+  "fnafur.computer.behavior.option.spawn_pos": "Use the entity's Spawn Position ?",
+  "fnafur.computer.behavior.option.spawn_rot": "Use the entity's Spawn Rotation ?",
+  "fnafur.computer.behavior.option.rotate_head": "Set a custom Head Rotation ?",
+  "fnafur.computer.behavior.option.position": "Set World Position",
+  "fnafur.computer.behavior.option.position_offset_x": "Position Offset X [10 = 1 block]",
+  "fnafur.computer.behavior.option.position_offset_z": "Position Offset Z [10 = 1 block]",
+  "fnafur.computer.behavior.option.rotation": "Set Rotation",
+  "fnafur.computer.behavior.option.head_yaw": "Set Head Yaw",
+  "fnafur.computer.behavior.option.head_pitch": "Set Head Pitch",
+  "fnafur.computer.behavior.option.aggressive": "Is Aggressive ?",
+  "fnafur.computer.behavior.option.roaming": "Should roam freely ?",
+  "fnafur.computer.behavior.option.weeping_angel": "Freeze when watched ?",
+  "fnafur.computer.behavior.option.performing": "Perform ?",
+  "fnafur.computer.behavior.option.deactivated": "Deactivated ?",
+  "fnafur.computer.behavior.option.performing_idle": "Perform when Idle ?",
+  "fnafur.computer.behavior.option.deactivated_idle": "Deactivated when Idle ?",
+  "fnafur.computer.behavior.option.teleport": "Teleport to destination ?",
+  "fnafur.computer.behavior.option.custom_moving_animation": "Use a custom animations ?",
+  "fnafur.computer.behavior.option.idle_animation": "Custom Idle animation",
+  "fnafur.computer.behavior.option.walking_animation": "Custom Walking animation ?",
+  "fnafur.computer.behavior.option.running_animation": "Custom Running animation ?",
+  "fnafur.computer.behavior.option.look_around": "Should look around ?",
+  "fnafur.computer.behavior.option.look_nearby_entities": "Should look at nearby entities ?"
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:block/camera_desk"
+    },
+    "facing=east": {
+      "model": "fnafur:block/camera_desk",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:block/camera_desk",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:block/camera_desk",
+      "y": 270
+    }
+  }
+}

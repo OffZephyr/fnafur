@@ -1,0 +1,26 @@
+{
+  "can_crawl": true,
+  "crawl_height": 0.65,
+  "skins": [
+    {
+      "name": "entity.fnafur.zephyr.default",
+      "icon": "fnafur:textures/entity/zephyr/icons/default.png",
+      "icon_outline": "fnafur:textures/gui/skins/default_outline.png",
+      "texture": "fnafur:textures/entity/zephyr/zephyr.png",
+      "glow_texture": "fnafur:textures/entity/zephyr/zephyr_glow.png",
+      "geo": "fnafur:geo/entity/zephyr/zephyr.geo.json",
+      "animations": "fnafur:animations/entity/zephyr/zephyr.animation.json",
+      "kill_screen_id": "death_goopy"
+    },
+    {
+      "name": "entity.fnafur.zephyr.neon",
+      "icon": "fnafur:textures/entity/zephyr/icons/neon.png",
+      "icon_outline": "fnafur:textures/gui/skins/default_outline.png",
+      "texture": "fnafur:textures/entity/zephyr/zephyr_neon.png",
+      "glow_texture": "fnafur:textures/entity/zephyr/zephyr_glow.png",
+      "geo": "fnafur:geo/entity/zephyr/zephyr.geo.json",
+      "animations": "fnafur:animations/entity/zephyr/zephyr.animation.json",
+      "kill_screen_id": "death_goopy"
+    }
+  ]
+}

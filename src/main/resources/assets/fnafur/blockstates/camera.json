@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "ceiling=false,facing=north": {
+      "model": "fnafur:block/camera"
+    },
+    "ceiling=false,facing=east": {
+      "model": "fnafur:block/camera",
+      "y": 90
+    },
+    "ceiling=false,facing=south": {
+      "model": "fnafur:block/camera",
+      "y": 180
+    },
+    "ceiling=false,facing=west": {
+      "model": "fnafur:block/camera",
+      "y": 270
+    },
+    "ceiling=true,facing=north": {
+      "model": "fnafur:block/camera_top"
+    },
+    "ceiling=true,facing=east": {
+      "model": "fnafur:block/camera_top",
+      "y": 90
+    },
+    "ceiling=true,facing=south": {
+      "model": "fnafur:block/camera_top",
+      "y": 180
+    },
+    "ceiling=true,facing=west": {
+      "model": "fnafur:block/camera_top",
+      "y": 270
+    }
+  }
+}

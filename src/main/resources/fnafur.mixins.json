@@ -1,0 +1,24 @@
+{
+	"required": true,
+	"package": "net.zephyr.fnafur.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"BlacklistMixin",
+		"BlockEntityMixin",
+		"CameraMixin",
+		"DeathScreenMixin",
+		"DebugRendererMixin",
+		"GameRendererMixin",
+		"LightmapTextureManagerMixin",
+		"LivingEntityMixin",
+		"MinecraftClientMixin",
+		"ModEntityDataSaverMixin",
+		"PlayerEntityMixin",
+		"PlayerEntityRendererMixin",
+		"PostEffectProcessorMixin",
+		"WorldRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "color=black": {
+      "model": "fnafur:props/floor_monitors1"
+    },
+    "color=beige": {
+      "model": "fnafur:props/floor_monitors1_beige"
+    }
+  }
+}
