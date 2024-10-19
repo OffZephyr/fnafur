@@ -105,12 +105,12 @@ public class CameraTabletScreen extends GoopyScreen {
 
         BlockEntity ent = MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(currentCam));
         boolean bl = ent != null;
-        NbtCompound nbt = ((IEntityDataSaver)ent).getPersistentData().copy();
+        NbtCompound nbt = bl ? ((IEntityDataSaver)ent).getPersistentData().copy() : new NbtCompound();
         boolean Active = nbt.getBoolean("Active");
         this.allowNightVision = nbt.getByte("NightVision") == 2;
         updateNightVision();
 
-        boolean hasNoSignal = currentCam == 0 || !Active;
+        boolean hasNoSignal = currentCam == 0 || !Active || !bl;
         if(hasNoSignal) context.fill(0, 0, this.width, this.height, 0xFF000000);
 
         Identifier staticTexture = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/static/" + this.Static + ".png");
@@ -147,6 +147,8 @@ public class CameraTabletScreen extends GoopyScreen {
 
         drawResizableText(context, this.textRenderer, Text.literal(Hour), 2, this.width - (this.textRenderer.getWidth(Hour) * 2) - 16, 18, 0x64FFFFFF, 0x00000000, false, false);
         drawResizableText(context, this.textRenderer, Text.literal(Day), 1, this.width - (this.textRenderer.getWidth(Day)) - 16, 36, 0x64FFFFFF, 0x00000000, false, false);
+
+
 
         drawRecolorableTexture(context, overlay, 0, 0, 0, this.width, this.height, 0, 0, this.width, this.height, 1, 1, 1, 1);
 
@@ -355,7 +357,7 @@ public class CameraTabletScreen extends GoopyScreen {
                 x *= (int)(1 / camScale);
                 z *= (int)(1 / camScale);
 
-                if (bl2 && MinecraftClient.getInstance().world != null) {
+                if (bl2 && MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().world.getBlockEntity(pos) instanceof CameraBlockEntity) {
                     String name = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(pos)).getPersistentData().getString("Name");
                     matrices.scale(1 / camScale, 1 / camScale, 1 / camScale);
                     context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(name), mouseX, mouseY);
@@ -499,6 +501,11 @@ public class CameraTabletScreen extends GoopyScreen {
             this.Static = this.Static + 1 >= 4 ? 0 : this.Static + 1;
             this.transition = Math.max(this.transition - 1, 0);
         }
+
+        if(!cams.isEmpty() && (!cams.contains(currentCam) || !(client.world.getBlockEntity(BlockPos.fromLong(currentCam)) instanceof CameraBlockEntity))){
+            cams.remove(currentCam);
+            currentCam = !cams.isEmpty() ? cams.get(0) : 0;
+        }
         super.tick();
     }
 
@@ -528,25 +535,29 @@ public class CameraTabletScreen extends GoopyScreen {
     }
 
     void setLight(long pos, boolean value) {
-        NbtCompound nbt = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(pos))).getPersistentData().copy();
-        if (nbt.getBoolean("Flashlight")) {
-            if (nbt.getBoolean("Lit") != value) {
-                nbt.putBoolean("Lit", value);
-                GoopyNetworkingUtils.saveBlockNbt(BlockPos.fromLong(pos), nbt);
-            }
-        } else {
-            if (nbt.getBoolean("Lit")) {
-                nbt.putBoolean("Lit", false);
-                GoopyNetworkingUtils.saveBlockNbt(BlockPos.fromLong(pos), nbt);
+        if(MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(pos)) instanceof CameraBlockEntity) {
+            NbtCompound nbt = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(pos))).getPersistentData().copy();
+            if (nbt.getBoolean("Flashlight")) {
+                if (nbt.getBoolean("Lit") != value) {
+                    nbt.putBoolean("Lit", value);
+                    GoopyNetworkingUtils.saveBlockNbt(BlockPos.fromLong(pos), nbt);
+                }
+            } else {
+                if (nbt.getBoolean("Lit")) {
+                    nbt.putBoolean("Lit", false);
+                    GoopyNetworkingUtils.saveBlockNbt(BlockPos.fromLong(pos), nbt);
+                }
             }
         }
     }
     void setUsed(long pos, boolean value){
-            NbtCompound nbt = ((IEntityDataSaver)MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(pos))).getPersistentData().copy();
+        if(MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(pos)) instanceof CameraBlockEntity) {
+            NbtCompound nbt = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(pos))).getPersistentData().copy();
             if (nbt.getBoolean("isUsed") != value) {
                 nbt.putBoolean("isUsed", value);
                 GoopyNetworkingUtils.saveBlockNbt(BlockPos.fromLong(pos), nbt);
             }
+        }
     }
 
     @Override
@@ -570,7 +581,7 @@ public class CameraTabletScreen extends GoopyScreen {
     public Vec3d camPos(){
         if(MinecraftClient.getInstance().world != null) {
             BlockEntity entity = MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(currentCam));
-            if (entity != null) {
+            if (entity instanceof CameraBlockEntity) {
                 BlockPos pos = BlockPos.fromLong(currentCam);
                 Vec3d offset;
                 float amount = 0.2f;
@@ -589,7 +600,7 @@ public class CameraTabletScreen extends GoopyScreen {
     public float getPitch(){
         if(MinecraftClient.getInstance().world != null) {
             BlockEntity entity = MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(currentCam));
-            if (entity != null) {
+            if (entity instanceof CameraBlockEntity) {
                 NbtCompound nbt = ((IEntityDataSaver) entity).getPersistentData().copy();
                 return nbt.getFloat("pitch");
             }
@@ -599,7 +610,7 @@ public class CameraTabletScreen extends GoopyScreen {
     public float getYaw(){
         if(MinecraftClient.getInstance().world != null) {
             BlockEntity entity = MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(currentCam));
-            if (entity != null) {
+            if (entity instanceof CameraBlockEntity) {
                 NbtCompound nbt = ((IEntityDataSaver) entity).getPersistentData().copy();
                 BlockPos pos = BlockPos.fromLong(currentCam);
                 World world = MinecraftClient.getInstance().world;

@@ -1,0 +1,640 @@
+{
+  "variants": {
+    "color=both,half=wall,facing=north,door=false,light=false": {
+      "model": "fnafur:props/office_buttons"
+    },
+    "color=both,half=wall,facing=north,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door"
+    },
+    "color=both,half=wall,facing=north,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light"
+    },
+    "color=both,half=wall,facing=north,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both"
+    },
+    "color=both,half=wall,facing=east,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "y": 90
+    },
+    "color=both,half=wall,facing=east,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "y": 90
+    },
+    "color=both,half=wall,facing=east,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "y": 90
+    },
+    "color=both,half=wall,facing=east,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "y": 90
+    },
+    "color=both,half=wall,facing=south,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "y": 180
+    },
+    "color=both,half=wall,facing=south,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "y": 180
+    },
+    "color=both,half=wall,facing=south,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "y": 180
+    },
+    "color=both,half=wall,facing=south,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "y": 180
+    },
+    "color=both,half=wall,facing=west,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "y": 270
+    },
+    "color=both,half=wall,facing=west,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "y": 270
+    },
+    "color=both,half=wall,facing=west,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "y": 270
+    },
+    "color=both,half=wall,facing=west,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "y": 270
+    },
+    "color=both,half=ceiling,facing=north,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=north,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=north,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=north,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=east,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "y": 90,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=east,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "y": 90,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=east,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "y": 90,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=east,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "y": 90,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=south,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "y": 180,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=south,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "y": 180,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=south,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "y": 180,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=south,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "y": 180,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=west,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "y": 270,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=west,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "y": 270,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=west,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "y": 270,
+      "x": 90
+    },
+    "color=both,half=ceiling,facing=west,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "y": 270,
+      "x": 90
+    },
+    "color=both,half=floor,facing=north,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "x": 270
+    },
+    "color=both,half=floor,facing=north,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "x": 270
+    },
+    "color=both,half=floor,facing=north,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "x": 270
+    },
+    "color=both,half=floor,facing=north,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "x": 270
+    },
+    "color=both,half=floor,facing=east,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "y": 90,
+      "x": 270
+    },
+    "color=both,half=floor,facing=east,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "y": 90,
+      "x": 270
+    },
+    "color=both,half=floor,facing=east,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "y": 90,
+      "x": 270
+    },
+    "color=both,half=floor,facing=east,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "y": 90,
+      "x": 270
+    },
+    "color=both,half=floor,facing=south,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "y": 180,
+      "x": 270
+    },
+    "color=both,half=floor,facing=south,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "y": 180,
+      "x": 270
+    },
+    "color=both,half=floor,facing=south,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "y": 180,
+      "x": 270
+    },
+    "color=both,half=floor,facing=south,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "y": 180,
+      "x": 270
+    },
+    "color=both,half=floor,facing=west,door=false,light=false": {
+      "model": "fnafur:props/office_buttons",
+      "y": 270,
+      "x": 270
+    },
+    "color=both,half=floor,facing=west,door=true,light=false": {
+      "model": "fnafur:props/office_buttons_door",
+      "y": 270,
+      "x": 270
+    },
+    "color=both,half=floor,facing=west,door=false,light=true": {
+      "model": "fnafur:props/office_buttons_light",
+      "y": 270,
+      "x": 270
+    },
+    "color=both,half=floor,facing=west,door=true,light=true": {
+      "model": "fnafur:props/office_buttons_both",
+      "y": 270,
+      "x": 270
+    },
+    "color=door,half=wall,facing=north,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off"
+    },
+    "color=door,half=wall,facing=north,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on"
+    },
+    "color=door,half=wall,facing=east,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "y": 90
+    },
+    "color=door,half=wall,facing=east,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "y": 90
+    },
+    "color=door,half=wall,facing=south,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "y": 180
+    },
+    "color=door,half=wall,facing=south,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "y": 180
+    },
+    "color=door,half=wall,facing=west,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "y": 270
+    },
+    "color=door,half=wall,facing=west,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "y": 270
+    },
+    "color=door,half=ceiling,facing=north,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "x": 90
+    },
+    "color=door,half=ceiling,facing=north,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "x": 90
+    },
+    "color=door,half=ceiling,facing=east,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "y": 90,
+      "x": 90
+    },
+    "color=door,half=ceiling,facing=east,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "y": 90,
+      "x": 90
+    },
+    "color=door,half=ceiling,facing=south,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "y": 180,
+      "x": 90
+    },
+    "color=door,half=ceiling,facing=south,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "y": 180,
+      "x": 90
+    },
+    "color=door,half=ceiling,facing=west,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "y": 270,
+      "x": 90
+    },
+    "color=door,half=ceiling,facing=west,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "y": 270,
+      "x": 90
+    },
+    "color=door,half=floor,facing=north,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "x": 270
+    },
+    "color=door,half=floor,facing=north,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "x": 270
+    },
+    "color=door,half=floor,facing=east,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "y": 90,
+      "x": 270
+    },
+    "color=door,half=floor,facing=east,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "y": 90,
+      "x": 270
+    },
+    "color=door,half=floor,facing=south,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "y": 180,
+      "x": 270
+    },
+    "color=door,half=floor,facing=south,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "y": 180,
+      "x": 270
+    },
+    "color=door,half=floor,facing=west,door=false,light=false": {
+      "model": "fnafur:props/door_office_button_off",
+      "y": 270,
+      "x": 270
+    },
+    "color=door,half=floor,facing=west,door=true,light=false": {
+      "model": "fnafur:props/door_office_button_on",
+      "y": 270,
+      "x": 270
+    },
+    "color=light,half=wall,facing=north,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off"
+    },
+    "color=light,half=wall,facing=north,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on"
+    },
+    "color=light,half=wall,facing=east,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "y": 90
+    },
+    "color=light,half=wall,facing=east,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "y": 90
+    },
+    "color=light,half=wall,facing=south,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "y": 180
+    },
+    "color=light,half=wall,facing=south,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "y": 180
+    },
+    "color=light,half=wall,facing=west,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "y": 270
+    },
+    "color=light,half=wall,facing=west,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "y": 270
+    },
+    "color=light,half=ceiling,facing=north,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "x": 90
+    },
+    "color=light,half=ceiling,facing=north,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "x": 90
+    },
+    "color=light,half=ceiling,facing=east,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "y": 90,
+      "x": 90
+    },
+    "color=light,half=ceiling,facing=east,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "y": 90,
+      "x": 90
+    },
+    "color=light,half=ceiling,facing=south,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "y": 180,
+      "x": 90
+    },
+    "color=light,half=ceiling,facing=south,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "y": 180,
+      "x": 90
+    },
+    "color=light,half=ceiling,facing=west,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "y": 270,
+      "x": 90
+    },
+    "color=light,half=ceiling,facing=west,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "y": 270,
+      "x": 90
+    },
+    "color=light,half=floor,facing=north,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "x": 270
+    },
+    "color=light,half=floor,facing=north,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "x": 270
+    },
+    "color=light,half=floor,facing=east,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "y": 90,
+      "x": 270
+    },
+    "color=light,half=floor,facing=east,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "y": 90,
+      "x": 270
+    },
+    "color=light,half=floor,facing=south,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "y": 180,
+      "x": 270
+    },
+    "color=light,half=floor,facing=south,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "y": 180,
+      "x": 270
+    },
+    "color=light,half=floor,facing=west,door=false,light=false": {
+      "model": "fnafur:props/light_office_button_off",
+      "y": 270,
+      "x": 270
+    },
+    "color=light,half=floor,facing=west,door=false,light=true": {
+      "model": "fnafur:props/light_office_button_on",
+      "y": 270,
+      "x": 270
+    },
+    "color=nameless_door,half=wall,facing=north,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off"
+    },
+    "color=nameless_door,half=wall,facing=north,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on"
+    },
+    "color=nameless_door,half=wall,facing=east,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "y": 90
+    },
+    "color=nameless_door,half=wall,facing=east,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "y": 90
+    },
+    "color=nameless_door,half=wall,facing=south,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "y": 180
+    },
+    "color=nameless_door,half=wall,facing=south,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "y": 180
+    },
+    "color=nameless_door,half=wall,facing=west,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "y": 270
+    },
+    "color=nameless_door,half=wall,facing=west,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "y": 270
+    },
+    "color=nameless_door,half=ceiling,facing=north,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "x": 90
+    },
+    "color=nameless_door,half=ceiling,facing=north,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "x": 90
+    },
+    "color=nameless_door,half=ceiling,facing=east,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "y": 90,
+      "x": 90
+    },
+    "color=nameless_door,half=ceiling,facing=east,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "y": 90,
+      "x": 90
+    },
+    "color=nameless_door,half=ceiling,facing=south,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "y": 180,
+      "x": 90
+    },
+    "color=nameless_door,half=ceiling,facing=south,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "y": 180,
+      "x": 90
+    },
+    "color=nameless_door,half=ceiling,facing=west,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "y": 270,
+      "x": 90
+    },
+    "color=nameless_door,half=ceiling,facing=west,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "y": 270,
+      "x": 90
+    },
+    "color=nameless_door,half=floor,facing=north,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "x": 270
+    },
+    "color=nameless_door,half=floor,facing=north,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "x": 270
+    },
+    "color=nameless_door,half=floor,facing=east,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "y": 90,
+      "x": 270
+    },
+    "color=nameless_door,half=floor,facing=east,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "y": 90,
+      "x": 270
+    },
+    "color=nameless_door,half=floor,facing=south,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "y": 180,
+      "x": 270
+    },
+    "color=nameless_door,half=floor,facing=south,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "y": 180,
+      "x": 270
+    },
+    "color=nameless_door,half=floor,facing=west,door=false,light=false": {
+      "model": "fnafur:props/red_office_button_off",
+      "y": 270,
+      "x": 270
+    },
+    "color=nameless_door,half=floor,facing=west,door=true,light=false": {
+      "model": "fnafur:props/red_office_button_on",
+      "y": 270,
+      "x": 270
+    },
+    "color=nameless_light,half=wall,facing=north,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off"
+    },
+    "color=nameless_light,half=wall,facing=north,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on"
+    },
+    "color=nameless_light,half=wall,facing=east,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "y": 90
+    },
+    "color=nameless_light,half=wall,facing=east,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "y": 90
+    },
+    "color=nameless_light,half=wall,facing=south,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "y": 180
+    },
+    "color=nameless_light,half=wall,facing=south,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "y": 180
+    },
+    "color=nameless_light,half=wall,facing=west,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "y": 270
+    },
+    "color=nameless_light,half=wall,facing=west,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "y": 270
+    },
+    "color=nameless_light,half=ceiling,facing=north,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "x": 90
+    },
+    "color=nameless_light,half=ceiling,facing=north,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "x": 90
+    },
+    "color=nameless_light,half=ceiling,facing=east,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "y": 90,
+      "x": 90
+    },
+    "color=nameless_light,half=ceiling,facing=east,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "y": 90,
+      "x": 90
+    },
+    "color=nameless_light,half=ceiling,facing=south,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "y": 180,
+      "x": 90
+    },
+    "color=nameless_light,half=ceiling,facing=south,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "y": 180,
+      "x": 90
+    },
+    "color=nameless_light,half=ceiling,facing=west,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "y": 270,
+      "x": 90
+    },
+    "color=nameless_light,half=ceiling,facing=west,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "y": 270,
+      "x": 90
+    },
+    "color=nameless_light,half=floor,facing=north,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "x": 270
+    },
+    "color=nameless_light,half=floor,facing=north,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "x": 270
+    },
+    "color=nameless_light,half=floor,facing=east,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "y": 90,
+      "x": 270
+    },
+    "color=nameless_light,half=floor,facing=east,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "y": 90,
+      "x": 270
+    },
+    "color=nameless_light,half=floor,facing=south,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "y": 180,
+      "x": 270
+    },
+    "color=nameless_light,half=floor,facing=south,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "y": 180,
+      "x": 270
+    },
+    "color=nameless_light,half=floor,facing=west,door=false,light=false": {
+      "model": "fnafur:props/gray_office_button_off",
+      "y": 270,
+      "x": 270
+    },
+    "color=nameless_light,half=floor,facing=west,door=false,light=true": {
+      "model": "fnafur:props/gray_office_button_on",
+      "y": 270,
+      "x": 270
+    }
+  }
+}

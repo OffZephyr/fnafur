@@ -19,6 +19,11 @@ public class WallGrunge extends StickerItem {
 
     @Override
     public boolean isStackable() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public float mouseOffset() {
+        return 0;
     }
 }

@@ -21,6 +21,7 @@ import net.zephyr.fnafur.blocks.props.base.PropBlock;
 
 public class FloorPropPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
+
             MinecraftClient client = MinecraftClient.getInstance();
             ClientPlayerEntity player = client.player;
             if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof BlockItem blockItem) {
@@ -56,13 +57,12 @@ public class FloorPropPlacingRenderer {
                             if (((BlockHitResult) blockHit).getSide() == Direction.WEST) x = 0;
                         }
 
-                        BlockState state = player.getMainHandStack().getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(block.getDefaultState())
-                                .with(FloorPropBlock.OFFSET_X, (int) (x * FloorPropBlock.offset_grid_size))
-                                .with(FloorPropBlock.OFFSET_Z, (int) (z * FloorPropBlock.offset_grid_size));
+                        BlockState state = player.getMainHandStack().getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(block.getDefaultState());
 
                         VoxelShape shape = state.getOutlineShape(client.world, pos, ShapeContext.absent());
 
                         matrices.push();
+                        matrices.translate(-cameraX + 0.5f, -cameraY, -cameraZ + 0.5f);
 
                         matrices.translate(-0.5f, 0, -0.5f);
                         matrices.translate(x + pos.getX() - 0.5f, y, z + pos.getZ() - 0.5f);
@@ -75,9 +75,6 @@ public class FloorPropPlacingRenderer {
                         client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), state, model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
 
                         WorldRenderer.drawShapeOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), shape, 0, 0, 0, 1,1 ,1, 0.5f, true);
-                        for (Box box : shape.getBoundingBoxes()) {
-                            DebugRenderer.drawBox(matrices, vertexConsumers, box, 2, 2, 2, 0.05f);
-                        }
                         matrices.pop();
                         FloorPropBlock.drawingOutline = false;
                     }

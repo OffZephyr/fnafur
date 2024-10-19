@@ -38,7 +38,7 @@ public class IllusionDisc extends ItemWithDescription implements Equipment {
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) throws NumberFormatException {
         String animatronic = ItemNbtUtil.getNbt(stack).getString("entity");
         if (!animatronic.isEmpty() && ComputerData.getAIAnimatronic(animatronic) instanceof ComputerData.Initializer.AnimatronicAI ai) {
-            Text before = Text.translatable("item.fnafur.floppy_disk.entity_name", "§7" + ai.entityType().getName().getString());
+            Text before = Text.translatable("item.fnafur.cpu.entity_name", "§7" + ai.entityType().getName().getString());
             Text text = Text.literal(before.getString());
             tooltip.add(text);
         }

@@ -10,9 +10,12 @@ import net.zephyr.fnafur.blocks.arcademachine.ArcademachineBlockEntity;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockEntity;
 import net.zephyr.fnafur.blocks.computer.ComputerBlockEntity;
+import net.zephyr.fnafur.blocks.fog.FogBlock;
+import net.zephyr.fnafur.blocks.fog.FogBlockEntity;
 import net.zephyr.fnafur.blocks.layered_block.LayeredBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers.base.StickerBlockEntity;
+import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
 
@@ -22,8 +25,10 @@ public class BlockEntityInit {
     public static BlockEntityType<CameraBlockEntity> CAMERA;
     public static BlockEntityType<CameraDeskBlockEntity> CAMERA_DESK;
     public static BlockEntityType<ArcademachineBlockEntity> ARCADE_MACHINE;
+    public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
     public static BlockEntityType<StickerBlockEntity> STICKER_BLOCK;
+    public static BlockEntityType<TileDoorBlockEntity> TILE_DOOR;
 
     public static void registerBlockEntities() {
         COMPUTER =
@@ -49,11 +54,25 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "arcade_machine"),
                         FabricBlockEntityTypeBuilder.create(ArcademachineBlockEntity::new,
                                 BlockInit.CAMERA_DESK).build());
+        FOG_BLOCK =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "fog_block"),
+                        FabricBlockEntityTypeBuilder.create(FogBlockEntity::new,
+                                BlockInit.FOG_BLOCK).build());
+
+        TILE_DOOR =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "tile_door"),
+                        FabricBlockEntityTypeBuilder.create(TileDoorBlockEntity::new,
+                                BlockInit.OFFICE_DOOR
+                        ).build());
         PROPS =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "props"),
                         FabricBlockEntityTypeBuilder.create(PropBlockEntity::new,
                                 PropInit.FLOOR_MONITORS_1,
                                 PropInit.FLOOR_MONITORS_2,
+                                PropInit.WOODEN_SHELF,
+
+                                PropInit.OFFICE_BUTTONS,
+
                                 PropInit.BEPH_PLUSHIE
                         ).build());
 
@@ -61,7 +80,8 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "sticker_block"),
                         FabricBlockEntityTypeBuilder.create(StickerBlockEntity::new,
                                 BlockInit.GRAY_WALL,
-                                BlockInit.DARK_GRAY_WALL
+                                BlockInit.DARK_GRAY_WALL,
+                                BlockInit.LARGE_BROWN_BRICKS
                         ).build());
 
 

@@ -123,7 +123,7 @@ public class ComputerBlock extends BlockWithEntity implements BlockEntityProvide
         //NbtCompound data = world.getBlockEntity(pos) instanceof ComputerBlockEntity ent ? ent.getCustomData() : new NbtCompound();
         NbtCompound data = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData();
 
-        if(player.getMainHandStack().isOf(ItemInit.FLOPPYDISK) || player.getMainHandStack().isOf(ItemInit.ILLUSIONDISC)){
+        if(player.getMainHandStack().isOf(ItemInit.CPU) || player.getMainHandStack().isOf(ItemInit.ILLUSIONDISC)){
             emptyDisk(data, world, pos, state);
             data.put("ai_data", player.getMainHandStack().encodeAllowEmpty(world.getRegistryManager()));
             player.getMainHandStack().decrementUnlessCreative(1, player);

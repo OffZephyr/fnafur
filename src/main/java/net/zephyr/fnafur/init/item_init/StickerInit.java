@@ -6,14 +6,17 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.zephyr.fnafur.FnafUniverseResuited;
-import net.zephyr.fnafur.item.stickers.BlackWhiteRedWallTiles;
-import net.zephyr.fnafur.item.stickers.WallGrunge;
+import net.zephyr.fnafur.item.stickers.*;
 
 public class StickerInit {
     public static final Item BLACK_WHITE_RED_WALL_TILES = registerItem("sticker_black_white_red_wall_tiles",
             new BlackWhiteRedWallTiles(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
+    public static final Item BLACK_WHITE_RED_WALL_BIG_TILES = registerItem("sticker_black_white_red_wall_big_tiles",
+            new BlackWhiteRedWalBiglTiles(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
     public static final Item WALL_GRUNGE = registerItem("sticker_wall_grunge",
             new WallGrunge(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
+    public static final Item WALL_GRUNGE_2 = registerItem("sticker_wall_grunge_2",
+            new WallGrunge2(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(FnafUniverseResuited.MOD_ID, name), item);

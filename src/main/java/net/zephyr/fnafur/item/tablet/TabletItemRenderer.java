@@ -45,7 +45,7 @@ public class TabletItemRenderer extends GeoItemRenderer<TabletItem> {
         AnimationController<GeoAnimatable> controller = cache.getManagerForId(GeoItem.getId(stack)).getAnimationControllers().get("Use");
 
         if (transformType != ModelTransformationMode.FIRST_PERSON_RIGHT_HAND && transformType != ModelTransformationMode.FIRST_PERSON_LEFT_HAND) {
-
+            poseStack.push();
             float partialTick = MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true);
             if (transformType == ModelTransformationMode.GUI) {
                 RenderLayer renderType = getRenderType(this.animatable, getTextureLocation(this.animatable), bufferSource, partialTick);
@@ -59,17 +59,29 @@ public class TabletItemRenderer extends GeoItemRenderer<TabletItem> {
 
             if (model != null && model.getAnimationProcessor().getBone("monitor") != null) {
                 GeoCube cube = model.getAnimationProcessor().getBone("monitor").getCubes().get(0);
+                GeoCube cube2 = model.getAnimationProcessor().getBone("monitor").getCubes().get(1);
                 GeoCube screen = model.getAnimationProcessor().getBone("monitor").getChildBones().get(0).getCubes().get(0);
+                poseStack.push();
+                poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
+                poseStack.translate(0.525f, -1f, 0);
+                renderCube(poseStack, cube2, buffer, packedLight, packedOverlay, 0xFFFFFFFF);
+                poseStack.pop();
+                poseStack.push();
                 poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
                 poseStack.translate(0.525f, -1f, 0);
                 renderCube(poseStack, cube, buffer, packedLight, packedOverlay, 0xFFFFFFFF);
+                poseStack.pop();
 
                 if (stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt().getBoolean("used")) {
-                    poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
-                    poseStack.translate(0, -0.5275, 0.025);
+
+                    poseStack.push();
+                    poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
+                    poseStack.translate(0.525f, -1f, 0);
                     renderCube(poseStack, screen, buffer, LightmapTextureManager.MAX_LIGHT_COORDINATE, packedOverlay, 0xFFFFFFFF);
+                    poseStack.pop();
                 }
             }
+            poseStack.pop();
         }
         else {
             GeoBone right = model.getAnimationProcessor().getBone("right");

@@ -15,7 +15,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -31,6 +33,7 @@ import net.zephyr.fnafur.item.stickers.base.StickerItem;
 
 public class StickerPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
+
             MinecraftClient client = MinecraftClient.getInstance();
             ClientPlayerEntity player = client.player;
             if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof StickerItem item) {
@@ -38,97 +41,68 @@ public class StickerPlacingRenderer {
                 if (blockHit.getType() == HitResult.Type.BLOCK) {
                     BlockPos pos = ((BlockHitResult) blockHit).getBlockPos();
                     if (client.world.getBlockState(pos).getBlock() instanceof StickerBlock) {
-                        Vec3d hitPos = blockHit.getPos().add(0, 1, 0);
 
                         if (item.isWallSticker() && (((BlockHitResult) blockHit).getSide() == Direction.UP || ((BlockHitResult) blockHit).getSide() == Direction.DOWN)) {
                             return;
                         }
 
+                        Vec3d hitPos = blockHit.getPos();
                         Direction direction = ((BlockHitResult) blockHit).getSide();
                         String name = item.sticker_name();
                         Sticker sticker = Sticker.getSticker(name);
 
-                        double yOffset = hitPos.getY() - pos.getY() - 1;
+                        if (sticker == null) return;
 
-                        double xOffset = hitPos.getX() - pos.getX();
-                        double zOffset = hitPos.getZ() - pos.getZ();
-
-                        float grid = sticker.getPixelDensity();
-                        float space = sticker.getSize();
-
-                        double x = 0;
-                        double y = 0;
-                        double z = 0;
-
-                        float SnapGrid = 1f / grid;
-                        if (player.isSneaking()) {
-                            SnapGrid = 1f / (grid / 12f);
-                        }
-
-                        if (sticker.getDirection() == Sticker.Movable.VERTICAL) {
-                            y = (yOffset / grid) * space;
-
-                            y = Math.round(y / SnapGrid) * SnapGrid;
-                            y = Math.clamp(y, 0, space);
-                        }
-                        if (sticker.getDirection() == Sticker.Movable.HORIZONTAL) {
-                            x = (xOffset / grid) * space;
-
-                            x = Math.round(x / SnapGrid) * SnapGrid;
-                            x = Math.clamp(x, 0, space);
-
-                            z = (zOffset / grid) * space;
-
-                            z = Math.round(z / SnapGrid) * SnapGrid;
-                            z = Math.clamp(z, 0, space);
-                        }
-
-                        if(direction == Direction.EAST || direction == Direction.WEST){
-                            x = 0;
-                        }
-                        if(direction == Direction.SOUTH || direction == Direction.NORTH){
-                            z = 0;
-                        }
+                        Vec3d stickerPos = StickerItem.stickerPos(pos, hitPos, direction, item, player, player.getWorld());
 
                         matrices.push();
-                        matrices.translate(x, y, z);
+                        matrices.translate(-cameraX + 0.5f, -cameraY, -cameraZ + 0.5f);
+                        matrices.translate(stickerPos.getX(), stickerPos.getY(), stickerPos.getZ());
                         matrices.translate(pos.getX(), pos.getY(), pos.getZ());
                         matrices.translate(0, 0.5f, 0);
                         matrices.multiply(((BlockHitResult) blockHit).getSide().getRotationQuaternion());
-                        matrices.translate(0, 0.501f, 0);
+                        matrices.translate(0, 0.506f, 0);
 
-                        if (sticker != null) {
-                            int dirPos = direction == Direction.NORTH || direction == Direction.SOUTH ? Math.abs(pos.getX()) :
-                                    direction == Direction.WEST || direction == Direction.EAST ? Math.abs(pos.getZ()) :
-                                            0;
-                            int num = dirPos % sticker.getTextures().length;
-                            String path = "textures/" + sticker.getTextures()[num].getPath() + ".png";
-                            Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, path);
+                        int dirPos = direction == Direction.NORTH || direction == Direction.SOUTH ? Math.abs(pos.getX()) :
+                                direction == Direction.WEST || direction == Direction.EAST ? Math.abs(pos.getZ()) :
+                                        0;
+                        int num = dirPos % sticker.getTextures().length;
+                        String path = "textures/" + sticker.getTextures()[num].getPath() + ".png";
+                        Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, path);
 
-                            float tWidth = 0.5f;
-                            float tHeight = 0.5f;
-                            float vWidth = 0.5f;
-                            float vHeight = 0.5f;
+                        float tWidth = 0.5f;
+                        float tHeight = 0.5f;
+                        float vWidth = 0.5f;
+                        float vHeight = 0.5f;
 
-                            RenderSystem.enableBlend();
-                            RenderSystem.enableDepthTest();
-                            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+                        RenderSystem.enableDepthTest();
+                        RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
 
-                            var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+                        var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
 
-                            RenderSystem.setShaderTexture(0, identifier);
-                            RenderSystem.setShaderColor(1, 1, 1, 0.6f);
+                        RenderSystem.setShaderTexture(0, identifier);
+                        RenderSystem.setShaderColor(1, 1, 1, 0.6f);
 
-                            buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, -vHeight).texture(0.5f - tWidth, 0.5f - tHeight).color(0x66FFFFFF);
-                            buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, vHeight).texture(0.5f - tWidth, 0.5f + tHeight).color(0x66FFFFFF);
-                            buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, vHeight).texture(0.5f + tWidth, 0.5f + tHeight).color(0x66FFFFFF);
-                            buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, -vHeight).texture(0.5f + tWidth, 0.5f - tHeight).color(0x66FFFFFF);
+                        buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, -vHeight)
+                                .texture(0.5f - tWidth, 0.5f - tHeight)
+                                .color(0xFFFFFFFF);
+                        buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, vHeight)
+                                .texture(0.5f - tWidth, 0.5f + tHeight)
+                                .color(0xFFFFFFFF);
+                        buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, vHeight)
+                                .texture(0.5f + tWidth, 0.5f + tHeight)
+                                .color(0xFFFFFFFF);
+                        buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, -vHeight)
+                                .texture(0.5f + tWidth, 0.5f - tHeight)
+                                .color(0xFFFFFFFF);
 
-                            RenderSystem.setShaderColor(1, 1, 1, 1f);
+                        RenderSystem.setShaderColor(1, 1, 1, 1f);
 
-                            BufferRenderer.drawWithGlobalProgram(buffer.end());
-                            matrices.pop();
-                        }
+                        BufferRenderer.drawWithGlobalProgram(buffer.end());
+
+                        RenderSystem.disableDepthTest();
+
+                        matrices.pop();
                     }
                 }
             }

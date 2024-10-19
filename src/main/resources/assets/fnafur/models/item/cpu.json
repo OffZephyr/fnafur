@@ -1,0 +1,10 @@
+{
+    "parent": "item/generated",
+    "textures": {
+      "layer0": "fnafur:item/cpus/default_cpu"
+    },
+    "overrides": [
+        { "predicate": { "fnafur.cl_fred": 1 }, "model": "fnafur:item/cpus/cl_fred_cpu" },
+        { "predicate": { "fnafur.cl_bon": 1 }, "model": "fnafur:item/cpus/cl_bon_cpu" }
+	]
+}

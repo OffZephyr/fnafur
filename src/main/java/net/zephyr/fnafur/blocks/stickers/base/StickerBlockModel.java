@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.render.model.json.ModelOverrideList;
@@ -29,7 +30,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
+import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
+import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -109,7 +113,11 @@ public class StickerBlockModel  implements UnbakedModel, BakedModel, FabricBaked
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         MeshBuilder builder = renderer.meshBuilder();
         QuadEmitter emitter = builder.getEmitter();
-        emitQuads(state, pos, ((IEntityDataSaver)blockView.getBlockEntity(pos)).getPersistentData(), emitter, builder, context);
+        BlockEntity entity = blockView.getBlockEntity(pos);
+
+        if (entity instanceof StickerBlockEntity ent) {
+            emitQuads(state, pos, ((IEntityDataSaver) ent).getPersistentData(), emitter, builder, context);
+        }
 
     }
 
@@ -131,20 +139,27 @@ public class StickerBlockModel  implements UnbakedModel, BakedModel, FabricBaked
         for(Direction direction : Direction.values()) {
             Sprite sprite = ((StickerBlock)state.getBlock()).sprites().get(direction).getSprite();
 
+            if(sprite == null) return;
+
             emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
             emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
             emitter.color(-1, -1, -1, -1);
             emitter.emit();
         }
-        for(Direction direction : Direction.values()) {
-            NbtList list = nbt.getList(direction.name(), NbtElement.STRING_TYPE);
-            NbtList offset_list = nbt.getList(direction.name() + "_offset", NbtElement.FLOAT_TYPE);
-            for(int i = 0; i < list.size(); i++) {
-                String name = list.getString(i);
-                Sticker sticker = Sticker.getSticker(name);
-                if(sticker != null) {
-                    int dirPos = direction == Direction.NORTH || direction == Direction.SOUTH ? Math.abs(pos.getX()) :
-                            direction == Direction.WEST || direction == Direction.EAST ? Math.abs(pos.getZ()) :
+        if(!nbt.isEmpty()) {
+            MinecraftClient client = MinecraftClient.getInstance();
+            for (Direction direction : Direction.values()) {
+                if (pos != BlockPos.ORIGIN && client.world.getBlockState(pos.offset(direction)).isSideSolidFullSquare(MinecraftClient.getInstance().world, pos.offset(direction), direction)) continue;
+
+                NbtList list = nbt.getList(direction.name(), NbtElement.STRING_TYPE);
+                NbtList offset_list = nbt.getList(direction.name() + "_offset", NbtElement.FLOAT_TYPE);
+
+                for (int i = 0; i < list.size(); i++) {
+                    String name = list.getString(i);
+                    Sticker sticker = Sticker.getSticker(name);
+                    if (name.isEmpty() || sticker == null) continue;
+                    int dirPos = direction.getAxis() == Direction.Axis.Z ? Math.abs(pos.getX()) :
+                            direction.getAxis() == Direction.Axis.X ? Math.abs(pos.getZ()) :
                                     0;
                     int num = dirPos % sticker.getTextures().length;
                     Identifier identifier = sticker.getTextures()[num];
@@ -154,23 +169,31 @@ public class StickerBlockModel  implements UnbakedModel, BakedModel, FabricBaked
                     float xOffset = sticker.getDirection() == Sticker.Movable.HORIZONTAL ? Offset : 0;
                     float yOffset = sticker.getDirection() == Sticker.Movable.VERTICAL ? Offset : 0;
 
-                    int textureSize = sticker.getPixelDensity() - sticker.getSize();
+                    boolean snapBelow = client.world.getBlockState(pos.down()).getBlock() instanceof StickerBlock;
+
+                    float textureSize = sticker.getPixelDensity() - sticker.getSize();
                     float scaledSpace = (float) sticker.getSize() / sticker.getPixelDensity();
                     float textureSizeY = sticker.getDirection() == Sticker.Movable.VERTICAL ? (float) textureSize / sticker.getPixelDensity() : 1.0f;
 
+                    float bottom = snapBelow ? yOffset : yOffset > 0 ? yOffset : 0.0f;
+                    float v = snapBelow ? 16 : yOffset > 0 ? 16 : 16 + yOffset * 16;
 
-                    emitter.square(direction, 0.0f + xOffset, 0.0f + yOffset, 1.0f + xOffset, textureSizeY + yOffset, -0.0011f + -0.0011f * i)
-                            .uv(0, 0, scaledSpace * 16)
-                            .uv(1, 0, 16)
-                            .uv(2, 16, 16)
-                            .uv(3, 16, scaledSpace * 16)
+                    emitter.square(direction,
+                                    0.0f + xOffset,
+                                    bottom,
+                                    1.0f + xOffset,
+                                    1.0f + yOffset,
+                                    -0.00011f + -0.00011f * i)
+                            .uv(0, 0, 0)
+                            .uv(1, 0, v)
+                            .uv(2, 16, v)
+                            .uv(3, 16, 0)
                             .spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE)
                             .color(-1, -1, -1, -1)
                             .emit();
                 }
             }
         }
-
         mesh = builder.build();
         mesh.outputTo(context.getEmitter());
     }

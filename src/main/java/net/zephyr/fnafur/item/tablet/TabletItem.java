@@ -74,19 +74,14 @@ public class TabletItem extends ItemWithDescription implements GeoItem {
     void openCams(World world, PlayerEntity user) {
         NbtCompound data = user.getMainHandStack().getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
         long[] cams = data.getLongArray("Cameras");
+
         List<Long> camsData = new ArrayList<>();
         for (int i = 0; i < cams.length; i++) {
-            camsData.add(cams[i]);
+            if(world.getBlockEntity(BlockPos.fromLong(cams[i])) instanceof CameraBlockEntity) camsData.add(cams[i]);
         }
-
+        data.putLongArray("Cameras", camsData);
         if (world.isClient()) {
-            for (int j = 0; j < camsData.size(); j++) {
-                if (!(MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(camsData.get(j))) instanceof CameraBlockEntity)) {
-                    camsData.remove(j);
-                    data.putLongArray("Cameras", camsData);
-                    GoopyNetworkingUtils.saveItemNbt(EquipmentSlot.MAINHAND.getName(), data);
-                }
-            }
+            GoopyNetworkingUtils.saveItemNbt(EquipmentSlot.MAINHAND.getName(), data);
         }
 
         boolean bl = data.getList("CamMap", NbtElement.LONG_ARRAY_TYPE).isEmpty();

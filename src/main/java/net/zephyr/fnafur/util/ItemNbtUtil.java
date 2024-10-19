@@ -14,8 +14,9 @@ public class ItemNbtUtil {
     public static NbtCompound getNbt(ItemStack stack){
         return stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
     }
-    public static void setNbt(ItemStack stack, NbtCompound nbt){
+    public static ItemStack setNbt(ItemStack stack, NbtCompound nbt){
         stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
+        return stack;
     }
     public static NbtCompound getBlockData(ItemStack stack){
         return stack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt();

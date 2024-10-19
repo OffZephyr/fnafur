@@ -25,7 +25,7 @@ public class CameraMapUiDrawer {
         List<Long> cams = new ArrayList<>();
         long[] camsData = data.getLongArray("Cameras");
         for (long cam : camsData) {
-            cams.add(cam);
+            if(MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(cam)) instanceof CameraBlockEntity) cams.add(cam);
         }
         BlockPos minPos = BlockPos.fromLong(data.getLong("mapMinCorner"));
         BlockPos maxPos = BlockPos.fromLong(data.getLong("mapMaxCorner"));
@@ -101,7 +101,7 @@ public class CameraMapUiDrawer {
                 z *= (int)(1 / camScale);
 
                 if(isMonitor){
-                    if (bl2 && MinecraftClient.getInstance().world != null) {
+                    if (bl2 && MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().world.getBlockEntity(pos) != null) {
                         String name = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(pos)).getPersistentData().getString("Name");
                         matrices.pop();
                         context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(name), mouseX, mouseY);

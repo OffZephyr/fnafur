@@ -57,9 +57,9 @@ public class FloorMonitors1 extends FloorPropBlock<FloorMonitorColors1> {
         return BlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
-    @Nullable
+
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new PropBlockEntity(pos, state);
+    public boolean rotates() {
+        return false;
     }
 }

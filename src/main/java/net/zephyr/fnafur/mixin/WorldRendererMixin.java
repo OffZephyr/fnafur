@@ -13,6 +13,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
+import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
@@ -60,9 +61,9 @@ public class WorldRendererMixin {
             matrices.push();
             float rotation = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getFloat("Rotation") + 180;
 
-            double offsetX = ((double) state.get(PropBlock.OFFSET_X) / PropBlock.offset_grid_size);
-            double offsetY = state.contains(PropBlock.OFFSET_Y) ? ((double) state.get(FloorPropBlock.OFFSET_Y) / PropBlock.offset_grid_size) : 0;
-            double offsetZ = ((double) state.get(PropBlock.OFFSET_Z) / PropBlock.offset_grid_size);
+            double offsetX = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("xOffset");
+            double offsetY = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("yOffset");
+            double offsetZ = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("zOffset");
 
             double posX = pos.getX();
             double posY = pos.getY();
@@ -71,10 +72,11 @@ public class WorldRendererMixin {
             matrices.translate(offsetX + posX, offsetY + posY, offsetZ + posZ);
 
             matrices.translate(-cameraX,-cameraY,-cameraZ);
-            matrices.translate(-0.5,0,-0.5);
-            matrices.translate(0.5,0,0.5);
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-rotation));
             matrices.translate(-0.5f, 0, -0.5f);
+            if(state.getBlock() instanceof WallPropBlock<?>) {
+                matrices.translate(0, -0.5f, 0);
+            }
 
             drawCuboidShapeOutline(
                     matrices,

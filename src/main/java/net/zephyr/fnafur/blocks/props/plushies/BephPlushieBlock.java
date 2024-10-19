@@ -27,6 +27,11 @@ public class BephPlushieBlock extends FloorPropBlock<BephColor> {
     }
 
     @Override
+    public boolean rotates() {
+        return false;
+    }
+
+    @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
         shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0.25, 0.0, 0.35, 0.75, 0.5, 0.70)));

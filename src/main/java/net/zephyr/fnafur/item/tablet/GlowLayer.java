@@ -16,7 +16,7 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 public class GlowLayer extends GeoRenderLayer<TabletItem> {
-    private static final String texture = "textures/item/security_monitor_e.png";
+    private static final String texture = "textures/item/security_tablet_e.png";
     private static Identifier LAYER = Identifier.of(FnafUniverseResuited.MOD_ID, texture);
 
     public GlowLayer(GeoRenderer<TabletItem> entityRendererIn) {

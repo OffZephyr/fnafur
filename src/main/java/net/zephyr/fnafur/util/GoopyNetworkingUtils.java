@@ -95,6 +95,9 @@ public class GoopyNetworkingUtils {
             ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(pos)).getPersistentData().copyFrom(nbt);
             ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), nbt));
             MinecraftClient.getInstance().world.getBlockEntity(pos).markDirty();
+
+
+            ClientPlayNetworking.send(new SyncBlockNbtC2SPayload(pos.asLong()));
         }
     }
     @Environment(EnvType.CLIENT)

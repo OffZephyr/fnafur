@@ -1,0 +1,10 @@
+{
+	"parent": "fnafur:props/office_buttons",
+  "overrides": [
+      { "predicate": { "skin": 0 }, "model": "fnafur:props/office_buttons" },
+      { "predicate": { "skin": 0.01 }, "model": "fnafur:props/door_office_button_off" },
+      { "predicate": { "skin": 0.02 }, "model": "fnafur:props/light_office_button_off" },
+      { "predicate": { "skin": 0.03 }, "model": "fnafur:props/red_office_button_off" },
+      { "predicate": { "skin": 0.04 }, "model": "fnafur:props/gray_office_button_off" }
+]
+  }

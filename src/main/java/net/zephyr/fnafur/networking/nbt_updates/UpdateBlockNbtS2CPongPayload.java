@@ -23,6 +23,7 @@ public record UpdateBlockNbtS2CPongPayload(long pos, NbtCompound data) implement
 
     public static void receive(UpdateBlockNbtS2CPongPayload payload, ClientPlayNetworking.Context context) {
        BlockEntity entity = context.client().world.getBlockEntity(BlockPos.fromLong(payload.pos()));
+       if(entity == null || ((IEntityDataSaver)entity).getPersistentData().equals(payload.data())) return;
         ((IEntityDataSaver)entity).getPersistentData().copyFrom(payload.data());
         BlockState state = context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos()));
         context.player().getWorld().updateListeners(BlockPos.fromLong(payload.pos()), state, state, 3);

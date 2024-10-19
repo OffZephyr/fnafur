@@ -2,6 +2,6 @@
 	"parent": "fnafur:props/floor_monitors1",
     "overrides": [
         { "predicate": { "skin": 0 }, "model": "fnafur:props/floor_monitors1" },
-        { "predicate": { "skin": 1 }, "model": "fnafur:props/floor_monitors1_beige" }
+        { "predicate": { "skin": 0.01 }, "model": "fnafur:props/floor_monitors1_beige" }
 	]
 }

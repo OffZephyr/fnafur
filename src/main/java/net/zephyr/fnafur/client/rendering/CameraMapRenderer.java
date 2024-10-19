@@ -20,11 +20,13 @@ import net.zephyr.fnafur.util.ItemNbtUtil;
 
 public class CameraMapRenderer {
     public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ){
+
         MinecraftClient client = MinecraftClient.getInstance();
         ClientPlayerEntity player = client.player;
         NbtCompound MainData = ItemNbtUtil.getNbt(player.getMainHandStack());
         NbtCompound OffData = ItemNbtUtil.getNbt(player.getOffHandStack());
 
+        matrices.push();
         matrices.translate(-cameraX + 0.5f, -cameraY, -cameraZ + 0.5f);
         if((player.getMainHandStack().isOf(ItemInit.TAPEMEASURE) || (player.getMainHandStack().isOf(ItemInit.PAINTBRUSH)) && player.getOffHandStack().isOf(ItemInit.TABLET))){
             if(MainData.getBoolean("hasCorner")){
@@ -57,7 +59,7 @@ public class CameraMapRenderer {
                             list.add(lineNbt);
 
                             if(MinecraftClient.getInstance().player.isSneaking()){
-                                renderLine(matrices, pos1, pos2, 1.0f, 0.5f, 0.5f, 0.75f, true, list);
+                                renderLine(matrices, pos1, pos2, 1.0f, 0.5f, 0.5f, 1f, true, list);
                             }
                             else {
                                 renderLine(matrices, pos1, pos2, 0.5f, 0.75f, 1.0f, 1f, true, list);
@@ -84,6 +86,7 @@ public class CameraMapRenderer {
 
 
         }
+        matrices.pop();
     }
 
 
@@ -117,7 +120,7 @@ public class CameraMapRenderer {
                 if(world.getBlockState(offsetPos).isSideSolidFullSquare(world, offsetPos, direction.getOpposite())) continue;
                 matrices.push();
                 matrices.multiply(direction.getRotationQuaternion());
-                matrices.translate(0, 0.501, 0);
+                matrices.translate(0, 0.5015, 0);
 
                 int shapeIndex = getLinePartShape(pos, pos1, pos2, direction, lineDirection, mapNbt);
                 Identifier texture = getLineTexture(shapeIndex);
@@ -130,9 +133,9 @@ public class CameraMapRenderer {
 
                 RenderSystem.enableBlend();
                 RenderSystem.enableDepthTest();
-                RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+                RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
 
-                var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+                var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
 
                 RenderSystem.setShaderTexture(0, texture);
                 RenderSystem.setShaderColor(red, green, blue, alpha);
@@ -141,8 +144,8 @@ public class CameraMapRenderer {
                 buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, vHeight).texture(0.5f - tWidth, 0.5f - tHeight).color(color);
                 buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, vHeight).texture(0.5f + tWidth, 0.5f - tHeight).color(color);
                 buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, -vHeight).texture(0.5f + tWidth, 0.5f + tHeight).color(color);
-
                 BufferRenderer.drawWithGlobalProgram(buffer.end());
+                RenderSystem.setShaderColor(1, 1, 1, 1);
                 matrices.pop();
             }
             pos = pos.offset(lineDirection);
@@ -212,8 +215,7 @@ public class CameraMapRenderer {
                 else if(next) return start;
                 else if(prev) return end;
             }
-        }
-        else {
+        } else {
             boolean edge = !lineZ && !z || lineZ && z;
             if(edge) {
                 if (left && right) return line;
@@ -252,7 +254,7 @@ public class CameraMapRenderer {
         boolean z = lineDirection == Direction.NORTH || lineDirection == Direction.SOUTH;
         boolean z2 = direction == Direction.NORTH || direction == Direction.SOUTH;
 
-        if(direction == Direction.UP || direction == Direction.DOWN) {
+        if(direction == Direction.UP) {
             float rot = switch (index) {
                 default -> 0;
                 case start -> z ? 180 : 0;
@@ -265,6 +267,21 @@ public class CameraMapRenderer {
                 case corner_left_back -> z ? 0 : 180;
                 case corner_right_front -> z ? 180 : 0;
                 case corner_right_back -> z ? 90 : -90;
+            };
+            return lineDirection.asRotation() + rot;
+        } else if(direction == Direction.DOWN) {
+            float rot = switch (index) {
+                default -> 0;
+                case start -> 0;
+                case end -> 180;
+                case t_split_right -> z ? 90 : -90;
+                case t_split_left -> z ? -90 : 90;
+                case t_split_both_front -> z ? 180 : 0;
+                case t_split_both_back -> z ? 0 : 180;
+                case corner_left_front -> 0;
+                case corner_left_back -> -90;
+                case corner_right_front -> 90;
+                case corner_right_back -> 180;
             };
             return lineDirection.asRotation() + rot;
         }

@@ -26,6 +26,7 @@ public record SyncBlockNbtC2SPayload(long pos) implements CustomPayload {
     public static void receive(SyncBlockNbtC2SPayload payload, ServerPlayNetworking.Context context) {
        BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
 
+       if(entity == null || ((IEntityDataSaver)entity).getPersistentData().isEmpty()) return;
 
         BlockState state = context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos()));
         context.player().getWorld().updateListeners(BlockPos.fromLong(payload.pos()), state, state, 3);

@@ -22,4 +22,9 @@ public class BlackWhiteRedWallTiles extends StickerItem {
         return true;
     }
 
+    @Override
+    public float mouseOffset() {
+        return 0.75f;
+    }
+
 }

@@ -28,12 +28,13 @@ public class FnafUniverseResuited implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	@Override
 	public void onInitialize() {
-		ItemInit.registerItems();
 		EntityInit.registerEntities();
 		BlockEntityInit.registerBlockEntities();
 		ItemGroupsInit.registerItemGroups();
 		SoundsInit.registerSounds();
 		ComputerData.runInitializers();
+		ItemInit.registerItems();
+		ParticlesInit.registerParticles();
 
 
 		registerCommands();

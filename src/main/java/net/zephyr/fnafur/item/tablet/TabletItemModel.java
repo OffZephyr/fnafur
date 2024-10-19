@@ -14,7 +14,7 @@ public class TabletItemModel extends GeoModel<TabletItem> {
 
     @Override
     public Identifier getTextureResource(TabletItem animatable) {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/item/security_monitor.png");
+        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/item/security_tablet.png");
     }
 
     @Override

@@ -16,7 +16,7 @@ public class ItemWithDescription extends Item {
     public static final int PAINT_BRUSH = 1;
     public static final int TAPE_MEASURE = 2;
     public static final int COIN = 3;
-    public static final int FLOPPY_DISK = 4;
+    public static final int cpu = 4;
     public static final int COMPUTER = 5;
     List<Text> tools;
     public ItemWithDescription(Settings settings, int... tools) {
@@ -44,8 +44,8 @@ public class ItemWithDescription extends Item {
             if(tool == ItemWithDescription.COIN){
                 toolList.add(Text.translatable("fnafur.symbol.coin"));
             }
-            if(tool == ItemWithDescription.FLOPPY_DISK){
-                toolList.add(Text.translatable("fnafur.symbol.floppy_disk"));
+            if(tool == ItemWithDescription.cpu){
+                toolList.add(Text.translatable("fnafur.symbol.cpu"));
             }
             if(tool == ItemWithDescription.COMPUTER){
                 toolList.add(Text.translatable("fnafur.symbol.computer"));

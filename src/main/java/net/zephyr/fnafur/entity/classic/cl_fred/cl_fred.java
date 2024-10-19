@@ -72,12 +72,12 @@ public class cl_fred extends DefaultEntity {
     private final EntitySkin BLACKLIGHT =
             new EntitySkin("entity.fnafur.cl_fred.blacklight")
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy.png"))
+                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_glow.png"))
                     .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddyicon.png"));
     private final EntitySkin BLACKLIGHT_YELLOW =
             new EntitySkin("entity.fnafur.cl_fred.blacklight_yellow")
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_yellow.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_yellow.png"))
+                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_yellow_glow.png"))
                     .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddyyellowearsicon.png"));
     private final EntitySkin BLACK =
             new EntitySkin("entity.fnafur.cl_fred.black")
@@ -87,17 +87,17 @@ public class cl_fred extends DefaultEntity {
     private final EntitySkin BLACKLIGHT_BGM =
             new EntitySkin("entity.fnafur.cl_fred.blacklight_bgm")
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgm.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgm.png"))
+                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgm_glow.png"))
                     .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddybgmicon.png"));
     private final EntitySkin BLACKLIGHT_BGB =
             new EntitySkin("entity.fnafur.cl_fred.blacklight_bgb")
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgb.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgb.png"))
+                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgb_glow.png"))
                     .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddybgbicon.png"));
     private final EntitySkin BLACKLIGHT_MBG =
             new EntitySkin("entity.fnafur.cl_fred.blacklight_mbg")
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_mbg.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_mbg.png"))
+                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_mbg_glow.png"))
                     .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddymbgicon.png"));
     private final EntitySkin INVERTED =
             new EntitySkin("entity.fnafur.cl_fred.inverted")
@@ -136,13 +136,17 @@ public class cl_fred extends DefaultEntity {
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 16D);
     }
 
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
 
     @Override
     protected void initGoals() {
 
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new MeleeAttackGoal(this, 1.2, false));
-        this.targetSelector.add(1, new ShouldActiveTargetGoal<>(this, PlayerEntity.class, false, true));
+        this.targetSelector.add(1, new ShouldActiveTargetGoal<>(this, PlayerEntity.class, true, true));
         this.goalSelector.add(2, new ShouldWanderGoal(this, 1));
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, PlayerEntity.class, 6f));
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, VillagerEntity.class, 6f));

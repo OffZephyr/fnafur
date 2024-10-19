@@ -152,6 +152,8 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
                     }
                 }
 
+                if(!forceIdleAnim().isEmpty()) idle = forceIdleAnim();
+
 
                 if (this.crawling) {
                     if (event.isMoving()) {
@@ -292,11 +294,8 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
 
             if (freezeTime > 0) {
                 freezeTime--;
-                setHeadYaw(getBodyYaw());
-                setVelocity(0, 0, 0);
-                setJumping(false);
-                getNavigation().stop();
             }
+            setAiDisabled(freezeTime > 0);
 
             if(!getWorld().isClient()) {
                 for (ServerPlayerEntity p : PlayerLookup.all(getServer())) {
@@ -336,7 +335,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
                         setPosition(goalPos.getX() + 0.5f + offsetX, getY(), goalPos.getZ() + 0.5f + offsetX);
                         getNavigation().stop();
                     } else {
-                        getNavigation().startMovingTo(goalPos.getX() + 0.5f, goalPos.getY(), goalPos.getZ() + 0.5f, getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 5);
+                        getNavigation().startMovingTo(goalPos.getX() + 0.5f, goalPos.getY(), goalPos.getZ() + 0.5f, getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 5.75f);
                     }
                 } if (getNavigation().getCurrentPath() != null && (getNavigation().getCurrentPath().isFinished() || getNavigation().isIdle()) && getTarget() == null) {
                     setPosition(goalPos.getX() + 0.5f + offsetX, getY(), goalPos.getZ() + 0.5f + offsetZ);
@@ -495,7 +494,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
         ItemStack stack = player.getMainHandStack();
-        if (stack.isOf(ItemInit.FLOPPYDISK)) {
+        if (stack.isOf(ItemInit.CPU)) {
             String animatronic = ItemNbtUtil.getNbt(stack).getString("entity");
             if (!animatronic.isEmpty() && ComputerData.getAIAnimatronic(animatronic) instanceof ComputerData.Initializer.AnimatronicAI ai) {
                 if(this.getType() == ai.entityType()) {
@@ -503,12 +502,12 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
                         dropStack(getDisk(this, getWorld()), (float) hitPos.y);
                     }
                     ItemStack disk = player.getMainHandStack();
-                    putFloppyDisk(this, disk, getWorld());
+                    putCPU(this, disk, getWorld());
                     disk.decrementUnlessCreative(1, player);
-                    player.sendMessage(Text.translatable("item.fnafur.floppy_disk.entity_updated"), true);
+                    player.sendMessage(Text.translatable("item.fnafur.cpu.entity_updated"), true);
                 }
                 else {
-                    player.sendMessage(Text.translatable("item.fnafur.floppy_disk.wrong_entity"), true);
+                    player.sendMessage(Text.translatable("item.fnafur.cpu.wrong_entity"), true);
                 }
                 return ActionResult.SUCCESS;
             }
@@ -516,7 +515,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
             ItemStack disk = getDisk(this, getWorld());
             if (!disk.isEmpty()) {
                 dropStack(disk, (float) hitPos.y);
-                putFloppyDisk(this, ItemStack.EMPTY, getWorld());
+                putCPU(this, ItemStack.EMPTY, getWorld());
                 return ActionResult.SUCCESS;
             }
         } else if (player.getMainHandStack().isOf(ItemInit.PAINTBRUSH)) {
@@ -567,14 +566,14 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
         }
     }
 
-    void putFloppyDisk(PathAwareEntity entity, ItemStack disk, World world){
-        ((IEntityDataSaver)entity).getPersistentData().put("floppy_disk", disk.encodeAllowEmpty(world.getRegistryManager()));
+    void putCPU(PathAwareEntity entity, ItemStack disk, World world){
+        ((IEntityDataSaver)entity).getPersistentData().put("cpu", disk.encodeAllowEmpty(world.getRegistryManager()));
         if(world.isClient()){
             GoopyNetworkingUtils.saveEntityData(entity.getId(), ((IEntityDataSaver)entity).getPersistentData());
         }
     }
     ItemStack getDisk(PathAwareEntity entity, World world){
-        return ItemStack.fromNbtOrEmpty(world.getRegistryManager(), ((IEntityDataSaver)entity).getPersistentData().getCompound("floppy_disk"));
+        return ItemStack.fromNbtOrEmpty(world.getRegistryManager(), ((IEntityDataSaver)entity).getPersistentData().getCompound("cpu"));
     }
     String getAIMode(PathAwareEntity entity, World world){
         NbtCompound diskData = ItemNbtUtil.getNbt(getDisk(entity, world));
@@ -665,6 +664,10 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
             return can_crawl;
         }
         else return ((IEntityDataSaver)this).getPersistentData().getBoolean("can_crawl");
+    }
+
+    String forceIdleAnim(){
+        return "";
     }
 
     List<String> getStatueAnimations(){

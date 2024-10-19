@@ -10,7 +10,27 @@
             "uniforms": [
                 {
                     "name": "Saturation",
-                    "values": [ 0.2 ]
+                    "values": [ 0.0 ]
+                },
+                {
+                    "name": "RedMatrix",
+                    "values": [ 2.0, 0.0, 0.0 ]
+                },
+                {
+                    "name": "GreenMatrix",
+                    "values": [ 2.0, 2.0, 2.0 ]
+                },
+                {
+                    "name": "BlueMatrix",
+                    "values": [ 2.0, 2.0, 2.0 ]
+                },
+                {
+                    "name": "NoiseIntensity",
+                    "values": [ 0.0 ]
+                },
+                {
+                    "name": "scanLineIntensity",
+                    "values": [ 0.0 ]
                 }
             ]
         },

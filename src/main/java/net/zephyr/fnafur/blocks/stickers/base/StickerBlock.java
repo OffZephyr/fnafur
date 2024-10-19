@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.blocks.stickers.base;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -19,8 +20,8 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import net.zephyr.fnafur.blocks.layered_block.LayeredBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -84,13 +85,30 @@ public abstract class StickerBlock extends BlockWithEntity {
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         NbtCompound data = itemStack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt().getCompound("fnafur.persistent");
 
-        if (world.getBlockEntity(pos) instanceof LayeredBlockEntity entity) {
-            ((IEntityDataSaver)entity).getPersistentData().copyFrom(data);
+        world.setBlockState(pos, state);
+        if (world.getBlockEntity(pos) instanceof StickerBlockEntity entity) {
+            ((IEntityDataSaver) entity).getPersistentData().copyFrom(data);
         }
-        if(world.isClient()){
+
+        if (world.isClient()) {
             GoopyNetworkingUtils.getNbtFromServer(pos);
             world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
         }
+    }
+
+    @Override
+    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
+    }
+
+    @Override
+    protected boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
+        return super.onSyncedBlockEvent(state, world, pos, type, data);
+    }
+
+    @Override
+    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
     @Nullable

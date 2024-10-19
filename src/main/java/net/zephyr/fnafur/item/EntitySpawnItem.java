@@ -6,6 +6,7 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
@@ -49,6 +50,7 @@ public abstract class EntitySpawnItem extends ItemWithDescription {
         return ActionResult.SUCCESS;
     }
 
+    public abstract Item getCreativeItem();
 
     @Nullable
     public static EntitySpawnItem forEntity(@Nullable EntityType<?> type) {

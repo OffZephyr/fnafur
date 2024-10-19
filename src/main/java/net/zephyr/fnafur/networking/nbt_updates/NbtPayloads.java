@@ -11,7 +11,8 @@ import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.*;
 public class NbtPayloads {
     public static final Identifier C2SBlockUpdate = Identifier.of(FnafUniverseResuited.MOD_ID, "c2s_block_update");
     public static final Identifier C2SBlockSync = Identifier.of(FnafUniverseResuited.MOD_ID, "c2s_block_sync");
-    public static final Identifier S2CBlockUpdatePong = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_block_update");
+    public static final Identifier S2CBlockUpdatePong = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_block_client_update");
+    public static final Identifier S2CBlockUpdateServer = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_block_server_update");
     public static final Identifier C2SEntityUpdate = Identifier.of(FnafUniverseResuited.MOD_ID, "c2s_entity_update");
     public static final Identifier C2SEntitySync = Identifier.of(FnafUniverseResuited.MOD_ID, "c2s_entity_sync");
     public static final Identifier S2CEntityUpdatePong = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_entity_update");
@@ -28,6 +29,7 @@ public class NbtPayloads {
         PayloadTypeRegistry.playC2S().register(UpdateBlockNbtC2SPayload.ID, UpdateBlockNbtC2SPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(SyncBlockNbtC2SPayload.ID, SyncBlockNbtC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(UpdateBlockNbtS2CPongPayload.ID, UpdateBlockNbtS2CPongPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(UpdateBlockNbtS2CGetFromClientPayload.ID, UpdateBlockNbtS2CGetFromClientPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(UpdateItemNbtC2SPayload.ID, UpdateItemNbtC2SPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(UpdateEntityNbtC2SPayload.ID, UpdateEntityNbtC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(UpdateEntityNbtS2CPongPayload.ID, UpdateEntityNbtS2CPongPayload.CODEC);
@@ -47,6 +49,7 @@ public class NbtPayloads {
         ClientPlayNetworking.registerGlobalReceiver(UpdateJumpscareDataS2CPayload.ID, UpdateJumpscareDataS2CPayload::receive);
         ClientPlayNetworking.registerGlobalReceiver(AIBehaviorUpdateS2CPayload.ID, AIBehaviorUpdateS2CPayload::receive);
         ClientPlayNetworking.registerGlobalReceiver(UpdateBlockNbtS2CPongPayload.ID, UpdateBlockNbtS2CPongPayload::receive);
+        ClientPlayNetworking.registerGlobalReceiver(UpdateBlockNbtS2CGetFromClientPayload.ID, UpdateBlockNbtS2CGetFromClientPayload::receive);
         ClientPlayNetworking.registerGlobalReceiver(UpdateEntityNbtS2CPongPayload.ID, UpdateEntityNbtS2CPongPayload::receive);
     }
     public static void registerServerReceivers() {

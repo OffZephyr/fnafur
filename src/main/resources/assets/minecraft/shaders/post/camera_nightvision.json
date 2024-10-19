@@ -21,8 +21,12 @@
                     "values": [ 0.75, 0.75, 0.75 ]
                 },
                 {
-                    "name": "BlueMatrix",
-                    "values": [ 0.65, 0.65, 0.65 ]
+                    "name": "NoiseIntensity",
+                    "values": [ 0 ]
+                },
+                {
+                    "name": "scanLineIntensity",
+                    "values": [ 0 ]
                 }
             ]
         },

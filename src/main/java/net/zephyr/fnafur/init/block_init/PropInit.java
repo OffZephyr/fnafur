@@ -14,6 +14,8 @@ import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.props.FloorMonitors.FloorMonitors1;
 import net.zephyr.fnafur.blocks.props.FloorMonitors.FloorMonitors2;
+import net.zephyr.fnafur.blocks.props.OfficeButtons.OfficeButtons;
+import net.zephyr.fnafur.blocks.props.WoodenShelf.WoodenShelf;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropRenderer;
 import net.zephyr.fnafur.blocks.props.plushies.BephPlushieBlock;
@@ -31,7 +33,13 @@ public class PropInit {
 
     public static final Block FLOOR_MONITORS_2 = registerBlock("floor_monitors2",
             new FloorMonitors2(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never).noCollision()));
-    private static Block registerBlock(String name, PropBlock block) {
+
+    public static final Block WOODEN_SHELF = registerBlock("wooden_shelf",
+            new WoodenShelf(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never).noCollision()));
+
+    public static final Block OFFICE_BUTTONS = registerBlock("office_buttons",
+            new OfficeButtons(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never).noCollision()));
+    private static Block registerBlock(String name, PropBlock<?> block) {
         propItems.add(registerBlockItem(name, block));
         return Registry.register(Registries.BLOCK, Identifier.of(FnafUniverseResuited.MOD_ID, name), block);
     }

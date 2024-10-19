@@ -8,6 +8,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.zephyr.fnafur.init.ParticlesInit;
 
 public class DeathCoin extends ItemWithDescription{
     public DeathCoin(Settings settings) {
@@ -21,7 +22,7 @@ public class DeathCoin extends ItemWithDescription{
             double height = target.getBoundingBox().getLengthY() / 2f;
             double amount = (height + 1) * 100f;
 
-            level.spawnParticles(ParticleTypes.CLOUD, target.getX(), (target.getY() + height), target.getZ(), (int)amount, width, height, width, 0.15);
+            level.spawnParticles(ParticlesInit.FOG_PARTICLE, target.getX(), (target.getY() + height), target.getZ(), (int)amount, width, height, width, 0.15);
         }
         target.getWorld().playSound(target, target.getBlockPos(), SoundEvents.ENTITY_WIND_CHARGE_WIND_BURST.value(), SoundCategory.PLAYERS, 1, 0);
 

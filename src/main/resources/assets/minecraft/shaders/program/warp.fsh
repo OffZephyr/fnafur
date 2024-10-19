@@ -57,10 +57,10 @@ void main() {
     OutColor = (Chroma * Saturation) + Luma;
 
     // Apply SSTV effect
-    float scanLine = sin(texCoord.y * 600.0 + Time * 10.0) * scanLineIntensity;
-    float noise = (fract(sin(dot(texCoord, vec2(12.9898, 78.233)) * (43758.5453 + Time))) - 0.5) * NoiseIntensity;
+    // float scanLine = sin(texCoord.y * 600.0 + Time * 10.0) * scanLineIntensity;
+    // float noise = (fract(sin(dot(texCoord, vec2(12.9898, 78.233)) * (43758.5453 + Time))) - 0.5) * NoiseIntensity;
 
-    OutColor.rgb += scanLine + noise;
+    // OutColor.rgb += scanLine + noise;
 
     fragColor = vec4(OutColor, 1.0);
 }

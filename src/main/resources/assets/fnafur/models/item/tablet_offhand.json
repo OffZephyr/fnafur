@@ -2,37 +2,35 @@
 	"parent": "fnafur:item/tablet",
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [94, 0, 0],
-			"translation": [-5.5, 2.25, 8]
+			"translation": [-4, -1.25, 5.5]
 		},
 		"thirdperson_lefthand": {
-			"rotation": [94, 0, 0],
-			"translation": [-5.5, 2.25, 8]
+			"translation": [-4, -1.25, 5.5]
 		},
 		"firstperson_righthand": {
-			"rotation": [82, 0, 0],
-			"translation": [-9, 2, 12]
+			"translation": [-9.05, 0.75, 10],
+			"scale": [0, 0, 0]
 		},
 		"firstperson_lefthand": {
-			"rotation": [82, 0, 0],
-			"translation": [-9.085, 2, 12]
+			"translation": [-9.05, 0.75, 10],
+			"scale": [0, 0, 0]
 		},
 		"ground": {
-			"translation": [0, 4, 0],
+			"rotation": [-90, 0, 0],
+			"translation": [0, 1.5, 3.25],
 			"scale": [0.75, 0.75, 0.75]
 		},
 		"gui": {
-			"rotation": [69, -12, -16],
-			"translation": [2, 2, 0]
+			"rotation": [-20, -12, -16],
+			"translation": [-2, -2.5, 0]
 		},
 		"head": {
-			"rotation": [90, 0, 0],
-			"translation": [0, 0, 2],
+			"translation": [0, -5.25, -2],
 			"scale": [1.2, 1.2, 1.2]
 		},
 		"fixed": {
-			"rotation": [-90, 0, 0],
-			"translation": [0, 0, -14],
+			"rotation": [0, 180, 0],
+			"translation": [0, -8, -10],
 			"scale": [2, 2, 2]
 		}
 	}

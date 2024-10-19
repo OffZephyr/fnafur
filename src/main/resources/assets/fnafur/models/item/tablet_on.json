@@ -1,10 +1,5 @@
 {
 	"parent": "fnafur:item/tablet",
-	"texture_size": [64, 64],
-	"textures": {
-		"0": "fnafur:item/security_monitor_on",
-		"particle": "fnafur:item/security_monitor_on"
-	},
 	"display": {
 		"thirdperson_righthand": {
 			"translation": [-4, -1.25, 5.5]

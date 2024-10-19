@@ -29,6 +29,12 @@ public class FloorMonitors2 extends FloorPropBlock<FloorMonitorColors1> {
     public EnumProperty<FloorMonitorColors1> COLOR_PROPERTY() {
         return COLOR;
     }
+
+    @Override
+    public boolean rotates() {
+        return false;
+    }
+
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();

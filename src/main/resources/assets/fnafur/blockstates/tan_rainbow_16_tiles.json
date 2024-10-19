@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "random=0": {
+      "model": "fnafur:block/tan_rainbow_16_tiles"
+    },
+    "random=1": {
+      "model": "fnafur:block/tan_rainbow_16_tiles_2"
+    },
+    "random=2": {
+      "model": "fnafur:block/tan_rainbow_16_tiles_3"
+    }
+  }
+}

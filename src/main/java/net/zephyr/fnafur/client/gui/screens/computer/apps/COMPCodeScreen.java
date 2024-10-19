@@ -56,7 +56,7 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
     private NbtCompound hourCompound;
     private final byte rollOver = 96;
     private byte hour = 0;
-    ItemStack floppy_disk;
+    ItemStack cpu;
     private static final Vector3f ENTITY_TRANSLATION = new Vector3f();
     private static final Quaternionf ENTITY_ROTATION = new Quaternionf().rotationXYZ(0.2f, (float) Math.PI, (float) Math.PI);
     private LivingEntity entity;
@@ -70,8 +70,8 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
         super(text, nbtCompound, o);
         world = client.world != null ? client.world : null;
         if (world == null) return;
-        floppy_disk = ItemStack.fromNbtOrEmpty(world.getRegistryManager(), getNbtData().getCompound("ai_data"));
-        diskData = floppy_disk.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
+        cpu = ItemStack.fromNbtOrEmpty(world.getRegistryManager(), getNbtData().getCompound("ai_data"));
+        diskData = cpu.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
         this.hourCompound = diskData.getCompound("" + this.hour);
 
         this.currentBehavior = hourCompound.getString("Behavior");
@@ -117,7 +117,7 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
             }
         }
         if (isOnButton(mouseX, mouseY, this.width / 2 + 248 / 2 - 2 - (int) (16 * 3f), this.height / 2 - 248 / 2 + 2, 16, 16)) {
-            if (!floppy_disk.isEmpty()) {
+            if (!cpu.isEmpty()) {
                 close();
 
                 ClientPlayNetworking.send(new ComputerEjectPayload(getBlockPos().asLong()));
@@ -128,17 +128,17 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
             }
         }
 
-        if (!floppy_disk.isEmpty()) {
+        if (!cpu.isEmpty()) {
             int x = (int) topCornerX + ((int) appAvailableSizeX / 2) + 10;
             if (this.subWindow == DEFAULT) {
                 if (isOnButton(mouseX, mouseY, x, (int) topCornerY, 90, 22)) {
                     this.subWindow = ANIMATRONIC_SELECTION;
-                } else if (floppy_disk.isOf(ItemInit.FLOPPYDISK) && isOnButton(mouseX, mouseY, (int) topCornerX, (int) topCornerY, 126, 22)) {
+                } else if (cpu.isOf(ItemInit.CPU) && isOnButton(mouseX, mouseY, (int) topCornerX, (int) topCornerY, 126, 22)) {
                     openSubList((int) mouseX, (int) mouseY, ComputerData.getAIBehaviors());
                 }
 
 
-                if (floppy_disk.isOf(ItemInit.FLOPPYDISK) && ComputerData.getAIBehavior(currentBehavior) instanceof ComputerAI ai) {
+                if (cpu.isOf(ItemInit.CPU) && ComputerData.getAIBehavior(currentBehavior) instanceof ComputerAI ai) {
                     for (int i = 0; i < ai.getList().size(); i++) {
                         ComputerAI.Option<?> option = ai.getList().get(i);
                         int dependency = ai.getList().indexOf(ai.getOption(option.getDependency()));
@@ -352,10 +352,10 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         context.fill((int)topCornerX, (int) topCornerY, (int)(topCornerX + appAvailableSizeX), (int)(topCornerY + appAvailableSizeY), -100, 0xFF182562);
 
-        if(!floppy_disk.isEmpty()) {
+        if(!cpu.isEmpty()) {
             context.drawTexture(BASE, (int) topCornerX + ((int) appAvailableSizeX / 2) + 6, (int) topCornerY - 1, 0, 0, 114, (int) appAvailableSizeY + 2, 256, 256);
             drawEntitySelection(context, mouseX, mouseY);
-            if(floppy_disk.isOf(ItemInit.FLOPPYDISK)) {
+            if(cpu.isOf(ItemInit.CPU)) {
                 drawBehaviorSelection(context, mouseX, mouseY);
                 sideScrollWheel(context);
             }
@@ -367,14 +367,14 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
             drawTextEdit(context);
         }
         else {
-            Text noDisk = Text.translatable("fnafur.screens.computer_code.no_floppy_disk");
+            Text noDisk = Text.translatable("fnafur.screens.computer_code.no_cpu");
             drawResizableText(context, client.textRenderer, noDisk, 2.5f, this.width /2f, this.height /2f, 0xFFFFFFFF, 0x00000000, false, true);
         }
         super.render(context, mouseX, mouseY, delta);
         boolean blockSaveBL = !Dirty;
         renderButton(BUTTONS, context, this.width / 2 + 248 / 2 - 2 - (int) (16 * 2f), this.height / 2 - 248 / 2 + 2, 16*3, 16*2, 16*4, 16*2, 16*5, 16*2, 16, 16, 128, 128, mouseX, mouseY, getHolding(), blockSaveBL);
 
-        renderButton(BUTTONS, context, this.width / 2 + 248 / 2 - 2 - (int) (16 * 3f), this.height / 2 - 248 / 2 + 2, 16*3, 16*3, 16*4, 16*3, 16*5, 16*3, 16, 16, 128, 128, mouseX, mouseY, getHolding(), floppy_disk.isEmpty());
+        renderButton(BUTTONS, context, this.width / 2 + 248 / 2 - 2 - (int) (16 * 3f), this.height / 2 - 248 / 2 + 2, 16*3, 16*3, 16*4, 16*3, 16*5, 16*3, 16, 16, 128, 128, mouseX, mouseY, getHolding(), cpu.isEmpty());
     }
     void drawBehaviorSelection(DrawContext context, int mouseX, int mouseY){
         if(ComputerData.getAIBehavior(currentBehavior) instanceof ComputerAI ai){
@@ -641,12 +641,12 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
     private void saveChanges(){
         diskData.put("" + hour, hourCompound);
         diskData.putString("entity", currentAnimatronic);
-        ItemStack stack = this.floppy_disk.copy();
+        ItemStack stack = this.cpu.copy();
         stack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(currentNbt -> {
             currentNbt.copyFrom(diskData);
         }));
         getNbtData().put("ai_data", stack.encodeAllowEmpty(world.getRegistryManager()));
-        this.floppy_disk = stack.copy();
+        this.cpu = stack.copy();
         GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), getNbtData());
     }
 }

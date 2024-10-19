@@ -11,20 +11,20 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.blocks.computer.ComputerData;
 import net.zephyr.fnafur.blocks.props.ColorEnumInterface;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.init.block_init.PropInit;
-import net.zephyr.fnafur.init.item_init.SpawnItemInit;
-import net.zephyr.fnafur.init.item_init.StickerInit;
 import net.zephyr.fnafur.item.DeathCoin;
-import net.zephyr.fnafur.item.FloppyDiskItem;
+import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.item.IllusionDisc;
-import net.zephyr.fnafur.item.ZephyrSpawn;
-import net.zephyr.fnafur.item.spawn_items.classic.cl_fred_SpawnItem;
 import net.zephyr.fnafur.item.tools.PaintbrushItem;
 import net.zephyr.fnafur.item.tablet.TabletItem;
 import net.zephyr.fnafur.item.tools.TapeMesurerItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
+import net.zephyr.fnafur.util.ItemNbtUtil;
+
+import java.util.Objects;
 
 public class ItemInit {
 
@@ -38,10 +38,10 @@ public class ItemInit {
             new TapeMesurerItem(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
     public static final Item TABLET = registerItem("tablet",
             new TabletItem(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
-    public static final Item FLOPPYDISK = registerItem("floppy_disk",
-            new FloppyDiskItem(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
     public static final Item DEATHCOIN = registerItem("deathcoin",
             new DeathCoin(new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
+    public static final Item CPU = registerItem("cpu",
+            new CPUItem(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
     public static final Item ILLUSIONDISC = registerItem("illusion_disc",
             new IllusionDisc(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
@@ -78,6 +78,22 @@ public class ItemInit {
             return itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt() == null || itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt().isEmpty() ? 0.0F : itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt().getBoolean("used") ? 1.0F : 0.0F;
         });
 
+        for(ComputerData.Initializer.AnimatronicAI ai : ComputerData.getAIAnimatronics()) {
+            String name = ai.id();
+            ModelPredicateProviderRegistry.register(CPU, Identifier.of(name), (itemStack, clientWorld, livingEntity, i) -> {
+                String animatronic = ItemNbtUtil.getNbt(itemStack).getString("entity");
+                return Objects.equals(name, animatronic) ? 1 : 0;
+            });
+        }
+        ModelPredicateProviderRegistry.register(CPU, Identifier.of("animatronic"), (itemStack, clientWorld, livingEntity, i) -> {
+            String animatronic = ItemNbtUtil.getNbt(itemStack).getString("entity");
+
+            if(!animatronic.isEmpty()) {
+                return CPUItem.getEntityID(animatronic) / 1000f;
+            }
+            return 0;
+        });
+
         for(Item item : PropInit.propItems){
             ModelPredicateProviderRegistry.register(
                     item,
@@ -87,7 +103,9 @@ public class ItemInit {
 
                             BlockStateComponent blockStateComponent = stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT);
                             ColorEnumInterface color = blockStateComponent.getValue(block.COLOR_PROPERTY());
-                            return color != null ? color.getIndex() : 0;
+                            if(color != null) {
+                                return color.getIndex() / 100f;
+                            }
                         }
                         return 0;
                     });
