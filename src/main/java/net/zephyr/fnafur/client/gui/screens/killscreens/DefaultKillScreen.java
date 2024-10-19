@@ -5,6 +5,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.zephyr.fnafur.init.SoundsInit;
 
 public class DefaultKillScreen extends AbstractKillScreen {
 
@@ -14,7 +15,7 @@ public class DefaultKillScreen extends AbstractKillScreen {
 
     @Override
     SoundEvent jumpscareSound() {
-        return SoundEvents.ENTITY_GOAT_SCREAMING_AMBIENT;
+        return SoundsInit.FNAF1_JUMPSCARE;
     }
 
     @Override

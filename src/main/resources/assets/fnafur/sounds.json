@@ -52,5 +52,61 @@
     "sounds": [
       "fnafur:jumpscares/zephyr_jumpscare"
     ]
+  },
+  "fnaf1_jumpscare": {
+    "subtitle": "sounds.fnafur.fnaf1_jumpscare",
+    "sounds": [
+      "fnafur:jumpscares/fnaf1_jumpscare"
+    ]
+  },
+  "fnaf1_footsteps": {
+    "subtitle": "sounds.fnafur.fnaf1_footsteps",
+    "sounds": [
+      "fnafur:animatronics/footsteps/fnaf1step1",
+      "fnafur:animatronics/footsteps/fnaf1step2",
+      "fnafur:animatronics/footsteps/fnaf1step3",
+      "fnafur:animatronics/footsteps/fnaf1step4",
+      "fnafur:animatronics/footsteps/fnaf1step5"
+    ]
+  },
+  "foxy_footsteps": {
+    "subtitle": "sounds.fnafur.foxy_footsteps",
+    "sounds": [
+      "fnafur:animatronics/footsteps/foxystep1",
+      "fnafur:animatronics/footsteps/foxystep2",
+      "fnafur:animatronics/footsteps/foxystep3",
+      "fnafur:animatronics/footsteps/foxystep4",
+      "fnafur:animatronics/footsteps/foxystep5"
+    ]
+  },
+  "animatronic_hurt": {
+    "subtitle": "sounds.fnafur.animatronic_hurt",
+    "sounds": [
+      "fnafur:animatronics/hurt/animatronic_hurt"
+    ]
+  },
+  "office_door_activate": {
+    "subtitle": "sounds.fnafur.office_door_activate",
+    "sounds": [
+      "fnafur:props/door/door_activate"
+    ]
+  },
+  "office_door_error": {
+    "subtitle": "sounds.fnafur.office_door_error",
+    "sounds": [
+      "fnafur:props/door/door_error"
+    ]
+  },
+  "office_door_knock": {
+    "subtitle": "sounds.fnafur.office_door_knock",
+    "sounds": [
+      "fnafur:props/door/door_knock"
+    ]
+  },
+  "office_door_light": {
+    "subtitle": "sounds.fnafur.office_door_light",
+    "sounds": [
+      "fnafur:props/door/door_light"
+    ]
   }
 }
