@@ -5,7 +5,6 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.VillagerEntity;
@@ -19,7 +18,6 @@ import net.zephyr.fnafur.entity.goals.ShouldLookAroundGoal;
 import net.zephyr.fnafur.entity.goals.ShouldLookAtEntityGoal;
 import net.zephyr.fnafur.entity.goals.ShouldWanderGoal;
 import net.zephyr.fnafur.init.ScreensInit;
-import net.zephyr.fnafur.init.SoundsInit;
 
 import java.util.ArrayList;
 import java.util.List;
