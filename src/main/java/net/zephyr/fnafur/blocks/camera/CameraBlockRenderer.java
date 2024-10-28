@@ -36,10 +36,15 @@ public class CameraBlockRenderer implements BlockEntityRenderer<CameraBlockEntit
    public static TexturedModelData getTexturedModelData() {
        ModelData modelData = new ModelData();
        ModelPartData modelPartData = modelData.getRoot();
-       modelPartData.addChild(HEAD, ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, -3.0F, -5.1F, 4.0F, 4.0F, 7.0F, new Dilation(0.0F))
-               .uv(0, 2).cuboid(-2.0F, -3.0F, -7.1F, 0.0F, 2.0F, 2.0F, new Dilation(0.0F))
-               .uv(10, 11).cuboid(-2.0F, -3.0F, -7.1F, 4.0F, 0.0F, 2.0F, new Dilation(0.0F))
-               .uv(0, 0).cuboid(2.0F, -3.0F, -7.1F, 0.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 13.0F, 3.0F));
+
+       ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, -2.0F, -6.0F, 4.0F, 4.0F, 8.0F, new Dilation(0.0F))
+               .uv(20, 0).cuboid(-0.5F, -0.5F, -8.2F, 1.0F, 1.0F, 4.9F, new Dilation(0.2F))
+               .uv(14, 19).cuboid(-0.95F, -0.95F, -9.0F, 1.9F, 1.9F, 1.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 13.0F, 3.0F));
+
+       ModelPartData cube_r1 = head.addChild("cube_r1", ModelPartBuilder.create().uv(0, 12).mirrored().cuboid(0.0F, -1.3F, -3.0F, 0.0F, 3.9F, 6.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(1.0F, -0.5F, 1.9F, 0.0F, 0.0F, 0.3927F));
+
+       ModelPartData cube_r2 = head.addChild("cube_r2", ModelPartBuilder.create().uv(0, 12).cuboid(0.0F, -1.3F, -3.0F, 0.0F, 3.9F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-1.0F, -0.5F, 1.9F, 0.0F, 0.0F, -0.3927F));
+
        return TexturedModelData.of(modelData, 32, 32);
     }
 

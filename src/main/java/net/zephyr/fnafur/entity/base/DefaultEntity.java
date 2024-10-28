@@ -73,6 +73,11 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
         super(type, world);
     }
 
+    @Override
+    public boolean shouldRender(double distance) {
+        return true;
+    }
+
     @Nullable
     @Override
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
