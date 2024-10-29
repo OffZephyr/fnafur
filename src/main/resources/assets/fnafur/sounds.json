@@ -85,6 +85,12 @@
       "fnafur:animatronics/hurt/animatronic_hurt"
     ]
   },
+  "animatronic_death": {
+    "subtitle": "sounds.fnafur.animatronic_death",
+    "sounds": [
+      "fnafur:animatronics/death/animatronic_death"
+    ]
+  },
   "office_door_activate": {
     "subtitle": "sounds.fnafur.office_door_activate",
     "sounds": [

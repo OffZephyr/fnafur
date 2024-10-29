@@ -20,6 +20,7 @@ public class SoundsInit {
     public static final SoundEvent FNAF1_FOOTSTEPS = registerSoundEvent("fnaf1_footsteps");
     public static final SoundEvent FOXY_FOOTSTEPS = registerSoundEvent("foxy_footsteps");
     public static final SoundEvent ANIMATRONIC_HURT = registerSoundEvent("animatronic_hurt");
+    public static final SoundEvent ANIMATRONIC_DEATH = registerSoundEvent("animatronic_death");
     public static final SoundEvent OFFICE_DOOR_ACTIVATE = registerSoundEvent("office_door_activate");
     public static final SoundEvent OFFICE_DOOR_ERROR = registerSoundEvent("office_door_error");
     public static final SoundEvent OFFICE_DOOR_KNOCK = registerSoundEvent("office_door_knock");
