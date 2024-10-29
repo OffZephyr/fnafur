@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemWithDescription extends Item {
-    public static final int WRENCH = 0;
+    public static final int PIPE_WRENCH = 0;
     public static final int PAINT_BRUSH = 1;
     public static final int TAPE_MEASURE = 2;
     public static final int COIN = 3;
@@ -32,7 +32,7 @@ public class ItemWithDescription extends Item {
     public static List<Text> getTools(int... tools){
         List<Text> toolList = new ArrayList<>();
         for (int tool: tools) {
-            if(tool == ItemWithDescription.WRENCH){
+            if(tool == ItemWithDescription.PIPE_WRENCH){
                 toolList.add(Text.translatable("fnafur.symbol.wrench"));
             }
             if(tool == ItemWithDescription.PAINT_BRUSH){

@@ -51,7 +51,7 @@
 
   "block.fnafur.camera": "Security Camera",
   "block.fnafur.camera.description.0.length": "2",
-  "block.fnafur.camera.description.0.0": "§b§lClick §ron this block with the §c§lWrench",
+  "block.fnafur.camera.description.0.0": "§b§lClick §ron this block with the §c§lPipe Wrench",
   "block.fnafur.camera.description.0.1": "to start §bediting its behavior.",
 
   "item.fnafur.default_description": "Hold %s to show more.",
@@ -63,6 +63,7 @@
   "item.fnafur.sticker_black_white_red_wall_tiles": "Red Wall Tiles",
   "item.fnafur.sticker_black_white_red_wall_big_tiles": "Triple Red Wall Tiles",
   "item.fnafur.sticker_wall_grunge": "Wall Grunge Sticker",
+  "item.fnafur.sticker_wall_grunge_2": "Wall Grunge Sticker Variant 2",
 
   "item.fnafur.tablet": "Tablet",
   "item.fnafur.tablet.description.0.length": "6",
@@ -82,7 +83,8 @@
   "item.fnafur.cpu.description.0.1": "§b§lINSERT §rthis item into the §6§lCOMPUTER",
   "item.fnafur.cpu.description.0.2": "to start §bcustomizing the AI stored on it.",
 
-  "item.fnafur.wrench": "Wrench",
+  "item.fnafur.pipe_wrench": "Pipe Wrench",
+  "item.fnafur.wrench": "Standard Wrench",
   "item.fnafur.paintbrush": "Paint Brush",
   "item.fnafur.paintbrush.map_cam.line1": "Camera Map Coloring...",
   "item.fnafur.paintbrush.map_cam.line2": "§b§lClick on a line §bto change its color.",

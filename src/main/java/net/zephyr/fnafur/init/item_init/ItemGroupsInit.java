@@ -32,9 +32,10 @@ public class ItemGroupsInit {
                     .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".technical"))
                     .noRenderedName()
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/tabs_fnaf.png"))
-                    .icon(() -> new ItemStack(ItemInit.WRENCH))
+                    .icon(() -> new ItemStack(ItemInit.PIPE_WRENCH))
                     .entries((displayContext, entries) -> {
 
+                        entries.add(ItemInit.PIPE_WRENCH);
                         entries.add(ItemInit.WRENCH);
                         entries.add(ItemInit.PAINTBRUSH);
                         entries.add(ItemInit.TAPEMEASURE);

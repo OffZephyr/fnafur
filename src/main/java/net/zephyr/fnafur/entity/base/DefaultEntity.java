@@ -516,7 +516,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
                 }
                 return ActionResult.SUCCESS;
             }
-        } else if (player.getMainHandStack().isOf(ItemInit.WRENCH)) {
+        } else if (player.getMainHandStack().isOf(ItemInit.PIPE_WRENCH)) {
             ItemStack disk = getDisk(this, getWorld());
             if (!disk.isEmpty()) {
                 dropStack(disk, (float) hitPos.y);

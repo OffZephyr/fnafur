@@ -21,6 +21,7 @@ import net.zephyr.fnafur.item.IllusionDisc;
 import net.zephyr.fnafur.item.tools.PaintbrushItem;
 import net.zephyr.fnafur.item.tablet.TabletItem;
 import net.zephyr.fnafur.item.tools.TapeMesurerItem;
+import net.zephyr.fnafur.item.tools.PipeWrenchItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 
@@ -30,6 +31,8 @@ public class ItemInit {
 
     public static final Item MOD_LOGO = registerItem("fnafur",
             new Item(new Item.Settings().maxCount(0).rarity(Rarity.EPIC)));
+    public static final Item PIPE_WRENCH = registerItem("pipe_wrench",
+            new PipeWrenchItem(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
     public static final Item WRENCH = registerItem("wrench",
             new WrenchItem(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
     public static final Item PAINTBRUSH = registerItem("paintbrush",

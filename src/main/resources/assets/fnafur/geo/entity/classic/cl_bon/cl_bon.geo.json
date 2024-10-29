@@ -1678,7 +1678,7 @@
 				{
 					"name": "right_eye_main",
 					"parent": "main",
-					"pivot": [-1.82184, 52.00777, -2.55848]
+					"pivot": [-1.8218, 51.9578, -2.6585]
 				},
 				{
 					"name": "eyeright",
@@ -1834,7 +1834,7 @@
 				{
 					"name": "left_eye_main",
 					"parent": "main",
-					"pivot": [1.82184, 52.00777, -2.55848]
+					"pivot": [1.87816, 52.02777, -2.83848]
 				},
 				{
 					"name": "eyeleft",

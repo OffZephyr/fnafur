@@ -10,13 +10,13 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
-import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.init.block_init.BlockInit;
+import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
-public class WrenchItem extends Item {
-    public WrenchItem(Settings settings) {
+public class PipeWrenchItem extends Item {
+    public PipeWrenchItem(Settings settings) {
         super(settings);
     }
 
@@ -43,6 +43,3 @@ public class WrenchItem extends Item {
         return super.useOnBlock(context);
     }
 }
-
-
-

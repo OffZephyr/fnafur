@@ -48,7 +48,7 @@ public class BlockInit {
     );
     public static final Block CAMERA = registerBlock("camera",
             new CameraBlock(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never).noCollision()),
-            ItemWithDescription.WRENCH);
+            ItemWithDescription.PIPE_WRENCH);
     public static final Block CAMERA_DESK = registerBlock("camera_desk",
             new CameraDeskBlock(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)));
     public static final Block ARCADE_MACHINE = registerBlock("arcade_machine",
