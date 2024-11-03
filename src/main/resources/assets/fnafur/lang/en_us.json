@@ -28,6 +28,11 @@
   "block.fnafur.gray_wall": "Gray Wall",
   "block.fnafur.dark_gray_wall": "Dark Gray Wall",
   "block.fnafur.large_brown_bricks": "Large Brown Bricks",
+  "block.fnafur.small_bricks": "Small Bricks",
+  "block.fnafur.light_small_bricks": "Light Small Bricks",
+  "block.fnafur.metal_bricks": "Metal Bricks",
+  "block.fnafur.rusty_metal_bricks": "Rusty Metal Bricks",
+  "block.fnafur.ceiling_tiles": "Ceiling Tiles",
   "block.fnafur.fog_block": "Fog Block",
 
   "block.fnafur.layered_block": "Layered Block",

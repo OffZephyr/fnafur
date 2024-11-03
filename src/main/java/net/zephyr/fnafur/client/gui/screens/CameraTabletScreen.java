@@ -584,7 +584,7 @@ public class CameraTabletScreen extends GoopyScreen {
             if (entity instanceof CameraBlockEntity) {
                 BlockPos pos = BlockPos.fromLong(currentCam);
                 Vec3d offset;
-                float amount = 0.2f;
+                float amount = -0.1f;
                 switch (MinecraftClient.getInstance().world.getBlockState(pos).get(CameraBlock.FACING)) {
                     default -> offset = new Vec3d(0, 0, amount);
                     case SOUTH -> offset = new Vec3d(0, 0, -amount);

@@ -69,6 +69,11 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.GRAY_WALL);
                         entries.add(BlockInit.DARK_GRAY_WALL);
                         entries.add(BlockInit.LARGE_BROWN_BRICKS);
+                        entries.add(BlockInit.SMALL_BRICKS);
+                        entries.add(BlockInit.LIGHT_SMALL_BRICKS);
+                        entries.add(BlockInit.METAL_BRICKS);
+                        entries.add(BlockInit.RUSTY_METAL_BRICKS);
+                        entries.add(BlockInit.CEILING_TILES);
 
                         entries.add(StickerInit.BLACK_WHITE_RED_WALL_TILES);
                         entries.add(StickerInit.BLACK_WHITE_RED_WALL_BIG_TILES);

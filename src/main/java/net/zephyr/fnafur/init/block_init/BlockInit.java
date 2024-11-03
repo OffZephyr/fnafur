@@ -82,6 +82,16 @@ public class BlockInit {
             new Block(AbstractBlock.Settings.copy(Blocks.STONE)));
     public static final Block TAN_RAINBOW_16_TILES = registerBlock("tan_rainbow_16_tiles",
             new Random3Block(AbstractBlock.Settings.copy(Blocks.STONE)));
+    public static final Block SMALL_BRICKS = registerBlock("small_bricks",
+            new Block(AbstractBlock.Settings.copy(Blocks.STONE)));
+    public static final Block LIGHT_SMALL_BRICKS = registerBlock("light_small_bricks",
+            new Block(AbstractBlock.Settings.copy(Blocks.STONE)));
+    public static final Block METAL_BRICKS = registerBlock("metal_bricks",
+            new Block(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)));
+    public static final Block RUSTY_METAL_BRICKS = registerBlock("rusty_metal_bricks",
+            new Block(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)));
+    public static final Block CEILING_TILES = registerBlock("ceiling_tiles",
+            new Block(AbstractBlock.Settings.copy(Blocks.STONE)));
 
 
     private static Block registerBlock(String name, StickerBlock block) {
