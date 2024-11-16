@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "texture=0": {
+      "model": "fnafur:block/ballpit"
+    },
+    "texture=1": {
+      "model": "fnafur:block/ballpit_2"
+    },
+    "texture=2": {
+      "model": "fnafur:block/ballpit_3"
+    },
+    "texture=3": {
+      "model": "fnafur:block/ballpit_4"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "fnafur:block/mimic_frames_slab_bottom"
+    },
+    "type=top": {
+      "model": "fnafur:block/mimic_frames_slab_top"
+    },
+    "type=double": {
+      "model": "fnafur:block/mimic_frames_slab_double"
+    }
+  }
+}

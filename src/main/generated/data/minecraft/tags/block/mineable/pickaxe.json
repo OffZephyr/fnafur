@@ -1,0 +1,27 @@
+{
+  "values": [
+    "fnafur:computer",
+    "fnafur:camera",
+    "fnafur:fog_block",
+    "fnafur:gray_wall",
+    "fnafur:dark_gray_wall",
+    "fnafur:large_brown_bricks",
+    "fnafur:black_white_tiles",
+    "fnafur:red_blue_tiles",
+    "fnafur:black_blue_tiles",
+    "fnafur:black_white_16_tiles",
+    "fnafur:black_white_16_tiles_trim",
+    "fnafur:tan_16_tiles",
+    "fnafur:tan_16_spaced_tiles",
+    "fnafur:tan_rainbow_16_tiles",
+    "fnafur:small_gray_bricks",
+    "fnafur:small_light_gray_bricks",
+    "fnafur:metal_plates",
+    "fnafur:rough_metal_plates",
+    "fnafur:ceiling_tiles",
+    "fnafur:ceiling_tiles_stained",
+    "fnafur:floor_monitors1",
+    "fnafur:floor_monitors2",
+    "fnafur:office_buttons"
+  ]
+}

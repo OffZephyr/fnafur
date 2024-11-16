@@ -1596,10 +1596,10 @@
 			},
 			"sound_effects": {
 				"0.8333": {
-					"effect": "fnaf1step1"
+					"effect": "step"
 				},
 				"1.6667": {
-					"effect": "fnaf1step2"
+					"effect": "step"
 				}
 			}
 		},
@@ -2084,10 +2084,10 @@
 			},
 			"sound_effects": {
 				"0.3333": {
-					"effect": "fnaf1step1"
+					"effect": "step"
 				},
 				"0.6667": {
-					"effect": "fnaf1step2"
+					"effect": "step"
 				}
 			}
 		},
@@ -5838,10 +5838,10 @@
 			},
 			"sound_effects": {
 				"0.875": {
-					"effect": "fnaf1step3"
+					"effect": "step"
 				},
 				"1.6667": {
-					"effect": "fnaf1step5"
+					"effect": "step"
 				}
 			}
 		},
@@ -6322,10 +6322,10 @@
 			},
 			"sound_effects": {
 				"0.3333": {
-					"effect": "fnaf1step3"
+					"effect": "step"
 				},
 				"0.6667": {
-					"effect": "fnaf1step3"
+					"effect": "step"
 				}
 			}
 		},

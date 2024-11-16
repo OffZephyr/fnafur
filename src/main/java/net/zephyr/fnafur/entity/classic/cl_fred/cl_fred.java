@@ -9,6 +9,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
@@ -18,6 +19,7 @@ import net.zephyr.fnafur.entity.goals.ShouldLookAroundGoal;
 import net.zephyr.fnafur.entity.goals.ShouldLookAtEntityGoal;
 import net.zephyr.fnafur.entity.goals.ShouldWanderGoal;
 import net.zephyr.fnafur.init.ScreensInit;
+import net.zephyr.fnafur.init.SoundsInit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +126,16 @@ public class cl_fred extends DefaultEntity {
         super(type, world);
     }
 
+    @Override
+    public SoundEvent walkSound() {
+        return SoundsInit.FNAF1_FOOTSTEPS;
+    }
+    public SoundEvent hurtSound() {
+        return SoundsInit.ANIMATRONIC_HURT;
+    }
+    public SoundEvent deathSound() {
+        return SoundsInit.ANIMATRONIC_DEATH;
+    }
     public static DefaultAttributeContainer.Builder setAttributes() {
 
         return MobEntity.createMobAttributes()

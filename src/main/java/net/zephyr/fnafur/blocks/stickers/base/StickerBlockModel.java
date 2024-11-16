@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.*;
@@ -32,6 +33,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFrameBlockModel;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemNbtUtil;
@@ -99,7 +101,6 @@ public class StickerBlockModel  implements UnbakedModel, BakedModel, FabricBaked
     @Nullable
     @Override
     public BakedModel bake(Baker baker, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer) {
-
         return this;
     }
 
@@ -115,7 +116,7 @@ public class StickerBlockModel  implements UnbakedModel, BakedModel, FabricBaked
         QuadEmitter emitter = builder.getEmitter();
         BlockEntity entity = blockView.getBlockEntity(pos);
 
-        if (entity instanceof StickerBlockEntity ent) {
+        if (entity instanceof BlockEntity ent) {
             emitQuads(state, pos, ((IEntityDataSaver) ent).getPersistentData(), emitter, builder, context);
         }
 
@@ -134,18 +135,10 @@ public class StickerBlockModel  implements UnbakedModel, BakedModel, FabricBaked
 
     public void emitQuads(BlockState state, BlockPos pos, NbtCompound nbt, QuadEmitter emitter, MeshBuilder builder, RenderContext context){
 
-        particlesprite = ((StickerBlock)state.getBlock()).particleSprite().getSprite();
+        particlesprite = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, ((StickerBlock)state.getBlock()).particleSprite()).getSprite();
 
-        for(Direction direction : Direction.values()) {
-            Sprite sprite = ((StickerBlock)state.getBlock()).sprites().get(direction).getSprite();
+        emitBaseCube(state, pos, emitter, nbt);
 
-            if(sprite == null) return;
-
-            emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-            emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
-            emitter.color(-1, -1, -1, -1);
-            emitter.emit();
-        }
         if(!nbt.isEmpty()) {
             MinecraftClient client = MinecraftClient.getInstance();
             for (Direction direction : Direction.values()) {
@@ -196,5 +189,17 @@ public class StickerBlockModel  implements UnbakedModel, BakedModel, FabricBaked
         }
         mesh = builder.build();
         mesh.outputTo(context.getEmitter());
+    }
+    public void emitBaseCube(BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
+        for(Direction direction : Direction.values()) {
+            Sprite sprite = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,((StickerBlock)state.getBlock()).sprites().get(direction)).getSprite();
+
+            if(sprite == null) return;
+
+            emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+            emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
+            emitter.color(-1, -1, -1, -1);
+            emitter.emit();
+        }
     }
 }

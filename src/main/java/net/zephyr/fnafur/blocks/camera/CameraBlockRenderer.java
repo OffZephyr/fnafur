@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockEntity;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
-import net.zephyr.fnafur.blocks.layered_block.LayeredBlock;
+import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;

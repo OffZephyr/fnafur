@@ -7,17 +7,15 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.arcademachine.ArcademachineBlockEntity;
+import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFrameBlockEntity;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockEntity;
 import net.zephyr.fnafur.blocks.computer.ComputerBlockEntity;
-import net.zephyr.fnafur.blocks.fog.FogBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlockEntity;
-import net.zephyr.fnafur.blocks.layered_block.LayeredBlockEntity;
+import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers.base.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
-import net.zephyr.fnafur.init.block_init.BlockInit;
-import net.zephyr.fnafur.init.block_init.PropInit;
 
 public class BlockEntityInit {
     public static BlockEntityType<ComputerBlockEntity> COMPUTER;
@@ -29,6 +27,7 @@ public class BlockEntityInit {
     public static BlockEntityType<PropBlockEntity> PROPS;
     public static BlockEntityType<StickerBlockEntity> STICKER_BLOCK;
     public static BlockEntityType<TileDoorBlockEntity> TILE_DOOR;
+    public static BlockEntityType<MimicFrameBlockEntity> MIMIC_FRAME;
 
     public static void registerBlockEntities() {
         COMPUTER =
@@ -81,8 +80,20 @@ public class BlockEntityInit {
                         FabricBlockEntityTypeBuilder.create(StickerBlockEntity::new,
                                 BlockInit.GRAY_WALL,
                                 BlockInit.DARK_GRAY_WALL,
-                                BlockInit.LARGE_BROWN_BRICKS
+                                BlockInit.LARGE_BROWN_BRICKS,
+                                BlockInit.SMALL_GRAY_BRICKS,
+                                BlockInit.SMALL_LIGHT_GRAY_BRICKS,
+                                BlockInit.METAL_PLATES,
+                                BlockInit.ROUGH_METAL_PLATES
                         ).build());
+
+        MIMIC_FRAME =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "mimic_frame"),
+                        FabricBlockEntityTypeBuilder.create(MimicFrameBlockEntity::new,
+                                BlockInit.MIMIC_FRAME,
+                                BlockInit.MIMIC_FRAME_SLAB
+                        ).build());
+
 
 
         FnafUniverseResuited.LOGGER.info("Registering Block Entities for " + FnafUniverseResuited.MOD_ID.toUpperCase());

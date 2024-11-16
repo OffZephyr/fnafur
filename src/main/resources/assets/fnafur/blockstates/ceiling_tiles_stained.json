@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "random=0": {
+      "model": "fnafur:block/ceiling_tiles_stained"
+    },
+    "random=1": {
+      "model": "fnafur:block/ceiling_tiles_stained_2"
+    },
+    "random=2": {
+      "model": "fnafur:block/ceiling_tiles_stained_3"
+    },
+    "random=3": {
+      "model": "fnafur:block/ceiling_tiles_stained_4"
+    }
+  }
+}

@@ -1,6 +1,8 @@
 package net.zephyr.fnafur.blocks.stickers.base;
 
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -8,15 +10,17 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -27,20 +31,49 @@ import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public abstract class StickerBlock extends BlockWithEntity {
+public class StickerBlock extends BlockWithEntity {
     public String name;
+    public final Identifier top;
+    public final Identifier bottom;
+    public final Identifier north;
+    public final Identifier east;
+    public final Identifier south;
+    public final Identifier west;
+    public final Identifier particle;
 
-    public StickerBlock(Settings settings) {
+    public StickerBlock(Settings settings, Identifier texture) {
+        this(settings, texture, texture, texture, texture ,texture, texture);
+    }
+    public StickerBlock(Settings settings, Identifier sides, Identifier top, Identifier bottom) {
+        this(settings, top, bottom, sides, sides ,sides, sides);
+    }
+    public StickerBlock(Settings settings, Identifier north, Identifier east, Identifier south, Identifier west, Identifier top, Identifier bottom) {
         super(settings);
+        this.top = top;
+        this.bottom = bottom;
+        this.north = north;
+        this.east = east;
+        this.south = south;
+        this.west = west;
+        this.particle = north;
     }
 
-    public Map<Direction, SpriteIdentifier> sprites() {
-        return null;
+    public Map<Direction, Identifier> sprites() {
+        Map<Direction, Identifier> map = new HashMap<>();
+        map.put(Direction.NORTH, north);
+        map.put(Direction.EAST, east);
+        map.put(Direction.SOUTH, south);
+        map.put(Direction.WEST, west);
+        map.put(Direction.UP, top);
+        map.put(Direction.DOWN, bottom);
+        return map;
     }
-    public SpriteIdentifier particleSprite() {
-        return  null;
+    public Identifier particleSprite() {
+        return particle;
     }
 
     @Override
@@ -86,7 +119,7 @@ public abstract class StickerBlock extends BlockWithEntity {
         NbtCompound data = itemStack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt().getCompound("fnafur.persistent");
 
         world.setBlockState(pos, state);
-        if (world.getBlockEntity(pos) instanceof StickerBlockEntity entity) {
+        if (world.getBlockEntity(pos) instanceof BlockEntity entity) {
             ((IEntityDataSaver) entity).getPersistentData().copyFrom(data);
         }
 

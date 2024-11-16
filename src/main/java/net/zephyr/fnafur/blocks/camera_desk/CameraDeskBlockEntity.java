@@ -11,7 +11,7 @@ import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.GoopyBlockEntity;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
-import net.zephyr.fnafur.blocks.layered_block.LayeredBlock;
+import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 

@@ -10,14 +10,6 @@ import net.zephyr.fnafur.networking.nbt_updates.UpdateCrawlingC2SPayload;
 import net.zephyr.fnafur.networking.payloads.*;
 
 public class PayloadDef {
-    public static final byte BLOCK_DATA = 0;
-    public static final byte ENTITY_DATA = 1;
-    public static final byte ITEM_DATA = 2;
-    public static final byte OTHER_DATA = 3;
-    public static final byte BOOL_AI_DATA = 0;
-    public static final byte INT_AI_DATA = 1;
-    public static final byte BLOCK_POS_AI_DATA = 2;
-    public static final byte STRING_AI_DATA = 3;
 
     public static void registerC2SPackets() {
 

@@ -2,10 +2,7 @@ package net.zephyr.fnafur.init.block_init;
 
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
+import net.minecraft.block.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.item.BlockItem;
@@ -15,7 +12,11 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.arcademachine.ArcademachineBlock;
+import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
+import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
+import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFrames;
+import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFramesSlab;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
@@ -23,10 +24,7 @@ import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockRenderer;
 import net.zephyr.fnafur.blocks.computer.ComputerBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlockRenderer;
-import net.zephyr.fnafur.blocks.layered_block.LayeredBlock;
-import net.zephyr.fnafur.blocks.stickers.DarkGrayWall;
-import net.zephyr.fnafur.blocks.stickers.GrayWall;
-import net.zephyr.fnafur.blocks.stickers.LargeBrownBricks;
+import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.blocks.stickers.base.StickerBlock;
 import net.zephyr.fnafur.blocks.tile_doors.OfficeDoor;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntityRenderer;
@@ -44,8 +42,20 @@ public class BlockInit {
             new ComputerBlock(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().notSolid().suffocates(Blocks::never).blockVision(Blocks::never)));
     public static final Block LAYERED_BLOCK_BASE = registerBlock("layered_block",
             new LayeredBlock(AbstractBlock.Settings.copy(Blocks.STONE).mapColor(MapColor.DIRT_BROWN)),
-            ItemWithDescription.PAINT_BRUSH, ItemWithDescription.TAPE_MEASURE
-    );
+            ItemWithDescription.PAINT_BRUSH, ItemWithDescription.TAPE_MEASURE);
+    public static final Block MIMIC_FRAME = registerBlock("mimic_frame_block",
+            new MimicFrames(AbstractBlock.Settings.copy(Blocks.STONE)
+                    .solidBlock(Blocks::never)
+                    .nonOpaque()
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)));
+    public static final Block MIMIC_FRAME_SLAB = registerBlock("mimic_frame_slab",
+            new MimicFramesSlab(AbstractBlock.Settings.copy(Blocks.STONE)
+                    .solidBlock(Blocks::never)
+                    .nonOpaque()
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)));
+
     public static final Block CAMERA = registerBlock("camera",
             new CameraBlock(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never).noCollision()),
             ItemWithDescription.PIPE_WRENCH);
@@ -55,17 +65,25 @@ public class BlockInit {
             new ArcademachineBlock(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)));
 
     public static final Block FOG_BLOCK = registerBlock("fog_block",
-            new FogBlock(AbstractBlock.Settings.copy(Blocks.SNOW_BLOCK).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never)));
+            new FogBlock(AbstractBlock.Settings.copy(Blocks.SNOW_BLOCK).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never).breakInstantly()));
 
     public static final Block OFFICE_DOOR = registerBlock("office_door",
-            new OfficeDoor(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never).breakInstantly().luminance(state -> 0)));
+            new OfficeDoor(AbstractBlock.Settings.copy(Blocks.STONE).nonOpaque().allowsSpawning(Blocks::never).solidBlock(Blocks::never).suffocates(Blocks::never).blockVision(Blocks::never).luminance(state -> 0)));
 
-    public static final Block GRAY_WALL = registerBlock("gray_wall",
-            new GrayWall(AbstractBlock.Settings.copy(Blocks.STONE)));
-    public static final Block DARK_GRAY_WALL = registerBlock("dark_gray_wall",
-            new DarkGrayWall(AbstractBlock.Settings.copy(Blocks.STONE)));
-    public static final Block LARGE_BROWN_BRICKS = registerBlock("large_brown_bricks",
-            new LargeBrownBricks(AbstractBlock.Settings.copy(Blocks.STONE)));
+    public static final Block GRAY_WALL = registerStickerBlock("gray_wall",
+            new StickerBlock(AbstractBlock.Settings.copy(Blocks.STONE), Identifier.of(FnafUniverseResuited.MOD_ID, "block/gray_wall")));
+    public static final Block DARK_GRAY_WALL = registerStickerBlock("dark_gray_wall",
+            new StickerBlock(AbstractBlock.Settings.copy(Blocks.STONE), Identifier.of(FnafUniverseResuited.MOD_ID, "block/dark_gray_wall")));
+    public static final Block LARGE_BROWN_BRICKS = registerStickerBlock("large_brown_bricks",
+            new StickerBlock(AbstractBlock.Settings.copy(Blocks.STONE), Identifier.of(FnafUniverseResuited.MOD_ID, "block/large_brown_bricks")));
+    public static final Block SMALL_GRAY_BRICKS = registerStickerBlock("small_gray_bricks",
+            new StickerBlock(AbstractBlock.Settings.copy(Blocks.STONE), Identifier.of(FnafUniverseResuited.MOD_ID, "block/small_gray_bricks")));
+    public static final Block SMALL_LIGHT_GRAY_BRICKS = registerStickerBlock("small_light_gray_bricks",
+            new StickerBlock(AbstractBlock.Settings.copy(Blocks.STONE), Identifier.of(FnafUniverseResuited.MOD_ID, "block/small_light_gray_bricks")));
+    public static final Block METAL_PLATES = registerStickerBlock("metal_plates",
+            new StickerBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK), Identifier.of(FnafUniverseResuited.MOD_ID, "block/metal_plates")));
+    public static final Block ROUGH_METAL_PLATES = registerStickerBlock("rough_metal_plates",
+            new StickerBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK), Identifier.of(FnafUniverseResuited.MOD_ID, "block/rough_metal_plates")));
     public static final Block BLACK_WHITE_TILES = registerBlock("black_white_tiles",
             new Block(AbstractBlock.Settings.copy(Blocks.STONE)));
     public static final Block RED_BLUE_TILES = registerBlock("red_blue_tiles",
@@ -82,19 +100,33 @@ public class BlockInit {
             new Block(AbstractBlock.Settings.copy(Blocks.STONE)));
     public static final Block TAN_RAINBOW_16_TILES = registerBlock("tan_rainbow_16_tiles",
             new Random3Block(AbstractBlock.Settings.copy(Blocks.STONE)));
-    public static final Block SMALL_BRICKS = registerBlock("small_bricks",
-            new Block(AbstractBlock.Settings.copy(Blocks.STONE)));
-    public static final Block LIGHT_SMALL_BRICKS = registerBlock("light_small_bricks",
-            new Block(AbstractBlock.Settings.copy(Blocks.STONE)));
-    public static final Block METAL_BRICKS = registerBlock("metal_bricks",
-            new Block(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)));
-    public static final Block RUSTY_METAL_BRICKS = registerBlock("rusty_metal_bricks",
-            new Block(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)));
     public static final Block CEILING_TILES = registerBlock("ceiling_tiles",
             new Block(AbstractBlock.Settings.copy(Blocks.STONE)));
+    public static final Block CEILING_TILE_LIGHT = registerBlock("ceiling_tile_light",
+            new RedstoneLampBlock(AbstractBlock.Settings.copy(Blocks.REDSTONE_LAMP)));
+    public static final Block CEILING_TILES_STAINED = registerBlock("ceiling_tiles_stained",
+            new Random4Block(AbstractBlock.Settings.copy(Blocks.STONE)));
+    public static final Block CARPET_STAR_GREEN = registerBlock("carpet_star_green",
+            new Random4Block(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)));
+    public static final Block CARPET_STAR_CYAN = registerBlock("carpet_star_cyan",
+            new Random4Block(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)));
+    public static final Block CARPET_STAR_BLUE = registerBlock("carpet_star_blue",
+            new Random4Block(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)));
+    public static final Block CARPET_STAR_PURPLE = registerBlock("carpet_star_purple",
+            new Random4Block(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)));
+    public static final Block CARPET_STAR_PINK = registerBlock("carpet_star_pink",
+            new Random4Block(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)));
+    public static final Block CARPET_STAR_RED = registerBlock("carpet_star_red",
+            new Random4Block(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)));
+    public static final Block CARPET_STAR_ORANGE = registerBlock("carpet_star_orange",
+            new Random4Block(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)));
+    public static final Block CARPET_STAR_BROWN = registerBlock("carpet_star_brown",
+            new Random4Block(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)));
+    public static final Block BALLPIT = registerBlock("ballpit",
+            new BallpitBlock(AbstractBlock.Settings.copy(Blocks.SNOW_BLOCK).strength(0.25F).dynamicBounds().solidBlock(Blocks::never).blockVision(Blocks::always)));
 
 
-    private static Block registerBlock(String name, StickerBlock block) {
+    private static Block registerStickerBlock(String name, StickerBlock block) {
         block.setName(name);
         STICKER_BLOCKS.add(block);
         registerBlockItem(name, block);
@@ -129,6 +161,9 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.LAYERED_BLOCK_BASE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA_DESK, RenderLayer.getCutout());
+
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTripwire());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_SLAB, RenderLayer.getTripwire());
 
         BlockEntityRendererFactories.register(BlockEntityInit.FOG_BLOCK, FogBlockRenderer::new);
 

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=true": {
+      "model": "fnafur:block/ceiling_tile_light"
+    },
+    "lit=false": {
+      "model": "fnafur:block/ceiling_tile_light_off"
+    }
+  }
+}

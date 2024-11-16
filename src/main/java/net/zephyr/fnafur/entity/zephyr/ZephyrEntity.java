@@ -6,6 +6,7 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
@@ -53,6 +54,21 @@ public class ZephyrEntity extends DefaultEntity {
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, PlayerEntity.class, 6f));
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, DefaultEntity.class, 6f));
         this.goalSelector.add(4, new ShouldLookAroundGoal(this));
+    }
+
+    @Override
+    public SoundEvent walkSound() {
+        return null;
+    }
+
+    @Override
+    public SoundEvent hurtSound() {
+        return null;
+    }
+
+    @Override
+    public SoundEvent deathSound() {
+        return null;
     }
 
     @Override

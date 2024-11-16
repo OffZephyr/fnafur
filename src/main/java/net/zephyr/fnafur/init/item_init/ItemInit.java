@@ -25,10 +25,11 @@ import net.zephyr.fnafur.item.tools.PipeWrenchItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ItemInit {
-
     public static final Item MOD_LOGO = registerItem("fnafur",
             new Item(new Item.Settings().maxCount(0).rarity(Rarity.EPIC)));
     public static final Item PIPE_WRENCH = registerItem("pipe_wrench",
@@ -47,7 +48,6 @@ public class ItemInit {
             new CPUItem(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
     public static final Item ILLUSIONDISC = registerItem("illusion_disc",
             new IllusionDisc(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
-
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(FnafUniverseResuited.MOD_ID, name), item);
     }

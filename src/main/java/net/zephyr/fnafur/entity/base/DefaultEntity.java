@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.entity.base;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -14,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -28,9 +31,11 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.computer.ComputerData;
+import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.item.EntitySpawnItem;
+import net.zephyr.fnafur.networking.entity.WalkSoundPlayerC2SPayload;
 import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.AIBehaviorUpdateS2CPayload;
 import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.UpdateEntityNbtS2CPongPayload;
 import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.UpdateJumpscareDataS2CPayload;
@@ -44,6 +49,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.ClientUtil;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
@@ -89,7 +95,12 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Main", 3, this::movementAnimController));
+        controllers.add(new AnimationController<>(this, "Walking", 3, this::movementAnimController)
+                .setSoundKeyframeHandler(state -> {
+                    if(state.getKeyframeData().getSound().equals("step")) {
+                        playWalkSound(getWorld());
+                    }
+                }));
         controllers.add(new AnimationController<>(this, "Attack", 1, this::attackAnimController));
     }
 
@@ -240,6 +251,12 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
         //return PlayState.STOP;
     }
 
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return deathSound();
+    }
+
     @Override
     public boolean tryAttack(Entity target) {
         if(target instanceof ServerPlayerEntity p && !p.isDead()) {
@@ -260,6 +277,15 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
         return super.onKilledOther(world, other);
     }
 
+    public  void playWalkSound(World world) {
+        if (!world.isClient()) {
+            this.playSound(walkSound(), 1, 1);
+            getWorld().playSound(null, getX(), getY(), getZ(), walkSound(), SoundCategory.HOSTILE, 1, 1);
+        }
+        else {
+            ClientPlayNetworking.send(new WalkSoundPlayerC2SPayload(getId()));
+        }
+    }
     @Override
     public void tick() {
         super.tick();
@@ -338,17 +364,23 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
                 if ((getNavigation().getCurrentPath() == null || getNavigation().getCurrentPath().getLastNode() == null || getNavigation().getCurrentPath().getLastNode().getBlockPos() != goalPos) && getTarget() == null) {
                     if (teleport && !aggressive) {
                         setPosition(goalPos.getX() + 0.5f + offsetX, getY(), goalPos.getZ() + 0.5f + offsetX);
+                        setVelocity(0, 0, 0);
                         getNavigation().stop();
                     } else {
                         getNavigation().startMovingTo(goalPos.getX() + 0.5f, goalPos.getY(), goalPos.getZ() + 0.5f, getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 5.75f);
                     }
                 } if (getNavigation().getCurrentPath() != null && (getNavigation().getCurrentPath().isFinished() || getNavigation().isIdle()) && getTarget() == null) {
                     setPosition(goalPos.getX() + 0.5f + offsetX, getY(), goalPos.getZ() + 0.5f + offsetZ);
+                    setVelocity(0, 0, 0);
                     getNavigation().stop();
                 }
             }
         }
     }
+
+    public abstract SoundEvent walkSound();
+    public abstract SoundEvent hurtSound();
+    public abstract SoundEvent deathSound();
 
     @Override
     public float lerpYaw(float delta) {
@@ -535,6 +567,12 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
 
     public String getBehavior() {
         return this.behavior;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return hurtSound();
     }
 
     @Override
