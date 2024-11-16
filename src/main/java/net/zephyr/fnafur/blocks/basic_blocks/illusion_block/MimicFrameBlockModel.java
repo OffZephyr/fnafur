@@ -59,10 +59,8 @@ public class MimicFrameBlockModel extends StickerBlockModel {
         Sprite frame = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_block")).getSprite();
         Sprite center = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_block_center")).getSprite();
 
-        BlockEntity entity = world.getBlockEntity(pos);
-
         for (Direction direction: Direction.values()) {
-            Block sideBlock = ((MimicFrames)state.getBlock()).getBlockFromNbt(((IEntityDataSaver)entity).getPersistentData().getCompound(direction.getName()), world);
+            Block sideBlock = ((MimicFrames)state.getBlock()).getBlockFromNbt(nbt.getCompound(direction.getName()), world);
 
             if(sideBlock == null) {
 

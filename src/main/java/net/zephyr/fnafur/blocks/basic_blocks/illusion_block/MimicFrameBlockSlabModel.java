@@ -35,10 +35,8 @@ public class MimicFrameBlockSlabModel extends MimicFrameBlockModel {
 
         Sprite frame_slab = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_slab")).getSprite();
 
-        BlockEntity entity = world.getBlockEntity(pos);
-
         for (Direction direction: Direction.values()) {
-            Block sideBlock = ((MimicFrames)state.getBlock()).getBlockFromNbt(((IEntityDataSaver)entity).getPersistentData().getCompound(direction.getName()), world);
+            Block sideBlock = ((MimicFrames)state.getBlock()).getBlockFromNbt(nbt.getCompound(direction.getName()), world);
 
             if(sideBlock == null) {
                 if (frame == null || center == null || frame_slab == null) return;
