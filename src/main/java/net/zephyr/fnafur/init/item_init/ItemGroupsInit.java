@@ -39,6 +39,7 @@ public class ItemGroupsInit {
                         entries.add(ItemInit.WRENCH);
                         entries.add(ItemInit.PAINTBRUSH);
                         entries.add(ItemInit.TAPEMEASURE);
+                        entries.add(ItemInit.JERRYCAN);
 
                         entries.add(BlockInit.CAMERA);
                         entries.add(ItemInit.TABLET);

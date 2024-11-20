@@ -17,6 +17,8 @@ import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
 import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFramesSlab;
+import net.zephyr.fnafur.blocks.battery.blocks.generators.FuelGeneratorBlock;
+import net.zephyr.fnafur.blocks.battery.blocks.switches.RedstoneSwitchBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
@@ -125,6 +127,10 @@ public class BlockInit {
     public static final Block BALLPIT = registerBlock("ballpit",
             new BallpitBlock(AbstractBlock.Settings.copy(Blocks.SNOW_BLOCK).strength(0.25F).dynamicBounds().solidBlock(Blocks::never).blockVision(Blocks::always)));
 
+    public static final Block FUEL_GENERATOR = registerBlock("fuel_generator",
+            new FuelGeneratorBlock(AbstractBlock.Settings.copy(Blocks.STONE)));
+    public static final Block REDSTONE_SWITCH = registerBlock("redstone_switch",
+            new RedstoneSwitchBlock(AbstractBlock.Settings.copy(Blocks.STONE)));
 
     private static Block registerStickerBlock(String name, StickerBlock block) {
         block.setName(name);

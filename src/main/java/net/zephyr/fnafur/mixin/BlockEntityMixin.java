@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.mixin;
 
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.sound.SoundManager;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;

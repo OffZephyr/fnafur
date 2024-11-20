@@ -18,6 +18,8 @@ import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.item.IllusionDisc;
+import net.zephyr.fnafur.item.battery.JerryCanItem;
+import net.zephyr.fnafur.item.battery.TestFreshUI;
 import net.zephyr.fnafur.item.tools.PaintbrushItem;
 import net.zephyr.fnafur.item.tablet.TabletItem;
 import net.zephyr.fnafur.item.tools.TapeMesurerItem;
@@ -48,6 +50,11 @@ public class ItemInit {
             new CPUItem(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
     public static final Item ILLUSIONDISC = registerItem("illusion_disc",
             new IllusionDisc(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
+    public static final Item JERRYCAN = registerItem("jerrycan",
+            new JerryCanItem(new Item.Settings().maxCount(1).rarity(Rarity.COMMON)));
+    public static final Item TEST_FUI = registerItem("fui_test",
+            new TestFreshUI(new Item.Settings().maxCount(1)));
+
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(FnafUniverseResuited.MOD_ID, name), item);
     }
