@@ -33,14 +33,16 @@ public class FUI_Screen extends Screen {
     /// Destroy/Close the screen
     public void destroy(){
         kill = true;
-        components.clear();
-        this.close();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
 
-        if(kill) return;
+        if(kill) {
+            components.clear();
+            this.close();
+            return;
+        }
 
         for(FUI_Component c : components){
             c.call(context, currentClient, delta);
