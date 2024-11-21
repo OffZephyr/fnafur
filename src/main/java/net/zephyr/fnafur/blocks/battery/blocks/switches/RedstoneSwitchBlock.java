@@ -41,6 +41,7 @@ public class RedstoneSwitchBlock extends Block implements BlockEntityProvider {
 
     @Override
     protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        if(entity == null) return 0;
         return 16 * (entity.isPowered() ? 1 : 0);
     }
 

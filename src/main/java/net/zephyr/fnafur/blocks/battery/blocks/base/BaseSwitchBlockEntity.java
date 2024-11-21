@@ -14,6 +14,7 @@ public class BaseSwitchBlockEntity extends BaseElectricBlockEntity {
 
     @Override
     public boolean isPowered() {
+        if(this.nodes == null) return false;
         return this.nodes.stream().anyMatch(e -> {
             BlockEntity ent = getWorld().getBlockEntity(e);
             if (!(ent instanceof IElectricNode)) {
