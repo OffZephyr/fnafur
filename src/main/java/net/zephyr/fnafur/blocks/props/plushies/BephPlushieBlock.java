@@ -46,7 +46,7 @@ public class BephPlushieBlock extends FloorPropBlock<BephColor> {
     }
 
     @Override
-    public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) { return true;}
+    public boolean isTransparent(BlockState state) { return true;}
 
 
     @Override

@@ -24,6 +24,8 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.DARK_GRAY_WALL)
                 .add(BlockInit.LARGE_BROWN_BRICKS)
                 .add(BlockInit.BLACK_WHITE_TILES)
+                .add(BlockInit.BLACK_TILE)
+                .add(BlockInit.WHITE_TILE)
                 .add(BlockInit.RED_BLUE_TILES)
                 .add(BlockInit.BLACK_BLUE_TILES)
                 .add(BlockInit.BLACK_WHITE_16_TILES)
@@ -52,6 +54,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.CARPET_STAR_RED)
                 .add(BlockInit.CARPET_STAR_ORANGE)
                 .add(BlockInit.CARPET_STAR_BROWN)
+                .add(BlockInit.CARPET_CONFETTI)
                 ;
 
         getOrCreateTagBuilder(BlockTags.CLIMBABLE)

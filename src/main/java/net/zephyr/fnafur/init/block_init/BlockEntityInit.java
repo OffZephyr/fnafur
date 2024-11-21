@@ -6,7 +6,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
-import net.zephyr.fnafur.blocks.arcademachine.ArcademachineBlockEntity;
 import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFrameBlockEntity;
 import net.zephyr.fnafur.blocks.battery.blocks.base.BaseSwitchBlockEntity;
 import net.zephyr.fnafur.blocks.battery.blocks.generators.FuelGeneratorBlockEntity;
@@ -17,7 +16,7 @@ import net.zephyr.fnafur.blocks.computer.ComputerBlockEntity;
 import net.zephyr.fnafur.blocks.fog.FogBlockEntity;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
-import net.zephyr.fnafur.blocks.stickers.base.StickerBlockEntity;
+import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
 
 public class BlockEntityInit {
@@ -25,7 +24,6 @@ public class BlockEntityInit {
     public static BlockEntityType<LayeredBlockEntity> LAYERED_BLOCK;
     public static BlockEntityType<CameraBlockEntity> CAMERA;
     public static BlockEntityType<CameraDeskBlockEntity> CAMERA_DESK;
-    public static BlockEntityType<ArcademachineBlockEntity> ARCADE_MACHINE;
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
     public static BlockEntityType<StickerBlockEntity> STICKER_BLOCK;
@@ -53,11 +51,6 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "camera_desk"),
                         FabricBlockEntityTypeBuilder.create(CameraDeskBlockEntity::new,
                                 BlockInit.CAMERA_DESK).build());
-
-        ARCADE_MACHINE =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "arcade_machine"),
-                        FabricBlockEntityTypeBuilder.create(ArcademachineBlockEntity::new,
-                                BlockInit.CAMERA_DESK).build());
         FOG_BLOCK =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "fog_block"),
                         FabricBlockEntityTypeBuilder.create(FogBlockEntity::new,
@@ -74,6 +67,7 @@ public class BlockEntityInit {
                                 PropInit.FLOOR_MONITORS_1,
                                 PropInit.FLOOR_MONITORS_2,
                                 PropInit.WOODEN_SHELF,
+                                PropInit.RETRO_TABLE,
 
                                 PropInit.OFFICE_BUTTONS,
 

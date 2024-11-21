@@ -3,8 +3,6 @@ package net.zephyr.fnafur.init;
 import net.zephyr.fnafur.client.gui.screens.CameraEditScreen;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.client.gui.screens.EntitySkinScreen;
-import net.zephyr.fnafur.client.gui.screens.PaintbrushScreen;
-import net.zephyr.fnafur.client.gui.screens.arcademachine.ArcademachineScreen;
 import net.zephyr.fnafur.client.gui.screens.computer.COMPBootupScreen;
 import net.zephyr.fnafur.client.gui.screens.computer.COMPDesktopScreen;
 import net.zephyr.fnafur.client.gui.screens.computer.apps.COMPCodeScreen;
@@ -30,10 +28,7 @@ public class ScreensInit {
         GoopyNetworkingUtils.registerScreen(COMPUTER_DESKTOP, COMPDesktopScreen::new);
         GoopyNetworkingUtils.registerScreen(COMPUTER_CODE, COMPCodeScreen::new);
 
-        GoopyNetworkingUtils.registerScreen(ARCADE_MACHINE, ArcademachineScreen::new);
-
         GoopyNetworkingUtils.registerScreen(CAMERA_EDIT, CameraEditScreen::new);
-        GoopyNetworkingUtils.registerScreen(PAINTBRUSH, PaintbrushScreen::new);
         GoopyNetworkingUtils.registerScreen(SKINS, EntitySkinScreen::new);
 
         GoopyNetworkingUtils.registerScreen(DEFAULT_KILLSCREEN, DefaultKillScreen::new);

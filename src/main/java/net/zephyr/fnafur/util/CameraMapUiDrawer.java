@@ -59,7 +59,7 @@ public class CameraMapUiDrawer {
             }
             int alpha = isMonitor ? (int)this.mapAlpha : (int)mapAlpha;
 
-            int color = ColorHelper.Argb.getArgb(alpha, 255, 255, 255);
+            int color = ColorHelper.getArgb(alpha, 255, 255, 255);
             //context.fill(bg1, bg2, mapEndPosX + (mapMultiplier*2), mapEndPosY + (mapMultiplier*2), 0x55000000);
 
             for(int i = 0; i < mapNbt.size(); i++) {
@@ -110,11 +110,11 @@ public class CameraMapUiDrawer {
                     }
                 }
 
-                int camColor = ColorHelper.Argb.getArgb(alpha, 100, 100, 100);
-                int camOutline = ColorHelper.Argb.getArgb(alpha, 255, 255, 255);
+                int camColor = ColorHelper.getArgb(alpha, 100, 100, 100);
+                int camOutline = ColorHelper.getArgb(alpha, 255, 255, 255);
                 if(isMonitor){
-                    camColor = bl2 || cam == currentCam ? ColorHelper.Argb.getArgb(alpha, 75, 255, 75) : ColorHelper.Argb.getArgb(alpha, 100, 100, 100);
-                    camOutline = nvOutline && cam == currentCam ? ColorHelper.Argb.getArgb(alpha, 133, 210, 255) : ColorHelper.Argb.getArgb(alpha, 255, 255, 255);
+                    camColor = bl2 || cam == currentCam ? ColorHelper.getArgb(alpha, 75, 255, 75) : ColorHelper.getArgb(alpha, 100, 100, 100);
+                    camOutline = nvOutline && cam == currentCam ? ColorHelper.getArgb(alpha, 133, 210, 255) : ColorHelper.getArgb(alpha, 255, 255, 255);
                 }
 
                 context.fill(x - (mapMultiplier / 2) * (int)(1 / camScale), z - (mapMultiplier / 2) * (int)(1 / camScale), x + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), z + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), camOutline);

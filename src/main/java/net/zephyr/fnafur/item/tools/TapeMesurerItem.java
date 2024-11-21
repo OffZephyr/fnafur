@@ -1,7 +1,6 @@
 package net.zephyr.fnafur.item.tools;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.Entity;
@@ -18,7 +17,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -29,10 +27,7 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockEntity;
-import net.zephyr.fnafur.blocks.battery.blocks.base.BaseElectricBlockEntity;
-import net.zephyr.fnafur.entity.cameramap.CameraMappingEntity;
 import net.zephyr.fnafur.init.block_init.BlockInit;
-import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.tablet.TabletItem;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
@@ -40,12 +35,10 @@ import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class TapeMesurerItem extends Item {
-    private CameraMappingEntity map = null;
     public TapeMesurerItem(Settings settings) {
         super(settings);
     }
 
-    BaseElectricBlockEntity parentNode = null;
 
     @Override
     public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
@@ -53,17 +46,16 @@ public class TapeMesurerItem extends Item {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if (user.isSneaking() && !user.getOffHandStack().isOf(ItemInit.TABLET)) {
             resetTape(user.getStackInHand(hand), user, world);
-            return TypedActionResult.success(user.getStackInHand(hand), true);
+            return ActionResult.SUCCESS;
         }
         return super.use(world, user, hand);
     }
     void resetTape(ItemStack stack, PlayerEntity player, World world){
         NbtCompound data = stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
         data.putBoolean("hasData", false);
-        parentNode = null;
         Text resetText = Text.translatable(FnafUniverseResuited.MOD_ID + ".tape_measure.reset");
         player.sendMessage(resetText, true);
         world.playSound(player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_SPYGLASS_STOP_USING, SoundCategory.PLAYERS, 1, 1, true);
@@ -72,34 +64,9 @@ public class TapeMesurerItem extends Item {
         }));
     }
 
-
-    public void checkElectricLink(ItemUsageContext context){
-        BlockPos pos = context.getBlockPos();
-        BlockEntity ent = context.getWorld().getBlockEntity(pos);
-        if(!(ent instanceof BaseElectricBlockEntity)) return;
-        if(context.shouldCancelInteraction()) return;
-        if(context.getWorld().isClient) return;
-
-        if(parentNode == null){
-            parentNode = (BaseElectricBlockEntity)ent;
-            context.getPlayer().sendMessage(Text.of("parent selected."),true);
-            return;
-        }
-
-        if(parentNode.getPos().equals(pos)){
-            context.getPlayer().sendMessage(Text.of("same block."),true);
-            return;
-        }
-
-        parentNode.addNode(pos);
-        context.getPlayer().sendMessage(Text.of("linked!"),true);
-        parentNode = null;
-    }
-
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         World world = context.getWorld();
-        checkElectricLink(context);
 
         if(!context.getPlayer().getOffHandStack().isEmpty() && context.getPlayer().getOffHandStack().getItem() instanceof TabletItem){
             NbtCompound data = context.getStack().getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
@@ -185,10 +152,6 @@ public class TapeMesurerItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         NbtCompound data = stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
-
-        if(map == null || map.getId() != data.getInt("mapEntityID") || !data.getBoolean("summon_entity")){
-            map = new CameraMappingEntity(EntityInit.CAMERA_MAPPING, world);
-        }
 
         boolean flag1 = data.getBoolean("hasData");
         boolean flag2 = entity instanceof PlayerEntity;

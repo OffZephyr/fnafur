@@ -5,6 +5,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
@@ -19,21 +20,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public abstract class EntitySpawnItem extends ItemWithDescription {
+public class EntitySpawnItem extends Item {
     private static final Map<EntityType<? extends LivingEntity>, EntitySpawnItem> SPAWN_ITEMS = Maps.newIdentityHashMap();
-    public EntitySpawnItem(Settings settings, int... tools) {
-        super(settings, tools);
-        SPAWN_ITEMS.put(entity(), this);
+    public EntityType<? extends LivingEntity> ENTITY_TYPE;
+    public EntitySpawnItem(Settings settings) {
+        super(settings);
+    }
+    public EntitySpawnItem setEntity(EntityType<? extends LivingEntity> entity){
+        ENTITY_TYPE = entity;
+        SPAWN_ITEMS.put(ENTITY_TYPE, this);
+        return this;
     }
 
-    public abstract EntityType<? extends LivingEntity> entity();
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         NbtCompound nbt = ItemNbtUtil.getNbt(context.getStack());
 
         BlockPos pos = context.getBlockPos().up();
         float yaw = context.getPlayerYaw() + 180f;
-        LivingEntity entity = entity().create(context.getWorld());
+        LivingEntity entity = ENTITY_TYPE.create(context.getWorld(), SpawnReason.TRIGGERED);
         entity.setPosition(pos.getX() + 0.5f, pos.getY(), pos.getZ() + 0.5f);
         entity.setBodyYaw(yaw);
         entity.setHeadYaw(yaw);
@@ -49,8 +54,6 @@ public abstract class EntitySpawnItem extends ItemWithDescription {
         }
         return ActionResult.SUCCESS;
     }
-
-    public abstract Item getCreativeItem();
 
     @Nullable
     public static EntitySpawnItem forEntity(@Nullable EntityType<?> type) {

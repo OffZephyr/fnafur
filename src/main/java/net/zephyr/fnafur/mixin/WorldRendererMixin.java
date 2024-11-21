@@ -18,6 +18,7 @@ import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -27,22 +28,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class WorldRendererMixin {
     @Shadow
     private ClientWorld world;
-    @Shadow
-    private static void drawCuboidShapeOutline(
-            MatrixStack matrices,
-            VertexConsumer vertexConsumer,
-            VoxelShape shape,
-            double offsetX,
-            double offsetY,
-            double offsetZ,
-            float red,
-            float green,
-            float blue,
-            float alpha
-    ){};
 
     @Redirect(
-            method = "render",
+            method = "getEntitiesToRender",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/render/Camera;isThirdPerson()Z"
@@ -55,7 +43,7 @@ public class WorldRendererMixin {
 
 
     @Inject(method = "drawBlockOutline", at = @At("HEAD"), cancellable = true)
-    public void drawBlockOutline(MatrixStack matrices, VertexConsumer vertexConsumer, Entity entity, double cameraX, double cameraY, double cameraZ, BlockPos pos, BlockState state, CallbackInfo ci){
+    public void drawBlockOutline(MatrixStack matrices, VertexConsumer vertexConsumer, Entity entity, double cameraX, double cameraY, double cameraZ, BlockPos pos, BlockState state, int color, CallbackInfo ci){
         if(state.getBlock() instanceof PropBlock) {
             FloorPropBlock.drawingOutline = true;
             matrices.push();
@@ -78,17 +66,15 @@ public class WorldRendererMixin {
                 matrices.translate(0, -0.5f, 0);
             }
 
-            drawCuboidShapeOutline(
+            VertexRendering.drawOutline(
                     matrices,
                     vertexConsumer,
                     state.getOutlineShape(this.world, pos, ShapeContext.of(entity)),
                     0,
                     0,
                     0,
-                    0.0F,
-                    0.0F,
-                    0.0F,
-                    0.4F
+                    color
+
             );
 
             matrices.pop();

@@ -22,7 +22,7 @@ public class NightGlowLayer<T extends DefaultEntity> extends GeoRenderLayer<T> {
     }
 
     @Override
-    public void render(MatrixStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+    public void render(MatrixStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int renderColor) {
         String skin = ((IEntityDataSaver) animatable).getPersistentData().getString("Reskin");
 
         Identifier TEXTURE = animatable.getSkin(skin).glow_texture;
@@ -30,7 +30,7 @@ public class NightGlowLayer<T extends DefaultEntity> extends GeoRenderLayer<T> {
         RenderLayer glowRenderType = RenderLayer.getEyes(TEXTURE);
 
         if (animatable.getAIHour(animatable.getWorld()) < 24 || animatable.getAIHour(animatable.getWorld()) > 72) {
-            getRenderer().reRender(getDefaultBakedModel(animatable), poseStack, bufferSource, animatable, glowRenderType, bufferSource.getBuffer(glowRenderType), partialTick, packedLight, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
+            getRenderer().reRender(getDefaultBakedModel(animatable, renderer), poseStack, bufferSource, animatable, glowRenderType, bufferSource.getBuffer(glowRenderType), partialTick, packedLight, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
         }
     }
 }

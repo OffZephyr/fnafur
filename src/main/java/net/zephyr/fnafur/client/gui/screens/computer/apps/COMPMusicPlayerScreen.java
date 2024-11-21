@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.client.gui.screens.computer.apps;
 
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -146,7 +147,7 @@ public class COMPMusicPlayerScreen extends COMPBaseAppScreen {
                         if(j % 2 == 0)
                             context.fill((int) topCornerX, songYPos, (int) topCornerX + (int) appAvailableSizeX, songYPos + (int) iconSize + 2, 0x44000011);
 
-                        context.drawTexture(song.getIconTexture(), this.width / 2 - (int) appAvailableSizeX / 2 + (int) iconSize, songYPos + 1, 0, 0, (int) iconSize, (int) iconSize, (int) iconSize, (int) iconSize);
+                        context.drawTexture(RenderLayer::getGuiTextured, song.getIconTexture(), this.width / 2 - (int) appAvailableSizeX / 2 + (int) iconSize, songYPos + 1, 0, 0, (int) iconSize, (int) iconSize, (int) iconSize, (int) iconSize);
                         context.drawText(this.textRenderer, text, this.width / 2 - (int) appAvailableSizeX / 2 + (int) iconSize * 3, songYPos + (int) buttonOffset, 0xFFFFFFFF, false);
 
                         if (mouseX > topCornerX && mouseX < topCornerX + appAvailableSizeX && mouseY > songYPos && mouseY < songYPos  + (int) iconSize + 2 && !dragging) {
@@ -182,21 +183,21 @@ public class COMPMusicPlayerScreen extends COMPBaseAppScreen {
             }
         }
 
-        context.drawTexture(SMALL_BAR, (int)topCornerX, (int)topCornerY, 0, 0, (int)appAvailableSizeX, (int)topBarPos, (int)appAvailableSizeX, (int)topBarPos);
+        context.drawTexture(RenderLayer::getGuiTextured, SMALL_BAR, (int)topCornerX, (int)topCornerY, 0, 0, (int)appAvailableSizeX, (int)topBarPos, (int)appAvailableSizeX, (int)topBarPos);
 
         if(mouseX > (int)topCornerX + (int)appAvailableSizeX - (int)buttonSize - (int)buttonOffset && mouseX < (int)topCornerX + (int)appAvailableSizeX - (int)buttonOffset && mouseY >(int)topCornerY + (int)buttonOffset && mouseY < (int)topCornerY + (int)buttonOffset + (int) buttonSize){
             if(holding){
-                context.drawTexture(BUTTONS, (int)topCornerX + (int)appAvailableSizeX - (int)buttonSize - (int)buttonOffset, (int)topCornerY + (int)buttonOffset, buttonSize*5, buttonSize, (int)buttonSize, (int)buttonSize, (int)buttonTextureSize, (int)buttonTextureSize);
+                context.drawTexture(RenderLayer::getGuiTextured, BUTTONS, (int)topCornerX + (int)appAvailableSizeX - (int)buttonSize - (int)buttonOffset, (int)topCornerY + (int)buttonOffset, buttonSize*5, buttonSize, (int)buttonSize, (int)buttonSize, (int)buttonTextureSize, (int)buttonTextureSize);
             }
             else {
-                context.drawTexture(BUTTONS, (int)topCornerX + (int)appAvailableSizeX - (int)buttonSize - (int)buttonOffset, (int)topCornerY + (int)buttonOffset, buttonSize*4, buttonSize, (int)buttonSize, (int)buttonSize, (int)buttonTextureSize, (int)buttonTextureSize);
+                context.drawTexture(RenderLayer::getGuiTextured, BUTTONS, (int)topCornerX + (int)appAvailableSizeX - (int)buttonSize - (int)buttonOffset, (int)topCornerY + (int)buttonOffset, buttonSize*4, buttonSize, (int)buttonSize, (int)buttonSize, (int)buttonTextureSize, (int)buttonTextureSize);
             }
         }
         else {
             if (playlistsScreen) {
-                context.drawTexture(BUTTONS, (int) topCornerX + (int) appAvailableSizeX - (int) buttonSize - (int) buttonOffset, (int) topCornerY + (int) buttonOffset, buttonSize * 5, buttonSize, (int) buttonSize, (int) buttonSize, (int) buttonTextureSize, (int) buttonTextureSize);
+                context.drawTexture(RenderLayer::getGuiTextured, BUTTONS, (int) topCornerX + (int) appAvailableSizeX - (int) buttonSize - (int) buttonOffset, (int) topCornerY + (int) buttonOffset, buttonSize * 5, buttonSize, (int) buttonSize, (int) buttonSize, (int) buttonTextureSize, (int) buttonTextureSize);
             } else {
-                context.drawTexture(BUTTONS, (int) topCornerX + (int) appAvailableSizeX - (int) buttonSize - (int) buttonOffset, (int) topCornerY + (int) buttonOffset, buttonSize * 3, buttonSize, (int) buttonSize, (int) buttonSize, (int) buttonTextureSize, (int) buttonTextureSize);
+                context.drawTexture(RenderLayer::getGuiTextured, BUTTONS, (int) topCornerX + (int) appAvailableSizeX - (int) buttonSize - (int) buttonOffset, (int) topCornerY + (int) buttonOffset, buttonSize * 3, buttonSize, (int) buttonSize, (int) buttonSize, (int) buttonTextureSize, (int) buttonTextureSize);
             }
         }
         super.render(context, mouseX, mouseY, delta);

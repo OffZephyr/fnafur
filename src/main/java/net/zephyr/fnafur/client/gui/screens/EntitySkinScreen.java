@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -38,7 +39,7 @@ public class EntitySkinScreen extends GoopyScreen{
     }
 
     protected void updateEntity(EntityType<? extends LivingEntity> entityType) {
-        this.entity = entityType.create(MinecraftClient.getInstance().world);
+        this.entity = entityType.create(MinecraftClient.getInstance().world, SpawnReason.TRIGGERED);
         ((IEntityDataSaver)this.entity).getPersistentData().copyFrom(getNbtData());
         if(this.entity instanceof DefaultEntity ent){
             ent.menuTick = true;

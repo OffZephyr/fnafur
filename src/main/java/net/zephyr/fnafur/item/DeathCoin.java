@@ -3,6 +3,7 @@ package net.zephyr.fnafur.item;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -10,9 +11,9 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.zephyr.fnafur.init.ParticlesInit;
 
-public class DeathCoin extends ItemWithDescription{
+public class DeathCoin extends Item {
     public DeathCoin(Settings settings) {
-        super(settings, ItemWithDescription.COIN);
+        super(settings);
     }
 
     @Override
@@ -26,8 +27,8 @@ public class DeathCoin extends ItemWithDescription{
         }
         target.getWorld().playSound(target, target.getBlockPos(), SoundEvents.ENTITY_WIND_CHARGE_WIND_BURST.value(), SoundCategory.PLAYERS, 1, 0);
 
-        if(target instanceof PlayerEntity ent){
-            ent.damage(ent.getWorld().getDamageSources().generic(), 999999999);
+        if(target instanceof PlayerEntity ent && ent.getWorld() instanceof ServerWorld serverWorld){
+            ent.damage(serverWorld, ent.getWorld().getDamageSources().generic(), 999999999);
         }
         else {
             target.remove(Entity.RemovalReason.DISCARDED);

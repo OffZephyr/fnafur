@@ -2,6 +2,8 @@ package net.zephyr.fnafur.client.gui.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.ShaderProgramKey;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.*;
@@ -10,6 +12,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.zephyr.fnafur.util.mixinAccessing.IDCVertexConsumersAcc;
 import org.joml.Matrix4f;
 
 public abstract class GoopyScreen extends Screen {
@@ -57,39 +60,39 @@ public abstract class GoopyScreen extends Screen {
 
     public void renderButton(Identifier texture, DrawContext context, int x, int y, int u, int v, int u2, int v2, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY){
         if(isOnButton(mouseX, mouseY, x, y, width, height)){
-            context.drawTexture(texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
         }
         else {
-            context.drawTexture(texture, x, y, u, v, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
     public void renderButton(Identifier texture, DrawContext context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding){
         if(isOnButton(mouseX, mouseY, x, y, width, height)) {
             if(holding){
-                context.drawTexture(texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
+                context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
             }
             else {
-                context.drawTexture(texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
+                context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
             }
         }
         else {
-            context.drawTexture(texture, x, y, u, v, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
     public void renderButton(Identifier texture, DrawContext context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding, boolean condition){
         if(condition){
-            context.drawTexture(texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
         }
         else if(isOnButton(mouseX, mouseY, x, y, width, height)) {
             if(holding){
-                context.drawTexture(texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
+                context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
             }
             else {
-                context.drawTexture(texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
+                context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
             }
         }
         else {
-            context.drawTexture(texture, x, y, u, v, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
 
@@ -108,15 +111,17 @@ public abstract class GoopyScreen extends Screen {
         int x2 = x + (int)regionWidth;
         int y2 = y + (int)regionHeight;
         RenderSystem.setShaderTexture(0, texture);
-        RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
+        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
         RenderSystem.enableBlend();
+        RenderSystem.setShaderColor(red, green, blue, alpha);
         Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
-        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-        bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)z).texture(u1, v1).color(red, green, blue, alpha);
-        bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)z).texture(u1, v2).color(red, green, blue, alpha);
-        bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)z).texture(u2, v2).color(red, green, blue, alpha);
-        bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)z).texture(u2, v1).color(red, green, blue, alpha);
+        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)z).texture(u1, v1);
+        bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)z).texture(u1, v2);
+        bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)z).texture(u2, v2);
+        bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)z).texture(u2, v1);
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.disableBlend();
     }
 
@@ -127,7 +132,7 @@ public abstract class GoopyScreen extends Screen {
         if(centered) x -= (textRenderer.getWidth(text) / 2f);
 
         MatrixStack matrices = context.getMatrices();
-        VertexConsumerProvider verticies = context.getVertexConsumers();
+        VertexConsumerProvider verticies = ((IDCVertexConsumersAcc)context).getVertexConsumers();
 
         matrices.push();
         matrices.scale(scale, scale, scale);

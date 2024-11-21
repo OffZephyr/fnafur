@@ -2305,6 +2305,11 @@
 					]
 				},
 				{
+					"name": "boop",
+					"parent": "main",
+					"pivot": [-0.02184, 49.82777, -6.83848]
+				},
+				{
 					"name": "right_arm",
 					"parent": "torso",
 					"pivot": [-7.9, 41.21146, 0.49891],

@@ -3,6 +3,8 @@ package net.zephyr.fnafur.blocks.tile_doors;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.ShaderProgramKey;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -199,7 +201,7 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
 
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        RenderSystem.setShader(GameRenderer::getRenderTypeCutoutProgram);
+        RenderSystem.setShader(ShaderProgramKeys.RENDERTYPE_CUTOUT);
 
         var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL);
 

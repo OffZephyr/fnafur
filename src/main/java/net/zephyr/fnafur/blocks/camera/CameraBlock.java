@@ -2,29 +2,33 @@ package net.zephyr.fnafur.blocks.camera;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootWorldContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import net.minecraft.world.tick.ScheduledTickView;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +40,7 @@ public class CameraBlock extends BlockWithEntity {
     public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
     public static final BooleanProperty POWERED = LeverBlock.POWERED;
     public static final BooleanProperty CEILING = BooleanProperty.of("ceiling");
-    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
     public CameraBlock(Settings settings) {
         super(settings.luminance(Blocks.createLightLevelFromLitBlockState(15)));
     }
@@ -94,9 +98,6 @@ public class CameraBlock extends BlockWithEntity {
     }
 
     @Override
-    public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) { return true;}
-
-    @Override
     protected boolean canPathfindThrough(BlockState state, NavigationType type) {
         return true;
     }
@@ -128,16 +129,17 @@ public class CameraBlock extends BlockWithEntity {
         data.putBoolean("Powered", false);
         data.putString("ActionName", Text.translatable("fnafur.screens.camera_tablet.default_action_name").getString());
         BlockPos oppositePos = pos.offset(state.get(FACING).getOpposite());
-        world.setBlockState(pos, state.with(CEILING, !world.getBlockState(oppositePos).isOpaqueFullCube(world, oppositePos)), 3);
+        world.setBlockState(pos, state.with(CEILING, !world.getBlockState(oppositePos).isOpaqueFullCube()), 3);
         super.onPlaced(world, pos, state, placer, itemStack);
     }
 
+
     @Override
-    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
         if(direction == state.get(FACING).getOpposite()){
-            world.setBlockState(pos, state.with(CEILING, !neighborState.isOpaqueFullCube(world, neighborPos)), 3);
+            return state.with(CEILING, !neighborState.isOpaqueFullCube());
         }
-        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+        return super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
     }
 
     @Override
@@ -150,7 +152,7 @@ public class CameraBlock extends BlockWithEntity {
     }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+    public List<ItemStack> getDroppedStacks(BlockState state, LootWorldContext.Builder builder) {
         BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
         List<ItemStack> item = new ArrayList<>();
         item.add(getPickStack(builder.getWorld(), blockEntity.getPos(), state));

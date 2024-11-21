@@ -11,15 +11,16 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootWorldContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LayeredBlock extends GoopyBlockWithEntity {
-    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
 
 
     public LayeredBlock(Settings settings) {
@@ -60,7 +61,7 @@ public class LayeredBlock extends GoopyBlockWithEntity {
     }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+    public List<ItemStack> getDroppedStacks(BlockState state, LootWorldContext.Builder builder) {
         BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
         List<ItemStack> item = new ArrayList<>();
         item.add(getPickStack(blockEntity.getWorld(), blockEntity.getPos(), state));
@@ -91,9 +92,6 @@ public class LayeredBlock extends GoopyBlockWithEntity {
             ((IEntityDataSaver)entity).getPersistentData().copyFrom(data);
         }
     }
-
-    @Override
-    public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) { return true;}
 
     @Nullable
     @Override

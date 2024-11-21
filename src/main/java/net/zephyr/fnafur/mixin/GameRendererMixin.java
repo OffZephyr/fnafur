@@ -5,6 +5,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.PostEffectProcessor;
+import net.minecraft.client.render.DefaultFramebufferSet;
+import net.minecraft.client.render.FrameGraphBuilder;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -30,13 +32,13 @@ public class GameRendererMixin implements IPostProcessorLoader {
     @Shadow
     MinecraftClient client;
     @Shadow
-    PostEffectProcessor postProcessor;
+    private Identifier postProcessorId;
     @Shadow
     ResourceManager resourceManager;
     private Map<Framebuffer, PostEffectProcessor> monitorPostProcessors = new HashMap<>();
 
     @Shadow
-    private void loadPostProcessor(Identifier id) {
+    private void setPostProcessor(Identifier id) {
 
     }
 
@@ -47,10 +49,10 @@ public class GameRendererMixin implements IPostProcessorLoader {
         }
     }*/
 
-    @Inject(method = "getFov(Lnet/minecraft/client/render/Camera;FZ)D", at = @At("RETURN"), cancellable = true)
-    public void getZoomLevel(CallbackInfoReturnable<Double> callbackInfo) {
+    @Inject(method = "getFov(Lnet/minecraft/client/render/Camera;FZ)F", at = @At("RETURN"), cancellable = true)
+    public void getZoomLevel(CallbackInfoReturnable<Float> callbackInfo) {
         if(MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen) {
-            double fov = 45;
+            float fov = 45;
             callbackInfo.setReturnValue(fov);
         }
     }
@@ -62,27 +64,29 @@ public class GameRendererMixin implements IPostProcessorLoader {
     public void resizePostProcessor(Framebuffer framebuffer, int width, int height){
         PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(framebuffer);
         if(monitorPostProcessor != null) {
-            monitorPostProcessor.setupDimensions(width, height);
+           // monitorPostProcessor.setupDimensions(width, height);
         }
     }
 
     @Override
-    public void setPostProcessor(Identifier id) {
-        loadPostProcessor(id);
+    public void loadPostProcessor(Identifier id) {
+        setPostProcessor(id);
     }
 
     @Override
-    public void render(float delta) {
+    public void render(FrameGraphBuilder builder, int textureWidth, int textureHeight, PostEffectProcessor.FramebufferSet framebufferSet) {
+
+        PostEffectProcessor postProcessor = this.client.getShaderLoader().loadPostEffect(this.postProcessorId, DefaultFramebufferSet.MAIN_ONLY);
         if(postProcessor != null){
-            postProcessor.render(delta);
+            postProcessor.render(builder, textureWidth, textureHeight, framebufferSet);
         }
     }
     @Override
     public void setMonitorPostProcessor(Identifier id, Framebuffer framebuffer) {
-        if(monitorPostProcessors.get(framebuffer) == null || !monitorPostProcessors.get(framebuffer).getName().equals(id.toString())) {
+        /*if(monitorPostProcessors.get(framebuffer) == null || !monitorPostProcessors.get(framebuffer).getName().equals(id.toString())) {
             System.out.println(id);
             loadMonitorPostProcessor(id, framebuffer);
-        }
+        }*/
     }
     @Override
     public void renderMonitor(float delta, boolean bool, Framebuffer framebuffer) {
@@ -91,7 +95,7 @@ public class GameRendererMixin implements IPostProcessorLoader {
             RenderSystem.disableBlend();
             RenderSystem.disableDepthTest();
             RenderSystem.resetTextureMatrix();
-            monitorPostProcessor.render(delta);
+            //monitorPostProcessor.render(delta);
         }
     }
 
@@ -119,8 +123,9 @@ public class GameRendererMixin implements IPostProcessorLoader {
 
     @Override
     public void clearPostProcessor() {
-        if (this.postProcessor != null) {
-            this.postProcessor.close();
+        PostEffectProcessor postProcessor = this.client.getShaderLoader().loadPostEffect(this.postProcessorId, DefaultFramebufferSet.MAIN_ONLY);
+        if (postProcessor != null) {
+            //this.postProcessor.close();
         }
     }
     @Override
@@ -128,19 +133,19 @@ public class GameRendererMixin implements IPostProcessorLoader {
         return this.monitorPostProcessors.get(framebuffer);
     }
 
-    void loadMonitorPostProcessor(Identifier id, Framebuffer framebuffer){
+    /*void loadMonitorPostProcessor(Identifier id, Framebuffer framebuffer){
         PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(framebuffer);
         if (monitorPostProcessor != null) {
-            monitorPostProcessor.close();
+           // monitorPostProcessor.close();
         }
         try {
             monitorPostProcessor = new PostEffectProcessor(this.client.getTextureManager(), this.resourceManager, framebuffer, id);
-            monitorPostProcessor.setupDimensions(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight());
+            //monitorPostProcessor.setupDimensions(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight());
             monitorPostProcessors.put(framebuffer, monitorPostProcessor);
         } catch (IOException iOException) {
             FnafUniverseResuited.LOGGER.warn("Failed to load shader: {}", (Object)id, (Object)iOException);
         } catch (JsonSyntaxException jsonSyntaxException) {
             FnafUniverseResuited.LOGGER.warn("Failed to parse shader: {}", (Object)id, (Object)jsonSyntaxException);
         }
-    }
+    }*/
 }

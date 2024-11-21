@@ -3,8 +3,9 @@ package net.zephyr.fnafur.item;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Equipment;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -19,19 +20,9 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 import java.util.List;
 
-public class IllusionDisc extends ItemWithDescription implements Equipment {
-    public IllusionDisc(Settings settings, int... tools) {
-        super(settings, ItemWithDescription.COIN, ItemWithDescription.COMPUTER);
-    }
-
-    @Override
-    public EquipmentSlot getSlotType() {
-        return EquipmentSlot.CHEST;
-    }
-
-    @Override
-    public RegistryEntry<SoundEvent> getEquipSound() {
-        return Equipment.super.getEquipSound();
+public class IllusionDisc extends Item {
+    public IllusionDisc(Settings settings) {
+        super(settings);
     }
 
     @Override

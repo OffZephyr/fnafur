@@ -2,16 +2,23 @@ package net.zephyr.fnafur.entity.base;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.shape.VoxelShapes;
 import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.blocks.props.pirates_cove.curtain.PiratesCoveCurtainBlockEntity;
 import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoRenderer;
 
 import java.util.Arrays;
 
@@ -19,13 +26,13 @@ public abstract class DefaultEntityModel<T extends DefaultEntity> extends GeoMod
     public AnimationState<T> animationState;
     public DefaultEntityRenderer<T> entityRenderer;
     @Override
-    public Identifier getModelResource(T animatable) {
+    public Identifier getModelResource(T animatable, @Nullable GeoRenderer<T> renderer) {
         String skin = ((IEntityDataSaver) animatable).getPersistentData().getString("Reskin");
         return animatable.getSkin(skin).geo;
     }
 
     @Override
-    public Identifier getTextureResource(T animatable) {
+    public Identifier getTextureResource(T animatable, @Nullable GeoRenderer<T> renderer) {
         String skin = ((IEntityDataSaver) animatable).getPersistentData().getString("Reskin");
 
         return animatable.getSkin(skin).texture;
@@ -49,8 +56,26 @@ public abstract class DefaultEntityModel<T extends DefaultEntity> extends GeoMod
     public void updateCamPos(DefaultEntity entity){
         String skin = ((IEntityDataSaver) entity).getPersistentData().getString("Reskin");
 
+        if(entity.isBoopable()) {
+            GeoBone bone = getAnimationProcessor().getBone("boop");
+
+            if(bone != null) {
+                if (entity.isBoopable()) {
+                    Box box = new Box(
+                            bone.getWorldPosition().x() - (entity.boopSize().getX() / 2f) + entity.boopOffset().getX(),
+                            bone.getWorldPosition().y() - (entity.boopSize().getY() / 2f) + entity.boopOffset().getY(),
+                            bone.getWorldPosition().z() - (entity.boopSize().getZ() / 2f) + entity.boopOffset().getZ(),
+                            bone.getWorldPosition().x() + (entity.boopSize().getX() / 2f) + entity.boopOffset().getX(),
+                            bone.getWorldPosition().y() + (entity.boopSize().getY() / 2f) + entity.boopOffset().getY(),
+                            bone.getWorldPosition().z() + (entity.boopSize().getZ() / 2f) + entity.boopOffset().getZ()
+                    );
+                    entity.boopBox = box;
+                }
+            }
+        }
         entity.killScreenID = entity.getSkin(skin).killScreenID;
         GeoBone camera = getAnimationProcessor().getBone("camera");
+
         Entity jumpscareEntity = MinecraftClient.getInstance().world.getEntityById(((IEntityDataSaver)MinecraftClient.getInstance().player).getPersistentData().getInt("JumpscareID"));
 
         IEditCamera camera1 = (IEditCamera)MinecraftClient.getInstance().gameRenderer.getCamera();

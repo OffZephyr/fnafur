@@ -19,6 +19,7 @@ import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.networking.payloads.MoneySyncDataC2SPayload;
 import net.zephyr.fnafur.util.CameraMapUiDrawer;
 import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.mixinAccessing.IDCVertexConsumersAcc;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class TabOverlayClass implements HudRenderCallback {
@@ -49,7 +50,7 @@ public class TabOverlayClass implements HudRenderCallback {
                 String day = renderClock()[1];
 
                 MatrixStack matrices = drawContext.getMatrices();
-                VertexConsumerProvider verticies = drawContext.getVertexConsumers();
+                VertexConsumerProvider verticies = ((IDCVertexConsumersAcc)drawContext).getVertexConsumers();
 
                 matrices.push();
                 matrices.scale(scale, scale, scale);
@@ -61,7 +62,7 @@ public class TabOverlayClass implements HudRenderCallback {
             } else if (client.player.getOffHandStack().isOf(ItemInit.TABLET)) {
                 if (client.player.getMainHandStack().isOf(ItemInit.TAPEMEASURE) || client.player.getMainHandStack().isOf(ItemInit.PAINTBRUSH)) {
                     MatrixStack matrices = drawContext.getMatrices();
-                    VertexConsumerProvider verticies = drawContext.getVertexConsumers();
+                    VertexConsumerProvider verticies = ((IDCVertexConsumersAcc)drawContext).getVertexConsumers();
 
                     CameraMapUiDrawer drawer = new CameraMapUiDrawer();
 

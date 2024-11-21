@@ -35,13 +35,13 @@ public class ZephyrEntity extends DefaultEntity {
     public static DefaultAttributeContainer.Builder setAttributes() {
 
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 15f)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10f)
-                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 1f)
-                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 0.25f)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10f)
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 12D);
+                .add(EntityAttributes.MAX_HEALTH, 15f)
+                .add(EntityAttributes.ATTACK_DAMAGE, 10f)
+                .add(EntityAttributes.ATTACK_SPEED, 1f)
+                .add(EntityAttributes.ATTACK_KNOCKBACK, 0.25f)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.2f)
+                .add(EntityAttributes.KNOCKBACK_RESISTANCE, 10f)
+                .add(EntityAttributes.FOLLOW_RANGE, 12D);
     }
 
     @Override

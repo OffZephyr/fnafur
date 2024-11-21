@@ -24,8 +24,8 @@ public class GlowLayer extends GeoRenderLayer<TabletItem> {
     }
 
     @Override
-    public void render(MatrixStack poseStack, TabletItem animatable, BakedGeoModel bakedModel, RenderLayer renderType, VertexConsumerProvider bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-RenderLayer glowRenderType = RenderLayer.getEyes(LAYER);
-        getRenderer().reRender(getDefaultBakedModel(animatable), poseStack, bufferSource, animatable, glowRenderType, bufferSource.getBuffer(glowRenderType), partialTick, packedLight, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
+    public void render(MatrixStack poseStack, TabletItem animatable, BakedGeoModel bakedModel, RenderLayer renderType, VertexConsumerProvider bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int renderColor) {
+        RenderLayer glowRenderType = RenderLayer.getEyes(LAYER);
+        getRenderer().reRender(getDefaultBakedModel(animatable, renderer), poseStack, bufferSource, animatable, glowRenderType, bufferSource.getBuffer(glowRenderType), partialTick, packedLight, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
     }
 }

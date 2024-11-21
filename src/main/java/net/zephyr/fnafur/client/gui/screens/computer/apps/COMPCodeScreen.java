@@ -5,10 +5,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
@@ -353,7 +355,7 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
         context.fill((int)topCornerX, (int) topCornerY, (int)(topCornerX + appAvailableSizeX), (int)(topCornerY + appAvailableSizeY), -100, 0xFF182562);
 
         if(!cpu.isEmpty()) {
-            context.drawTexture(BASE, (int) topCornerX + ((int) appAvailableSizeX / 2) + 6, (int) topCornerY - 1, 0, 0, 114, (int) appAvailableSizeY + 2, 256, 256);
+            context.drawTexture(RenderLayer::getGuiTextured, BASE, (int) topCornerX + ((int) appAvailableSizeX / 2) + 6, (int) topCornerY - 1, 0, 0, 114, (int) appAvailableSizeY + 2, 256, 256);
             drawEntitySelection(context, mouseX, mouseY);
             if(cpu.isOf(ItemInit.CPU)) {
                 drawBehaviorSelection(context, mouseX, mouseY);
@@ -380,12 +382,12 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
         if(ComputerData.getAIBehavior(currentBehavior) instanceof ComputerAI ai){
             for(int i = 0; i < ai.getList().size(); i++){
                 ComputerAI.Option<?> option = ai.getList().get(i);
-                context.drawTexture(BASE, (int)topCornerX, 22 + (int)topCornerY + i * 18, 118, 132, 126, 18);
+                context.drawTexture(RenderLayer::getGuiTextured, BASE, (int)topCornerX, 22 + (int)topCornerY + i * 18, 118, 132, 126, 18, 256, 256);
 
                 int dependency = ai.getList().indexOf(ai.getOption(option.getDependency()));
                 boolean bl = !option.getDependency().isEmpty() && !hourCompound.getBoolean("" + dependency);
                 bl = option.isInvert() != bl;
-                if(bl) context.drawTexture(BASE, (int)topCornerX, 22 + (int)topCornerY + i * 18, 118, 150, 126, 18);
+                if(bl) context.drawTexture(RenderLayer::getGuiTextured, BASE, (int)topCornerX, 22 + (int)topCornerY + i * 18, 118, 150, 126, 18, 256, 256);
 
                 int availableSpace = 116;
                 if(!bl) {
@@ -395,7 +397,7 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
                         drawAutoResizedText(context, textRenderer, option.getName(), 0.8f, availableSpace, (int) topCornerX + 18, 22 + 5 + (int) topCornerY + (i * 18), 0xFF000000, 0x00000000, false, false);
                     } else if (option.getDefaultValue() instanceof List<?>) {
                         boolean bl2 = this.entity instanceof DefaultEntity;
-                        context.drawTexture(BASE, (int) topCornerX, 22 + (int) topCornerY + i * 18, 118, 180, 126, 18);
+                        context.drawTexture(RenderLayer::getGuiTextured, BASE, (int) topCornerX, 22 + (int) topCornerY + i * 18, 118, 180, 126, 18, 256, 256);
                         drawAutoResizedText(context, textRenderer, option.getName(), 0.5f, availableSpace, (int) topCornerX + 18, 22 + 2 + (int) topCornerY + (i * 18), 0xFF000000, 0x00000000, false, false);
                         String st = hourCompound.getString("" + i);
                         if (!st.isEmpty() && bl2) {
@@ -403,7 +405,7 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
                         }
                         super.renderButton(BASE, context, (int) topCornerX + 3, 22 + 3 + (int) topCornerY + (i * 18), 142, 168, 142, 168, 154, 168, 12, 12, 256, 256, mouseX, mouseY, false, bl2);
                     } else if (option.getDefaultValue() instanceof BlockPos) {
-                        context.drawTexture(BASE, (int) topCornerX, 22 + (int) topCornerY + i * 18, 118, 198, 126, 18);
+                        context.drawTexture(RenderLayer::getGuiTextured, BASE, (int) topCornerX, 22 + (int) topCornerY + i * 18, 118, 198, 126, 18, 256, 256);
 
                         BlockPos pos = BlockPos.fromLong(hourCompound.getLong("" + i));
                         drawAutoResizedText(context, textRenderer, Text.literal("X: " + pos.getX()), 0.5f, 126, (int) topCornerX + 5, 22 + 9 + (int) topCornerY + (i * 18), 0xFF000000, 0x00000000, false, false);
@@ -414,7 +416,7 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
 
                     } else if (option.getDefaultValue() instanceof Integer) {
                         int num = hourCompound.getInt("" + i);
-                        context.drawTexture(BASE, (int) topCornerX, 22 + (int) topCornerY + i * 18, 118, 216, 126, 18);
+                        context.drawTexture(RenderLayer::getGuiTextured, BASE, (int) topCornerX, 22 + (int) topCornerY + i * 18, 118, 216, 126, 18, 256, 256);
 
                         drawAutoResizedText(context, textRenderer, Text.literal("" + num), 0.5f, 126, (int) topCornerX + 5, 22 + 9 + (int) topCornerY + (i * 18), 0xFF000000, 0x00000000, false, false);
                         drawAutoResizedText(context, textRenderer, option.getName(), 0.5f, availableSpace, (int) topCornerX + 63, 22 + 2 + (int) topCornerY + (i * 18), 0xFF000000, 0x00000000, false, true);
@@ -436,7 +438,7 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
 
     void drawList(DrawContext context, int mouseX, int mouseY){
         context.fill(subListX, subListY, subListX + 94, subListY + 151, 0xFF666666);
-        context.drawTexture(LIST, subListX, subListY, 0, 0, 94, 151);
+        context.drawTexture(RenderLayer::getGuiTextured, LIST, subListX, subListY, 0, 0, 94, 151, 256, 256);
 
         this.maxSubScroll = Math.max((this.popupList.size() - 9) * 16, 0);
         for(int i = 0; i < this.popupList.size(); i++){
@@ -576,7 +578,7 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
     }
 
     protected void updateEntity(EntityType<? extends LivingEntity> entityType) {
-        this.entity = entityType.create(this.client.world);
+        this.entity = entityType.create(this.client.world, SpawnReason.TRIGGERED);
         if(this.entity instanceof DefaultEntity ent){
             ent.menuTick = true;
         }
@@ -645,7 +647,7 @@ public class COMPCodeScreen extends COMPBaseAppScreen {
         stack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(currentNbt -> {
             currentNbt.copyFrom(diskData);
         }));
-        getNbtData().put("ai_data", stack.encodeAllowEmpty(world.getRegistryManager()));
+        getNbtData().put("ai_data", stack.toNbtAllowEmpty(world.getRegistryManager()));
         this.cpu = stack.copy();
         GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), getNbtData());
     }

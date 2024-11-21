@@ -3944,6 +3944,11 @@
 					]
 				},
 				{
+					"name": "boop",
+					"parent": "guitar",
+					"pivot": [-0.00214, 27.85269, -10.2257]
+				},
+				{
 					"name": "right_leg",
 					"parent": "root",
 					"pivot": [-3.62748, 25.31606, 0.25],

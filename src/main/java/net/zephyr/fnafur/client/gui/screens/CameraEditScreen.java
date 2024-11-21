@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -347,14 +348,14 @@ public class CameraEditScreen extends GoopyScreen {
 
         renderInGameBackground(context);
 
-        context.drawTexture(texture, this.width/2 - 81, this.height/2 - 36, 0, 0, 146, 72, 256, 256);
+        context.drawTexture(RenderLayer::getGuiTextured, texture, this.width/2 - 81, this.height/2 - 36, 0, 0, 146, 72, 256, 256);
 
         if(this.isActive){
             if (mouseX > this.width / 2 - 77 && mouseX < this.width / 2 - 66 && mouseY > this.height / 2 + 6 && mouseY < this.height / 2 + 20) {
-                context.drawTexture(texture, this.width / 2 - 77, this.height / 2 + 6, 77, 72, 11, 15, 256, 256);
+                context.drawTexture(RenderLayer::getGuiTextured, texture, this.width / 2 - 77, this.height / 2 + 6, 77, 72, 11, 15, 256, 256);
             }
             else {
-                context.drawTexture(texture, this.width / 2 - 77, this.height / 2 + 6, 66, 72, 11, 15, 256, 256);
+                context.drawTexture(RenderLayer::getGuiTextured, texture, this.width / 2 - 77, this.height / 2 + 6, 66, 72, 11, 15, 256, 256);
             }
 
             if(flashlight){
@@ -417,7 +418,7 @@ public class CameraEditScreen extends GoopyScreen {
                 context.fill(x2 + 5, this.height / 2 + 21, x + 48, this.height / 2 + 28, 0xFF555555);
             }
 
-            //context.drawTexture(texture, this.width/2 - 47, this.height/2 - 8, 0, 72, 11, 11, 256, 256);
+            //context.drawTexture(RenderLayer::getGuiTextured, texture, this.width/2 - 47, this.height/2 - 8, 0, 72, 11, 11, 256, 256);
 
             if(action) {
                 renderButton(texture, context, this.width / 2 - 87, this.height / 2 - 18, 146, 63, 152, 63, 6, 7, 256, 256, mouseX, mouseY);
@@ -425,14 +426,14 @@ public class CameraEditScreen extends GoopyScreen {
         }
         else {
             if (mouseX > this.width / 2 - 77 && mouseX < this.width / 2 - 66 && mouseY > this.height / 2 + 6 && mouseY < this.height / 2 + 20) {
-                context.drawTexture(texture, this.width / 2 - 77, this.height / 2 + 6, 55, 72, 11, 15, 256, 256);
+                context.drawTexture(RenderLayer::getGuiTextured, texture, this.width / 2 - 77, this.height / 2 + 6, 55, 72, 11, 15, 256, 256);
             }
         }
 
-        context.drawTexture(texture, this.width / 2 - 46, this.height / 2 - 29, 154, 0, 94, 16, 256, 256);
+        context.drawTexture(RenderLayer::getGuiTextured, texture, this.width / 2 - 46, this.height / 2 - 29, 154, 0, 94, 16, 256, 256);
 
-        context.drawTexture(texture, this.width/2 + 51, this.height / 2 + 9, 146, speedX * 7, 7, 7, 256, 256);
-        context.drawTexture(texture, this.width/2 + 51, this.height / 2 + 21, 146, speedY * 7, 7, 7, 256, 256);
+        context.drawTexture(RenderLayer::getGuiTextured, texture, this.width/2 + 51, this.height / 2 + 9, 146, speedX * 7, 7, 7, 256, 256);
+        context.drawTexture(RenderLayer::getGuiTextured, texture, this.width/2 + 51, this.height / 2 + 21, 146, speedY * 7, 7, 7, 256, 256);
 
         String key = "§l" + MinecraftClient.getInstance().options.sneakKey.getBoundKeyLocalizedText().getString();
         Text tooltips = Text.translatable("fnafur.screens.camera_edit.tooltip", key);

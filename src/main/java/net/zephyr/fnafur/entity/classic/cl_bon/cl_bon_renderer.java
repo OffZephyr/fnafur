@@ -11,9 +11,4 @@ public class cl_bon_renderer extends DefaultEntityRenderer<cl_bon> {
         super(renderManager, new cl_bon_model());
         addRenderLayer(new GlowLayer<>(this));
     }
-
-    @Override
-    public void render(cl_bon entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-    }
 }

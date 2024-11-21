@@ -9,8 +9,8 @@ import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFrameBlockModel;
 import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFrameBlockSlabModel;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockModel;
-import net.zephyr.fnafur.blocks.stickers.base.StickerBlock;
-import net.zephyr.fnafur.blocks.stickers.base.StickerBlockModel;
+import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
+import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
 
 @Environment(EnvType.CLIENT)
 public class ModelLoading implements ModelLoadingPlugin {
@@ -33,7 +33,7 @@ public class ModelLoading implements ModelLoadingPlugin {
     public static final ModelIdentifier MIMIC_FRAME_SLAB_DOUBLE_W_ID = new ModelIdentifier(MIMIC_FRAME_SLAB_ID, "type=double,waterlogged=true");
     public static final ModelIdentifier MIMIC_FRAME_SLAB_INV_ID = new ModelIdentifier(MIMIC_FRAME_SLAB_ID, "inventory");
     @Override
-    public void onInitializeModelLoader(Context pluginContext) {
+    public void initialize(Context pluginContext) {
 
         pluginContext.modifyModelOnLoad().register((original, context) -> {
             for(StickerBlock block : BlockInit.STICKER_BLOCKS){

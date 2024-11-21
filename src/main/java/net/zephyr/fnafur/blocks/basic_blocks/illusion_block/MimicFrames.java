@@ -12,12 +12,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.zephyr.fnafur.blocks.stickers.base.StickerBlock;
+import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -25,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class MimicFrames extends StickerBlock {
     public MimicFrames(Settings settings) {
-        super(settings, Identifier.of(""));
+        super(settings);
     }
     @Nullable
     @Override
@@ -34,23 +33,24 @@ public class MimicFrames extends StickerBlock {
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         BlockEntity entity = world.getBlockEntity(pos);
+        ItemStack stack = player.getMainHandStack();
         if(entity != null) {
-            if (stack.getItem() instanceof BlockItem blockItem) {
+            if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
                 if(!(blockItem.getBlock() instanceof MimicFrames)) {
-                    ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().put(hit.getSide().getName(), stack.encodeAllowEmpty(world.getRegistryManager()));
+                    ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().put(hit.getSide().getName(), stack.toNbtAllowEmpty(world.getRegistryManager()));
 
                     if(world.isClient()){
                         GoopyNetworkingUtils.saveBlockNbt(entity.getPos(), ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData());
                     }
                     world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
 
-                    return ItemActionResult.SUCCESS;
+                    return ActionResult.SUCCESS;
                 }
             }
         }
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+        return super.onUse(state, world, pos, player, hit);
     }
 
     public static Block getBlockFromNbt(NbtCompound nbt, World world){

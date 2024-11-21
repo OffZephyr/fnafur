@@ -6,7 +6,14 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SoundsInit {
+    public static Map<String, SoundEvent> sounds = new HashMap<>();
+    public static Map<SoundEvent, Boolean> soundRepeats = new HashMap<>();
+    public static Map<SoundEvent, String> soundKeys = new HashMap<>();
+
     public static final SoundEvent CAM_OPEN = registerSoundEvent("cam_open");
     public static final SoundEvent CAM_CLOSE = registerSoundEvent("cam_close");
     public static final SoundEvent CAM_SWITCH = registerSoundEvent("cam_switch");
@@ -25,9 +32,26 @@ public class SoundsInit {
     public static final SoundEvent OFFICE_DOOR_ERROR = registerSoundEvent("office_door_error");
     public static final SoundEvent OFFICE_DOOR_KNOCK = registerSoundEvent("office_door_knock");
     public static final SoundEvent OFFICE_DOOR_LIGHT = registerSoundEvent("office_door_light");
-    public static SoundEvent registerSoundEvent(String name) {
+
+    public static SoundEvent getSound(String name){
+        return sounds.get(name);
+    }
+    public static String getSoundName(SoundEvent sound){
+        return soundKeys.get(sound);
+    }
+    public static boolean soundRepeats(SoundEvent sound){
+        return soundRepeats.get(sound);
+    }
+    public static SoundEvent registerSoundEvent(String name){
+        return registerSoundEvent(name, false);
+    }
+    public static SoundEvent registerSoundEvent(String name, boolean repeats){
         Identifier id = Identifier.of(FnafUniverseResuited.MOD_ID, name);
-        return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
+        SoundEvent sound = Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
+        sounds.put(name, sound);
+        soundKeys.put(sound, name);
+        soundRepeats.put(sound, repeats);
+        return sound;
     }
 
     public static void registerSounds() {

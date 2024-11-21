@@ -11,9 +11,4 @@ public class cl_fred_renderer extends DefaultEntityRenderer<cl_fred> {
         super(renderManager, new cl_fred_model());
         addRenderLayer(new GlowLayer<>(this));
     }
-
-    @Override
-    public void render(cl_fred entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-    }
 }

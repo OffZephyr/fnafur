@@ -3,29 +3,21 @@ package net.zephyr.fnafur.item.tablet;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ModelTransformationMode;
 import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class TabletItemRenderer extends GeoItemRenderer<TabletItem> {
@@ -49,13 +41,13 @@ public class TabletItemRenderer extends GeoItemRenderer<TabletItem> {
             float partialTick = MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true);
             if (transformType == ModelTransformationMode.GUI) {
                 RenderLayer renderType = getRenderType(this.animatable, getTextureLocation(this.animatable), bufferSource, partialTick);
-                VertexConsumer buffer = ItemRenderer.getDirectItemGlintConsumer(bufferSource, renderType, false, this.currentItemStack != null && this.currentItemStack.hasGlint());
-                preRender(poseStack, this.animatable, getGeoModel().getBakedModel(getGeoModel().getModelResource(animatable)), bufferSource, buffer, false, partialTick, packedLight, packedOverlay, 0xFFFFFFFF);
+                VertexConsumer buffer = ItemRenderer.getItemGlintConsumer(bufferSource, renderType, false, this.currentItemStack != null && this.currentItemStack.hasGlint());
+                preRender(poseStack, this.animatable, getGeoModel().getBakedModel(getGeoModel().getModelResource(animatable, this)), bufferSource, buffer, false, partialTick, packedLight, packedOverlay, 0xFFFFFFFF);
                 poseStack.translate(-0.5f, -0.51f, -0.5f);
             }
 
             RenderLayer renderType = getRenderType(this.animatable, getTextureLocation(this.animatable), bufferSource, partialTick);
-            VertexConsumer buffer = ItemRenderer.getDirectItemGlintConsumer(bufferSource, renderType, false, this.currentItemStack != null && this.currentItemStack.hasGlint());
+            VertexConsumer buffer = ItemRenderer.getItemGlintConsumer(bufferSource, renderType, false, this.currentItemStack != null && this.currentItemStack.hasGlint());
 
             if (model != null && model.getAnimationProcessor().getBone("monitor") != null) {
                 GeoCube cube = model.getAnimationProcessor().getBone("monitor").getCubes().get(0);
@@ -115,9 +107,9 @@ public class TabletItemRenderer extends GeoItemRenderer<TabletItem> {
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-bone.getRotY() * MathHelper.DEGREES_PER_RADIAN));
 
         if (arm == Arm.RIGHT) {
-            playerEntityRenderer.renderRightArm(matrices, vertexConsumers, light, MinecraftClient.getInstance().player);
+            playerEntityRenderer.renderRightArm(matrices, vertexConsumers, light, MinecraftClient.getInstance().player.getSkinTextures().texture(), true);
         } else {
-            playerEntityRenderer.renderLeftArm(matrices, vertexConsumers, light, MinecraftClient.getInstance().player);
+            playerEntityRenderer.renderLeftArm(matrices, vertexConsumers, light, MinecraftClient.getInstance().player.getSkinTextures().texture(), true);
         }
         matrices.pop();
     }

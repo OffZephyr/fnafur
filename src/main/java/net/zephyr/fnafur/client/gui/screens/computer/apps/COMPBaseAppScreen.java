@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.client.gui.screens.computer.apps;
 
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -95,16 +96,16 @@ public abstract class COMPBaseAppScreen extends COMPBaseScreen {
         float bottomBarTextureHeight = (52 / 256f) * screenSize;
         float appWindowSize = (248 / 256f) * screenSize;
 
-        context.drawTexture(WALLPAPER, (width/2)-(screenSize/2), (height/2)-(screenSize/2), 0, 0, screenSize, (int)borderLineSize, screenSize, screenSize);
-        context.drawTexture(WALLPAPER, (width/2)-(screenSize/2), (height/2)-(screenSize/2) + (int)borderLineSize, 0, borderLineSize, (int)borderLineSize, screenSize - (2*(int)borderLineSize), screenSize, screenSize);
-        context.drawTexture(WALLPAPER, (width/2)+(screenSize/2) - (int)borderLineSize, (height/2)-(screenSize/2) + (int)borderLineSize, appWindowSize, borderLineSize, (int)borderLineSize, screenSize - (2*(int)borderLineSize), screenSize, screenSize);
-        context.drawTexture(WALLPAPER, (width/2)-(screenSize/2), (height/2)+(screenSize/2) - (int)borderLineSize, 0, appWindowSize, screenSize, (int)borderLineSize, screenSize, screenSize);
+        context.drawTexture(RenderLayer::getGuiTextured, WALLPAPER, (width/2)-(screenSize/2), (height/2)-(screenSize/2), 0, 0, screenSize, (int)borderLineSize, screenSize, screenSize);
+        context.drawTexture(RenderLayer::getGuiTextured, WALLPAPER, (width/2)-(screenSize/2), (height/2)-(screenSize/2) + (int)borderLineSize, 0, borderLineSize, (int)borderLineSize, screenSize - (2*(int)borderLineSize), screenSize, screenSize);
+        context.drawTexture(RenderLayer::getGuiTextured, WALLPAPER, (width/2)+(screenSize/2) - (int)borderLineSize, (height/2)-(screenSize/2) + (int)borderLineSize, appWindowSize, borderLineSize, (int)borderLineSize, screenSize - (2*(int)borderLineSize), screenSize, screenSize);
+        context.drawTexture(RenderLayer::getGuiTextured, WALLPAPER, (width/2)-(screenSize/2), (height/2)+(screenSize/2) - (int)borderLineSize, 0, appWindowSize, screenSize, (int)borderLineSize, screenSize, screenSize);
 
 
-        context.drawTexture(BOTTOM_BAR, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) bottomBarHeight, 0, (39 / 256f) * screenSize, screenSize, (int) bottomBarHeight, screenSize, (int) bottomBarTextureHeight);
+        context.drawTexture(RenderLayer::getGuiTextured, BOTTOM_BAR, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) bottomBarHeight, 0, (39 / 256f) * screenSize, screenSize, (int) bottomBarHeight, screenSize, (int) bottomBarTextureHeight);
 
 
-        context.drawTexture(WINDOW_BASE, this.width / 2 - (int)appWindowSize / 2, this.height / 2 - (int)appWindowSize / 2, 0, 0, (int)appWindowSize, (int)appWindowSize, (int)appWindowSize, (int)appWindowSize);
+        context.drawTexture(RenderLayer::getGuiTextured, WINDOW_BASE, this.width / 2 - (int)appWindowSize / 2, this.height / 2 - (int)appWindowSize / 2, 0, 0, (int)appWindowSize, (int)appWindowSize, (int)appWindowSize, (int)appWindowSize);
 
         renderCloseButton(context, mouseX, mouseY);
 

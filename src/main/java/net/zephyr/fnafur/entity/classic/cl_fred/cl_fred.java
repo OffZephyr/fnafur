@@ -5,12 +5,21 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
@@ -20,6 +29,7 @@ import net.zephyr.fnafur.entity.goals.ShouldLookAtEntityGoal;
 import net.zephyr.fnafur.entity.goals.ShouldWanderGoal;
 import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.init.SoundsInit;
+import net.zephyr.fnafur.util.SoundUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,13 +149,13 @@ public class cl_fred extends DefaultEntity {
     public static DefaultAttributeContainer.Builder setAttributes() {
 
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50f)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 9999f)
-                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 1f)
-                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 0f)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 9999f)
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 16D);
+                .add(EntityAttributes.MAX_HEALTH, 50f)
+                .add(EntityAttributes.ATTACK_DAMAGE, 9999f)
+                .add(EntityAttributes.ATTACK_SPEED, 1f)
+                .add(EntityAttributes.ATTACK_KNOCKBACK, 0f)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.2f)
+                .add(EntityAttributes.KNOCKBACK_RESISTANCE, 9999f)
+                .add(EntityAttributes.FOLLOW_RANGE, 16D);
     }
 
     @Override
@@ -164,6 +174,21 @@ public class cl_fred extends DefaultEntity {
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, VillagerEntity.class, 6f));
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, DefaultEntity.class, 6f));
         this.goalSelector.add(4, new ShouldLookAroundGoal(this));
+    }
+
+    @Override
+    public boolean isBoopable(){
+        return true;
+    }
+
+    @Override
+    public Vec3d boopSize() {
+        return new Vec3d(0.25f, 0.15f, 0.25f);
+    }
+
+    @Override
+    public Vec3d boopOffset() {
+        return new Vec3d(0, -1, 0);
     }
 
     @Override
@@ -263,7 +288,7 @@ public class cl_fred extends DefaultEntity {
 
     @Override
     protected String attackAnim() {
-        return "";
+        return "animation.cl_fred.attack";
     }
 
     @Override

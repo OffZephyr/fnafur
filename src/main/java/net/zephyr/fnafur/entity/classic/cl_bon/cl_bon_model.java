@@ -36,6 +36,6 @@ public class cl_bon_model extends DefaultEntityModel<cl_bon> {
 
     @Override
     public float scale() {
-        return 0.675f;
+        return 0.67f;
     }
 }

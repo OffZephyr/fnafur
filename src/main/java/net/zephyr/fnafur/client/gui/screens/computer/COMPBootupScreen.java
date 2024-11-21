@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.client.gui.screens.computer;
 
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -58,7 +59,7 @@ public class COMPBootupScreen extends COMPBaseScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.drawTexture(BOOTUP_SCREEN, (width/2)-(screenSize/2), (height/2)-(screenSize/2), 0, 0, screenSize, screenSize, screenSize, screenSize);
+        context.drawTexture(RenderLayer::getGuiTextured, BOOTUP_SCREEN, (width/2)-(screenSize/2), (height/2)-(screenSize/2), 0, 0, screenSize, screenSize, screenSize, screenSize);
         super.render(context, mouseX, mouseY, delta);
     }
 

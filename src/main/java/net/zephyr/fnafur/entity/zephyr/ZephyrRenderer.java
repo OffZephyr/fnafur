@@ -11,11 +11,5 @@ public class ZephyrRenderer extends DefaultEntityRenderer<ZephyrEntity> {
         super(renderManager, new ZephyrModel());
         addRenderLayer(new GlowLayer<>(this));
     }
-
-    @Override
-    public void render(ZephyrEntity entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-
-    }
 }
 

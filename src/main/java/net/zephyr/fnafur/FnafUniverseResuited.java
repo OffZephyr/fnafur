@@ -10,6 +10,8 @@ import net.zephyr.fnafur.blocks.computer.ComputerData;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.init.*;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
+import net.zephyr.fnafur.init.block_init.BlockInit;
+import net.zephyr.fnafur.init.block_init.GeoBlockEntityInit;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.init.item_init.ItemGroupsInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
@@ -30,6 +32,7 @@ public class FnafUniverseResuited implements ModInitializer {
 	public void onInitialize() {
 		EntityInit.registerEntities();
 		BlockEntityInit.registerBlockEntities();
+		GeoBlockEntityInit.registerBlockEntities();
 		ItemGroupsInit.registerItemGroups();
 		SoundsInit.registerSounds();
 		ComputerData.runInitializers();

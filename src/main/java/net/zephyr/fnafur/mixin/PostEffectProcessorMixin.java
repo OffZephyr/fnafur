@@ -17,13 +17,13 @@ public class PostEffectProcessorMixin implements IPostProcessorUniform {
     @Override
     public void set2FloatUniforms(String name, float value1, float value2) {
         for (PostEffectPass postEffectPass : this.passes) {
-            postEffectPass.getProgram().getUniformByNameOrDummy(name).set(value1, value2);
+            postEffectPass.getProgram().getUniform(name).set(value1, value2);
         }
     }
 
     public void set3FloatUniforms(String name, float value1, float value2, float value3){
         for (PostEffectPass postEffectPass : this.passes) {
-            postEffectPass.getProgram().getUniformByNameOrDummy(name).set(value1, value2, value3);
+            postEffectPass.getProgram().getUniform(name).set(value1, value2, value3);
         }
     }
 }

@@ -21,6 +21,8 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.DARK_GRAY_WALL);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.LARGE_BROWN_BRICKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_WHITE_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_TILE);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WHITE_TILE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_BLUE_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_BLUE_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_WHITE_16_TILES);
@@ -40,7 +42,7 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_RED);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_ORANGE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_BROWN);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_BROWN);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_CONFETTI);
     }
 
     @Override
@@ -50,5 +52,7 @@ public class ModelProvider extends FabricModelProvider {
 
         itemModelGenerator.register(SpawnItemInit.CL_FRED_SPAWN, Models.GENERATED);
         itemModelGenerator.register(SpawnItemInit.CL_BON_SPAWN, Models.GENERATED);
+        itemModelGenerator.register(SpawnItemInit.CL_CHICA_SPAWN, Models.GENERATED);
+        itemModelGenerator.register(SpawnItemInit.CL_FOXY_SPAWN, Models.GENERATED);
     }
 }

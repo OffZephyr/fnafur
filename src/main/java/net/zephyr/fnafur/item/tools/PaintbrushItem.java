@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockEntity;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockModel;
-import net.zephyr.fnafur.entity.cameramap.CameraMappingEntity;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.init.ScreensInit;
@@ -33,7 +32,6 @@ public class PaintbrushItem extends Item {
     public PaintbrushItem(Settings settings) {
         super(settings);
     }
-    private CameraMappingEntity map = null;
 
     @Override
     public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
@@ -106,10 +104,6 @@ public class PaintbrushItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         NbtCompound data = stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
-
-        if(map == null || map.getId() != data.getInt("mapEntityID") || !data.getBoolean("summon_entity")){
-            map = new CameraMappingEntity(EntityInit.CAMERA_MAPPING, world);
-        }
 
         boolean flag2 = entity instanceof PlayerEntity;
         Item item = flag2 ? ((PlayerEntity) entity).getOffHandStack().getItem() : null;

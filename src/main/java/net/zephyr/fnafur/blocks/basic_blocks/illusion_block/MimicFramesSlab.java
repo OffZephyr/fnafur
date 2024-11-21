@@ -2,9 +2,11 @@ package net.zephyr.fnafur.blocks.basic_blocks.illusion_block;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.SlabType;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
@@ -19,19 +21,19 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
-import net.zephyr.fnafur.blocks.stickers.base.StickerBlock;
+import net.minecraft.world.tick.ScheduledTickView;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -75,6 +77,11 @@ public class MimicFramesSlab extends MimicFrames implements Waterloggable {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
+
+
+        BlockState state = ctx.getStack().getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(getDefaultState());
+
+
         BlockPos blockPos = ctx.getBlockPos();
         BlockState blockState = ctx.getWorld().getBlockState(blockPos);
         if (blockState.isOf(this)) {
@@ -113,6 +120,38 @@ public class MimicFramesSlab extends MimicFrames implements Waterloggable {
     }
 
     @Override
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+        ItemStack itemStack = super.getPickStack(world, pos, state);
+        world.getBlockEntity(pos, BlockEntityInit.MIMIC_FRAME).ifPresent((blockEntity) -> {
+            blockEntity.setStackNbt(itemStack, world.getRegistryManager());
+        });
+        BlockStateComponent blockStateComponent = itemStack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT);
+        blockStateComponent = blockStateComponent.with(TYPE, state.get(TYPE));
+        itemStack.set(DataComponentTypes.BLOCK_STATE, blockStateComponent);
+        System.out.println(blockStateComponent.getValue(TYPE).asString());
+        return itemStack;
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        String type = state.get(TYPE).asString();
+        NbtCompound data = itemStack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt().getCompound("fnafur.persistent").getCompound(type);
+
+        NbtCompound nbt = new NbtCompound();
+        nbt.put(type, data);
+
+        world.setBlockState(pos, state);
+        if (world.getBlockEntity(pos) instanceof BlockEntity entity) {
+            ((IEntityDataSaver) entity).getPersistentData().copyFrom(nbt);
+        }
+
+        if (world.isClient()) {
+            GoopyNetworkingUtils.getNbtFromServer(pos);
+            world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
+        }
+    }
+
+    @Override
     public boolean tryFillWithFluid(WorldAccess world, BlockPos pos, BlockState state, FluidState fluidState) {
         return state.get(TYPE) != SlabType.DOUBLE ? Waterloggable.super.tryFillWithFluid(world, pos, state, fluidState) : false;
     }
@@ -122,15 +161,14 @@ public class MimicFramesSlab extends MimicFrames implements Waterloggable {
         return state.get(TYPE) != SlabType.DOUBLE ? Waterloggable.super.canFillWithFluid(player, world, pos, state, fluid) : false;
     }
 
+
     @Override
-    protected BlockState getStateForNeighborUpdate(
-            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos
-    ) {
+    protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
         if ((Boolean)state.get(WATERLOGGED)) {
-            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+            tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }
 
-        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+        return super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
     }
 
     @Override
@@ -146,19 +184,21 @@ public class MimicFramesSlab extends MimicFrames implements Waterloggable {
                 return false;
         }
     }
+
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         BlockEntity entity = world.getBlockEntity(pos);
+        ItemStack stack = player.getMainHandStack();
         if(entity != null) {
-            if (stack.getItem() instanceof BlockItem blockItem) {
-                if(!(blockItem.getBlock() instanceof MimicFramesSlab)) {
+            if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
+                if(!(blockItem.getBlock() instanceof MimicFrames)) {
                     String side;
                     if(state.get(TYPE) == SlabType.DOUBLE) side = hit.getPos().getY() - pos.getY() > 0.5f ? "top" : "bottom";
                     else side = state.get(TYPE).asString();
 
-                    NbtCompound nbt = new NbtCompound();
+                    NbtCompound nbt = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().getCompound(side);
 
-                    nbt.put(hit.getSide().getName(), stack.encodeAllowEmpty(world.getRegistryManager()));
+                    nbt.put(hit.getSide().getName(), stack.toNbtAllowEmpty(world.getRegistryManager()));
                     ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().put(side, nbt);
 
                     if(world.isClient()){
@@ -166,10 +206,10 @@ public class MimicFramesSlab extends MimicFrames implements Waterloggable {
                     }
                     world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
 
-                    return ItemActionResult.SUCCESS;
+                    return ActionResult.SUCCESS;
                 }
             }
         }
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+        return super.onUse(state, world, pos, player, hit);
     }
 }

@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.mixin;
 
+import net.minecraft.client.render.Frustum;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.debug.DebugRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -19,7 +20,7 @@ public class DebugRendererMixin {
     WallPropPlacingRenderer wallPropPlacingRenderer = new WallPropPlacingRenderer();
     StickerPlacingRenderer stickerPlacingRenderer = new StickerPlacingRenderer();
     @Inject(method = "render", at = @At("HEAD"))
-    public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ, CallbackInfo ci){
+    public void render(MatrixStack matrices, Frustum frustum, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ, CallbackInfo ci){
         mapRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         floorPropPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         wallPropPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);

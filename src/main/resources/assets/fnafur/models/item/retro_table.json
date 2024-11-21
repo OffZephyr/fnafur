@@ -1,0 +1,6 @@
+{
+	"parent": "fnafur:props/retro_table",
+    "overrides": [
+        { "predicate": { "skin": 0 }, "model": "fnafur:props/retro_table" }
+	]
+}

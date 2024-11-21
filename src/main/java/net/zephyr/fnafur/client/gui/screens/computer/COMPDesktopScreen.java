@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.client.gui.screens.computer;
 
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -124,7 +125,7 @@ public class COMPDesktopScreen extends COMPBaseScreen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         if(!dragging) {gotMouseX = mouseX; gotMouseY = mouseY;}
 
-        context.drawTexture(WALLPAPER, (width/2)-(screenSize/2), (height/2)-(screenSize/2), 0, 0, screenSize, screenSize, screenSize, screenSize);
+        context.drawTexture(RenderLayer::getGuiTextured, WALLPAPER, (width/2)-(screenSize/2), (height/2)-(screenSize/2), 0, 0, screenSize, screenSize, screenSize, screenSize);
 
         for(int i = 0; i < ComputerData.getApps().size(); i++){
             Identifier appIcon = ComputerData.getApps().get(i).getIconTexture();
@@ -176,7 +177,7 @@ public class COMPDesktopScreen extends COMPBaseScreen {
                 }
 
             }
-            context.drawTexture(WALLPAPER_MENU, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) wallpaperMenuHeight, 0, 0, screenSize, (int) wallpaperMenuHeight, screenSize, (int) wallpaperMenuHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, WALLPAPER_MENU, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) wallpaperMenuHeight, 0, 0, screenSize, (int) wallpaperMenuHeight, screenSize, (int) wallpaperMenuHeight);
         }
         else {
             for(int i = 0; i < ComputerData.getApps().size(); i++){
@@ -201,12 +202,12 @@ public class COMPDesktopScreen extends COMPBaseScreen {
 
         if (onWallpaperButton) {
             if (holding) {
-                context.drawTexture(BOTTOM_BAR, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) bottomBarHeight, 0, (26 / 256f) * screenSize, screenSize, (int) bottomBarHeight, screenSize, (int) bottomBarTextureHeight);
+                context.drawTexture(RenderLayer::getGuiTextured, BOTTOM_BAR, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) bottomBarHeight, 0, (26 / 256f) * screenSize, screenSize, (int) bottomBarHeight, screenSize, (int) bottomBarTextureHeight);
             } else {
-                context.drawTexture(BOTTOM_BAR, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) bottomBarHeight, 0, (13 / 256f) * screenSize, screenSize, (int) bottomBarHeight, screenSize, (int) bottomBarTextureHeight);
+                context.drawTexture(RenderLayer::getGuiTextured, BOTTOM_BAR, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) bottomBarHeight, 0, (13 / 256f) * screenSize, screenSize, (int) bottomBarHeight, screenSize, (int) bottomBarTextureHeight);
             }
         } else {
-            context.drawTexture(BOTTOM_BAR, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) bottomBarHeight, 0, 0, screenSize, (int) bottomBarHeight, screenSize, (int) bottomBarTextureHeight);
+            context.drawTexture(RenderLayer::getGuiTextured, BOTTOM_BAR, this.width / 2 - this.screenSize / 2, (this.height / 2 + this.screenSize / 2) - (int) bottomBarHeight, 0, 0, screenSize, (int) bottomBarHeight, screenSize, (int) bottomBarTextureHeight);
         }
 
         super.render(context, mouseX, mouseY, delta);

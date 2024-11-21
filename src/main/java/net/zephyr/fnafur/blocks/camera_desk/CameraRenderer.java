@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.blocks.camera_desk;
 
+import com.mojang.blaze3d.systems.ProjectionType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.gl.PostEffectProcessor;
-import net.minecraft.client.gl.SimpleFramebuffer;
+import net.minecraft.client.gl.*;
 import net.minecraft.client.option.GraphicsMode;
 import net.minecraft.client.render.*;
+import net.minecraft.client.util.Pool;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -36,6 +36,8 @@ public class CameraRenderer {
     public static Map<BlockPos, Boolean> dirty = new HashMap<>();
     public static Map<Framebuffer, Float> noiseIntensity = new HashMap<>();
 
+    private static final Pool pool = new Pool(3);
+
     public static boolean isDrawing() {
         return Deep > 0;
     }
@@ -53,7 +55,7 @@ public class CameraRenderer {
 
     public static void onResize(int width, int height) {
         for (int i = 0; i < framebuffers.length; i++) {
-            framebuffers[i] = new SimpleFramebuffer(width, height, true, false);
+            framebuffers[i] = new SimpleFramebuffer(width, height, true);
             dirty.replaceAll((p, v) -> true);
             ((IPostProcessorLoader) MinecraftClient.getInstance().gameRenderer).resizePostProcessor(framebuffers[i], width, height);
         }
@@ -108,7 +110,7 @@ public class CameraRenderer {
         float vWidth = 0.5f;
         float vHeight = 0.5f;
 
-        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
 
         var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 
@@ -170,7 +172,9 @@ public class CameraRenderer {
                 Deep--;
                 return -1;
             }
-            framebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
+            if(MinecraftClient.IS_SYSTEM_MAC) {
+                framebuffer.clear();
+            }
 
             if (isDirty(entity.getPos())) {
                 ((IPostProcessorLoader) client.gameRenderer).setMonitorPostProcessor(normalShader, framebuffer);
@@ -190,12 +194,12 @@ public class CameraRenderer {
             framebuffer.beginWrite(true);
             client.getWindow().setFramebufferWidth(framebuffer.textureWidth);
             client.getWindow().setFramebufferHeight(framebuffer.textureHeight);
-            client.gameRenderer.loadProjectionMatrix(projMat);
+            RenderSystem.setProjectionMatrix(projMat, ProjectionType.PERSPECTIVE);
             RenderSystem.modelViewStack = new Matrix4fStack(16);
             illuminateScreen = nightVision;
             client.gameRenderer.getLightmapTextureManager().tick();
             client.gameRenderer.getLightmapTextureManager().update(tickDelta);
-            client.worldRenderer.render(client.getRenderTickCounter(), false, camera, client.gameRenderer, client.gameRenderer.getLightmapTextureManager(), rotMat, projMat);
+            client.worldRenderer.render(pool, client.getRenderTickCounter(), false, camera, client.gameRenderer, client.gameRenderer.getLightmapTextureManager(), rotMat, projMat);
             illuminateScreen = false;
             client.gameRenderer.getLightmapTextureManager().tick();
             client.gameRenderer.getLightmapTextureManager().update(tickDelta);
@@ -208,9 +212,8 @@ public class CameraRenderer {
             camera.pos = oldPos;
             camera.setRotation(oldYaw, oldPitch);
             client.worldRenderer.frustum = oldFrustum;
-            client.gameRenderer.loadProjectionMatrix(prevProjMat);
+            RenderSystem.setProjectionMatrix(prevProjMat, ProjectionType.PERSPECTIVE);
             RenderSystem.modelViewStack = oldModelViewStack;
-            RenderSystem.modelViewMatrix = oldModelViewMat;
             client.getWindow().setFramebufferWidth(oldFboWidth);
             client.getWindow().setFramebufferHeight(oldFboHeight);
             RenderSystem.viewport(0, 0, client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());

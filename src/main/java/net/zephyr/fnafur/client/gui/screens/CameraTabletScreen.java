@@ -32,8 +32,8 @@ import java.util.List;
 public class CameraTabletScreen extends GoopyScreen {
     boolean closing = false;
     Identifier overlay = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/camera/camera_overlay.png");
-    Identifier normalShader = Identifier.of(FnafUniverseResuited.MOD_ID, "shaders/post/camera.json");
-    Identifier nvShader = Identifier.of(FnafUniverseResuited.MOD_ID, "shaders/post/camera_nightvision.json");
+    Identifier normalShader = Identifier.ofVanilla("post_effects/camera.json");
+    Identifier nvShader = Identifier.ofVanilla("post_effects/camera_nightvision.json");
     int Static = 0;
     long currentCam = 0;
     int curCamIndex = 0;
@@ -96,7 +96,7 @@ public class CameraTabletScreen extends GoopyScreen {
         this.updateNightVision();
 
         Identifier shader = nightVision ? nvShader : normalShader;
-        ((IPostProcessorLoader)MinecraftClient.getInstance().gameRenderer).setPostProcessor(shader);
+        MinecraftClient.getInstance().gameRenderer.setPostProcessor(Identifier.ofVanilla("creeper"));
         super.init();
     }
     @Override
@@ -183,8 +183,8 @@ public class CameraTabletScreen extends GoopyScreen {
             float deltaMultiplier = delta * 48;
             if (width > height) {
                 int alphaX = (int) sliderAlphaX;
-                int whiteX = ColorHelper.Argb.getArgb (alphaX, 255, 255, 255);
-                int colorX = hoverX ? ColorHelper.Argb.getArgb(alphaX, 150, 150, 150) : ColorHelper.Argb.getArgb(alphaX, 100, 100, 100);
+                int whiteX = ColorHelper.getArgb (alphaX, 255, 255, 255);
+                int colorX = hoverX ? ColorHelper.getArgb(alphaX, 150, 150, 150) : ColorHelper.getArgb(alphaX, 100, 100, 100);
 
                 int goalAlphaX = isOnButton(mouseX, mouseY, 0, 0, this.width, (y * 2) + sliderHeight) && width > height ? 255 : 100;
                 if(sliderAlphaX > goalAlphaX){
@@ -198,8 +198,8 @@ public class CameraTabletScreen extends GoopyScreen {
                 context.fill((int) sliderX, y + (height / 2) - (sliderHeight / 2), (int) sliderX + sliderWidth, y + (height / 2) + (sliderHeight / 2), colorX);
             } else {
                 int alphaY = (int) sliderAlphaY;
-                int whiteY = ColorHelper.Argb.getArgb (alphaY, 255, 255, 255);
-                int colorY = hoverY ? ColorHelper.Argb.getArgb(alphaY, 150, 150, 150) : ColorHelper.Argb.getArgb(alphaY, 100, 100, 100);
+                int whiteY = ColorHelper.getArgb (alphaY, 255, 255, 255);
+                int colorY = hoverY ? ColorHelper.getArgb(alphaY, 150, 150, 150) : ColorHelper.getArgb(alphaY, 100, 100, 100);
 
                 int goalAlphaY = isOnButton(mouseX, mouseY, 0, 0, (x * 2) + sliderHeight, this.height) && width < height ? 255 : 100;
                 if(sliderAlphaY > goalAlphaY){
@@ -263,7 +263,7 @@ public class CameraTabletScreen extends GoopyScreen {
                 int y = (mapEndPosY - (mapHeight * mapMultiplier) - mapMultiplier) - 5 - height;
                 context.fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xFFFFFFFF);
                 boolean bl = isOnButton(mouseX, mouseY, x, y, width, height);
-                int color = bl ? holding ? ColorHelper.Argb.getArgb(255, 75, 255, 75) : ColorHelper.Argb.getArgb(255, 150, 150, 150) : ColorHelper.Argb.getArgb(255, 100, 100, 100);
+                int color = bl ? holding ? ColorHelper.getArgb(255, 75, 255, 75) : ColorHelper.getArgb(255, 150, 150, 150) : ColorHelper.getArgb(255, 100, 100, 100);
                 context.fill(x, y, x + width, y + height, color);
                 context.drawCenteredTextWithShadow(textRenderer, nbt.getString("ActionName"), x + width / 2, (y + (height / 2)) - 4, 0xFFFFFFFF);
             }
@@ -316,7 +316,7 @@ public class CameraTabletScreen extends GoopyScreen {
             }
             int alpha = (int) mapAlpha;
 
-            int color = ColorHelper.Argb.getArgb(alpha, 255, 255, 255);
+            int color = ColorHelper.getArgb(alpha, 255, 255, 255);
             //context.fill(bg1, bg2, mapEndPosX + (mapMultiplier*2), mapEndPosY + (mapMultiplier*2), 0x55000000);
 
             for(int i = 0; i < mapNbt.size(); i++) {
@@ -363,8 +363,8 @@ public class CameraTabletScreen extends GoopyScreen {
                     context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(name), mouseX, mouseY);
                     matrices.scale(camScale, camScale, camScale);
                 }
-                int camColor = bl2 || cam == currentCam ? ColorHelper.Argb.getArgb(alpha, 75, 255, 75) : ColorHelper.Argb.getArgb(alpha, 100, 100, 100);
-                int camOutline = allowNightVision && enableNightVision && cam == currentCam ? ColorHelper.Argb.getArgb(alpha, 133, 210, 255) : ColorHelper.Argb.getArgb(alpha, 255, 255, 255);
+                int camColor = bl2 || cam == currentCam ? ColorHelper.getArgb(alpha, 75, 255, 75) : ColorHelper.getArgb(alpha, 100, 100, 100);
+                int camOutline = allowNightVision && enableNightVision && cam == currentCam ? ColorHelper.getArgb(alpha, 133, 210, 255) : ColorHelper.getArgb(alpha, 255, 255, 255);
                 context.fill(x - (mapMultiplier / 2) * (int)(1 / camScale), z - (mapMultiplier / 2) * (int)(1 / camScale), x + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), z + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), camOutline);
                 context.fill(x - ((mapMultiplier / 4) * (int)(1 / camScale)), z - ((mapMultiplier / 4) * (int)(1 / camScale)), x + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 4) * (int)(1 / camScale)), z + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 4) * (int)(1 / camScale)), camColor);
             }
@@ -432,9 +432,10 @@ public class CameraTabletScreen extends GoopyScreen {
 
             updateNightVision();
 
+
             if(bl2 || bl3){
                 Identifier shader = nightVision ? nvShader : normalShader;
-                ((IPostProcessorLoader)MinecraftClient.getInstance().gameRenderer).setPostProcessor(shader);
+                MinecraftClient.getInstance().gameRenderer.setPostProcessor(Identifier.ofVanilla("creeper"));
             }
         }
     }
@@ -562,7 +563,7 @@ public class CameraTabletScreen extends GoopyScreen {
 
     @Override
     public void close() {
-        ((IPostProcessorLoader)MinecraftClient.getInstance().gameRenderer).clearPostProcessor();
+        MinecraftClient.getInstance().gameRenderer.clearPostProcessor();
         this.closing = true;
 
         NbtCompound nbt = getNbtData();

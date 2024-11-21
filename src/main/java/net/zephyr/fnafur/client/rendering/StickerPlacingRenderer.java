@@ -1,35 +1,19 @@
 package net.zephyr.fnafur.client.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.debug.DebugRenderer;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
-import net.minecraft.util.shape.VoxelShape;
 import net.zephyr.fnafur.FnafUniverseResuited;
-import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
-import net.zephyr.fnafur.blocks.props.base.PropBlock;
-import net.zephyr.fnafur.blocks.stickers.base.Sticker;
-import net.zephyr.fnafur.blocks.stickers.base.StickerBlock;
-import net.zephyr.fnafur.item.stickers.base.StickerItem;
+import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
+import net.zephyr.fnafur.init.item_init.StickerInit;
+import net.zephyr.fnafur.item.StickerItem;
 
 public class StickerPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
@@ -49,7 +33,7 @@ public class StickerPlacingRenderer {
                         Vec3d hitPos = blockHit.getPos();
                         Direction direction = ((BlockHitResult) blockHit).getSide();
                         String name = item.sticker_name();
-                        Sticker sticker = Sticker.getSticker(name);
+                        StickerInit.Sticker sticker = StickerInit.getSticker(name);
 
                         if (sticker == null) return;
 
@@ -76,7 +60,7 @@ public class StickerPlacingRenderer {
                         float vHeight = 0.5f;
 
                         RenderSystem.enableDepthTest();
-                        RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
+                        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX_COLOR);
 
                         var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
 

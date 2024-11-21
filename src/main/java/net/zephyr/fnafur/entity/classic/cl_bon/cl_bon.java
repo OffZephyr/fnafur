@@ -11,6 +11,7 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
@@ -80,13 +81,13 @@ public class cl_bon extends DefaultEntity {
     public static DefaultAttributeContainer.Builder setAttributes() {
 
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50f)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 9999f)
-                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 1f)
-                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 0f)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 9999f)
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 16D);
+                .add(EntityAttributes.MAX_HEALTH, 50f)
+                .add(EntityAttributes.ATTACK_DAMAGE, 9999f)
+                .add(EntityAttributes.ATTACK_SPEED, 1f)
+                .add(EntityAttributes.ATTACK_KNOCKBACK, 0f)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.2f)
+                .add(EntityAttributes.KNOCKBACK_RESISTANCE, 9999f)
+                .add(EntityAttributes.FOLLOW_RANGE, 16D);
     }
 
     @Override
@@ -105,6 +106,21 @@ public class cl_bon extends DefaultEntity {
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, VillagerEntity.class, 6f));
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, DefaultEntity.class, 6f));
         this.goalSelector.add(4, new ShouldLookAroundGoal(this));
+    }
+
+    @Override
+    public boolean isBoopable(){
+        return true;
+    }
+
+    @Override
+    public Vec3d boopSize() {
+        return new Vec3d(0.5f, 0.5f, 0.5f);
+    }
+
+    @Override
+    public Vec3d boopOffset() {
+        return new Vec3d(0f, -0.5f, 0f);
     }
 
     @Override
@@ -204,7 +220,7 @@ public class cl_bon extends DefaultEntity {
 
     @Override
     protected String attackAnim() {
-        return "";
+        return "animation.cl_bon.attack";
     }
 
     @Override

@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.freshUI.Components;
 
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.util.Identifier;
@@ -17,7 +18,8 @@ public class FUI_Image extends FUI_Component {
 
     @Override
     public void draw(DrawContext context, Vector2i finalPos, Vector2i finalSize, RenderTickCounter dt) {
-        context.drawTexture(texture, finalPos.x, finalPos.y, 0,0, finalSize.x, finalSize.y);
+        //TODO Add texture X and Y, gives error if missing
+        //context.drawTexture(RenderLayer::getGuiTextured, texture, finalPos.x, finalPos.y, 0,0, finalSize.x, finalSize.y, TextureX, TextureY);
         super.draw(context, finalPos, finalSize, dt);
     }
 }

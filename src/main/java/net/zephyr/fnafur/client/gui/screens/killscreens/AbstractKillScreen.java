@@ -115,8 +115,8 @@ public abstract class AbstractKillScreen extends GoopyScreen {
             float textAlpha = animationTick > transitionMax ? 204f : MathHelper.lerp((animationTick - transitionMin) / (transitionMax - transitionMin), 5, 204);
             float buttonAlpha = animationTick < transitionMax ? textAlpha : 204f;
 
-            int color = ColorHelper.Argb.getArgb((int) textAlpha, 255, 255, 255);
-            int buttonColor = ColorHelper.Argb.getArgb((int) buttonAlpha, 255, 255, 255);
+            int color = ColorHelper.getArgb((int) textAlpha, 255, 255, 255);
+            int buttonColor = ColorHelper.getArgb((int) buttonAlpha, 255, 255, 255);
 
             Text text1 = goBackToTitle ? Text.translatable("death.fnafur.confirm") : this.isHardcore ? Text.translatable("deathScreen.spectate") : Text.translatable("deathScreen.respawn");
             Text text2 = goBackToTitle ? Text.translatable("death.fnafur.back") : Text.translatable("deathScreen.titleScreen");

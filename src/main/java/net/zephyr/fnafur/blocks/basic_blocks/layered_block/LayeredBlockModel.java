@@ -86,12 +86,7 @@ public class LayeredBlockModel implements UnbakedModel, BakedModel, FabricBakedM
     }
 
     @Override
-    public Collection<Identifier> getModelDependencies() {
-        return List.of();
-    }
-
-    @Override
-    public void setParents(Function<Identifier, UnbakedModel> modelLoader) {
+    public void resolve(Resolver resolver) {
 
     }
 
@@ -152,10 +147,10 @@ public class LayeredBlockModel implements UnbakedModel, BakedModel, FabricBakedM
                             Sprite sprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, texture).getSprite();
 
                             int colorValue = data.getCompound("layer" + i).getInt(directionId + "_" + k + "_color");
-                            float r = ColorHelper.Argb.getRed(colorValue);
-                            float g = ColorHelper.Argb.getGreen(colorValue);
-                            float b = ColorHelper.Argb.getBlue(colorValue);
-                            int color = thisLayer.cantRecolorLayer() ? 0xFFFFFFFF : ColorHelper.Argb.getArgb(255, (int) r, (int) g, (int) b);
+                            float r = ColorHelper.getRed(colorValue);
+                            float g = ColorHelper.getGreen(colorValue);
+                            float b = ColorHelper.getBlue(colorValue);
+                            int color = thisLayer.cantRecolorLayer() ? 0xFFFFFFFF : ColorHelper.getArgb(255, (int) r, (int) g, (int) b);
 
                             emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
                             emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
@@ -216,10 +211,10 @@ public class LayeredBlockModel implements UnbakedModel, BakedModel, FabricBakedM
                         Sprite sprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, texture).getSprite();
 
                         int colorValue = data.getCompound("layer" + i).getInt(directionId + "_" + k + "_color");
-                        float r = ColorHelper.Argb.getRed(colorValue);
-                        float g = ColorHelper.Argb.getGreen(colorValue);
-                        float b = ColorHelper.Argb.getBlue(colorValue);
-                        int color = thisLayer.cantRecolorLayer() ? 0xFFFFFFFF : ColorHelper.Argb.getArgb(255, (int) r, (int) g, (int) b);
+                        float r = ColorHelper.getRed(colorValue);
+                        float g = ColorHelper.getGreen(colorValue);
+                        float b = ColorHelper.getBlue(colorValue);
+                        int color = thisLayer.cantRecolorLayer() ? 0xFFFFFFFF : ColorHelper.getArgb(255, (int) r, (int) g, (int) b);
 
                         emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
                         emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);

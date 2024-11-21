@@ -73,7 +73,7 @@ public class PropRenderer<T extends BlockEntity> implements BlockEntityRenderer<
                 }
                 matrices.translate(offsetX, offsetY, offsetZ);
                 for (Box box : block.getClickHitBoxes(state)) {
-                    WorldRenderer.drawShapeOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), VoxelShapes.cuboid(box), 0, 0, 0, 0, 1, 0, 1f, true);
+                    VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), VoxelShapes.cuboid(box), 0, 0, 0, 0xFF00FF00);
                 }
                 matrices.pop();
             }

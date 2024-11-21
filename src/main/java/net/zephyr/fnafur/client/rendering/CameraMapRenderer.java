@@ -2,6 +2,8 @@ package net.zephyr.fnafur.client.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.ShaderProgramKey;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
@@ -67,10 +69,10 @@ public class CameraMapRenderer {
                         }
                         else {
                             long color = mapNbt.getLongArray(i).length >= 3 ? mapNbt.getLongArray(i)[2] : 0xFFFFFFFFL;
-                            float red = ColorHelper.Argb.getRed((int)color) / 255f;
-                            float green = ColorHelper.Argb.getGreen((int)color) / 255f;
-                            float blue = ColorHelper.Argb.getBlue((int)color) / 255f;
-                            float alpha = ColorHelper.Argb.getAlpha((int)color) / 255f;
+                            float red = ColorHelper.getRed((int)color) / 255f;
+                            float green = ColorHelper.getGreen((int)color) / 255f;
+                            float blue = ColorHelper.getBlue((int)color) / 255f;
+                            float alpha = ColorHelper.getAlpha((int)color) / 255f;
 
                             long[] line2 = new long[] {pos1.asLong(), pos2.asLong()};
                             NbtLongArray lineNbt = new NbtLongArray(line2);
@@ -91,7 +93,7 @@ public class CameraMapRenderer {
 
 
     void renderLine(MatrixStack matrices, BlockPos pos1, BlockPos pos2, float red, float green, float blue, float alpha, boolean selected, NbtList mapNbt){
-        int color = ColorHelper.Argb.fromFloats(alpha, red, green, blue);
+        int color = ColorHelper.fromFloats(alpha, red, green, blue);
         boolean onXAxis = pos1.getX() != pos2.getX();
         boolean onXPos = pos1.getX() < pos2.getX();
         boolean onZPos = pos1.getZ() < pos2.getZ();
@@ -133,7 +135,7 @@ public class CameraMapRenderer {
 
                 RenderSystem.enableBlend();
                 RenderSystem.enableDepthTest();
-                RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
+                RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX_COLOR);
 
                 var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
 

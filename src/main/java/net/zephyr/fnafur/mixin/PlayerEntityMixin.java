@@ -1,9 +1,6 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -37,7 +34,7 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
             if (!animatronic.isEmpty() && ComputerData.getAIAnimatronic(animatronic) instanceof ComputerData.Initializer.AnimatronicAI ai) {
 
                 if (((IPlayerCustomModel) player).getCurrentEntity() == null || ((IPlayerCustomModel)player).getCurrentEntity().getType() != ai.entityType()) {
-                    LivingEntity entity1 = ai.entityType().create(player.getWorld());
+                    LivingEntity entity1 = ai.entityType().create(player.getWorld(), SpawnReason.TRIGGERED);
                     ((IEntityDataSaver) entity1).getPersistentData().copyFrom(animatronicData);
                     if (entity1 instanceof DefaultEntity ent) {
                         ent.mimicPlayer = player;

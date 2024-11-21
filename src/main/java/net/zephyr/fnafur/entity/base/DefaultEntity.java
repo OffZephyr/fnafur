@@ -42,6 +42,7 @@ import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.UpdateJumpscareData
 import net.zephyr.fnafur.util.Computer.ComputerAI;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.SoundUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IPlayerCustomModel;
 import org.jetbrains.annotations.Nullable;
@@ -58,6 +59,7 @@ import java.util.Objects;
 
 public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity {
     public DefaultEntityModel<? extends DefaultEntity> model = null;
+    public Box boopBox;
     public boolean mimic;
     public PlayerEntity mimicPlayer;
     public boolean mimicAggressive = false;
@@ -74,6 +76,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
     public boolean menuTick = false;
     public int serverBehaviorIndex = -1;
     private String behavior;
+    private boolean initialRotUpdate = false;
 
     public DefaultEntity(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -82,15 +85,6 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
     @Override
     public boolean shouldRender(double distance) {
         return true;
-    }
-
-    @Nullable
-    @Override
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-
-        ((IEntityDataSaver)this).getPersistentData().putLong("spawnPos", getBlockPos().asLong());
-        ((IEntityDataSaver)this).getPersistentData().putFloat("spawnRot", getHeadYaw());
-        return super.initialize(world, difficulty, spawnReason, entityData);
     }
 
     @Override
@@ -258,12 +252,12 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
     }
 
     @Override
-    public boolean tryAttack(Entity target) {
+    public boolean tryAttack(ServerWorld world, Entity target) {
         if(target instanceof ServerPlayerEntity p && !p.isDead()) {
             ((IEntityDataSaver)p).getPersistentData().putInt("JumpscareID", this.getId());
             ServerPlayNetworking.send(p, new UpdateJumpscareDataS2CPayload(getId()));
         }
-        return super.tryAttack(target);
+        return super.tryAttack(world, target);
     }
 
     @Override
@@ -290,8 +284,13 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
     public void tick() {
         super.tick();
 
-        if(!((IEntityDataSaver)this).getPersistentData().contains("spawnRot")){
+        if(!((IEntityDataSaver)this).getPersistentData().contains("spawnRot") && getWorld().isClient()){
             GoopyNetworkingUtils.getEntityNbtFromServer(getId());
+        }
+
+        if(!initialRotUpdate && ((IEntityDataSaver)this).getPersistentData().getFloat("spawnRot") != 0) {
+            setRotation(((IEntityDataSaver) this).getPersistentData().getFloat("spawnRot"), 0);
+            initialRotUpdate = true;
         }
 
         if(model != null) {
@@ -365,13 +364,21 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
                     if (teleport && !aggressive) {
                         setPosition(goalPos.getX() + 0.5f + offsetX, getY(), goalPos.getZ() + 0.5f + offsetX);
                         setVelocity(0, 0, 0);
+                        float yaw = ((IEntityDataSaver) this).getPersistentData().getFloat("spawnRot");
+                        setHeadYaw(yaw);
+                        setBodyYaw(yaw);
+                        setYaw(yaw);
                         getNavigation().stop();
                     } else {
-                        getNavigation().startMovingTo(goalPos.getX() + 0.5f, goalPos.getY(), goalPos.getZ() + 0.5f, getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 5.75f);
+                        getNavigation().startMovingTo(goalPos.getX() + 0.5f, goalPos.getY(), goalPos.getZ() + 0.5f, getAttributeValue(EntityAttributes.MOVEMENT_SPEED) * 5.75f);
                     }
                 } if (getNavigation().getCurrentPath() != null && (getNavigation().getCurrentPath().isFinished() || getNavigation().isIdle()) && getTarget() == null) {
                     setPosition(goalPos.getX() + 0.5f + offsetX, getY(), goalPos.getZ() + 0.5f + offsetZ);
                     setVelocity(0, 0, 0);
+                    float yaw = ((IEntityDataSaver) this).getPersistentData().getFloat("spawnRot");
+                    setHeadYaw(yaw);
+                    setBodyYaw(yaw);
+                    setYaw(yaw);
                     getNavigation().stop();
                 }
             }
@@ -530,36 +537,46 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
 
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
+
+        if(boopBox != null) {
+            if (boopBox.expand(0.1f).contains(getPos().add(hitPos))) {
+
+                SoundUtils.playMutableSound(this, boopSound(), 1, 1);
+                return ActionResult.SUCCESS;
+            }
+        }
+
         ItemStack stack = player.getMainHandStack();
-        if (stack.isOf(ItemInit.CPU)) {
-            String animatronic = ItemNbtUtil.getNbt(stack).getString("entity");
-            if (!animatronic.isEmpty() && ComputerData.getAIAnimatronic(animatronic) instanceof ComputerData.Initializer.AnimatronicAI ai) {
-                if(this.getType() == ai.entityType()) {
-                    if (!getDisk(this, getWorld()).isEmpty()) {
-                        dropStack(getDisk(this, getWorld()), (float) hitPos.y);
+        if(player.getWorld() instanceof ServerWorld serverWorld) {
+            if (stack.isOf(ItemInit.CPU)) {
+                String animatronic = ItemNbtUtil.getNbt(stack).getString("entity");
+                if (!animatronic.isEmpty() && ComputerData.getAIAnimatronic(animatronic) instanceof ComputerData.Initializer.AnimatronicAI ai) {
+                    if (this.getType() == ai.entityType()) {
+                        if (!getDisk(this, getWorld()).isEmpty()) {
+                            dropStack(serverWorld, getDisk(this, getWorld()), (float) hitPos.y);
+                        }
+                        ItemStack disk = player.getMainHandStack();
+                        putCPU(this, disk, getWorld());
+                        disk.decrementUnlessCreative(1, player);
+                        player.sendMessage(Text.translatable("item.fnafur.cpu.entity_updated"), true);
+                    } else {
+                        player.sendMessage(Text.translatable("item.fnafur.cpu.wrong_entity"), true);
                     }
-                    ItemStack disk = player.getMainHandStack();
-                    putCPU(this, disk, getWorld());
-                    disk.decrementUnlessCreative(1, player);
-                    player.sendMessage(Text.translatable("item.fnafur.cpu.entity_updated"), true);
+                    return ActionResult.SUCCESS;
                 }
-                else {
-                    player.sendMessage(Text.translatable("item.fnafur.cpu.wrong_entity"), true);
+            } else if (player.getMainHandStack().isOf(ItemInit.PIPE_WRENCH)) {
+                ItemStack disk = getDisk(this, getWorld());
+                if (!disk.isEmpty()) {
+                    dropStack(serverWorld, disk, (float) hitPos.y);
+                    putCPU(this, ItemStack.EMPTY, getWorld());
+                    return ActionResult.SUCCESS;
+                }
+            } else if (player.getMainHandStack().isOf(ItemInit.PAINTBRUSH)) {
+                if (player instanceof ServerPlayerEntity p) {
+                    GoopyNetworkingUtils.setScreen(p, ScreensInit.SKINS, ((IEntityDataSaver) this).getPersistentData(), getId());
                 }
                 return ActionResult.SUCCESS;
             }
-        } else if (player.getMainHandStack().isOf(ItemInit.PIPE_WRENCH)) {
-            ItemStack disk = getDisk(this, getWorld());
-            if (!disk.isEmpty()) {
-                dropStack(disk, (float) hitPos.y);
-                putCPU(this, ItemStack.EMPTY, getWorld());
-                return ActionResult.SUCCESS;
-            }
-        } else if (player.getMainHandStack().isOf(ItemInit.PAINTBRUSH)) {
-            if(player instanceof ServerPlayerEntity p) {
-                GoopyNetworkingUtils.setScreen(p, ScreensInit.SKINS, ((IEntityDataSaver)this).getPersistentData(), getId());
-            }
-            return ActionResult.SUCCESS;
         }
         return super.interactAt(player, hitPos, hand);
     }
@@ -584,7 +601,9 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
         }*/
         ItemStack spawnItem = getPickBlockStack();
 
-        dropStack(spawnItem);
+        if(getWorld() instanceof ServerWorld serverWorld) {
+            dropStack(serverWorld, spawnItem);
+        }
         super.onDeath(damageSource);
     }
 
@@ -610,7 +629,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
     }
 
     void putCPU(PathAwareEntity entity, ItemStack disk, World world){
-        ((IEntityDataSaver)entity).getPersistentData().put("cpu", disk.encodeAllowEmpty(world.getRegistryManager()));
+        ((IEntityDataSaver)entity).getPersistentData().put("cpu", disk.toNbtAllowEmpty(world.getRegistryManager()));
         if(world.isClient()){
             GoopyNetworkingUtils.saveEntityData(entity.getId(), ((IEntityDataSaver)entity).getPersistentData());
         }
@@ -875,4 +894,17 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
         return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/skins/default_icon.png");
     }
 
+    public boolean isBoopable(){
+        return false;
+    }
+    public SoundEvent boopSound(){
+        return SoundsInit.CASUAL_BONGOS;
+    }
+    public Vec3d boopSize(){
+        return new Vec3d(0.1f, 0.1f, 0.1f);
+    }
+
+    public Vec3d boopOffset(){
+        return new Vec3d(0f, 0f, 0f);
+    }
 }

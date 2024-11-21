@@ -95,7 +95,7 @@ public class WallPropPlacingRenderer {
                         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
                         matrices.translate(-0.5f, 0, -0.5f);
 
-                        WorldRenderer.drawShapeOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), shape, 0, 0, 0, 1,1 ,1, 0.5f, true);
+                        VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), shape, 0, 0, 0, 0x88FFFFFF);
                         matrices.pop();
                         FloorPropBlock.drawingOutline = false;
                     }

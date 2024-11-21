@@ -34,7 +34,7 @@ public class FloorPropPlacingRenderer {
                         if (((BlockHitResult) blockHit).getSide() == Direction.UP) pos = pos.up();
                         if (((BlockHitResult) blockHit).getSide() == Direction.DOWN) pos = pos.down();
 
-                        float rotation = -player.getHeadYaw();
+                        float rotation = -MinecraftClient.getInstance().gameRenderer.getCamera().getYaw();
 
                         double x = hitPos.getX() - pos.getX();
                         double y = pos.getY();
@@ -74,7 +74,7 @@ public class FloorPropPlacingRenderer {
 
                         client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), state, model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
 
-                        WorldRenderer.drawShapeOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), shape, 0, 0, 0, 1,1 ,1, 0.5f, true);
+                        VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), shape, 0, 0, 0, 0x88FFFFFF);
                         matrices.pop();
                         FloorPropBlock.drawingOutline = false;
                     }

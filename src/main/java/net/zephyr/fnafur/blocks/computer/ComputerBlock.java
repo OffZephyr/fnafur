@@ -10,23 +10,23 @@ import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootWorldContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +36,7 @@ import java.util.List;
 
 public class ComputerBlock extends BlockWithEntity implements BlockEntityProvider {
 
-    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
     public ComputerBlock(Settings settings) {
         super(settings);
     }
@@ -66,9 +66,6 @@ public class ComputerBlock extends BlockWithEntity implements BlockEntityProvide
         super.appendProperties(builder);
         builder.add(FACING);
     }
-
-    @Override
-    public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) { return true;}
 
     @Nullable
     @Override
@@ -110,7 +107,7 @@ public class ComputerBlock extends BlockWithEntity implements BlockEntityProvide
     }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+    public List<ItemStack> getDroppedStacks(BlockState state, LootWorldContext.Builder builder) {
         BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
 
         List<ItemStack> item = new ArrayList<>();
@@ -125,7 +122,7 @@ public class ComputerBlock extends BlockWithEntity implements BlockEntityProvide
 
         if(player.getMainHandStack().isOf(ItemInit.CPU) || player.getMainHandStack().isOf(ItemInit.ILLUSIONDISC)){
             emptyDisk(data, world, pos, state);
-            data.put("ai_data", player.getMainHandStack().encodeAllowEmpty(world.getRegistryManager()));
+            data.put("ai_data", player.getMainHandStack().toNbtAllowEmpty(world.getRegistryManager()));
             player.getMainHandStack().decrementUnlessCreative(1, player);
             return ActionResult.SUCCESS;
         }
@@ -144,7 +141,7 @@ public class ComputerBlock extends BlockWithEntity implements BlockEntityProvide
 
         if(disk != ItemStack.EMPTY) {
             Block.dropStack(world, pos, state.get(FACING), disk);
-            blockData.put("ai_data", ItemStack.EMPTY.encodeAllowEmpty(world.getRegistryManager()));
+            blockData.put("ai_data", ItemStack.EMPTY.toNbtAllowEmpty(world.getRegistryManager()));
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;

@@ -1,7 +1,5 @@
 package net.zephyr.fnafur.blocks.props.base;
 
-import com.google.common.reflect.TypeToken;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,19 +10,16 @@ import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.zephyr.fnafur.blocks.props.ColorEnumInterface;
-import net.zephyr.fnafur.blocks.props.FloorMonitors.FloorMonitorColors1;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import org.jetbrains.annotations.Nullable;
@@ -38,13 +33,18 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     public static final float angleSnap = 22.5f;
     public static final float gridSnap = 0.25f;
 
-    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
     protected PropBlock(Settings settings) {
         super(settings);
     }
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        ItemStack stack = player.getMainHandStack();
+        if(stack != null && stack.getItem() == ItemInit.PAINTBRUSH) {
+            world.setBlockState(pos, state.cycle(COLOR_PROPERTY()));
+            return ActionResult.SUCCESS;
+        }
         return super.onUse(state, world, pos, player, hit);
     }
 
@@ -79,16 +79,6 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
         return validateTicker(type, BlockEntityInit.PROPS,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
 
-    }
-
-    @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if(stack.getItem() == ItemInit.PAINTBRUSH) {
-            world.setBlockState(pos, state.cycle(COLOR_PROPERTY()));
-            return ItemActionResult.SUCCESS;
-        }
-
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
 
     public List<Box> getClickHitBoxes(BlockState state){

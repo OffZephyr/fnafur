@@ -7,15 +7,16 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
@@ -23,7 +24,6 @@ import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.init.SoundsInit;
-import net.zephyr.fnafur.item.ItemWithDescription;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class TabletItem extends ItemWithDescription implements GeoItem {
+public class TabletItem extends Item implements GeoItem {
     AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     boolean transition = false;
     boolean closing = false;
@@ -47,11 +47,12 @@ public class TabletItem extends ItemWithDescription implements GeoItem {
     private static final RawAnimation USE_ANIM = RawAnimation.begin().thenPlayAndHold("animation.tablet.open");
     private static final RawAnimation CLOSE_ANIM = RawAnimation.begin().thenPlay("animation.tablet.close");
     public TabletItem(Settings settings) {
-        super(settings, ItemWithDescription.TAPE_MEASURE);
+        super(settings);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
+
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if (hand == user.preferredHand)
             if (user instanceof ServerPlayerEntity p) {
                 if(!transition) {

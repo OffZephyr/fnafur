@@ -1,16 +1,18 @@
 package net.zephyr.fnafur.entity.base;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.shape.VoxelShapes;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
@@ -20,22 +22,34 @@ public abstract class DefaultEntityRenderer<T extends DefaultEntity> extends Geo
     }
 
     @Override
-    public void render(T entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
+    public void render(EntityRenderState entityRenderState, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
 
-        if(this.getGeoModel() instanceof DefaultEntityModel<T> model){
-            model.entityRenderer = this;
+        T entity = getAnimatable();
+
+        if(entity != null) {
+            if (entity.boopBox != null && MinecraftClient.getInstance().getEntityRenderDispatcher().shouldRenderHitboxes()) {
+                poseStack.push();
+                poseStack.translate(-entity.getX(), -entity.getY(), -entity.getZ());
+                VertexRendering.drawOutline(poseStack, bufferSource.getBuffer(RenderLayer.LINES), VoxelShapes.cuboid(entity.boopBox), 0, 0, 0, 0xFF00FF00);
+                poseStack.pop();
+            }
+
+            if (this.getGeoModel() instanceof DefaultEntityModel<T> model) {
+                model.entityRenderer = this;
+            }
+
+            PlayerEntity player = MinecraftClient.getInstance().player;
+            Entity jumpscareEntity = MinecraftClient.getInstance().world.getEntityById(((IEntityDataSaver) player).getPersistentData().getInt("JumpscareID"));
+
+            if (MinecraftClient.getInstance().player.isDead() && jumpscareEntity != null && entity.getId() != jumpscareEntity.getId())
+                return;
+
+            poseStack.push();
+            float scale = ((DefaultEntityModel) getGeoModel()).scale();
+            poseStack.scale(scale, scale, scale);
+            super.render(entityRenderState, poseStack, bufferSource, packedLight);
+            poseStack.pop();
         }
-
-        PlayerEntity player = MinecraftClient.getInstance().player;
-        Entity jumpscareEntity = MinecraftClient.getInstance().world.getEntityById(((IEntityDataSaver)player).getPersistentData().getInt("JumpscareID"));
-
-        if(MinecraftClient.getInstance().player.isDead() && jumpscareEntity != null && entity.getId() != jumpscareEntity.getId()) return;
-
-        poseStack.push();
-        float scale = ((DefaultEntityModel)getGeoModel()).scale();
-        poseStack.scale(scale, scale, scale);
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-        poseStack.pop();
     }
 
     @Override
@@ -44,8 +58,8 @@ public abstract class DefaultEntityRenderer<T extends DefaultEntity> extends Geo
     }
 
     @Override
-    protected float getDeathMaxRotation(T animatable) {
-        return 0.0F;
+    protected float getDeathMaxRotation(T animatable, float partialTick) {
+        return 0.0f;
     }
 
     @Override

@@ -15,9 +15,9 @@ public class CPUItem extends Item {
     public Text getName(ItemStack stack) {
         String animatronic = ItemNbtUtil.getNbt(stack).getString("entity");
         if (!animatronic.isEmpty() && ComputerData.getAIAnimatronic(animatronic) instanceof ComputerData.Initializer.AnimatronicAI ai) {
-            return Text.translatable(this.getTranslationKey(stack), ai.entityType().getName().getString());
+            return Text.translatable(this.getTranslationKey(), ai.entityType().getName().getString());
         }
-        return Text.translatable(this.getTranslationKey(stack), "Empty");
+        return Text.translatable(this.getTranslationKey(), "Empty");
     }
 
     public static float getEntityID(String name){

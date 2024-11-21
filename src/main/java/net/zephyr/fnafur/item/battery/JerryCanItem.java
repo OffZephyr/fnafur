@@ -28,6 +28,7 @@ public class JerryCanItem extends Item {
 
         //currentCapacity = 0;
 
-        return super.useOnBlock(context);
+        //ActionResult.SUCCESS makes the arm swing
+        return ActionResult.SUCCESS;
     }
 }

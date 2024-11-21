@@ -1,0 +1,63 @@
+{
+    "targets": {
+        "swap": {}
+    },
+    "passes": [
+        {
+            "program": "minecraft:program/warp",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "minecraft:main"
+                }
+            ],
+            "output": "swap",
+            "uniforms": [
+                {
+                    "name": "Saturation",
+                    "values": [ 0.0 ]
+                },
+                {
+                    "name": "RedMatrix",
+                    "values": [ 2.0, 0.0, 0.0 ]
+                },
+                {
+                    "name": "GreenMatrix",
+                    "values": [ 2.0, 2.0, 2.0 ]
+                },
+                {
+                    "name": "BlueMatrix",
+                    "values": [ 2.0, 2.0, 2.0 ]
+                },
+                {
+                    "name": "NoiseIntensity",
+                    "values": [ 0.0 ]
+                },
+                {
+                    "name": "scanLineIntensity",
+                    "values": [ 0.0 ]
+                }
+            ]
+        },
+        {
+            "program": "minecraft:post/bits",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "swap"
+                }
+            ],
+            "output": "minecraft:main",
+            "uniforms": [
+                {
+                    "name": "Resolution",
+                    "values": [ 32.0 ]
+                },
+                {
+                    "name": "MosaicSize",
+                    "values": [ 4.0 ]
+                }
+            ]
+        }
+    ]
+}

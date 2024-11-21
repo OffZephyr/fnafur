@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.init.block_init.BlockInit;
+import net.zephyr.fnafur.init.block_init.GeoBlockInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
 
 public class ItemGroupsInit {
@@ -25,6 +26,10 @@ public class ItemGroupsInit {
                         entries.add(PropInit.FLOOR_MONITORS_1);
                         entries.add(PropInit.FLOOR_MONITORS_2);
                         entries.add(PropInit.WOODEN_SHELF);
+                        entries.add(PropInit.RETRO_TABLE);
+
+                        entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
+                        entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 
                     }).build());
     public static final ItemGroup FNAF_TECHNICAL = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, "technical"),
@@ -62,6 +67,8 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.MIMIC_FRAME);
                         entries.add(BlockInit.MIMIC_FRAME_SLAB);
 
+                        entries.add(BlockInit.BLACK_TILE);
+                        entries.add(BlockInit.WHITE_TILE);
                         entries.add(BlockInit.BLACK_WHITE_TILES);
                         entries.add(BlockInit.RED_BLUE_TILES);
                         entries.add(BlockInit.BLACK_BLUE_TILES);
@@ -79,6 +86,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CARPET_STAR_RED);
                         entries.add(BlockInit.CARPET_STAR_ORANGE);
                         entries.add(BlockInit.CARPET_STAR_BROWN);
+                        entries.add(BlockInit.CARPET_CONFETTI);
 
                         entries.add(BlockInit.GRAY_WALL);
                         entries.add(BlockInit.DARK_GRAY_WALL);
@@ -87,6 +95,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.SMALL_LIGHT_GRAY_BRICKS);
                         entries.add(BlockInit.METAL_PLATES);
                         entries.add(BlockInit.ROUGH_METAL_PLATES);
+                        entries.add(BlockInit.CEILING_TILE_LIGHT);
                         entries.add(BlockInit.CEILING_TILES);
                         entries.add(BlockInit.CEILING_TILES_STAINED);
 
@@ -94,6 +103,8 @@ public class ItemGroupsInit {
 
                         entries.add(StickerInit.BLACK_WHITE_RED_WALL_TILES);
                         entries.add(StickerInit.BLACK_WHITE_RED_WALL_BIG_TILES);
+                        entries.add(StickerInit.COLORED_WHITE_WALL_TILES);
+                        entries.add(StickerInit.COLORED_WHITE_LONG_WALL_TILES);
                         entries.add(StickerInit.WALL_GRUNGE);
                         entries.add(StickerInit.WALL_GRUNGE_2);
 
@@ -111,6 +122,8 @@ public class ItemGroupsInit {
 
                         entries.add(SpawnItemInit.CL_FRED_SPAWN);
                         entries.add(SpawnItemInit.CL_BON_SPAWN);
+                        entries.add(SpawnItemInit.CL_CHICA_SPAWN);
+                        entries.add(SpawnItemInit.CL_FOXY_SPAWN);
 
                     }).build());
 
