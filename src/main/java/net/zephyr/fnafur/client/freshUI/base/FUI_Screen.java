@@ -15,24 +15,32 @@ public class FUI_Screen extends Screen {
 
     List<FUI_Component> components;
     MinecraftClient currentClient;
+    boolean kill;
 
     public FUI_Screen(Text title) {
         super(title);
         currentClient = MinecraftClient.getInstance();
         components = new ArrayList<>();
+        kill = false;
     }
 
+    /// Add a FUI_Component to the screen
     public void addComponent(FUI_Component component){
         components.add(component);
         component.root = this;
     }
 
+    /// Destroy/Close the screen
     public void destroy(){
+        kill = true;
         components.clear();
+        this.close();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+
+        if(kill) return;
 
         for(FUI_Component c : components){
             c.call(context, currentClient, delta);
@@ -52,6 +60,7 @@ public class FUI_Screen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(kill) return false;
         for(FUI_Component c : components){
             c.whenClicked(mouseX, mouseY, button);
         }

@@ -20,11 +20,15 @@ public class FUI_QuickActionsMenu extends FUI_Component {
     final int CELL_SIZE = 25;
 
     Map<Integer, Runnable> actions = new HashMap<>(){{
-        put(MIDDLE, ()->{destroy();});
+        put(MIDDLE, ()->{root.destroy();});
     }};
 
     void setActions(Map<Integer, Runnable> nActions){
         actions = nActions;
+    }
+
+    void addAction(Integer index, Runnable action){
+        actions.put(index, action);
     }
 
     Vector2i getPosByInt(int i){
