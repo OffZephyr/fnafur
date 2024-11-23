@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.client.*;
+import net.minecraft.item.Item;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
@@ -49,6 +50,7 @@ public class ModelProvider extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ItemInit.DEATHCOIN, Models.GENERATED);
         itemModelGenerator.register(ItemInit.ILLUSIONDISC, Models.GENERATED);
+        itemModelGenerator.register(Item.fromBlock(BlockInit.CAMERA), Models.GENERATED);
 
         itemModelGenerator.register(SpawnItemInit.CL_FRED_SPAWN, Models.GENERATED);
         itemModelGenerator.register(SpawnItemInit.CL_BON_SPAWN, Models.GENERATED);

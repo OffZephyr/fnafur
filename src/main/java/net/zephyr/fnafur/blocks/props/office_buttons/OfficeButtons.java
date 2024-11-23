@@ -5,10 +5,12 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +25,7 @@ import net.zephyr.fnafur.blocks.props.ColorEnumInterface;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.WallHalfProperty;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
+import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -137,7 +140,16 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
     }
 
     @Override
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+    }
+
+    @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        
+        ItemStack stack = player.getMainHandStack();
+        if(stack != null && stack.getItem() == ItemInit.PAINTBRUSH)
+            return super.onUse(state, world, pos, player, hit);
 
         checkingButtons = true;
         ActionResult result = super.onUse(state, world, pos, player, hit);
