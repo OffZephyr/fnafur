@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.basic_blocks.illusion_block;
+package net.zephyr.fnafur.blocks.illusion_block;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,7 +22,6 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -190,22 +189,28 @@ public class MimicFramesSlab extends MimicFrames implements Waterloggable {
         BlockEntity entity = world.getBlockEntity(pos);
         ItemStack stack = player.getMainHandStack();
         if(entity != null) {
+
+            String side;
+            if(state.get(TYPE) == SlabType.DOUBLE) side = hit.getPos().getY() - pos.getY() > 0.5f ? "top" : "bottom";
+            else side = state.get(TYPE).asString();
+
+            NbtCompound nbt = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData();
+            NbtCompound nbt2 = nbt.getCompound(side);
+            Block currentBlock = getCurrentBlock(nbt2, world, hit.getSide());
+
             if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
-                if(!(blockItem.getBlock() instanceof MimicFrames)) {
-                    String side;
-                    if(state.get(TYPE) == SlabType.DOUBLE) side = hit.getPos().getY() - pos.getY() > 0.5f ? "top" : "bottom";
-                    else side = state.get(TYPE).asString();
+                if(!(blockItem.getBlock() instanceof MimicFrames) && currentBlock == null) {
+                    nbt2 = setBlockTexture(nbt2, stack, hit.getSide(), world);
+                    nbt.put(side, nbt2);
 
-                    NbtCompound nbt = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().getCompound(side);
+                    saveBlockTexture(
+                            nbt,
+                            world,
+                            pos,
+                            player.getServer()
+                    );
 
-                    nbt.put(hit.getSide().getName(), stack.toNbtAllowEmpty(world.getRegistryManager()));
-                    ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().put(side, nbt);
-
-                    if(world.isClient()){
-                        GoopyNetworkingUtils.saveBlockNbt(entity.getPos(), ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData());
-                    }
                     world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
-
                     return ActionResult.SUCCESS;
                 }
             }

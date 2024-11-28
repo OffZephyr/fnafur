@@ -1,6 +1,8 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -32,13 +34,13 @@ import java.util.Map;
 
 public class StickerBlock extends BlockWithEntity {
     public String name;
-    public Identifier top = MissingSprite.getMissingSpriteId();
-    public Identifier bottom = MissingSprite.getMissingSpriteId();
-    public Identifier north = MissingSprite.getMissingSpriteId();
-    public Identifier east = MissingSprite.getMissingSpriteId();
-    public Identifier south = MissingSprite.getMissingSpriteId();
-    public Identifier west = MissingSprite.getMissingSpriteId();
-    public Identifier particle = MissingSprite.getMissingSpriteId();
+    private Identifier top;
+    private Identifier bottom;
+    private Identifier north;
+    private Identifier east;
+    private Identifier south;
+    private Identifier west;
+    private Identifier particle;
 
     public StickerBlock(Settings settings) {
         super(settings);
@@ -55,18 +57,51 @@ public class StickerBlock extends BlockWithEntity {
         return this;
     }
 
+    @Environment(EnvType.CLIENT)
+    public Identifier getTop(){
+        return top == null ? MissingSprite.getMissingSpriteId() : top;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Identifier getBottom(){
+        return bottom == null ? MissingSprite.getMissingSpriteId() : bottom;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Identifier getNorth(){
+        return north == null ? MissingSprite.getMissingSpriteId() : north;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Identifier getEast(){
+        return east == null ? MissingSprite.getMissingSpriteId() : east;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Identifier getSouth(){
+        return south == null ? MissingSprite.getMissingSpriteId() : south;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Identifier getWest(){
+        return west == null ? MissingSprite.getMissingSpriteId() : west;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Identifier getParticle(){
+        return particle == null ? MissingSprite.getMissingSpriteId() : particle;
+    }
+
+    @Environment(EnvType.CLIENT)
     public Map<Direction, Identifier> sprites() {
         Map<Direction, Identifier> map = new HashMap<>();
-        map.put(Direction.NORTH, north);
-        map.put(Direction.EAST, east);
-        map.put(Direction.SOUTH, south);
-        map.put(Direction.WEST, west);
-        map.put(Direction.UP, top);
-        map.put(Direction.DOWN, bottom);
+        map.put(Direction.NORTH, getNorth());
+        map.put(Direction.EAST, getEast());
+        map.put(Direction.SOUTH, getSouth());
+        map.put(Direction.WEST, getWest());
+        map.put(Direction.UP, getTop());
+        map.put(Direction.DOWN, getBottom());
         return map;
-    }
-    public Identifier particleSprite() {
-        return particle;
     }
 
     @Override

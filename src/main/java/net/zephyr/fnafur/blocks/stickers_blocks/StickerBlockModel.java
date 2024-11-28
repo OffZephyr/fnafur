@@ -125,7 +125,7 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 
     public void emitQuads(BlockState state, BlockPos pos, NbtCompound nbt, QuadEmitter emitter, MeshBuilder builder, RenderContext context){
 
-        particlesprite = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, ((StickerBlock)state.getBlock()).particleSprite()).getSprite();
+        particlesprite = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, ((StickerBlock)state.getBlock()).getParticle()).getSprite();
 
         emitBaseCube(state, pos, emitter, nbt);
 

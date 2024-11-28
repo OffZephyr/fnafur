@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.basic_blocks.illusion_block;
+package net.zephyr.fnafur.blocks.illusion_block;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.init;
 
+import net.zephyr.fnafur.client.freshUI.base.FUI_Screen;
 import net.zephyr.fnafur.client.gui.screens.CameraEditScreen;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.client.gui.screens.EntitySkinScreen;

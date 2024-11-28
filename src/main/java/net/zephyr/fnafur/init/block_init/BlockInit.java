@@ -5,11 +5,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.block.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
@@ -17,8 +13,8 @@ import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
-import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFrames;
-import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFramesSlab;
+import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
+import net.zephyr.fnafur.blocks.illusion_block.MimicFramesSlab;
 import net.zephyr.fnafur.blocks.battery.blocks.generators.FuelGeneratorBlock;
 import net.zephyr.fnafur.blocks.battery.blocks.switches.RedstoneSwitchBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
@@ -29,7 +25,6 @@ import net.zephyr.fnafur.blocks.computer.ComputerBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlockRenderer;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
-import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
 import net.zephyr.fnafur.blocks.tile_doors.OfficeDoor;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntityRenderer;
@@ -139,6 +134,30 @@ public class BlockInit {
             AbstractBlock.Settings.copy(Blocks.STONE),
             Identifier.of(FnafUniverseResuited.MOD_ID, "block/large_brown_bricks")
     );
+    public static final Block LARGE_LIGHT_GRAY_BRICKS = registerStickerBlock(
+            "large_light_gray_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/large_light_gray_bricks")
+    );
+    public static final Block TAN_BRICKS = registerStickerBlock(
+            "tan_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/tan_bricks")
+    );
+    public static final Block VARIED_TAN_BRICKS = registerStickerBlock(
+            "varied_tan_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/varied_tan_bricks")
+    );
+    public static final Block LARGE_WHITE_BRICKS = registerStickerBlock(
+            "large_white_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/large_white_bricks")
+    );
     public static final Block SMALL_GRAY_BRICKS = registerStickerBlock(
             "small_gray_bricks",
             StickerBlock::new,
@@ -198,8 +217,23 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block WHITE_16_TILES = registerBlock(
+            "white_16_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block WHITE_16_CLEAN_TILES = registerBlock(
+            "white_16_clean_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
     public static final Block TAN_16_TILES = registerBlock(
             "tan_16_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block TAN_16_CLEAN_TILES = registerBlock(
+            "tan_16_clean_tiles",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
@@ -211,6 +245,11 @@ public class BlockInit {
     public static final Block TAN_RAINBOW_16_TILES = registerBlock(
             "tan_rainbow_16_tiles",
             Random3Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BLACK_CORNER_BROWN_TILE = registerBlock(
+            "black_corner_brown_tile",
+            Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
     public static final Block CEILING_TILES = registerBlock(
@@ -225,7 +264,7 @@ public class BlockInit {
     );
     public static final Block CEILING_TILES_STAINED = registerBlock(
             "ceiling_tiles_stained",
-            Block::new,
+            Random4Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
     public static final Block CARPET_STAR_GREEN = registerBlock(
@@ -270,6 +309,11 @@ public class BlockInit {
     );
     public static final Block CARPET_CONFETTI = registerBlock(
             "carpet_confetti",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
+    );
+    public static final Block CARPET_SPACE = registerBlock(
+            "carpet_space",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
     );

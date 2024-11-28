@@ -6,8 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
-import net.zephyr.fnafur.blocks.basic_blocks.illusion_block.MimicFrameBlockEntity;
-import net.zephyr.fnafur.blocks.battery.blocks.base.BaseSwitchBlockEntity;
+import net.zephyr.fnafur.blocks.illusion_block.MimicFrameBlockEntity;
 import net.zephyr.fnafur.blocks.battery.blocks.generators.FuelGeneratorBlockEntity;
 import net.zephyr.fnafur.blocks.battery.blocks.switches.RedstoneSwitchBlockEntity;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
@@ -80,10 +79,14 @@ public class BlockEntityInit {
                                 BlockInit.GRAY_WALL,
                                 BlockInit.DARK_GRAY_WALL,
                                 BlockInit.LARGE_BROWN_BRICKS,
+                                BlockInit.LARGE_LIGHT_GRAY_BRICKS,
+                                BlockInit.LARGE_WHITE_BRICKS,
                                 BlockInit.SMALL_GRAY_BRICKS,
                                 BlockInit.SMALL_LIGHT_GRAY_BRICKS,
                                 BlockInit.METAL_PLATES,
-                                BlockInit.ROUGH_METAL_PLATES
+                                BlockInit.ROUGH_METAL_PLATES,
+                                BlockInit.TAN_BRICKS,
+                                BlockInit.VARIED_TAN_BRICKS
                         ).build());
 
         MIMIC_FRAME =

@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.basic_blocks.illusion_block;
+package net.zephyr.fnafur.blocks.illusion_block;
 
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;

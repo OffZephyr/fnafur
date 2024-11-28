@@ -14,6 +14,6 @@ public class FnafUniverseResuitedDataGenerator implements DataGeneratorEntrypoin
 		pack.addProvider(ItemTagProvider::new);
 		pack.addProvider(LootTableProvider::new);
 		pack.addProvider(ModelProvider::new);
-		pack.addProvider(RecipeProvider::new);
+		//pack.addProvider(RecipeProvider::new);
 	}
 }

@@ -74,9 +74,13 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.BLACK_BLUE_TILES);
                         entries.add(BlockInit.BLACK_WHITE_16_TILES);
                         entries.add(BlockInit.BLACK_WHITE_16_TILES_TRIM);
+                        entries.add(BlockInit.WHITE_16_CLEAN_TILES);
+                        entries.add(BlockInit.WHITE_16_TILES);
+                        entries.add(BlockInit.TAN_16_CLEAN_TILES);
                         entries.add(BlockInit.TAN_16_TILES);
                         entries.add(BlockInit.TAN_16_SPACED_TILES);
                         entries.add(BlockInit.TAN_RAINBOW_16_TILES);
+                        entries.add(BlockInit.BLACK_CORNER_BROWN_TILE);
 
                         entries.add(BlockInit.CARPET_STAR_GREEN);
                         entries.add(BlockInit.CARPET_STAR_CYAN);
@@ -87,10 +91,13 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CARPET_STAR_ORANGE);
                         entries.add(BlockInit.CARPET_STAR_BROWN);
                         entries.add(BlockInit.CARPET_CONFETTI);
+                        entries.add(BlockInit.CARPET_SPACE);
 
                         entries.add(BlockInit.GRAY_WALL);
                         entries.add(BlockInit.DARK_GRAY_WALL);
                         entries.add(BlockInit.LARGE_BROWN_BRICKS);
+                        entries.add(BlockInit.LARGE_LIGHT_GRAY_BRICKS);
+                        entries.add(BlockInit.LARGE_WHITE_BRICKS);
                         entries.add(BlockInit.SMALL_GRAY_BRICKS);
                         entries.add(BlockInit.SMALL_LIGHT_GRAY_BRICKS);
                         entries.add(BlockInit.METAL_PLATES);
@@ -98,11 +105,15 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CEILING_TILE_LIGHT);
                         entries.add(BlockInit.CEILING_TILES);
                         entries.add(BlockInit.CEILING_TILES_STAINED);
+                        entries.add(BlockInit.TAN_BRICKS);
+                        entries.add(BlockInit.VARIED_TAN_BRICKS);
 
                         entries.add(BlockInit.BALLPIT);
 
                         entries.add(StickerInit.BLACK_WHITE_RED_WALL_TILES);
                         entries.add(StickerInit.BLACK_WHITE_RED_WALL_BIG_TILES);
+                        entries.add(StickerInit.BLACK_WHITE_BLACK_WALL_TILES);
+                        entries.add(StickerInit.BLACK_WHITE_BLACK_DIRTY_WALL_TILES);
                         entries.add(StickerInit.COLORED_WHITE_WALL_TILES);
                         entries.add(StickerInit.COLORED_WHITE_LONG_WALL_TILES);
                         entries.add(StickerInit.WALL_GRUNGE);

@@ -58,13 +58,13 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity {
+
     public DefaultEntityModel<? extends DefaultEntity> model = null;
     public Box boopBox;
     public boolean mimic;
     public PlayerEntity mimicPlayer;
     public boolean mimicAggressive = false;
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    public long[] JumpscareCamPos = new long[6];
     public boolean isGUI = false;
     public String killScreenID;
     boolean running = false;
@@ -343,7 +343,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
         BlockPos goalPos = !boolData(behavior, "spawn_pos", this) ? blockPosData(behavior, "position", this) : BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("spawnPos"));
         double offsetX = Math.clamp(intData(behavior, "position_offset_x", this) / 10f, -0.495f, 0.495f);
         double offsetZ = Math.clamp(intData(behavior, "position_offset_z", this) / 10f, -0.495f, 0.495f);
-        if (getBlockPos().equals(goalPos)) {
+        if (getBlockPos().getX() == goalPos.getX() && getBlockPos().getZ() == goalPos.getZ()) {
             boolean headRotation = boolData(behavior, "rotate_head", this);
             boolean spawnRot = boolData(behavior, "spawn_rot", this);
             int yaw = spawnRot ? ((IEntityDataSaver) this).getPersistentData().getInt("spawnRot") : intData(behavior, "rotation", this);
@@ -360,29 +360,32 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
                 boolean teleport = boolData(behavior, "teleport", this);
                 boolean aggressive = boolData(behavior, "aggressive", this);
 
+                double x = goalPos.getX() + 0.5f + offsetX;
+                double y = goalPos.getY();
+                double z = goalPos.getZ() + 0.5f + offsetZ;
+                float yaw = ((IEntityDataSaver) this).getPersistentData().getFloat("spawnRot");
+
                 if ((getNavigation().getCurrentPath() == null || getNavigation().getCurrentPath().getLastNode() == null || getNavigation().getCurrentPath().getLastNode().getBlockPos() != goalPos) && getTarget() == null) {
                     if (teleport && !aggressive) {
-                        setPosition(goalPos.getX() + 0.5f + offsetX, getY(), goalPos.getZ() + 0.5f + offsetX);
-                        setVelocity(0, 0, 0);
-                        float yaw = ((IEntityDataSaver) this).getPersistentData().getFloat("spawnRot");
-                        setHeadYaw(yaw);
-                        setBodyYaw(yaw);
-                        setYaw(yaw);
-                        getNavigation().stop();
+                        setToPosRot(x, y, z, yaw);
                     } else {
                         getNavigation().startMovingTo(goalPos.getX() + 0.5f, goalPos.getY(), goalPos.getZ() + 0.5f, getAttributeValue(EntityAttributes.MOVEMENT_SPEED) * 5.75f);
                     }
                 } if (getNavigation().getCurrentPath() != null && (getNavigation().getCurrentPath().isFinished() || getNavigation().isIdle()) && getTarget() == null) {
-                    setPosition(goalPos.getX() + 0.5f + offsetX, getY(), goalPos.getZ() + 0.5f + offsetZ);
-                    setVelocity(0, 0, 0);
-                    float yaw = ((IEntityDataSaver) this).getPersistentData().getFloat("spawnRot");
-                    setHeadYaw(yaw);
-                    setBodyYaw(yaw);
-                    setYaw(yaw);
-                    getNavigation().stop();
+                    setToPosRot(x, y, z, yaw);
                 }
             }
         }
+    }
+
+    public void setToPosRot(double x, double y, double z, float yaw){
+        setPos(x, y, z);
+        setVelocity(0, 0, 0);
+        NbtCompound nbt = ((IEntityDataSaver) this).getPersistentData();
+        setHeadYaw(yaw);
+        setBodyYaw(yaw);
+        setYaw(yaw);
+        getNavigation().stop();
     }
 
     public abstract SoundEvent walkSound();

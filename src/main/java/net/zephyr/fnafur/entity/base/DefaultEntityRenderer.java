@@ -20,13 +20,18 @@ public abstract class DefaultEntityRenderer<T extends DefaultEntity> extends Geo
     public DefaultEntityRenderer(EntityRendererFactory.Context renderManager, GeoModel<T> model) {
         super(renderManager, model);
     }
-
+    public void render(T entity, EntityRenderState entityRenderState, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
+        animatable = entity;
+        render(entityRenderState, poseStack, bufferSource, packedLight);
+    }
     @Override
     public void render(EntityRenderState entityRenderState, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
 
         T entity = getAnimatable();
 
         if(entity != null) {
+            if(entity.mimic) System.out.println("t3");
+
             if (entity.boopBox != null && MinecraftClient.getInstance().getEntityRenderDispatcher().shouldRenderHitboxes()) {
                 poseStack.push();
                 poseStack.translate(-entity.getX(), -entity.getY(), -entity.getZ());

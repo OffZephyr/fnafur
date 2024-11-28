@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class FUI_Screen extends Screen {
     MinecraftClient currentClient;
     boolean kill;
 
-    public FUI_Screen(Text title) {
+    public FUI_Screen(Text title, NbtCompound nbt, Object value3) {
         super(title);
         currentClient = MinecraftClient.getInstance();
         components = new ArrayList<>();

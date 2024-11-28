@@ -42,6 +42,28 @@ public class StickerInit {
             Movable.VERTICAL,
             Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/black_white_red_wall_big_tiles")
     );
+    public static final Item BLACK_WHITE_BLACK_WALL_TILES = registerSticker(
+            "sticker_black_white_black_wall_tiles",
+            StickerItem::new,
+            new Item.Settings().maxCount(1).rarity(Rarity.COMMON),
+            "b_w_b_wall_tiles",
+            5.5f,
+            16,
+            0.75f,
+            Movable.VERTICAL,
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/black_white_black_wall_tiles")
+    );
+    public static final Item BLACK_WHITE_BLACK_DIRTY_WALL_TILES = registerSticker(
+            "sticker_black_white_black_dirty_wall_tiles",
+            StickerItem::new,
+            new Item.Settings().maxCount(1).rarity(Rarity.COMMON),
+            "b_w_b_dirty_wall_tiles",
+            5.5f,
+            16,
+            0.75f,
+            Movable.VERTICAL,
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/black_white_black_dirty_wall_tiles")
+    );
     public static final Item WALL_GRUNGE = registerSticker(
             "sticker_wall_grunge",
             StickerItem::new,

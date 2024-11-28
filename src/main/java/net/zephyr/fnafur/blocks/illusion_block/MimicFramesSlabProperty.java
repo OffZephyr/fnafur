@@ -1,7 +1,6 @@
-package net.zephyr.fnafur.blocks.basic_blocks.illusion_block;
+package net.zephyr.fnafur.blocks.illusion_block;
 
 import net.minecraft.util.StringIdentifiable;
-import net.zephyr.fnafur.blocks.props.ColorEnumInterface;
 
 public enum MimicFramesSlabProperty implements StringIdentifiable {
     BOTTOM("bottom", 0),

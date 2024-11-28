@@ -38,15 +38,17 @@ public class LivingEntityRendererMixin {
         if(player != null) {
             T entity = (T) ((IPlayerCustomModel) player).getCurrentEntity();
             if (entity != null) {
+
                 EntityType<T> entityType = (EntityType<T>) entity.getType();
 
                 EntityRendererFactory.Context context = new EntityRendererFactory.Context(
                         client.getEntityRenderDispatcher(), client.getItemRenderer(), client.getMapRenderer(), client.getBlockRenderManager(), client.getResourceManager(), client.getEntityModelLoader(), client.getEquipmentModelLoader(), client.textRenderer
                 );
 
-                EntityRenderer<?, ?> renderer = FnafUniverseResuited.RENDERER_FACTORIES.get(entityType).create(context);
+                EntityRenderer<T, ?> renderer = (EntityRenderer<T, ?>) FnafUniverseResuited.RENDERER_FACTORIES.get(entityType).create(context);
 
-                if (renderer instanceof DefaultEntityRenderer<?> entityRenderer) {
+                if (renderer != null) {
+                    DefaultEntityRenderer<T> entityRenderer = (DefaultEntityRenderer<T>)renderer;
 
                     entity.setHeadYaw(entity.mimicPlayer.getBodyYaw());
                     float bodyYawDiff = entity.mimicPlayer.getBodyYaw() - ((IPlayerCustomModel) entity.mimicPlayer).getMimicYaw();
@@ -61,8 +63,7 @@ public class LivingEntityRendererMixin {
                     entity.setBodyYaw(((IPlayerCustomModel) entity.mimicPlayer).getMimicYaw());
                     entity.setPitch(entity.mimicPlayer.getPitch());
 
-
-                    entityRenderer.render(entityRenderer.getEntityRenderState(), matrixStack, vertexConsumerProvider, i);
+                   //entityRenderer.render(entity, entityRenderer.createRenderState(), matrixStack, vertexConsumerProvider, i);
                 }
                 ci.cancel();
             }

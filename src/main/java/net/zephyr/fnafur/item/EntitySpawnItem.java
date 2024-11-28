@@ -45,7 +45,7 @@ public class EntitySpawnItem extends Item {
         if(!nbt.isEmpty()) {
             ((IEntityDataSaver) entity).getPersistentData().copyFrom(nbt);
         }
-        ((IEntityDataSaver)entity).getPersistentData().putLong("spawnPos", pos.asLong());
+        ((IEntityDataSaver)entity).getPersistentData().putLong("spawnPos", entity.getBlockPos().asLong());
         ((IEntityDataSaver)entity).getPersistentData().putFloat("spawnRot", yaw);
         context.getWorld().spawnEntity(entity);
         context.getStack().decrementUnlessCreative(1, context.getPlayer());

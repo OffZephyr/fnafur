@@ -18,6 +18,7 @@ public class Random4Block extends Block {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
+        System.out.println("test");
         Random random = new Random();
         int num = random.nextInt(0, 4);
 
