@@ -81,6 +81,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.TAN_16_SPACED_TILES);
                         entries.add(BlockInit.TAN_RAINBOW_16_TILES);
                         entries.add(BlockInit.BLACK_CORNER_BROWN_TILE);
+                        entries.add(BlockInit.BLACK_GREEN_DIAGONAL_TILE);
 
                         entries.add(BlockInit.CARPET_STAR_GREEN);
                         entries.add(BlockInit.CARPET_STAR_CYAN);
@@ -90,6 +91,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CARPET_STAR_RED);
                         entries.add(BlockInit.CARPET_STAR_ORANGE);
                         entries.add(BlockInit.CARPET_STAR_BROWN);
+                        entries.add(BlockInit.CARPET_SWIRLY_RED);
                         entries.add(BlockInit.CARPET_CONFETTI);
                         entries.add(BlockInit.CARPET_SPACE);
 
@@ -105,8 +107,19 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CEILING_TILE_LIGHT);
                         entries.add(BlockInit.CEILING_TILES);
                         entries.add(BlockInit.CEILING_TILES_STAINED);
-                        entries.add(BlockInit.TAN_BRICKS);
-                        entries.add(BlockInit.VARIED_TAN_BRICKS);
+                        entries.add(BlockInit.TAN_THIN_BRICKS);
+                        entries.add(BlockInit.VARIED_TAN_THIN_BRICKS);
+                        entries.add(BlockInit.BROWN_THIN_BRICKS);
+                        entries.add(BlockInit.RED_THIN_BRICKS);
+                        entries.add(BlockInit.ORANGE_THIN_BRICKS);
+                        entries.add(BlockInit.YELLOW_THIN_BRICKS);
+                        entries.add(BlockInit.GREEN_THIN_BRICKS);
+                        entries.add(BlockInit.CYAN_THIN_BRICKS);
+                        entries.add(BlockInit.PURPLE_THIN_BRICKS);
+                        entries.add(BlockInit.MAGENTA_THIN_BRICKS);
+                        entries.add(BlockInit.PINK_THIN_BRICKS);
+                        entries.add(BlockInit.GRAY_THIN_BRICKS);
+                        entries.add(BlockInit.WHITE_THIN_BRICKS);
 
                         entries.add(BlockInit.BALLPIT);
 

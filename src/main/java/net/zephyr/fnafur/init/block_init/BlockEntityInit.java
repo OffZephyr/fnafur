@@ -85,8 +85,19 @@ public class BlockEntityInit {
                                 BlockInit.SMALL_LIGHT_GRAY_BRICKS,
                                 BlockInit.METAL_PLATES,
                                 BlockInit.ROUGH_METAL_PLATES,
-                                BlockInit.TAN_BRICKS,
-                                BlockInit.VARIED_TAN_BRICKS
+                                BlockInit.TAN_THIN_BRICKS,
+                                BlockInit.VARIED_TAN_THIN_BRICKS,
+                                BlockInit.GRAY_THIN_BRICKS,
+                                BlockInit.BROWN_THIN_BRICKS,
+                                BlockInit.CYAN_THIN_BRICKS,
+                                BlockInit.GREEN_THIN_BRICKS,
+                                BlockInit.MAGENTA_THIN_BRICKS,
+                                BlockInit.PINK_THIN_BRICKS,
+                                BlockInit.ORANGE_THIN_BRICKS,
+                                BlockInit.PURPLE_THIN_BRICKS,
+                                BlockInit.RED_THIN_BRICKS,
+                                BlockInit.WHITE_THIN_BRICKS,
+                                BlockInit.YELLOW_THIN_BRICKS
                         ).build());
 
         MIMIC_FRAME =

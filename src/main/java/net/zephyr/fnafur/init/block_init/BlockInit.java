@@ -140,17 +140,83 @@ public class BlockInit {
             AbstractBlock.Settings.copy(Blocks.STONE),
             Identifier.of(FnafUniverseResuited.MOD_ID, "block/large_light_gray_bricks")
     );
-    public static final Block TAN_BRICKS = registerStickerBlock(
-            "tan_bricks",
+    public static final Block TAN_THIN_BRICKS = registerStickerBlock(
+            "tan_thin_bricks",
             StickerBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/tan_bricks")
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/tan_thin_bricks")
     );
-    public static final Block VARIED_TAN_BRICKS = registerStickerBlock(
-            "varied_tan_bricks",
+    public static final Block VARIED_TAN_THIN_BRICKS = registerStickerBlock(
+            "varied_tan_thin_bricks",
             StickerBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/varied_tan_bricks")
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/varied_tan_thin_bricks")
+    );
+    public static final Block GRAY_THIN_BRICKS = registerStickerBlock(
+            "gray_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/gray_thin_bricks")
+    );
+    public static final Block BROWN_THIN_BRICKS = registerStickerBlock(
+            "brown_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/brown_thin_bricks")
+    );
+    public static final Block CYAN_THIN_BRICKS = registerStickerBlock(
+            "cyan_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/cyan_thin_bricks")
+    );
+    public static final Block GREEN_THIN_BRICKS = registerStickerBlock(
+            "green_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/green_thin_bricks")
+    );
+    public static final Block MAGENTA_THIN_BRICKS = registerStickerBlock(
+            "magenta_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/magenta_thin_bricks")
+    );
+    public static final Block ORANGE_THIN_BRICKS = registerStickerBlock(
+            "orange_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/orange_thin_bricks")
+    );
+    public static final Block PINK_THIN_BRICKS = registerStickerBlock(
+            "pink_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/pink_thin_bricks")
+    );
+    public static final Block PURPLE_THIN_BRICKS = registerStickerBlock(
+            "purple_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/purple_thin_bricks")
+    );
+    public static final Block RED_THIN_BRICKS = registerStickerBlock(
+            "red_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/red_thin_bricks")
+    );
+    public static final Block WHITE_THIN_BRICKS = registerStickerBlock(
+            "white_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/white_thin_bricks")
+    );
+    public static final Block YELLOW_THIN_BRICKS = registerStickerBlock(
+            "yellow_thin_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/yellow_thin_bricks")
     );
     public static final Block LARGE_WHITE_BRICKS = registerStickerBlock(
             "large_white_bricks",
@@ -252,6 +318,11 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block BLACK_GREEN_DIAGONAL_TILE = registerBlock(
+            "black_green_diagonal_tile",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
     public static final Block CEILING_TILES = registerBlock(
             "ceiling_tiles",
             Block::new,
@@ -304,6 +375,12 @@ public class BlockInit {
     );
     public static final Block CARPET_STAR_BROWN = registerBlock(
             "carpet_star_brown",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
+    );
+
+    public static final Block CARPET_SWIRLY_RED = registerBlock(
+            "carpet_swirly_red",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
     );

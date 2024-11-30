@@ -28,8 +28,19 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.SMALL_LIGHT_GRAY_BRICKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.METAL_PLATES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.ROUGH_METAL_PLATES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_BRICKS);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.VARIED_TAN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.VARIED_TAN_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GRAY_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BROWN_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CYAN_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GREEN_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.MAGENTA_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.ORANGE_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.PINK_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.PURPLE_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WHITE_THIN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.YELLOW_THIN_BRICKS);
 
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_WHITE_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_TILE);
@@ -43,6 +54,7 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_16_CLEAN_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_16_SPACED_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_CORNER_BROWN_TILE);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_GREEN_DIAGONAL_TILE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CEILING_TILES);
 
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_GREEN);
@@ -53,6 +65,7 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_RED);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_ORANGE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_BROWN);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_SWIRLY_RED);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_CONFETTI);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_SPACE);
     }
