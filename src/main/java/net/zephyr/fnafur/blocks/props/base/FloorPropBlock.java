@@ -4,26 +4,22 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.blocks.props.ColorEnumInterface;
-import net.zephyr.fnafur.blocks.props.wooden_shelf.WoodenShelfColors1;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class FloorPropBlock<T extends Enum<T> & ColorEnumInterface & StringIdentifiable> extends PropBlock<T> {
+public abstract class FloorPropBlock<@Nullable T extends Enum<T> & ColorEnumInterface & StringIdentifiable> extends PropBlock {
 
     protected FloorPropBlock(Settings settings) {
         super(settings);
@@ -78,7 +74,7 @@ public abstract class FloorPropBlock<T extends Enum<T> & ColorEnumInterface & St
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        if(COLOR_PROPERTY() != null) {
+        if(COLOR_ENUM() != null) {
             builder.add(COLOR_PROPERTY());
         }
         builder.add(FACING);

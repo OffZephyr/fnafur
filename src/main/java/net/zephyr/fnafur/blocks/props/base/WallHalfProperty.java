@@ -1,7 +1,6 @@
 package net.zephyr.fnafur.blocks.props.base;
 
 import net.minecraft.util.StringIdentifiable;
-import net.zephyr.fnafur.blocks.props.ColorEnumInterface;
 
 public enum WallHalfProperty implements StringIdentifiable {
     WALL("wall"),

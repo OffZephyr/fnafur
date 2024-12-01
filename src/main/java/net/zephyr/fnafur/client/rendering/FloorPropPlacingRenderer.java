@@ -18,6 +18,9 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 
 public class FloorPropPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
@@ -70,9 +73,13 @@ public class FloorPropPlacingRenderer {
                         matrices.translate(0.5f, 0, 0.5f);
                         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
                         matrices.translate(-0.5f, 0, -0.5f);
-                        BakedModel model = client.getBakedModelManager().getBlockModels().getModel(state);
+                        if(block instanceof GeoPropBlock){
 
-                        client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), state, model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                        }
+                        else {
+                            BakedModel model = client.getBakedModelManager().getBlockModels().getModel(state);
+                            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), state, model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                        }
 
                         VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), shape, 0, 0, 0, 0x88FFFFFF);
                         matrices.pop();

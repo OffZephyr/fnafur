@@ -2,10 +2,7 @@ package net.zephyr.fnafur.item.tablet;
 
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
-import net.zephyr.fnafur.blocks.props.pirates_cove.stage.PiratesCoveStageBlockEntity;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 

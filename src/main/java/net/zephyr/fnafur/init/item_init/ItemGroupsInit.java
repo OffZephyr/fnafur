@@ -23,13 +23,26 @@ public class ItemGroupsInit {
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/tabs_fnaf.png"))
                     .icon(() -> new ItemStack(PropInit.FLOOR_MONITORS_1))
                     .entries((displayContext, entries) -> {
+                        entries.add(PropInit.FNAF_1_DESK);
+                        entries.add(PropInit.WALL_CLOUDS);
+
                         entries.add(PropInit.FLOOR_MONITORS_1);
                         entries.add(PropInit.FLOOR_MONITORS_2);
                         entries.add(PropInit.WOODEN_SHELF);
                         entries.add(PropInit.RETRO_TABLE);
 
+                        entries.add(PropInit.CEILING_TILE_VENT);
+                        entries.add(PropInit.RESTROOM_SIGN);
+                        entries.add(PropInit.BROOM);
+                        entries.add(PropInit.MOP_BUCKET);
+
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
+
+                        entries.add(GeoBlockInit.SMALL_GRAY_DOOR);
+                        entries.add(GeoBlockInit.BIG_GRAY_DOOR);
+                        entries.add(GeoBlockInit.BIG_MAGENTA_DOOR);
+                        entries.add(GeoBlockInit.BIG_GREEN_DOOR);
 
                     }).build());
     public static final ItemGroup FNAF_TECHNICAL = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, "technical"),

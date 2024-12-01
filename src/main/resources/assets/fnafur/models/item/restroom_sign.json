@@ -1,0 +1,8 @@
+{
+	"parent": "fnafur:props/restroom_sign_men",
+    "overrides": [
+        { "predicate": { "skin": 0 }, "model": "fnafur:props/restroom_sign_men" },
+        { "predicate": { "skin": 0.01 }, "model": "fnafur:props/restroom_sign_women" },
+        { "predicate": { "skin": 0.02 }, "model": "fnafur:props/restroom_sign_neutral" }
+	]
+}

@@ -25,7 +25,7 @@ public class CPUItem extends Item {
             default -> 0;
             case "fnafur.cl_fred" -> 1;
             case "fnafur.cl_bon" -> 2;
-            case "fnafur.cl_chic" -> 3;
+            case "fnafur.cl_chica" -> 3;
             case "fnafur.cl_foxy" -> 4;
             case "fnafur.cl_spar" -> 5;
         };

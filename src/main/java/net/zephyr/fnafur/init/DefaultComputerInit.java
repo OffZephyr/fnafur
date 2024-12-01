@@ -109,6 +109,7 @@ public class DefaultComputerInit implements ComputerData.Initializer {
         AIs.add(new AnimatronicAI(Text.translatable("fnafur.mod_name"), EntityInit.ZEPHYR, "fnafur.zephyr"));
         AIs.add(new AnimatronicAI(Text.translatable("fnafur.mod_name"), ClassicInit.CL_FRED, "fnafur.cl_fred"));
         AIs.add(new AnimatronicAI(Text.translatable("fnafur.mod_name"), ClassicInit.CL_BON, "fnafur.cl_bon"));
+        AIs.add(new AnimatronicAI(Text.translatable("fnafur.mod_name"), ClassicInit.CL_CHICA, "fnafur.cl_chica"));
         AIs.add(new AnimatronicAI(Text.translatable("fnafur.mod_name"), ClassicInit.CL_FOXY, "fnafur.cl_foxy"));
         return AIs;
     }

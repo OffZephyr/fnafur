@@ -9,15 +9,13 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.computer.ComputerData;
-import net.zephyr.fnafur.blocks.props.ColorEnumInterface;
+import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.item.DeathCoin;
@@ -32,8 +30,6 @@ import net.zephyr.fnafur.item.tools.PipeWrenchItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 

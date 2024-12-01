@@ -15,6 +15,7 @@ import net.zephyr.fnafur.blocks.computer.ComputerBlockEntity;
 import net.zephyr.fnafur.blocks.fog.FogBlockEntity;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
 
@@ -25,6 +26,7 @@ public class BlockEntityInit {
     public static BlockEntityType<CameraDeskBlockEntity> CAMERA_DESK;
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
+    public static BlockEntityType<GeoPropBlockEntity> GEO_PROPS;
     public static BlockEntityType<StickerBlockEntity> STICKER_BLOCK;
     public static BlockEntityType<TileDoorBlockEntity> TILE_DOOR;
     public static BlockEntityType<MimicFrameBlockEntity> MIMIC_FRAME;
@@ -68,9 +70,18 @@ public class BlockEntityInit {
                                 PropInit.WOODEN_SHELF,
                                 PropInit.RETRO_TABLE,
 
+                                PropInit.WALL_CLOUDS,
+                                PropInit.RESTROOM_SIGN,
+                                PropInit.BROOM,
+                                PropInit.MOP_BUCKET,
                                 PropInit.OFFICE_BUTTONS,
 
                                 PropInit.BEPH_PLUSHIE
+                        ).build());
+        GEO_PROPS =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "geo_props"),
+                        FabricBlockEntityTypeBuilder.create(GeoPropBlockEntity::new,
+                                PropInit.FNAF_1_DESK
                         ).build());
 
         STICKER_BLOCK =

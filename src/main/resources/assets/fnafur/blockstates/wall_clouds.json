@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/wall_clouds"
+    },
+    "facing=east": {
+      "model": "fnafur:props/wall_clouds",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/wall_clouds",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/wall_clouds",
+      "y": 270
+    }
+  }
+}

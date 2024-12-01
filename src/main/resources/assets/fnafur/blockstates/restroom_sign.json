@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "facing=north,color=men": {
+      "model": "fnafur:props/restroom_sign_men"
+    },
+    "facing=east,color=men": {
+      "model": "fnafur:props/restroom_sign_men",
+      "y": 90
+    },
+    "facing=south,color=men": {
+      "model": "fnafur:props/restroom_sign_men",
+      "y": 180
+    },
+    "facing=west,color=men": {
+      "model": "fnafur:props/restroom_sign_men",
+      "y": 270
+    },
+    "facing=north,color=women": {
+      "model": "fnafur:props/restroom_sign_women"
+    },
+    "facing=east,color=women": {
+      "model": "fnafur:props/restroom_sign_women",
+      "y": 90
+    },
+    "facing=south,color=women": {
+      "model": "fnafur:props/restroom_sign_women",
+      "y": 180
+    },
+    "facing=west,color=women": {
+      "model": "fnafur:props/restroom_sign_women",
+      "y": 270
+    },
+    "facing=north,color=neutral": {
+      "model": "fnafur:props/restroom_sign_neutral"
+    },
+    "facing=east,color=neutral": {
+      "model": "fnafur:props/restroom_sign_neutral",
+      "y": 90
+    },
+    "facing=south,color=neutral": {
+      "model": "fnafur:props/restroom_sign_neutral",
+      "y": 180
+    },
+    "facing=west,color=neutral": {
+      "model": "fnafur:props/restroom_sign_neutral",
+      "y": 270
+    }
+  }
+}

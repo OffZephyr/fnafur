@@ -29,24 +29,6 @@ public class cl_chica extends DefaultEntity {
 
     private final EntitySkin DEFAULT =
             new EntitySkin("entity.fnafur.cl_chica.default");
-    private final EntitySkin CLEAN =
-            new EntitySkin("entity.fnafur.cl_chica.clean")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_clean.png"));
-    private final EntitySkin DIRTY =
-            new EntitySkin("entity.fnafur.cl_chica.dirty")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_dirty.png"));
-    private final EntitySkin BLACKLIGHT =
-            new EntitySkin("entity.fnafur.cl_chica.blacklight")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight.png"));
-    private final EntitySkin BLACKLIGHT_MGB =
-            new EntitySkin("entity.fnafur.cl_chica.blacklight_mgb")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight_mgb.png"));
-    private final EntitySkin BLACKLIGHT_INVERTED =
-            new EntitySkin("entity.fnafur.cl_chica.blacklight_inverted")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight_inverted.png"));
-    private final EntitySkin INVERTED =
-            new EntitySkin("entity.fnafur.cl_chica.inverted")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_inverted.png"));
 
     public cl_chica(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -68,7 +50,7 @@ public class cl_chica extends DefaultEntity {
         return MobEntity.createMobAttributes()
                 .add(EntityAttributes.MAX_HEALTH, 50f)
                 .add(EntityAttributes.ATTACK_DAMAGE, 9999f)
-                .add(EntityAttributes.ATTACK_SPEED, 0.95f)
+                .add(EntityAttributes.ATTACK_SPEED, 1f)
                 .add(EntityAttributes.ATTACK_KNOCKBACK, 0f)
                 .add(EntityAttributes.MOVEMENT_SPEED, 0.2f)
                 .add(EntityAttributes.KNOCKBACK_RESISTANCE, 9999f)
@@ -91,6 +73,21 @@ public class cl_chica extends DefaultEntity {
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, VillagerEntity.class, 6f));
         this.goalSelector.add(3, new ShouldLookAtEntityGoal(this, DefaultEntity.class, 6f));
         this.goalSelector.add(4, new ShouldLookAroundGoal(this));
+    }
+
+    @Override
+    public boolean isBoopable(){
+        return true;
+    }
+
+    @Override
+    public Vec3d boopSize() {
+        return new Vec3d(0.5f, 0.5f, 0.5f);
+    }
+
+    @Override
+    public Vec3d boopOffset() {
+        return new Vec3d(0f, -0.5f, 0f);
     }
 
     @Override
@@ -232,12 +229,6 @@ public class cl_chica extends DefaultEntity {
     public List<EntitySkin> getSkins() {
         List<EntitySkin> list = new ArrayList<>();
         list.add(DEFAULT);
-        list.add(CLEAN);
-        list.add(DIRTY);
-        list.add(BLACKLIGHT);
-        list.add(BLACKLIGHT_MGB);
-        list.add(BLACKLIGHT_INVERTED);
-        list.add(INVERTED);
         return list;
     }
     @Override

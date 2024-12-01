@@ -63,9 +63,18 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.CEILING_TILES)
                 .add(BlockInit.CEILING_TILES_STAINED)
 
+                .add(PropInit.FNAF_1_DESK)
+                .add(PropInit.CEILING_TILE_VENT)
                 .add(PropInit.FLOOR_MONITORS_1)
                 .add(PropInit.FLOOR_MONITORS_2)
                 .add(PropInit.OFFICE_BUTTONS)
+        ;
+
+        getOrCreateTagBuilder(BlockTags.PLANKS)
+                .add(PropInit.WOODEN_SHELF)
+                .add(PropInit.RETRO_TABLE)
+                .add(PropInit.RESTROOM_SIGN)
+                .add(PropInit.WALL_CLOUDS)
         ;
 
         getOrCreateTagBuilder(BlockTags.WOOL)
