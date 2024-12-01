@@ -40,10 +40,7 @@ public class Fnaf1Desk extends FloorPropBlock<DefaultPropColorEnum> implements G
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
-        switch(state.get(FACING)){
-            case NORTH, SOUTH -> shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-1, 0, 0, 2, 2.25f, 1)));
-            case EAST, WEST -> shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0, 0, -1, 1, 2.25f, 2)));
-        }
+        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-1, 0, 0, 2, 2.25f, 1)));
         return drawingOutline ? shape : VoxelShapes.fullCube();
     }
 
