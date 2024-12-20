@@ -41,6 +41,9 @@ public class cl_foxy extends DefaultEntity {
     private final EntitySkin DIRTY =
             new EntitySkin("entity.fnafur.cl_foxy.dirty")
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_dirty.png"));
+    private final EntitySkin STAINED_FABRIC =
+            new EntitySkin("entity.fnafur.cl_foxy.stained_fabric")
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_stained_fabric.png"));
     private final EntitySkin OLD =
             new EntitySkin("entity.fnafur.cl_foxy.old")
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_old.png"));
@@ -60,6 +63,12 @@ public class cl_foxy extends DefaultEntity {
     private final EntitySkin SHADOW =
             new EntitySkin("entity.fnafur.cl_foxy.shadow")
                     .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_shadow.png"));
+    private final EntitySkin SHADOW_WHITE_EYES =
+            new EntitySkin("entity.fnafur.cl_foxy.shadow_white_eyes")
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_shadow_white_eyes.png"));
+    private final EntitySkin SHADOW_NORMAL_EYES =
+            new EntitySkin("entity.fnafur.cl_foxy.shadow_normal_eyes")
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_shadow_normal_eyes.png"));
 
     public cl_foxy(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -243,10 +252,13 @@ public class cl_foxy extends DefaultEntity {
         list.add(FIXED);
         list.add(FIXED_TAIL);
         list.add(DIRTY);
+        list.add(STAINED_FABRIC);
         list.add(OLD);
         list.add(BLACKLIGHT);
         list.add(BLACKLIGHT_PBG);
         list.add(SHADOW);
+        list.add(SHADOW_WHITE_EYES);
+        list.add(SHADOW_NORMAL_EYES);
         list.add(INVERTED);
         list.add(FIXED_INVERTED);
         return list;

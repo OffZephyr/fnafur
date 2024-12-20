@@ -29,6 +29,24 @@ public class cl_chica extends DefaultEntity {
 
     private final EntitySkin DEFAULT =
             new EntitySkin("entity.fnafur.cl_chica.default");
+    private final EntitySkin CLEAN =
+            new EntitySkin("entity.fnafur.cl_chica.clean")
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_clean.png"));
+    private final EntitySkin DIRTY =
+            new EntitySkin("entity.fnafur.cl_chica.dirty")
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_dirty.png"));
+    private final EntitySkin BLACKLIGHT =
+            new EntitySkin("entity.fnafur.cl_chica.blacklight")
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight.png"));
+    private final EntitySkin BLACKLIGHT_MGB =
+            new EntitySkin("entity.fnafur.cl_chica.blacklight_mgb")
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight_mgb.png"));
+    private final EntitySkin BLACKLIGHT_INVERTED =
+            new EntitySkin("entity.fnafur.cl_chica.blacklight_inverted")
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight_inverted.png"));
+    private final EntitySkin INVERTED =
+            new EntitySkin("entity.fnafur.cl_chica.inverted")
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_inverted.png"));
 
     public cl_chica(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -77,7 +95,7 @@ public class cl_chica extends DefaultEntity {
 
     @Override
     public boolean isBoopable(){
-        return true;
+        return false;
     }
 
     @Override
@@ -229,8 +247,15 @@ public class cl_chica extends DefaultEntity {
     public List<EntitySkin> getSkins() {
         List<EntitySkin> list = new ArrayList<>();
         list.add(DEFAULT);
+        list.add(CLEAN);
+        list.add(DIRTY);
+        list.add(BLACKLIGHT);
+        list.add(BLACKLIGHT_MGB);
+        list.add(BLACKLIGHT_INVERTED);
+        list.add(INVERTED);
         return list;
     }
+
     @Override
     public Identifier getDefaultTexture() {
         return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica.png");
