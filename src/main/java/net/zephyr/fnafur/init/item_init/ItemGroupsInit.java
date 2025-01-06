@@ -119,10 +119,13 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CARPET_CONFETTI);
                         entries.add(BlockInit.CARPET_CONFETTI_FREDBEARS);
                         entries.add(BlockInit.CARPET_SPACE);
+                        entries.add(BlockInit.CARPET_TRIANGLE);
 
                         entries.add(BlockInit.WALL_TILE_FULL);
                         entries.add(BlockInit.GRAY_WALL);
                         entries.add(BlockInit.DARK_GRAY_WALL);
+                        entries.add(BlockInit.BRICK_WALL);
+                        entries.add(BlockInit.BRICK_WALL_DARKER);
                         entries.add(BlockInit.RED_BRICK_WALL);
                         entries.add(BlockInit.RED_BRICK_WALL_SMALL);
                         entries.add(BlockInit.RED_BRICK_WALL_MIXED);
@@ -139,6 +142,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CEILING_TILES_STAINED);
                         entries.add(BlockInit.DARK_CEILING);
                         entries.add(BlockInit.DARK_CEILING_DETAIL);
+                        entries.add(BlockInit.PLAIN_BLACK_BLOCK);
                         entries.add(BlockInit.TAN_THIN_BRICKS);
                         entries.add(BlockInit.VARIED_TAN_THIN_BRICKS);
                         entries.add(BlockInit.BROWN_THIN_BRICKS);
@@ -153,6 +157,8 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.GRAY_THIN_BRICKS);
                         entries.add(BlockInit.WHITE_THIN_BRICKS);
                         entries.add(BlockInit.MOSAIC_BRICKS);
+                        entries.add(BlockInit.GRUNGE_STONE_BRICKS);
+                        entries.add(BlockInit.GRUNGE_STONE_BRICKS_DIRTY);
 
                         entries.add(BlockInit.BALLPIT);
 

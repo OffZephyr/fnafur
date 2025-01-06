@@ -127,6 +127,18 @@ public class BlockInit {
             AbstractBlock.Settings.copy(Blocks.STONE),
             Identifier.of(FnafUniverseResuited.MOD_ID, "block/dark_gray_wall")
     );
+    public static final Block BRICK_WALL = registerStickerBlock(
+            "brick_wall",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/brick_wall")
+    );
+    public static final Block BRICK_WALL_DARKER = registerStickerBlock(
+            "brick_wall_darker",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/brick_wall_darker")
+    );
     public static final Block RED_BRICK_WALL = registerStickerBlock(
             "red_brick_wall",
             StickerBlock::new,
@@ -258,6 +270,18 @@ public class BlockInit {
             StickerBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE),
             Identifier.of(FnafUniverseResuited.MOD_ID, "block/small_light_gray_bricks")
+    );
+    public static final Block GRUNGE_STONE_BRICKS = registerStickerBlock(
+            "grunge_stone_bricks",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/grunge_stone_bricks")
+    );
+    public static final Block GRUNGE_STONE_BRICKS_DIRTY = registerStickerBlock(
+            "grunge_stone_bricks_dirty",
+            StickerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "block/grunge_stone_bricks_dirty")
     );
     public static final Block METAL_PLATES = registerStickerBlock(
             "metal_plates",
@@ -477,6 +501,11 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
     );
+    public static final Block CARPET_TRIANGLE = registerBlock(
+            "carpet_triangle",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
+    );
     public static final Block DARK_CEILING = registerBlock(
             "dark_ceiling",
             Block::new,
@@ -484,6 +513,11 @@ public class BlockInit {
     );
     public static final Block DARK_CEILING_DETAIL = registerBlock(
             "dark_ceiling_detail",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block PLAIN_BLACK_BLOCK = registerBlock(
+            "plain_black_block",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );

@@ -25,6 +25,8 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.WALL_TILE_FULL)
                 .add(BlockInit.GRAY_WALL)
                 .add(BlockInit.DARK_GRAY_WALL)
+                .add(BlockInit.BRICK_WALL)
+                .add(BlockInit.BRICK_WALL_DARKER)
                 .add(BlockInit.RED_BRICK_WALL)
                 .add(BlockInit.RED_BRICK_WALL_SMALL)
                 .add(BlockInit.RED_BRICK_WALL_MIXED)
@@ -35,6 +37,8 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.LARGE_WHITE_BRICKS)
                 .add(BlockInit.SMALL_GRAY_BRICKS)
                 .add(BlockInit.SMALL_LIGHT_GRAY_BRICKS)
+                .add(BlockInit.GRUNGE_STONE_BRICKS)
+                .add(BlockInit.GRUNGE_STONE_BRICKS_DIRTY)
                 .add(BlockInit.METAL_PLATES)
                 .add(BlockInit.ROUGH_METAL_PLATES)
                 .add(BlockInit.TAN_THIN_BRICKS)
@@ -79,6 +83,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.CEILING_TILES_STAINED)
                 .add(BlockInit.DARK_CEILING)
                 .add(BlockInit.DARK_CEILING_DETAIL)
+                .add(BlockInit.PLAIN_BLACK_BLOCK)
 
                 .add(BlockInit.KITCHEN_FLOOR)
                 .add(BlockInit.CONCRETE_FLOOR)
@@ -110,6 +115,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.CARPET_CONFETTI)
                 .add(BlockInit.CARPET_CONFETTI_FREDBEARS)
                 .add(BlockInit.CARPET_SPACE)
+                .add(BlockInit.CARPET_TRIANGLE)
                 ;
 
         getOrCreateTagBuilder(BlockTags.CLIMBABLE)

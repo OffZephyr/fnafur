@@ -23,6 +23,8 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WALL_TILE_FULL);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GRAY_WALL);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.DARK_GRAY_WALL);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BRICK_WALL);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BRICK_WALL_DARKER);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_BRICK_WALL);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_BRICK_WALL_SMALL);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_BRICK_WALL_MIXED);
@@ -32,6 +34,8 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.LARGE_WHITE_BRICKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.SMALL_GRAY_BRICKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.SMALL_LIGHT_GRAY_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GRUNGE_STONE_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GRUNGE_STONE_BRICKS_DIRTY);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.METAL_PLATES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.ROUGH_METAL_PLATES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_THIN_BRICKS);
@@ -74,6 +78,7 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CEILING_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.DARK_CEILING);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.DARK_CEILING_DETAIL);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.PLAIN_BLACK_BLOCK);
 
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.KITCHEN_FLOOR);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CONCRETE_FLOOR);
@@ -90,6 +95,7 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_CONFETTI);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_CONFETTI_FREDBEARS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_SPACE);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_TRIANGLE);
     }
 
     @Override

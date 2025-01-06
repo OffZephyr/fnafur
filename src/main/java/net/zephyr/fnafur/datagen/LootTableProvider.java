@@ -21,6 +21,8 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.WALL_TILE_FULL);
         addDrop(BlockInit.GRAY_WALL);
         addDrop(BlockInit.DARK_GRAY_WALL);
+        addDrop(BlockInit.BRICK_WALL);
+        addDrop(BlockInit.BRICK_WALL_DARKER);
         addDrop(BlockInit.RED_BRICK_WALL);
         addDrop(BlockInit.RED_BRICK_WALL_SMALL);
         addDrop(BlockInit.RED_BRICK_WALL_MIXED);
@@ -42,6 +44,8 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.PURPLE_THIN_BRICKS);
         addDrop(BlockInit.WHITE_THIN_BRICKS);
         addDrop(BlockInit.MOSAIC_BRICKS);
+        addDrop(BlockInit.GRUNGE_STONE_BRICKS);
+        addDrop(BlockInit.GRUNGE_STONE_BRICKS_DIRTY);
 
         addDrop(BlockInit.STAGE_PLANKS);
         addDrop(BlockInit.STAGE_PLANKS_THIN);
@@ -70,6 +74,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.CEILING_TILES_STAINED);
         addDrop(BlockInit.DARK_CEILING);
         addDrop(BlockInit.DARK_CEILING_DETAIL);
+        addDrop(BlockInit.PLAIN_BLACK_BLOCK);
 
         addDrop(BlockInit.KITCHEN_FLOOR);
         addDrop(BlockInit.CONCRETE_FLOOR);
@@ -86,6 +91,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.CARPET_CONFETTI);
         addDrop(BlockInit.CARPET_CONFETTI_FREDBEARS);
         addDrop(BlockInit.CARPET_SPACE);
+        addDrop(BlockInit.CARPET_TRIANGLE);
 
         addDrop(PropInit.FNAF_1_DESK);
         addDrop(PropInit.WALL_CLOUDS);
