@@ -6,9 +6,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrameBlockEntity;
-import net.zephyr.fnafur.blocks.battery.blocks.generators.FuelGeneratorBlockEntity;
-import net.zephyr.fnafur.blocks.battery.blocks.switches.RedstoneSwitchBlockEntity;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockEntity;
 import net.zephyr.fnafur.blocks.computer.ComputerBlockEntity;
@@ -30,8 +29,7 @@ public class BlockEntityInit {
     public static BlockEntityType<StickerBlockEntity> STICKER_BLOCK;
     public static BlockEntityType<TileDoorBlockEntity> TILE_DOOR;
     public static BlockEntityType<MimicFrameBlockEntity> MIMIC_FRAME;
-    public static BlockEntityType<FuelGeneratorBlockEntity> FUEL_GENERATOR;
-    public static BlockEntityType<RedstoneSwitchBlockEntity> REDSTONE_SWITCH;
+    public static BlockEntityType<BaseEnergyBlockEntity> ENERGY;
 
     public static void registerBlockEntities() {
         COMPUTER =
@@ -127,16 +125,10 @@ public class BlockEntityInit {
                         ).build());
 
         //battery.blocks
-        FUEL_GENERATOR =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "fuel_generator"),
-                        FabricBlockEntityTypeBuilder.create(FuelGeneratorBlockEntity::new,
-                                    BlockInit.FUEL_GENERATOR
-                                ).build());
-
-        REDSTONE_SWITCH =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "redstone_switch"),
-                        FabricBlockEntityTypeBuilder.create(RedstoneSwitchBlockEntity::new,
-                                BlockInit.REDSTONE_SWITCH
+        ENERGY      =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "energy"),
+                        FabricBlockEntityTypeBuilder.create(BaseEnergyBlockEntity::new,
+                                BlockInit.FUEL_GENERATOR
                         ).build());
 
         FnafUniverseResuited.LOGGER.info("Registering Block Entities for " + FnafUniverseResuited.MOD_ID.toUpperCase());

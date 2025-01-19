@@ -21,8 +21,7 @@ import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.item.IllusionDisc;
-import net.zephyr.fnafur.item.battery.JerryCanItem;
-import net.zephyr.fnafur.item.battery.TestFreshUI;
+import net.zephyr.fnafur.item.energy.JerryCanItem;
 import net.zephyr.fnafur.item.tools.PaintbrushItem;
 import net.zephyr.fnafur.item.tablet.TabletItem;
 import net.zephyr.fnafur.item.tools.TapeMesurerItem;
@@ -103,11 +102,6 @@ public class ItemInit {
             "jerrycan",
             JerryCanItem::new,
             new Item.Settings().maxCount(1).rarity(Rarity.COMMON)
-    );
-    public static final Item TEST_FUI = registerItem(
-            "fui_test",
-            TestFreshUI::new,
-            new Item.Settings().maxCount(1)
     );
 
     public static Item registerItem(String path, Function<Item.Settings, Item> factory, Item.Settings settings) {

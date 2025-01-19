@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north":{
+      "model":"fnafur:block/fuel_generator","y":0
+      },
+    "facing=south":{
+      "model":"fnafur:block/fuel_generator","y":180
+    },
+    "facing=east":{
+      "model":"fnafur:block/fuel_generator","y":270
+    },
+    "facing=west":{
+        "model":"fnafur:block/fuel_generator","y":90
+    }
+  }
+}

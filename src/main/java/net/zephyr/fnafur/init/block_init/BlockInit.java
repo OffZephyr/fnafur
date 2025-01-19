@@ -13,10 +13,10 @@ import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
+import net.zephyr.fnafur.blocks.energy.blocks.generators.BaseGeneratorBlock;
+import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFramesSlab;
-import net.zephyr.fnafur.blocks.battery.blocks.generators.FuelGeneratorBlock;
-import net.zephyr.fnafur.blocks.battery.blocks.switches.RedstoneSwitchBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
@@ -533,11 +533,10 @@ public class BlockInit {
     public static final Block FUEL_GENERATOR = registerBlock(
             "fuel_generator",
             FuelGeneratorBlock::new,
-            AbstractBlock.Settings.copy(Blocks.STONE));
-    public static final Block REDSTONE_SWITCH = registerBlock(
-            "redstone_switch",
-            RedstoneSwitchBlock::new,
-            AbstractBlock.Settings.copy(Blocks.STONE));
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+    );
+
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
         final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
