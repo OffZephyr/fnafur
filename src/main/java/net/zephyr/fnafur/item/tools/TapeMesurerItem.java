@@ -25,8 +25,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.blocks.CallableByMesurer;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockEntity;
+import net.zephyr.fnafur.blocks.energy.enums.IElectricNode;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.tablet.TabletItem;
@@ -67,6 +69,10 @@ public class TapeMesurerItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         World world = context.getWorld();
+
+        if(world.getBlockState(context.getBlockPos()).getBlock() instanceof CallableByMesurer callable){
+            return callable.ExecuteAction(context);
+        }
 
         if(!context.getPlayer().getOffHandStack().isEmpty() && context.getPlayer().getOffHandStack().getItem() instanceof TabletItem){
             NbtCompound data = context.getStack().getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();

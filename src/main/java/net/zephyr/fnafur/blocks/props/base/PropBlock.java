@@ -58,6 +58,7 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     }
     public abstract Class<T> COLOR_ENUM();
     public EnumProperty<T> COLOR_PROPERTY(){
+        if(COLOR_ENUM() == null) return COLOR;
         if(COLOR == null) COLOR = EnumProperty.of("color", COLOR_ENUM());
         return COLOR;
     }

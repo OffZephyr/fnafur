@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.init.block_init;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -128,7 +129,8 @@ public class BlockEntityInit {
         ENERGY      =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "energy"),
                         FabricBlockEntityTypeBuilder.create(BaseEnergyBlockEntity::new,
-                                BlockInit.FUEL_GENERATOR
+                        BlockInit.FUEL_GENERATOR,
+                                BlockInit.REDSTONE_CONVERTER
                         ).build());
 
         FnafUniverseResuited.LOGGER.info("Registering Block Entities for " + FnafUniverseResuited.MOD_ID.toUpperCase());

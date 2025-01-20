@@ -6,6 +6,7 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.nbt.NbtInt;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
 import org.jetbrains.annotations.Nullable;
@@ -28,11 +29,10 @@ public class FuelGeneratorBlock extends  BaseGeneratorBlock {
     /// add fuel amount to a block
     public void AddFuel(World world, BlockPos pos, int amount) {
         BlockEntity entity = world.getBlockEntity(pos);
-        if(!(entity instanceof BaseEnergyBlockEntity)) return;
-        BaseEnergyBlockEntity ent = ((BaseEnergyBlockEntity)entity);
+        if(!(entity instanceof BaseEnergyBlockEntity base)) return;
 
-        int newQuantity = Math.min(ent.getData().getInt(KEY_FUEL) + amount, MAX_CAPACITY);
-        ent.setData(KEY_FUEL, NbtInt.of(newQuantity));
+        int newQuantity = Math.min(base.getData().getInt(KEY_FUEL) + amount, MAX_CAPACITY);
+        base.setData(KEY_FUEL, NbtInt.of(newQuantity));
 
         System.out.println("[FUEL_GEN]: refuel!");
 
@@ -49,8 +49,7 @@ public class FuelGeneratorBlock extends  BaseGeneratorBlock {
             //System.out.println("[FUEL_GEN]: tick! "+pos);
 
             BlockEntity ent = world1.getBlockEntity(pos);
-            if(!(ent instanceof BaseEnergyBlockEntity)) return;
-            BaseEnergyBlockEntity base = ((BaseEnergyBlockEntity)ent);
+            if(!(ent instanceof BaseEnergyBlockEntity base)) return;
 
             int newQuantity = Math.max(base.getData().getInt(KEY_FUEL) - FUEL_CONSUMPTION, 0);
             base.setData(KEY_FUEL,NbtInt.of(newQuantity));
@@ -59,9 +58,9 @@ public class FuelGeneratorBlock extends  BaseGeneratorBlock {
     }
 
     @Override
-    public boolean isPowered(World world, BlockPos pos) {
+    public boolean isPowered(BlockView world, BlockPos pos) {
         BlockEntity ent = world.getBlockEntity(pos);
-        if(!(ent instanceof BaseEnergyBlockEntity)) return false;
-        return ((BaseEnergyBlockEntity)ent).getData().getInt(KEY_FUEL) > 0;
+        if(!(ent instanceof BaseEnergyBlockEntity base)) return false;
+        return base.getData().getInt(KEY_FUEL) > 0;
     }
 }

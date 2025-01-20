@@ -15,6 +15,7 @@ import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.BaseGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
+import net.zephyr.fnafur.blocks.energy.blocks.switches.RedstoneConverterBlock;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFramesSlab;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
@@ -535,6 +536,11 @@ public class BlockInit {
             FuelGeneratorBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
+    );
+    public static final Block REDSTONE_CONVERTER = registerBlock(
+            "redstone_converter",
+            RedstoneConverterBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
     );
 
 
