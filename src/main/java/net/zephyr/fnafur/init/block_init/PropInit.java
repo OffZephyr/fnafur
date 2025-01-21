@@ -200,6 +200,7 @@ public class PropInit {
 
     public static void registerPropsOnClient() {
         BlockEntityRendererFactories.register(BlockEntityInit.PROPS, PropRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntityInit.ENERGY, PropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GEO_PROPS, GeoPropRenderer::new);
 
         for (Item item : PROPS) {

@@ -78,6 +78,7 @@ public class ItemGroupsInit {
                     .entries((displayContext, entries) -> {
 
                         entries.add(BlockInit.MIMIC_FRAME);
+                        entries.add(BlockInit.MIMIC_FRAME_2x2);
                         entries.add(BlockInit.MIMIC_FRAME_SLAB);
 
                         entries.add(BlockInit.GROUT_TILE);

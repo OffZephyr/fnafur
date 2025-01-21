@@ -122,6 +122,7 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "mimic_frame"),
                         FabricBlockEntityTypeBuilder.create(MimicFrameBlockEntity::new,
                                 BlockInit.MIMIC_FRAME,
+                                BlockInit.MIMIC_FRAME_2x2,
                                 BlockInit.MIMIC_FRAME_SLAB
                         ).build());
 

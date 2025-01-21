@@ -80,7 +80,6 @@ public class MimicFramesSlab extends MimicFrames implements Waterloggable {
 
         BlockState state = ctx.getStack().getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(getDefaultState());
 
-
         BlockPos blockPos = ctx.getBlockPos();
         BlockState blockState = ctx.getWorld().getBlockState(blockPos);
         if (blockState.isOf(this)) {

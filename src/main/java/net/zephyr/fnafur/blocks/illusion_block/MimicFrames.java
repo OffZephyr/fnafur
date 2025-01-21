@@ -4,21 +4,31 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.property.Properties;
+import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.*;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
@@ -27,8 +37,19 @@ import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
+import org.joml.Vector3i;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MimicFrames extends StickerBlock {
+    public static List<Identifier> IDs = new ArrayList<>();
+
+    Vec3i latestMatrixPos;
     public MimicFrames(Settings settings) {
         super(settings);
     }
@@ -37,6 +58,116 @@ public class MimicFrames extends StickerBlock {
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new MimicFrameBlockEntity(pos, state);
     }
+    public int getMatrixSize(){
+        return 1;
+    }
+
+    Vec3i getMatrixPos(Vec3d pos, BlockPos blockPos){
+        double x = getMatrixSize() == 1 ? 0 : pos.getX() - blockPos.getX();
+        double y = getMatrixSize() == 1 ? 0 : pos.getY() - blockPos.getY();
+        double z = getMatrixSize() == 1 ? 0 : pos.getZ() - blockPos.getZ();
+        return new Vec3i((int)(x * getMatrixSize()), (int)(y * getMatrixSize()), (int)(z * getMatrixSize()));
+    }
+    @Nullable
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        Vec3d offset = ctx.getSide().getDoubleVector().multiply(0.01f);
+        latestMatrixPos = getMatrixPos(ctx.getHitPos().add(offset), ctx.getBlockPos());
+        return getDefaultState();
+    }
+    public static boolean[][][] arrayToMatrix(byte[] array, int size){
+        if(array.length > 0) {
+            boolean[][][] matrix = new boolean[size][size][size];
+            for (int x = 0; x < size; x++) {
+                for (int y = 0; y < size; y++) {
+                    for (int z = 0; z < size; z++) {
+                        matrix[x][y][z] = array[(x * size * size) + (y * size) + z] == 1;
+                    }
+                }
+            }
+            return matrix;
+        }
+        return new boolean[1][1][1];
+    }
+    public static byte[] matrixToArray(boolean[][][] matrix, int size){
+        byte[] array = new byte[size * size * size];
+        for(int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                for (int z = 0; z < size; z++) {
+                    array[(x * size * size) + (y * size) + z] = (byte) (matrix[x][y][z] ? 1 : 0);
+                }
+            }
+        }
+        return array;
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        BlockEntity entity = world.getBlockEntity(pos);
+        if(entity != null) {
+            Vec3i matrixPos = latestMatrixPos;
+            byte[] data = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix");
+            boolean[][][] matrix = new boolean[getMatrixSize()][getMatrixSize()][getMatrixSize()];
+            matrix[matrixPos.getX()][matrixPos.getY()][matrixPos.getZ()] = true;
+
+            byte[] array = matrixToArray(matrix, getMatrixSize());
+            for(int i = 0; i < data.length; i++){
+                array[i] = (byte) Math.max(data[i], array[i]);
+            }
+            ((IEntityDataSaver)entity).getPersistentData().putByteArray("cubeMatrix", array);
+        }
+        super.onPlaced(world, pos, state, placer, itemStack);
+    }
+
+    @Override
+    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        BlockEntity entity = world.getBlockEntity(pos);
+        if(entity != null) {
+            byte[] cubeArray = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix");
+            if(cubeArray.length <= 1) return VoxelShapes.fullCube();
+            boolean[][][] cubeMatrix = arrayToMatrix(cubeArray, getMatrixSize());
+            float part = 1.0f / getMatrixSize();
+            VoxelShape shape = VoxelShapes.empty();
+
+            for (int x = 0; x < getMatrixSize(); x++) {
+                for (int y = 0; y < getMatrixSize(); y++) {
+                    for (int z = 0; z < getMatrixSize(); z++) {
+                        Box box = new Box(0 + (x * part), 0 + (y * part), 0 + (z * part), part + (x * part), part + (y * part), part + (z * part));
+                        if(cubeMatrix[x][y][z]) shape = VoxelShapes.union(shape, VoxelShapes.cuboid(box));
+                    }
+                }
+            }
+            return shape;
+        }
+        return super.getOutlineShape(state, world, pos, context);
+    }
+
+    @Override
+    protected boolean canReplace(BlockState state, ItemPlacementContext context) {
+
+        ItemStack itemStack = context.getStack();
+
+        BlockEntity entity = context.getWorld().getBlockEntity(context.getBlockPos());
+        if(entity == null || !itemStack.isOf(this.asItem())) return false;
+        else{
+            Vec3d offset = context.getSide().getDoubleVector().multiply(0.01f);
+            Vec3i matrixPos = getMatrixPos(context.getHitPos().add(offset), context.getBlockPos());
+            if(matrixPos.getX() > 1 || matrixPos.getY() > 1 || matrixPos.getZ() > 1) return false;
+            if(matrixPos.getX() < 0 || matrixPos.getY() < 0 || matrixPos.getZ() < 0) return false;
+
+            byte[] data = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix");
+            boolean[][][] matrix = arrayToMatrix(data, getMatrixSize());
+
+            matrix[matrixPos.getX()][matrixPos.getY()][matrixPos.getZ()] = true;
+
+            byte[] array = matrixToArray(matrix, getMatrixSize());
+
+            ((IEntityDataSaver)entity).getPersistentData().putByteArray("cubeMatrix", array);
+            context.getWorld().updateListeners(context.getBlockPos(), getDefaultState(), getDefaultState(), 3);
+            context.getWorld().playSoundAtBlockCenter(context.getBlockPos(), state.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 1, 1, true);
+            return true;
+        }
+    }
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
@@ -44,11 +175,15 @@ public class MimicFrames extends StickerBlock {
         ItemStack stack = player.getMainHandStack();
         if(entity != null) {
 
+            Vec3i direcVector = hit.getSide().getVector();
+            Vec3i matrixPos = getMatrixPos(hit.getPos(), hit.getBlockPos());
+
             NbtCompound nbt = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData();
             Block currentBlock = getCurrentBlock(nbt, world, hit.getSide());
 
+
             if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
-                if(!(blockItem.getBlock() instanceof MimicFrames) && currentBlock == null) {
+                if (!(blockItem.getBlock() instanceof MimicFrames) && currentBlock == null) {
 
                     saveBlockTexture(
                             setBlockTexture(nbt, stack, hit.getSide(), world),

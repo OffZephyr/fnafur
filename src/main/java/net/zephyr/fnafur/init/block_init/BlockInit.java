@@ -17,6 +17,7 @@ import net.zephyr.fnafur.blocks.energy.blocks.generators.BaseGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.RedstoneConverterBlock;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
+import net.zephyr.fnafur.blocks.illusion_block.MimicFrames2x2;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFramesSlab;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
@@ -53,7 +54,7 @@ public class BlockInit {
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .mapColor(MapColor.DIRT_BROWN)
     );
-    public static final Block MIMIC_FRAME = registerBlock(
+    public static final Block MIMIC_FRAME = registerFrame(
             "mimic_frame_block",
             MimicFrames::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
@@ -61,6 +62,16 @@ public class BlockInit {
                     .nonOpaque()
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
+    );
+    public static final Block MIMIC_FRAME_2x2 = registerFrame(
+            "mimic_frame_2",
+            MimicFrames2x2::new,
+            AbstractBlock.Settings.copy(MIMIC_FRAME)
+                    .solidBlock(Blocks::never)
+                    .nonOpaque()
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .replaceable()
     );
     public static final Block MIMIC_FRAME_SLAB = registerBlock(
             "mimic_frame_slab",
@@ -552,7 +563,12 @@ public class BlockInit {
         Items.register(block);
         return block;
     }
-    private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier texture) {
+    private static Block registerFrame(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+        Block block = registerBlock(name, factory, settings);
+        MimicFrames.IDs.add(Identifier.of(FnafUniverseResuited.MOD_ID, name));
+        return block;
+    }
+        private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier texture) {
         return registerStickerBlock(name, factory, settings, texture, texture, texture, texture, texture, texture);
     }
     private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier sides, Identifier top, Identifier bottom) {
@@ -590,6 +606,7 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA_DESK, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTripwire());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getTripwire());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_SLAB, RenderLayer.getTripwire());
 
         BlockEntityRendererFactories.register(BlockEntityInit.FOG_BLOCK, FogBlockRenderer::new);
