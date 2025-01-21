@@ -15,7 +15,6 @@ import net.minecraft.nbt.NbtLongArray;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.CallableByMesurer;
@@ -30,6 +29,8 @@ import java.util.List;
 
 public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElectricNode, CallableByMesurer {
 
+    int tick;
+    final int TICK_RATE = 20;
 
     public BaseSwitchBlock(AbstractBlock.Settings settings) {
         super(settings);
@@ -37,29 +38,39 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
 
     @Override
     public ActionResult addNode(World world, BlockPos pos, BlockPos toAdd, BlockHitResult hit) {
-        System.out.println("[SWITCH]: try to connect node...");
+        //System.out.println("[SWITCH]: try to connect node...");
         if(pos == toAdd) return ActionResult.FAIL;
         if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return ActionResult.FAIL;
         List<Long> p = new ArrayList<>(
                 Arrays.stream(base.getData().getLongArray(BaseEnergyBlockEntity.KEY_NODES)).boxed().toList()
         );
 
+        if(p.contains(toAdd.asLong()))return ActionResult.SUCCESS;
         p.add(toAdd.asLong());
 
         base.setData(BaseEnergyBlockEntity.KEY_NODES, new NbtLongArray(p) );
-        System.out.println("[SWITCH]: data nodes : "+ base.getNodes().toString());
+        //System.out.println("[SWITCH]: data nodes : "+ base.getNodes().toString());
         return ActionResult.SUCCESS;
     }
 
     @Override
-    public ActionResult remNode(World world, BlockPos pos, BlockHitResult hit) {
-        return ActionResult.PASS;
+    public ActionResult remNode(World world, BlockPos pos, BlockPos toRem, BlockHitResult hit) {
+        if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return ActionResult.FAIL;
+        List<Long> p = new ArrayList<>(
+                Arrays.stream(base.getData().getLongArray(BaseEnergyBlockEntity.KEY_NODES)).boxed().toList()
+        );
+
+        p.remove(toRem.asLong());
+        base.setData(BaseEnergyBlockEntity.KEY_NODES, new NbtLongArray(p) );
+        return ActionResult.SUCCESS;
     }
 
     @Override
     public boolean isPowered(BlockView world, BlockPos pos) {
         if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return false;
+        //System.out.println("[SWITCH] nodes l: "+base.getNodes().length);
         for(BlockPos p  : base.getNodes()){
+            if(pos == p) continue;
             if(!(world.getBlockState(p).getBlock() instanceof IElectricNode node)) continue;
             if(node.isPowered(world,p)) return true;
         }
@@ -68,7 +79,7 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
 
     @Override
     public boolean canBeParent() {
-        return false;
+        return true;
     }
 
     @Override
@@ -76,21 +87,34 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
         NbtCompound data = context.getStack().getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
 
         if(data.getBoolean("needConnection")){
-            addNode(
-                    context.getWorld(),
-                    context.getBlockPos(),
-                    BlockPos.fromLong(data.getLong("posConnection")),
-                    null
-            );
+            if(context.getPlayer().isSneaking()){
+                remNode(
+                        context.getWorld(),
+                        context.getBlockPos(),
+                        BlockPos.fromLong(data.getLong("posConnection")),
+                        null
+                );
+                //System.out.println("[SWITCH] node removed! ");
+            } else {
+                addNode(
+                        context.getWorld(),
+                        context.getBlockPos(),
+                        BlockPos.fromLong(data.getLong("posConnection")),
+                        null
+                );
+                //System.out.println("[SWITCH] node added! ");
+            }
+
             data.putBoolean("needConnection", false);
             data.putLong("posConnection", 0L);
+
         }
         else {
             data.putBoolean("needConnection", true);
             data.putLong("posConnection", context.getBlockPos().asLong());
         }
 
-        System.out.println("[SWITCH] tool data: "+data.toString());
+        //System.out.println("[SWITCH] tool data: "+data.toString());
 
         context.getStack().apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(currentNbt -> {
             currentNbt.copyFrom(data);
@@ -100,13 +124,17 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
     }
 
     @Override
-    protected boolean emitsRedstonePower(BlockState state) {
-        return true;
-    }
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return ((world1, pos, state1, blockEntity) -> {
+            if(world1.isClient) return;
 
-    @Override
-    protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return isPowered(world, pos) ? 16 : 0;
+            tick = Math.max(tick-1, 0);
+            if(tick > 0) return;
+            tick = TICK_RATE;
+
+            world1.updateNeighbors(pos, world1.getBlockState(pos).getBlock());
+
+        });
     }
 
     @Override

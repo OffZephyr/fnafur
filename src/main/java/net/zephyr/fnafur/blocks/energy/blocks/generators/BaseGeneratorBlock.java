@@ -3,7 +3,6 @@ package net.zephyr.fnafur.blocks.energy.blocks.generators;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemUsageContext;
@@ -17,7 +16,6 @@ import net.zephyr.fnafur.blocks.CallableByMesurer;
 import net.zephyr.fnafur.blocks.energy.enums.GenericEnum;
 import net.zephyr.fnafur.blocks.energy.enums.IElectricNode;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
-import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +48,7 @@ public class BaseGeneratorBlock extends FloorPropBlock<GenericEnum> implements B
     }
 
     @Override
-    public ActionResult remNode(World world, BlockPos pos, BlockHitResult hit) {
+    public ActionResult remNode(World world, BlockPos pos, BlockPos toRem, BlockHitResult hit) {
         return ActionResult.PASS;
     }
 

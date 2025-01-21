@@ -16,7 +16,7 @@ public class FuelGeneratorBlock extends  BaseGeneratorBlock {
     //Constants
     public static String KEY_FUEL = "fuel";
     public static int TICK_RATE = 20;
-    public static int FUEL_CONSUMPTION = 1;
+    public static int FUEL_CONSUMPTION = 2;
     public static int MAX_CAPACITY = 1000;
 
     //Variables
@@ -64,3 +64,5 @@ public class FuelGeneratorBlock extends  BaseGeneratorBlock {
         return base.getData().getInt(KEY_FUEL) > 0;
     }
 }
+
+// TODO: find model problem
