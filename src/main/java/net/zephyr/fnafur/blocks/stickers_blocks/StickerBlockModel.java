@@ -19,6 +19,7 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -31,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
+import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.item_init.StickerInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -116,7 +118,7 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
     public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
 
         BlockState state = ((BlockItem)stack.getItem()).getBlock().getDefaultState();
-        NbtCompound nbt = stack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt().getCompound("fnafur.persistent");;
+        NbtCompound nbt = stack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt().getCompound("fnafur.persistent");
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         MeshBuilder builder = renderer.meshBuilder();
         QuadEmitter emitter = builder.getEmitter();
@@ -125,9 +127,9 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 
     public void emitQuads(BlockState state, BlockPos pos, NbtCompound nbt, QuadEmitter emitter, MeshBuilder builder, RenderContext context){
 
-        particlesprite = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, ((StickerBlock)state.getBlock()).getParticle()).getSprite();
-
-        emitBaseCube(state, pos, emitter, nbt);
+        ItemStack stack = ItemStack.fromNbtOrEmpty(MinecraftClient.getInstance().world.getRegistryManager(), nbt.getCompound("BlockState"));
+        BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem)stack.getItem()).getBlock().getDefaultState()) : state;
+        emitBaseCube(newState, pos, emitter, nbt);
 
         if(!nbt.isEmpty()) {
             MinecraftClient client = MinecraftClient.getInstance();
@@ -152,26 +154,29 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
                     float xOffset = sticker.getDirection() == StickerInit.Movable.HORIZONTAL ? Offset : 0;
                     float yOffset = sticker.getDirection() == StickerInit.Movable.VERTICAL ? Offset : 0;
 
-                    boolean snapBelow = client.world.getBlockState(pos.down()).getBlock() instanceof StickerBlock;
+                    boolean snapBelow = client.world.getBlockState(pos.down()).isSideSolidFullSquare(client.world, pos.down(), direction);
+                    boolean snapAbove = client.world.getBlockState(pos.up()).isSideSolidFullSquare(client.world, pos.up(), direction);
 
                     float textureSize = sticker.getPixelDensity() - sticker.getSize();
                     float scaledSpace = (float) sticker.getSize() / sticker.getPixelDensity();
                     float textureSizeY = sticker.getDirection() == StickerInit.Movable.VERTICAL ? (float) textureSize / sticker.getPixelDensity() : 1.0f;
 
                     float bottom = snapBelow ? yOffset : yOffset > 0 ? yOffset : 0.0f;
+                    float top = snapAbove ? 1.0f + yOffset : 1.0f + yOffset < 1 ? 1.0f + yOffset : 1.0f;
                     float v = snapBelow ? 16 : yOffset > 0 ? 16 : 16 + yOffset * 16;
+                    float v2 = snapAbove ? 0 : 1.0f + yOffset < 1 ? 0 : yOffset * 16;
 
                     float offset = -0.0002f;
                     emitter.square(direction,
                                     0.0f + xOffset,
                                     bottom,
                                     1.0f + xOffset,
-                                    1.0f + yOffset,
+                                    top,
                                     offset + offset * i)
-                            .uv(0, 0, 0)
+                            .uv(0, 0, v2)
                             .uv(1, 0, v)
                             .uv(2, 16, v)
-                            .uv(3, 16, 0)
+                            .uv(3, 16, v2)
                             .spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE)
                             .color(-1, -1, -1, -1)
                             .emit();
@@ -182,15 +187,19 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
         mesh.outputTo(context.getEmitter());
     }
     public void emitBaseCube(BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
+        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(state);
+        particlesprite = model.getParticleSprite();
         for(Direction direction : Direction.values()) {
-            Sprite sprite = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE,((StickerBlock)state.getBlock()).sprites().get(direction)).getSprite();
+            List<BakedQuad> quadList = model.getQuads(state, direction, Random.create());
 
-            if(sprite == null) return;
+            for (BakedQuad quad : quadList) {
+                Sprite sprite = quad.getSprite();
 
-            emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-            emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
-            emitter.color(-1, -1, -1, -1);
-            emitter.emit();
+                emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+                emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
+                emitter.color(-1, -1, -1, -1);
+                emitter.emit();
+            }
         }
     }
 }

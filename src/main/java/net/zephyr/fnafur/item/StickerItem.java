@@ -1,18 +1,28 @@
 package net.zephyr.fnafur.item;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.*;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
+import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
+import net.zephyr.fnafur.init.block_init.BlockEntityInit;
+import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.item_init.StickerInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -50,10 +60,32 @@ public class StickerItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        if(context.getWorld().getBlockState(context.getBlockPos()).getBlock() instanceof StickerBlock block){
+        if(context.getWorld().getBlockState(context.getBlockPos()).isSideSolidFullSquare(context.getWorld(), context.getBlockPos(), context.getSide())){
             if(!isWallSticker() || (isWallSticker() && context.getSide() != Direction.UP && context.getSide() != Direction.DOWN)){
+                BlockState blockState = context.getWorld().getBlockState(context.getBlockPos());
+
                 BlockEntity entity = context.getWorld().getBlockEntity(context.getBlockPos());
+
+                if(!(blockState.getBlock() instanceof BlockWithSticker)) {
+                    context.getWorld().setBlockState(context.getBlockPos(), BlockInit.STICKER_BLOCK.getDefaultState());
+
+                    entity = context.getWorld().getBlockEntity(context.getBlockPos());
+                    NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
+
+                    ItemStack itemStack = blockState.getBlock().getPickStack(context.getWorld(), context.getBlockPos(), blockState);
+                    BlockStateComponent component = BlockStateComponent.DEFAULT;
+
+                    for (Property<?> property : blockState.getProperties()) {
+                        component = component.with(property, blockState);
+                    }
+
+                    itemStack.set(DataComponentTypes.BLOCK_STATE, component);
+
+                    nbt.put("BlockState", itemStack.toNbtAllowEmpty(context.getWorld().getRegistryManager()));
+                }
+
                 NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
+
                 String side = context.getSide().name();
 
                 Direction direction = context.getSide();
@@ -93,7 +125,7 @@ public class StickerItem extends Item {
                     if(context.getWorld().isClient()){
                         GoopyNetworkingUtils.saveBlockNbt(entity.getPos(), nbt);
                     }
-                    context.getWorld().updateListeners(pos, block.getDefaultState(), block.getDefaultState(), 3);
+                    //context.getWorld().updateListeners(pos, block.getDefaultState(), block.getDefaultState(), 3);
 
                     return ActionResult.SUCCESS;
                 }
@@ -107,8 +139,8 @@ public class StickerItem extends Item {
 
     public static Vec3d stickerPos(BlockPos pos, Vec3d hitPos, Direction direction, StickerItem item, PlayerEntity player, World world){
 
-        boolean snapBelow = world.getBlockState(pos.down()).getBlock() instanceof StickerBlock;
-        boolean snapAbove = world.getBlockState(pos.up()).getBlock() instanceof StickerBlock;
+        boolean snapBelow = world.getBlockState(pos.down()).isSideSolidFullSquare(world, pos.down(), direction);
+        boolean snapAbove = world.getBlockState(pos.up()).isSideSolidFullSquare(world, pos.up(), direction);
 
         String name = item.sticker_name();
         StickerInit.Sticker sticker = StickerInit.getSticker(name);
@@ -136,7 +168,9 @@ public class StickerItem extends Item {
             y = Math.round(y / SnapGrid) * SnapGrid;
 
             if (player.isSneaking()) {
-                y = ((Math.round((y) / 0.2f) * 0.25f) / grid) * space;
+                y = ((Math.round((y) / 0.2f) * 0.5f) / grid) * space;
+                //space = space / 4f;
+
                 y = Math.clamp(y, -space / grid, 0);
             }
             if(!snapBelow) y = Math.clamp(y, -space / grid, 1);

@@ -86,6 +86,7 @@ public class BlockEntityInit {
         STICKER_BLOCK =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "sticker_block"),
                         FabricBlockEntityTypeBuilder.create(StickerBlockEntity::new,
+                                BlockInit.STICKER_BLOCK,
                                 BlockInit.GRAY_WALL,
                                 BlockInit.DARK_GRAY_WALL,
                                 BlockInit.BRICK_WALL,
@@ -123,6 +124,7 @@ public class BlockEntityInit {
                         FabricBlockEntityTypeBuilder.create(MimicFrameBlockEntity::new,
                                 BlockInit.MIMIC_FRAME,
                                 BlockInit.MIMIC_FRAME_2x2,
+                                BlockInit.MIMIC_FRAME_4x4,
                                 BlockInit.MIMIC_FRAME_SLAB
                         ).build());
 

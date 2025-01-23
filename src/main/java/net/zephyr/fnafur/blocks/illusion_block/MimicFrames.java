@@ -1,10 +1,9 @@
 package net.zephyr.fnafur.blocks.illusion_block;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -31,6 +30,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MimicFrames extends StickerBlock {
+public class MimicFrames extends BlockWithSticker {
     public static List<Identifier> IDs = new ArrayList<>();
 
     Vec3i latestMatrixPos;
@@ -152,7 +152,8 @@ public class MimicFrames extends StickerBlock {
         else{
             Vec3d offset = context.getSide().getDoubleVector().multiply(0.01f);
             Vec3i matrixPos = getMatrixPos(context.getHitPos().add(offset), context.getBlockPos());
-            if(matrixPos.getX() > 1 || matrixPos.getY() > 1 || matrixPos.getZ() > 1) return false;
+            System.out.println(matrixPos);
+            if(matrixPos.getX() > getMatrixSize() - 1 || matrixPos.getY() > getMatrixSize() - 1 || matrixPos.getZ() > getMatrixSize() - 1) return false;
             if(matrixPos.getX() < 0 || matrixPos.getY() < 0 || matrixPos.getZ() < 0) return false;
 
             byte[] data = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix");
@@ -175,15 +176,14 @@ public class MimicFrames extends StickerBlock {
         ItemStack stack = player.getMainHandStack();
         if(entity != null) {
 
-            Vec3i direcVector = hit.getSide().getVector();
             Vec3i matrixPos = getMatrixPos(hit.getPos(), hit.getBlockPos());
 
             NbtCompound nbt = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData();
-            Block currentBlock = getCurrentBlock(nbt, world, hit.getSide());
+            Block currentBlock = getCurrentBlock(nbt, world, hit.getSide(), matrixPos);
 
 
             if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
-                if (!(blockItem.getBlock() instanceof MimicFrames) && currentBlock == null) {
+                if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null) {
 
                     saveBlockTexture(
                             setBlockTexture(nbt, stack, hit.getSide(), world),
@@ -200,7 +200,7 @@ public class MimicFrames extends StickerBlock {
         return super.onUse(state, world, pos, player, hit);
     }
 
-    public Block getCurrentBlock(NbtCompound nbt, World world, Direction direction){
+    public Block getCurrentBlock(NbtCompound nbt, World world, Direction direction, Vec3i matrixPos){
         return getBlockFromNbt(nbt.getCompound(direction.getName()), world);
     }
 

@@ -11,7 +11,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.zephyr.fnafur.FnafUniverseResuited;
-import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
 import net.zephyr.fnafur.init.item_init.StickerInit;
 import net.zephyr.fnafur.item.StickerItem;
 
@@ -24,20 +23,20 @@ public class StickerPlacingRenderer {
                 HitResult blockHit = client.crosshairTarget;
                 if (blockHit.getType() == HitResult.Type.BLOCK) {
                     BlockPos pos = ((BlockHitResult) blockHit).getBlockPos();
-                    if (client.world.getBlockState(pos).getBlock() instanceof StickerBlock) {
+                    Direction direction = ((BlockHitResult) blockHit).getSide();
+                    if (client.world.getBlockState(pos).isSideSolidFullSquare(client.world, pos, direction)) {
 
                         if (item.isWallSticker() && (((BlockHitResult) blockHit).getSide() == Direction.UP || ((BlockHitResult) blockHit).getSide() == Direction.DOWN)) {
                             return;
                         }
 
                         Vec3d hitPos = blockHit.getPos();
-                        Direction direction = ((BlockHitResult) blockHit).getSide();
                         String name = item.sticker_name();
                         StickerInit.Sticker sticker = StickerInit.getSticker(name);
 
                         if (sticker == null) return;
 
-                        Vec3d stickerPos = StickerItem.stickerPos(pos, hitPos, direction, item, player, player.getWorld());
+                        Vec3d stickerPos = StickerItem.stickerPos(pos, hitPos, direction, item, player, client.world);
 
                         matrices.push();
                         matrices.translate(-cameraX + 0.5f, -cameraY, -cameraZ + 0.5f);

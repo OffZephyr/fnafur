@@ -25,6 +25,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -195,7 +196,7 @@ public class MimicFramesSlab extends MimicFrames implements Waterloggable {
 
             NbtCompound nbt = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData();
             NbtCompound nbt2 = nbt.getCompound(side);
-            Block currentBlock = getCurrentBlock(nbt2, world, hit.getSide());
+            Block currentBlock = getCurrentBlock(nbt2, world, hit.getSide(), new Vec3i(0, 0, 0));
 
             if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
                 if(!(blockItem.getBlock() instanceof MimicFrames) && currentBlock == null) {
