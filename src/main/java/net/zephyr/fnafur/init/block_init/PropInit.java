@@ -22,6 +22,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.fnaf1desk.Fnaf1Desk;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVent;
+import net.zephyr.fnafur.blocks.props.wall_props.ac_unit.AcUnit;
 import net.zephyr.fnafur.blocks.props.wall_props.office_buttons.OfficeButtons;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.RetroTableBlock;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
@@ -108,6 +109,16 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .noCollision()
+    );
+    public static final Block AC_UNIT = registerBlock(
+            "ac_unit",
+           AcUnit::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
     );
     public static final Block RETRO_TABLE = registerBlock(
             "retro_table",

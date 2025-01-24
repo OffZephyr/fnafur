@@ -3,11 +3,13 @@ package net.zephyr.fnafur.init.block_init;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.block.*;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
@@ -168,15 +170,13 @@ public class BlockInit {
 
     public static final Block TILED_GLASS = registerBlock(
             "tiled_glass",
-            Block::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_STAINED_GLASS)
-                    .nonOpaque()
+            TransparentBlock::new,
+            AbstractBlock.Settings.copy(Blocks.GLASS)
     );
     public static final Block TILED_GLASS_COLORED = registerBlock(
             "tiled_glass_colored",
-            Block::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_STAINED_GLASS)
-                    .nonOpaque()
+            TransparentBlock::new,
+            AbstractBlock.Settings.copy(Blocks.GLASS)
     );
 
    /* Wall Blocks */
@@ -772,9 +772,11 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTripwire());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getTripwire());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getTripwire());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_SLAB, RenderLayer.getTripwire());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getTripwire());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS, RenderLayer.getTripwire());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_COLORED, RenderLayer.getTripwire());
+
 
         BlockEntityRendererFactories.register(BlockEntityInit.FOG_BLOCK, FogBlockRenderer::new);
 

@@ -29,6 +29,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.FLOOR_MONITORS_1);
                         entries.add(PropInit.FLOOR_MONITORS_2);
                         entries.add(PropInit.WOODEN_SHELF);
+                        entries.add(PropInit.AC_UNIT);
                         entries.add(PropInit.RETRO_TABLE);
 
                         entries.add(PropInit.CEILING_TILE_VENT);
@@ -40,6 +41,16 @@ public class ItemGroupsInit {
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 
                         entries.add(GeoBlockInit.SMALL_GRAY_DOOR);
+                        entries.add(GeoBlockInit.TWO_FIVE_RED_DOOR);
+                        entries.add(GeoBlockInit.TWO_FIVE_BLACK_DOOR);
+                        entries.add(GeoBlockInit.TWO_FIVE_GREEN_DOOR);
+                        entries.add(GeoBlockInit.TWO_FIVE_CYAN_DOOR);
+                        entries.add(GeoBlockInit.TWO_FIVE_BROWN_DOOR);
+                        entries.add(GeoBlockInit.TWO_FIVE_RED_DOOR_WINDOW);
+                        entries.add(GeoBlockInit.TWO_FIVE_BLACK_DOOR_WINDOW);
+                        entries.add(GeoBlockInit.TWO_FIVE_GREEN_DOOR_WINDOW);
+                        entries.add(GeoBlockInit.TWO_FIVE_CYAN_DOOR_WINDOW);
+                        entries.add(GeoBlockInit.TWO_FIVE_BROWN_DOOR_WINDOW);
                         entries.add(GeoBlockInit.BIG_GRAY_DOOR);
                         entries.add(GeoBlockInit.BIG_MAGENTA_DOOR);
                         entries.add(GeoBlockInit.BIG_GREEN_DOOR);

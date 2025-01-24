@@ -21,6 +21,7 @@ import java.util.List;
 public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     boolean open;
+    boolean front;
     public GeoDoorEntity(BlockPos pos, BlockState state) {
         super(GeoBlockEntityInit.GEO_DOOR, pos, state);
     }
@@ -31,8 +32,10 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
     }
 
     private PlayState animController(AnimationState<GeoDoorEntity> geoDoorEntityAnimationState) {
-        if(open) return geoDoorEntityAnimationState.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.geo_door.open"));
-        else return geoDoorEntityAnimationState.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.geo_door.close"));
+        String openAnim = front ? "animation.geo_door.open_back" : "animation.geo_door.open";
+        String closeAnim = front ? "animation.geo_door.close_back" : "animation.geo_door.close";
+        if(open) return geoDoorEntityAnimationState.setAndContinue(RawAnimation.begin().thenPlayAndHold(openAnim));
+        else return geoDoorEntityAnimationState.setAndContinue(RawAnimation.begin().thenPlayAndHold(closeAnim));
     }
 
     @Override
@@ -43,19 +46,26 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
     public void tick(World world, BlockPos pos, BlockState state, GeoDoorEntity blockEntity) {
         if(state.get(GeoDoor.MAIN)) {
             Box box = ((GeoDoor) state.getBlock()).getEntityArea(state, pos);
-            open = checkOpen(world, box);
+            Entity entity = checkOpen(world, box);
+            open = entity != null;
+            if(open) {
+                float rot = state.get(GeoDoor.FACING).asRotation();
+                int turns = (int) (entity.getYaw() / 360);
+                float entityYaw = entity.getYaw() - (360 * turns);
+                front = entityYaw > rot - 90 && entityYaw < rot + 90;
+            }
         }
     }
-    private boolean checkOpen(World world, Box box){
+    private Entity checkOpen(World world, Box box){
         List<Entity> list = world.getOtherEntities(null, box);
-        if(list.isEmpty()) return false;
+        if(list.isEmpty()) return null;
         for(Entity ent : list){
             BlockHitResult result = (BlockHitResult) ent.raycast(5, 0.0f, true);
             if(world.getBlockState(result.getBlockPos()).getBlock() instanceof GeoDoor && !ent.isSneaking()){
-                return true;
+                return ent;
             }
         }
-        return false;
+        return null;
     }
 
     public Identifier getTexture() {

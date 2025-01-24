@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/ac_unit"
+    },
+    "facing=east": {
+      "model": "fnafur:props/ac_unit",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/ac_unit",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/ac_unit",
+      "y": 270
+    }
+  }
+}

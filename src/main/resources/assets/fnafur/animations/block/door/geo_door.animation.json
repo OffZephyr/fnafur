@@ -39,6 +39,45 @@
 					}
 				}
 			}
+		},
+		"animation.geo_door.open_back": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.5,
+			"bones": {
+				"door": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"0.5": {
+							"vector": [0, 90, 0],
+							"easing": "easeInOutBack",
+							"easingArgs": []
+						}
+					}
+				}
+			}
+		},
+		"animation.geo_door.close_back": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.5,
+			"bones": {
+				"door": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 90, 0],
+							"easing": "easeInOutBack",
+							"easingArgs": []
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutBack",
+							"easingArgs": []
+						}
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

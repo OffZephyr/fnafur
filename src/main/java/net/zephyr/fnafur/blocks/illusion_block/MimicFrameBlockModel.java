@@ -182,8 +182,8 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                 float z = z0 / part;
 
                 if(matrixSize != 1){
-                    v2 = v2 - (yOffset * 16);
-                    v = v;
+                    v2 = 16 - z1 *16;
+                    v = 16 - z0 *16;
                 }
 
                 float left = Math.clamp(0.0f + xOffset, x0, 1);

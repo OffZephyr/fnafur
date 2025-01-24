@@ -34,8 +34,5 @@ public class FnafUniverseResuitedClient implements ClientModInitializer {
 		net.zephyr.fnafur.networking.PayloadDef.registerS2CPackets();
 		HudRenderCallback.EVENT.register(new net.zephyr.fnafur.client.gui.TabOverlayClass());
 		FnafUniverseResuited.LOGGER.info("Client Initialized.");
-
-		BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS, RenderLayer.getTranslucent());
-		BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_COLORED, RenderLayer.getTranslucent());
 	}
 }

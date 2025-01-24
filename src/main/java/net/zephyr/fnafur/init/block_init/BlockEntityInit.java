@@ -67,6 +67,7 @@ public class BlockEntityInit {
                                 PropInit.FLOOR_MONITORS_1,
                                 PropInit.FLOOR_MONITORS_2,
                                 PropInit.WOODEN_SHELF,
+                                PropInit.AC_UNIT,
                                 PropInit.RETRO_TABLE,
 
                                 PropInit.WALL_CLOUDS,
