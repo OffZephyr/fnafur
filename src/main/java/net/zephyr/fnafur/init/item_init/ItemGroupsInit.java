@@ -101,6 +101,14 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.BLACK_CORNER_BROWN_TILE);
                         entries.add(BlockInit.BLACK_GREEN_DIAGONAL_TILE);
                         entries.add(BlockInit.BRIGHT_YELLOW_TILES);
+                        entries.add(BlockInit.POOL_FLOOR_SMALL_TILES);
+                        entries.add(BlockInit.BLUE_SMALL_TILES);
+                        entries.add(BlockInit.TURQUOISE_SMALL_TILES);
+                        entries.add(BlockInit.PURPLE_SMALL_TILES);
+                        entries.add(BlockInit.SMALL_STONE_TILES);
+
+                        entries.add(BlockInit.TILED_GLASS);
+                        entries.add(BlockInit.TILED_GLASS_COLORED);
 
                         entries.add(BlockInit.STAGE_PLANKS);
                         entries.add(BlockInit.STAGE_PLANKS_THIN);
@@ -175,6 +183,9 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.SMALL_BLUE_RED_BRICKS);
                         entries.add(BlockInit.SMALL_CYAN_BLACK_BRICKS);
                         entries.add(BlockInit.SMALL_DARK_BLUE_BRICKS);
+                        entries.add(BlockInit.DARK_TAN_BRICKS);
+                        entries.add(BlockInit.LIGHT_TAN_BRICKS);
+                        entries.add(BlockInit.SMALL_BIEGE_BRICKS);
 
                         entries.add(BlockInit.BALLPIT);
 

@@ -164,6 +164,21 @@ public class BlockInit {
 
     //BASIC CUBE BLOCKS START HERE!!!
 
+    /* GLASS BLOCKS */
+
+    public static final Block TILED_GLASS = registerBlock(
+            "tiled_glass",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_STAINED_GLASS)
+                    .nonOpaque()
+    );
+    public static final Block TILED_GLASS_COLORED = registerBlock(
+            "tiled_glass_colored",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_STAINED_GLASS)
+                    .nonOpaque()
+    );
+
    /* Wall Blocks */
 
     public static final Block GRAY_WALL = registerBlock(
@@ -350,6 +365,21 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block DARK_TAN_BRICKS = registerBlock(
+            "dark_tan_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block LIGHT_TAN_BRICKS = registerBlock(
+            "light_tan_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block SMALL_BIEGE_BRICKS = registerBlock(
+            "small_beige_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
 
     /* Metallic Blocks */
 
@@ -528,6 +558,32 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block BLUE_SMALL_TILES = registerBlock(
+            "blue_small_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block POOL_FLOOR_SMALL_TILES = registerBlock(
+            "pool_floor_small_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block TURQUOISE_SMALL_TILES = registerBlock(
+            "turquoise_small_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block PURPLE_SMALL_TILES = registerBlock(
+            "purple_small_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block SMALL_STONE_TILES = registerBlock(
+            "small_stone_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+
 
 
     /* Ceiling Blocks */

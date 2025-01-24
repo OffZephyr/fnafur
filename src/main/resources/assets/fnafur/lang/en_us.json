@@ -112,6 +112,17 @@
   "block.fnafur.small_blue_red_bricks": "Small Blue & Red Bricks",
   "block.fnafur.small_cyan_black_bricks": "Small Cyan & Black Bricks",
   "block.fnafur.small_dark_blue_bricks": "Small Dark Blue Bricks",
+  "block.fnafur.dark_tan_bricks": "Dark Tan Bricks",
+  "block.fnafur.light_tan_bricks": "Light Tan Bricks",
+  "block.fnafur.small_beige_bricks": "Small Beige Bricks",
+  "block.fnafur.pool_floor_small_tiles": "Small Pool Floor Tiles",
+  "block.fnafur.blue_small_tiles": "Small Blue Tiles",
+  "block.fnafur.turquoise_small_tiles": "Small Turquoise Tiles",
+  "block.fnafur.purple_small_tiles": "Small Purple Tiles",
+  "block.fnafur.small_stone_tiles": "Small Stone Tiles",
+
+  "block.fnafur.tiled_glass": "Tiled Glass",
+  "block.fnafur.tiled_glass_colored": "Colored Tiled Glass",
 
   "block.fnafur.mimic_frame_block": "Mimic Frame Block",
   "block.fnafur.mimic_frame_slab": "Mimic Frame Slab",

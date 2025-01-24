@@ -20,7 +20,12 @@ public class ModelProvider extends FabricModelProvider {
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.FOG_BLOCK);
 
-        // WALL TILES AND BLOCKS
+        // GLASS BLOCKS
+
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TILED_GLASS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TILED_GLASS_COLORED);
+
+        // WALL AND FLOOR BLOCKS
 
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WALL_TILE_FULL);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GRAY_WALL);
@@ -30,6 +35,30 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_RED_WALL_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_RED_WALL_TILES_TOP);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.EXTRUDED_BLACK_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_WHITE_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_TILE);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WHITE_TILE);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_BLUE_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_BLUE_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLUE_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_WHITE_16_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BRIGHT_YELLOW_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WHITE_16_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WHITE_16_CLEAN_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_16_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_16_CLEAN_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_16_SPACED_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_CORNER_BROWN_TILE);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_GREEN_DIAGONAL_TILE);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GROUT_TILE);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.KITCHEN_FLOOR);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CONCRETE_FLOOR);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLUE_SMALL_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TURQUOISE_SMALL_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.POOL_FLOOR_SMALL_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.PURPLE_SMALL_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.SMALL_STONE_TILES);
+
 
         // BRICKS
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BRICK_WALL);
@@ -68,6 +97,10 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.SMALL_BLUE_RED_BRICKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.SMALL_CYAN_BLACK_BRICKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.SMALL_DARK_BLUE_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.DARK_TAN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.LIGHT_TAN_BRICKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.SMALL_BIEGE_BRICKS);
+
 
 
         // WOODEN BLOCKS
@@ -76,28 +109,6 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.DARK_STAGE_PLANKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.DARK_STAGE_PLANKS_THIN);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.LIGHT_STAGE_PLANKS);
-
-
-        // FLOOR TILES AND BLOCKS
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_WHITE_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_TILE);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WHITE_TILE);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_BLUE_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_BLUE_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLUE_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_WHITE_16_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BRIGHT_YELLOW_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WHITE_16_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WHITE_16_CLEAN_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_16_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_16_CLEAN_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.TAN_16_SPACED_TILES);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_CORNER_BROWN_TILE);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_GREEN_DIAGONAL_TILE);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GROUT_TILE);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.KITCHEN_FLOOR);
-        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CONCRETE_FLOOR);
-
 
 
         // CEILING BLOCKS
