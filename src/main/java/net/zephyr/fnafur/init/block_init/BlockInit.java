@@ -41,6 +41,9 @@ import java.util.function.Function;
 public class BlockInit {
     public static List<StickerBlock> STICKER_BLOCKS = new ArrayList<>();
 
+
+    /* CUSTOM MODELS */
+
     public static final Block COMPUTER = registerBlock(
             "computer",
             ComputerBlock::new,
@@ -145,6 +148,24 @@ public class BlockInit {
                     .blockVision(Blocks::never)
                     .luminance(state -> 0)
     );
+
+    public static final Block FUEL_GENERATOR = registerBlock(
+            "fuel_generator",
+            FuelGeneratorBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+    );
+    public static final Block REDSTONE_CONVERTER = registerBlock(
+            "redstone_converter",
+            RedstoneConverterBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+
+
+    //BASIC CUBE BLOCKS START HERE!!!
+
+   /* Wall Blocks */
+
     public static final Block GRAY_WALL = registerBlock(
             "gray_wall",
             Block::new,
@@ -155,6 +176,10 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+
+
+    /* Decorative Bricks */
+
     public static final Block BRICK_WALL = registerBlock(
             "brick_wall",
             Block::new,
@@ -177,6 +202,11 @@ public class BlockInit {
     );
     public static final Block RED_BRICK_WALL_SMALL = registerBlock(
             "red_brick_wall_small",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BLACK_BRICKS = registerBlock(
+            "black_bricks",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
@@ -285,6 +315,45 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block MOSAIC_BRICKS = registerBlock(
+            "mosaic_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block SMALL_BLACK_BRICKS = registerBlock(
+            "small_black_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block SMALL_BLACK_RED_BRICKS = registerBlock(
+            "small_black_red_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+     public static final Block SMALL_BLUE_BLACK_BRICKS = registerBlock(
+            "small_blue_black_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+     public static final Block SMALL_BLUE_RED_BRICKS = registerBlock(
+            "small_blue_red_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+     public static final Block SMALL_CYAN_BLACK_BRICKS = registerBlock(
+            "small_cyan_black_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+     public static final Block SMALL_DARK_BLUE_BRICKS = registerBlock(
+            "small_dark_blue_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+
+    /* Metallic Blocks */
+
+
     public static final Block METAL_PLATES = registerBlock(
             "metal_plates",
             Block::new,
@@ -295,8 +364,26 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
     );
-    public static final Block MOSAIC_BRICKS = registerBlock(
-            "mosaic_bricks",
+
+    /* Wall Tiles */
+
+    public static final Block BLACK_BLUE_WALL_TILES = registerBlock(
+            "black_blue_wall_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BLACK_BLUE_WALL_TILES_TOP = registerBlock(
+            "black_blue_wall_tiles_top",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BLACK_RED_WALL_TILES = registerBlock(
+            "black_red_wall_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BLACK_RED_WALL_TILES_TOP = registerBlock(
+            "black_red_wall_tiles_top",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
@@ -305,6 +392,14 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block EXTRUDED_BLACK_TILES = registerBlock(
+            "extruded_black_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+
+    /* Wooden Blocks */
+
     public static final Block STAGE_PLANKS = registerBlock(
             "stage_planks",
             Block::new,
@@ -330,6 +425,9 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
     );
+
+   /* Floor Tiles and Blocks */
+
     public static final Block BLACK_WHITE_TILES = registerBlock(
             "black_white_tiles",
             Block::new,
@@ -385,6 +483,11 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block BRIGHT_YELLOW_TILES = registerBlock(
+            "bright_yellow_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
     public static final Block TAN_16_TILES = registerBlock(
             "tan_16_tiles",
             Block::new,
@@ -415,6 +518,20 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block KITCHEN_FLOOR = registerBlock(
+            "kitchen_floor",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block CONCRETE_FLOOR = registerBlock(
+            "concrete_floor",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+
+
+    /* Ceiling Blocks */
+
     public static final Block CEILING_TILES = registerBlock(
             "ceiling_tiles",
             Block::new,
@@ -430,16 +547,24 @@ public class BlockInit {
             Random4Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
-    public static final Block KITCHEN_FLOOR = registerBlock(
-            "kitchen_floor",
+    public static final Block DARK_CEILING = registerBlock(
+            "dark_ceiling",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
-    public static final Block CONCRETE_FLOOR = registerBlock(
-            "concrete_floor",
+    public static final Block DARK_CEILING_DETAIL = registerBlock(
+            "dark_ceiling_detail",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block BLACK_CEILING_TILE = registerBlock(
+            "black_ceiling_tile",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+
+    /* Carpet Blocks */
+
     public static final Block CARPET_STAR_GREEN = registerBlock(
             "carpet_star_green",
             Block::new,
@@ -506,21 +631,27 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
     );
-    public static final Block DARK_CEILING = registerBlock(
-            "dark_ceiling",
-            Block::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-    );
-    public static final Block DARK_CEILING_DETAIL = registerBlock(
-            "dark_ceiling_detail",
-            Block::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-    );
+
+   /* Miscellaneous Blocks */
+
     public static final Block PLAIN_BLACK_BLOCK = registerBlock(
             "plain_black_block",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block CHEESE_BLOCK = registerBlock(
+            "cheese_block",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.HONEY_BLOCK)
+    );
+    public static final Block CHEESE_BLOCK_WHITE = registerBlock(
+            "cheese_block_white",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.HONEY_BLOCK)
+    );
+
+    /* Ballpit */
+
     public static final Block BALLPIT = registerBlock(
             "ballpit",
             BallpitBlock::new,
@@ -529,17 +660,6 @@ public class BlockInit {
                     .dynamicBounds()
                     .solidBlock(Blocks::never)
                     .blockVision(Blocks::always)
-    );
-    public static final Block FUEL_GENERATOR = registerBlock(
-            "fuel_generator",
-            FuelGeneratorBlock::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-    );
-    public static final Block REDSTONE_CONVERTER = registerBlock(
-            "redstone_converter",
-            RedstoneConverterBlock::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
     );
 
 

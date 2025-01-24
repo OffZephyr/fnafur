@@ -88,6 +88,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.BLACK_WHITE_TILES);
                         entries.add(BlockInit.RED_BLUE_TILES);
                         entries.add(BlockInit.BLACK_BLUE_TILES);
+                        entries.add(BlockInit.EXTRUDED_BLACK_TILES);
                         entries.add(BlockInit.BLUE_TILES);
                         entries.add(BlockInit.BLACK_WHITE_16_TILES);
                         entries.add(BlockInit.BLACK_WHITE_16_TILES_TRIM);
@@ -99,6 +100,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.TAN_RAINBOW_16_TILES);
                         entries.add(BlockInit.BLACK_CORNER_BROWN_TILE);
                         entries.add(BlockInit.BLACK_GREEN_DIAGONAL_TILE);
+                        entries.add(BlockInit.BRIGHT_YELLOW_TILES);
 
                         entries.add(BlockInit.STAGE_PLANKS);
                         entries.add(BlockInit.STAGE_PLANKS_THIN);
@@ -126,11 +128,16 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.WALL_TILE_FULL);
                         entries.add(BlockInit.GRAY_WALL);
                         entries.add(BlockInit.DARK_GRAY_WALL);
+                        entries.add(BlockInit.BLACK_BLUE_WALL_TILES);
+                        entries.add(BlockInit.BLACK_BLUE_WALL_TILES_TOP);
+                        entries.add(BlockInit.BLACK_RED_WALL_TILES);
+                        entries.add(BlockInit.BLACK_RED_WALL_TILES_TOP);
                         entries.add(BlockInit.BRICK_WALL);
                         entries.add(BlockInit.BRICK_WALL_DARKER);
                         entries.add(BlockInit.RED_BRICK_WALL);
                         entries.add(BlockInit.RED_BRICK_WALL_SMALL);
                         entries.add(BlockInit.RED_BRICK_WALL_MIXED);
+                        entries.add(BlockInit.BLACK_BRICKS);
                         entries.add(BlockInit.BLUE_BRICKS);
                         entries.add(BlockInit.LARGE_BROWN_BRICKS);
                         entries.add(BlockInit.LARGE_LIGHT_GRAY_BRICKS);
@@ -140,6 +147,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.METAL_PLATES);
                         entries.add(BlockInit.ROUGH_METAL_PLATES);
                         entries.add(BlockInit.CEILING_TILE_LIGHT);
+                        entries.add(BlockInit.BLACK_CEILING_TILE);
                         entries.add(BlockInit.CEILING_TILES);
                         entries.add(BlockInit.CEILING_TILES_STAINED);
                         entries.add(BlockInit.DARK_CEILING);
@@ -161,8 +169,17 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.MOSAIC_BRICKS);
                         entries.add(BlockInit.GRUNGE_STONE_BRICKS);
                         entries.add(BlockInit.GRUNGE_STONE_BRICKS_DIRTY);
+                        entries.add(BlockInit.SMALL_BLACK_BRICKS);
+                        entries.add(BlockInit.SMALL_BLACK_RED_BRICKS);
+                        entries.add(BlockInit.SMALL_BLUE_BLACK_BRICKS);
+                        entries.add(BlockInit.SMALL_BLUE_RED_BRICKS);
+                        entries.add(BlockInit.SMALL_CYAN_BLACK_BRICKS);
+                        entries.add(BlockInit.SMALL_DARK_BLUE_BRICKS);
 
                         entries.add(BlockInit.BALLPIT);
+
+                        entries.add(BlockInit.CHEESE_BLOCK);
+                        entries.add(BlockInit.CHEESE_BLOCK_WHITE);
 
                         entries.add(StickerInit.BLACK_WHITE_RED_WALL_TILES);
                         entries.add(StickerInit.BLACK_WHITE_RED_WALL_BIG_TILES);
@@ -172,6 +189,7 @@ public class ItemGroupsInit {
                         entries.add(StickerInit.COLORED_WHITE_LONG_WALL_TILES);
                         entries.add(StickerInit.WALL_GRUNGE);
                         entries.add(StickerInit.WALL_GRUNGE_2);
+
 
                     }).build());
     public static final ItemGroup FNAF_ANIMATRONICS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, "animatronics"),

@@ -17,15 +17,37 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
     public void generate() {
         addDrop(BlockInit.COMPUTER);
         addDrop(BlockInit.CAMERA);
+        addDrop(PropInit.FNAF_1_DESK);
+        addDrop(PropInit.WALL_CLOUDS);
+        addDrop(PropInit.FLOOR_MONITORS_1);
+        addDrop(PropInit.FLOOR_MONITORS_2);
+        addDrop(PropInit.OFFICE_BUTTONS);
+        addDrop(PropInit.WOODEN_SHELF);
+        addDrop(PropInit.RETRO_TABLE);
+        addDrop(PropInit.CEILING_TILE_VENT);
+        addDrop(PropInit.RESTROOM_SIGN);
+        addDrop(PropInit.BROOM);
+        addDrop(PropInit.MOP_BUCKET);
+
         addDrop(BlockInit.FOG_BLOCK);
+
+        // WALL TILES AND BLOCKS
         addDrop(BlockInit.WALL_TILE_FULL);
         addDrop(BlockInit.GRAY_WALL);
         addDrop(BlockInit.DARK_GRAY_WALL);
+        addDrop(BlockInit.BLACK_BLUE_WALL_TILES);
+        addDrop(BlockInit.BLACK_BLUE_WALL_TILES_TOP);
+        addDrop(BlockInit.BLACK_RED_WALL_TILES);
+        addDrop(BlockInit.BLACK_RED_WALL_TILES_TOP);
+        addDrop(BlockInit.EXTRUDED_BLACK_TILES);
+
+        // BRICKS
         addDrop(BlockInit.BRICK_WALL);
         addDrop(BlockInit.BRICK_WALL_DARKER);
         addDrop(BlockInit.RED_BRICK_WALL);
         addDrop(BlockInit.RED_BRICK_WALL_SMALL);
         addDrop(BlockInit.RED_BRICK_WALL_MIXED);
+        addDrop(BlockInit.BLACK_BRICKS);
         addDrop(BlockInit.BLUE_BRICKS);
         addDrop(BlockInit.LARGE_BROWN_BRICKS);
         addDrop(BlockInit.LARGE_LIGHT_GRAY_BRICKS);
@@ -46,13 +68,21 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.MOSAIC_BRICKS);
         addDrop(BlockInit.GRUNGE_STONE_BRICKS);
         addDrop(BlockInit.GRUNGE_STONE_BRICKS_DIRTY);
+        addDrop(BlockInit.SMALL_BLACK_BRICKS);
+        addDrop(BlockInit.SMALL_BLACK_RED_BRICKS);
+        addDrop(BlockInit.SMALL_BLUE_BLACK_BRICKS);
+        addDrop(BlockInit.SMALL_BLUE_RED_BRICKS);
+        addDrop(BlockInit.SMALL_CYAN_BLACK_BRICKS);
+        addDrop(BlockInit.SMALL_DARK_BLUE_BRICKS);
 
+        // WOODEN BLOCKS
         addDrop(BlockInit.STAGE_PLANKS);
         addDrop(BlockInit.STAGE_PLANKS_THIN);
         addDrop(BlockInit.DARK_STAGE_PLANKS);
         addDrop(BlockInit.DARK_STAGE_PLANKS_THIN);
         addDrop(BlockInit.LIGHT_STAGE_PLANKS);
 
+       // FLOOR TILES AND BLOCKS
         addDrop(BlockInit.BLACK_WHITE_TILES);
         addDrop(BlockInit.BLACK_TILE);
         addDrop(BlockInit.WHITE_TILE);
@@ -63,6 +93,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.BLACK_WHITE_16_TILES_TRIM);
         addDrop(BlockInit.WHITE_16_TILES);
         addDrop(BlockInit.WHITE_16_CLEAN_TILES);
+        addDrop(BlockInit.BRIGHT_YELLOW_TILES);
         addDrop(BlockInit.TAN_16_TILES);
         addDrop(BlockInit.TAN_16_CLEAN_TILES);
         addDrop(BlockInit.TAN_16_SPACED_TILES);
@@ -70,15 +101,19 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.BLACK_CORNER_BROWN_TILE);
         addDrop(BlockInit.BLACK_GREEN_DIAGONAL_TILE);
         addDrop(BlockInit.GROUT_TILE);
+        addDrop(BlockInit.KITCHEN_FLOOR);
+        addDrop(BlockInit.CONCRETE_FLOOR);
+
+        // CEILING BLOCKS
         addDrop(BlockInit.CEILING_TILES);
         addDrop(BlockInit.CEILING_TILES_STAINED);
         addDrop(BlockInit.DARK_CEILING);
         addDrop(BlockInit.DARK_CEILING_DETAIL);
+        addDrop(BlockInit.BLACK_CEILING_TILE);
         addDrop(BlockInit.PLAIN_BLACK_BLOCK);
 
-        addDrop(BlockInit.KITCHEN_FLOOR);
-        addDrop(BlockInit.CONCRETE_FLOOR);
 
+        // CARPETS
         addDrop(BlockInit.CARPET_STAR_GREEN);
         addDrop(BlockInit.CARPET_STAR_CYAN);
         addDrop(BlockInit.CARPET_STAR_BLUE);
@@ -93,16 +128,9 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.CARPET_SPACE);
         addDrop(BlockInit.CARPET_TRIANGLE);
 
-        addDrop(PropInit.FNAF_1_DESK);
-        addDrop(PropInit.WALL_CLOUDS);
-        addDrop(PropInit.FLOOR_MONITORS_1);
-        addDrop(PropInit.FLOOR_MONITORS_2);
-        addDrop(PropInit.OFFICE_BUTTONS);
-        addDrop(PropInit.WOODEN_SHELF);
-        addDrop(PropInit.RETRO_TABLE);
-        addDrop(PropInit.CEILING_TILE_VENT);
-        addDrop(PropInit.RESTROOM_SIGN);
-        addDrop(PropInit.BROOM);
-        addDrop(PropInit.MOP_BUCKET);
+        // CHEESE BLOCKS
+        addDrop(BlockInit.CHEESE_BLOCK);
+        addDrop(BlockInit.CHEESE_BLOCK_WHITE);
+
     }
 }
