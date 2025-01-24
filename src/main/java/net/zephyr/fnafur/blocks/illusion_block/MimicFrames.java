@@ -7,6 +7,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -108,7 +109,7 @@ public class MimicFrames extends BlockWithSticker {
             Vec3i matrixPos = latestMatrixPos;
             byte[] data = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix");
             boolean[][][] matrix = new boolean[getMatrixSize()][getMatrixSize()][getMatrixSize()];
-            matrix[matrixPos.getX()][matrixPos.getY()][matrixPos.getZ()] = true;
+            matrix[Math.clamp(matrixPos.getX(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getY(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getZ(), 0, getMatrixSize()-1)] = true;
 
             byte[] array = matrixToArray(matrix, getMatrixSize());
             for(int i = 0; i < data.length; i++){
@@ -150,6 +151,7 @@ public class MimicFrames extends BlockWithSticker {
         BlockEntity entity = context.getWorld().getBlockEntity(context.getBlockPos());
         if(entity == null || !itemStack.isOf(this.asItem())) return false;
         else{
+            if(getMatrixSize() == 1) return false;
             Vec3d offset = context.getSide().getDoubleVector().multiply(0.01f);
             Vec3i matrixPos = getMatrixPos(context.getHitPos().add(offset), context.getBlockPos());
             System.out.println(matrixPos);
@@ -176,17 +178,17 @@ public class MimicFrames extends BlockWithSticker {
         ItemStack stack = player.getMainHandStack();
         if(entity != null) {
 
-            Vec3i matrixPos = getMatrixPos(hit.getPos(), hit.getBlockPos());
+            Vec3i matrixPos = getMatrixPos(hit.getPos().offset(hit.getSide(), -0.1), hit.getBlockPos());
 
             NbtCompound nbt = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData();
             Block currentBlock = getCurrentBlock(nbt, world, hit.getSide(), matrixPos);
 
 
             if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
-                if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null) {
+                if (!(blockItem.getBlock() instanceof MimicFrames) && currentBlock == null) {
 
                     saveBlockTexture(
-                            setBlockTexture(nbt, stack, hit.getSide(), world),
+                            setBlockTexture(nbt, stack, hit.getSide(), world, matrixPos),
                             world,
                             pos,
                             player.getServer()
@@ -201,12 +203,18 @@ public class MimicFrames extends BlockWithSticker {
     }
 
     public Block getCurrentBlock(NbtCompound nbt, World world, Direction direction, Vec3i matrixPos){
-        return getBlockFromNbt(nbt.getCompound(direction.getName()), world);
+        NbtCompound blockNbt = nbt.getCompound("BlockData").getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ());
+        return getBlockFromNbt(blockNbt.getCompound(direction.getName()), world);
     }
 
-    public NbtCompound setBlockTexture(NbtCompound nbt, ItemStack stack, Direction direction, World world){
+    public NbtCompound setBlockTexture(NbtCompound nbt, ItemStack stack, Direction direction, World world, Vec3i matrixPos){
 
-        nbt.put(direction.getName(), stack.toNbtAllowEmpty(world.getRegistryManager()));
+        NbtCompound blockNbt = nbt.getCompound("BlockData").getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ());
+
+        blockNbt.put(direction.getName(), stack.toNbtAllowEmpty(world.getRegistryManager()));
+        NbtCompound blockData = nbt.getCompound("BlockData");
+        blockData.put("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ(), blockNbt);
+        nbt.put("BlockData", blockData);
         return nbt;
     }
     public void saveBlockTexture(NbtCompound nbt, World world, BlockPos pos, MinecraftServer server){

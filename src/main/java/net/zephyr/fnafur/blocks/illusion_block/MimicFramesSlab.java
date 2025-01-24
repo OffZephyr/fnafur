@@ -200,7 +200,7 @@ public class MimicFramesSlab extends MimicFrames implements Waterloggable {
 
             if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
                 if(!(blockItem.getBlock() instanceof MimicFrames) && currentBlock == null) {
-                    nbt2 = setBlockTexture(nbt2, stack, hit.getSide(), world);
+                    nbt2 = setBlockTexture(nbt2, stack, hit.getSide(), world, new Vec3i(0, 0, 0));
                     nbt.put(side, nbt2);
 
                     saveBlockTexture(

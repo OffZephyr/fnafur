@@ -80,7 +80,6 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.MIMIC_FRAME);
                         entries.add(BlockInit.MIMIC_FRAME_2x2);
                         entries.add(BlockInit.MIMIC_FRAME_4x4);
-                        entries.add(BlockInit.MIMIC_FRAME_SLAB);
 
                         entries.add(BlockInit.GROUT_TILE);
                         entries.add(BlockInit.BLACK_TILE);

@@ -129,7 +129,30 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 
         ItemStack stack = ItemStack.fromNbtOrEmpty(MinecraftClient.getInstance().world.getRegistryManager(), nbt.getCompound("BlockState"));
         BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem)stack.getItem()).getBlock().getDefaultState()) : state;
+
         emitBaseCube(newState, pos, emitter, nbt);
+        emitStickers(pos, emitter, nbt);
+
+        mesh = builder.build();
+        mesh.outputTo(context.getEmitter());
+    }
+    public void emitBaseCube(BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
+        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(state);
+        particlesprite = model.getParticleSprite();
+        for(Direction direction : Direction.values()) {
+            List<BakedQuad> quadList = model.getQuads(state, direction, Random.create());
+
+            for (BakedQuad quad : quadList) {
+                Sprite sprite = quad.getSprite();
+
+                emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+                emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
+                emitter.color(-1, -1, -1, -1);
+                emitter.emit();
+            }
+        }
+    }
+    public void emitStickers(BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
 
         if(!nbt.isEmpty()) {
             MinecraftClient client = MinecraftClient.getInstance();
@@ -181,24 +204,6 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
                             .color(-1, -1, -1, -1)
                             .emit();
                 }
-            }
-        }
-        mesh = builder.build();
-        mesh.outputTo(context.getEmitter());
-    }
-    public void emitBaseCube(BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
-        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(state);
-        particlesprite = model.getParticleSprite();
-        for(Direction direction : Direction.values()) {
-            List<BakedQuad> quadList = model.getQuads(state, direction, Random.create());
-
-            for (BakedQuad quad : quadList) {
-                Sprite sprite = quad.getSprite();
-
-                emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-                emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
-                emitter.color(-1, -1, -1, -1);
-                emitter.emit();
             }
         }
     }
