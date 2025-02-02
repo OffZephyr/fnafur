@@ -3,7 +3,7 @@ package net.zephyr.fnafur.item;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.zephyr.fnafur.blocks.computer.ComputerData;
+import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 
 public class CPUItem extends Item {

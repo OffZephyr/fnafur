@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.computer;
+package net.zephyr.fnafur.blocks.utility_blocks.computer;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

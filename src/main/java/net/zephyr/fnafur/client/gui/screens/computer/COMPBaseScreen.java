@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.zephyr.fnafur.FnafUniverseResuited;
-import net.zephyr.fnafur.blocks.computer.ComputerData;
+import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.client.gui.screens.computer.apps.COMPBaseAppScreen;
 import net.zephyr.fnafur.init.block_init.BlockInit;

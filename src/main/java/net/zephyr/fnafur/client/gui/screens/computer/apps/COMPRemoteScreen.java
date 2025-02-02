@@ -12,7 +12,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
-import net.zephyr.fnafur.blocks.computer.ComputerData;
+import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.item.EntitySpawnItem;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;

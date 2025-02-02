@@ -78,6 +78,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.OFFICE_BUTTONS);
 
                         entries.add(BlockInit.COMPUTER);
+                        entries.add(BlockInit.CPU_CONFIG_PANEL);
 
                     }).build());
     public static final ItemGroup FNAF_BLOCKS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, "blocks"),

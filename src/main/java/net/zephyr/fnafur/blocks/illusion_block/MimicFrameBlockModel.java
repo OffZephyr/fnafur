@@ -38,7 +38,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
     @Override
     public void emitBaseCube(BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt) {
         World world = MinecraftClient.getInstance().world;
-        if(state.getBlock() instanceof MimicFrames block) {
+        if (state.getBlock() instanceof MimicFrames block) {
             int matrixSize = block.getMatrixSize();
             byte[] cubeArray = nbt.getByteArray("cubeMatrix");
             if (cubeArray.length == 0) {
@@ -59,6 +59,16 @@ public class MimicFrameBlockModel extends StickerBlockModel {
 
                         for (Direction direction : Direction.values()) {
 
+                            if((z == 0 && direction == Direction.NORTH) ||
+                                            (z == matrixSize - 1 && direction == Direction.SOUTH) ||
+                                            (x == 0 && direction == Direction.WEST) ||
+                                            (x == matrixSize - 1 && direction == Direction.EAST) ||
+                                            (y == matrixSize - 1 && direction == Direction.UP) ||
+                                            (y == 0 && direction == Direction.DOWN)
+                            ) {
+                                if (world.getBlockState(pos.offset(direction)).getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), MinecraftClient.getInstance().world, pos.offset(direction), pos, frame.getMatrixSize(), matrixSize))
+                                    continue;
+                            }
                             Block sideBlock = block.getCurrentBlock(nbt, world, direction, new Vec3i(x, y, z));
 
                             if (direction == Direction.EAST && x + 1 < matrixSize && cubeMatrix[x + 1][y][z]) continue;
@@ -75,6 +85,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
             }
         }
     }
+
     public void emitSide(QuadEmitter emitter, NbtCompound nbt, Direction direction, Block sideBlock, BlockPos pos, boolean reColor, int matrixSize, int x, int y, int z, int colorIndex) {
 
         int frameSize = matrixSize * matrixSize;
@@ -124,9 +135,10 @@ public class MimicFrameBlockModel extends StickerBlockModel {
 
         emitStickers(direction, emitter, nbt, pos, x0, x1, z0, z1, depth, matrixSize);
     }
-    int getColor(Direction direction, int offset){
+
+    int getColor(Direction direction, int offset) {
         Direction side = offset % 2 == 0 ? direction.getOpposite() : direction;
-        int base = switch(side){
+        int base = switch (side) {
             case NORTH -> 0xFFBBBBFF;
             case EAST -> 0xFFBBFFBB;
             case SOUTH -> 0xFFFFBB99;
@@ -142,7 +154,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
     }
 
     public void emitStickers(Direction direction, QuadEmitter emitter, NbtCompound nbt, BlockPos pos, float x0, float x1, float z0, float z1, float depth, int matrixSize) {
-        if(!nbt.isEmpty()) {
+        if (!nbt.isEmpty()) {
 
             MinecraftClient client = MinecraftClient.getInstance();
             NbtList list = nbt.getList(direction.name(), NbtElement.STRING_TYPE);
@@ -163,8 +175,8 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                 float xOffset = sticker.getDirection() == StickerInit.Movable.HORIZONTAL ? Offset : 0;
                 float yOffset = sticker.getDirection() == StickerInit.Movable.VERTICAL ? Offset : 0;
 
-                boolean snapBelow = matrixSize == 1 && client.world.getBlockState(pos.down()).isSideSolidFullSquare(client.world, pos.down(), direction);
-                boolean snapAbove = matrixSize == 1 && client.world.getBlockState(pos.up()).isSideSolidFullSquare(client.world, pos.up(), direction);
+                boolean snapBelow = client.world.getBlockState(pos.down()).isSideSolidFullSquare(client.world, pos.down(), direction);
+                boolean snapAbove = client.world.getBlockState(pos.up()).isSideSolidFullSquare(client.world, pos.up(), direction);
 
                 float textureSize = sticker.getPixelDensity() - sticker.getSize();
                 float scaledSpace = (float) sticker.getSize() / sticker.getPixelDensity();
@@ -175,24 +187,29 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                 float v = snapBelow ? 16 : yOffset > 0 ? 16 : 16 + yOffset * 16;
                 float v2 = snapAbove ? 0 : 1.0f + yOffset < 1 ? 0 : yOffset * 16;
 
-                bottom = matrixSize == 1 ? bottom : z0;
-                top = matrixSize == 1 ? top : z1;
-
                 float part = z1 - z0;
-                float z = z0 / part;
+                int z = (int) (matrixSize - 1 - (z0 / part));
+                int offsetZ = (int) (Math.abs(yOffset) / part);
+                if (matrixSize == 4) {
+                    int l = 0;
+                }
+                if(z < offsetZ) continue;
 
-                if(matrixSize != 1){
-                    v2 = 16 - z1 *16;
-                    v = 16 - z0 *16;
+                if (matrixSize != 1) {
+
+                    top = z == offsetZ || z <= 0 && offsetZ <= 0 ? top : z1;
+                    bottom = z == matrixSize - 1 ? bottom : z0;
+
+                    v2 = z == offsetZ || z <= 0 && offsetZ <= 0 ? v2 : (16 - z1 * 16) + (yOffset * 16);
+                    v = z == matrixSize - 1 ? v : (16 - z0 * 16) + (yOffset * 16);
                 }
 
                 float left = Math.clamp(0.0f + xOffset, x0, 1);
                 float right = Math.clamp(1.0f + xOffset, 0, x1);
                 float u = x0 * 16;
                 float u2 = x1 * 16;
-                float offset = -0.0002f;
 
-                float stickerDepth = depth + (offset + offset * i);
+                float stickerDepth = depth + (STICKER_OFFSET + STICKER_OFFSET * i);
 
                 emitter.square(direction,
                                 left,

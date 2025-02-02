@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.client.gui.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.ShaderProgramKey;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -12,14 +12,23 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ColorHelper;
 import net.zephyr.fnafur.util.mixinAccessing.IDCVertexConsumersAcc;
 import org.joml.Matrix4f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class GoopyScreen extends Screen {
+    public static List<GUIButton> BUTTONS = new ArrayList<GUIButton>();
     BlockPos blockPos = BlockPos.ORIGIN;
     int entityID = 0;
+    int windowSizeX = 256, windowSizeY = 256;
+    int windowX, windowY;
     String itemSlot = "";
     NbtCompound nbtData = new NbtCompound();
+    private boolean holding;
+
     public void putNbtData(NbtCompound nbt){
         nbtData = nbt.copy();
     }
@@ -39,6 +48,7 @@ public abstract class GoopyScreen extends Screen {
     public String getItemSlot(){ return itemSlot; }
     public GoopyScreen(Text title) {
         super(title);
+        BUTTONS.clear();
     }
     public GoopyScreen(Text title, NbtCompound nbt, long l) {
         this(title);
@@ -54,7 +64,78 @@ public abstract class GoopyScreen extends Screen {
         else if(o instanceof String slot) this.itemSlot = slot;
     }
 
-    public static boolean isOnButton(double mouseX, double mouseY, int x, int y, int width, int height) {
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        windowX = (MinecraftClient.getInstance().getWindow().getScaledWidth()/2) - (windowSizeX/2);
+        windowY = (MinecraftClient.getInstance().getWindow().getScaledHeight()/2) - (windowSizeY/2);
+
+        for(GUIButton button : BUTTONS){
+            if(button instanceof GUIToggle toggle){
+                renderToggle(context, toggle);
+            }
+            else {
+                renderButton(context, mouseX, mouseY, button);
+            }
+        }
+        super.render(context, mouseX, mouseY, delta);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        this.holding = true;
+        for(GUIButton guiButton : BUTTONS){
+            int x = windowX + guiButton.x;
+            int y = windowY + guiButton.y;
+            int w = guiButton.width;
+            int h = guiButton.height;
+            if(guiButton instanceof GUIToggle guiToggle){
+                if(isOnButton(mouseX, mouseY, x, y, w, h) && guiButton.toggle_exec != null){
+                    guiButton.toggle_exec.toggle(guiToggle);
+                }
+            }
+            else{
+                if(isOnButton(mouseX, mouseY, x, y, w, h) && guiButton.click_exec != null){
+                    guiButton.click_exec.execute();
+                }
+            }
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        this.holding = false;
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    public void renderButton(DrawContext context, double mouseX, double mouseY, GUIButton button) {
+        int x = windowX + button.x;
+        int y = windowY + button.y;
+        int w = button.width;
+        int h = button.height;
+        GUISprite texture = button.off_sprite;
+
+        if (isOnButton(mouseX, mouseY, x, y, w, h)) {
+            if (holding && button.on_sprite != null) {
+                texture = button.on_sprite;
+            } else {
+                texture = button.hover_sprite != null ? button.hover_sprite : button.on_sprite != null ? button.on_sprite : button.off_sprite;
+            }
+        }
+        drawRecolorableTexture(context, texture.texture, x, y, w, h, texture.u, texture.v, texture.textureWidth, texture.textureHeight, texture.color);
+    }
+    public void renderToggle(DrawContext context, GUIToggle button) {
+        int x = windowX + button.x;
+        int y = windowY + button.y;
+        int w = button.width;
+        int h = button.height;
+        GUISprite texture;
+
+        texture = button.on ? button.on_sprite : button.off_sprite;
+        drawRecolorableTexture(context, texture.texture, x, y, w, h, texture.u, texture.v, texture.textureWidth, texture.textureHeight, texture.color);
+    }
+
+        public static boolean isOnButton(double mouseX, double mouseY, int x, int y, int width, int height) {
         return (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height);
     }
 
@@ -100,6 +181,9 @@ public abstract class GoopyScreen extends Screen {
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
     }
 
+    public void drawRecolorableTexture(DrawContext context, Identifier texture, int x, int y, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, int color) {
+        drawRecolorableTexture(context, texture, x, y, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight, ColorHelper.getRed(color) / 256f, ColorHelper.getGreen(color) / 256f,ColorHelper.getBlue(color) / 256f,ColorHelper.getAlpha(color) / 256f);
+    }
     public void drawRecolorableTexture(DrawContext context, Identifier texture, int x, int y, int z, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, float red, float green, float blue, float alpha) {
         float u1 = (u + 0.0f) /textureWidth;
         float u2 = (u + regionWidth) / textureWidth;
@@ -146,5 +230,72 @@ public abstract class GoopyScreen extends Screen {
     public static float getResizedTextHeight(TextRenderer textRenderer, Text text, float baseScale, float maxTextWidth){
         float scale = (textRenderer.getWidth(text) * baseScale) > maxTextWidth ? (baseScale / textRenderer.getWidth(text)) * maxTextWidth : baseScale;
         return 8 * scale;
+    }
+
+    public record GUISprite(Identifier texture, int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight, int color){
+    }
+    public class GUIButton{
+
+        @FunctionalInterface
+        interface ToggleAction {
+            void toggle(GUIToggle button);
+        }
+        @FunctionalInterface
+        interface ButtonAction {
+            void execute();
+        }
+        public final int x, y, width, height;
+        public GUISprite off_sprite;
+        public GUISprite hover_sprite;
+        public GUISprite on_sprite;
+        public ButtonAction hover_exec;
+        public ButtonAction click_exec;
+        public ToggleAction toggle_exec;
+        GUIButton(int x, int y, int width, int height){
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            BUTTONS.add(this);
+        }
+
+        public GUIButton offSprite(Identifier texture, int u, int v, int textureWidth, int textureHeight, int color){
+            off_sprite = new GUISprite(texture, x, y, width, height, u, v, textureWidth, textureHeight, color);
+            return this;
+        }
+        public GUIButton hoverSprite(Identifier texture, int u, int v, int textureWidth, int textureHeight, int color){
+            hover_sprite = new GUISprite(texture, x, y, width, height, u, v, textureWidth, textureHeight, color);
+            return this;
+        }
+        public GUIButton onSprite(Identifier texture, int u, int v, int textureWidth, int textureHeight, int color){
+            on_sprite = new GUISprite(texture, x, y, width, height, u, v, textureWidth, textureHeight, color);
+            return this;
+        }
+        public GUIButton hoverExec(ButtonAction method){
+            hover_exec = method;
+            return this;
+        }
+        public GUIButton clickExec(ButtonAction method){
+            click_exec = method;
+            return this;
+        }
+
+        public GUIButton toggleExec(ToggleAction method){
+            toggle_exec = method;
+            return this;
+        }
+    }
+
+    public class GUIToggle extends GUIButton{
+        public String setting;
+        public boolean on;
+        GUIToggle(int x, int y, int width, int height, String setting) {
+            this(x, y, width, height, setting, false);
+        }
+        GUIToggle(int x, int y, int width, int height, String setting, boolean defaultValue) {
+            super(x, y, width, height);
+            this.setting = setting;
+            this.on = defaultValue;
+        }
     }
 }

@@ -27,6 +27,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
         getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(BlockInit.COMPUTER)
+                .add(BlockInit.CPU_CONFIG_PANEL)
                 .add(BlockInit.CAMERA)
                 .add(BlockInit.FOG_BLOCK)
                 .add(PropInit.FNAF_1_DESK)

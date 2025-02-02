@@ -64,9 +64,9 @@ public class MimicFrames extends BlockWithSticker {
     }
 
     Vec3i getMatrixPos(Vec3d pos, BlockPos blockPos){
-        double x = getMatrixSize() == 1 ? 0 : pos.getX() - blockPos.getX();
-        double y = getMatrixSize() == 1 ? 0 : pos.getY() - blockPos.getY();
-        double z = getMatrixSize() == 1 ? 0 : pos.getZ() - blockPos.getZ();
+        double x = pos.getX() - blockPos.getX();
+        double y = pos.getY() - blockPos.getY();
+        double z = pos.getZ() - blockPos.getZ();
         return new Vec3i((int)(x * getMatrixSize()), (int)(y * getMatrixSize()), (int)(z * getMatrixSize()));
     }
     @Nullable
@@ -151,17 +151,24 @@ public class MimicFrames extends BlockWithSticker {
         BlockEntity entity = context.getWorld().getBlockEntity(context.getBlockPos());
         if(entity == null || !itemStack.isOf(this.asItem())) return false;
         else{
-            if(getMatrixSize() == 1) return false;
-            Vec3d offset = context.getSide().getDoubleVector().multiply(0.01f);
-            Vec3i matrixPos = getMatrixPos(context.getHitPos().add(offset), context.getBlockPos());
-            System.out.println(matrixPos);
-            if(matrixPos.getX() > getMatrixSize() - 1 || matrixPos.getY() > getMatrixSize() - 1 || matrixPos.getZ() > getMatrixSize() - 1) return false;
-            if(matrixPos.getX() < 0 || matrixPos.getY() < 0 || matrixPos.getZ() < 0) return false;
+            //if(getMatrixSize() == 1) return false;
+            Vec3d offset = context.getSide().getDoubleVector().multiply((1f / getMatrixSize())/2f);
+            Vec3d hitPos = context.getHitPos().add(offset);
+
+            BlockPos pos = new BlockPos((int) hitPos.getX(), (int) hitPos.getY(), (int) hitPos.getZ());
+
+            Vec3i matrixPos = getMatrixPos(hitPos, context.getBlockPos());
+
+            if(context.getBlockPos().getX() < 0) pos = pos.add(-1, 0, 0);
+            if(context.getBlockPos().getY() < 0) pos = pos.add(0, -1, 0);
+            if(context.getBlockPos().getZ() < 0) pos = pos.add(0, 0, -1);
+
+            if(!pos.equals(context.getBlockPos())) return false;
 
             byte[] data = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix");
             boolean[][][] matrix = arrayToMatrix(data, getMatrixSize());
 
-            matrix[matrixPos.getX()][matrixPos.getY()][matrixPos.getZ()] = true;
+            matrix[Math.clamp(matrixPos.getX(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getY(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getZ(), 0, getMatrixSize()-1)] = true;
 
             byte[] array = matrixToArray(matrix, getMatrixSize());
 
@@ -172,6 +179,77 @@ public class MimicFrames extends BlockWithSticker {
         }
     }
 
+    public static boolean isSideFull(Direction direction, World world, BlockPos pos, BlockPos framePos, int matrixSize, int matrixSize2) {
+        if (matrixSize == 1) return true;
+        if (matrixSize != matrixSize2) return false;
+
+        BlockEntity entity = world.getBlockEntity(pos);
+        BlockEntity entity2 = world.getBlockEntity(framePos);
+        if (entity != null && entity2 != null) {
+            byte[] data = ((IEntityDataSaver) entity).getPersistentData().getByteArray("cubeMatrix");
+            boolean[][][] matrix = arrayToMatrix(data, matrixSize);
+            boolean[][][] matrix2;
+
+            byte[] data2 = ((IEntityDataSaver) entity2).getPersistentData().getByteArray("cubeMatrix");
+            matrix2 = arrayToMatrix(data2, matrixSize2);
+
+            boolean full = true;
+            for (int x = 0; x < matrixSize; x++) {
+                for (int y = 0; y < matrixSize; y++) {
+                    switch (direction) {
+                        case NORTH: {
+                            if (matrix[x][y][0] != matrix2[x][y][matrixSize - 1]) {
+                                full = false;
+                                break;
+                            }
+                            break;
+                        }
+                        case SOUTH: {
+                            if (matrix[x][y][matrixSize - 1] != matrix2[x][y][0]) {
+                                full = false;
+                                break;
+                            }
+                            break;
+                        }
+                        case WEST: {
+                            if (matrix[0][y][x] != matrix2[matrixSize - 1][y][x]) {
+                                full = false;
+                                break;
+                            }
+                            break;
+                        }
+                        case EAST: {
+                            if (matrix[matrixSize - 1][y][x] != matrix2[0][y][x]) {
+                                full = false;
+                                break;
+                            }
+                            break;
+                        }
+                        case UP: {
+                            if (matrix[x][matrixSize - 1][y] != matrix2[x][0][y]) {
+                                full = false;
+                                break;
+                            }
+                            break;
+                        }
+                        case DOWN: {
+                            if (matrix[x][0][y] != matrix2[x][matrixSize - 1][y]) {
+                                full = false;
+                                break;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return full;
+        }
+        return false;
+    }
+    public static boolean isSideFull(Direction direction, World world, BlockPos pos, int matrixSize) {
+        return isSideFull(direction, world, pos, pos, matrixSize, 1);
+    }
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         BlockEntity entity = world.getBlockEntity(pos);
@@ -185,7 +263,7 @@ public class MimicFrames extends BlockWithSticker {
 
 
             if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
-                if (!(blockItem.getBlock() instanceof MimicFrames) && currentBlock == null) {
+                if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null) {
 
                     saveBlockTexture(
                             setBlockTexture(nbt, stack, hit.getSide(), world, matrixPos),

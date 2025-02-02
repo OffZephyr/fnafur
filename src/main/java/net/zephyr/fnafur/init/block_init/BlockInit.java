@@ -3,19 +3,16 @@ package net.zephyr.fnafur.init.block_init;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.block.*;
-import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
-import net.zephyr.fnafur.blocks.energy.blocks.generators.BaseGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.RedstoneConverterBlock;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
@@ -26,7 +23,7 @@ import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockRenderer;
-import net.zephyr.fnafur.blocks.computer.ComputerBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlockRenderer;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
@@ -34,6 +31,7 @@ import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
 import net.zephyr.fnafur.blocks.tile_doors.OfficeDoor;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntityRenderer;
+import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.client.JavaModels;
 
 import java.util.ArrayList;
@@ -49,6 +47,16 @@ public class BlockInit {
     public static final Block COMPUTER = registerBlock(
             "computer",
             ComputerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .notSolid()
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+    );
+
+    public static final Block CPU_CONFIG_PANEL = registerBlock(
+            "cpu_config_panel",
+            CpuConfigPanelBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .notSolid()
@@ -769,13 +777,16 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA_DESK, RenderLayer.getCutout());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTripwire());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getTripwire());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getTripwire());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CPU_CONFIG_PANEL, RenderLayer.getCutout());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getTripwire());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS, RenderLayer.getTripwire());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_COLORED, RenderLayer.getTripwire());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getTranslucent());
+
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getTranslucent());
+
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_COLORED, RenderLayer.getTranslucent());
 
 
         BlockEntityRendererFactories.register(BlockEntityInit.FOG_BLOCK, FogBlockRenderer::new);

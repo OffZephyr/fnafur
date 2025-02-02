@@ -4,11 +4,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.zephyr.fnafur.entity.GlowLayer;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
+
+import java.util.List;
 
 public class GeoDoorRenderer extends GeoBlockRenderer<GeoDoorEntity> {
     public GeoDoorRenderer(BlockEntityRendererFactory.Context context) {
         super(new DoorModel());
+        addRenderLayer(new GeoDoorWindowLayer(this));
     }
 
     @Override

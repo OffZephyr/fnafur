@@ -3,6 +3,7 @@ package net.zephyr.fnafur.util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.networking.nbt_updates.*;
 import net.zephyr.fnafur.networking.screens.*;
@@ -115,6 +117,20 @@ public class GoopyNetworkingUtils {
         }
     }
 
+    public static void saveBlockNbt(BlockPos pos, NbtCompound nbt, World world) {
+        if (world != null) {
+            if (world.isClient()) {
+                saveBlockNbt(pos, nbt);
+            } else {
+                ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().copyFrom(nbt);
+
+                for (ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
+                    ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(pos.asLong(), nbt));
+
+                }
+            }
+        }
+    }
     @FunctionalInterface
     public interface ScreenFactory<T extends GoopyScreen> {
         T create(Text title, NbtCompound value2, Object value3);

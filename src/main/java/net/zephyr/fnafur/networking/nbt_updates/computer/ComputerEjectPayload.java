@@ -8,7 +8,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.blocks.computer.ComputerBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlock;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.networking.nbt_updates.NbtPayloads;
 

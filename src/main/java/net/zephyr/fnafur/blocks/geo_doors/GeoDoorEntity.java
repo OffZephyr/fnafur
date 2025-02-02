@@ -11,12 +11,15 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.block_init.GeoBlockEntityInit;
+import net.zephyr.fnafur.util.GoopyNetworkingUtils;
+import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -48,11 +51,21 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
             Box box = ((GeoDoor) state.getBlock()).getEntityArea(state, pos);
             Entity entity = checkOpen(world, box);
             open = entity != null;
+
+            for(BlockPos pos1 : ((GeoDoor) state.getBlock()).doorPos(state, pos)){
+                BlockState doorState = world.getBlockState(pos1);
+                if(doorState.contains(GeoDoor.OPEN)) {
+                    world.setBlockState(pos1, doorState.with(GeoDoor.OPEN, open));
+                }
+            }
             if(open) {
                 float rot = state.get(GeoDoor.FACING).asRotation();
-                int turns = (int) (entity.getYaw() / 360);
-                float entityYaw = entity.getYaw() - (360 * turns);
-                front = entityYaw > rot - 90 && entityYaw < rot + 90;
+                float entityRot = entity.getYaw() + 90 - rot;
+                int turns = (int) (entityRot / 360);
+                float entityYaw = entityRot - (360 * turns);
+                entityYaw = entityRot < 0 ? 360 + entityYaw : entityYaw;
+                front = entityYaw > 0 && entityYaw < 180;
+
             }
         }
     }
@@ -71,6 +84,14 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
     public Identifier getTexture() {
         if(getCachedState().getBlock() instanceof GeoDoor door) {
             return door.getTexture();
+        }
+        return null;
+    }
+
+
+    public Identifier getWindowTexture() {
+        if(getCachedState().getBlock() instanceof GeoDoor door) {
+            return door.getWindowTexture();
         }
         return null;
     }

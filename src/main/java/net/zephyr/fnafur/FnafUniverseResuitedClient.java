@@ -1,11 +1,8 @@
 package net.zephyr.fnafur;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.render.RenderLayer;
 import net.zephyr.fnafur.init.*;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.block_init.ModelLoading;
@@ -17,10 +14,10 @@ public class FnafUniverseResuitedClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 
-		net.zephyr.fnafur.blocks.computer.ComputerData.addInitializer(new DefaultComputerInit());
+		net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData.addInitializer(new DefaultComputerInit());
 
 		ModelLoadingPlugin.register(new ModelLoading());
-		net.zephyr.fnafur.blocks.computer.ComputerData.runInitializersClient();
+		net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData.runInitializersClient();
 		ItemInit.clientRegisterItem();
 		ScreensInit.init();
 		BlockInit.registerBlocksOnClient();

@@ -34,22 +34,27 @@ import java.util.List;
 public abstract class GeoDoor extends BlockWithEntity {
     public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
     public static final BooleanProperty LOCKED = BooleanProperty.of("lock");
+    public static final BooleanProperty OPEN = BooleanProperty.of("open");
     public static final BooleanProperty MAIN = BooleanProperty.of("main");
     private Identifier texture;
+    private Identifier windowTexture;
     private Identifier model;
 
     public GeoDoor(Settings settings) {
         super(settings);
         setDefaultState(getDefaultState().with(LOCKED, false));
     }
-
-    public GeoDoor setActualModelTexture(Identifier texture, Identifier model){
+    public GeoDoor setActualModelTexture(Identifier texture, Identifier windowTexture, Identifier model){
         this.texture = texture;
+        this.windowTexture = windowTexture;
         this.model = model;
         return this;
     }
     public Identifier getTexture(){
         return texture;
+    }
+    public Identifier getWindowTexture(){
+        return windowTexture;
     }
     public Identifier getModel(){
         return model;
@@ -83,16 +88,16 @@ public abstract class GeoDoor extends BlockWithEntity {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(FACING, MAIN, LOCKED));
+        super.appendProperties(builder.add(FACING, MAIN, LOCKED, OPEN));
     }
 
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         BlockEntity entity = world.getBlockEntity(pos);
-        if(entity instanceof GeoDoorEntity ent){
-            BlockPos origin = BlockPos.fromLong(((IEntityDataSaver)ent).getPersistentData().getLong("origin"));
+        if(entity instanceof GeoDoorEntity ent) {
+            BlockPos origin = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("origin"));
             BlockState originState = world.getBlockState(origin);
-            return originState.contains(LOCKED) && originState.get(LOCKED) ? super.getCollisionShape(state, world, pos, context) : VoxelShapes.empty();
+            return !(state.contains(OPEN) && state.get(OPEN)) || originState.contains(LOCKED) && originState.get(LOCKED) ? super.getCollisionShape(state, world, pos, context) : VoxelShapes.empty();
         }
         return VoxelShapes.fullCube();
     }

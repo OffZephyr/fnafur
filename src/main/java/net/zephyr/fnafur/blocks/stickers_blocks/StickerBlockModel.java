@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
@@ -44,6 +45,7 @@ import java.util.function.Supplier;
 
 public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedModel {
     Sprite particlesprite;
+    public static float STICKER_OFFSET = -0.002f;
     private Mesh mesh;
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
@@ -137,9 +139,16 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
         mesh.outputTo(context.getEmitter());
     }
     public void emitBaseCube(BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
-        BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(state);
+        MinecraftClient client = MinecraftClient.getInstance();
+        BakedModel model = client.getBakedModelManager().getBlockModels().getModel(state);
         particlesprite = model.getParticleSprite();
+
         for(Direction direction : Direction.values()) {
+
+            BlockState sideState = client.world.getBlockState(pos.offset(direction));
+            if (pos != BlockPos.ORIGIN && !(sideState.getBlock() instanceof MimicFrames) && sideState.isOpaque() && client.world.getBlockState(pos.offset(direction)).isSideSolidFullSquare(client.world, pos.offset(direction), direction.getOpposite())) continue;
+            if (pos != BlockPos.ORIGIN && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.world, pos.offset(direction), frame.getMatrixSize())) continue;
+
             List<BakedQuad> quadList = model.getQuads(state, direction, Random.create());
 
             for (BakedQuad quad : quadList) {
@@ -157,7 +166,9 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
         if(!nbt.isEmpty()) {
             MinecraftClient client = MinecraftClient.getInstance();
             for (Direction direction : Direction.values()) {
-                if (pos != BlockPos.ORIGIN && client.world.getBlockState(pos.offset(direction)).isSideSolidFullSquare(MinecraftClient.getInstance().world, pos.offset(direction), direction)) continue;
+                BlockState sideState = client.world.getBlockState(pos.offset(direction));
+                if (pos != BlockPos.ORIGIN && !(sideState.getBlock() instanceof MimicFrames) && sideState.isOpaque() && client.world.getBlockState(pos.offset(direction)).isSideSolidFullSquare(client.world, pos.offset(direction), direction.getOpposite())) continue;
+                if (pos != BlockPos.ORIGIN && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.world, pos.offset(direction), frame.getMatrixSize())) continue;
 
                 NbtList list = nbt.getList(direction.name(), NbtElement.STRING_TYPE);
                 NbtList offset_list = nbt.getList(direction.name() + "_offset", NbtElement.FLOAT_TYPE);
@@ -189,13 +200,12 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
                     float v = snapBelow ? 16 : yOffset > 0 ? 16 : 16 + yOffset * 16;
                     float v2 = snapAbove ? 0 : 1.0f + yOffset < 1 ? 0 : yOffset * 16;
 
-                    float offset = -0.0002f;
                     emitter.square(direction,
                                     0.0f + xOffset,
                                     bottom,
                                     1.0f + xOffset,
                                     top,
-                                    offset + offset * i)
+                                    STICKER_OFFSET + STICKER_OFFSET * i)
                             .uv(0, 0, v2)
                             .uv(1, 0, v)
                             .uv(2, 16, v)
