@@ -63,7 +63,7 @@ public class Bear5Entity extends PathAwareEntity {
             float dist = this.distanceTo(this.target);
             setVelocity(getVelocity().add(direction.multiply(0.01f + 0.01f * (dist/10f))));
 
-            if(dist < 0.2f && getWorld() instanceof ServerWorld world){
+            if(dist < 0.25f && getWorld() instanceof ServerWorld world){
                 this.target.kill(world);
                 this.remove(RemovalReason.DISCARDED);
             }
