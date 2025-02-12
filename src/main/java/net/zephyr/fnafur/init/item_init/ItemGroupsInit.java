@@ -20,7 +20,6 @@ public class ItemGroupsInit {
             FabricItemGroup.builder()
                     .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".props"))
                     .noRenderedName()
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/tabs_fnaf.png"))
                     .icon(() -> new ItemStack(PropInit.FLOOR_MONITORS_1))
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
@@ -60,7 +59,6 @@ public class ItemGroupsInit {
             FabricItemGroup.builder()
                     .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".technical"))
                     .noRenderedName()
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/tabs_fnaf.png"))
                     .icon(() -> new ItemStack(ItemInit.PIPE_WRENCH))
                     .entries((displayContext, entries) -> {
 
@@ -85,7 +83,6 @@ public class ItemGroupsInit {
             FabricItemGroup.builder()
                     .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".blocks"))
                     .noRenderedName()
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/tabs_fnaf.png"))
                     .icon(() -> new ItemStack(BlockInit.BLACK_WHITE_TILES))
                     .entries((displayContext, entries) -> {
 
@@ -218,7 +215,6 @@ public class ItemGroupsInit {
             FabricItemGroup.builder()
                     .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".animatronics"))
                     .noRenderedName()
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/tabs_fnaf.png"))
                     .icon(() -> new ItemStack(SpawnItemInit.CL_FRED_SPAWN))
                     .entries((displayContext, entries) -> {
                         entries.add(ItemInit.DEATHCOIN);
@@ -230,6 +226,15 @@ public class ItemGroupsInit {
                         entries.add(SpawnItemInit.CL_CHICA_SPAWN);
                         entries.add(SpawnItemInit.CL_FOXY_SPAWN);
 
+                    }).build());
+    public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, FnafUniverseResuited.MOD_ID),
+            FabricItemGroup.builder()
+                    .displayName(Text.literal(FnafUniverseResuited.MOD_ID))
+                    .noRenderedName()
+                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/tabs_fnaf.png"))
+                    .icon(() -> new ItemStack(SpawnItemInit.CL_FRED_SPAWN))
+                    .entries((displayContext, entries) -> {
+                        entries.add(SpawnItemInit.CL_FRED_SPAWN);
                     }).build());
 
     public static void registerItemGroups() {

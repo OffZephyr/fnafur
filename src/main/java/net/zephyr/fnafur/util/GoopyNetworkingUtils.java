@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.networking.nbt_updates.*;
+import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.UpdateEntityNbtS2CPongPayload;
 import net.zephyr.fnafur.networking.screens.*;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -114,6 +115,20 @@ public class GoopyNetworkingUtils {
         if(entity != null) {
             ((IEntityDataSaver) entity).getPersistentData().copyFrom(nbt);
             ClientPlayNetworking.send(new UpdateEntityNbtC2SPayload(entityID, nbt));
+        }
+    }
+    public static void saveEntityNbt(int entityID, NbtCompound nbt, World world){
+        Entity entity = world.getEntityById(entityID);
+        if(entity != null) {
+            if(world.isClient()){
+                saveEntityData(entityID, nbt);
+            }
+            else {
+                ((IEntityDataSaver) entity).getPersistentData().copyFrom(nbt);
+                for(ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
+                    ServerPlayNetworking.send(p, new UpdateEntityNbtS2CPongPayload(entityID, nbt));
+                }
+            }
         }
     }
 

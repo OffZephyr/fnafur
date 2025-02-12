@@ -79,6 +79,12 @@
       "fnafur:animatronics/footsteps/foxystep5"
     ]
   },
+  "bear5": {
+    "subtitle": "sounds.fnafur.bear5",
+    "sounds": [
+      "fnafur:animatronics/footsteps/bear5slide"
+    ]
+  },
   "animatronic_hurt": {
     "subtitle": "sounds.fnafur.animatronic_hurt",
     "sounds": [

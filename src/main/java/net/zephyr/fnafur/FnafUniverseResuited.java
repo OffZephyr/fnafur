@@ -15,6 +15,7 @@ import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.init.item_init.ItemGroupsInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.networking.PayloadDef;
+import net.zephyr.fnafur.util.commands.Bear5Command;
 import net.zephyr.fnafur.util.commands.MoneyCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,5 +49,6 @@ public class FnafUniverseResuited implements ModInitializer {
 
 	public void registerCommands() {
 		CommandRegistrationCallback.EVENT.register(MoneyCommand::register);
+		CommandRegistrationCallback.EVENT.register(Bear5Command::register);
 	}
 }

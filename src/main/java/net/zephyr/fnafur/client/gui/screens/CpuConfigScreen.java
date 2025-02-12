@@ -36,6 +36,7 @@ public class CpuConfigScreen extends GoopyScreen{
     };
     public static final Identifier TEXTURE = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/cpu_config_screen.png");
     public CpuConfigScreen(Text text, NbtCompound nbtCompound, Object o) {
+
         super(text, nbtCompound, o);
         windowSizeX = 256;
         windowSizeY = 256;

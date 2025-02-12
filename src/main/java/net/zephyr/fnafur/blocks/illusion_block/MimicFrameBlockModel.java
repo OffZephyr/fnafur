@@ -66,7 +66,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                                             (y == matrixSize - 1 && direction == Direction.UP) ||
                                             (y == 0 && direction == Direction.DOWN)
                             ) {
-                                if (world.getBlockState(pos.offset(direction)).getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), MinecraftClient.getInstance().world, pos.offset(direction), pos, frame.getMatrixSize(), matrixSize))
+                                if (world != null && world.getBlockState(pos.offset(direction)).getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), MinecraftClient.getInstance().world, pos.offset(direction), pos, frame.getMatrixSize(), matrixSize))
                                     continue;
                             }
                             Block sideBlock = block.getCurrentBlock(nbt, world, direction, new Vec3i(x, y, z));
