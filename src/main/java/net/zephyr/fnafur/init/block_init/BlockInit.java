@@ -15,6 +15,8 @@ import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.BaseGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
+import net.zephyr.fnafur.blocks.energy.blocks.switches.CircuitBreakerBlock;
+import net.zephyr.fnafur.blocks.energy.blocks.switches.ElectricalLockerBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.RedstoneConverterBlock;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames2x2;
@@ -159,6 +161,13 @@ public class BlockInit {
             "redstone_converter",
             RedstoneConverterBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+    );
+    public static final Block ELECTRICAL_LOCKER = registerBlock(
+            "electrical_locker",
+            ElectricalLockerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
     );
 
 
@@ -717,7 +726,12 @@ public class BlockInit {
                     .solidBlock(Blocks::never)
                     .blockVision(Blocks::always)
     );
-
+    public static final Block CIRCUIT_BREAKER = registerBlock(
+            "circuit_breaker",
+            CircuitBreakerBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+    );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
         final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
@@ -727,6 +741,7 @@ public class BlockInit {
         Items.register(block);
         return block;
     }
+
     private static Block registerFrame(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
         Block block = registerBlock(name, factory, settings);
         MimicFrames.IDs.add(Identifier.of(FnafUniverseResuited.MOD_ID, name));
@@ -735,9 +750,11 @@ public class BlockInit {
         private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier texture) {
         return registerStickerBlock(name, factory, settings, texture, texture, texture, texture, texture, texture);
     }
+
     private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier sides, Identifier top, Identifier bottom) {
         return registerStickerBlock(name, factory, settings, sides, sides, sides, sides, top, bottom);
     }
+
     private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier north,Identifier east,Identifier south,Identifier west,Identifier top,Identifier bottom) {
         final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
@@ -756,6 +773,7 @@ public class BlockInit {
         GeoBlockInit.registerGeoBlocks();
         FnafUniverseResuited.LOGGER.info("Registering Blocks for " + FnafUniverseResuited.MOD_ID.toUpperCase());
     }
+
     public static void registerBlocksOnClient() {
         EntityModelLayerRegistry.registerModelLayer(JavaModels.CAMERA_HEAD, CameraBlockRenderer::getTexturedModelData);
         BlockEntityRendererFactories.register(BlockEntityInit.CAMERA, CameraBlockRenderer::new);
@@ -788,4 +806,5 @@ public class BlockInit {
         GeoBlockInit.registerGeoBlocksOnClient();
         FnafUniverseResuited.LOGGER.info("Registering Blocks On CLIENT for " + FnafUniverseResuited.MOD_ID.toUpperCase());
     }
+
 }

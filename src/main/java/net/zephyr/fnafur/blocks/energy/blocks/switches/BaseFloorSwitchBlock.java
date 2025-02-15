@@ -1,9 +1,6 @@
 package net.zephyr.fnafur.blocks.energy.blocks.switches;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -13,13 +10,15 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtLongArray;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.CallableByMesurer;
 import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
-import net.zephyr.fnafur.blocks.energy.enums.IElectricNode;
+import net.zephyr.fnafur.blocks.energy.enums.EnergyNodeType;
+import net.zephyr.fnafur.blocks.energy.enums.EnergyNode;
+import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,17 +26,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElectricNode, CallableByMesurer {
+public class BaseFloorSwitchBlock extends FloorPropBlock implements BlockEntityProvider, EnergyNode, CallableByMesurer {
 
     int tick;
     final int TICK_RATE = 20;
 
-    public BaseSwitchBlock(AbstractBlock.Settings settings) {
+    public BaseFloorSwitchBlock(AbstractBlock.Settings settings) {
         super(settings);
     }
 
     @Override
-    public ActionResult addNode(World world, BlockPos pos, BlockPos toAdd, BlockHitResult hit) {
+    public Class<EnergyNodeType> COLOR_ENUM() {
+        return null;
+    }
+
+
+    @Override
+    public ActionResult addNode(World world, BlockPos pos, BlockPos toAdd, Vec3d hit) {
         //System.out.println("[SWITCH]: try to connect node...");
         if(pos == toAdd) return ActionResult.FAIL;
         if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return ActionResult.FAIL;
@@ -54,7 +59,7 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
     }
 
     @Override
-    public ActionResult remNode(World world, BlockPos pos, BlockPos toRem, BlockHitResult hit) {
+    public ActionResult remNode(World world, BlockPos pos, BlockPos toRem, Vec3d hit) {
         if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return ActionResult.FAIL;
         List<Long> p = new ArrayList<>(
                 Arrays.stream(base.getData().getLongArray(BaseEnergyBlockEntity.KEY_NODES)).boxed().toList()
@@ -71,16 +76,17 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
         //System.out.println("[SWITCH] nodes l: "+base.getNodes().length);
         for(BlockPos p  : base.getNodes()){
             if(pos == p) continue;
-            if(!(world.getBlockState(p).getBlock() instanceof IElectricNode node)) continue;
-            if(node.isPowered(world,p)) return true;
+            if(!(world.getBlockState(p).getBlock() instanceof EnergyNode node)) continue;
+            if(!node.typeOf(EnergyNodeType.OUTPUT) && node.isPowered(world,p)) return true;
         }
         return false;
     }
 
     @Override
-    public boolean canBeParent() {
-        return true;
+    public EnergyNodeType nodeType() {
+        return EnergyNodeType.SWITCH;
     }
+
 
     @Override
     public ActionResult ExecuteAction(ItemUsageContext context) {
@@ -92,7 +98,7 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
                         context.getWorld(),
                         context.getBlockPos(),
                         BlockPos.fromLong(data.getLong("posConnection")),
-                        null
+                        context.getHitPos()
                 );
                 //System.out.println("[SWITCH] node removed! ");
             } else {
@@ -100,7 +106,7 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
                         context.getWorld(),
                         context.getBlockPos(),
                         BlockPos.fromLong(data.getLong("posConnection")),
-                        null
+                        context.getHitPos()
                 );
                 //System.out.println("[SWITCH] node added! ");
             }
@@ -124,7 +130,7 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+    public @Nullable BlockEntityTicker getTicker(World world, BlockState state, BlockEntityType type) {
         return ((world1, pos, state1, blockEntity) -> {
             if(world1.isClient) return;
 
@@ -133,7 +139,6 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
             tick = TICK_RATE;
 
             world1.updateNeighbors(pos, world1.getBlockState(pos).getBlock());
-
         });
     }
 
@@ -141,6 +146,12 @@ public class BaseSwitchBlock extends Block implements BlockEntityProvider, IElec
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return BlockEntityInit.ENERGY.instantiate(pos, state);
     }
+
+    @Override
+    public boolean rotates() {
+        return false;
+    }
+
 }
 
-    // TODO: auto-refresh weakRedstonePower()
+    // TODO: (improve) auto-refresh weakRedstonePower()

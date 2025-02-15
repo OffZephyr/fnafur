@@ -28,7 +28,6 @@ import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.CallableByMesurer;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockEntity;
-import net.zephyr.fnafur.blocks.energy.enums.IElectricNode;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.tablet.TabletItem;

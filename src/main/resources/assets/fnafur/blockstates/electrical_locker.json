@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "open=true,facing=north": {
+      "model": "fnafur:block/electrical_locker_open",
+      "y": 0
+    },
+    "open=true,facing=south": {
+      "model": "fnafur:block/electrical_locker_open",
+      "y": 180
+    },
+    "open=true,facing=east": {
+      "model": "fnafur:block/electrical_locker_open",
+      "y": 90
+    },
+    "open=true,facing=west": {
+      "model": "fnafur:block/electrical_locker_open",
+      "y": 270
+    },
+    "open=false,facing=north": {
+      "model": "fnafur:block/electrical_locker_open",
+      "y": 0
+    },
+    "open=false,facing=south": {
+      "model": "fnafur:block/electrical_locker_close",
+      "y": 180
+    },
+    "open=false,facing=east": {
+      "model": "fnafur:block/electrical_locker_close",
+      "y": 90
+    },
+    "open=false,facing=west": {
+      "model": "fnafur:block/electrical_locker_close",
+      "y": 270
+    }
+  }
+}

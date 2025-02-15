@@ -3,7 +3,7 @@
 	"ambientocclusion": false,
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "fnafur:block/energy/generator_on",
+		"0": "fnafur:block/energy/generator_off",
 		"particle": "fnafur:block/electronic_particle"
 	},
 	"elements": [

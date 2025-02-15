@@ -8,18 +8,18 @@ import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.CallableByMesurer;
-import net.zephyr.fnafur.blocks.energy.enums.GenericEnum;
-import net.zephyr.fnafur.blocks.energy.enums.IElectricNode;
+import net.zephyr.fnafur.blocks.energy.enums.EnergyNodeType;
+import net.zephyr.fnafur.blocks.energy.enums.EnergyNode;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import org.jetbrains.annotations.Nullable;
 
-public class BaseGeneratorBlock extends FloorPropBlock<GenericEnum> implements BlockEntityProvider, IElectricNode, CallableByMesurer {
+public class BaseGeneratorBlock extends FloorPropBlock implements BlockEntityProvider, EnergyNode, CallableByMesurer {
 
     public BaseGeneratorBlock(Settings settings) {
         super(settings);
@@ -28,7 +28,7 @@ public class BaseGeneratorBlock extends FloorPropBlock<GenericEnum> implements B
 
 
     @Override
-    public Class COLOR_ENUM() {
+    public Class<EnergyNodeType> COLOR_ENUM() {
         return null;
     }
 
@@ -43,12 +43,12 @@ public class BaseGeneratorBlock extends FloorPropBlock<GenericEnum> implements B
     }
 
     @Override
-    public ActionResult addNode(World world, BlockPos pos, BlockPos toAdd, BlockHitResult hit) {
+    public ActionResult addNode(World world, BlockPos pos, BlockPos toAdd, Vec3d hit) {
         return ActionResult.PASS;
     }
 
     @Override
-    public ActionResult remNode(World world, BlockPos pos, BlockPos toRem, BlockHitResult hit) {
+    public ActionResult remNode(World world, BlockPos pos, BlockPos toRem, Vec3d hit) {
         return ActionResult.PASS;
     }
 
@@ -58,8 +58,8 @@ public class BaseGeneratorBlock extends FloorPropBlock<GenericEnum> implements B
     }
 
     @Override
-    public boolean canBeParent() {
-        return false;
+    public EnergyNodeType nodeType() {
+        return EnergyNodeType.GENERATOR;
     }
 
     @Override

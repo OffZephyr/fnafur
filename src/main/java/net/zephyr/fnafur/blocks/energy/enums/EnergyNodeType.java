@@ -3,14 +3,15 @@ package net.zephyr.fnafur.blocks.energy.enums;
 import net.minecraft.util.StringIdentifiable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum GenericEnum implements StringIdentifiable, ColorEnumInterface {
-    DEFAULT("default", 0),
-    OLD("old", 1);
+public enum EnergyNodeType implements StringIdentifiable, ColorEnumInterface {
+    GENERATOR("generator", 0),
+    SWITCH("switch", 1),
+    OUTPUT("output", 2);
 
     private final String name;
     private final int index;
 
-    GenericEnum(String name, int index){
+    EnergyNodeType(String name, int index){
         this.name = name;
         this.index = index;
     }

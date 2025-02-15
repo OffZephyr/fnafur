@@ -1,0 +1,38 @@
+{
+
+  "variants": {
+    "circuit_open=true,facing=north": {
+      "model": "fnafur:block/circuit_breaker_on",
+      "y": 0
+    },
+    "circuit_open=true,facing=south": {
+      "model": "fnafur:block/circuit_breaker_on",
+      "y": 180
+    },
+    "circuit_open=true,facing=east": {
+      "model": "fnafur:block/circuit_breaker_on",
+      "y": 90
+    },
+    "circuit_open=true,facing=west": {
+      "model": "fnafur:block/circuit_breaker_on",
+      "y": 270
+    },
+    "circuit_open=false,facing=north": {
+      "model": "fnafur:block/circuit_breaker",
+      "y": 0
+    },
+    "circuit_open=false,facing=south": {
+      "model": "fnafur:block/circuit_breaker",
+      "y": 180
+    },
+    "circuit_open=false,facing=east": {
+      "model": "fnafur:block/circuit_breaker",
+      "y": 90
+    },
+    "circuit_open=false,facing=west": {
+      "model": "fnafur:block/circuit_breaker",
+      "y": 270
+    }
+  }
+
+}
