@@ -6,6 +6,7 @@
     "BlacklistMixin",
     "BlockEntityMixin",
     "CameraMixin",
+    "CreativeInventoryScreenMixin",
     "DeathScreenMixin",
     "DebugRendererMixin",
     "DrawContextMixin",

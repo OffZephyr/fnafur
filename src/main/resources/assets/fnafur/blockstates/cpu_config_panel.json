@@ -1,0 +1,109 @@
+{
+  "variants": {
+    "facing=north,top=false,bottom=false,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel"
+    },
+    "facing=east,top=false,bottom=false,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel",
+      "y": 90
+    },
+    "facing=south,top=false,bottom=false,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel",
+      "y": 180
+    },
+    "facing=west,top=false,bottom=false,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel",
+      "y": 270
+    },
+    "facing=north,top=true,bottom=false,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_top"
+    },
+    "facing=east,top=true,bottom=false,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_top",
+      "y": 90
+    },
+    "facing=south,top=true,bottom=false,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_top",
+      "y": 180
+    },
+    "facing=west,top=true,bottom=false,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_top",
+      "y": 270
+    },
+    "facing=north,top=false,bottom=true,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_bottom"
+    },
+    "facing=east,top=false,bottom=true,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_bottom",
+      "y": 90
+    },
+    "facing=south,top=false,bottom=true,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_bottom",
+      "y": 180
+    },
+    "facing=west,top=false,bottom=true,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_bottom",
+      "y": 270
+    },
+    "facing=north,top=true,bottom=true,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_2"
+    },
+    "facing=east,top=true,bottom=true,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_2",
+      "y": 90
+    },
+    "facing=south,top=true,bottom=true,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_2",
+      "y": 180
+    },
+    "facing=west,top=true,bottom=true,path=false": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_2",
+      "y": 270
+    },
+    "facing=north,top=true,bottom=false,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_top_path"
+    },
+    "facing=east,top=true,bottom=false,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_top_path",
+      "y": 90
+    },
+    "facing=south,top=true,bottom=false,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_top_path",
+      "y": 180
+    },
+    "facing=west,top=true,bottom=false,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_top_path",
+      "y": 270
+    },
+    "facing=north,top=false,bottom=true,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_bottom_path"
+    },
+    "facing=east,top=false,bottom=true,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_bottom_path",
+      "y": 90
+    },
+    "facing=south,top=false,bottom=true,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_bottom_path",
+      "y": 180
+    },
+    "facing=west,top=false,bottom=true,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_1_bottom_path",
+      "y": 270
+    },
+    "facing=north,top=true,bottom=true,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_full"
+    },
+    "facing=east,top=true,bottom=true,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_full",
+      "y": 90
+    },
+    "facing=south,top=true,bottom=true,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_full",
+      "y": 180
+    },
+    "facing=west,top=true,bottom=true,path=true": {
+      "model": "fnafur:block/cpu_config_panel/cpu_config_panel_full",
+      "y": 270
+    }
+  }
+}

@@ -3,6 +3,7 @@ package net.zephyr.fnafur.util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -13,8 +14,10 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.networking.nbt_updates.*;
+import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.UpdateEntityNbtS2CPongPayload;
 import net.zephyr.fnafur.networking.screens.*;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -114,7 +117,35 @@ public class GoopyNetworkingUtils {
             ClientPlayNetworking.send(new UpdateEntityNbtC2SPayload(entityID, nbt));
         }
     }
+    public static void saveEntityNbt(int entityID, NbtCompound nbt, World world){
+        Entity entity = world.getEntityById(entityID);
+        if(entity != null) {
+            if(world.isClient()){
+                saveEntityData(entityID, nbt);
+            }
+            else {
+                ((IEntityDataSaver) entity).getPersistentData().copyFrom(nbt);
+                for(ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
+                    ServerPlayNetworking.send(p, new UpdateEntityNbtS2CPongPayload(entityID, nbt));
+                }
+            }
+        }
+    }
 
+    public static void saveBlockNbt(BlockPos pos, NbtCompound nbt, World world) {
+        if (world != null) {
+            if (world.isClient()) {
+                saveBlockNbt(pos, nbt);
+            } else {
+                ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().copyFrom(nbt);
+
+                for (ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
+                    ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(pos.asLong(), nbt));
+
+                }
+            }
+        }
+    }
     @FunctionalInterface
     public interface ScreenFactory<T extends GoopyScreen> {
         T create(Text title, NbtCompound value2, Object value3);

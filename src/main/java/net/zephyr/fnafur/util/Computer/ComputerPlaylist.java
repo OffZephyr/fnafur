@@ -1,6 +1,6 @@
 package net.zephyr.fnafur.util.Computer;
 
-import net.zephyr.fnafur.blocks.computer.ComputerData;
+import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 
 import java.util.ArrayList;
 import java.util.List;

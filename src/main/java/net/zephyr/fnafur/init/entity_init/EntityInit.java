@@ -1,13 +1,10 @@
 package net.zephyr.fnafur.init.entity_init;
 
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
@@ -17,9 +14,9 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
-import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
-import net.zephyr.fnafur.entity.classic.cl_fred.cl_fred;
+import net.zephyr.fnafur.entity.other.bear5.Bear5Entity;
+import net.zephyr.fnafur.entity.other.bear5.Bear5Renderer;
 import net.zephyr.fnafur.entity.zephyr.ZephyrEntity;
 import net.zephyr.fnafur.entity.zephyr.ZephyrRenderer;
 
@@ -27,6 +24,10 @@ public class EntityInit {
     public static final EntityType<ZephyrEntity> ZEPHYR = register(
             "zephyr",
             EntityType.Builder.create(ZephyrEntity::new, SpawnGroup.MISC).dimensions(0.65f, 1.65f).eyeHeight(1.55f)
+    );
+    public static final EntityType<Bear5Entity> BEAR5 = register(
+            "bear5",
+            EntityType.Builder.create(Bear5Entity::new, SpawnGroup.MISC).dimensions(1, 3).eyeHeight(2)
     );
 
     private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
@@ -42,6 +43,7 @@ public class EntityInit {
 
     public static void registerEntities(){
         FabricDefaultAttributeRegistry.register(EntityInit.ZEPHYR, ZephyrEntity.setAttributes());
+        FabricDefaultAttributeRegistry.register(EntityInit.BEAR5, Bear5Entity.setAttributes());
 
         ClassicInit.registerEntities();
 
@@ -50,6 +52,7 @@ public class EntityInit {
     public static void registerEntitiesOnClient(){
 
         createRenderer(EntityInit.ZEPHYR, ZephyrRenderer::new);
+        EntityRendererRegistry.register(EntityInit.BEAR5, Bear5Renderer::new);
 
         ClassicInit.registerEntitiesOnClient();
 

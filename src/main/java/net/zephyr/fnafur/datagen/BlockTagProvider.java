@@ -19,6 +19,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         getOrCreateTagBuilder(BlockTags.PLANKS)
                 .add(PropInit.WOODEN_SHELF)
+                .add(PropInit.AC_UNIT)
                 .add(PropInit.RETRO_TABLE)
                 .add(PropInit.RESTROOM_SIGN)
                 .add(PropInit.WALL_CLOUDS)
@@ -26,6 +27,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
         getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(BlockInit.COMPUTER)
+                .add(BlockInit.CPU_CONFIG_PANEL)
                 .add(BlockInit.CAMERA)
                 .add(BlockInit.FOG_BLOCK)
                 .add(PropInit.FNAF_1_DESK)

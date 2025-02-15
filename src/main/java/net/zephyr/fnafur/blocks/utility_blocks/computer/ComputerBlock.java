@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.computer;
+package net.zephyr.fnafur.blocks.utility_blocks.computer;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;

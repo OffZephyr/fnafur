@@ -16,6 +16,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
     @Override
     public void generate() {
         addDrop(BlockInit.COMPUTER);
+        addDrop(BlockInit.CPU_CONFIG_PANEL);
         addDrop(BlockInit.CAMERA);
         addDrop(PropInit.FNAF_1_DESK);
         addDrop(PropInit.WALL_CLOUDS);
@@ -23,6 +24,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.FLOOR_MONITORS_2);
         addDrop(PropInit.OFFICE_BUTTONS);
         addDrop(PropInit.WOODEN_SHELF);
+        addDrop(PropInit.AC_UNIT);
         addDrop(PropInit.RETRO_TABLE);
         addDrop(PropInit.CEILING_TILE_VENT);
         addDrop(PropInit.RESTROOM_SIGN);

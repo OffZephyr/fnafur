@@ -1,11 +1,10 @@
-package net.zephyr.fnafur.blocks.computer.Apps;
+package net.zephyr.fnafur.blocks.utility_blocks.computer.Apps;
 
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.util.Computer.ComputerApp;
 
-public class RemoteApp extends ComputerApp {
-    public RemoteApp(String name, Identifier iconTexture) {
+public class CodeApp extends ComputerApp {
+    public CodeApp(String name, Identifier iconTexture) {
         super(name, iconTexture);
     }
 
