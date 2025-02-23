@@ -12,6 +12,7 @@ import net.minecraft.client.texture.TextureManager;
 import net.minecraft.component.type.MapIdComponent;
 import net.minecraft.item.map.MapState;
 import net.minecraft.util.Identifier;
+import net.zephyr.fnafur.FnafUniverseResuited;
 
 @Environment(EnvType.CLIENT)
 public class CameraMapTextureManager implements AutoCloseable {
@@ -65,7 +66,8 @@ public class CameraMapTextureManager implements AutoCloseable {
         MapTexture(final int id, final MapState state) {
             this.state = state;
             this.texture = new NativeImageBackedTexture(128, 128, true);
-            this.textureId = CameraMapTextureManager.this.textureManager.registerDynamicTexture("camera_map/" + id, this.texture);
+            this.textureId = Identifier.of(FnafUniverseResuited.MOD_ID, "cam_id" + id);
+            CameraMapTextureManager.this.textureManager.registerTexture(this.textureId, this.texture);
         }
 
         void setState(MapState state) {

@@ -43,8 +43,10 @@ public class Bear5Entity extends PathAwareEntity {
 
     @Override
     public void tick() {
-        if(!SoundUtils.playingSound(this, SoundsInit.BEAR5)){
-            SoundUtils.playMutableSound(this, SoundsInit.BEAR5, 1, 1);
+        if(getWorld().isClient()) {
+            if (!SoundUtils.playingSound(this, SoundsInit.BEAR5)) {
+                SoundUtils.playMutableSound(this, SoundsInit.BEAR5, 1, 1);
+            }
         }
         if(((IEntityDataSaver)this).getPersistentData().contains("TargetID")) {
             if(!getWorld().isClient()){

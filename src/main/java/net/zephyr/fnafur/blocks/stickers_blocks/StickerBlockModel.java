@@ -1,33 +1,30 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.loading.v1.WrapperGroupableModel;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
-import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
-import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+import net.fabricmc.fabric.api.renderer.v1.material.ShadeMode;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
-import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
+import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.*;
-import net.minecraft.client.render.model.json.ModelOverrideList;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -38,15 +35,20 @@ import net.zephyr.fnafur.init.item_init.StickerInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedModel {
+public class StickerBlockModel extends WrapperGroupableModel implements UnbakedModel, BakedModel, FabricBakedModel {
     Sprite particlesprite;
+
+    Block block;
     public static float STICKER_OFFSET = -0.002f;
-    private Mesh mesh;
+
+    Random random = Random.create();
+    private static final RenderMaterial STANDARD_MATERIAL = Renderer.get().materialFinder().shadeMode(ShadeMode.VANILLA).find();
+    private static final RenderMaterial NO_AO_MATERIAL = Renderer.get().materialFinder().shadeMode(ShadeMode.VANILLA).ambientOcclusion(TriState.FALSE).find();
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
         return List.of();
@@ -68,8 +70,8 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
     }
 
     @Override
-    public boolean isBuiltin() {
-        return false;
+    public @Nullable UnbakedModel getParent() {
+        return null;
     }
 
     @Override
@@ -78,13 +80,34 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
     }
 
     @Override
-    public ModelTransformation getTransformation() {
-        return ModelHelper.MODEL_TRANSFORM_BLOCK;
+    public @Nullable Boolean getAmbientOcclusion() {
+        return true;
     }
 
     @Override
-    public ModelOverrideList getOverrides() {
-        return ModelOverrideList.EMPTY;
+    public @Nullable GuiLight getGuiLight() {
+        return GuiLight.BLOCK;
+    }
+
+    @Override
+    public ModelTextures.Textures getTextures() {
+        return new ModelTextures.Textures(
+                Map.of()
+        );
+    }
+
+    @Override
+    public BakedModel bake(ModelTextures textures, Baker baker, ModelBakeSettings settings, boolean ambientOcclusion, boolean isSideLit, ModelTransformation transformation) {
+
+        System.out.println("BAKE BAKE");
+        /*Renderer renderer = RendererAccess.INSTANCE.getRenderer();
+        MeshBuilder builder = renderer.meshBuilder();*/
+        return this;
+    }
+
+    @Override
+    public ModelTransformation getTransformation() {
+        return ModelHelper.MODEL_TRANSFORM_BLOCK;
     }
 
     @Override
@@ -92,53 +115,44 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
 
     }
 
-    @Nullable
-    @Override
-    public BakedModel bake(Baker baker, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings rotationContainer) {
-        return this;
-    }
-
     @Override
     public boolean isVanillaAdapter() {
         return false;
     }
-    @Override
-    public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
 
-        Renderer renderer = RendererAccess.INSTANCE.getRenderer();
-        MeshBuilder builder = renderer.meshBuilder();
-        QuadEmitter emitter = builder.getEmitter();
+
+    @Override
+    public void emitBlockQuads(QuadEmitter emitter, BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, Predicate<@Nullable Direction> cullTest) {
+
+        block = state.getBlock();
         BlockEntity entity = blockView.getBlockEntity(pos);
 
         if (entity instanceof BlockEntity ent) {
-            emitQuads(state, pos, ((IEntityDataSaver) ent).getPersistentData(), emitter, builder, context);
+            emitQuads(state, pos, ((IEntityDataSaver) ent).getPersistentData(), emitter);
         }
-
     }
 
     @Override
-    public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
+    public void emitItemQuads(QuadEmitter emitter, Supplier<Random> randomSupplier) {
 
-        BlockState state = ((BlockItem)stack.getItem()).getBlock().getDefaultState();
-        NbtCompound nbt = stack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt().getCompound("fnafur.persistent");
-        Renderer renderer = RendererAccess.INSTANCE.getRenderer();
-        MeshBuilder builder = renderer.meshBuilder();
-        QuadEmitter emitter = builder.getEmitter();
-        emitQuads(state, BlockPos.ORIGIN, nbt, emitter, builder, context);
+        if(block != null) {
+            BlockState state = (block.getDefaultState());
+            //NbtCompound nbt = item.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt().getCompound("fnafur.persistent");
+
+            emitQuads(state, BlockPos.ORIGIN, new NbtCompound(), emitter);
+        }
     }
 
-    public void emitQuads(BlockState state, BlockPos pos, NbtCompound nbt, QuadEmitter emitter, MeshBuilder builder, RenderContext context){
+    public void emitQuads(BlockState state, BlockPos pos, NbtCompound nbt, QuadEmitter emitter){
 
         ItemStack stack = ItemStack.fromNbtOrEmpty(MinecraftClient.getInstance().world.getRegistryManager(), nbt.getCompound("BlockState"));
+
         BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem)stack.getItem()).getBlock().getDefaultState()) : state;
 
-        emitBaseCube(newState, pos, emitter, nbt);
-        emitStickers(pos, emitter, nbt);
-
-        mesh = builder.build();
-        mesh.outputTo(context.getEmitter());
+        emitBaseCube(state, newState, pos, emitter, nbt);
+        emitStickers(state, pos, emitter, nbt);
     }
-    public void emitBaseCube(BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
+    public void emitBaseCube(BlockState baseState, BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
         MinecraftClient client = MinecraftClient.getInstance();
         BakedModel model = client.getBakedModelManager().getBlockModels().getModel(state);
         particlesprite = model.getParticleSprite();
@@ -149,19 +163,16 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
             if (pos != BlockPos.ORIGIN && !(sideState.getBlock() instanceof MimicFrames) && sideState.isOpaque() && client.world.getBlockState(pos.offset(direction)).isSideSolidFullSquare(client.world, pos.offset(direction), direction.getOpposite())) continue;
             if (pos != BlockPos.ORIGIN && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.world, pos.offset(direction), frame.getMatrixSize())) continue;
 
-            List<BakedQuad> quadList = model.getQuads(state, direction, Random.create());
+            List<BakedQuad> quadList = model.getQuads(state, direction, random);
+            final RenderMaterial defaultMaterial = model.useAmbientOcclusion() ? STANDARD_MATERIAL : NO_AO_MATERIAL;
 
             for (BakedQuad quad : quadList) {
-                Sprite sprite = quad.getSprite();
-
-                emitter.square(direction, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-                emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
-                emitter.color(-1, -1, -1, -1);
+                emitter.fromVanilla(quad, defaultMaterial, direction);
                 emitter.emit();
             }
         }
     }
-    public void emitStickers(BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
+    public void emitStickers(BlockState baseState, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
 
         if(!nbt.isEmpty()) {
             MinecraftClient client = MinecraftClient.getInstance();
@@ -182,7 +193,8 @@ public class StickerBlockModel implements UnbakedModel, BakedModel, FabricBakedM
                                     0;
                     int num = dirPos % sticker.getTextures().length;
                     Identifier identifier = sticker.getTextures()[num];
-                    Sprite sprite = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, identifier).getSprite();
+
+                    Sprite sprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier).getSprite();
 
                     float Offset = offset_list.getFloat(i);
                     float xOffset = sticker.getDirection() == StickerInit.Movable.HORIZONTAL ? Offset : 0;

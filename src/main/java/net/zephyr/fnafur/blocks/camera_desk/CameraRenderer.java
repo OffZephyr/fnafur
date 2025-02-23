@@ -199,7 +199,7 @@ public class CameraRenderer {
             illuminateScreen = nightVision;
             client.gameRenderer.getLightmapTextureManager().tick();
             client.gameRenderer.getLightmapTextureManager().update(tickDelta);
-            client.worldRenderer.render(pool, client.getRenderTickCounter(), false, camera, client.gameRenderer, client.gameRenderer.getLightmapTextureManager(), rotMat, projMat);
+            client.worldRenderer.render(pool, client.getRenderTickCounter(), false, camera, client.gameRenderer, rotMat, projMat);
             illuminateScreen = false;
             client.gameRenderer.getLightmapTextureManager().tick();
             client.gameRenderer.getLightmapTextureManager().update(tickDelta);

@@ -20,7 +20,6 @@ import net.zephyr.fnafur.blocks.energy.blocks.switches.RedstoneConverterBlock;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames2x2;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames4x4;
-import net.zephyr.fnafur.blocks.illusion_block.MimicFramesSlab;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
@@ -28,7 +27,6 @@ import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockRenderer;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlockRenderer;
-import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
 import net.zephyr.fnafur.blocks.tile_doors.OfficeDoor;
@@ -65,12 +63,6 @@ public class BlockInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
     );
-    public static final Block LAYERED_BLOCK_BASE = registerBlock(
-            "layered_block",
-            LayeredBlock::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .mapColor(MapColor.DIRT_BROWN)
-    );
     public static final Block STICKER_BLOCK = registerBlock(
             "sticker_block",
             BlockWithSticker::new,
@@ -105,15 +97,6 @@ public class BlockInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .replaceable()
-    );
-    public static final Block MIMIC_FRAME_SLAB = registerBlock(
-            "mimic_frame_slab",
-            MimicFramesSlab::new,
-                    AbstractBlock.Settings.copy(Blocks.STONE)
-                    .solidBlock(Blocks::never)
-                    .nonOpaque()
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
     );
 
     public static final Block CAMERA = registerBlock(
@@ -752,7 +735,7 @@ public class BlockInit {
 
     private static Block registerFrame(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
         Block block = registerBlock(name, factory, settings);
-        MimicFrames.IDs.add(Identifier.of(FnafUniverseResuited.MOD_ID, name));
+        MimicFrames.IDs.add(Identifier.of(FnafUniverseResuited.MOD_ID, "block/" + name));
         return block;
     }
         private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier texture) {
@@ -791,7 +774,6 @@ public class BlockInit {
 
         BlockEntityRendererFactories.register(BlockEntityInit.CAMERA_DESK, CameraDeskBlockRenderer::new);
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.LAYERED_BLOCK_BASE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA_DESK, RenderLayer.getCutout());
 

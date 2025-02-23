@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "color=black_0": {
+      "model": "fnafur:props/floor_monitors/black_floor_monitor_0"
+    },
+    "color=black_1": {
+      "model": "fnafur:props/floor_monitors/black_floor_monitor_1"
+    },
+    "color=black_2": {
+      "model": "fnafur:props/floor_monitors/black_floor_monitor_2"
+    },
+    "color=black_3": {
+      "model": "fnafur:props/floor_monitors/black_floor_monitor_3"
+    },
+    "color=black_4": {
+      "model": "fnafur:props/floor_monitors/black_floor_monitor_4"
+    },
+    "color=black_5": {
+      "model": "fnafur:props/floor_monitors/black_floor_monitor_5"
+    },
+    "color=black_6": {
+      "model": "fnafur:props/floor_monitors/black_floor_monitor_6"
+    },
+    "color=black_7": {
+      "model": "fnafur:props/floor_monitors/black_floor_monitor_7"
+    },
+    "color=beige_0": {
+      "model": "fnafur:props/floor_monitors/beige_floor_monitor_0"
+    },
+    "color=beige_1": {
+      "model": "fnafur:props/floor_monitors/beige_floor_monitor_1"
+    },
+    "color=beige_2": {
+      "model": "fnafur:props/floor_monitors/beige_floor_monitor_2"
+    },
+    "color=beige_3": {
+      "model": "fnafur:props/floor_monitors/beige_floor_monitor_3"
+    },
+    "color=beige_4": {
+      "model": "fnafur:props/floor_monitors/beige_floor_monitor_4"
+    },
+    "color=beige_5": {
+      "model": "fnafur:props/floor_monitors/beige_floor_monitor_5"
+    },
+    "color=beige_6": {
+      "model": "fnafur:props/floor_monitors/beige_floor_monitor_6"
+    },
+    "color=beige_7": {
+      "model": "fnafur:props/floor_monitors/beige_floor_monitor_7"
+    }
+  }
+}

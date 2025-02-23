@@ -270,7 +270,7 @@ public class CameraMapRenderer {
                 case corner_right_front -> z ? 180 : 0;
                 case corner_right_back -> z ? 90 : -90;
             };
-            return lineDirection.asRotation() + rot;
+            return lineDirection.getPositiveHorizontalDegrees() + rot;
         } else if(direction == Direction.DOWN) {
             float rot = switch (index) {
                 default -> 0;
@@ -285,7 +285,7 @@ public class CameraMapRenderer {
                 case corner_right_front -> 90;
                 case corner_right_back -> 180;
             };
-            return lineDirection.asRotation() + rot;
+            return lineDirection.getPositiveHorizontalDegrees() + rot;
         }
         else {
             float rot;

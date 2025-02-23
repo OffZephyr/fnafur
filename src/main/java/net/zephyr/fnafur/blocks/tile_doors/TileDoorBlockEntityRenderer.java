@@ -108,7 +108,7 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
 
                     matrices.push();
                     matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90));
-                    matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(facing.asRotation()));
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(facing.getPositiveHorizontalDegrees()));
                     renderSquare(
                             matrices.peek().getPositionMatrix(),
                             texture,

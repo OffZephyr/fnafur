@@ -1,8 +1,6 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -10,30 +8,24 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.MutableText;
+import net.minecraft.state.property.Property;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
+import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class BlockWithSticker extends BlockWithEntity {
     public BlockWithSticker(Settings settings) {
@@ -65,31 +57,35 @@ public class BlockWithSticker extends BlockWithEntity {
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
-
     @Override
-    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+        ItemStack itemStack = super.getPickStack(world, pos, state, includeData);
 
-        ItemStack itemStack = super.getPickStack(world, pos, state);
-        world.getBlockEntity(pos, BlockEntityInit.STICKER_BLOCK).ifPresent((blockEntity) -> {
-            blockEntity.setStackNbt(itemStack, world.getRegistryManager());
-        });
+        BlockStateComponent component = BlockStateComponent.DEFAULT;
+        for(Property property : state.getProperties()){
+            component = component.with(property, state.get(property));
+        }
+
+        itemStack.set(DataComponentTypes.BLOCK_STATE, component);
         NbtCompound nbt = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData();
 
         ItemStack stack = ItemStack.fromNbtOrEmpty(MinecraftClient.getInstance().world.getRegistryManager(), nbt.getCompound("BlockState"));
         itemStack.set(DataComponentTypes.ITEM_NAME, Text.literal(stack.getName().getString() + Text.translatable("block.fnafur.has_sticker").getString()));
+
+        ItemNbtUtil.setNbt(itemStack, nbt);
+
 
         return itemStack;
     }
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        NbtCompound data = itemStack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt().getCompound("fnafur.persistent");
+        NbtCompound data = ItemNbtUtil.getNbt(itemStack);
 
         world.setBlockState(pos, state);
         if (world.getBlockEntity(pos) instanceof BlockEntity entity) {
             ((IEntityDataSaver) entity).getPersistentData().copyFrom(data);
         }
-
         if (world.isClient()) {
             GoopyNetworkingUtils.getNbtFromServer(pos);
             world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);

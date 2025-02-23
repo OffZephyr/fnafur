@@ -1,7 +1,6 @@
 package net.zephyr.fnafur.item.tablet;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.Entity;
@@ -10,7 +9,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.consume.UseAction;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -21,9 +19,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
-import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.init.SoundsInit;
+import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -33,6 +31,7 @@ import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.RenderUtil;
 
 import java.util.ArrayList;
@@ -231,7 +230,7 @@ public class TabletItem extends Item implements GeoItem {
             private TabletItemRenderer renderer;
 
             @Override
-            public @Nullable BuiltinModelItemRenderer getGeoItemRenderer() {
+            public @Nullable GeoItemRenderer<?> getGeoItemRenderer() {
                 if (this.renderer == null)
                     this.renderer = new TabletItemRenderer(new TabletItemModel());
 

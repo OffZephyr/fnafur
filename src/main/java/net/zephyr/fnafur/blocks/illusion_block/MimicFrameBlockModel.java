@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -32,11 +33,17 @@ public class MimicFrameBlockModel extends StickerBlockModel {
 
     @Override
     public Sprite getParticleSprite() {
-        return new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_1")).getSprite();
+        return new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_1")).getSprite();
     }
 
     @Override
-    public void emitBaseCube(BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt) {
+    public void emitBaseCube(BlockState baseState, BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt) {
+
+        if(!(baseState.getBlock() instanceof MimicFrames)) {
+            super.emitBaseCube(baseState, state, pos, emitter, nbt);
+            return;
+        }
+
         World world = MinecraftClient.getInstance().world;
         if (state.getBlock() instanceof MimicFrames block) {
             int matrixSize = block.getMatrixSize();
@@ -89,7 +96,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
     public void emitSide(QuadEmitter emitter, NbtCompound nbt, Direction direction, Block sideBlock, BlockPos pos, boolean reColor, int matrixSize, int x, int y, int z, int colorIndex) {
 
         int frameSize = matrixSize * matrixSize;
-        Sprite frame = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_" + frameSize)).getSprite();
+        Sprite frame = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_" + frameSize)).getSprite();
 
         if (frame == null) return;
 
@@ -150,7 +157,12 @@ public class MimicFrameBlockModel extends StickerBlockModel {
     }
 
     @Override
-    public void emitStickers(BlockPos pos, QuadEmitter emitter, NbtCompound nbt) {
+    public void emitStickers(BlockState baseState, BlockPos pos, QuadEmitter emitter, NbtCompound nbt) {
+
+        if(!(baseState.getBlock() instanceof MimicFrames)) {
+            super.emitStickers(baseState, pos, emitter, nbt);
+        }
+
     }
 
     public void emitStickers(Direction direction, QuadEmitter emitter, NbtCompound nbt, BlockPos pos, float x0, float x1, float z0, float z1, float depth, int matrixSize) {
@@ -169,7 +181,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                                 0;
                 int num = dirPos % sticker.getTextures().length;
                 Identifier identifier = sticker.getTextures()[num];
-                Sprite sprite = new SpriteIdentifier(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, identifier).getSprite();
+                Sprite sprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier).getSprite();
 
                 float Offset = offset_list.getFloat(i);
                 float xOffset = sticker.getDirection() == StickerInit.Movable.HORIZONTAL ? Offset : 0;

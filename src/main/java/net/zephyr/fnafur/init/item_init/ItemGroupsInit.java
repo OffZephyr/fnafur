@@ -20,13 +20,12 @@ public class ItemGroupsInit {
             FabricItemGroup.builder()
                     .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".props"))
                     .noRenderedName()
-                    .icon(() -> new ItemStack(PropInit.FLOOR_MONITORS_1))
+                    .icon(() -> new ItemStack(PropInit.FLOOR_MONITORS))
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
                         entries.add(PropInit.WALL_CLOUDS);
 
-                        entries.add(PropInit.FLOOR_MONITORS_1);
-                        entries.add(PropInit.FLOOR_MONITORS_2);
+                        entries.add(PropInit.FLOOR_MONITORS);
                         entries.add(PropInit.WOODEN_SHELF);
                         entries.add(PropInit.AC_UNIT);
                         entries.add(PropInit.RETRO_TABLE);

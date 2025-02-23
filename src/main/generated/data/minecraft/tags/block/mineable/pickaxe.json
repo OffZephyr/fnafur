@@ -1,12 +1,12 @@
 {
   "values": [
     "fnafur:computer",
+    "fnafur:cpu_config_panel",
     "fnafur:camera",
     "fnafur:fog_block",
     "fnafur:fnaf1desk",
     "fnafur:ceiling_tile_vent",
-    "fnafur:floor_monitors1",
-    "fnafur:floor_monitors2",
+    "fnafur:floor_monitors",
     "fnafur:office_buttons",
     "fnafur:wall_tile_full",
     "fnafur:black_blue_wall_tiles",

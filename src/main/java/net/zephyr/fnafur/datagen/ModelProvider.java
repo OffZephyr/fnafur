@@ -1,13 +1,12 @@
 package net.zephyr.fnafur.datagen;
 
+import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.client.*;
+import net.minecraft.client.data.BlockStateModelGenerator;
+import net.minecraft.client.data.ItemModelGenerator;
+import net.minecraft.client.data.Models;
 import net.minecraft.item.Item;
 import net.zephyr.fnafur.init.block_init.BlockInit;
-import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.init.item_init.SpawnItemInit;
 
@@ -120,7 +119,7 @@ public class ModelProvider extends FabricModelProvider {
         // SINGLE COLORED BLOCKS
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.PLAIN_BLACK_BLOCK);
 
-       // CARPETS
+        // CARPETS
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_GREEN);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_CYAN);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CARPET_STAR_BLUE);
@@ -138,6 +137,7 @@ public class ModelProvider extends FabricModelProvider {
         // CHEESE BLOCKS
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CHEESE_BLOCK);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CHEESE_BLOCK_WHITE);
+
     }
 
     @Override

@@ -132,14 +132,14 @@ public class StickerBlock extends BlockWithEntity {
     }
 
     @Override
-    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+        BlockEntity entity = world.getBlockEntity(pos);
+        ItemStack itemStack = new ItemStack(this);
 
-        ItemStack itemStack = super.getPickStack(world, pos, state);
-        world.getBlockEntity(pos, BlockEntityInit.STICKER_BLOCK).ifPresent((blockEntity) -> {
-            blockEntity.setStackNbt(itemStack, world.getRegistryManager());
-        });
-
-        return itemStack;
+        if(entity != null) {
+            itemStack.set(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.of(((IEntityDataSaver) entity).getPersistentData().copy()));
+        }
+        return super.getPickStack(world, pos, state, includeData);
     }
 
     @Override

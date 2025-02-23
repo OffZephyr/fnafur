@@ -1,6 +1,6 @@
-// 1.21.3	2025-01-23T22:50:38.3994662	Fnaf Universe Resuited/Tags for minecraft:block
-a566d1ddc2a4d3ace563712b9a55b568ec30c991 data\minecraft\tags\block\sword_efficient.json
-e85dbf866695bb39a085d3a7050f62c498792aa6 data\minecraft\tags\block\mineable\pickaxe.json
-b7d180a00460958196f4a3a4057921313d6a303f data\minecraft\tags\block\wool.json
-33f11ca21e4d309b7e8ce3fe8e26267246240601 data\minecraft\tags\block\planks.json
-a5acfdcf50ca6317232c848267a3e78ba7fae382 data\minecraft\tags\block\climbable.json
+// 1.21.4	-999999999-01-01T00:00:00	Fnaf Universe Resuited/Tags for minecraft:block
+a5acfdcf50ca6317232c848267a3e78ba7fae382 data/minecraft/tags/block/climbable.json
+a7aac78aa0dbb4601c5d560c24bd1c43957bd9fb data/minecraft/tags/block/mineable/pickaxe.json
+47d0abf8f890c934d033807be3edca352ceca793 data/minecraft/tags/block/planks.json
+a566d1ddc2a4d3ace563712b9a55b568ec30c991 data/minecraft/tags/block/sword_efficient.json
+b7d180a00460958196f4a3a4057921313d6a303f data/minecraft/tags/block/wool.json

@@ -32,8 +32,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.FOG_BLOCK)
                 .add(PropInit.FNAF_1_DESK)
                 .add(PropInit.CEILING_TILE_VENT)
-                .add(PropInit.FLOOR_MONITORS_1)
-                .add(PropInit.FLOOR_MONITORS_2)
+                .add(PropInit.FLOOR_MONITORS)
                 .add(PropInit.OFFICE_BUTTONS)
 
                 // WALL BLOCKS AND FLOOR BLOCKS

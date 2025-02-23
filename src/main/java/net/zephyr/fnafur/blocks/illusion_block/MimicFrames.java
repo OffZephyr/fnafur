@@ -9,6 +9,8 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
@@ -77,8 +79,8 @@ public class MimicFrames extends BlockWithSticker {
         return getDefaultState();
     }
     public static boolean[][][] arrayToMatrix(byte[] array, int size){
+        boolean[][][] matrix = new boolean[size][size][size];
         if(array.length > 0) {
-            boolean[][][] matrix = new boolean[size][size][size];
             for (int x = 0; x < size; x++) {
                 for (int y = 0; y < size; y++) {
                     for (int z = 0; z < size; z++) {
@@ -86,9 +88,8 @@ public class MimicFrames extends BlockWithSticker {
                     }
                 }
             }
-            return matrix;
         }
-        return new boolean[1][1][1];
+        return matrix;
     }
     public static byte[] matrixToArray(boolean[][][] matrix, int size){
         byte[] array = new byte[size * size * size];
@@ -323,12 +324,15 @@ public class MimicFrames extends BlockWithSticker {
 
     }
     @Override
-    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+        ItemStack itemStack = super.getPickStack(world, pos, state, includeData);
 
-        ItemStack itemStack = super.getPickStack(world, pos, state);
-        world.getBlockEntity(pos, BlockEntityInit.MIMIC_FRAME).ifPresent((blockEntity) -> {
-            blockEntity.setStackNbt(itemStack, world.getRegistryManager());
-        });
+        BlockStateComponent component = BlockStateComponent.DEFAULT;
+        for(Property property : state.getProperties()){
+            component = component.with(property, state.get(property));
+        }
+
+        itemStack.set(DataComponentTypes.BLOCK_STATE, component);
 
         return itemStack;
     }

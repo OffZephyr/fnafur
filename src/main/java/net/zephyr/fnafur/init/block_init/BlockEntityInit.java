@@ -6,23 +6,21 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
-import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
-import net.zephyr.fnafur.blocks.illusion_block.MimicFrameBlockEntity;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlockEntity;
+import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
 import net.zephyr.fnafur.blocks.fog.FogBlockEntity;
-import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockEntity;
+import net.zephyr.fnafur.blocks.illusion_block.MimicFrameBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlockEntity;
 
 public class BlockEntityInit {
     public static BlockEntityType<ComputerBlockEntity> COMPUTER;
     public static BlockEntityType<CpuConfigPanelBlockEntity> CPU_CONFIG_PANEL;
-    public static BlockEntityType<LayeredBlockEntity> LAYERED_BLOCK;
     public static BlockEntityType<CameraBlockEntity> CAMERA;
     public static BlockEntityType<CameraDeskBlockEntity> CAMERA_DESK;
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
@@ -42,10 +40,6 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "cpu_config_panel"),
                         FabricBlockEntityTypeBuilder.create(CpuConfigPanelBlockEntity::new,
                                 BlockInit.CPU_CONFIG_PANEL).build());
-        LAYERED_BLOCK =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "layered_block"),
-                        FabricBlockEntityTypeBuilder.create(LayeredBlockEntity::new,
-                                BlockInit.LAYERED_BLOCK_BASE).build());
 
         CAMERA =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "camera"),
@@ -69,8 +63,7 @@ public class BlockEntityInit {
         PROPS =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "props"),
                         FabricBlockEntityTypeBuilder.create(PropBlockEntity::new,
-                                PropInit.FLOOR_MONITORS_1,
-                                PropInit.FLOOR_MONITORS_2,
+                                PropInit.FLOOR_MONITORS,
                                 PropInit.WOODEN_SHELF,
                                 PropInit.AC_UNIT,
                                 PropInit.RETRO_TABLE,
@@ -130,8 +123,7 @@ public class BlockEntityInit {
                         FabricBlockEntityTypeBuilder.create(MimicFrameBlockEntity::new,
                                 BlockInit.MIMIC_FRAME,
                                 BlockInit.MIMIC_FRAME_2x2,
-                                BlockInit.MIMIC_FRAME_4x4,
-                                BlockInit.MIMIC_FRAME_SLAB
+                                BlockInit.MIMIC_FRAME_4x4
                         ).build());
 
         //battery.blocks

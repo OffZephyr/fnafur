@@ -18,6 +18,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
+import software.bernie.geckolib.renderer.GeckolibSpecialRenderer;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class TabletItemRenderer extends GeoItemRenderer<TabletItem> {
@@ -27,7 +28,8 @@ public class TabletItemRenderer extends GeoItemRenderer<TabletItem> {
     }
 
     @Override
-    public void render(ItemStack stack, ModelTransformationMode transformType, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight, int packedOverlay) {
+    public void render(GeckolibSpecialRenderer.RenderData renderData, ModelTransformationMode transformType, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight, int packedOverlay, boolean hasGlint) {
+        ItemStack stack = renderData.itemstack();
         this.animatable = (TabletItem) stack.getItem();
         this.currentItemStack = stack;
         this.renderPerspective = transformType;
@@ -84,7 +86,7 @@ public class TabletItemRenderer extends GeoItemRenderer<TabletItem> {
                     renderArm(poseStack, bufferSource, packedLight, Arm.LEFT, left);
                 }
             }
-            super.render(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
+            super.render(renderData, transformType, poseStack, bufferSource, packedLight, packedOverlay, hasGlint);
         }
 
     }

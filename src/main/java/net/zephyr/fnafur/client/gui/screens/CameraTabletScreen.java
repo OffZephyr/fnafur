@@ -18,7 +18,6 @@ import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.GoopyBlockEntity;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
-import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.client.gui.TabOverlayClass;
 import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.util.CameraMapUiDrawer;
@@ -101,6 +100,7 @@ public class CameraTabletScreen extends GoopyScreen {
     }
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+
         doubleClick = doubleClick - delta > 0 ? doubleClick - delta : 0;
 
         BlockEntity ent = MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(currentCam));
@@ -615,7 +615,7 @@ public class CameraTabletScreen extends GoopyScreen {
                 NbtCompound nbt = ((IEntityDataSaver) entity).getPersistentData().copy();
                 BlockPos pos = BlockPos.fromLong(currentCam);
                 World world = MinecraftClient.getInstance().world;
-                return nbt.getFloat("yaw") + world.getBlockState(pos).get(LayeredBlock.FACING).asRotation();
+                return nbt.getFloat("yaw") + world.getBlockState(pos).get(CameraBlock.FACING).getPositiveHorizontalDegrees();
             }
         }
         return MinecraftClient.getInstance().cameraEntity != null ? MinecraftClient.getInstance().cameraEntity.getYaw() : 0;

@@ -14,6 +14,8 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicRenderer;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.entity.other.bear5.Bear5Entity;
 import net.zephyr.fnafur.entity.other.bear5.Bear5Renderer;
@@ -24,6 +26,10 @@ public class EntityInit {
     public static final EntityType<ZephyrEntity> ZEPHYR = register(
             "zephyr",
             EntityType.Builder.create(ZephyrEntity::new, SpawnGroup.MISC).dimensions(0.65f, 1.65f).eyeHeight(1.55f)
+    );
+    public static final EntityType<AnimatronicEntity> ANIMATRONIC = register(
+            "animatronic",
+            EntityType.Builder.create(AnimatronicEntity::new, SpawnGroup.MISC).dimensions(0.8f, 2.25f).eyeHeight(1.8f)
     );
     public static final EntityType<Bear5Entity> BEAR5 = register(
             "bear5",
@@ -42,7 +48,10 @@ public class EntityInit {
     }
 
     public static void registerEntities(){
+        CharacterInit.registerCharacters();
+
         FabricDefaultAttributeRegistry.register(EntityInit.ZEPHYR, ZephyrEntity.setAttributes());
+        FabricDefaultAttributeRegistry.register(EntityInit.ANIMATRONIC, AnimatronicEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(EntityInit.BEAR5, Bear5Entity.setAttributes());
 
         ClassicInit.registerEntities();
@@ -53,6 +62,7 @@ public class EntityInit {
 
         createRenderer(EntityInit.ZEPHYR, ZephyrRenderer::new);
         EntityRendererRegistry.register(EntityInit.BEAR5, Bear5Renderer::new);
+        makeRenderer(EntityInit.ANIMATRONIC, AnimatronicRenderer::new);
 
         ClassicInit.registerEntitiesOnClient();
 
@@ -61,6 +71,10 @@ public class EntityInit {
         FnafUniverseResuited.LOGGER.info("Registering Entities on CLIENT for " + FnafUniverseResuited.MOD_ID.toUpperCase());
     }
 
+    public static <E extends AnimatronicEntity> void makeRenderer(EntityType<? extends E> entityType, EntityRendererFactory<E> entityRendererFactory) {
+        FnafUniverseResuited.RENDER_FACTORIES.put(entityType, entityRendererFactory);
+        EntityRendererRegistry.register(entityType, entityRendererFactory);
+    }
     public static <E extends DefaultEntity> void createRenderer(EntityType<? extends E> entityType, EntityRendererFactory<E> entityRendererFactory) {
         FnafUniverseResuited.RENDERER_FACTORIES.put(entityType, entityRendererFactory);
         EntityRendererRegistry.register(entityType, entityRendererFactory);

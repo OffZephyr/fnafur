@@ -5,6 +5,8 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,6 +18,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -98,11 +101,16 @@ public class ComputerBlock extends BlockWithEntity implements BlockEntityProvide
         nbt.putString("wallpaper", "blue_checker");
     }
     @Override
-    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
-        ItemStack itemStack = super.getPickStack(world, pos, state);
-        world.getBlockEntity(pos, BlockEntityInit.COMPUTER).ifPresent((blockEntity) -> {
-            blockEntity.setStackNbt(itemStack, world.getRegistryManager());
-        });
+    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+        ItemStack itemStack = super.getPickStack(world, pos, state, includeData);
+
+        BlockStateComponent component = BlockStateComponent.DEFAULT;
+        for(Property property : state.getProperties()){
+            component = component.with(property, state.get(property));
+        }
+
+        itemStack.set(DataComponentTypes.BLOCK_STATE, component);
+
         return itemStack;
     }
 
@@ -111,7 +119,7 @@ public class ComputerBlock extends BlockWithEntity implements BlockEntityProvide
         BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
 
         List<ItemStack> item = new ArrayList<>();
-        item.add(getPickStack(builder.getWorld(), blockEntity.getPos(), state));
+        item.add(getPickStack(builder.getWorld(), blockEntity.getPos(), state, true));
         return item;
     }
 

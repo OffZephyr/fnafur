@@ -26,14 +26,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.CallableByMesurer;
-import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
-import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlockEntity;
-import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.tablet.TabletItem;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
-import net.zephyr.fnafur.util.ItemNbtUtil;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class TapeMesurerItem extends Item {
     public TapeMesurerItem(Settings settings) {
@@ -138,19 +132,6 @@ public class TapeMesurerItem extends Item {
                 currentNbt.copyFrom(tabletData);
             }));
         }
-        else {
-            if (world.getBlockState(context.getBlockPos()).isOf(BlockInit.LAYERED_BLOCK_BASE)) {
-                if (context.getPlayer().isSneaking()) {
-                    resetTape(context.getStack(), context.getPlayer(), context.getWorld());
-                    return ActionResult.PASS;
-                }
-
-                if (world.getBlockEntity(context.getBlockPos()) instanceof LayeredBlockEntity entity) {
-                    copyPaste(context, entity);
-                    return ActionResult.SUCCESS;
-                }
-            }
-        }
         return super.useOnBlock(context);
     }
 
@@ -187,64 +168,6 @@ public class TapeMesurerItem extends Item {
             }));
         }
         super.inventoryTick(stack, world, entity, slot, selected);
-    }
-    private void copyPaste(ItemUsageContext context, LayeredBlockEntity entity){
-        World world = context.getWorld();
-        NbtCompound nbt = ItemNbtUtil.getNbt(context.getStack());
-
-        BlockState state = world.getBlockState(context.getBlockPos());
-        int rotationAmount = getDirectionId(state.get(LayeredBlock.FACING));
-        Direction directionClicked = context.getSide();
-        Direction textureRotation = directionClicked;
-        if(directionClicked != Direction.UP && directionClicked != Direction.DOWN) {
-            for (int j = 0; j < rotationAmount; j++) {
-                textureRotation = textureRotation.rotateYClockwise();
-            }
-        }
-
-        byte direction = (byte)getDirectionId(textureRotation);
-
-        if (nbt == null || !nbt.getBoolean("hasData")) {
-            NbtCompound data = new NbtCompound();
-            NbtCompound entityData = ((IEntityDataSaver)entity).getPersistentData();
-            data.putBoolean("hasData", true);
-            data.putByte("editSide", direction);
-
-            NbtCompound blockData = new NbtCompound();
-            for (int i = 0; i < 3; i++) {
-                blockData.putString("layer" + i, entityData.getCompound("layer" + i).getString("" + direction));
-                blockData.putString("layer" + i, entityData.getCompound("layer" + i).getString("" + direction));
-                blockData.putString("layer" + i, entityData.getCompound("layer" + i).getString("" + direction));
-                for (int j = 0; j < 3; j++) {
-                    blockData.putInt(i + "_color_" + j, entityData.getCompound("layer" + i).getInt(direction + "_" + j + "_color"));
-                }
-            }
-            data.put("data", blockData);
-            context.getStack().apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(currentNbt -> {
-                currentNbt.copyFrom(data);
-            }));
-            PlayerEntity player = context.getPlayer();
-            world.playSound(player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_SPYGLASS_USE, SoundCategory.PLAYERS, 1, 1, true);
-        } else {
-            NbtCompound entityData = ((IEntityDataSaver)entity).getPersistentData().copy();
-            NbtCompound itemData = nbt.getCompound("data");
-            for (int i = 0; i < 3; i++) {
-
-                NbtCompound layerData = entityData.getCompound("layer" + i);
-                layerData.putString("" + direction, itemData.getString("layer" + i));
-                for (int j = 0; j < 3; j++) {
-                    layerData.putInt(direction + "_" + j + "_color", itemData.getInt(i + "_color_" + j));
-                }
-                entityData.put("layer" + i, layerData);
-            }
-
-            if(world.isClient()){
-                GoopyNetworkingUtils.saveBlockNbt(entity.getPos(), entityData);
-            }
-            PlayerEntity player = context.getPlayer();
-            world.playSound(player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_SPYGLASS_USE, SoundCategory.PLAYERS, 1, 1, true);
-            world.playSound(context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 1, 1, true);
-        }
     }
     private long corner2(BlockPos start, BlockPos end){
         int distX = MathHelper.abs(end.getX() - start.getX());

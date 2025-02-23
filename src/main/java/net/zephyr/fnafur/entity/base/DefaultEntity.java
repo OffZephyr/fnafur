@@ -418,7 +418,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
     }
 
     public boolean shouldCrawl(){
-        BlockPos frontBlock = this.getBlockPos().offset(Direction.fromRotation(this.getHeadYaw()));
+        BlockPos frontBlock = this.getBlockPos().offset(Direction.fromHorizontalDegrees(this.getHeadYaw()));
         BlockPos frontUpBlock = frontBlock.up();
         BlockPos frontUpUpBlock = frontUpBlock.up();
         BlockPos upBlock = this.getBlockPos().up();

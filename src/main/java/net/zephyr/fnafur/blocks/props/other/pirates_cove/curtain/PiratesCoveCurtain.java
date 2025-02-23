@@ -51,7 +51,7 @@ public class PiratesCoveCurtain extends BlockWithEntity {
 
     @Override
     protected BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+        return BlockRenderType.INVISIBLE;
     }
 
     @Override

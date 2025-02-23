@@ -59,7 +59,7 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
                 }
             }
             if(open) {
-                float rot = state.get(GeoDoor.FACING).asRotation();
+                float rot = state.get(GeoDoor.FACING).getPositiveHorizontalDegrees();
                 float entityRot = entity.getYaw() + 90 - rot;
                 int turns = (int) (entityRot / 360);
                 float entityYaw = entityRot - (360 * turns);

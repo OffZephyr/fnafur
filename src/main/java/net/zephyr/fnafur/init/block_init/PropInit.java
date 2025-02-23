@@ -16,8 +16,7 @@ import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
-import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors1;
-import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors2;
+import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.fnaf1desk.Fnaf1Desk;
@@ -77,20 +76,9 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
-    public static final Block FLOOR_MONITORS_1 = registerBlock(
-            "floor_monitors1",
-            FloorMonitors1::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .noCollision()
-    );
-    public static final Block FLOOR_MONITORS_2 = registerBlock(
-            "floor_monitors2",
-            FloorMonitors2::new,
+    public static final Block FLOOR_MONITORS = registerBlock(
+            "floor_monitors",
+            FloorMonitors::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)

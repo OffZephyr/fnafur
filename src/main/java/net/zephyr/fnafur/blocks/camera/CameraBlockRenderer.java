@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockEntity;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
-import net.zephyr.fnafur.blocks.basic_blocks.layered_block.LayeredBlock;
 import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -61,10 +60,10 @@ public class CameraBlockRenderer implements BlockEntityRenderer<CameraBlockEntit
 
         World world = entity.getWorld();
         boolean bl = world != null;
-        BlockState blockState = bl ? entity.getCachedState() : BlockInit.CAMERA.getDefaultState().with(LayeredBlock.FACING, Direction.SOUTH);
+        BlockState blockState = bl ? entity.getCachedState() : BlockInit.CAMERA.getDefaultState().with(CameraBlock.FACING, Direction.SOUTH);
 
         NbtCompound data = ((IEntityDataSaver)entity).getPersistentData();
-        float f = blockState.get(LayeredBlock.FACING).asRotation();
+        float f = blockState.get(CameraBlock.FACING).getPositiveHorizontalDegrees();
 
         matrices.push();
         matrices.translate(0.5f, -0.125f, 0.5f);

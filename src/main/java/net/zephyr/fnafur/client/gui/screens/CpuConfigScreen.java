@@ -8,12 +8,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class CpuConfigScreen extends GoopyScreen{
     int time = 24;
+    int aggressivity = 0;
+    int speed = 2;
     public static final int[][] HOUR_MAP = {
             {1, 2},
             {0, 1},
@@ -101,13 +101,22 @@ public class CpuConfigScreen extends GoopyScreen{
                 .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
                 .toggleExec(this::ToggleClick);
 
-        new GUIToggle(10, 219, 10, 14, "usePathing")
+        new GUIToggle(10, 219, 10, 14, "wanderAround")
+                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
+                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
+                .toggleExec(this::ToggleClick);
+
+        new GUIToggle(10, 232, 10, 14, "usePathing")
                 .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
                 .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
                 .toggleExec(this::ToggleClick);
 
 
         new GUIToggle(135, 131, 10, 14, "useTime")
+                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
+                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
+                .toggleExec(this::ToggleClick);
+        new GUIToggle(135, 162, 10, 14, "aggressive")
                 .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
                 .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
                 .toggleExec(this::ToggleClick);
@@ -132,27 +141,13 @@ public class CpuConfigScreen extends GoopyScreen{
 
     @Override
     public void renderToggle(DrawContext context, GUIToggle button) {
-        float scale = 0.75f;
 
-        int x = windowX + button.x + 12;
-        int y = windowY + button.y + 3;
-        String text = button.setting;
-        int width = (int)((textRenderer.getWidth(text) + 2) * scale);
+        List<String> left = new ArrayList<>();
+        left.add("useTime");
+        left.add("aggressive");
 
-        if(!Objects.equals(button.setting, "useTime")) {
-            drawRecolorableTexture(context, TEXTURE, x, y, 2, 9, 256, 113, 512, 512, 0xFFFFFFFF);
-            drawRecolorableTexture(context, TEXTURE, x + 2, y, width, 9, 256 + 4, 113, 512, 512, 0xFFFFFFFF);
-            drawRecolorableTexture(context, TEXTURE, x + width + 2, y, 2, 9, 256 + 2, 113, 512, 512, 0xFFFFFFFF);
-            //context.drawText(textRenderer, button.setting, x + 3, y+ 1, 0xFF112233, false);
-            drawResizableText(context, textRenderer, Text.literal(button.setting), scale, x + 3, y + 2, 0xFF112233, 0x00000000, false, false);
-        }
-        else {
-            drawRecolorableTexture(context, TEXTURE, windowX + button.x - width - 6 , y, 2, 9, 256, 113, 512, 512, 0xFFFFFFFF);
-            drawRecolorableTexture(context, TEXTURE, windowX + button.x - width - 4, y, width, 9, 256 + 4, 113, 512, 512, 0xFFFFFFFF);
-            drawRecolorableTexture(context, TEXTURE, windowX + button.x - 4, y, 2, 9, 256 + 2, 113, 512, 512, 0xFFFFFFFF);
+        printTape(context, Text.literal(button.setting), button.x, windowY + button.y + 3, 0.75f, left.contains(button.setting));
 
-            drawResizableText(context, textRenderer, Text.literal(button.setting), scale, windowX + button.x - width - 3, y + 2, 0xFF112233, 0x00000000, false, false);
-        }
         super.renderToggle(context, button);
     }
 
@@ -183,22 +178,40 @@ public class CpuConfigScreen extends GoopyScreen{
         drawRecolorableTexture(context, TEXTURE, timeX + 18, timeY, 3, 5, amu, 122, 512, 512, 0xFFFFFFFF);
         drawRecolorableTexture(context, TEXTURE, timeX + 22, timeY, 5, 5, 292, 122, 512, 512, 0xFFFFFFFF);
 
-        int timeDialX = windowX + 148;
+        printTape(context, Text.literal("Behavior->"), 136, windowY + 151, 0.75f, true);
+
+        int dialX = windowX + 148;
+
         int timeDialY = windowY + 131;
+        int aggressivityDialY = windowY + 162;
+        int speedDialY = windowY + 189;
+
         int timeDialV = time % 2 == 0 ? 85 : 98;
-        Text timeDialText = Text.literal("Time/Event->");
-        int timeDialTextWidth = (int)((textRenderer.getWidth(timeDialText) + 2) * 0.75f);
+        int aggressivityDialV = aggressivity % 2 == 0 ? 85 : 98;
+        int speedDialV = speed % 2 == 0 ? 85 : 98;
 
-        drawRecolorableTexture(context, TEXTURE, timeDialX, timeDialY, 11, 13, 270, timeDialV, 512, 512, 0xFFFFFFFF);
+        drawRecolorableTexture(context, TEXTURE, dialX, timeDialY, 11, 13, 270, timeDialV, 512, 512, 0xFFFFFFFF);
+        drawRecolorableTexture(context, TEXTURE, dialX, aggressivityDialY, 11, 13, 270, aggressivityDialV, 512, 512, 0xFFFFFFFF);
+        drawRecolorableTexture(context, TEXTURE, dialX, speedDialY, 11, 13, 270, speedDialV, 512, 512, 0xFFFFFFFF);
 
-        drawRecolorableTexture(context, TEXTURE, timeX - timeDialTextWidth - 9 , timeY - 2, 2, 9, 256, 113, 512, 512, 0xFFFFFFFF);
-        drawRecolorableTexture(context, TEXTURE, timeX - timeDialTextWidth - 7, timeY - 2, timeDialTextWidth, 9, 256 + 4, 113, 512, 512, 0xFFFFFFFF);
-        drawRecolorableTexture(context, TEXTURE, timeX - 7, timeY - 2, 2, 9, 256 + 2, 113, 512, 512, 0xFFFFFFFF);
+        printTape(context, Text.literal("Time/Event->"), 128, timeY - 2, 0.75f, true);
 
-        drawResizableText(context, textRenderer, timeDialText, 0.75f, timeX - timeDialTextWidth - 6, timeY, 0xFF112233, 0x00000000, false, false);
+        printTape(context, Text.literal("speed"), 147, speedDialY + 4, 0.75f, true);
 
         super.render(context, mouseX, mouseY, delta);
     }
 
+    void printTape(DrawContext context, Text text, int x, int y, float textScale, boolean left){
+
+        int width = (int)((textRenderer.getWidth(text) + 2) * textScale);
+
+        int i = left ? windowX + x - width - 6 : windowX + x + 12;
+
+        drawRecolorableTexture(context, TEXTURE, i, y, 2, 9, 256, 113, 512, 512, 0xFFFFFFFF);
+        drawRecolorableTexture(context, TEXTURE, i + 2, y, width, 9, 256 + 4, 113, 512, 512, 0xFFFFFFFF);
+        drawRecolorableTexture(context, TEXTURE, i + width + 2, y, 2, 9, 256 + 2, 113, 512, 512, 0xFFFFFFFF);
+        //context.drawText(textRenderer, button.setting, x + 3, y+ 1, 0xFF112233, false);
+        drawResizableText(context, textRenderer, text, textScale, i + 3, y + 2, 0xFF112233, 0x00000000, false, false);
+    }
 
 }

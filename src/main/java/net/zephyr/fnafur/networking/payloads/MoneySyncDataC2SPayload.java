@@ -13,7 +13,7 @@ public record MoneySyncDataC2SPayload(int credits, boolean shouldUpdate) impleme
     public static final CustomPayload.Id<MoneySyncDataC2SPayload> ID = new CustomPayload.Id<>(NbtPayloads.C2SMoneyID);
     public static final PacketCodec<PacketByteBuf, MoneySyncDataC2SPayload> CODEC = PacketCodec.tuple(
             PacketCodecs.INTEGER, MoneySyncDataC2SPayload::credits,
-            PacketCodecs.BOOL, MoneySyncDataC2SPayload::shouldUpdate,
+            PacketCodecs.BOOLEAN, MoneySyncDataC2SPayload::shouldUpdate,
             MoneySyncDataC2SPayload::new);
     public static void receive(MoneySyncDataC2SPayload payload, ServerPlayNetworking.Context context) {
         if(payload.shouldUpdate()) ((IEntityDataSaver)context.player()).getPersistentData().putInt("Credits", payload.credits());

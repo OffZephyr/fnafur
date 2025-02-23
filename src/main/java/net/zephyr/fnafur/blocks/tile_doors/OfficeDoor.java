@@ -22,6 +22,6 @@ public class OfficeDoor extends TileDoorBlock{
 
     @Override
     protected BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+        return BlockRenderType.INVISIBLE;
     }
 }

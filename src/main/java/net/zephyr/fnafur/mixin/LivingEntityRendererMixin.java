@@ -1,16 +1,24 @@
 package net.zephyr.fnafur.mixin;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.item.ItemModelManager;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.MapRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.BlockRenderManager;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.render.entity.equipment.EquipmentModelLoader;
+import net.minecraft.client.render.entity.model.LoadedEntityModels;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.math.MathHelper;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
@@ -42,7 +50,7 @@ public class LivingEntityRendererMixin {
                 EntityType<T> entityType = (EntityType<T>) entity.getType();
 
                 EntityRendererFactory.Context context = new EntityRendererFactory.Context(
-                        client.getEntityRenderDispatcher(), client.getItemRenderer(), client.getMapRenderer(), client.getBlockRenderManager(), client.getResourceManager(), client.getEntityModelLoader(), client.getEquipmentModelLoader(), client.textRenderer
+                        client.getEntityRenderDispatcher(), client.getItemModelManager(), client.getMapRenderer(), client.getBlockRenderManager(), client.getResourceManager(), client.getLoadedEntityModels(), new EquipmentModelLoader(), client.textRenderer
                 );
 
                 EntityRenderer<T, ?> renderer = (EntityRenderer<T, ?>) FnafUniverseResuited.RENDERER_FACTORIES.get(entityType).create(context);

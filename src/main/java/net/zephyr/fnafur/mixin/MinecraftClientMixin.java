@@ -11,12 +11,14 @@ import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.client.gui.screens.computer.apps.COMPRemoteScreen;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
+import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
 import net.zephyr.fnafur.util.jsonReaders.entity_skins.EntityDataManager;
 import net.zephyr.fnafur.util.jsonReaders.layered_block.LayeredBlockManager;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -41,6 +43,8 @@ public class MinecraftClientMixin implements IGetClientManagers {
 
 	private LayeredBlockManager layerManager = new LayeredBlockManager();
 	private EntityDataManager entityDataManager = new EntityDataManager();
+	@Unique
+	private CharacterModelManager characterModelManager = new CharacterModelManager();
 
 	@Inject(method = "getFramebuffer", at = @At("HEAD"), cancellable = true)
 	public void getFramebuffer(CallbackInfoReturnable<Framebuffer> cir) {
@@ -72,6 +76,7 @@ public class MinecraftClientMixin implements IGetClientManagers {
 	public void reloaders(CallbackInfo ci) {
 		this.resourceManager.registerReloader(this.layerManager);
 		this.resourceManager.registerReloader(this.entityDataManager);
+		this.resourceManager.registerReloader(this.characterModelManager);
 	}
 
 	@Inject(method = "getCameraEntity", at = @At("HEAD"), cancellable = true)

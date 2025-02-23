@@ -143,19 +143,15 @@ public class CameraBlock extends BlockWithEntity {
     }
 
     @Override
-    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
-        ItemStack itemStack = super.getPickStack(world, pos, state);
-        world.getBlockEntity(pos, BlockEntityInit.CAMERA).ifPresent((blockEntity) -> {
-            blockEntity.setStackNbt(itemStack, world.getRegistryManager());
-        });
-        return itemStack;
+    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+        return super.getPickStack(world, pos, state, includeData);
     }
 
     @Override
     public List<ItemStack> getDroppedStacks(BlockState state, LootWorldContext.Builder builder) {
         BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
         List<ItemStack> item = new ArrayList<>();
-        item.add(getPickStack(builder.getWorld(), blockEntity.getPos(), state));
+        item.add(getPickStack(builder.getWorld(), blockEntity.getPos(), state, true));
         return item;
     }
     @Nullable

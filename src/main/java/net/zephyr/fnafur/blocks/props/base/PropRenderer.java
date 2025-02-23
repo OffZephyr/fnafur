@@ -44,7 +44,7 @@ public class PropRenderer<T extends BlockEntity> implements BlockEntityRenderer<
                 GoopyNetworkingUtils.getNbtFromServer(pos);
             }
             float rotation = ((IEntityDataSaver)entity).getPersistentData().getFloat("Rotation");
-            float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().asRotation();
+            float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
 
             double offsetX = ((IEntityDataSaver)entity).getPersistentData().getDouble("xOffset");
             double offsetY = ((IEntityDataSaver)entity).getPersistentData().getDouble("yOffset");

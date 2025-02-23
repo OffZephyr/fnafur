@@ -61,6 +61,11 @@ public abstract class GeoDoor extends BlockWithEntity {
     }
 
     @Override
+    protected BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.INVISIBLE;
+    }
+
+    @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
         return null;
     }

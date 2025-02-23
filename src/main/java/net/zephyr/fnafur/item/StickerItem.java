@@ -72,7 +72,7 @@ public class StickerItem extends Item {
                     entity = context.getWorld().getBlockEntity(context.getBlockPos());
                     NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
 
-                    ItemStack itemStack = blockState.getBlock().getPickStack(context.getWorld(), context.getBlockPos(), blockState);
+                    ItemStack itemStack = new ItemStack(blockState.getBlock().asItem());
                     BlockStateComponent component = BlockStateComponent.DEFAULT;
 
                     for (Property<?> property : blockState.getProperties()) {

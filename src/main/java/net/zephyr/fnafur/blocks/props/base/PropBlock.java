@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.state.property.Property;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -99,11 +100,16 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     }
 
     @Override
-    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
-        ItemStack itemStack = new ItemStack(this);
-        if(COLOR_ENUM() != null) {
-            itemStack.set(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT.with(COLOR_PROPERTY(), state.get(COLOR_PROPERTY())));
+    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+        ItemStack itemStack = super.getPickStack(world, pos, state, includeData);
+
+        BlockStateComponent component = BlockStateComponent.DEFAULT;
+        for(Property property : state.getProperties()){
+            component = component.with(property, state.get(property));
         }
+
+        itemStack.set(DataComponentTypes.BLOCK_STATE, component);
+
         return itemStack;
     }
 
@@ -117,6 +123,6 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
 
     @Override
     protected BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+        return BlockRenderType.INVISIBLE;
     }
 }
