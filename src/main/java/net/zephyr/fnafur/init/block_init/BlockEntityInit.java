@@ -63,6 +63,8 @@ public class BlockEntityInit {
         PROPS =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "props"),
                         FabricBlockEntityTypeBuilder.create(PropBlockEntity::new,
+                                BlockInit.WORKBENCH,
+
                                 PropInit.FLOOR_MONITORS,
                                 PropInit.WOODEN_SHELF,
                                 PropInit.AC_UNIT,

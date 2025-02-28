@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.client.gui.screens;
+package net.zephyr.fnafur.client.gui.screens.crafting;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -7,10 +7,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 
 import java.util.*;
 
-public class CpuConfigScreen extends GoopyScreen{
+public class CpuConfigScreen extends GoopyScreen {
     int time = 24;
     int aggressivity = 0;
     int speed = 2;
@@ -122,7 +123,7 @@ public class CpuConfigScreen extends GoopyScreen{
                 .toggleExec(this::ToggleClick);
     }
 
-    private void UpClick() {
+    public void UpClick() {
         System.out.println("UP");
     }
     private void ConfirmClick() {

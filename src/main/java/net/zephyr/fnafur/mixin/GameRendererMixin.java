@@ -8,6 +8,7 @@ import net.minecraft.client.gl.PostEffectProcessor;
 import net.minecraft.client.render.DefaultFramebufferSet;
 import net.minecraft.client.render.FrameGraphBuilder;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
@@ -41,7 +42,6 @@ public class GameRendererMixin implements IPostProcessorLoader {
     private void setPostProcessor(Identifier id) {
 
     }
-
     /*@Inject(method = "render", at = @At(value = "HEAD"))
     public void renderMonitorPostProcessor(RenderTickCounter tickCounter, boolean tick, CallbackInfo ci) {
         if(!client.skipGameRender) {

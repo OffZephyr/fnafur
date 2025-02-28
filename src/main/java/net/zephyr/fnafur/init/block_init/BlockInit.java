@@ -11,6 +11,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
+import net.zephyr.fnafur.blocks.basic_blocks.ColoredLight;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
@@ -32,6 +33,7 @@ import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
 import net.zephyr.fnafur.blocks.tile_doors.OfficeDoor;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntityRenderer;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
 
 import java.util.ArrayList;
@@ -57,6 +59,15 @@ public class BlockInit {
     public static final Block CPU_CONFIG_PANEL = registerBlock(
             "cpu_config_panel",
             CpuConfigPanelBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .notSolid()
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+    );
+    public static final Block WORKBENCH = registerBlock(
+            "workbench",
+            WorkbenchBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .notSolid()
@@ -595,7 +606,7 @@ public class BlockInit {
     );
     public static final Block CEILING_TILE_LIGHT = registerBlock(
             "ceiling_tile_light",
-            RedstoneLampBlock::new,
+            ColoredLight::new,
             AbstractBlock.Settings.copy(Blocks.REDSTONE_LAMP)
     );
     public static final Block CEILING_TILES_STAINED = registerBlock(
@@ -778,6 +789,7 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA_DESK, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CPU_CONFIG_PANEL, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.WORKBENCH, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getTranslucent());

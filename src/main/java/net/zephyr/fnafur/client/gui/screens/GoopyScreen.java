@@ -23,8 +23,8 @@ public abstract class GoopyScreen extends Screen {
     public static List<GUIButton> BUTTONS = new ArrayList<GUIButton>();
     BlockPos blockPos = BlockPos.ORIGIN;
     int entityID = 0;
-    int windowSizeX = 256, windowSizeY = 256;
-    int windowX, windowY;
+    public int windowSizeX = 256, windowSizeY = 256;
+    public int windowX, windowY;
     String itemSlot = "";
     NbtCompound nbtData = new NbtCompound();
     private boolean holding;
@@ -237,11 +237,11 @@ public abstract class GoopyScreen extends Screen {
     public class GUIButton{
 
         @FunctionalInterface
-        interface ToggleAction {
+        public interface ToggleAction {
             void toggle(GUIToggle button);
         }
         @FunctionalInterface
-        interface ButtonAction {
+        public interface ButtonAction {
             void execute();
         }
         public final int x, y, width, height;
@@ -251,7 +251,7 @@ public abstract class GoopyScreen extends Screen {
         public ButtonAction hover_exec;
         public ButtonAction click_exec;
         public ToggleAction toggle_exec;
-        GUIButton(int x, int y, int width, int height){
+        public GUIButton(int x, int y, int width, int height){
             this.x = x;
             this.y = y;
             this.width = width;
@@ -289,7 +289,7 @@ public abstract class GoopyScreen extends Screen {
     public class GUIToggle extends GUIButton{
         public String setting;
         public boolean on;
-        GUIToggle(int x, int y, int width, int height, String setting) {
+        public GUIToggle(int x, int y, int width, int height, String setting) {
             this(x, y, width, height, setting, false);
         }
         GUIToggle(int x, int y, int width, int height, String setting, boolean defaultValue) {
