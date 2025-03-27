@@ -1,0 +1,219 @@
+{
+    "root": {
+        "isLimb": false,
+        "isAccessory": false,
+        "sub": [
+            {
+                "left_leg": {
+                    "isLimb": true,
+                    "isAccessory": false,
+                    "sub": [
+                        {
+                            "left_lower_leg": {
+                                "isLimb": true,
+                                "isAccessory": false,
+                                "sub": [
+                                    {
+                                        "left_foot":{
+                                            "isLimb": false,
+                                            "isAccessory": false,
+                                            "sub": []
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "right_leg": {
+                    "isLimb": true,
+                    "isAccessory": false,
+                    "sub": [
+                        {
+                            "right_lower_leg": {
+                                "isLimb": true,
+                                "isAccessory": false,
+                                "sub": [
+                                    {
+                                        "right_foot":{
+                                            "isLimb": false,
+                                            "isAccessory": false,
+                                            "sub": []
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "pelvis": {
+                    "isLimb": false,
+                    "isAccessory": false,
+                    "sub": [
+                        {
+                            "torso": {
+                                "isLimb": false,
+                                "isAccessory": false,
+                                "sub": [
+                                    {
+                                        "torso_accessory": {
+                                            "isLimb": false,
+                                            "isAccessory": true,
+                                            "sub": []
+                                        }
+                                    },
+                                    {
+                                        "head": {
+                                            "isLimb": false,
+                                            "isAccessory": false,
+                                            "sub": [
+                                                {   
+                                                    "jaw": {
+                                                        "isLimb": false,
+                                                        "isAccessory": false,
+                                                        "sub": []
+                                                    }
+                                                },
+                                                {
+                                                    "left_ear": {
+                                                        "isLimb": false,
+                                                        "isAccessory": false,
+                                                        "sub": []
+                                                    }
+                                                },
+                                                {
+                                                    "right_ear": {
+                                                        "isLimb": false,
+                                                        "isAccessory": false,
+                                                        "sub": []
+                                                    }
+                                                },
+                                                {
+                                                    "eyeleft": {
+                                                        "isLimb": false,
+                                                        "isAccessory": true,
+                                                        "sub": [
+                                                            {
+                                                                "lefteyelid_top": {
+                                                                    "isLimb": false,
+                                                                    "isAccessory": true,
+                                                                    "sub": []
+                                                                }
+                                                            },
+                                                            {
+                                                                "lefteyelid_bottom": {
+                                                                    "isLimb": false,
+                                                                    "isAccessory": true,
+                                                                    "sub": []
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "eyeright": {
+                                                        "isLimb": false,
+                                                        "isAccessory": true,
+                                                        "sub": [
+                                                            {
+                                                                "righteyelid_top": {
+                                                                    "isLimb": false,
+                                                                    "isAccessory": true,
+                                                                    "sub": []
+                                                                }
+                                                            },
+                                                            {
+                                                                "righteyelid_bottom": {
+                                                                    "isLimb": false,
+                                                                    "isAccessory": true,
+                                                                    "sub": []
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "head_accessory": {
+                                                        "isLimb": false,
+                                                        "isAccessory": true,
+                                                        "sub": []
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "left_arm": {
+                                            "isLimb": true,
+                                            "isAccessory": false,
+                                            "sub": [
+                                                {
+                                                    "left_lower_arm": {
+                                                        "isLimb": true,
+                                                        "isAccessory": false,
+                                                        "sub": [
+                                                            {
+                                                                "left_hand":{
+                                                                    "isLimb": false,
+                                                                    "isAccessory": false,
+                                                                    "sub": [
+                                                                        {
+                                                                            "left_hand_accessory": {
+                                                                                "isLimb": false,
+                                                                                "isAccessory": true,
+                                                                                "sub": []
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "right_arm": {
+                                            "isLimb": true,
+                                            "isAccessory": false,
+                                            "sub": [
+                                                {
+                                                    "right_lower_arm": {
+                                                        "isLimb": true,
+                                                        "isAccessory": false,
+                                                        "sub": [
+                                                            {
+                                                                "right_hand":{
+                                                                    "isLimb": false,
+                                                                    "isAccessory": false,
+                                                                    "sub": [
+                                                                        {
+                                                                            "right_hand_accessory": {
+                                                                                "isLimb": false,
+                                                                                "isAccessory": true,
+                                                                                "sub": []
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

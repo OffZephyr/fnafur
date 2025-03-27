@@ -28,6 +28,8 @@ public class FnafUniverseResuited implements ModInitializer {
 	public static final Map<EntityType<? extends DefaultEntity>, EntityRendererFactory<?>> RENDERER_FACTORIES = new Object2ObjectOpenHashMap<>();
 	public static final Map<EntityType<? extends AnimatronicEntity>, EntityRendererFactory<?>> RENDER_FACTORIES = new Object2ObjectOpenHashMap<>();
 
+	public static final boolean DEBUG = true;
+
 	public static final String MOD_ID = "fnafur";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	@Override
@@ -52,5 +54,11 @@ public class FnafUniverseResuited implements ModInitializer {
 	public void registerCommands() {
 		CommandRegistrationCallback.EVENT.register(MoneyCommand::register);
 		CommandRegistrationCallback.EVENT.register(Bear5Command::register);
+	}
+
+	public static void print(String print){
+		if(DEBUG) {
+			System.out.println(print);
+		}
 	}
 }

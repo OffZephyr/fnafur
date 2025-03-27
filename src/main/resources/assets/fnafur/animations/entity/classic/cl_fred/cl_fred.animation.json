@@ -4,7 +4,7 @@
 		"animation.cl_fred.Base": {
 			"loop": true,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"vector": [0, -0.15, 0]
 					}
@@ -164,7 +164,7 @@
 		"animation.cl_fred.blink": {
 			"animation_length": 0.5,
 			"bones": {
-				"left_top_eyelid": {
+				"lefteyelid_top": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -194,7 +194,7 @@
 						}
 					}
 				},
-				"left_bottom_eyelid": {
+				"lefteyelid_bottom": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -224,7 +224,7 @@
 						}
 					}
 				},
-				"right_top_eyelid": {
+				"righteyelid_top": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -254,7 +254,7 @@
 						}
 					}
 				},
-				"right_bottom_eyelid": {
+				"righteyelid_bottom": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -357,7 +357,7 @@
 			"loop": true,
 			"animation_length": 0.25,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"vector": [0, -0.15, 0]
 					}
@@ -2028,7 +2028,7 @@
 						}
 					}
 				},
-				"Root": {
+				"root": {
 					"position": {
 						"vector": [0, -0.4, 0]
 					}
@@ -2053,7 +2053,7 @@
 		"animation.cl_fred.idle": {
 			"loop": true,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"vector": [0, -0.15, 0]
 					}
@@ -2234,7 +2234,7 @@
 			"loop": true,
 			"animation_length": 7.5,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"vector": [0, -0.15, 0]
 					}
@@ -2511,7 +2511,7 @@
 			"loop": true,
 			"animation_length": 11.6667,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"vector": [0, -0.15, 0]
 					}
@@ -3033,7 +3033,7 @@
 						}
 					}
 				},
-				"left_top_eyelid": {
+				"lefteyelid_top": {
 					"rotation": {
 						"1.1667": {
 							"vector": [0, 0, 0]
@@ -3135,7 +3135,7 @@
 						}
 					}
 				},
-				"left_bottom_eyelid": {
+				"lefteyelid_bottom": {
 					"rotation": {
 						"1.1667": {
 							"vector": [0, 0, 0]
@@ -3237,7 +3237,7 @@
 						}
 					}
 				},
-				"right_top_eyelid": {
+				"righteyelid_top": {
 					"rotation": {
 						"1.1667": {
 							"vector": [0, 0, 0]
@@ -3339,7 +3339,7 @@
 						}
 					}
 				},
-				"right_bottom_eyelid": {
+				"righteyelid_bottom": {
 					"rotation": {
 						"1.1667": {
 							"vector": [0, 0, 0]
@@ -3457,7 +3457,7 @@
 			"loop": true,
 			"animation_length": 10.25,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"vector": [0, -0.15, 0]
 					}
@@ -3921,7 +3921,7 @@
 		"animation.cl_fred.Deactivated": {
 			"loop": true,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"vector": [0, -0.15, 0]
 					}
@@ -4106,7 +4106,7 @@
 		"animation.cl_fred.DeactivatedToNight": {
 			"animation_length": 1.5,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"0.0": {
 							"vector": [0, -0.15, 0]
@@ -4784,7 +4784,7 @@
 			"loop": true,
 			"animation_length": 1.0049,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"0.0": {
 							"vector": [0, -1.075, 0]
@@ -5387,7 +5387,7 @@
 			"loop": true,
 			"animation_length": 1.0049,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"0.0": {
 							"vector": [0, -1.075, 0]
@@ -5965,7 +5965,7 @@
 			"loop": true,
 			"animation_length": 1.0049,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"0.0": {
 							"vector": [0, -1.075, 0]
@@ -6530,7 +6530,7 @@
 			"loop": true,
 			"animation_length": 1.0025,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"0.0": {
 							"vector": [0, -1.075, 0]
@@ -6877,7 +6877,7 @@
 		"animation.cl_fred.jumpscare": {
 			"animation_length": 1.9167,
 			"bones": {
-				"Root": {
+				"root": {
 					"rotation": {
 						"vector": [0, 12.5, -17.5]
 					},
@@ -6997,7 +6997,7 @@
 						"vector": [0, 0, 0]
 					}
 				},
-				"left_top_eyelid": {
+				"lefteyelid_top": {
 					"rotation": {
 						"vector": [-17.5, 0, 0]
 					}
@@ -7007,7 +7007,7 @@
 						"vector": [0, 0, 0]
 					}
 				},
-				"right_top_eyelid": {
+				"righteyelid_top": {
 					"rotation": {
 						"vector": [-17.5, 0, 0]
 					}
@@ -7256,7 +7256,7 @@
 		"animation.cl_fred.Death": {
 			"loop": true,
 			"bones": {
-				"Root": {
+				"root": {
 					"position": {
 						"vector": [0, -0.15, 0]
 					}

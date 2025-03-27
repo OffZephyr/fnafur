@@ -124,24 +124,24 @@ public class CpuConfigScreen extends GoopyScreen {
     }
 
     public void UpClick() {
-        System.out.println("UP");
+        FnafUniverseResuited.print("UP");
     }
     private void ConfirmClick() {
-        System.out.println("CONFIRM");
+        FnafUniverseResuited.print("CONFIRM");
     }
     private void BackClick() {
-        System.out.println("BACK");
+        FnafUniverseResuited.print("BACK");
     }
     private void DownClick() {
-        System.out.println("DOWN");
+        FnafUniverseResuited.print("DOWN");
     }
     private void ToggleClick(GUIToggle button) {
         button.on = !button.on;
-        System.out.println(button.setting + ": " + button.on);
+        FnafUniverseResuited.print(button.setting + ": " + button.on);
     }
 
     @Override
-    public void renderToggle(DrawContext context, GUIToggle button) {
+    public void renderToggle(DrawContext context, double mouseX, double mouseY, GUIToggle button) {
 
         List<String> left = new ArrayList<>();
         left.add("useTime");
@@ -149,7 +149,7 @@ public class CpuConfigScreen extends GoopyScreen {
 
         printTape(context, Text.literal(button.setting), button.x, windowY + button.y + 3, 0.75f, left.contains(button.setting));
 
-        super.renderToggle(context, button);
+        super.renderToggle(context, mouseX, mouseY, button);
     }
 
     @Override
@@ -198,8 +198,8 @@ public class CpuConfigScreen extends GoopyScreen {
         printTape(context, Text.literal("Time/Event->"), 128, timeY - 2, 0.75f, true);
 
         printTape(context, Text.literal("speed"), 147, speedDialY + 4, 0.75f, true);
-
         super.render(context, mouseX, mouseY, delta);
+
     }
 
     void printTape(DrawContext context, Text text, int x, int y, float textScale, boolean left){

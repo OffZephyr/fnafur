@@ -1,0 +1,34 @@
+{
+    "default": {
+        "characters": [
+            {
+                "name": "endo_01",
+                "endo": "endo_01"
+            }
+        ]
+    },
+    "classic": {
+        "characters": [
+             {
+                "name": "cl_fred",
+                "endo": "endo_01"
+            },
+            {
+                "name": "cl_bon",
+                "endo": "endo_01"
+            },
+            {
+                "name": "cl_chica",
+                "endo": "endo_01"
+            },
+            {
+                "name": "cl_foxy",
+                "endo": "endo_01"
+            },
+            {
+               "name": "cl_sparky",
+               "endo": "endo_01"
+            }
+        ]
+    }
+}

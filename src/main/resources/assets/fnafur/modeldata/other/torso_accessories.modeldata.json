@@ -1,0 +1,20 @@
+{
+  "cl_fred": {
+    "model": "geo/entity/classic/cl_fred/accessories/bowtie.geo.json",
+    "layers": [
+      {
+        "name": "color",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/classic/cl_fred/other/other_default.png",
+            "overlay_emissive": ""
+          }
+        ]
+      }
+    ]
+  }
+}

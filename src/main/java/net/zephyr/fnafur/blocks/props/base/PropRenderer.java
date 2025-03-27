@@ -10,6 +10,7 @@ import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.RotationAxis;
@@ -33,22 +34,21 @@ public class PropRenderer<T extends BlockEntity> implements BlockEntityRenderer<
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         BlockPos pos = entity.getPos();
         BlockState state = client.world.getBlockState(pos);
+        NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
+
+        if(((IEntityDataSaver)entity).getPersistentData().isEmpty()){
+            GoopyNetworkingUtils.getNbtFromServer(pos);
+        }
 
         if(state.getBlock() instanceof PropBlock<?> block) {
             matrices.push();
-            if(!((IEntityDataSaver)entity).getPersistentData().isEmpty()){
-                GoopyNetworkingUtils.getNbtFromServer(pos);
-            }
 
-            if(((IEntityDataSaver)entity).getPersistentData().isEmpty()){
-                GoopyNetworkingUtils.getNbtFromServer(pos);
-            }
-            float rotation = ((IEntityDataSaver)entity).getPersistentData().getFloat("Rotation");
-            float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
+            float rotation = nbt.getFloat("Rotation");
+            float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees() + 180f;
 
-            double offsetX = ((IEntityDataSaver)entity).getPersistentData().getDouble("xOffset");
-            double offsetY = ((IEntityDataSaver)entity).getPersistentData().getDouble("yOffset");
-            double offsetZ = ((IEntityDataSaver)entity).getPersistentData().getDouble("zOffset");
+            double offsetX = nbt.getDouble("xOffset");
+            double offsetY = nbt.getDouble("yOffset");
+            double offsetZ = nbt.getDouble("zOffset");
 
             matrices.translate(-0.5f, 0, -0.5f);
             matrices.translate(offsetX, offsetY, offsetZ);
@@ -64,7 +64,7 @@ public class PropRenderer<T extends BlockEntity> implements BlockEntityRenderer<
             this.renderModel(pos, state, matrices, vertexConsumers, entity.getWorld(), false, overlay);
             matrices.pop();
 
-            if(MinecraftClient.getInstance().getEntityRenderDispatcher().shouldRenderHitboxes()) {
+            if(client.getEntityRenderDispatcher().shouldRenderHitboxes()) {
 
                 matrices.push();
                 matrices.translate(-0.5f, 0, -0.5f);

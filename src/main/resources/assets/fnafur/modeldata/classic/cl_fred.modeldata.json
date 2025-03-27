@@ -1,0 +1,59 @@
+{
+  "default": {
+    "model": "geo/entity/classic/cl_fred/cl_fred.geo.json",
+    "layers": [
+      {
+        "name": "endo",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/classic/cl_fred/endo/endo_default.png",
+            "overlay_emissive": ""
+          }
+        ]
+      },
+      {
+        "name": "base_color",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/classic/cl_fred/base_color/base_color_default.png",
+            "overlay_emissive": ""
+          }
+        ]
+      },
+      {
+        "name": "accent_color",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/classic/cl_fred/accent_color/accent_color_default.png",
+            "overlay_emissive": ""
+          }
+        ]
+      },
+      {
+        "name": "other",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/classic/cl_fred/other/other_default.png",
+            "overlay_emissive": ""
+          }
+        ]
+      }
+    ]
+  }
+}

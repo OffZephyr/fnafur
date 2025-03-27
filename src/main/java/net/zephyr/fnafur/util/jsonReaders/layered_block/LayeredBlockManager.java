@@ -75,7 +75,7 @@ public class LayeredBlockManager extends SinglePreparationResourceReloader<List<
         this.Layers.clear();
         this.Layers = prepared;
         for (LayeredBlockLayer layer : prepared) {
-            System.out.println(layer.getName());
+            FnafUniverseResuited.print(layer.getName());
         }
     }
 }

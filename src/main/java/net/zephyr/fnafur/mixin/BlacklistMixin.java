@@ -32,7 +32,7 @@ public class BlacklistMixin {
 	private void init(CallbackInfo info) {
 
 		String UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
-		System.out.println(UUID);
+		FnafUniverseResuited.print(UUID);
 		String Username = MinecraftClient.getInstance().getSession().getUsername();
 		boolean BlacklistedName = GoopyBlacklist.getBlacklist().containsKey(Username);
 		boolean BlacklistedUUID = GoopyBlacklist.getBlacklist().containsValue(UUID);

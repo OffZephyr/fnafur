@@ -1,0 +1,59 @@
+{
+  "endo01_eye": {
+    "model": "geo/entity/eyes/endo01/endo01_eye.geo.json",
+    "layers": [
+      {
+        "name": "eyelids",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/eyes/endo_01/eyelid/eyelid_black.png",
+            "overlay_emissive": ""
+          }
+        ]
+      },
+      {
+        "name": "scleras",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/eyes/endo_01/sclera/sclera_white.png",
+            "overlay_emissive": ""
+          }
+        ]
+      },
+      {
+        "name": "irises",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/eyes/endo_01/iris/iris_blue.png",
+            "overlay_emissive": ""
+          }
+        ]
+      },
+      {
+        "name": "pupils",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/eyes/endo_01/pupil/pupil_black.png",
+            "overlay_emissive": ""
+          }
+        ]
+      }
+    ]
+  }
+}

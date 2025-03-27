@@ -47,7 +47,7 @@ public class COMPRemoteScreen extends COMPBaseAppScreen {
 
     @Override
     public void tick() {
-        System.out.println(MinecraftClient.getInstance().getSoundManager().getDebugString());
+        FnafUniverseResuited.print(MinecraftClient.getInstance().getSoundManager().getDebugString());
         super.tick();
     }
 

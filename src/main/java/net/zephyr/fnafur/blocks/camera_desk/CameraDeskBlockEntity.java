@@ -41,7 +41,7 @@ public class CameraDeskBlockEntity extends GoopyBlockEntity {
             posList.add(blockEntity.getPos());
             CameraRenderer.setDirty(blockEntity.getPos(), true);
             blockEntity.updateCams();
-            System.out.println("CameraDeskBlockEntity added at " + blockEntity.getPos());
+            FnafUniverseResuited.print("CameraDeskBlockEntity added at " + blockEntity.getPos());
         }
     }
 

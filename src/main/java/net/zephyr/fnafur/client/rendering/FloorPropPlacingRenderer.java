@@ -3,6 +3,7 @@ package net.zephyr.fnafur.client.rendering;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -38,6 +39,7 @@ public class FloorPropPlacingRenderer {
                         if (((BlockHitResult) blockHit).getSide() == Direction.DOWN) pos = pos.down();
 
                         float rotation = -MinecraftClient.getInstance().gameRenderer.getCamera().getYaw();
+                        float offsetRotation = block.getDefaultState().get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees() + 180f;
 
                         double x = hitPos.getX() - pos.getX();
                         double y = pos.getY();
@@ -72,9 +74,14 @@ public class FloorPropPlacingRenderer {
 
                         matrices.translate(0.5f, 0, 0.5f);
                         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
+                        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(offsetRotation));
                         matrices.translate(-0.5f, 0, -0.5f);
                         if(block instanceof GeoPropBlock){
+                            /*BlockEntity entity = block.createBlockEntity(BlockPos.ORIGIN, block.getDefaultState());
 
+                            if(entity instanceof GeoPropBlockEntity ent && ent.renderer instanceof GeoPropRenderer r){
+                                r.render(ent , 0, matrices, vertexConsumers, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            }*/
                         }
                         else {
                             BakedModel model = client.getBakedModelManager().getBlockModels().getModel(state);

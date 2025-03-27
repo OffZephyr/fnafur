@@ -30,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
+import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.item_init.StickerInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -99,7 +100,7 @@ public class StickerBlockModel extends WrapperGroupableModel implements UnbakedM
     @Override
     public BakedModel bake(ModelTextures textures, Baker baker, ModelBakeSettings settings, boolean ambientOcclusion, boolean isSideLit, ModelTransformation transformation) {
 
-        System.out.println("BAKE BAKE");
+        FnafUniverseResuited.print("BAKE BAKE");
         /*Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         MeshBuilder builder = renderer.meshBuilder();*/
         return this;

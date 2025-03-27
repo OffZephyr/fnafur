@@ -1,0 +1,13 @@
+{
+    "torso_accessory": "torso_accessories",
+    "head_accessory": "head_accessories",
+    "eyeleft": "eyes",
+    "lefteyelid_top": "eyes",
+    "lefteyelid_bottom": "eyes",
+    "eyeright": "eyes",
+    "righteyelid_top": "eyes",
+    "righteyelid_bottom": "eyes",
+    "guitar": "guitars",
+    "left_hand_accessory": "left_hand_accessories",
+    "right_hand_accessory": "right_hand_accessories"
+}

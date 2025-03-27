@@ -73,7 +73,7 @@ public class COMPMusicPlayerScreen extends COMPBaseAppScreen {
                     for (int j = 0; j < play.getList().size(); j++) {
                         int songYPos = yPos - 2 + spacingOffset + spacingOffset * j;
                         if (mouseX > topCornerX && mouseX < topCornerX + appAvailableSizeX && mouseY > songYPos && mouseY < songYPos  + (int) iconSize + 2 && !dragging) {
-                            System.out.println(play.getList().get(j).getName());
+                            FnafUniverseResuited.print(play.getList().get(j).getName());
                         }
                     }
                     spacing += spacingOffset * (play.getList().size() + 1);

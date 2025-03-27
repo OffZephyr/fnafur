@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
+import net.zephyr.fnafur.FnafUniverseResuited;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
@@ -18,7 +19,7 @@ public class Random4Block extends Block {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        System.out.println("test");
+        FnafUniverseResuited.print("test");
         Random random = new Random();
         int num = random.nextInt(0, 4);
 

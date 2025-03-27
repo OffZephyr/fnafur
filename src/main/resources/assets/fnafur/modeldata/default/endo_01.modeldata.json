@@ -1,0 +1,20 @@
+{
+  "default": {
+    "model": "geo/entity/default/endo_01/endo_01.geo.json",
+    "layers": [
+      {
+        "name": "endo",
+        "variants": [
+          {
+            "name":  "default",
+            "color_texture": "",
+            "color_emissive": "",
+            "can_be_recolored": false,
+            "overlay_texture": "textures/entity/default/endo_01/endo_01.png",
+            "overlay_emissive": ""
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GoopyScreen extends Screen {
-    public static List<GUIButton> BUTTONS = new ArrayList<GUIButton>();
+    public static List<GUIButton> BUTTONS = new ArrayList<>();
     BlockPos blockPos = BlockPos.ORIGIN;
     int entityID = 0;
     public int windowSizeX = 256, windowSizeY = 256;
@@ -71,7 +71,7 @@ public abstract class GoopyScreen extends Screen {
 
         for(GUIButton button : BUTTONS){
             if(button instanceof GUIToggle toggle){
-                renderToggle(context, toggle);
+                renderToggle(context, mouseX, mouseY, toggle);
             }
             else {
                 renderButton(context, mouseX, mouseY, button);
@@ -124,14 +124,21 @@ public abstract class GoopyScreen extends Screen {
         }
         drawRecolorableTexture(context, texture.texture, x, y, w, h, texture.u, texture.v, texture.textureWidth, texture.textureHeight, texture.color);
     }
-    public void renderToggle(DrawContext context, GUIToggle button) {
+    public void renderToggle(DrawContext context, double mouseX, double mouseY, GUIToggle button) {
         int x = windowX + button.x;
         int y = windowY + button.y;
         int w = button.width;
         int h = button.height;
-        GUISprite texture;
+        GUISprite texture = button.on ? button.on_sprite : button.off_sprite;
 
-        texture = button.on ? button.on_sprite : button.off_sprite;
+        if (isOnButton(mouseX, mouseY, x, y, w, h)) {
+            if (holding && ((button.on && button.on_sprite != null) || (!button.on && button.off_sprite != null))) {
+                texture = button.on ? button.on_sprite : button.off_sprite;
+            } else {
+                texture = button.hover_sprite != null ? button.hover_sprite : button.on_sprite != null ? button.on_sprite : button.off_sprite;
+            }
+        }
+
         drawRecolorableTexture(context, texture.texture, x, y, w, h, texture.u, texture.v, texture.textureWidth, texture.textureHeight, texture.color);
     }
 

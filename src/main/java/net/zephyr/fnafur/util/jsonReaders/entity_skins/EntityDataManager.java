@@ -80,7 +80,7 @@ public class EntityDataManager extends SinglePreparationResourceReloader<Map<Ent
         for(EntityType<?> type : prepared.keySet()){
             this.Skins.put(type, prepared.get(type).skins());
             for(EntitySkin skin : prepared.get(type).skins()) {
-                System.out.println(skin.getName());
+                FnafUniverseResuited.print(skin.getName());
             }
         }
     }

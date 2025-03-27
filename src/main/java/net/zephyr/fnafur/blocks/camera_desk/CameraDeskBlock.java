@@ -22,6 +22,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.GoopyBlockWithEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.item.tablet.TabletItem;
@@ -70,7 +71,7 @@ public class CameraDeskBlock extends GoopyBlockWithEntity {
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof CameraDeskBlockEntity) {
-            System.out.println("CameraDeskBlockEntity removed at " + pos);
+            FnafUniverseResuited.print("CameraDeskBlockEntity removed at " + pos);
             CameraDeskBlockEntity.posList.remove(pos);
         } return super.onBreak(world, pos, state, player);
     }
