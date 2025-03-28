@@ -76,6 +76,7 @@ public class FloorPropPlacingRenderer {
                         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
                         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(offsetRotation));
                         matrices.translate(-0.5f, 0, -0.5f);
+
                         if(block instanceof GeoPropBlock){
                             /*BlockEntity entity = block.createBlockEntity(BlockPos.ORIGIN, block.getDefaultState());
 

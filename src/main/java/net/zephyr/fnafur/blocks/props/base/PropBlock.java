@@ -104,10 +104,13 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
         ItemStack itemStack = super.getPickStack(world, pos, state, includeData);
 
         BlockStateComponent component = BlockStateComponent.DEFAULT;
-        for(Property property : state.getProperties()){
+        /*for(Property property : state.getProperties()){
             component = component.with(property, state.get(property));
-        }
+        }*/
 
+        if(state.contains(COLOR)) {
+            component = component.with(COLOR, state.get(COLOR));
+        }
         itemStack.set(DataComponentTypes.BLOCK_STATE, component);
 
         return itemStack;

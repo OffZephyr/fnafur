@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "type=single": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_single"
+    },
+    "type=north_west": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_nw"
+    },
+    "type=north": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_n"
+    },
+    "type=north_east": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_ne"
+    },
+    "type=west": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_w"
+    },
+    "type=center": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_c"
+    },
+    "type=east": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_e"
+    },
+    "type=south_west": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_sw"
+    },
+    "type=south": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_s"
+    },
+    "type=south_east": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_se"
+    },
+    "type=vertical_north": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_vn"
+    },
+    "type=vertical_center": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_vc"
+    },
+    "type=vertical_south": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_vs"
+    },
+    "type=horizontal_west": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_hw"
+    },
+    "type=horizontal_center": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_hc"
+    },
+    "type=horizontal_east": {
+      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_he"
+    }
+  }
+}

@@ -29,6 +29,8 @@ import net.zephyr.fnafur.blocks.props.floor_props.trash_bin.TrashBin;
 import net.zephyr.fnafur.blocks.props.floor_props.wet_floor_sign.WetFloorSign;
 import net.zephyr.fnafur.blocks.props.floor_props.wooden_shelf.WoodenShelf;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVent;
+import net.zephyr.fnafur.blocks.props.tiling.HorizontalTilingBlock;
+import net.zephyr.fnafur.blocks.props.tiling.TableBlock;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVentBlack;
 import net.zephyr.fnafur.blocks.props.wall_props.ac_unit.AcUnit;
 import net.zephyr.fnafur.blocks.props.wall_props.air_vent.AirVent;
@@ -71,6 +73,26 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .noCollision()
+    );
+    public static final Block PARTY_TABLE = registerBlock(
+            "party_table",
+            TableBlock::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+    );
+    public static final Block PARTY_TABLE_CONFETTI = registerBlock(
+            "party_table_confetti",
+            TableBlock::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
     );
 
     public static final Block WALL_CLOUDS = registerBlock(

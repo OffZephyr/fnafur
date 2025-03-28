@@ -19,6 +19,8 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.CPU_CONFIG_PANEL);
         addDrop(BlockInit.WORKBENCH);
         addDrop(BlockInit.CAMERA);
+        addDrop(PropInit.PARTY_TABLE);
+        addDrop(PropInit.PARTY_TABLE_CONFETTI);
         addDrop(PropInit.FNAF_1_DESK);
         addDrop(PropInit.WALL_CLOUDS);
         addDrop(PropInit.FLOOR_MONITORS);

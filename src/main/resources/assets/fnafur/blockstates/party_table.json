@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "type=single": {
+      "model": "fnafur:block/tiling/party_table/party_table_single"
+    },
+    "type=north_west": {
+      "model": "fnafur:block/tiling/party_table/party_table_nw"
+    },
+    "type=north": {
+      "model": "fnafur:block/tiling/party_table/party_table_n"
+    },
+    "type=north_east": {
+      "model": "fnafur:block/tiling/party_table/party_table_ne"
+    },
+    "type=west": {
+      "model": "fnafur:block/tiling/party_table/party_table_w"
+    },
+    "type=center": {
+      "model": "fnafur:block/tiling/party_table/party_table_c"
+    },
+    "type=east": {
+      "model": "fnafur:block/tiling/party_table/party_table_e"
+    },
+    "type=south_west": {
+      "model": "fnafur:block/tiling/party_table/party_table_sw"
+    },
+    "type=south": {
+      "model": "fnafur:block/tiling/party_table/party_table_s"
+    },
+    "type=south_east": {
+      "model": "fnafur:block/tiling/party_table/party_table_se"
+    },
+    "type=vertical_north": {
+      "model": "fnafur:block/tiling/party_table/party_table_vn"
+    },
+    "type=vertical_center": {
+      "model": "fnafur:block/tiling/party_table/party_table_vc"
+    },
+    "type=vertical_south": {
+      "model": "fnafur:block/tiling/party_table/party_table_vs"
+    },
+    "type=horizontal_west": {
+      "model": "fnafur:block/tiling/party_table/party_table_hw"
+    },
+    "type=horizontal_center": {
+      "model": "fnafur:block/tiling/party_table/party_table_hc"
+    },
+    "type=horizontal_east": {
+      "model": "fnafur:block/tiling/party_table/party_table_he"
+    }
+  }
+}

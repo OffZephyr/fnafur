@@ -1,0 +1,32 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [256, 256],
+	"textures": {
+		"0": "fnafur:block/party_table",
+		"particle": "fnafur:block/party_table"
+	},
+	"elements": [
+		{
+			"from": [0, 7, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 11.5, 8]},
+			"faces": {
+				"north": {"uv": [1.01563, 2.89063, 2.01563, 3.46875], "texture": "#0"},
+				"east": {"uv": [2.01563, 2.89063, 3.01563, 3.46875], "texture": "#0"},
+				"south": {"uv": [7.01406, 3.00313, 8.01406, 3.58125], "texture": "#0"},
+				"west": {"uv": [6.01406, 3, 7.01406, 3.57813], "texture": "#0"},
+				"up": {"uv": [5.01563, 3, 4.01563, 2], "texture": "#0"},
+				"down": {"uv": [8.01563, 2, 7.01563, 3], "texture": "#0"}
+			}
+		}
+	],
+	"display": {},
+	"groups": [
+		{
+			"name": "N",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}
