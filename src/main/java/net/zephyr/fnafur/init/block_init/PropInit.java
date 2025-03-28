@@ -23,6 +23,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.RetroTableBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.fnaf1desk.Fnaf1Desk;
+import net.zephyr.fnafur.blocks.props.floor_props.wet_floor_sign.WetFloorSign;
 import net.zephyr.fnafur.blocks.props.floor_props.wooden_shelf.WoodenShelf;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVent;
 import net.zephyr.fnafur.blocks.props.wall_props.ac_unit.AcUnit;
@@ -170,6 +171,18 @@ public class PropInit {
             "mop_bucket",
             MopBucket::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block WET_FLOOR_SIGN = registerBlock(
+            "wet_floor_sign",
+            WetFloorSign::new,
+            AbstractBlock.Settings.copy(Blocks.BAMBOO)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)

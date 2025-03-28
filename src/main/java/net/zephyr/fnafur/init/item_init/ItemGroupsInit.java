@@ -34,6 +34,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.RESTROOM_SIGN);
                         entries.add(PropInit.BROOM);
                         entries.add(PropInit.MOP_BUCKET);
+                        entries.add(PropInit.WET_FLOOR_SIGN);
 
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);

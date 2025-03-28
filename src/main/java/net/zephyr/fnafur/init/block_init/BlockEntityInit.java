@@ -74,6 +74,7 @@ public class BlockEntityInit {
                                 PropInit.RESTROOM_SIGN,
                                 PropInit.BROOM,
                                 PropInit.MOP_BUCKET,
+                                PropInit.WET_FLOOR_SIGN,
                                 PropInit.OFFICE_BUTTONS,
 
                                 PropInit.BEPH_PLUSHIE

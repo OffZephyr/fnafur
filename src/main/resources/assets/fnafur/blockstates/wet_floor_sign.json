@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/wet_floor_sign",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "fnafur:props/wet_floor_sign",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "fnafur:props/wet_floor_sign"
+    },
+    "facing=west": {
+      "model": "fnafur:props/wet_floor_sign",
+      "y": 90
+    }
+  }
+}

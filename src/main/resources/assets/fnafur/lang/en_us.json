@@ -253,6 +253,9 @@
   "item.fnafur.zephyr_spawn.description.0.0": "§b§lClick §ron this entity with a",
   "item.fnafur.zephyr_spawn.description.0.1": "§d§lFloppy Disk §rto give it an AI.",
 
+  "entity_category.fnafur.classic": "Classic",
+  "entity_category.fnafur.springlocks": "Springlocks",
+
   "entity.fnafur.skin_screen.confirm": "Save & Close",
   "entity.fnafur.zephyr": "Zephyr",
   "entity.fnafur.zephyr.default": "Blue Outfit",
@@ -371,6 +374,11 @@
   "entity.fnafur.cl_foxy.inverted.description": "Photo Negative!",
   "entity.fnafur.cl_foxy.fixed_inverted": "Fixed Inverted Foxy",
   "entity.fnafur.cl_foxy.fixed_inverted.description": "Photo Negative!",
+  
+  "entity.fnafur.cl_sparky": "Sparky",
+
+  "entity.fnafur.spring_bonnie": "Spring Bonnie",
+  "entity.fnafur.spring_freddy": "Spring Freddy",
 
   "death.fnafur.back": "Back",
   "death.fnafur.confirm": "Confirm",

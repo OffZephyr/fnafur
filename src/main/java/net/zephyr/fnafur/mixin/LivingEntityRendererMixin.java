@@ -71,6 +71,11 @@ public class LivingEntityRendererMixin {
                     entity.setBodyYaw(((IPlayerCustomModel) entity.mimicPlayer).getMimicYaw());
                     entity.setPitch(entity.mimicPlayer.getPitch());
 
+
+                    EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
+
+                    entityRenderDispatcher.render(entity, 0, 0, 0, 1.0F, matrixStack, vertexConsumerProvider, i);
+
                    //entityRenderer.render(entity, entityRenderer.createRenderState(), matrixStack, vertexConsumerProvider, i);
                 }
                 ci.cancel();

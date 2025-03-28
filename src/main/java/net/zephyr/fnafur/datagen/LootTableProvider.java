@@ -30,6 +30,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.RESTROOM_SIGN);
         addDrop(PropInit.BROOM);
         addDrop(PropInit.MOP_BUCKET);
+        addDrop(PropInit.WET_FLOOR_SIGN);
 
         addDrop(BlockInit.FOG_BLOCK);
 

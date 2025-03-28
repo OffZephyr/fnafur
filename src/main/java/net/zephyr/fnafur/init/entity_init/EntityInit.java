@@ -14,6 +14,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicBetaRenderer;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicRenderer;
 import net.zephyr.fnafur.entity.base.DefaultEntity;

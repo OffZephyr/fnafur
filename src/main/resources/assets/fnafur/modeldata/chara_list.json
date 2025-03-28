@@ -1,12 +1,4 @@
 {
-    "default": {
-        "characters": [
-            {
-                "name": "endo_01",
-                "endo": "endo_01"
-            }
-        ]
-    },
     "classic": {
         "characters": [
              {
@@ -28,6 +20,18 @@
             {
                "name": "cl_sparky",
                "endo": "endo_01"
+            }
+        ]
+    },
+    "springlocks": {
+        "characters": [
+            {
+                "name": "spring_bonnie",
+                "endo": "springlock_endo"
+            },
+            {
+               "name": "spring_freddy",
+               "endo": "springlock_endo"
             }
         ]
     }
