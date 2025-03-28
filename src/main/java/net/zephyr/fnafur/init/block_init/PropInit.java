@@ -18,6 +18,7 @@ import net.zephyr.fnafur.blocks.props.base.PropRenderer;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
+import net.zephyr.fnafur.blocks.props.floor_props.kitchen.PizzaOven;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.present_stack.PresentStack;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
@@ -274,6 +275,18 @@ public class PropInit {
             "air_vent",
             AirVent::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BARS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block PIZZA_OVEN = registerBlock(
+            "pizza_oven",
+            PizzaOven::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)

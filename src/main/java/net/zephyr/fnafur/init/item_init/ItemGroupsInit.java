@@ -43,6 +43,8 @@ public class ItemGroupsInit {
                         entries.add(PropInit.TRASH_BIN);
                         entries.add(PropInit.WET_FLOOR_SIGN);
 
+                        entries.add(PropInit.PIZZA_OVEN);
+
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 

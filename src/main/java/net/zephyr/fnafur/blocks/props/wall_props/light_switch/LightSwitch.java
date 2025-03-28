@@ -7,10 +7,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSignSkins;
 
-public class LightSwitch extends WallPropBlock {
+public class LightSwitch extends WallPropBlock<DefaultPropColorEnum> {
     public LightSwitch(Settings settings) {
         super(settings);
     }
@@ -27,7 +28,7 @@ public class LightSwitch extends WallPropBlock {
     }
 
     @Override
-    public Class<RestroomSignSkins> COLOR_ENUM() {
+    public Class<DefaultPropColorEnum> COLOR_ENUM() {
         return null;
     }
 

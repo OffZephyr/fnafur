@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/pizza_oven",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "fnafur:props/pizza_oven",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "fnafur:props/pizza_oven"
+    },
+    "facing=west": {
+      "model": "fnafur:props/pizza_oven",
+      "y": 90
+    }
+  }
+}

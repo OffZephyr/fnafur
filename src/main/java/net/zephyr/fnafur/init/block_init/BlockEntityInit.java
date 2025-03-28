@@ -82,6 +82,7 @@ public class BlockEntityInit {
                                 PropInit.LIGHT_SWITCH,
                                 PropInit.WALL_OUTLET,
                                 PropInit.AIR_VENT,
+                                PropInit.PIZZA_OVEN,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());
