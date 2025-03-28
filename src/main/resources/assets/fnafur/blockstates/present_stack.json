@@ -1,0 +1,51 @@
+{
+  "variants": {
+    "facing=north,color=0": {
+      "model": "fnafur:props/present_stack/present_stack",
+      "y": 180
+    },
+    "facing=east,color=0": {
+      "model": "fnafur:props/present_stack/present_stack",
+      "y": 270
+    },
+    "facing=south,color=0": {
+      "model": "fnafur:props/present_stack/present_stack"
+    },
+    "facing=west,color=0": {
+      "model": "fnafur:props/present_stack/present_stack",
+      "y": 90
+    },
+    "facing=north,color=1": {
+      "model": "fnafur:props/present_stack/present_stack_2",
+      "y": 180
+    },
+
+    "facing=east,color=1": {
+      "model": "fnafur:props/present_stack/present_stack_2",
+      "y": 270
+    },
+    "facing=south,color=1": {
+      "model": "fnafur:props/present_stack/present_stack_2"
+
+    },
+    "facing=west,color=1": {
+      "model": "fnafur:props/present_stack/present_stack_2",
+      "y": 90
+    },
+    "facing=north,color=2": {
+      "model": "fnafur:props/present_stack/present_stack_3",
+      "y": 180
+    },
+    "facing=east,color=2": {
+      "model": "fnafur:props/present_stack/present_stack_3",
+      "y": 270
+    },
+    "facing=south,color=2": {
+      "model": "fnafur:props/present_stack/present_stack_3"
+    },
+    "facing=west,color=2": {
+      "model": "fnafur:props/present_stack/present_stack_3",
+      "y": 90
+    }
+  }
+}

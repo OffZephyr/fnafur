@@ -19,17 +19,24 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
+import net.zephyr.fnafur.blocks.props.floor_props.present_stack.PresentStack;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.RetroTableBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.fnaf1desk.Fnaf1Desk;
+import net.zephyr.fnafur.blocks.props.floor_props.trash_bin.TrashBin;
 import net.zephyr.fnafur.blocks.props.floor_props.wet_floor_sign.WetFloorSign;
 import net.zephyr.fnafur.blocks.props.floor_props.wooden_shelf.WoodenShelf;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVent;
+import net.zephyr.fnafur.blocks.props.other.CeilingTileVentBlack;
 import net.zephyr.fnafur.blocks.props.wall_props.ac_unit.AcUnit;
+import net.zephyr.fnafur.blocks.props.wall_props.air_vent.AirVent;
+import net.zephyr.fnafur.blocks.props.wall_props.light_switch.LightSwitch;
 import net.zephyr.fnafur.blocks.props.wall_props.office_buttons.OfficeButtons;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
+import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSignWall;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
+import net.zephyr.fnafur.blocks.props.wall_props.wall_outlet.WallOutlet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +149,18 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
+    public static final Block CEILING_TILE_VENT_BLACK = registerBlock(
+            "ceiling_tile_vent_black",
+            CeilingTileVentBlack::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
     public static final Block RESTROOM_SIGN = registerBlock(
             "restroom_sign",
             RestroomSign::new,
@@ -179,10 +198,82 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
+    public static final Block TRASH_BIN = registerBlock(
+            "trash_bin",
+            TrashBin::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
     public static final Block WET_FLOOR_SIGN = registerBlock(
             "wet_floor_sign",
             WetFloorSign::new,
             AbstractBlock.Settings.copy(Blocks.BAMBOO)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block PRESENT_STACK = registerBlock(
+            "present_stack",
+            PresentStack::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block EXIT_SIGN_WALL = registerBlock(
+            "exit_sign_wall",
+            ExitSignWall::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BARS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block WALL_OUTLET = registerBlock(
+            "wall_outlet",
+            WallOutlet::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BARS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block LIGHT_SWITCH = registerBlock(
+            "light_switch",
+            LightSwitch::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BARS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block AIR_VENT = registerBlock(
+            "air_vent",
+            AirVent::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BARS)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)

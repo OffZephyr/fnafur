@@ -33,6 +33,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.FOG_BLOCK)
                 .add(PropInit.FNAF_1_DESK)
                 .add(PropInit.CEILING_TILE_VENT)
+                .add(PropInit.CEILING_TILE_VENT_BLACK)
                 .add(PropInit.FLOOR_MONITORS)
                 .add(PropInit.OFFICE_BUTTONS)
 

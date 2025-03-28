@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/air_vent"
+    },
+    "facing=east": {
+      "model": "fnafur:props/air_vent",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/air_vent",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/air_vent",
+      "y": 270
+    }
+  }
+}

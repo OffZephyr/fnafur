@@ -27,10 +27,17 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.AC_UNIT);
         addDrop(PropInit.RETRO_TABLE);
         addDrop(PropInit.CEILING_TILE_VENT);
+        addDrop(PropInit.CEILING_TILE_VENT_BLACK);
         addDrop(PropInit.RESTROOM_SIGN);
         addDrop(PropInit.BROOM);
         addDrop(PropInit.MOP_BUCKET);
+        addDrop(PropInit.TRASH_BIN);
         addDrop(PropInit.WET_FLOOR_SIGN);
+        addDrop(PropInit.PRESENT_STACK);
+        addDrop(PropInit.EXIT_SIGN_WALL);
+        addDrop(PropInit.WALL_OUTLET);
+        addDrop(PropInit.LIGHT_SWITCH);
+        addDrop(PropInit.AIR_VENT);
 
         addDrop(BlockInit.FOG_BLOCK);
 

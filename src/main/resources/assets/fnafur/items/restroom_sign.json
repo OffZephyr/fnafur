@@ -1,0 +1,34 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases":[
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/restroom_sign_men"
+        },
+        "when": "men"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/restroom_sign_women"
+        },
+        "when": "women"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/restroom_sign_neutral"
+        },
+        "when": "neutral"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "fnafur:props/restroom_sign_men"
+    },
+    "block_state_property": "color",
+    "property": "minecraft:block_state"
+  }
+}

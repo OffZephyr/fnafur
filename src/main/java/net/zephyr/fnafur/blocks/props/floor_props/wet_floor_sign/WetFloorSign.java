@@ -23,7 +23,7 @@ public class WetFloorSign extends FloorPropBlock<DefaultPropColorEnum> {
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0.25f, 0f, 0.25f, 0.75f, 0.5f, 0.75f)));
+        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0f, 0f, 0f, 1f, 1f, 1f)));
         return drawingOutline ? shape : VoxelShapes.fullCube();
     }
 

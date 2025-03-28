@@ -3,7 +3,8 @@
 	"ambientocclusion": false,
 	"texture_size": [256, 256],
 	"textures": {
-		"1": "fnafur:block/props/wall_clouds"
+		"1": "fnafur:block/props/wall_clouds",
+		"particle": "fnafur:block/props/wall_clouds"
 	},
 	"elements": [
 		{

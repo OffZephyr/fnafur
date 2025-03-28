@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/trash_bin",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "fnafur:props/trash_bin",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "fnafur:props/trash_bin"
+    },
+    "facing=west": {
+      "model": "fnafur:props/trash_bin",
+      "y": 90
+    }
+  }
+}

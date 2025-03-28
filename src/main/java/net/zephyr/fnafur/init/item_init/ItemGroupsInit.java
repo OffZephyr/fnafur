@@ -24,16 +24,23 @@ public class ItemGroupsInit {
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
                         entries.add(PropInit.WALL_CLOUDS);
+                        entries.add(PropInit.PRESENT_STACK);
+                        entries.add(PropInit.EXIT_SIGN_WALL);
+                        entries.add(PropInit.LIGHT_SWITCH);
+                        entries.add(PropInit.WALL_OUTLET);
 
                         entries.add(PropInit.FLOOR_MONITORS);
                         entries.add(PropInit.WOODEN_SHELF);
                         entries.add(PropInit.AC_UNIT);
                         entries.add(PropInit.RETRO_TABLE);
 
+                        entries.add(PropInit.AIR_VENT);
                         entries.add(PropInit.CEILING_TILE_VENT);
+                        entries.add(PropInit.CEILING_TILE_VENT_BLACK);
                         entries.add(PropInit.RESTROOM_SIGN);
                         entries.add(PropInit.BROOM);
                         entries.add(PropInit.MOP_BUCKET);
+                        entries.add(PropInit.TRASH_BIN);
                         entries.add(PropInit.WET_FLOOR_SIGN);
 
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);

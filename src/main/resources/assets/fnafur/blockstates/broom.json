@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
+      "model": "fnafur:props/broom",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "fnafur:props/broom",
+      "y": 270
+    },
+    "facing=south": {
       "model": "fnafur:props/broom"
+    },
+    "facing=west": {
+      "model": "fnafur:props/broom",
+      "y": 90
     }
   }
 }

@@ -74,8 +74,14 @@ public class BlockEntityInit {
                                 PropInit.RESTROOM_SIGN,
                                 PropInit.BROOM,
                                 PropInit.MOP_BUCKET,
+                                PropInit.TRASH_BIN,
                                 PropInit.WET_FLOOR_SIGN,
                                 PropInit.OFFICE_BUTTONS,
+                                PropInit.PRESENT_STACK,
+                                PropInit.EXIT_SIGN_WALL,
+                                PropInit.LIGHT_SWITCH,
+                                PropInit.WALL_OUTLET,
+                                PropInit.AIR_VENT,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

@@ -22,7 +22,7 @@ public class Broom extends FloorPropBlock<DefaultPropColorEnum> {
 
     @Override
     public boolean rotates() {
-        return false;
+        return true;
     }
 
     @Override
