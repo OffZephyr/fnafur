@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "random=0": {
+      "model": "fnafur:block/dirty_glass"
+    },
+    "random=1": {
+      "model": "fnafur:block/dirty_glass_2"
+    },
+    "random=2": {
+      "model": "fnafur:block/dirty_glass_3"
+    },
+    "random=3": {
+      "model": "fnafur:block/dirty_glass_4"
+    },
+    "random=4": {
+      "model": "fnafur:block/dirty_glass"
+    }
+  }
+}
