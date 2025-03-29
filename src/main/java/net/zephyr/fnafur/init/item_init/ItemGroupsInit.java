@@ -30,6 +30,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.EXIT_SIGN_WALL);
                         entries.add(PropInit.LIGHT_SWITCH);
                         entries.add(PropInit.WALL_OUTLET);
+                        entries.add(PropInit.PUNCH_IN_CARDS);
 
                         entries.add(PropInit.FLOOR_MONITORS);
                         entries.add(PropInit.WOODEN_SHELF);
@@ -46,6 +47,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.WET_FLOOR_SIGN);
 
                         entries.add(PropInit.PIZZA_OVEN);
+                        entries.add(PropInit.POTS_AND_PANS_RACK);
 
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);

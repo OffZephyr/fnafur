@@ -1,0 +1,43 @@
+package net.zephyr.fnafur.blocks.props.wall_props.kitchen;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.component.type.BlockStateComponent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
+import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
+import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSignSkins;
+
+public class PotsAndPansRack extends WallPropBlock<RestroomSignSkins> {
+    public PotsAndPansRack(Settings settings) {
+        super(settings);
+    }
+
+    @Override
+    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        VoxelShape shape = switch (state.get(FACING)){
+            default -> VoxelShapes.cuboid(-0.4, -0.2, 0, 1.4, 0.8f, 0.4f);
+            case SOUTH -> VoxelShapes.cuboid(-0.4, -0.2, 0.6f, 1.4, 0.8f, 1f);
+            case WEST -> VoxelShapes.cuboid(0, -0.2, -0.4, 0.4f, 0.8f, 1.4f);
+            case EAST -> VoxelShapes.cuboid(0.6, -0.2, -0.4, 1.01f, 0.8f, 1.4f);
+        };
+        return drawingOutline ? shape : VoxelShapes.fullCube();
+    }
+
+    @Override
+    public Class<RestroomSignSkins> COLOR_ENUM() {
+        return RestroomSignSkins.class;
+    }
+
+    @Override
+    public boolean lockY(BlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean goesOnFloor(BlockStateComponent state) {
+        return false;
+    }
+}

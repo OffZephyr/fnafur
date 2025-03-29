@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/punch_in_cards"
+    },
+    "facing=east": {
+      "model": "fnafur:props/punch_in_cards",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/punch_in_cards",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/punch_in_cards",
+      "y": 270
+    }
+  }
+}

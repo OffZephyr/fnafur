@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/pots_and_pans_rack"
+    },
+    "facing=east": {
+      "model": "fnafur:props/pots_and_pans_rack",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/pots_and_pans_rack",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/pots_and_pans_rack",
+      "y": 270
+    }
+  }
+}

@@ -34,8 +34,10 @@ import net.zephyr.fnafur.blocks.props.tiling.TableBlock;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVentBlack;
 import net.zephyr.fnafur.blocks.props.wall_props.ac_unit.AcUnit;
 import net.zephyr.fnafur.blocks.props.wall_props.air_vent.AirVent;
+import net.zephyr.fnafur.blocks.props.wall_props.kitchen.PotsAndPansRack;
 import net.zephyr.fnafur.blocks.props.wall_props.light_switch.LightSwitch;
 import net.zephyr.fnafur.blocks.props.wall_props.office_buttons.OfficeButtons;
+import net.zephyr.fnafur.blocks.props.wall_props.punch_in_cards.PunchInCards;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
 import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSignWall;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
@@ -309,6 +311,30 @@ public class PropInit {
             "pizza_oven",
             PizzaOven::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block POTS_AND_PANS_RACK = registerBlock(
+            "pots_and_pans_rack",
+            PotsAndPansRack::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block PUNCH_IN_CARDS = registerBlock(
+            "punch_in_cards",
+            PunchInCards::new,
+            AbstractBlock.Settings.copy(Blocks.BAMBOO)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)
