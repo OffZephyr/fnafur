@@ -31,6 +31,9 @@ import java.util.List;
 
 public class MimicFrameBlockModel extends StickerBlockModel {
 
+    public MimicFrameBlockModel(UnbakedModel model){
+        super(model);
+    }
     @Override
     public Sprite getParticleSprite() {
         return new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_1")).getSprite();

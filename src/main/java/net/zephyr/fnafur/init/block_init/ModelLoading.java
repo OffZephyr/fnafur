@@ -3,11 +3,7 @@ package net.zephyr.fnafur.init.block_init;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
-import net.fabricmc.fabric.api.client.model.loading.v1.ModelModifier;
-import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrameBlockModel;
-import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
 
 @Environment(EnvType.CLIENT)
@@ -20,10 +16,10 @@ public class ModelLoading implements ModelLoadingPlugin {
         pluginContext.modifyModelOnLoad().register((original, context) -> {
             if(context.id() != null) {
                 if (context.id().toString().contains(STICKER_BLOCK_ID)) {
-                    return new StickerBlockModel();
+                    return new StickerBlockModel(original);
                 }
                 else if (context.id().toString().contains(MIMIC_BLOCK_ID)) {
-                    return new MimicFrameBlockModel();
+                    return new MimicFrameBlockModel(original);
                 }
             }
             return original;

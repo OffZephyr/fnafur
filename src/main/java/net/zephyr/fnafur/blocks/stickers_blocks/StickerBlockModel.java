@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.WrapperGroupableModel;
+import net.fabricmc.fabric.api.client.model.loading.v1.WrapperUnbakedModel;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.material.ShadeMode;
@@ -41,7 +42,12 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class StickerBlockModel extends WrapperGroupableModel implements UnbakedModel, BakedModel, FabricBakedModel {
+public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel, FabricBakedModel {
+
+    public StickerBlockModel(UnbakedModel model){
+        super(model);
+    }
+
     Sprite particlesprite;
 
     Block block;
@@ -61,6 +67,11 @@ public class StickerBlockModel extends WrapperGroupableModel implements UnbakedM
     }
 
     @Override
+    public void resolve(Resolver resolver) {
+
+    }
+
+    @Override
     public boolean hasDepth() {
         return false;
     }
@@ -71,30 +82,8 @@ public class StickerBlockModel extends WrapperGroupableModel implements UnbakedM
     }
 
     @Override
-    public @Nullable UnbakedModel getParent() {
-        return null;
-    }
-
-    @Override
     public Sprite getParticleSprite() {
         return particlesprite;
-    }
-
-    @Override
-    public @Nullable Boolean getAmbientOcclusion() {
-        return true;
-    }
-
-    @Override
-    public @Nullable GuiLight getGuiLight() {
-        return GuiLight.BLOCK;
-    }
-
-    @Override
-    public ModelTextures.Textures getTextures() {
-        return new ModelTextures.Textures(
-                Map.of()
-        );
     }
 
     @Override
@@ -104,16 +93,6 @@ public class StickerBlockModel extends WrapperGroupableModel implements UnbakedM
         /*Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         MeshBuilder builder = renderer.meshBuilder();*/
         return this;
-    }
-
-    @Override
-    public ModelTransformation getTransformation() {
-        return ModelHelper.MODEL_TRANSFORM_BLOCK;
-    }
-
-    @Override
-    public void resolve(Resolver resolver) {
-
     }
 
     @Override

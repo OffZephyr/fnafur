@@ -1,6 +1,7 @@
 accessWidener v2 named
 # Methods
 accessible method net/minecraft/client/render/GameRenderer setPostProcessor (Lnet/minecraft/util/Identifier;)V
+accessible method net/minecraft/client/render/model/UnbakedModel getTransformation ()Lnet/minecraft/client/render/model/json/ModelTransformation;
 
 # Classes
 extendable class net/minecraft/client/render/block/BlockModelRenderer$AmbientOcclusionCalculator
