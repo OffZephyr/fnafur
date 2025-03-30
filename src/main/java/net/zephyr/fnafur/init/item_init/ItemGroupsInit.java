@@ -111,9 +111,11 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.WHITE_TILE);
                         entries.add(BlockInit.BLACK_WHITE_TILES);
                         entries.add(BlockInit.RED_BLUE_TILES);
+                        entries.add(BlockInit.RED_BLACK_TILES);
                         entries.add(BlockInit.BLACK_BLUE_TILES);
                         entries.add(BlockInit.EXTRUDED_BLACK_TILES);
                         entries.add(BlockInit.BLUE_TILES);
+                        entries.add(BlockInit.BRIGHT_BLUE_TILES);
                         entries.add(BlockInit.BLACK_WHITE_16_TILES);
                         entries.add(BlockInit.BLACK_WHITE_16_TILES_TRIM);
                         entries.add(BlockInit.WHITE_16_CLEAN_TILES);
@@ -157,6 +159,8 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.DARK_STAGE_PLANKS);
                         entries.add(BlockInit.DARK_STAGE_PLANKS_THIN);
                         entries.add(BlockInit.LIGHT_STAGE_PLANKS);
+                        entries.add(BlockInit.WOODEN_LOWER_WALL);
+                        entries.add(BlockInit.WOODEN_LOWER_WALL_TRIMMED);
 
                         // FLOORS AND CONCRETE
                         entries.add(BlockInit.KITCHEN_FLOOR);
@@ -186,6 +190,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.BLACK_BLUE_WALL_TILES_TOP);
                         entries.add(BlockInit.BLACK_RED_WALL_TILES);
                         entries.add(BlockInit.BLACK_RED_WALL_TILES_TOP);
+                        entries.add(BlockInit.DIRTY_BRICKS);
                         entries.add(BlockInit.BRICK_WALL);
                         entries.add(BlockInit.BRICK_WALL_DARKER);
                         entries.add(BlockInit.RED_BRICK_WALL);
@@ -193,6 +198,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.RED_BRICK_WALL_MIXED);
                         entries.add(BlockInit.BLACK_BRICKS);
                         entries.add(BlockInit.BLUE_BRICKS);
+                        entries.add(BlockInit.BRIGHT_BLUE_BRICKS);
                         entries.add(BlockInit.BLUE_GRAY_BRICKS);
                         entries.add(BlockInit.LARGE_BROWN_BRICKS);
                         entries.add(BlockInit.LARGE_LIGHT_GRAY_BRICKS);

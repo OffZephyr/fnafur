@@ -49,6 +49,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.DARK_GRAY_WALL)
                 .add(BlockInit.EXTRUDED_BLACK_TILES)
                 .add(BlockInit.BLACK_WHITE_TILES)
+                .add(BlockInit.RED_BLACK_TILES)
                 .add(BlockInit.BLACK_TILE)
                 .add(BlockInit.WHITE_TILE)
                 .add(BlockInit.RED_BLUE_TILES)
@@ -84,6 +85,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.GREEN_TILES_BLACK_LINING)
                 .add(BlockInit.OFF_WHITE_TILES)
                 .add(BlockInit.OFF_WHITE_TILES_DIRTY)
+                .add(BlockInit.BRIGHT_BLUE_TILES)
 
                 // CONCRETE
                 .add(BlockInit.CONCRETE_FLOOR)
@@ -123,6 +125,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.LIGHT_TAN_BRICKS)
                 .add(BlockInit.BLUE_GRAY_BRICKS)
                 .add(BlockInit.GRAY_BRICKS_WHITE_CEMENT)
+                .add(BlockInit.BRIGHT_BLUE_BRICKS)
 
                 // METALLIC BLOCKS
                 .add(BlockInit.METAL_PLATES)
@@ -134,6 +137,8 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.DARK_STAGE_PLANKS)
                 .add(BlockInit.DARK_STAGE_PLANKS_THIN)
                 .add(BlockInit.LIGHT_STAGE_PLANKS)
+                .add(BlockInit.WOODEN_LOWER_WALL)
+                .add(BlockInit.WOODEN_LOWER_WALL_TRIMMED)
 
                 // CEILING BLOCKS
                 .add(BlockInit.CEILING_TILES)

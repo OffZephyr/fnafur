@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "fnafur:block/large_light_gray_bricks"
-  }
-}

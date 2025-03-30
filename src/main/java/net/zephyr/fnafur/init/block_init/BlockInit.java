@@ -388,6 +388,16 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block BRIGHT_BLUE_BRICKS = registerBlock(
+            "bright_blue_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block DIRTY_BRICKS = registerBlock(
+            "dirty_bricks",
+            Random4Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
 
     /* Metallic Blocks */
 
@@ -500,6 +510,11 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block BRIGHT_BLUE_TILES = registerBlock(
+            "bright_blue_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
 
     /* Wooden Blocks */
 
@@ -528,11 +543,26 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
     );
+    public static final Block WOODEN_LOWER_WALL = registerBlock(
+            "wooden_lower_wall",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
+    );
+    public static final Block WOODEN_LOWER_WALL_TRIMMED = registerBlock(
+            "wooden_lower_wall_trimmed",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
+    );
 
    /*Floor Blocks & Floor Tiles*/
 
     public static final Block BLACK_WHITE_TILES = registerBlock(
             "black_white_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block RED_BLACK_TILES = registerBlock(
+            "red_black_tiles",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );

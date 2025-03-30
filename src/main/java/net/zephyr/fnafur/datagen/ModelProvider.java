@@ -39,6 +39,7 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_RED_WALL_TILES_TOP);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.EXTRUDED_BLACK_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_WHITE_TILES);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_BLACK_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLACK_TILE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WHITE_TILE);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_BLUE_TILES);
@@ -72,6 +73,7 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GREEN_TILES_BLACK_LINING);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.OFF_WHITE_TILES);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.OFF_WHITE_TILES_DIRTY);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BRIGHT_BLUE_TILES);
 
         // CONCRETE
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CONCRETE_FLOOR);
@@ -113,6 +115,7 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.LIGHT_TAN_BRICKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BLUE_GRAY_BRICKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.GRAY_BRICKS_WHITE_CEMENT);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.BRIGHT_BLUE_BRICKS);
 
 
 
@@ -122,6 +125,8 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.DARK_STAGE_PLANKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.DARK_STAGE_PLANKS_THIN);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.LIGHT_STAGE_PLANKS);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WOODEN_LOWER_WALL);
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.WOODEN_LOWER_WALL_TRIMMED);
 
 
         // CEILING BLOCKS

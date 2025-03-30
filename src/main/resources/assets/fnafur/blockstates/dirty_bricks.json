@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "random=0": {
+      "model": "fnafur:block/dirty_bricks"
+    },
+    "random=1": {
+      "model": "fnafur:block/dirty_bricks_2"
+    },
+    "random=2": {
+      "model": "fnafur:block/dirty_bricks_3"
+    },
+    "random=3": {
+      "model": "fnafur:block/dirty_bricks_4"
+    },
+    "random=4": {
+      "model": "fnafur:block/dirty_bricks"
+    }
+  }
+}
