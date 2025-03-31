@@ -69,6 +69,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.WHITE_TILE);
         addDrop(BlockInit.RED_BLUE_TILES);
         addDrop(BlockInit.BLACK_BLUE_TILES);
+        addDrop(BlockInit.BLACK_PURPLE_TILES);
         addDrop(BlockInit.BLUE_TILES);
         addDrop(BlockInit.BLACK_WHITE_16_TILES);
         addDrop(BlockInit.BLACK_WHITE_16_TILES_TRIM);
@@ -101,6 +102,15 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.OFF_WHITE_TILES);
         addDrop(BlockInit.OFF_WHITE_TILES_DIRTY);
         addDrop(BlockInit.BRIGHT_BLUE_TILES);
+        addDrop(BlockInit.BRIGHT_NAVY_BLUE_TILES);
+        addDrop(BlockInit.BRIGHT_GREEN_TILES);
+        addDrop(BlockInit.BRIGHT_WHITE_TILES);
+        addDrop(BlockInit.BLACK_TILES);
+        addDrop(BlockInit.WHITE_TILES);
+        addDrop(BlockInit.RED_TILES);
+        addDrop(BlockInit.DARK_BLUE_TILES);
+        addDrop(BlockInit.WHITE_DINER_WALL);
+        addDrop(BlockInit.TAN_DINER_WALL);
 
         // CONCRETE
         addDrop(BlockInit.CONCRETE_FLOOR);
@@ -138,6 +148,9 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.BLUE_GRAY_BRICKS);
         addDrop(BlockInit.GRAY_BRICKS_WHITE_CEMENT);
         addDrop(BlockInit.BRIGHT_BLUE_BRICKS);
+        addDrop(BlockInit.BRIGHT_GREEN_BRICKS);
+        addDrop(BlockInit.BRIGHT_WHITE_BRICKS);
+        addDrop(BlockInit.BRIGHT_NAVY_BLUE_BRICKS);
 
         // WOODEN BLOCKS
         addDrop(BlockInit.STAGE_PLANKS);
