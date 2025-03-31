@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/kitchen_prep_table",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "fnafur:props/kitchen_prep_table",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "fnafur:props/kitchen_prep_table"
+    },
+    "facing=west": {
+      "model": "fnafur:props/kitchen_prep_table",
+      "y": 90
+    }
+  }
+}

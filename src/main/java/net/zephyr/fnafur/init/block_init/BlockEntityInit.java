@@ -83,8 +83,10 @@ public class BlockEntityInit {
                                 PropInit.WALL_OUTLET,
                                 PropInit.AIR_VENT,
                                 PropInit.PIZZA_OVEN,
+                                PropInit.KITCHEN_PREP_TABLE,
                                 PropInit.PUNCH_IN_CARDS,
                                 PropInit.POTS_AND_PANS_RACK,
+                                PropInit.SKEEBALL_ARCADE,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

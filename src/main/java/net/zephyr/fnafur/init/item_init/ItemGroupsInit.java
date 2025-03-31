@@ -47,8 +47,10 @@ public class ItemGroupsInit {
                         entries.add(PropInit.WET_FLOOR_SIGN);
 
                         entries.add(PropInit.PIZZA_OVEN);
+                        entries.add(PropInit.KITCHEN_PREP_TABLE);
                         entries.add(PropInit.POTS_AND_PANS_RACK);
 
+                        entries.add(PropInit.SKEEBALL_ARCADE);
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/skeeball_arcade",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "fnafur:props/skeeball_arcade",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "fnafur:props/skeeball_arcade"
+    },
+    "facing=west": {
+      "model": "fnafur:props/skeeball_arcade",
+      "y": 90
+    }
+  }
+}
