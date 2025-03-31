@@ -25,6 +25,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.FNAF_1_DESK);
                         entries.add(PropInit.PARTY_TABLE);
                         entries.add(PropInit.PARTY_TABLE_CONFETTI);
+                        entries.add(PropInit.WOODEN_CHAIR);
                         entries.add(PropInit.WALL_CLOUDS);
                         entries.add(PropInit.PRESENT_STACK);
                         entries.add(PropInit.EXIT_SIGN_WALL);

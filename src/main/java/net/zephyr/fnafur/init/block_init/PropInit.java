@@ -18,6 +18,7 @@ import net.zephyr.fnafur.blocks.props.base.PropRenderer;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.blocks.props.floor_props.arcade.SkeeballArcade;
+import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.KitchenPrepTable;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.PizzaOven;
@@ -253,6 +254,18 @@ public class PropInit {
             "present_stack",
             PresentStack::new,
             AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block WOODEN_CHAIR = registerBlock(
+            "wooden_chair",
+            WoodenChair::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)
