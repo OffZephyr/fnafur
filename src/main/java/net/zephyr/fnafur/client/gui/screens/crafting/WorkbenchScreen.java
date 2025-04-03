@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.client.gui.screens.crafting;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
@@ -16,6 +17,7 @@ import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
+import net.zephyr.fnafur.networking.entity.WorkbenchSaveC2SPayload;
 import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.joml.Matrix4f;
@@ -68,11 +70,21 @@ public class WorkbenchScreen extends GoopyScreen {
                 .hoverSprite(TEXTURE, 312, 92 + 19 + 19 + 19, 512, 512, 0xFFFFFFFF)
                 .toggleExec(this::ToggleClick);
 
-        /*new GUIToggle(windowX + 6, windowY + 6 + 23 + 23 + 23 + 23, 56, 19, "cpu")
+        new GUIButton(windowX + 6, windowY + 6 + 23 + 23 + 23, 56, 19)
                 .offSprite(TEXTURE, 256, 92 + 19 + 19 + 19 + 19, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 312, 92 + 19 + 19 + 19 + 19, 512, 512, 0xFFFFFFFF)
                 .hoverSprite(TEXTURE, 312, 92 + 19 + 19 + 19 + 19, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);*/
+                .clickExec(this::SaveButton);
+
+        if(!getNbtData().getCompound("GiftData").isEmpty()){
+            System.out.println("TEST");
+            ((IEntityDataSaver)entity).getPersistentData().put("alt", getNbtData().getCompound("GiftData"));
+        }
+
+    }
+
+    private void SaveButton() {
+        ClientPlayNetworking.send(new WorkbenchSaveC2SPayload(getBlockPos().up().asLong(), ((IEntityDataSaver)entity).getPersistentData().getCompound("alt")));
+        close();
     }
 
     private void ToggleClick(GUIToggle button) {
@@ -88,7 +100,7 @@ public class WorkbenchScreen extends GoopyScreen {
             case "suit" -> 2;
             case "alt" -> 3;
             case "eyes" -> 4;
-            case "cpu" -> 5;
+            case "save" -> 5;
         };
 
         suit_subtab = "";
@@ -395,6 +407,10 @@ public class WorkbenchScreen extends GoopyScreen {
 
 
         NbtCompound altNbt = new NbtCompound();
+        altNbt.putString("chara", this.chara);
+        altNbt.putString("alt", this.alt);
+        altNbt.putString("eyes", this.eyes);
+
         altNbt.putString("model", model);
         altNbt.putString("texture", texture);
 

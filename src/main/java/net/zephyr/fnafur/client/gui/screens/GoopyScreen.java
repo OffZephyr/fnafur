@@ -129,7 +129,9 @@ public abstract class GoopyScreen extends Screen {
             if (holding && button.on_sprite != null) {
                 texture = button.on_sprite;
             } else {
-                texture = button.hover_sprite != null ? button.hover_sprite : button.on_sprite != null ? button.on_sprite : button.off_sprite;
+                if(button.hover_sprite != null){
+                    texture = button.hover_sprite;
+                }
             }
         }
         drawRecolorableTexture(context, texture.texture, x, y, w, h, texture.u, texture.v, texture.textureWidth, texture.textureHeight, texture.color);
@@ -145,7 +147,9 @@ public abstract class GoopyScreen extends Screen {
             if (holding && ((button.on && button.on_sprite != null) || (!button.on && button.off_sprite != null))) {
                 texture = button.on ? button.on_sprite : button.off_sprite;
             } else {
-                texture = button.hover_sprite != null ? button.hover_sprite : button.on_sprite != null ? button.on_sprite : button.off_sprite;
+                if(button.hover_sprite != null){
+                    texture = button.hover_sprite;
+                }
             }
         }
 

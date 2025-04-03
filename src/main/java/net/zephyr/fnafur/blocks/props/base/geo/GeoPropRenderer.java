@@ -37,13 +37,9 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
     }
     public void render(T entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
+        entity.item = true;
         if(getGeoModel().getModelResource(entity, this) == null) return;
-        super.render(entity, MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(false), matrices, vertexConsumers, light, overlay);
-    }
-
-    @Override
-    public void actuallyRender(MatrixStack poseStack, T animatable, BakedGeoModel model, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
-        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
+        super.render(entity, MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true), matrices, vertexConsumers, light, overlay);
     }
 
     @Override

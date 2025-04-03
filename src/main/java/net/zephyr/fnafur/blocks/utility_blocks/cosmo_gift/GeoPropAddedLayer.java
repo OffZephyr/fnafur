@@ -5,10 +5,12 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropModel;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -25,6 +27,8 @@ public class GeoPropAddedLayer<T extends GeoPropBlockEntity> extends GeoRenderLa
     @Override
     public void render(MatrixStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int renderColor) {
 
-        getRenderer().reRender(getGeoModel().getBakedModel(Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/giftbox_overlay.geo.json")), poseStack, bufferSource, animatable, layer, bufferSource.getBuffer(layer), partialTick, packedLight, packedOverlay, renderColor);
+        if(((GeoPropModel<T>)getGeoModel()).reRender){
+            getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, layer, bufferSource.getBuffer(layer), partialTick, packedLight, packedOverlay, renderColor);
+        }
     }
 }

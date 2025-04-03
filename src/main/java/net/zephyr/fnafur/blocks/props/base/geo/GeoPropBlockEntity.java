@@ -22,6 +22,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class GeoPropBlockEntity extends PropBlockEntity implements GeoBlockEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     public GeoPropBlock block;
+    public boolean item = false;
     public GeoPropBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityInit.GEO_PROPS, pos, state);
     }

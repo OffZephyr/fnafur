@@ -7,6 +7,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
+import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -118,5 +119,16 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
     @Override
     public void setCrawling(boolean crawling) {
         this.crawling = crawling;
+    }
+
+    @Inject(method = "getEquippedStack", at = @At("HEAD"), cancellable = true)
+    public void getDualHandItem(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> ci) {
+        /*if(slot == EquipmentSlot.MAINHAND || slot == EquipmentSlot.OFFHAND){
+            ItemStack stack = ItemStack.fromNbtOrEmpty(((PlayerEntity)(Object)this).getWorld().getRegistryManager(),((IEntityDataSaver)((Object)this)).getPersistentData().getCompound("dualHandItem"));
+
+            if(stack.isOf(PropInit.COSMO_GIFT.asItem())){
+                ci.setReturnValue(stack);
+            }
+        }*/
     }
 }

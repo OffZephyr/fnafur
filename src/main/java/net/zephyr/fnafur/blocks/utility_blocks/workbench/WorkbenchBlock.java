@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -17,7 +18,9 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.init.ScreensInit;
+import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
+import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
@@ -52,10 +55,21 @@ public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
 
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if(!world.isClient()){
-            GoopyNetworkingUtils.setScreen(player, ScreensInit.WORKBENCH, ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData(), pos);
-        }
 
+        if(stack.isEmpty() || stack.isOf(PropInit.COSMO_GIFT.asItem())) {
+            if (!world.isClient()) {
+                NbtCompound nbt2 = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().copy();
+                if (stack.isOf(PropInit.COSMO_GIFT.asItem())) {
+                    NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+
+                    if (nbt.isEmpty()) return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+
+                        nbt2.put("GiftData", nbt);
+                        stack.decrement(1);
+                }
+                GoopyNetworkingUtils.setScreen(player, ScreensInit.WORKBENCH, nbt2, pos);
+            }
+        }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
 

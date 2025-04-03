@@ -40,17 +40,19 @@ public class GalaxyLayerGeoPropRenderer<T extends GalaxyLayerGeoPropEntity> exte
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
         super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+
+        ((GeoPropModel)getGeoModel()).reRender = true;
+        super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+        ((GeoPropModel)getGeoModel()).reRender = false;
     }
 
     @Override
     public void preRender(MatrixStack poseStack, T animatable, BakedGeoModel model, @Nullable VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
-        ((GeoPropModel)getGeoModel()).reRender = isReRender;
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 
     @Override
     public void postRender(MatrixStack poseStack, T animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
-        ((GeoPropModel)getGeoModel()).reRender = false;
         super.postRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 

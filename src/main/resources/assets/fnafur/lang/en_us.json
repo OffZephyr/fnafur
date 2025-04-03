@@ -297,9 +297,15 @@
   "entity.fnafur.zephyr.neon": "Neon Outfit",
   "entity.fnafur.zephyr.neon.description": "Quirked up dark boi with a little bit of 80s swag.",
 
+  "entity.fnafur.none": "None",
+
   "entity.fnafur.cl_fred": "Freddy Fazbear",
+
   "entity_alts.fnafur.cl_fred.default": "FNAF 1",
   "entity_alts.fnafur.cl_fred.colorable": "Colorable",
+
+  "entity_eyes.fnafur.cl_fred.default": "Blue",
+
   "entity.fnafur.cl_bon": "Bonnie",
   "entity.fnafur.cl_chica": "Chica",
   "entity.fnafur.cl_foxy": "Foxy",

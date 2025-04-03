@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.unknown",
+				"identifier": "geometry.cosmic_gift",
 				"texture_width": 32,
 				"texture_height": 32,
 				"visible_bounds_width": 2,
@@ -12,8 +12,13 @@
 			},
 			"bones": [
 				{
+					"name": "rotation_tool",
+					"pivot": [0, 3.6, 0]
+				},
+				{
 					"name": "root",
-					"pivot": [0, 0, 0]
+					"parent": "rotation_tool",
+					"pivot": [0, 3.6, 0]
 				},
 				{
 					"name": "box",

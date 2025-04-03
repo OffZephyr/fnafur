@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,open=false": {
       "model": "fnafur:props/double_door_fridge/double_door_fridge",
       "y": 180
     },
-    "facing=east": {
+    "facing=east,open=false": {
       "model": "fnafur:props/double_door_fridge/double_door_fridge",
       "y": 270
     },
-    "facing=south": {
+    "facing=south,open=false": {
       "model": "fnafur:props/double_door_fridge/double_door_fridge"
     },
-    "facing=west": {
+    "facing=west,open=false": {
       "model": "fnafur:props/double_door_fridge/double_door_fridge",
+      "y": 90
+    },
+    "facing=north,open=true": {
+      "model": "fnafur:props/double_door_fridge/double_door_fridge_both_doors",
+      "y": 180
+    },
+    "facing=east,open=true": {
+      "model": "fnafur:props/double_door_fridge/double_door_fridge_both_doors",
+      "y": 270
+    },
+    "facing=south,open=true": {
+      "model": "fnafur:props/double_door_fridge/double_door_fridge_both_doors"
+    },
+    "facing=west,open=true": {
+      "model": "fnafur:props/double_door_fridge/double_door_fridge_both_doors",
       "y": 90
     }
   }

@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.unknown",
+				"identifier": "geometry.cosmic_gift",
 				"texture_width": 32,
 				"texture_height": 32,
 				"visible_bounds_width": 2,
@@ -12,8 +12,13 @@
 			},
 			"bones": [
 				{
+					"name": "rotation_tool",
+					"pivot": [0, 3.6, 0]
+				},
+				{
 					"name": "root",
-					"pivot": [0, 0, 0]
+					"parent": "rotation_tool",
+					"pivot": [0, 3.6, 0]
 				},
 				{
 					"name": "box",
@@ -21,15 +26,15 @@
 					"pivot": [0, 0, 0],
 					"cubes": [
 						{
-							"origin": [-3.25, 7.05, -3.25],
+							"origin": [-3.25, 7.025, -3.25],
 							"size": [6.5, 0, 6.5],
 							"uv": {
 								"north": {"uv": [19, 6], "uv_size": [6.5, 0]},
-								"east": {"uv": [0, 20], "uv_size": [6.5, 0]},
-								"south": {"uv": [21, 13], "uv_size": [6.5, 0]},
-								"west": {"uv": [21, 20], "uv_size": [6.5, 0]},
+								"east": {"uv": [0, 20], "uv_size": [8.5, 7]},
+								"south": {"uv": [21, 13], "uv_size": [8.5, 7]},
+								"west": {"uv": [21, 20], "uv_size": [8.5, 7]},
 								"up": {"uv": [11, 1], "uv_size": [6.5, 6.5]},
-								"down": {"uv": [31.5, 2.25], "uv_size": [0.5, -2.25]}
+								"down": {"uv": [28.5, 2.25], "uv_size": [3.5, -2.25]}
 							}
 						}
 					]

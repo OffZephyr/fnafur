@@ -64,7 +64,7 @@ public class PropInit {
             Fnaf1Desk::new,
             Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/fnaf1desk.png"),
             Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fnaf1desk.geo.json"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/fnaf1desk.animation.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -78,7 +78,7 @@ public class PropInit {
             CosmoGift::new,
             Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/gift_boxes/cosmo_gift.png"),
             Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/giftbox.geo.json"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/cosmo_box.animation.json"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/cosmo_gift.animation.json"),
             AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
