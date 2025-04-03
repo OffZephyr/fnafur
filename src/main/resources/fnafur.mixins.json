@@ -20,6 +20,7 @@
     "PlayerEntityMixin",
     "PlayerEntityRendererMixin",
     "PostEffectProcessorMixin",
+    "RenderLayerMixin",
     "WorldRendererMixin"
   ],
   "injectors": {

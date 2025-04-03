@@ -29,7 +29,7 @@ public class Fnaf1Desk extends FloorPropBlock<DefaultPropColorEnum> implements G
 
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new GeoPropBlockEntity(pos, state);
+        return new GeoPropBlockEntity(pos, state, this);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Fnaf1Desk extends FloorPropBlock<DefaultPropColorEnum> implements G
 
     @Override
     public boolean rotates() {
-        return true;
+        return false;
     }
 
     @Override

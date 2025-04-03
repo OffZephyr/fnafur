@@ -3,7 +3,7 @@
     "fragment": "minecraft:core/terrain",
     "defines": {
         "values": {
-            "ALPHA_CUTOUT": "0.01"
+            "ALPHA_CUTOUT": "0.0000000001"
         }
     },
     "samplers": [

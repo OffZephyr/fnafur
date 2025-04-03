@@ -2,6 +2,7 @@ package net.zephyr.fnafur.blocks.props.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
@@ -17,6 +18,9 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -32,6 +36,28 @@ public abstract class WallPropBlock<T extends Enum<T> & ColorEnumInterface & Str
     @Override
     public boolean rotates() {
         return true;
+    }
+
+    @Override
+    protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
+
+
+        if(state.contains(FACING)){
+            VoxelShape shape;
+
+            switch (state.get(FACING)){
+                default -> shape = VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1f);
+                case EAST -> shape = VoxelShapes.cuboid(0, 0, 0, 0.1f, 1, 1);
+                case NORTH -> shape = VoxelShapes.cuboid(0, 0, 0.9f, 1, 1, 1);
+                case WEST -> shape = VoxelShapes.cuboid(0.9f, 0, 0, 1, 1, 1);
+                case UP -> shape = VoxelShapes.cuboid(0, 0.9f, 0, 1, 1, 1);
+                case DOWN -> shape = VoxelShapes.cuboid(0, 0, 0, 1, 0.1f, 1);
+            }
+
+            return shape;
+        }
+
+        return super.getRaycastShape(state, world, pos);
     }
 
     @Nullable

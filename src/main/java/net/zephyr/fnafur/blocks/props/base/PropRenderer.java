@@ -44,7 +44,7 @@ public class PropRenderer<T extends BlockEntity> implements BlockEntityRenderer<
             matrices.push();
 
             float rotation = nbt.getFloat("Rotation");
-            float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees() + 180f;
+            float offsetRotation = !block.rotates() ? 0 : state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees() + 180f;
 
             double offsetX = nbt.getDouble("xOffset");
             double offsetY = nbt.getDouble("yOffset");

@@ -23,7 +23,7 @@ public class ExitSignWall extends WallPropBlock {
             case WEST -> VoxelShapes.cuboid(0, 0.1f, 0.2f, 0.1f, 0.9f, 0.8f);
             case EAST -> VoxelShapes.cuboid(0.9f, 0.1f, 0.2f, 1, 0.9f, 0.8f);
         };
-        return drawingOutline ? shape : VoxelShapes.fullCube();
+        return drawingOutline ? shape : getRaycastShape(state, world, pos);
     }
 
     @Override

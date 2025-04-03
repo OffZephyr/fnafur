@@ -3,7 +3,6 @@ package net.zephyr.fnafur.blocks.props.base.geo;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -16,28 +15,40 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.blocks.geo_doors.GeoDoorEntity;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GeoPropAddedLayer;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.model.GeoModel;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 @Environment(EnvType.CLIENT)
 public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRenderer<T> implements BlockEntityRenderer<T> {
     MinecraftClient client;
     BlockRenderManager manager;
+    boolean loadedLayers = false;
     public GeoPropRenderer(BlockEntityRendererFactory.Context context) {
         super(new GeoPropModel<>());
         client = MinecraftClient.getInstance();
         manager = client.getBlockRenderManager();
     }
+    public void render(T entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+
+        if(getGeoModel().getModelResource(entity, this) == null) return;
+        super.render(entity, MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(false), matrices, vertexConsumers, light, overlay);
+    }
+
+    @Override
+    public void actuallyRender(MatrixStack poseStack, T animatable, BakedGeoModel model, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
+        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
+    }
 
     @Override
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+
         BlockPos pos = entity.getPos();
         BlockState state = client.world.getBlockState(pos);
 
@@ -86,13 +97,5 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
                 matrices.pop();
             }
         }
-    }
-
-    private void renderModel(BlockPos pos, BlockState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, World world, boolean cull, int overlay) {
-        RenderLayer renderLayer = RenderLayers.getBlockLayer(state);
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(renderLayer);
-        this.manager
-                .getModelRenderer()
-                .render(world, this.manager.getModel(state), state, pos, matrices, vertexConsumer, cull, Random.create(), state.getRenderingSeed(pos), overlay);
     }
 }

@@ -1,0 +1,58 @@
+{
+
+    "cl_fred":{
+        "default_alt": "default",
+        "alts":{
+
+            "default": {
+                "model": "geo/entity/classic/cl_fred/cl_fred.geo.json",
+                "texture": "textures/entity/classic/cl_fred/cl_fred.png",
+                "recolorable_textures": [],
+                "emissive": "",
+                "recolorable_emissive": [],
+                
+                "animations": "animations/entity/classic/cl_fred/cl_fred.animation.json",
+    
+                "default_eyes": "default",
+                "eyes":{
+    
+                    "default": {
+                        "texture": "textures/entity/classic/cl_fred/cl_fred.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    }
+    
+                }
+            },
+            
+
+            "colorable": {
+                "model": "geo/entity/classic/cl_fred/cl_fred.geo.json",
+                "texture": "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred.png",
+                "recolorable_textures": [
+                    "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred_color0.png",
+                    "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred_color1.png"
+                ],
+                "emissive": "",
+                "recolorable_emissive": [],
+                
+                "animations": "animations/entity/classic/cl_fred/cl_fred.animation.json",
+    
+                "default_eyes": "default",
+                "eyes":{
+    
+                    "default": {
+                        "texture": "textures/entity/classic/cl_fred/cl_fred.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    }
+    
+                }
+            }
+
+        }
+    }
+
+}

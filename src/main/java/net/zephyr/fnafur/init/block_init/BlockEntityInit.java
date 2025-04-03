@@ -16,6 +16,7 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlockEntity;
 
 public class BlockEntityInit {
@@ -26,6 +27,7 @@ public class BlockEntityInit {
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
     public static BlockEntityType<GeoPropBlockEntity> GEO_PROPS;
+    public static BlockEntityType<GalaxyLayerGeoPropEntity> GALAXY_GEO_PROPS;
     public static BlockEntityType<StickerBlockEntity> STICKER_BLOCK;
     public static BlockEntityType<TileDoorBlockEntity> TILE_DOOR;
     public static BlockEntityType<MimicFrameBlockEntity> MIMIC_FRAME;
@@ -95,6 +97,12 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "geo_props"),
                         FabricBlockEntityTypeBuilder.create(GeoPropBlockEntity::new,
                                 PropInit.FNAF_1_DESK
+                        ).build());
+
+        GALAXY_GEO_PROPS =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "galaxy_geo_props"),
+                        FabricBlockEntityTypeBuilder.create(GalaxyLayerGeoPropEntity::new,
+                                PropInit.COSMO_GIFT
                         ).build());
 
         STICKER_BLOCK =

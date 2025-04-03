@@ -1,0 +1,32 @@
+{
+
+    "cl_fred":{
+        "default_alt": "default",
+        "alts":{
+
+            "default": {
+                "model": "geo/entity/classic/cl_foxy/cl_foxy.geo.json",
+                "texture": "textures/entity/classic/cl_foxy/cl_foxy.png",
+                "recolorable_textures": [],
+                "emissive": "",
+                "recolorable_emissive": [],
+                
+                "animations": "animations/entity/classic/cl_foxy/cl_foxy.animation.json",
+    
+                "default_eyes": "default",
+                "eyes":{
+    
+                    "default": {
+                        "texture": "textures/entity/classic/cl_foxy/cl_foxy.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    }
+    
+                }
+            }
+
+        }
+    }
+    
+}

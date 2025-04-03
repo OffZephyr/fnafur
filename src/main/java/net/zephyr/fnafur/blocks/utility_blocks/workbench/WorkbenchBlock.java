@@ -28,11 +28,16 @@ public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
 
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        /*VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.5f, 0f, 0f, 1.5f, 1.9f, 1f)));
-        return drawingOutline ? shape : VoxelShapes.fullCube();*/
+        VoxelShape shape = VoxelShapes.empty();
 
-        return VoxelShapes.fullCube();
+        switch (state.get(FACING).getAxis()){
+            default -> shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.5f, 0f, 0f, 1.5f, 1.9f, 1f)));
+            //case Direction.Axis.Z -> shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0f, 0f, -0.5f, 1f, 1.9f, 1.5f)));
+        }
+
+        return drawingOutline ? shape : VoxelShapes.fullCube();
+
+        //return VoxelShapes.fullCube();
     }
 
     @Override

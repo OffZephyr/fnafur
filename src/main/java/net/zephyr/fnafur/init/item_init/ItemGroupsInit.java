@@ -95,6 +95,10 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CPU_CONFIG_PANEL);
                         entries.add(BlockInit.WORKBENCH);
 
+                        entries.add(BlockInit.FUEL_GENERATOR);
+                        entries.add(BlockInit.REDSTONE_CONVERTER);
+                        entries.add(BlockInit.ELECTRICAL_LOCKER);
+
                     }).build());
     public static final ItemGroup FNAF_BLOCKS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, "blocks"),
             FabricItemGroup.builder()
@@ -278,6 +282,7 @@ public class ItemGroupsInit {
                         entries.add(ItemInit.DEATHCOIN);
                         entries.add(ItemInit.CPU);
                         entries.add(ItemInit.ILLUSIONDISC);
+                        entries.add(PropInit.COSMO_GIFT);
 
                         entries.add(SpawnItemInit.CL_FRED_SPAWN);
                         entries.add(SpawnItemInit.CL_BON_SPAWN);

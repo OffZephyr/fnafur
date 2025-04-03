@@ -916,26 +916,6 @@ public class BlockInit {
         MimicFrames.IDs.add(Identifier.of(FnafUniverseResuited.MOD_ID, "block/" + name));
         return block;
     }
-        private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier texture) {
-        return registerStickerBlock(name, factory, settings, texture, texture, texture, texture, texture, texture);
-    }
-
-    private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier sides, Identifier top, Identifier bottom) {
-        return registerStickerBlock(name, factory, settings, sides, sides, sides, sides, top, bottom);
-    }
-
-    private static Block registerStickerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Identifier north,Identifier east,Identifier south,Identifier west,Identifier top,Identifier bottom) {
-        final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
-        final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
-
-        final StickerBlock block = ((StickerBlock)Blocks.register(registryKey, factory, settings)).textures(north, east, south, west, top, bottom);
-        Items.register(block);
-
-        block.setName(name);
-        STICKER_BLOCKS.add(block);
-
-        return block;
-    }
 
     public static void registerBlocks(){
         PropInit.registerProps();
@@ -958,11 +938,14 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CPU_CONFIG_PANEL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.WORKBENCH, RenderLayer.getCutout());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.FUEL_GENERATOR, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.ELECTRICAL_LOCKER, RenderLayer.getCutout());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getCutout());
+
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_COLORED, RenderLayer.getTranslucent());

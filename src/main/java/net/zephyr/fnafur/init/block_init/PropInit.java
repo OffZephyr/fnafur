@@ -38,13 +38,15 @@ import net.zephyr.fnafur.blocks.props.other.CeilingTileVentBlack;
 import net.zephyr.fnafur.blocks.props.wall_props.ac_unit.AcUnit;
 import net.zephyr.fnafur.blocks.props.wall_props.air_vent.AirVent;
 import net.zephyr.fnafur.blocks.props.wall_props.kitchen.PotsAndPansRack;
-import net.zephyr.fnafur.blocks.props.wall_props.light_switch.LightSwitch;
+import net.zephyr.fnafur.blocks.props.wall_props.electricity.light_switch.LightSwitch;
 import net.zephyr.fnafur.blocks.props.wall_props.office_buttons.OfficeButtons;
 import net.zephyr.fnafur.blocks.props.wall_props.punch_in_cards.PunchInCards;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
 import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSignWall;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
-import net.zephyr.fnafur.blocks.props.wall_props.wall_outlet.WallOutlet;
+import net.zephyr.fnafur.blocks.props.wall_props.electricity.wall_outlet.WallOutlet;
+import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.CosmoGift;
+import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +63,20 @@ public class PropInit {
             Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fnaf1desk.geo.json"),
             Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fnaf1desk.animation.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+    public static final Block COSMO_GIFT = registerGeoProp(
+            "cosmo_gift",
+            CosmoGift::new,
+            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/gift_boxes/cosmo_gift.png"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/giftbox.geo.json"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/cosmo_box.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)
@@ -248,6 +264,7 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
+                    .offset(AbstractBlock.OffsetType.NONE)
                     .noCollision()
     );
     public static final Block PRESENT_STACK = registerBlock(
@@ -343,6 +360,7 @@ public class PropInit {
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
+                    .offset(AbstractBlock.OffsetType.NONE)
                     .breakInstantly()
                     .noCollision()
     );
@@ -405,6 +423,7 @@ public class PropInit {
         BlockEntityRendererFactories.register(BlockEntityInit.PROPS, PropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.ENERGY, PropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GEO_PROPS, GeoPropRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntityInit.GALAXY_GEO_PROPS, GalaxyLayerGeoPropRenderer::new);
 
         for (Item item : PROPS) {
             BlockRenderLayerMap.INSTANCE.putBlock(((BlockItem)item).getBlock(), RenderLayer.getCutout());

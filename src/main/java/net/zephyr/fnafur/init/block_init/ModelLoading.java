@@ -14,7 +14,7 @@ public class ModelLoading implements ModelLoadingPlugin {
     public void initialize(Context pluginContext) {
 
         pluginContext.modifyModelOnLoad().register((original, context) -> {
-            if(context.id() != null) {
+            if(context.id() != null && original != null) {
                 if (context.id().toString().contains(STICKER_BLOCK_ID)) {
                     return new StickerBlockModel(original);
                 }

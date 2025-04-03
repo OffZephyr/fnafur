@@ -19,11 +19,6 @@ import java.util.*;
 
 public class CharacterModelManager extends SinglePreparationResourceReloader<List<ModelData>> {
 
-    public static final String EYES = "eyes";
-    public static final String TORSO_ACCESSORIES = "torso_accessories";
-
-    static final Gson GSON = new Gson();
-    public static Identifier DEFAULT_MODEL = Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/default/endo_01/endo_01.geo.json");
     public static final Map<String, List<Chara>> CHARACTER_CATEGORIES = new HashMap<>();
     public static final Map<String, String> ACCESSORY_FILES = new HashMap<>();
     public static final Map<String, String> MAPS = new HashMap<>();
@@ -31,11 +26,22 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
     public static final Map<Chara, Map<String, ModelEntry>> MODEL_DATA = new HashMap<>();
     public static final Map<String, Map<String, MapEntry>> MAP_DATA = new HashMap<>();
     public static final Map<String, Map<String, ModelEntry>> ACCESSORY_MODEL_DATA = new HashMap<>();
+    public static final Map<Chara, Map<String, DataEntry.Alt>> CHARA_ALT_MAP = new HashMap<>();
+    public static final Map<Chara, String> CHARA_DEFAULT_ALT_MAP = new HashMap<>();
+
+
+
+    public static final String EYES = "eyes";
+    public static final String TORSO_ACCESSORIES = "torso_accessories";
+
+    static final Gson GSON = new Gson();
+    public static Identifier DEFAULT_MODEL = Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/default/endo_01/endo_01.geo.json");
     private static final TypeToken<Map<String, CharacterEntry>> CHARACTER_LIST_TYPE = new TypeToken<>() {};
     private static final TypeToken<Map<String, String>> STRING_LIST = new TypeToken<>() {};
     private static final TypeToken<Map<String, ModelDataEntry>> MODEL_LIST_TYPE = new TypeToken<>() {};
     private static final TypeToken<Map<String, ModelEntry>> MODEL_DATA_TYPE = new TypeToken<>() {};
     private static final TypeToken<Map<String, MapEntry>> MAP_DATA_TYPE = new TypeToken<>() {};
+    private static final TypeToken<Map<String, DataEntry>> CHARA_DATA_TYPE = new TypeToken<>() {};
     @Override
     protected List<ModelData> prepare(ResourceManager resourceManager, Profiler profiler) {
         List<ModelData> models = new ArrayList<>();
@@ -50,6 +56,7 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
             for(String category : CHARACTER_CATEGORIES.keySet()){
                 for(Chara character : CHARACTER_CATEGORIES.get(category)){
                     getModelData(resourceManager, profiler, string, category, character);
+                    getCharacterData(resourceManager, profiler, string, category, character);
                 }
             }
             for(String accessory : ACCESSORY_FILES.keySet()){
@@ -136,6 +143,24 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
             }
         }
     }
+    void getCharacterData(ResourceManager resourceManager, Profiler profiler, String namespace, String category, Chara character) {
+        String path = "modeldata/" + category + "/" + character.name + ".data.json";
+        List<Resource> list = resourceManager.getAllResources(Identifier.of(namespace, path));
+        for (Resource resource : list) {
+            try (BufferedReader reader = resource.getReader();) {
+                Map<String, DataEntry> layerEntries = JsonHelper.deserialize(GSON, reader, CHARA_DATA_TYPE);
+                for (Map.Entry<String, DataEntry> entry : layerEntries.entrySet()) {
+                    System.out.println(character.name() + " has " + entry.getValue().alts().size() + " alts");
+
+                    CHARA_ALT_MAP.put(character, entry.getValue().alts());
+                    CHARA_DEFAULT_ALT_MAP.put(character, entry.getValue().default_alt());
+                }
+            } catch (RuntimeException | IOException runtimeException) {
+                FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+            }
+        }
+    }
+
     void getModelData(ResourceManager resourceManager, Profiler profiler, String namespace, String category, Chara character) {
         String path = "modeldata/" + category + "/" + character.name + ".modeldata.json";
         List<Resource> list = resourceManager.getAllResources(Identifier.of(namespace, path));
@@ -201,6 +226,10 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
     public record ModelEntry(String model, List<Layer> layers){
         public record Layer(String name, List<Texture> variants){}
         public record Texture(String name, String color_texture, String color_emissive, Boolean can_be_recolored, String overlay_texture, String overlay_emissive){}
+    }
+    public record DataEntry(String default_alt, Map<String, Alt> alts){
+        public record Alt(String model, String texture, List<String> recolorable_textures, String emissive, List<String> recolorable_emissive, String animations, String default_eyes, Map<String, Eyes> eyes){}
+        public record Eyes(String texture, List<String> recolorable_textures, String emissive, List<String> recolorable_emissive){}
     }
 
     public static List<String> getVariantNames(Chara character, String variant){
