@@ -25,6 +25,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.FNAF_1_DESK);
                         entries.add(PropInit.PARTY_TABLE);
                         entries.add(PropInit.PARTY_TABLE_CONFETTI);
+                        entries.add(PropInit.PARTY_HAT);
                         entries.add(PropInit.WOODEN_CHAIR);
                         entries.add(PropInit.WALL_CLOUDS);
                         entries.add(PropInit.PRESENT_STACK);
@@ -48,6 +49,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.WET_FLOOR_SIGN);
 
                         entries.add(PropInit.PIZZA_OVEN);
+                        entries.add(PropInit.DOUBLE_DOOR_FRIDGE);
                         entries.add(PropInit.KITCHEN_PREP_TABLE);
                         entries.add(PropInit.POTS_AND_PANS_RACK);
 

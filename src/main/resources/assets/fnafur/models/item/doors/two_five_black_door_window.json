@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+      "layer0": "fnafur:item/doors/2_5_door_black_window"
+    }
+}

@@ -10,8 +10,8 @@ import net.minecraft.world.BlockView;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 
-public class PizzaOven extends FloorPropBlock<DefaultPropColorEnum> {
-    public PizzaOven(Settings settings) {
+public class DoubleDoorFridge extends FloorPropBlock<DefaultPropColorEnum> {
+    public DoubleDoorFridge(Settings settings) {
         super(settings);
     }
 
@@ -23,7 +23,7 @@ public class PizzaOven extends FloorPropBlock<DefaultPropColorEnum> {
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.32f, 0f, -0.065f, 1.32f, 1.75f, 1.12f)));
+        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.32f, 0f, 0f, 1.32f, 2.0f, 1.0f)));
         return drawingOutline ? shape : VoxelShapes.fullCube();
     }
 

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/double_door_fridge/double_door_fridge",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "fnafur:props/double_door_fridge/double_door_fridge",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "fnafur:props/double_door_fridge/double_door_fridge"
+    },
+    "facing=west": {
+      "model": "fnafur:props/double_door_fridge/double_door_fridge",
+      "y": 90
+    }
+  }
+}

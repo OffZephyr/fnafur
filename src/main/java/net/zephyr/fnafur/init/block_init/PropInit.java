@@ -20,8 +20,11 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.blocks.props.floor_props.arcade.SkeeballArcade;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
+import net.zephyr.fnafur.blocks.props.floor_props.kitchen.DoubleDoorFridge;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.KitchenPrepTable;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.PizzaOven;
+import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
+import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHatsColors;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.present_stack.PresentStack;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
@@ -351,6 +354,18 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
+    public static final Block DOUBLE_DOOR_FRIDGE = registerBlock(
+            "double_door_fridge",
+            DoubleDoorFridge::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
     public static final Block KITCHEN_PREP_TABLE = registerBlock(
             "kitchen_prep_table",
             KitchenPrepTable::new,
@@ -399,6 +414,22 @@ public class PropInit {
                     .blockVision(Blocks::never)
                     .breakInstantly()
                     .noCollision()
+                    .offset(AbstractBlock.OffsetType.NONE)
+    );
+    public static final Block PARTY_HAT = registerBlock(
+            "party_hats",
+            PartyHats::new,
+            AbstractBlock.Settings.copy(Blocks.BAMBOO)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+                    .offset(AbstractBlock.OffsetType.NONE)
+                    .sounds(BlockSoundGroup.COBWEB)
+
     );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {

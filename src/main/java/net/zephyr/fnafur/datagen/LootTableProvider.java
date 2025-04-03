@@ -46,6 +46,8 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.PUNCH_IN_CARDS);
         addDrop(PropInit.SKEEBALL_ARCADE);
         addDrop(PropInit.WOODEN_CHAIR);
+        addDrop(PropInit.PARTY_HAT);
+        addDrop(PropInit.DOUBLE_DOOR_FRIDGE);
 
         addDrop(BlockInit.FOG_BLOCK);
 

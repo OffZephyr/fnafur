@@ -90,6 +90,8 @@ public class BlockEntityInit {
                                 PropInit.POTS_AND_PANS_RACK,
                                 PropInit.SKEEBALL_ARCADE,
                                 PropInit.WOODEN_CHAIR,
+                                PropInit.PARTY_HAT,
+                                PropInit.DOUBLE_DOOR_FRIDGE,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

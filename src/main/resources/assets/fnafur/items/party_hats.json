@@ -1,0 +1,91 @@
+{
+    "model": {
+      "type": "minecraft:select",
+      "cases":[
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_red"
+          },
+          "when": "color_0"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_orange"
+          },
+          "when": "color_1"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_pink"
+          },
+          "when": "color_2"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_magenta"
+          },
+          "when": "color_3"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_blue"
+          },
+          "when": "color_4"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_purple"
+          },
+          "when": "color_5"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_light_blue"
+          },
+          "when": "color_6"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_cyan"
+          },
+          "when": "color_7"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_green"
+          },
+          "when": "color_8"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_lime"
+          },
+          "when": "color_9"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/party_hats/party_hat_yellow"
+          },
+          "when": "color_10"
+        }
+   
+               ],
+      "fallback": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/party_hats/party_hat_red"
+        },
+        "block_state_property": "color",
+      "property": "minecraft:block_state"
+    }
+  }
