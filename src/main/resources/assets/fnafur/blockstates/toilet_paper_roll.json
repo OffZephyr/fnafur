@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/toilet_paper_roll"
+    },
+    "facing=east": {
+      "model": "fnafur:props/toilet_paper_roll",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/toilet_paper_roll",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/toilet_paper_roll",
+      "y": 270
+    }
+  }
+}

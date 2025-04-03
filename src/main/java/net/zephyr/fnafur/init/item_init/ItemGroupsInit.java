@@ -43,12 +43,14 @@ public class ItemGroupsInit {
                         entries.add(PropInit.CEILING_TILE_VENT);
                         entries.add(PropInit.CEILING_TILE_VENT_BLACK);
                         entries.add(PropInit.RESTROOM_SIGN);
+                        entries.add(PropInit.TOILET_PAPER_ROLL);
                         entries.add(PropInit.BROOM);
                         entries.add(PropInit.MOP_BUCKET);
                         entries.add(PropInit.TRASH_BIN);
                         entries.add(PropInit.WET_FLOOR_SIGN);
 
                         entries.add(PropInit.PIZZA_OVEN);
+                        entries.add(PropInit.FRIDGE);
                         entries.add(PropInit.DOUBLE_DOOR_FRIDGE);
                         entries.add(PropInit.KITCHEN_PREP_TABLE);
                         entries.add(PropInit.POTS_AND_PANS_RACK);

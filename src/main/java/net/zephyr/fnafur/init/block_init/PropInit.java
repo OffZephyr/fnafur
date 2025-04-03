@@ -21,6 +21,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.arcade.SkeeballArcade;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.DoubleDoorFridge;
+import net.zephyr.fnafur.blocks.props.floor_props.kitchen.Fridge;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.KitchenPrepTable;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.PizzaOven;
 import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
@@ -44,6 +45,7 @@ import net.zephyr.fnafur.blocks.props.wall_props.kitchen.PotsAndPansRack;
 import net.zephyr.fnafur.blocks.props.wall_props.electricity.light_switch.LightSwitch;
 import net.zephyr.fnafur.blocks.props.wall_props.office_buttons.OfficeButtons;
 import net.zephyr.fnafur.blocks.props.wall_props.punch_in_cards.PunchInCards;
+import net.zephyr.fnafur.blocks.props.wall_props.restroom.ToiletPaperRoll;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
 import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSignWall;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
@@ -366,6 +368,18 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
+    public static final Block FRIDGE = registerBlock(
+            "fridge",
+            Fridge::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
     public static final Block KITCHEN_PREP_TABLE = registerBlock(
             "kitchen_prep_table",
             KitchenPrepTable::new,
@@ -428,6 +442,20 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
                     .offset(AbstractBlock.OffsetType.NONE)
+                    .sounds(BlockSoundGroup.COBWEB)
+
+    );
+    public static final Block TOILET_PAPER_ROLL = registerBlock(
+            "toilet_paper_roll",
+            ToiletPaperRoll::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
                     .sounds(BlockSoundGroup.COBWEB)
 
     );
