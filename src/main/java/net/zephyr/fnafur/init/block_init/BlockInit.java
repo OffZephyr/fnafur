@@ -14,6 +14,7 @@ import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.ColoredLight;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
+import net.zephyr.fnafur.blocks.decorations.WarehouseShelfBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.CircuitBreakerBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.ElectricalLockerBlock;
@@ -173,6 +174,14 @@ public class BlockInit {
             ElectricalLockerBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
+    );
+
+    public static final Block WAREHOUSE_SHELF = registerBlock(
+            "warehouse_shelf",
+            WarehouseShelfBlock::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BARS)
+                    .nonOpaque()
+
     );
 
 
@@ -940,6 +949,7 @@ public class BlockInit {
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.FUEL_GENERATOR, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.ELECTRICAL_LOCKER, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.WAREHOUSE_SHELF, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getCutout());

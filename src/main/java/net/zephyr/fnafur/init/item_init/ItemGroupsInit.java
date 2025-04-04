@@ -59,6 +59,7 @@ public class ItemGroupsInit {
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 
+                        entries.add(BlockInit.WAREHOUSE_SHELF);
                         entries.add(GeoBlockInit.SMALL_GRAY_DOOR);
                         entries.add(GeoBlockInit.TWO_FIVE_RED_DOOR);
                         entries.add(GeoBlockInit.TWO_FIVE_BLACK_DOOR);

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:block/warehouse_shelf",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "fnafur:block/warehouse_shelf",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "fnafur:block/warehouse_shelf"
+    },
+    "facing=west": {
+      "model": "fnafur:block/warehouse_shelf",
+      "y": 90
+    }
+  }
+}
