@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/kitchen_prep_table"
+      "model": "fnafur:item/kitchen_prep_table"
   }
 }

@@ -5,28 +5,28 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "fnafur:props/present_stack/present_stack"
+          "model": "fnafur:item/present_stack"
         },
         "when": "0"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "fnafur:props/present_stack/present_stack_2"
+          "model": "fnafur:item/present_stack"
         },
         "when": "1"
       },
       {
         "model": {
           "type": "minecraft:model",
-          "model": "fnafur:props/present_stack/present_stack_3"
+          "model": "fnafur:item/present_stack"
         },
         "when": "2"
       }
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "fnafur:props/present_stack/present_stack"
+      "model": "fnafur:item/present_stack"
     },
     "block_state_property": "color",
     "property": "minecraft:block_state"

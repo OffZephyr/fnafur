@@ -1,7 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/wet_floor_sign",
-      "y": 90
+      "model": "fnafur:item/wet_floor_sign"
   }
 }

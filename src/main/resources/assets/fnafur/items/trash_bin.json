@@ -1,7 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/trash_bin",
-      "y": 90
+      "model": "fnafur:item/trash_bin"
   }
 }
