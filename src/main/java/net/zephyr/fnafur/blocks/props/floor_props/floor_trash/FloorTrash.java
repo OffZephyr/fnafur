@@ -13,6 +13,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitorCol
 public class FloorTrash extends FloorPropBlock<FloorTrashSkins> {
     public FloorTrash(Settings settings) {
         super(settings);
+        setDefaultState(getDefaultState().with(COLOR_PROPERTY(), FloorTrashSkins.MODEL_1));
     }
 
     @Override

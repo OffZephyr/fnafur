@@ -1,3 +1,6 @@
 {
-	"parent": "fnafur:props/ac_unit"
+    "parent": "item/generated",
+    "textures": {
+      "layer0": "fnafur:item/ac_unit"
+    }
 }

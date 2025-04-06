@@ -22,6 +22,9 @@ import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallHalfProperty;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 
 public class WallPropPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
@@ -87,9 +90,25 @@ public class WallPropPlacingRenderer {
 
                         matrices.translate(x + pos.getX(), y + pos.getY(), z + pos.getZ());
 
-                        BakedModel model = client.getBakedModelManager().getBlockModels().getModel(state);
+                        if(block instanceof GeoPropBlock){
 
-                        client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), state, model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            matrices.push();
+                            float offsetRotation = state.get(WallPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
+                            matrices.translate(0.5f, 0, 0.5f);
+                            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-offsetRotation));
+                            matrices.translate(-0.5f, 0, -0.5f);
+                            GeoPropBlockEntity entity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
+
+                            entity.setWorld(MinecraftClient.getInstance().world);
+                            if(MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(entity) instanceof GeoPropRenderer<GeoPropBlockEntity> geo){
+                                geo.render(entity, matrices, vertexConsumers, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            }
+                            matrices.pop();
+                        }
+                        else {
+                            BakedModel model = client.getBakedModelManager().getBlockModels().getModel(state);
+                            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), state, model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                        }
 
                         matrices.translate(0.5f, 0, 0.5f);
                         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));

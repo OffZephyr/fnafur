@@ -59,7 +59,6 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
                 GoopyNetworkingUtils.getNbtFromServer(pos);
             }
             float rotation = ((IEntityDataSaver)entity).getPersistentData().getFloat("Rotation");
-            float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
 
             double offsetX = ((IEntityDataSaver)entity).getPersistentData().getDouble("xOffset");
             double offsetY = ((IEntityDataSaver)entity).getPersistentData().getDouble("yOffset");
@@ -71,6 +70,7 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
                 matrices.translate(0, -0.5f, 0);
             }
             else {
+                float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
                 matrices.translate(0.5f, 0, 0.5f);
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(offsetRotation));
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-rotation));

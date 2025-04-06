@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/ac_unit"
+      "model": "fnafur:item/ac_unit"
   }
 }

@@ -110,7 +110,11 @@ public abstract class GeoDoor extends BlockWithEntity {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+       Direction facing = ctx.getHorizontalPlayerFacing().getOpposite();
+       if(ctx.getWorld().getBlockState(ctx.getBlockPos().offset(facing.rotateYClockwise())).getBlock() instanceof GeoDoor){
+           facing = facing.getOpposite();
+       }
+        return this.getDefaultState().with(FACING, facing);
     }
 
     @Override

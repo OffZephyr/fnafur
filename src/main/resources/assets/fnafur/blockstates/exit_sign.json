@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "facing=north,half=wall": {
+      "model": "fnafur:props/exit_sign_wall"
+    },
+    "facing=east,half=wall": {
+      "model": "fnafur:props/exit_sign_wall",
+      "y": 90
+    },
+    "facing=south,half=wall": {
+      "model": "fnafur:props/exit_sign_wall",
+      "y": 180
+    },
+    "facing=west,half=wall": {
+      "model": "fnafur:props/exit_sign_wall",
+      "y": 270
+    },
+    "facing=north,half=ceiling": {
+      "model": "fnafur:props/exit_sign_ceiling"
+    },
+    "facing=east,half=ceiling": {
+      "model": "fnafur:props/exit_sign_ceiling",
+      "y": 90
+    },
+    "facing=south,half=ceiling": {
+      "model": "fnafur:props/exit_sign_ceiling",
+      "y": 180
+    },
+    "facing=west,half=ceiling": {
+      "model": "fnafur:props/exit_sign_ceiling",
+      "y": 270
+    },
+    "facing=north,half=floor": {
+      "model": "fnafur:props/exit_sign_wall"
+    },
+    "facing=east,half=floor": {
+      "model": "fnafur:props/exit_sign_wall",
+      "y": 90
+    },
+    "facing=south,half=floor": {
+      "model": "fnafur:props/exit_sign_wall",
+      "y": 180
+    },
+    "facing=west,half=floor": {
+      "model": "fnafur:props/exit_sign_wall",
+      "y": 270
+    }
+  }
+}

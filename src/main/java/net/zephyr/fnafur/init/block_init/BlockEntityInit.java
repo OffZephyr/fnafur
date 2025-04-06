@@ -13,6 +13,7 @@ import net.zephyr.fnafur.blocks.fog.FogBlockEntity;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrameBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
+import net.zephyr.fnafur.blocks.props.wall_props.clocks.GeoClockPropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlockEntity;
@@ -27,6 +28,7 @@ public class BlockEntityInit {
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
     public static BlockEntityType<GeoPropBlockEntity> GEO_PROPS;
+    public static BlockEntityType<GeoClockPropBlockEntity> GEO_CLOCK_PROP;
     public static BlockEntityType<GalaxyLayerGeoPropEntity> GALAXY_GEO_PROPS;
     public static BlockEntityType<StickerBlockEntity> STICKER_BLOCK;
     public static BlockEntityType<TileDoorBlockEntity> TILE_DOOR;
@@ -81,7 +83,7 @@ public class BlockEntityInit {
                                 PropInit.WET_FLOOR_SIGN,
                                 PropInit.OFFICE_BUTTONS,
                                 PropInit.PRESENT_STACK,
-                                PropInit.EXIT_SIGN_WALL,
+                                PropInit.EXIT_SIGN,
                                 PropInit.LIGHT_SWITCH,
                                 PropInit.WALL_OUTLET,
                                 PropInit.AIR_VENT,
@@ -105,6 +107,11 @@ public class BlockEntityInit {
                                 PropInit.STAR_PLASTIC_CHAIR,
                                 PropInit.DOUBLE_DOOR_FRIDGE,
                                 PropInit.FRIDGE
+                        ).build());
+        GEO_CLOCK_PROP =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "clock_geo_props"),
+                        FabricBlockEntityTypeBuilder.create(GeoClockPropBlockEntity::new,
+                                PropInit.WOODEN_CLOCK
                         ).build());
 
         GALAXY_GEO_PROPS =

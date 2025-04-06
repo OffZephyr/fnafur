@@ -23,6 +23,7 @@ public class ItemGroupsInit {
                     .icon(() -> new ItemStack(PropInit.FLOOR_MONITORS))
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
+                        entries.add(PropInit.WOODEN_CLOCK);
                         entries.add(PropInit.PARTY_TABLE);
                         entries.add(PropInit.PARTY_TABLE_CONFETTI);
                         entries.add(PropInit.PARTY_HAT);
@@ -30,7 +31,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.WOODEN_CHAIR);
                         entries.add(PropInit.WALL_CLOUDS);
                         entries.add(PropInit.PRESENT_STACK);
-                        entries.add(PropInit.EXIT_SIGN_WALL);
+                        entries.add(PropInit.EXIT_SIGN);
                         entries.add(PropInit.LIGHT_SWITCH);
                         entries.add(PropInit.WALL_OUTLET);
                         entries.add(PropInit.PUNCH_IN_CARDS);

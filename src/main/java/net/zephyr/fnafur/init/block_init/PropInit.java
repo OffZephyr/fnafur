@@ -42,13 +42,15 @@ import net.zephyr.fnafur.blocks.props.tiling.TableBlock;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVentBlack;
 import net.zephyr.fnafur.blocks.props.wall_props.ac_unit.AcUnit;
 import net.zephyr.fnafur.blocks.props.wall_props.air_vent.AirVent;
+import net.zephyr.fnafur.blocks.props.wall_props.clocks.GeoClockPropRenderer;
+import net.zephyr.fnafur.blocks.props.wall_props.clocks.WoodenClock;
 import net.zephyr.fnafur.blocks.props.wall_props.kitchen.PotsAndPansRack;
 import net.zephyr.fnafur.blocks.props.wall_props.electricity.light_switch.LightSwitch;
 import net.zephyr.fnafur.blocks.props.wall_props.office_buttons.OfficeButtons;
 import net.zephyr.fnafur.blocks.props.wall_props.punch_in_cards.PunchInCards;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom.ToiletPaperRoll;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
-import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSignWall;
+import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSign;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
 import net.zephyr.fnafur.blocks.props.wall_props.electricity.wall_outlet.WallOutlet;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.CosmoGift;
@@ -312,9 +314,9 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
-    public static final Block EXIT_SIGN_WALL = registerBlock(
-            "exit_sign_wall",
-            ExitSignWall::new,
+    public static final Block EXIT_SIGN = registerBlock(
+            "exit_sign",
+            ExitSign::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BARS)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -393,6 +395,21 @@ public class PropInit {
             Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/fridge.png"),
             Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fridge.geo.json"),
             Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/fridge.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block WOODEN_CLOCK = registerGeoProp(
+            "wooden_clock",
+            WoodenClock::new,
+            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/wall_clock.png"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/wall_clock.geo.json"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/wall_clock.animation.json"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -526,20 +543,12 @@ public class PropInit {
         GEO_PROPS.add(Items.register(block));
         return block;
     }
-    private static Block registerGeoTranslucentProp(String name, Function<AbstractBlock.Settings, Block> factory, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings) {
-        final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
-        final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
-
-        final Block block = Blocks.register(registryKey, factory, settings);
-        ((GeoPropBlock)block).setModelInfo(texture, model, animations);
-        GEO_PROPS_TRANSLUCENT.add(Items.register(block));
-        return block;
-    }
 
     public static void registerPropsOnClient() {
         BlockEntityRendererFactories.register(BlockEntityInit.PROPS, PropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.ENERGY, PropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GEO_PROPS, GeoPropRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntityInit.GEO_CLOCK_PROP, GeoClockPropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GALAXY_GEO_PROPS, GalaxyLayerGeoPropRenderer::new);
 
         for (Item item : PROPS) {

@@ -23,6 +23,10 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
     @Override
     public void render(TileDoorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
+        if(((IEntityDataSaver)entity).getPersistentData().isEmpty()){
+            GoopyNetworkingUtils.getNbtFromServer(entity.getPos());
+        }
+
         BlockState state = entity.getWorld().getBlockState(entity.getPos());
 
         if(state.getBlock() instanceof TileDoorBlock && state.get(TileDoorBlock.MAIN)){

@@ -38,7 +38,11 @@
           "when": "model_4"
         }
         ],
-        "block_state_property": "color",
-      "property": "minecraft:block_state"
+        "fallback": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/floor_trash/floor_trash_1"
+          },
+          "block_state_property": "color",
+        "property": "minecraft:block_state"
     }
   }

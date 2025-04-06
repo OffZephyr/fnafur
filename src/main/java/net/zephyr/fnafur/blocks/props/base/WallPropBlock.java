@@ -41,22 +41,28 @@ public abstract class WallPropBlock<T extends Enum<T> & ColorEnumInterface & Str
     @Override
     protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
 
+        if(state.get(HALF) == WallHalfProperty.WALL) {
+            if (state.contains(FACING)) {
+                VoxelShape shape;
 
-        if(state.contains(FACING)){
-            VoxelShape shape;
+                switch (state.get(FACING)) {
+                    default -> shape = VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1f);
+                    case EAST -> shape = VoxelShapes.cuboid(0, 0, 0, 0.1f, 1, 1);
+                    case NORTH -> shape = VoxelShapes.cuboid(0, 0, 0.9f, 1, 1, 1);
+                    case WEST -> shape = VoxelShapes.cuboid(0.9f, 0, 0, 1, 1, 1);
+                    case UP -> shape = VoxelShapes.cuboid(0, 0.9f, 0, 1, 1, 1);
+                    case DOWN -> shape = VoxelShapes.cuboid(0, 0, 0, 1, 0.1f, 1);
+                }
 
-            switch (state.get(FACING)){
-                default -> shape = VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1f);
-                case EAST -> shape = VoxelShapes.cuboid(0, 0, 0, 0.1f, 1, 1);
-                case NORTH -> shape = VoxelShapes.cuboid(0, 0, 0.9f, 1, 1, 1);
-                case WEST -> shape = VoxelShapes.cuboid(0.9f, 0, 0, 1, 1, 1);
-                case UP -> shape = VoxelShapes.cuboid(0, 0.9f, 0, 1, 1, 1);
-                case DOWN -> shape = VoxelShapes.cuboid(0, 0, 0, 1, 0.1f, 1);
+                return shape;
             }
-
-            return shape;
         }
-
+        else if(state.get(HALF) == WallHalfProperty.CEILING){
+            return VoxelShapes.cuboid(0, 0.9f, 0, 1, 1, 1);
+        }
+        else{
+            return VoxelShapes.cuboid(0, 0, 0, 1, 0.1f, 1);
+        }
         return super.getRaycastShape(state, world, pos);
     }
 
