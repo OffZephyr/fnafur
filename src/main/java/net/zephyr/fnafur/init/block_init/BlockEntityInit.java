@@ -60,7 +60,8 @@ public class BlockEntityInit {
         TILE_DOOR =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "tile_door"),
                         FabricBlockEntityTypeBuilder.create(TileDoorBlockEntity::new,
-                                BlockInit.OFFICE_DOOR
+                                BlockInit.OFFICE_DOOR,
+                                BlockInit.GARAGE_DOOR
                         ).build());
         PROPS =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "props"),
@@ -91,8 +92,6 @@ public class BlockEntityInit {
                                 PropInit.SKEEBALL_ARCADE,
                                 PropInit.WOODEN_CHAIR,
                                 PropInit.PARTY_HAT,
-                                PropInit.DOUBLE_DOOR_FRIDGE,
-                                PropInit.FRIDGE,
                                 PropInit.TOILET_PAPER_ROLL,
 
                                 PropInit.BEPH_PLUSHIE
@@ -100,7 +99,10 @@ public class BlockEntityInit {
         GEO_PROPS =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "geo_props"),
                         FabricBlockEntityTypeBuilder.create(GeoPropBlockEntity::new,
-                                PropInit.FNAF_1_DESK
+                                PropInit.FNAF_1_DESK,
+                                PropInit.STAR_PLASTIC_CHAIR,
+                                PropInit.DOUBLE_DOOR_FRIDGE,
+                                PropInit.FRIDGE
                         ).build());
 
         GALAXY_GEO_PROPS =

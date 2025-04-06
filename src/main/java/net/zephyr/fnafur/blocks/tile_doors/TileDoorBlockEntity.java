@@ -17,4 +17,9 @@ public class TileDoorBlockEntity extends BlockEntity {
     public BlockState getDefaultState(){
         return this.state.getBlock().getDefaultState();
     }
+
+
+    public void tick(World world, BlockPos pos, BlockState state, net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity blockEntity) {
+
+    }
 }

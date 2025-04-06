@@ -9,6 +9,7 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.ColoredLight;
@@ -26,20 +27,22 @@ import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockRenderer;
+import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlock;
+import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntityRenderer;
+import net.zephyr.fnafur.blocks.tile_doors.TileDoorDirection;
+import net.zephyr.fnafur.blocks.tile_doors.TileDoorItem;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlockRenderer;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
-import net.zephyr.fnafur.blocks.tile_doors.OfficeDoor;
-import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntityRenderer;
+import net.zephyr.fnafur.blocks.tile_doors.beta.OfficeDoor;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Function;
 
 public class BlockInit {
@@ -181,9 +184,25 @@ public class BlockInit {
             WarehouseShelfBlock::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BARS)
                     .nonOpaque()
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
 
     );
 
+    /* TILING DOORS */
+
+
+    public static final Block GARAGE_DOOR = registerTileDoor(
+            "garage_door",
+            TileDoorBlock::new,
+            TileDoorDirection.UP,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .notSolid()
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+    );
 
     //BASIC CUBE BLOCKS START HERE!!!
 
@@ -917,6 +936,14 @@ public class BlockInit {
 
         final Block block = Blocks.register(registryKey, factory, settings);
         Items.register(block);
+        return block;
+    }
+    private static Block registerTileDoor(String name, Function<AbstractBlock.Settings, Block> factory, TileDoorDirection direction, AbstractBlock.Settings settings) {
+        final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
+        final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
+
+        final TileDoorBlock block = (TileDoorBlock) Blocks.register(registryKey, factory, settings);
+        Items.register(block, TileDoorItem::new);
         return block;
     }
 

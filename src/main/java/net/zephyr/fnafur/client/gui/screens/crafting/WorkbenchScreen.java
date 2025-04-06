@@ -166,7 +166,7 @@ public class WorkbenchScreen extends GoopyScreen {
 
                     for (int i = 0; i < size; i++) {
 
-                        int height = 177 / size;
+                        int height = 154 / size;
                         int offset = i * (height + 2);
 
                         int colorWidth = 12;
@@ -358,7 +358,7 @@ public class WorkbenchScreen extends GoopyScreen {
 
             for (int i = 0; i < size; i++) {
 
-                int height = 177 / size;
+                int height = 154 / size;
                 int offset = i * (height + 2);
 
                 int colorWidth = 12;
@@ -373,7 +373,7 @@ public class WorkbenchScreen extends GoopyScreen {
                 double colorY = Math.clamp(1 - ((mouseY - y - 3) / (height - 6)), 0, 1);
 
                 if (isOn) {
-                    colors[i][colorX] = (int) (colorY * 256);
+                    colors[i][colorX] = (int) (colorY * 255);
                 }
 
                 altNbt.putIntArray("color" + i, colors[i]);

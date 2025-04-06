@@ -19,7 +19,7 @@ import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class FloorPropBlock<@Nullable T extends Enum<T> & ColorEnumInterface & StringIdentifiable> extends PropBlock {
+public abstract class FloorPropBlock<@Nullable T extends Enum<T> & ColorEnumInterface & StringIdentifiable> extends PropBlock<T> {
 
     protected FloorPropBlock(Settings settings) {
         super(settings);

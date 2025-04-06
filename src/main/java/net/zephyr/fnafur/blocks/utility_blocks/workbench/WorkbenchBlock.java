@@ -64,8 +64,8 @@ public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
 
                     if (nbt.isEmpty()) return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
 
-                        nbt2.put("GiftData", nbt);
-                        stack.decrement(1);
+                    nbt2.put("GiftData", nbt);
+                    stack.decrement(1);
                 }
                 GoopyNetworkingUtils.setScreen(player, ScreensInit.WORKBENCH, nbt2, pos);
             }

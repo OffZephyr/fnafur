@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +18,9 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GeoPropBlockEntity extends PropBlockEntity implements GeoBlockEntity {
@@ -36,8 +40,20 @@ public class GeoPropBlockEntity extends PropBlockEntity implements GeoBlockEntit
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-
+        controllers.add(new AnimationController<>(this, "main", 0, this::mainController));
     }
+
+    private PlayState mainController(AnimationState<GeoPropBlockEntity> geoPropBlockEntityAnimationState) {
+        BlockState state = getWorld().getBlockState(getPos());
+
+        if(block.getCurrentAnimation(state, getPos()) != null){
+            state = state.getBlock() instanceof GeoPropBlock ? state : ((Block)block).getDefaultState();
+
+            return geoPropBlockEntityAnimationState.setAndContinue(block.getCurrentAnimation(state, getPos()));
+        }
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
@@ -59,5 +75,9 @@ public class GeoPropBlockEntity extends PropBlockEntity implements GeoBlockEntit
     public Identifier getAnimations(World world){
         if(block != null) return block.getAnimations();
         return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getAnimations();
+    }
+    public RenderLayer getRenderType(){
+        if(block != null) return block.getRenderType();
+        return null;
     }
 }

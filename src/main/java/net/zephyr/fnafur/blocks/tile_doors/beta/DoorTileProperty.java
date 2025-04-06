@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.tile_doors;
+package net.zephyr.fnafur.blocks.tile_doors.beta;
 
 import net.minecraft.util.StringIdentifiable;
 

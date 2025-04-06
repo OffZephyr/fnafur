@@ -14,6 +14,8 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
+import net.zephyr.fnafur.blocks.special.SeatEntity;
+import net.zephyr.fnafur.blocks.special.SeatEntityRenderer;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicBetaRenderer;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicRenderer;
@@ -35,6 +37,10 @@ public class EntityInit {
     public static final EntityType<Bear5Entity> BEAR5 = register(
             "bear5",
             EntityType.Builder.create(Bear5Entity::new, SpawnGroup.MISC).dimensions(1, 3).eyeHeight(2)
+    );
+    public static final EntityType<SeatEntity> SEAT = register(
+            "seat",
+            EntityType.Builder.create(SeatEntity::new, SpawnGroup.MISC).dimensions(0.01f, 0.01f)
     );
 
     private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
@@ -64,6 +70,7 @@ public class EntityInit {
         createRenderer(EntityInit.ZEPHYR, ZephyrRenderer::new);
         EntityRendererRegistry.register(EntityInit.BEAR5, Bear5Renderer::new);
         makeRenderer(EntityInit.ANIMATRONIC, AnimatronicRenderer::new);
+        EntityRendererRegistry.register(EntityInit.SEAT, SeatEntityRenderer::new);
 
         ClassicInit.registerEntitiesOnClient();
 

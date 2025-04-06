@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.blocks.props.base.geo;
 
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import org.jetbrains.annotations.Nullable;
@@ -29,5 +30,13 @@ public class GeoPropModel<T extends GeoPropBlockEntity> extends GeoModel<T> {
         if(animatable != null && animatable.getWorld() != null)
             return animatable.getAnimations(animatable.getWorld());
         return null;
+    }
+
+    @Override
+    public @Nullable RenderLayer getRenderType(T animatable, Identifier texture) {
+        if(animatable != null && animatable.getWorld() != null && animatable.getRenderType() != null)
+            return animatable.getRenderType();
+
+        return super.getRenderType(animatable, texture);
     }
 }

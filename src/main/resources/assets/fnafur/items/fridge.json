@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/fridge/fridge"
+      "model": "fnafur:item/fridge"
   }
 }

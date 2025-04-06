@@ -35,7 +35,7 @@ public class Bear5Renderer extends EntityRenderer<Bear5Entity, Bear5RenderState>
 
             RenderSystem.enableCull();
             RenderSystem.depthMask(true);
-            RenderSystem.enableDepthTest();
+            RenderSystem.disableDepthTest();
 
             RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX_COLOR);
 

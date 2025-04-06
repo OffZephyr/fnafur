@@ -18,6 +18,7 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animation.RawAnimation;
 
 public class Fnaf1Desk extends FloorPropBlock<DefaultPropColorEnum> implements GeoPropBlock {
     private Identifier texture;
@@ -74,5 +75,10 @@ public class Fnaf1Desk extends FloorPropBlock<DefaultPropColorEnum> implements G
     @Override
     public Identifier getAnimations() {
         return this.animations;
+    }
+
+    @Override
+    public RawAnimation getCurrentAnimation(BlockState state, BlockPos pos) {
+        return RawAnimation.begin().thenLoop("idle");
     }
 }

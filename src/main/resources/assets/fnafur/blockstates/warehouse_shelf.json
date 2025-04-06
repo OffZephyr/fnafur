@@ -1,18 +1,93 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "fnafur:block/warehouse_shelf",
+    "facing=north,type=single,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_single",
       "y": 180
     },
-    "facing=east": {
-      "model": "fnafur:block/warehouse_shelf",
+    "facing=east,type=single,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_single",
       "y": 270
     },
-    "facing=south": {
-      "model": "fnafur:block/warehouse_shelf"
+    "facing=south,type=single,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_single"
     },
-    "facing=west": {
-      "model": "fnafur:block/warehouse_shelf",
+    "facing=west,type=single,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_single",
+      "y": 90
+    },
+    "facing=north,type=left,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_left",
+      "y": 180
+    },
+    "facing=east,type=left,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_left",
+      "y": 270
+    },
+    "facing=south,type=left,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_left"
+    },
+    "facing=west,type=left,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_left",
+      "y": 90
+    },
+    "facing=north,type=right,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_right",
+      "y": 180
+    },
+    "facing=east,type=right,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_right",
+      "y": 270
+    },
+    "facing=south,type=right,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_right"
+    },
+    "facing=west,type=right,top=false": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_right",
+      "y": 90
+    },
+    "facing=north,type=single,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_single_top",
+      "y": 180
+    },
+    "facing=east,type=single,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_single_top",
+      "y": 270
+    },
+    "facing=south,type=single,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_single_top"
+    },
+    "facing=west,type=single,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_single_top",
+      "y": 90
+    },
+    "facing=north,type=left,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_left_top",
+      "y": 180
+    },
+    "facing=east,type=left,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_left_top",
+      "y": 270
+    },
+    "facing=south,type=left,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_left_top"
+    },
+    "facing=west,type=left,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_left_top",
+      "y": 90
+    },
+    "facing=north,type=right,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_right_top",
+      "y": 180
+    },
+    "facing=east,type=right,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_right_top",
+      "y": 270
+    },
+    "facing=south,type=right,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_right_top"
+    },
+    "facing=west,type=right,top=true": {
+      "model": "fnafur:block/warehouse_shelf/warehouse_shelf_right_top",
       "y": 90
     }
   }

@@ -18,6 +18,7 @@ import net.zephyr.fnafur.blocks.props.base.PropRenderer;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.blocks.props.floor_props.arcade.SkeeballArcade;
+import net.zephyr.fnafur.blocks.props.floor_props.chairs.StarPlasticChair;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.DoubleDoorFridge;
@@ -58,12 +59,27 @@ import java.util.function.Function;
 public class PropInit {
     public static List<Item> PROPS = new ArrayList<>();
     public static List<Item> GEO_PROPS = new ArrayList<>();
+    public static List<Item> GEO_PROPS_TRANSLUCENT = new ArrayList<>();
 
     public static final Block FNAF_1_DESK = registerGeoProp(
             "fnaf1desk",
             Fnaf1Desk::new,
             Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/fnaf1desk.png"),
             Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fnaf1desk.geo.json"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+    public static final Block STAR_PLASTIC_CHAIR = registerGeoProp(
+            "star_plastic_chair",
+            StarPlasticChair::new,
+            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/fnaf1chair.png"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fnaf1chair.geo.json"),
             Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/fnaf1desk.animation.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
@@ -354,9 +370,12 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
-    public static final Block DOUBLE_DOOR_FRIDGE = registerBlock(
+    public static final Block DOUBLE_DOOR_FRIDGE = registerGeoProp(
             "double_door_fridge",
             DoubleDoorFridge::new,
+            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/double_fridge.png"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/double_door_fridge.geo.json"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/double_door_fridge.animation.json"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -366,9 +385,12 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
-    public static final Block FRIDGE = registerBlock(
+    public static final Block FRIDGE = registerGeoProp(
             "fridge",
             Fridge::new,
+            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/fridge.png"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fridge.geo.json"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/fridge.animation.json"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -475,6 +497,15 @@ public class PropInit {
         GEO_PROPS.add(Items.register(block));
         return block;
     }
+    private static Block registerGeoTranslucentProp(String name, Function<AbstractBlock.Settings, Block> factory, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings) {
+        final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
+        final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
+
+        final Block block = Blocks.register(registryKey, factory, settings);
+        ((GeoPropBlock)block).setModelInfo(texture, model, animations);
+        GEO_PROPS_TRANSLUCENT.add(Items.register(block));
+        return block;
+    }
 
     public static void registerPropsOnClient() {
         BlockEntityRendererFactories.register(BlockEntityInit.PROPS, PropRenderer::new);
@@ -487,6 +518,9 @@ public class PropInit {
         }
         for (Item item : GEO_PROPS) {
             BlockRenderLayerMap.INSTANCE.putBlock(((BlockItem)item).getBlock(), RenderLayer.getCutout());
+        }
+        for (Item item : GEO_PROPS_TRANSLUCENT) {
+            BlockRenderLayerMap.INSTANCE.putBlock(((BlockItem)item).getBlock(), RenderLayer.getTranslucent());
         }
 
         FnafUniverseResuited.LOGGER.info("Registering Props On CLIENT for " + FnafUniverseResuited.MOD_ID.toUpperCase());

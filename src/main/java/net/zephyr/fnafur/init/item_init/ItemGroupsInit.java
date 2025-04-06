@@ -26,6 +26,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.PARTY_TABLE);
                         entries.add(PropInit.PARTY_TABLE_CONFETTI);
                         entries.add(PropInit.PARTY_HAT);
+                        entries.add(PropInit.STAR_PLASTIC_CHAIR);
                         entries.add(PropInit.WOODEN_CHAIR);
                         entries.add(PropInit.WALL_CLOUDS);
                         entries.add(PropInit.PRESENT_STACK);
@@ -93,6 +94,7 @@ public class ItemGroupsInit {
                         entries.add(ItemInit.TABLET);
                         entries.add(BlockInit.FOG_BLOCK);
 
+                        entries.add(BlockInit.GARAGE_DOOR);
                         entries.add(BlockInit.OFFICE_DOOR);
                         entries.add(PropInit.OFFICE_BUTTONS);
 

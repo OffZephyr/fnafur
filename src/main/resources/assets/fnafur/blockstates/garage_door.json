@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=north,main=true,open=true": {
+      "model": "fnafur:block/tiling/doors/garage_door"
+    },
+    "facing=east,main=true,open=true": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 90
+    },
+    "facing=south,main=true,open=true": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 180
+    },
+    "facing=west,main=true,open=true": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 270
+    },
+    "facing=north,main=true,open=false": {
+      "model": "fnafur:block/tiling/doors/garage_door"
+    },
+    "facing=east,main=true,open=false": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 90
+    },
+    "facing=south,main=true,open=false": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 180
+    },
+    "facing=west,main=true,open=false": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 270
+    },
+    "facing=north,main=false,open=true": {
+      "model": "fnafur:block/tiling/doors/garage_door"
+    },
+    "facing=east,main=false,open=true": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 90
+    },
+    "facing=south,main=false,open=true": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 180
+    },
+    "facing=west,main=false,open=true": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 270
+    },
+    "facing=north,main=false,open=false": {
+      "model": "fnafur:block/tiling/doors/garage_door"
+    },
+    "facing=east,main=false,open=false": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 90
+    },
+    "facing=south,main=false,open=false": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 180
+    },
+    "facing=west,main=false,open=false": {
+      "model": "fnafur:block/tiling/doors/garage_door",
+      "y": 270
+    }
+  }
+}

@@ -28,6 +28,7 @@ import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IUniverseRenderLayers;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 import java.util.List;
@@ -113,5 +114,10 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
     @Override
     public Identifier getAnimations() {
         return this.animations;
+    }
+
+    @Override
+    public RawAnimation getCurrentAnimation(BlockState state, BlockPos pos) {
+        return null;
     }
 }

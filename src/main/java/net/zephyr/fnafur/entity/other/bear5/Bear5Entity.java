@@ -7,7 +7,10 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.SoundsInit;
@@ -24,6 +27,35 @@ public class Bear5Entity extends PathAwareEntity {
         super(entityType, world);
         noClip = true;
         setNoGravity(true);
+    }
+
+    @Override
+    public boolean isSubmergedInWater() {
+        return false;
+    }
+
+    @Override
+    public void setOnFireFromLava() {
+    }
+
+    @Override
+    public boolean isInLava() {
+        return false;
+    }
+
+    @Override
+    public boolean isPushedByFluids() {
+        return false;
+    }
+
+    @Override
+    public boolean isInFluid() {
+        return false;
+    }
+
+    @Override
+    public boolean updateMovementInFluid(TagKey<Fluid> tag, double speed) {
+        return false;
     }
 
     @Override
@@ -55,6 +87,7 @@ public class Bear5Entity extends PathAwareEntity {
             UUID targetID = ((IEntityDataSaver)this).getPersistentData().getUuid("TargetID");
             PlayerEntity entity = getWorld().getPlayerByUuid(targetID);
             if(entity != null){
+                entity.sendMessage(Text.literal("§9Something §1§lWICKED §9this way comes......"), true);
                 this.target = entity;
             }
         }
@@ -65,7 +98,7 @@ public class Bear5Entity extends PathAwareEntity {
             float dist = this.distanceTo(this.target);
             setVelocity(getVelocity().add(direction.multiply(0.01f + 0.01f * (dist/10f))));
 
-            if(dist < 0.25f && getWorld() instanceof ServerWorld world){
+            if(dist < 0.5f && getWorld() instanceof ServerWorld world){
                 this.target.kill(world);
                 this.remove(RemovalReason.DISCARDED);
             }
