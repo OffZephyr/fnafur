@@ -93,6 +93,8 @@ public class BlockEntityInit {
                                 PropInit.WOODEN_CHAIR,
                                 PropInit.PARTY_HAT,
                                 PropInit.TOILET_PAPER_ROLL,
+                                PropInit.TOILET,
+                                PropInit.FLOOR_TRASH,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

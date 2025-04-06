@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "color=model_0": {
+      "model": "fnafur:props/floor_trash/floor_trash_1"
+    },
+    "color=model_1": {
+      "model": "fnafur:props/floor_trash/floor_trash_2"
+    },
+    "color=model_2": {
+      "model": "fnafur:props/floor_trash/floor_trash_3"
+    },
+    "color=model_3": {
+      "model": "fnafur:props/floor_trash/floor_trash_4"
+    },
+    "color=model_4": {
+      "model": "fnafur:props/floor_trash/floor_trash_5"
+    }
+  }
+}

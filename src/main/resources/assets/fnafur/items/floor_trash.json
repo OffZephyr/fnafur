@@ -1,0 +1,44 @@
+{
+    "model": {
+      "type": "minecraft:select",
+      "cases":[
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/floor_trash/floor_trash_1"
+          },
+          "when": "model_0"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/floor_trash/floor_trash_2"
+          },
+          "when": "model_1"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/floor_trash/floor_trash_3"
+          },
+          "when": "model_2"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/floor_trash/floor_trash_4"
+          },
+          "when": "model_3"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/floor_trash/floor_trash_5"
+          },
+          "when": "model_4"
+        }
+        ],
+        "block_state_property": "color",
+      "property": "minecraft:block_state"
+    }
+  }

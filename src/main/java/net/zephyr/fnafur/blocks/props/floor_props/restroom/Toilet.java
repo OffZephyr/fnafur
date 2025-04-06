@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.props.floor_props.chairs;
+package net.zephyr.fnafur.blocks.props.floor_props.restroom;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -14,10 +14,9 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.special.SeatBlock;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
-public class WoodenChair extends FloorPropBlock<DefaultPropColorEnum> implements SeatBlock {
-    public WoodenChair(Settings settings) {
+public class Toilet extends FloorPropBlock<DefaultPropColorEnum> implements SeatBlock {
+    public Toilet(Settings settings) {
         super(settings);
     }
 
@@ -27,19 +26,9 @@ public class WoodenChair extends FloorPropBlock<DefaultPropColorEnum> implements
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if(!isUsed(world, pos) && player.getMainHandStack().isEmpty()){
-            player.startRiding(sit(player, pos));
-            return ActionResult.SUCCESS;
-        }
-
-        return super.onUse(state, world, pos, player, hit);
-    }
-
-    @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0f, 0f, 0f, 1f, 1f, 1f)));
+        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0f, 0f, 0f, 1f, 1.1f, 1f)));
         return drawingOutline ? shape : VoxelShapes.fullCube();
     }
 
@@ -49,16 +38,25 @@ public class WoodenChair extends FloorPropBlock<DefaultPropColorEnum> implements
     }
 
     @Override
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if(!isUsed(world, pos) && player.getMainHandStack().isEmpty()){
+            player.startRiding(sit(player, pos));
+            return ActionResult.SUCCESS; }
+        return super.onUse(state, world, pos, player, hit);
+    }
+
+    @Override
     public boolean rotates() {
         return true;
     }
 
     @Override
-    public float getSittingOffset(World world, BlockPos pos) {
-        return 0.1f;
-    }
-    @Override
     public float getSittingHeight(World world, BlockPos pos) {
-        return 0.1f;
+        return 0;
+    }
+
+    @Override
+    public float getSittingOffset(World world, BlockPos pos) {
+        return 0;
     }
 }

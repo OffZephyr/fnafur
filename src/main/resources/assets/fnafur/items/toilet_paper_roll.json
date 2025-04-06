@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/toilet_paper_roll"
+      "model": "fnafur:props/restroom/toilet_paper_roll"
   }
 }

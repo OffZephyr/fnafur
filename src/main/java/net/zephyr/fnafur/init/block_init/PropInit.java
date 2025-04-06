@@ -21,6 +21,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.arcade.SkeeballArcade;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.StarPlasticChair;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
+import net.zephyr.fnafur.blocks.props.floor_props.floor_trash.FloorTrash;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.DoubleDoorFridge;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.Fridge;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.KitchenPrepTable;
@@ -28,6 +29,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.kitchen.PizzaOven;
 import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.present_stack.PresentStack;
+import net.zephyr.fnafur.blocks.props.floor_props.restroom.Toilet;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.RetroTableBlock;
@@ -468,6 +470,33 @@ public class PropInit {
     public static final Block TOILET_PAPER_ROLL = registerBlock(
             "toilet_paper_roll",
             ToiletPaperRoll::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+                    .sounds(BlockSoundGroup.COBWEB)
+
+    );
+    public static final Block TOILET = registerBlock(
+            "toilet",
+            Toilet::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+
+    );
+    public static final Block FLOOR_TRASH = registerBlock(
+            "floor_trash",
+            FloorTrash::new,
             AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)

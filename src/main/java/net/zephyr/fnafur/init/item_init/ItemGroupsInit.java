@@ -45,6 +45,8 @@ public class ItemGroupsInit {
                         entries.add(PropInit.CEILING_TILE_VENT_BLACK);
                         entries.add(PropInit.RESTROOM_SIGN);
                         entries.add(PropInit.TOILET_PAPER_ROLL);
+                        entries.add(PropInit.TOILET);
+                        entries.add(PropInit.FLOOR_TRASH);
                         entries.add(PropInit.BROOM);
                         entries.add(PropInit.MOP_BUCKET);
                         entries.add(PropInit.TRASH_BIN);
