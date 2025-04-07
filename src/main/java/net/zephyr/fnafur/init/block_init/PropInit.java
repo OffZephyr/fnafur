@@ -421,7 +421,7 @@ public class PropInit {
     public static final Block WOODEN_CLOCK = registerGeoProp(
             "wooden_clock",
             WoodenClock::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/wall_clock.png"),
+            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/wooden_clock.png"),
             Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/wall_clock.geo.json"),
             Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/wall_clock.animation.json"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)

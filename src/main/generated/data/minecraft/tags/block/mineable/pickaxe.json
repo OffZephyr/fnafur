@@ -79,6 +79,9 @@
     "fnafur:concrete_floor",
     "fnafur:concrete_floor_dark",
     "fnafur:concrete_floor_tile",
+    "fnafur:dark_gray_concrete",
+    "fnafur:gray_concrete_wall",
+    "fnafur:gray_concrete_wall_split",
     "fnafur:brick_wall",
     "fnafur:brick_wall_darker",
     "fnafur:red_brick_wall",
@@ -121,6 +124,10 @@
     "fnafur:bright_orange_bricks",
     "fnafur:bright_pink_bricks",
     "fnafur:bright_purple_bricks",
+    "fnafur:green_bricks",
+    "fnafur:teal_bricks",
+    "fnafur:red_bricks_black_grout",
+    "fnafur:red_bricks_white_grout",
     "fnafur:metal_plates",
     "fnafur:rough_metal_plates",
     "fnafur:stage_planks",
@@ -141,6 +148,8 @@
     "fnafur:tiled_glass_colored",
     "fnafur:big_window",
     "fnafur:big_window_white",
-    "fnafur:big_window_dark"
+    "fnafur:big_window_dark",
+    "fnafur:tiled_glass_slit",
+    "fnafur:tiled_glass_slit_colored"
   ]
 }

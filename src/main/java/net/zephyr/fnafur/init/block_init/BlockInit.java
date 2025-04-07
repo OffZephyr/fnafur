@@ -497,6 +497,26 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block GREEN_BRICKS = registerBlock(
+            "green_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block TEAL_BRICKS = registerBlock(
+            "teal_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block RED_BRICKS_BLACK_GROUT = registerBlock(
+            "red_bricks_black_grout",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block RED_BRICKS_WHITE_GROUT = registerBlock(
+            "red_bricks_white_grout",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
 
     /* Metallic Blocks */
 
@@ -971,6 +991,24 @@ public class BlockInit {
     );
     public static final Block CONCRETE_FLOOR_TILE = registerBlock(
             "concrete_floor_tile",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+
+    );
+    public static final Block DARK_GRAY_CONCRETE = registerBlock(
+            "dark_gray_concrete",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+
+    );
+    public static final Block GRAY_CONCRETE_WALL = registerBlock(
+            "gray_concrete_wall",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+
+    );
+    public static final Block GRAY_CONCRETE_WALL_SPLIT = registerBlock(
+            "gray_concrete_wall_split",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
 

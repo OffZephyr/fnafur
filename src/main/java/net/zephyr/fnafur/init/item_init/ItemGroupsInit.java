@@ -201,6 +201,9 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CONCRETE_FLOOR);
                         entries.add(BlockInit.CONCRETE_FLOOR_DARK);
                         entries.add(BlockInit.CONCRETE_FLOOR_TILE);
+                        entries.add(BlockInit.DARK_GRAY_CONCRETE);
+                        entries.add(BlockInit.GRAY_CONCRETE_WALL);
+                        entries.add(BlockInit.GRAY_CONCRETE_WALL_SPLIT);
 
                         // CARPETS
                         entries.add(BlockInit.CARPET_STAR_GREEN);
@@ -233,6 +236,8 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.RED_BRICK_WALL);
                         entries.add(BlockInit.RED_BRICK_WALL_SMALL);
                         entries.add(BlockInit.RED_BRICK_WALL_MIXED);
+                        entries.add(BlockInit.RED_BRICKS_BLACK_GROUT);
+                        entries.add(BlockInit.RED_BRICKS_WHITE_GROUT);
                         entries.add(BlockInit.BLACK_BRICKS);
                         entries.add(BlockInit.BLUE_BRICKS);
                         entries.add(BlockInit.BRIGHT_BLUE_BRICKS);
@@ -245,6 +250,8 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.BRIGHT_PINK_BRICKS);
                         entries.add(BlockInit.BRIGHT_PURPLE_BRICKS);
                         entries.add(BlockInit.BLUE_GRAY_BRICKS);
+                        entries.add(BlockInit.TEAL_BRICKS);
+                        entries.add(BlockInit.GREEN_BRICKS);
                         entries.add(BlockInit.LARGE_BROWN_BRICKS);
                         entries.add(BlockInit.LARGE_LIGHT_GRAY_BRICKS);
                         entries.add(BlockInit.LARGE_WHITE_BRICKS);

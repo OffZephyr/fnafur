@@ -138,6 +138,9 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.CONCRETE_FLOOR);
         addDrop(BlockInit.CONCRETE_FLOOR_DARK);
         addDrop(BlockInit.CONCRETE_FLOOR_TILE);
+        addDrop(BlockInit.DARK_GRAY_CONCRETE);
+        addDrop(BlockInit.GRAY_CONCRETE_WALL);
+        addDrop(BlockInit.GRAY_CONCRETE_WALL_SPLIT);
 
         // BRICKS
         addDrop(BlockInit.BRICK_WALL);
@@ -179,6 +182,10 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.BRIGHT_ORANGE_BRICKS);
         addDrop(BlockInit.BRIGHT_PINK_BRICKS);
         addDrop(BlockInit.BRIGHT_PURPLE_BRICKS);
+        addDrop(BlockInit.GREEN_BRICKS);
+        addDrop(BlockInit.TEAL_BRICKS);
+        addDrop(BlockInit.RED_BRICKS_BLACK_GROUT);
+        addDrop(BlockInit.RED_BRICKS_WHITE_GROUT);
 
         // WOODEN BLOCKS
         addDrop(BlockInit.STAGE_PLANKS);

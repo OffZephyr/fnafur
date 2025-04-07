@@ -111,6 +111,9 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.CONCRETE_FLOOR)
                 .add(BlockInit.CONCRETE_FLOOR_DARK)
                 .add(BlockInit.CONCRETE_FLOOR_TILE)
+                .add(BlockInit.DARK_GRAY_CONCRETE)
+                .add(BlockInit.GRAY_CONCRETE_WALL)
+                .add(BlockInit.GRAY_CONCRETE_WALL_SPLIT)
 
                 // BRICKS
                 .add(BlockInit.BRICK_WALL)
@@ -155,6 +158,10 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.BRIGHT_ORANGE_BRICKS)
                 .add(BlockInit.BRIGHT_PINK_BRICKS)
                 .add(BlockInit.BRIGHT_PURPLE_BRICKS)
+                .add(BlockInit.GREEN_BRICKS)
+                .add(BlockInit.TEAL_BRICKS)
+                .add(BlockInit.RED_BRICKS_BLACK_GROUT)
+                .add(BlockInit.RED_BRICKS_WHITE_GROUT)
 
                 // METALLIC BLOCKS
                 .add(BlockInit.METAL_PLATES)
