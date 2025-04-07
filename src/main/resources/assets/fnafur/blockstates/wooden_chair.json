@@ -2,18 +2,19 @@
   "variants": {
     "facing=north": {
       "model": "fnafur:props/wooden_chair",
-      "y": 180
+      "y": 0
     },
     "facing=east": {
       "model": "fnafur:props/wooden_chair",
-      "y": 270
+      "y": 90
     },
     "facing=south": {
-      "model": "fnafur:props/wooden_chair"
+      "model": "fnafur:props/wooden_chair",
+      "y": 180
     },
     "facing=west": {
       "model": "fnafur:props/wooden_chair",
-      "y": 90
+      "y": 270
     }
   }
 }

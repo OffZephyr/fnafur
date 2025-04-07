@@ -2,18 +2,19 @@
   "variants": {
     "facing=north": {
       "model": "fnafur:props/restroom/toilet",
-      "y": 180
+      "y": 0
     },
     "facing=east": {
       "model": "fnafur:props/restroom/toilet",
-      "y": 270
+      "y": 90
     },
     "facing=south": {
-      "model": "fnafur:props/restroom/toilet"
+      "model": "fnafur:props/restroom/toilet",
+      "y": 180
     },
     "facing=west": {
       "model": "fnafur:props/restroom/toilet",
-      "y": 90
+      "y": 270
     }
   }
 }
