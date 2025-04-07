@@ -125,6 +125,7 @@ public class ItemGroupsInit {
 
                         // TILES
                         entries.add(BlockInit.GROUT_TILE);
+                        entries.add(BlockInit.DARK_GROUT_TILES);
                         entries.add(BlockInit.BLACK_TILE);
                         entries.add(BlockInit.WHITE_TILE);
                         entries.add(BlockInit.BLACK_WHITE_TILES);
@@ -138,6 +139,11 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.BRIGHT_NAVY_BLUE_TILES);
                         entries.add(BlockInit.BRIGHT_GREEN_TILES);
                         entries.add(BlockInit.BRIGHT_WHITE_TILES);
+                        entries.add(BlockInit.BRIGHT_BROWN_TILES);
+                        entries.add(BlockInit.BRIGHT_MAGENTA_TILES);
+                        entries.add(BlockInit.BRIGHT_ORANGE_TILES);
+                        entries.add(BlockInit.BRIGHT_PINK_TILES);
+                        entries.add(BlockInit.BRIGHT_PURPLE_TILES);
                         entries.add(BlockInit.DARK_BLUE_TILES);
                         entries.add(BlockInit.BLACK_TILES);
                         entries.add(BlockInit.RED_TILES);
@@ -173,7 +179,9 @@ public class ItemGroupsInit {
 
                         // GLASS
                         entries.add(BlockInit.TILED_GLASS);
+                        entries.add(BlockInit.TILED_GLASS_SLIT);
                         entries.add(BlockInit.TILED_GLASS_COLORED);
+                        entries.add(BlockInit.TILED_GLASS_SLIT_COLORED);
                         entries.add(BlockInit.BIG_WINDOW);
                         entries.add(BlockInit.BIG_WINDOW_WHITE);
                         entries.add(BlockInit.BIG_WINDOW_DARK);
@@ -192,6 +200,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.KITCHEN_FLOOR);
                         entries.add(BlockInit.CONCRETE_FLOOR);
                         entries.add(BlockInit.CONCRETE_FLOOR_DARK);
+                        entries.add(BlockInit.CONCRETE_FLOOR_TILE);
 
                         // CARPETS
                         entries.add(BlockInit.CARPET_STAR_GREEN);
@@ -230,6 +239,11 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.BRIGHT_NAVY_BLUE_BRICKS);
                         entries.add(BlockInit.BRIGHT_GREEN_BRICKS);
                         entries.add(BlockInit.BRIGHT_WHITE_BRICKS);
+                        entries.add(BlockInit.BRIGHT_BROWN_BRICKS);
+                        entries.add(BlockInit.BRIGHT_MAGENTA_BRICKS);
+                        entries.add(BlockInit.BRIGHT_ORANGE_BRICKS);
+                        entries.add(BlockInit.BRIGHT_PINK_BRICKS);
+                        entries.add(BlockInit.BRIGHT_PURPLE_BRICKS);
                         entries.add(BlockInit.BLUE_GRAY_BRICKS);
                         entries.add(BlockInit.LARGE_BROWN_BRICKS);
                         entries.add(BlockInit.LARGE_LIGHT_GRAY_BRICKS);

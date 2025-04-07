@@ -11,6 +11,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.WallHalfProperty;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSignSkins;
@@ -43,7 +44,7 @@ public class ExitSign extends WallPropBlock {
     }
 
     @Override
-    public Class<RestroomSignSkins> COLOR_ENUM() {
+    public Class<DefaultPropColorEnum> COLOR_ENUM() {
         return null;
     }
 

@@ -29,8 +29,7 @@ public class AcUnit extends WallPropBlock<DefaultPropColorEnum> {
     }
 
     @Override
-    public Class<DefaultPropColorEnum> COLOR_ENUM() {
-        return DefaultPropColorEnum.class;
+    public Class<DefaultPropColorEnum> COLOR_ENUM() { return null;
     }
 
     @Override

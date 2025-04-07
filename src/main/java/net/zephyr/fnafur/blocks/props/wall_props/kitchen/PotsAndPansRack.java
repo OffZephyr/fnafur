@@ -7,10 +7,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSignSkins;
 
-public class PotsAndPansRack extends WallPropBlock<RestroomSignSkins> {
+public class PotsAndPansRack extends WallPropBlock<DefaultPropColorEnum> {
     public PotsAndPansRack(Settings settings) {
         super(settings);
     }
@@ -27,8 +28,7 @@ public class PotsAndPansRack extends WallPropBlock<RestroomSignSkins> {
     }
 
     @Override
-    public Class<RestroomSignSkins> COLOR_ENUM() {
-        return RestroomSignSkins.class;
+    public Class<DefaultPropColorEnum> COLOR_ENUM() { return null;
     }
 
     @Override

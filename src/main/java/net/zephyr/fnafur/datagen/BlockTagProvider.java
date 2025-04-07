@@ -93,16 +93,24 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.BRIGHT_NAVY_BLUE_TILES)
                 .add(BlockInit.BRIGHT_GREEN_TILES)
                 .add(BlockInit.BRIGHT_WHITE_TILES)
+                .add(BlockInit.BRIGHT_BROWN_TILES)
+                .add(BlockInit.BRIGHT_MAGENTA_TILES)
+                .add(BlockInit.BRIGHT_ORANGE_TILES)
+                .add(BlockInit.BRIGHT_PINK_TILES)
+                .add(BlockInit.BRIGHT_PURPLE_TILES)
+                .add(BlockInit.BRIGHT_WHITE_TILES)
                 .add(BlockInit.DARK_BLUE_TILES)
                 .add(BlockInit.BLACK_TILES)
                 .add(BlockInit.RED_TILES)
                 .add(BlockInit.WHITE_TILES)
                 .add(BlockInit.WHITE_DINER_WALL)
                 .add(BlockInit.TAN_DINER_WALL)
+                .add(BlockInit.DARK_GROUT_TILES)
 
                 // CONCRETE
                 .add(BlockInit.CONCRETE_FLOOR)
                 .add(BlockInit.CONCRETE_FLOOR_DARK)
+                .add(BlockInit.CONCRETE_FLOOR_TILE)
 
                 // BRICKS
                 .add(BlockInit.BRICK_WALL)
@@ -142,6 +150,11 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.BRIGHT_NAVY_BLUE_BRICKS)
                 .add(BlockInit.BRIGHT_GREEN_BRICKS)
                 .add(BlockInit.BRIGHT_WHITE_BRICKS)
+                .add(BlockInit.BRIGHT_BROWN_BRICKS)
+                .add(BlockInit.BRIGHT_MAGENTA_BRICKS)
+                .add(BlockInit.BRIGHT_ORANGE_BRICKS)
+                .add(BlockInit.BRIGHT_PINK_BRICKS)
+                .add(BlockInit.BRIGHT_PURPLE_BRICKS)
 
                 // METALLIC BLOCKS
                 .add(BlockInit.METAL_PLATES)
@@ -173,6 +186,8 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.BIG_WINDOW)
                 .add(BlockInit.BIG_WINDOW_WHITE)
                 .add(BlockInit.BIG_WINDOW_DARK)
+                .add(BlockInit.TILED_GLASS_SLIT)
+                .add(BlockInit.TILED_GLASS_SLIT_COLORED)
                ;
 
                 // CARPETS

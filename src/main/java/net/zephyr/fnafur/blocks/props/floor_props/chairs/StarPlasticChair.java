@@ -60,8 +60,7 @@ public class StarPlasticChair extends FloorPropBlock<DefaultPropColorEnum> imple
     }
 
     @Override
-    public Class COLOR_ENUM() {
-        return DefaultPropColorEnum.class;
+    public Class COLOR_ENUM() { return null;
     }
 
     @Override

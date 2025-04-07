@@ -229,6 +229,16 @@ public class BlockInit {
             TransparentBlock::new,
             AbstractBlock.Settings.copy(Blocks.GLASS)
     );
+    public static final Block TILED_GLASS_SLIT = registerBlock(
+            "tiled_glass_slit",
+            TransparentBlock::new,
+            AbstractBlock.Settings.copy(Blocks.GLASS)
+    );
+    public static final Block TILED_GLASS_SLIT_COLORED = registerBlock(
+            "tiled_glass_slit_colored",
+            TransparentBlock::new,
+            AbstractBlock.Settings.copy(Blocks.GLASS)
+    );
     public static final Block BIG_WINDOW = registerBlock(
             "big_window",
             TransparentBlock::new,
@@ -462,6 +472,31 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block BRIGHT_BROWN_BRICKS = registerBlock(
+            "bright_brown_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BRIGHT_MAGENTA_BRICKS = registerBlock(
+            "bright_magenta_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BRIGHT_ORANGE_BRICKS = registerBlock(
+            "bright_orange_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BRIGHT_PINK_BRICKS = registerBlock(
+            "bright_pink_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BRIGHT_PURPLE_BRICKS = registerBlock(
+            "bright_purple_bricks",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
 
     /* Metallic Blocks */
 
@@ -611,6 +646,31 @@ public class BlockInit {
     );
     public static final Block BRIGHT_WHITE_TILES = registerBlock(
             "bright_white_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BRIGHT_BROWN_TILES = registerBlock(
+            "bright_brown_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BRIGHT_MAGENTA_TILES = registerBlock(
+            "bright_magenta_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BRIGHT_ORANGE_TILES = registerBlock(
+            "bright_orange_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BRIGHT_PINK_TILES = registerBlock(
+            "bright_pink_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block BRIGHT_PURPLE_TILES = registerBlock(
+            "bright_purple_tiles",
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
@@ -780,6 +840,11 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block DARK_GROUT_TILES = registerBlock(
+            "dark_grout_tiles",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
 
 
 
@@ -904,6 +969,12 @@ public class BlockInit {
             AbstractBlock.Settings.copy(Blocks.STONE)
 
     );
+    public static final Block CONCRETE_FLOOR_TILE = registerBlock(
+            "concrete_floor_tile",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+
+    );
 
    /* Miscellaneous Blocks */
 
@@ -934,6 +1005,9 @@ public class BlockInit {
                     .solidBlock(Blocks::never)
                     .blockVision(Blocks::always)
     );
+
+   /*Circuit Breaker */
+
     public static final Block CIRCUIT_BREAKER = registerBlock(
             "circuit_breaker",
             CircuitBreakerBlock::new,
@@ -996,7 +1070,9 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_SLIT, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_COLORED, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_SLIT_COLORED, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BIG_WINDOW, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BIG_WINDOW_WHITE, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BIG_WINDOW_DARK, RenderLayer.getTranslucent());
