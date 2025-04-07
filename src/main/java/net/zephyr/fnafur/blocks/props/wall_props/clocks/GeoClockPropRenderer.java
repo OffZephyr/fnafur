@@ -45,16 +45,25 @@ public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity> extends Geo
         poseStack.push();
 
         float rot = 0;
-        if(Objects.equals(bone.getName(), "hour")){
-            rot = animatable.deltaHour;
+        if(Objects.equals(bone.getName(), "second")){
+            System.out.println("sec");
+            rot = animatable.deltaMinute * 60;
+            poseStack.translate(0, 0.5f, 0);
+            poseStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(360 * rot));
+            poseStack.translate(0, -0.5f, 0);
         }
-        else if(Objects.equals(bone.getName(), "minute")){
+        if(Objects.equals(bone.getName(), "minute")){
             rot = animatable.deltaMinute;
+            poseStack.translate(0, 0.5f, 0);
+            poseStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(360 * rot));
+            poseStack.translate(0, -0.5f, 0);
         }
-
-        poseStack.translate(0, 0.5f, 0);
-        poseStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(360 * rot));
-        poseStack.translate(0, -0.5f, 0);
+        else if(Objects.equals(bone.getName(), "hour")){
+            rot = (animatable.deltaHour + (((1 / 12f) * (animatable.deltaMinute))));
+            poseStack.translate(0, 0.5f, 0);
+            poseStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180 * rot));
+            poseStack.translate(0, -0.5f, 0);
+        }
 
         super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
         poseStack.pop();

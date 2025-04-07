@@ -95,23 +95,23 @@ public class DoubleDoorFridge extends FloorPropBlock<DefaultPropColorEnum> imple
     }
 
     @Override
-    public Identifier getTexture() {
+    public Identifier getTexture(BlockState state, BlockPos pos) {
         return this.texture;
     }
 
     @Override
-    public Identifier getModel() {
+    public Identifier getModel(BlockState state, BlockPos pos) {
         return this.model;
     }
 
     @Override
-    public Identifier getAnimations() {
+    public Identifier getAnimations(BlockState state, BlockPos pos) {
         return this.animations;
     }
 
     @Override
-    public RenderLayer getRenderType() {
-        return RenderLayer.getEntityCutout(getTexture());
+    public RenderLayer getRenderType(BlockState state, BlockPos pos) {
+        return RenderLayer.getEntityCutout(getTexture(state, pos));
     }
 
     @Override

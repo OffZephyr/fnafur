@@ -59,25 +59,29 @@ public class GeoPropBlockEntity extends PropBlockEntity implements GeoBlockEntit
         return this.cache;
     }
     public Identifier getTexture(World world){
-        if(block != null) return block.getTexture();
-        return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getTexture();
+        BlockState state = world.getBlockState(getPos()).isOf(this.getCachedState().getBlock()) ? world.getBlockState(getPos()) : getCachedState();
+        if(block != null) return block.getTexture(state, getPos());
+        return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getTexture(state, getPos());
     }
     public Identifier getReRenderTexture(World world){
         return getTexture(world);
     }
     public Identifier getModel(World world){
-        if(block != null) return block.getModel();
-        return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getModel();
+        BlockState state = world.getBlockState(getPos()).isOf(this.getCachedState().getBlock()) ? world.getBlockState(getPos()) : getCachedState();
+        if(block != null) return block.getModel(state, getPos());
+        return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getModel(state, getPos());
     }
     public Identifier getReRenderModel(World world){
         return getModel(world);
     }
     public Identifier getAnimations(World world){
-        if(block != null) return block.getAnimations();
-        return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getAnimations();
+        BlockState state = world.getBlockState(getPos()).isOf(this.getCachedState().getBlock()) ? world.getBlockState(getPos()) : getCachedState();
+        if(block != null) return block.getAnimations(state, getPos());
+        return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getAnimations(state, getPos());
     }
     public RenderLayer getRenderType(){
-        if(block != null) return block.getRenderType();
+        BlockState state = world.getBlockState(getPos()).isOf(this.getCachedState().getBlock()) ? world.getBlockState(getPos()) : getCachedState();
+        if(block != null) return block.getRenderType(state, getPos());
         return null;
     }
 }

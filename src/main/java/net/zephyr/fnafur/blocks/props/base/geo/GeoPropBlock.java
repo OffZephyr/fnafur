@@ -12,10 +12,10 @@ import java.util.Map;
 
 public interface GeoPropBlock {
     public void setModelInfo(Identifier texture, Identifier model, Identifier animations);
-    public Identifier getTexture();
-    public Identifier getModel();
-    public Identifier getAnimations();
-    default RenderLayer getRenderType(){
+    public Identifier getTexture(BlockState state, BlockPos pos);
+    public Identifier getModel(BlockState state, BlockPos pos);
+    public Identifier getAnimations(BlockState state, BlockPos pos);
+    default RenderLayer getRenderType(BlockState state, BlockPos pos){
         return null;
     }
     public RawAnimation getCurrentAnimation(BlockState state, BlockPos pos);

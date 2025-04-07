@@ -40,12 +40,11 @@ public class GeoClockPropBlockEntity extends GeoPropBlockEntity implements GeoBl
         long dayTime = (world.getTimeOfDay());
         double currentDay = dayTime / 24000d;
 
-        long minute = (long) ((dayTime / 1000f) * 60);
-        long hour = minute / 60;
-        minute = minute - (60*hour);
+        float minute = ((dayTime / 1000f) * 60f);
+        float hour = minute / 60f;
 
         deltaMinute = minute / 60f;
-        deltaHour = ((hour + 6) / 12f) - (int)currentDay;
+        deltaHour = ((hour + 12) / 12f) - (int)currentDay;
 
         super.tick(world, blockPos, state, entity);
     }

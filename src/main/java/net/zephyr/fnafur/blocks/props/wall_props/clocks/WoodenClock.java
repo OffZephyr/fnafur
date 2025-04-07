@@ -12,6 +12,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
@@ -20,7 +21,7 @@ import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public class WoodenClock extends WallPropBlock<DefaultPropColorEnum> implements GeoPropBlock {
+public class WoodenClock extends WallPropBlock<WoodenClockColorEnum> implements GeoPropBlock {
     private Identifier texture;
     private Identifier model;
     private Identifier animations;
@@ -40,8 +41,8 @@ public class WoodenClock extends WallPropBlock<DefaultPropColorEnum> implements 
     }
 
     @Override
-    public Class<DefaultPropColorEnum> COLOR_ENUM() {
-        return null;
+    public Class<WoodenClockColorEnum> COLOR_ENUM() {
+        return WoodenClockColorEnum.class;
     }
 
     @Override
@@ -68,17 +69,25 @@ public class WoodenClock extends WallPropBlock<DefaultPropColorEnum> implements 
     }
 
     @Override
-    public Identifier getTexture() {
+    public Identifier getTexture(BlockState state, BlockPos pos) {
         return this.texture;
     }
 
     @Override
-    public Identifier getModel() {
-        return this.model;
+    public Identifier getModel(BlockState state, BlockPos pos) {
+        Identifier noSeconds = Identifier.of(FnafUniverseResuited.MOD_ID,"geo/block/props/wall_clock.geo.json");
+        Identifier seconds = Identifier.of(FnafUniverseResuited.MOD_ID,"geo/block/props/wall_clock_seconds.geo.json");
+
+        this.model = state.get(COLOR_PROPERTY()) == WoodenClockColorEnum.SECONDS ? seconds : noSeconds;
+
+        return switch (state.get(COLOR_PROPERTY())){
+            default -> noSeconds;
+            case SECONDS -> seconds;
+        };
     }
 
     @Override
-    public Identifier getAnimations() {
+    public Identifier getAnimations(BlockState state, BlockPos pos) {
         return this.animations;
     }
 
