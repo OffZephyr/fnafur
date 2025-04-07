@@ -9,8 +9,10 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -61,6 +63,17 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
     }
 
     @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        NbtCompound nbt = ItemNbtUtil.getNbt(itemStack);
+
+        if(world.getBlockEntity(pos) instanceof BlockEntity ent){
+            ((IEntityDataSaver)ent).getPersistentData().put("contains", nbt);
+        }
+
+        super.onPlaced(world, pos, state, placer, itemStack);
+    }
+
+    @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new GalaxyLayerGeoPropEntity(pos, state, this);
     }
@@ -86,6 +99,7 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
                 chara = chara.isEmpty() ? "entity.fnafur.none" : "entity.fnafur." + chara;
 
                 List<Text> lore = List.of(
+                        Text.literal("§8Use on Inactive Animatronic"),
                         Text.literal("§8Character: " + "§7" + Text.translatable(chara).getString()),
                         Text.literal("§8Alt: " + "§7" + Text.translatable(alt).getString()),
                         Text.literal("§8Eyes: " + "§7" + Text.translatable(eyes).getString())

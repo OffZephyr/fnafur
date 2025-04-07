@@ -289,10 +289,11 @@ public class ItemGroupsInit {
                     .noRenderedName()
                     .icon(() -> new ItemStack(SpawnItemInit.CL_FRED_SPAWN))
                     .entries((displayContext, entries) -> {
+                        entries.add(BlockInit.ANIMATRONIC_BLOCK);
+                        entries.add(PropInit.COSMO_GIFT);
                         entries.add(ItemInit.DEATHCOIN);
                         entries.add(ItemInit.CPU);
                         entries.add(ItemInit.ILLUSIONDISC);
-                        entries.add(PropInit.COSMO_GIFT);
 
                         entries.add(SpawnItemInit.CL_FRED_SPAWN);
                         entries.add(SpawnItemInit.CL_BON_SPAWN);

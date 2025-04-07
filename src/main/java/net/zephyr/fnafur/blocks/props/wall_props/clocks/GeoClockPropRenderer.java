@@ -46,7 +46,6 @@ public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity> extends Geo
 
         float rot = 0;
         if(Objects.equals(bone.getName(), "second")){
-            System.out.println("sec");
             rot = animatable.deltaMinute * 60;
             poseStack.translate(0, 0.5f, 0);
             poseStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(360 * rot));

@@ -1,6 +1,21 @@
 {
     "model": {
-      "type": "minecraft:model",
-      "model": "fnafur:item/giftbox_item"
+      
+      "type": "minecraft:select",
+      "cases":[
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/giftbox_item_sprite"
+          },
+          "when": "gui"
+        }
+      ],
+      "fallback": {
+        "type": "minecraft:model",
+        "model": "fnafur:item/giftbox_item"
+        },
+        "block_state_property": "color",
+      "property": "minecraft:display_context"
   }
 }

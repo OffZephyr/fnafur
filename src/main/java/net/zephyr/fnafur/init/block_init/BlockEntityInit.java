@@ -19,6 +19,7 @@ import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlockEntity;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 
 public class BlockEntityInit {
     public static BlockEntityType<ComputerBlockEntity> COMPUTER;
@@ -27,6 +28,7 @@ public class BlockEntityInit {
     public static BlockEntityType<CameraDeskBlockEntity> CAMERA_DESK;
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
+    public static BlockEntityType<AnimatronicBlockEntity> ANIMATRONIC_BLOCK;
     public static BlockEntityType<GeoPropBlockEntity> GEO_PROPS;
     public static BlockEntityType<GeoClockPropBlockEntity> GEO_CLOCK_PROP;
     public static BlockEntityType<GalaxyLayerGeoPropEntity> GALAXY_GEO_PROPS;
@@ -112,6 +114,11 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "clock_geo_props"),
                         FabricBlockEntityTypeBuilder.create(GeoClockPropBlockEntity::new,
                                 PropInit.WOODEN_CLOCK
+                        ).build());
+        ANIMATRONIC_BLOCK =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "animatronic_block"),
+                        FabricBlockEntityTypeBuilder.create(AnimatronicBlockEntity::new,
+                                BlockInit.ANIMATRONIC_BLOCK
                         ).build());
 
         GALAXY_GEO_PROPS =

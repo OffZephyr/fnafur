@@ -40,6 +40,7 @@ import net.zephyr.fnafur.blocks.tile_doors.beta.OfficeDoor;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,16 @@ public class BlockInit {
 
 
     /* CUSTOM MODELS */
+    public static final Block ANIMATRONIC_BLOCK = registerBlock(
+            "animatronic_block",
+            AnimatronicBlock::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .notSolid()
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+    );
+
 
     public static final Block COMPUTER = registerBlock(
             "computer",

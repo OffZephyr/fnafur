@@ -55,6 +55,7 @@ import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
 import net.zephyr.fnafur.blocks.props.wall_props.electricity.wall_outlet.WallOutlet;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.CosmoGift;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropRenderer;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntityRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -548,6 +549,7 @@ public class PropInit {
         BlockEntityRendererFactories.register(BlockEntityInit.PROPS, PropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.ENERGY, PropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GEO_PROPS, GeoPropRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntityInit.ANIMATRONIC_BLOCK, AnimatronicBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GEO_CLOCK_PROP, GeoClockPropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GALAXY_GEO_PROPS, GalaxyLayerGeoPropRenderer::new);
 

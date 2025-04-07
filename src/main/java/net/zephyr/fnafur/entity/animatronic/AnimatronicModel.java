@@ -32,7 +32,6 @@ public class AnimatronicModel<T extends AnimatronicEntity> extends GeoModel<T> {
     public Identifier getAnimationResource(T animatable) {
         String animations = ((IEntityDataSaver) animatable).getPersistentData().getCompound("alt").getString("animations");
         if (!animations.isEmpty()) {
-            System.out.println(animations);
             return Identifier.of(FnafUniverseResuited.MOD_ID, animations);
         }
 

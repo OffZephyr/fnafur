@@ -20,6 +20,9 @@ import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
+import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.CosmoGift;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
+import net.zephyr.fnafur.init.block_init.BlockInit;
 
 public class FloorPropPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
@@ -35,6 +38,8 @@ public class FloorPropPlacingRenderer {
                         Vec3d hitPos = blockHit.getPos().add(0, 1, 0);
                         if (((BlockHitResult) blockHit).getSide() == Direction.UP) pos = pos.up();
                         if (((BlockHitResult) blockHit).getSide() == Direction.DOWN) pos = pos.down();
+
+                        if(block instanceof CosmoGift && player.getWorld().getBlockState(pos).isOf(BlockInit.ANIMATRONIC_BLOCK)) return;
 
                         float rotation = -MinecraftClient.getInstance().gameRenderer.getCamera().getYaw();
                         float offsetRotation = !block.rotates() ? 0 : block.getDefaultState().get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees() + 180f;
@@ -76,7 +81,14 @@ public class FloorPropPlacingRenderer {
                         matrices.translate(-0.5f, 0, -0.5f);
 
                         if(block instanceof GeoPropBlock){
+                            GeoPropBlockEntity entity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
 
+                            entity.setWorld(MinecraftClient.getInstance().world);
+                            if(MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(entity) instanceof GeoPropRenderer<GeoPropBlockEntity> geo){
+                                geo.render(entity, matrices, vertexConsumers, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            }
+                        }
+                        else if(block instanceof AnimatronicBlock){
                             GeoPropBlockEntity entity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
 
                             entity.setWorld(MinecraftClient.getInstance().world);
