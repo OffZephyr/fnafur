@@ -35,6 +35,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.RetroTableBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.fnaf1desk.Fnaf1Desk;
 import net.zephyr.fnafur.blocks.props.floor_props.trash_bin.TrashBin;
+import net.zephyr.fnafur.blocks.props.floor_props.water_dispenser.WaterDispenser;
 import net.zephyr.fnafur.blocks.props.floor_props.wet_floor_sign.WetFloorSign;
 import net.zephyr.fnafur.blocks.props.floor_props.wooden_shelf.WoodenShelf;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVent;
@@ -269,6 +270,18 @@ public class PropInit {
     public static final Block TRASH_BIN = registerBlock(
             "trash_bin",
             TrashBin::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block WATER_DISPENSER = registerBlock(
+            "water_dispenser",
+            WaterDispenser::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)

@@ -99,6 +99,7 @@ public class BlockEntityInit {
                                 PropInit.TOILET_PAPER_ROLL,
                                 PropInit.TOILET,
                                 PropInit.FLOOR_TRASH,
+                                PropInit.WATER_DISPENSER,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

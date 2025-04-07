@@ -58,6 +58,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.DOUBLE_DOOR_FRIDGE);
                         entries.add(PropInit.KITCHEN_PREP_TABLE);
                         entries.add(PropInit.POTS_AND_PANS_RACK);
+                        entries.add(PropInit.WATER_DISPENSER);
 
                         entries.add(PropInit.SKEEBALL_ARCADE);
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
