@@ -1,19 +1,19 @@
 {
   "variants": {
     "facing=north": {
-      "model": "fnafur:props/tall_workbench",
-      "y": 180
+      "model": "fnafur:props/tall_workbench"
     },
     "facing=east": {
       "model": "fnafur:props/tall_workbench",
-      "y": 270
+      "y": 90
     },
     "facing=south": {
-      "model": "fnafur:props/tall_workbench"
+      "model": "fnafur:props/tall_workbench",
+      "y": 180
     },
     "facing=west": {
       "model": "fnafur:props/tall_workbench",
-      "y": 90
+      "y": 270
     }
   }
 }

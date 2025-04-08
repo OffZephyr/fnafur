@@ -5,6 +5,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,11 +24,20 @@ public class PropBlockEntity extends BlockEntity {
         super(type, pos, state);
     }
 
+    @Override
+    public boolean onSyncedBlockEvent(int type, int data) {
+        return super.onSyncedBlockEvent(type, data);
+    }
+
+    @Override
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
+        super.readNbt(nbt, registries);
+    }
+
     public void tick(World world, BlockPos blockPos, BlockState state, PropBlockEntity entity){
-        if(!world.isClient() && ((IEntityDataSaver)entity).getPersistentData().isEmpty()){
-            for(ServerPlayerEntity p : PlayerLookup.all(world.getServer())){
-                ServerPlayNetworking.send(p, new UpdateBlockNbtS2CGetFromClientPayload(blockPos.asLong()));
-            }
+
+        if(getWorld() != null && getWorld().isClient() && ((IEntityDataSaver)this).getPersistentData().isEmpty()){
+            GoopyNetworkingUtils.getNbtFromServer(getPos());
         }
     }
 }

@@ -9,7 +9,7 @@
       "y": 90
     },
     "facing=south,color=0": {
-      "model": "fnafur:props/present_stack/present_stack"
+      "model": "fnafur:props/present_stack/present_stack",
       "y": 180
     },
     "facing=west,color=0": {

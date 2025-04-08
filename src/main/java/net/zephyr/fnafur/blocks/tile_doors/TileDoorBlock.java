@@ -102,9 +102,13 @@ public class TileDoorBlock extends BlockWithEntity {
             int width = ((IEntityDataSaver)ent).getPersistentData().getInt("width");
             int height = ((IEntityDataSaver)ent).getPersistentData().getInt("height");
 
+
+            BlockPos testPos = mainPos.offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
+            Direction direction = world.getBlockState(testPos).getBlock() instanceof TileDoorBlock ? state.get(TileDoorBlock.FACING).rotateYCounterclockwise() : state.get(TileDoorBlock.FACING).rotateYClockwise();
+
             for(int x = 0; x <= width; x++){
                 for(int y = 0; y <= height; y++){
-                    BlockPos breakPos = mainPos.up(y).offset(state.get(FACING).rotateYCounterclockwise(), x);
+                    BlockPos breakPos = mainPos.up(y).offset(direction, x);
                     world.setBlockState(breakPos, Blocks.AIR.getDefaultState());
                 }
             }
@@ -120,16 +124,27 @@ public class TileDoorBlock extends BlockWithEntity {
             BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("main"));
 
             if(world.getBlockEntity(mainPos) instanceof TileDoorBlockEntity ent2) {
-                boolean powered = world.isReceivingRedstonePower(pos);
 
                 int width = ((IEntityDataSaver) ent2).getPersistentData().getInt("width");
                 int height = ((IEntityDataSaver) ent2).getPersistentData().getInt("height");
+
+
+                BlockPos testPos = mainPos.offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
+                Direction direction = world.getBlockState(testPos).getBlock() instanceof TileDoorBlock ? state.get(TileDoorBlock.FACING).rotateYCounterclockwise() : state.get(TileDoorBlock.FACING).rotateYClockwise();
+
+                boolean powered = false;
+                for (int x = 0; x <= width; x++) {
+                    for (int y = 0; y <= height; y++) {
+                        BlockPos updatePos = mainPos.up(y).offset(direction, x);
+                        if(world.isReceivingRedstonePower(updatePos)) powered = true;
+                    }
+                }
 
                 world.setBlockState(mainPos, world.getBlockState(mainPos).with(OPEN, powered), 0);
 
                 for (int x = 0; x <= width; x++) {
                     for (int y = 0; y <= height; y++) {
-                        BlockPos updatePos = mainPos.up(y).offset(state.get(FACING).rotateYCounterclockwise(), x);
+                        BlockPos updatePos = mainPos.up(y).offset(direction, x);
                         world.setBlockState(updatePos, world.getBlockState(updatePos).with(MAIN, updatePos.equals(mainPos)).with(OPEN, powered), 0);
                         for (ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
                             ServerPlayNetworking.send(p, new TileDoorUpdateS2CPayload(updatePos.asLong(), powered));

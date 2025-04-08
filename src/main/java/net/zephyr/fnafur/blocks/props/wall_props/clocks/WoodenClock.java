@@ -70,7 +70,7 @@ public class WoodenClock extends WallPropBlock<WoodenClockColorEnum> implements 
 
     @Override
     public Identifier getTexture(BlockState state, BlockPos pos) {
-        return this.texture;
+        return texture;
     }
 
     @Override

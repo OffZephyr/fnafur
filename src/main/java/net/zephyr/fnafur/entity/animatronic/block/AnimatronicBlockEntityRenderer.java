@@ -17,7 +17,11 @@ public class AnimatronicBlockEntityRenderer<T extends AnimatronicBlockEntity> ex
     @Override
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if(!(MinecraftClient.getInstance().currentScreen instanceof WorkbenchScreen || MinecraftClient.getInstance().currentScreen instanceof CpuConfigScreen)){
+            matrices.push();
+            matrices.translate(0.17, 0, 0.17);
+            matrices.scale(0.68f, 0.68f, 0.68f);
             super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+            matrices.pop();
         }
     }
 }

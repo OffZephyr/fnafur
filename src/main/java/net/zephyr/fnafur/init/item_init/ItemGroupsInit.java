@@ -87,6 +87,11 @@ public class ItemGroupsInit {
                     .noRenderedName()
                     .icon(() -> new ItemStack(ItemInit.PIPE_WRENCH))
                     .entries((displayContext, entries) -> {
+                        entries.add(BlockInit.ANIMATRONIC_BLOCK);
+                        entries.add(PropInit.COSMO_GIFT);
+                        entries.add(ItemInit.DEATHCOIN);
+                        entries.add(ItemInit.CPU);
+                        entries.add(ItemInit.ILLUSIONDISC);
 
                         entries.add(ItemInit.PIPE_WRENCH);
                         entries.add(ItemInit.WRENCH);
@@ -303,24 +308,6 @@ public class ItemGroupsInit {
                         entries.add(StickerInit.WALL_GRUNGE);
                         entries.add(StickerInit.WALL_GRUNGE_2);
 
-
-                    }).build());
-    public static final ItemGroup FNAF_ANIMATRONICS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, "animatronics"),
-            FabricItemGroup.builder()
-                    .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".animatronics"))
-                    .noRenderedName()
-                    .icon(() -> new ItemStack(SpawnItemInit.CL_FRED_SPAWN))
-                    .entries((displayContext, entries) -> {
-                        entries.add(BlockInit.ANIMATRONIC_BLOCK);
-                        entries.add(PropInit.COSMO_GIFT);
-                        entries.add(ItemInit.DEATHCOIN);
-                        entries.add(ItemInit.CPU);
-                        entries.add(ItemInit.ILLUSIONDISC);
-
-                        entries.add(SpawnItemInit.CL_FRED_SPAWN);
-                        entries.add(SpawnItemInit.CL_BON_SPAWN);
-                        entries.add(SpawnItemInit.CL_CHICA_SPAWN);
-                        entries.add(SpawnItemInit.CL_FOXY_SPAWN);
 
                     }).build());
     public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, FnafUniverseResuited.MOD_ID),

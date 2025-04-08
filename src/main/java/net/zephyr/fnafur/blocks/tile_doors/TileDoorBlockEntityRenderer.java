@@ -11,6 +11,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -44,12 +45,15 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
             float translateMaxHeight = height + 0.5f;
             float translateHeight = MathHelper.lerp(openDelta, 0, translateMaxHeight);
 
+            BlockPos testPos = entity.getPos().offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
+            Direction direction = entity.getWorld().getBlockState(testPos).getBlock() instanceof TileDoorBlock ? state.get(TileDoorBlock.FACING).rotateYCounterclockwise() : state.get(TileDoorBlock.FACING).rotateYClockwise();
+
             matrices.push();
             matrices.translate(0, translateHeight, 0);
             for (int x = 0; x <= width; x++) {
                 for (int y = 0; y <= height - (int)translateHeight; y++) {
 
-                    BlockPos updatePos = entity.getPos().up(y).offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise(), x);
+                    BlockPos updatePos = entity.getPos().up(y).offset(direction, x);
 
                     BlockState posState = entity.getWorld().getBlockState(updatePos);
                     BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(posState);

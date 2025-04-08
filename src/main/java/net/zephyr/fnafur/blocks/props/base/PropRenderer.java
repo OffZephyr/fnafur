@@ -32,20 +32,21 @@ public class PropRenderer<T extends BlockEntity> implements BlockEntityRenderer<
     }
 
     @Override
+    public int getRenderDistance() {
+        return 32;
+    }
+
+    @Override
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         BlockPos pos = entity.getPos();
         BlockState state = client.world.getBlockState(pos);
         NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
 
-        if(((IEntityDataSaver)entity).getPersistentData().isEmpty()){
-            GoopyNetworkingUtils.getNbtFromServer(pos);
-        }
-
         if(state.getBlock() instanceof PropBlock<?> block) {
             matrices.push();
 
             float rotation = nbt.getFloat("Rotation");
-            float offsetRotation = !block.rotates() ? 0 : state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees() + 180f;
+            float offsetRotation = !block.rotates() ? 0 : state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
 
             double offsetX = nbt.getDouble("xOffset");
             double offsetY = nbt.getDouble("yOffset");

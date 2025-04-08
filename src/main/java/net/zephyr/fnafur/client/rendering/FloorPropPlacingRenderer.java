@@ -42,7 +42,7 @@ public class FloorPropPlacingRenderer {
                         if(block instanceof CosmoGift && player.getWorld().getBlockState(pos).isOf(BlockInit.ANIMATRONIC_BLOCK)) return;
 
                         float rotation = -MinecraftClient.getInstance().gameRenderer.getCamera().getYaw();
-                        float offsetRotation = !block.rotates() ? 0 : block.getDefaultState().get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees() + 180f;
+                        float offsetRotation = !block.rotates() ? 0 : block.getDefaultState().get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
 
                         double x = hitPos.getX() - pos.getX();
                         double y = pos.getY();
@@ -93,7 +93,11 @@ public class FloorPropPlacingRenderer {
 
                             entity.setWorld(MinecraftClient.getInstance().world);
                             if(MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(entity) instanceof GeoPropRenderer<GeoPropBlockEntity> geo){
+                                matrices.push();
+                                matrices.translate(0.17, 0, 0.17);
+                                matrices.scale(0.68f, 0.68f, 0.68f);
                                 geo.render(entity, matrices, vertexConsumers, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                                matrices.pop();
                             }
                         }
                         else {
