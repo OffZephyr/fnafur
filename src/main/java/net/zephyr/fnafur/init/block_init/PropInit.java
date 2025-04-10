@@ -22,10 +22,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.chairs.StarPlasticChair;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_trash.FloorTrash;
-import net.zephyr.fnafur.blocks.props.floor_props.kitchen.DoubleDoorFridge;
-import net.zephyr.fnafur.blocks.props.floor_props.kitchen.Fridge;
-import net.zephyr.fnafur.blocks.props.floor_props.kitchen.KitchenPrepTable;
-import net.zephyr.fnafur.blocks.props.floor_props.kitchen.PizzaOven;
+import net.zephyr.fnafur.blocks.props.floor_props.kitchen.*;
 import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.present_stack.PresentStack;
@@ -379,6 +376,18 @@ public class PropInit {
     public static final Block PIZZA_OVEN = registerBlock(
             "pizza_oven",
             PizzaOven::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block ICE_CREAM_DISPENSER = registerBlock(
+            "ice_cream_dispenser",
+            IceCreamDispenser::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)

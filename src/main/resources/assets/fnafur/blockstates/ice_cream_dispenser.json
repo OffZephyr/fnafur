@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/ice_cream_dispenser"
+    },
+    "facing=east": {
+      "model": "fnafur:props/ice_cream_dispenser",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/ice_cream_dispenser",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/ice_cream_dispenser",
+      "y": 270
+    }
+  }
+}

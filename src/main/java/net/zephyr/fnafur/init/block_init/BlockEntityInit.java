@@ -100,6 +100,7 @@ public class BlockEntityInit {
                                 PropInit.TOILET,
                                 PropInit.FLOOR_TRASH,
                                 PropInit.WATER_DISPENSER,
+                                PropInit.ICE_CREAM_DISPENSER,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());
