@@ -48,6 +48,8 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
         return VoxelShapes.fullCube();
     }
+
+
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         ItemStack stack = player.getMainHandStack();

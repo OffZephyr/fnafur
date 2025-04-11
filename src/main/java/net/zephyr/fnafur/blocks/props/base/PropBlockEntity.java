@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.GoopyBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CGetFromClientPayload;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -24,20 +25,14 @@ public class PropBlockEntity extends BlockEntity {
         super(type, pos, state);
     }
 
-    @Override
-    public boolean onSyncedBlockEvent(int type, int data) {
-        return super.onSyncedBlockEvent(type, data);
-    }
-
-    @Override
-    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        super.readNbt(nbt, registries);
-    }
-
     public void tick(World world, BlockPos blockPos, BlockState state, PropBlockEntity entity){
-
-        if(getWorld() != null && getWorld().isClient() && ((IEntityDataSaver)this).getPersistentData().isEmpty()){
-            GoopyNetworkingUtils.getNbtFromServer(getPos());
+        if(!world.isClient()){
+            if(!((IEntityDataSaver)entity).getPersistentData().getBoolean("synced")){
+                for(ServerPlayerEntity p : PlayerLookup.all(entity.getWorld().getServer())){
+                    ServerPlayNetworking.send(p, new UpdateBlockNbtS2CGetFromClientPayload(blockPos.asLong()));
+                }
+                ((IEntityDataSaver)entity).getPersistentData().putBoolean("synced", true);
+            }
         }
     }
 }

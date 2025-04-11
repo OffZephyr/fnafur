@@ -36,8 +36,6 @@ public abstract class FloorPropBlock<@Nullable T extends Enum<T> & ColorEnumInte
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         if (world.getBlockEntity(pos) != null && placer instanceof PlayerEntity player) {
-
-
             if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof BlockItem blockItem) {
                 if (blockItem.getBlock() instanceof FloorPropBlock && world.isClient()) {
                     FloorPropBlock.drawingOutline = true;
@@ -64,7 +62,6 @@ public abstract class FloorPropBlock<@Nullable T extends Enum<T> & ColorEnumInte
                         ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("xOffset", x);
                         ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("zOffset", z);
 
-                        GoopyNetworkingUtils.saveBlockNbt(pos, ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData());
                     }
                 }
             }

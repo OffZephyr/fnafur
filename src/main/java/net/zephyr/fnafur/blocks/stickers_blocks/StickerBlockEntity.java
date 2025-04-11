@@ -16,11 +16,7 @@ public class StickerBlockEntity extends BlockEntity {
         super(BlockEntityInit.STICKER_BLOCK, pos, state);
     }
     public void tick(World world, BlockPos blockPos, BlockState state, StickerBlockEntity entity){
-        if(!world.isClient()){
-            for(ServerPlayerEntity p : PlayerLookup.all(world.getServer())){
-                ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(blockPos.asLong(), ((IEntityDataSaver)this).getPersistentData().copy()));
-            }
-        }
+
     }
 
 

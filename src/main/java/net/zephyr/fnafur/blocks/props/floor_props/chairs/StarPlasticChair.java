@@ -97,7 +97,7 @@ public class StarPlasticChair extends FloorPropBlock<DefaultPropColorEnum> imple
 
     @Override
     public float getSittingOffset(World world, BlockPos pos) {
-        return 0;
+        return 0.1f;
     }
 
     @Override

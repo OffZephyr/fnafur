@@ -2,6 +2,7 @@ package net.zephyr.fnafur.blocks.props.base.geo;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
@@ -9,6 +10,7 @@ import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -20,6 +22,7 @@ import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GeoPropAddedLayer;
+import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -48,21 +51,22 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
 
         BlockPos pos = entity.getPos();
         BlockState state = client.world.getBlockState(pos);
+        NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
 
         if(state.getBlock() instanceof PropBlock<?> block) {
             matrices.push();
-            if(!((IEntityDataSaver)entity).getPersistentData().isEmpty()){
-                GoopyNetworkingUtils.getNbtFromServer(pos);
+
+            if(!nbt.contains("synced")){
+                ClientPlayNetworking.send(new SyncBlockNbtC2SPayload(pos.asLong()));
+
+                nbt = ((IEntityDataSaver)entity).getPersistentData();
             }
 
-            if(((IEntityDataSaver)entity).getPersistentData().isEmpty()){
-                GoopyNetworkingUtils.getNbtFromServer(pos);
-            }
-            float rotation = ((IEntityDataSaver)entity).getPersistentData().getFloat("Rotation");
+            float rotation = nbt.getFloat("Rotation");
 
-            double offsetX = ((IEntityDataSaver)entity).getPersistentData().getDouble("xOffset");
-            double offsetY = ((IEntityDataSaver)entity).getPersistentData().getDouble("yOffset");
-            double offsetZ = ((IEntityDataSaver)entity).getPersistentData().getDouble("zOffset");
+            double offsetX = nbt.getDouble("xOffset");
+            double offsetY = nbt.getDouble("yOffset");
+            double offsetZ = nbt.getDouble("zOffset");
 
             matrices.translate(-0.5f, 0, -0.5f);
             matrices.translate(offsetX, offsetY, offsetZ);

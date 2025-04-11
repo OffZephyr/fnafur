@@ -44,7 +44,7 @@ public class GeoClockPropBlockEntity extends GeoPropBlockEntity implements GeoBl
         float hour = minute / 60f;
 
         deltaMinute = minute / 60f;
-        deltaHour = ((hour + 12) / 12f) - (int)currentDay;
+        deltaHour = ((hour + 12) / 12f);
 
         super.tick(world, blockPos, state, entity);
     }

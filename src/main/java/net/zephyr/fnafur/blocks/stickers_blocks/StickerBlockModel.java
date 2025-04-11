@@ -34,6 +34,7 @@ import net.minecraft.world.BlockRenderView;
 import net.zephyr.fnafur.FnafUniverseResuited;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.item_init.StickerInit;
+import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -108,6 +109,9 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
         BlockEntity entity = blockView.getBlockEntity(pos);
 
         if (entity instanceof BlockEntity ent) {
+            if(((IEntityDataSaver) ent).getPersistentData().isEmpty()){
+                GoopyNetworkingUtils.getNbtFromServer(ent.getPos());
+            }
             emitQuads(state, pos, ((IEntityDataSaver) ent).getPersistentData(), emitter);
         }
     }
@@ -115,12 +119,12 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
     @Override
     public void emitItemQuads(QuadEmitter emitter, Supplier<Random> randomSupplier) {
 
-        if(block != null) {
+        /*if(block != null) {
             BlockState state = (block.getDefaultState());
             //NbtCompound nbt = item.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt().getCompound("fnafur.persistent");
 
             emitQuads(state, BlockPos.ORIGIN, new NbtCompound(), emitter);
-        }
+        }*/
     }
 
     public void emitQuads(BlockState state, BlockPos pos, NbtCompound nbt, QuadEmitter emitter){

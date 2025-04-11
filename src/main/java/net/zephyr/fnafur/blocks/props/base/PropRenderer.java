@@ -2,6 +2,7 @@ package net.zephyr.fnafur.blocks.props.base;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -9,7 +10,6 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.entity.model.Deadmau5EarsEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +18,8 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
+import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CGetFromClientPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 @Environment(EnvType.CLIENT)
@@ -44,6 +45,12 @@ public class PropRenderer<T extends BlockEntity> implements BlockEntityRenderer<
 
         if(state.getBlock() instanceof PropBlock<?> block) {
             matrices.push();
+
+            if(!nbt.contains("synced")){
+                ClientPlayNetworking.send(new SyncBlockNbtC2SPayload(pos.asLong()));
+
+                nbt = ((IEntityDataSaver)entity).getPersistentData();
+            }
 
             float rotation = nbt.getFloat("Rotation");
             float offsetRotation = !block.rotates() ? 0 : state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
