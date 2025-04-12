@@ -11,6 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.BlockItem;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
@@ -23,6 +24,8 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.CosmoGift;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
 import net.zephyr.fnafur.init.block_init.BlockInit;
+import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class FloorPropPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
@@ -90,6 +93,7 @@ public class FloorPropPlacingRenderer {
                         }
                         else if(block instanceof AnimatronicBlock){
                             GeoPropBlockEntity entity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
+                            NbtCompound nbt = ItemNbtUtil.getNbt(player.getMainHandStack());
 
                             entity.setWorld(MinecraftClient.getInstance().world);
                             if(MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(entity) instanceof GeoPropRenderer<GeoPropBlockEntity> geo){

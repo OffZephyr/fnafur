@@ -4,13 +4,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropModel;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.client.gui.screens.crafting.CpuConfigScreen;
 import net.zephyr.fnafur.client.gui.screens.crafting.WorkbenchScreen;
 
 public class AnimatronicBlockEntityRenderer<T extends AnimatronicBlockEntity> extends GeoPropRenderer<T> {
     public AnimatronicBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
-        super(context);
+        super(new AnimatronicBlockModel<>());
         addRenderLayer(new AnimatronicBlockColoredLayer<>(this));
     }
 

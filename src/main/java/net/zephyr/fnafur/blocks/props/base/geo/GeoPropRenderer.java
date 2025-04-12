@@ -22,11 +22,14 @@ import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GeoPropAddedLayer;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockModel;
 import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 @Environment(EnvType.CLIENT)
@@ -39,6 +42,13 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
         client = MinecraftClient.getInstance();
         manager = client.getBlockRenderManager();
     }
+
+    public GeoPropRenderer(GeoModel<T> animatronicBlockEntityAnimatronicBlockModel) {
+        super(animatronicBlockEntityAnimatronicBlockModel);
+        client = MinecraftClient.getInstance();
+        manager = client.getBlockRenderManager();
+    }
+
     public void render(T entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 
         entity.item = true;

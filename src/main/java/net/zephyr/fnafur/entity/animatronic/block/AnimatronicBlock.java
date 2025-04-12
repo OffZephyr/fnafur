@@ -8,6 +8,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -30,7 +31,7 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public class AnimatronicBlock extends FloorPropBlock<DefaultPropColorEnum> {
+public class AnimatronicBlock extends FloorPropBlock<DemoAnimationList> {
     public AnimatronicBlock(Settings settings) {
         super(settings);
     }
@@ -67,7 +68,7 @@ public class AnimatronicBlock extends FloorPropBlock<DefaultPropColorEnum> {
 
     @Override
     public Class COLOR_ENUM() {
-        return DefaultPropColorEnum.class;
+        return DemoAnimationList.class;
     }
 
     @Override
