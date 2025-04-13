@@ -22,6 +22,7 @@ public class SoundsInit {
     public static final SoundEvent CLICK_PRESS = registerSoundEvent("click_press");
     public static final SoundEvent CLICK_RELEASE = registerSoundEvent("click_release");
     public static final SoundEvent CASUAL_BONGOS = registerSoundEvent("casual_bongos");
+    public static final SoundEvent MAIN_MENU = registerSoundEvent("main_menu");
     public static final SoundEvent ZEPHYR_JUMPSCARE = registerSoundEvent("zephyr_jumpscare");
     public static final SoundEvent FNAF1_JUMPSCARE = registerSoundEvent("fnaf1_jumpscare");
     public static final SoundEvent FNAF1_FOOTSTEPS = registerSoundEvent("fnaf1_footsteps");

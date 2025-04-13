@@ -225,6 +225,7 @@ public class MimicFrames extends BlockWithSticker {
             if(cubeArray[i] != 1) return false;
         }
 
+
         return true;
     }
 
