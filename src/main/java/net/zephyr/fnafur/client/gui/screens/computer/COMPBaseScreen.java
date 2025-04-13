@@ -8,7 +8,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.client.gui.screens.computer.apps.COMPBaseAppScreen;
@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public abstract class COMPBaseScreen extends GoopyScreen {
     public Identifier WALLPAPER = ComputerData.getWallpapers().get(0).getTexture();
-    public Identifier OUTLINE = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/computer_outline.png");
+    public Identifier OUTLINE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/computer_outline.png");
     public COMPBaseScreen(Text title, NbtCompound nbt, Object o) {
         super(title, nbt, o);
     }

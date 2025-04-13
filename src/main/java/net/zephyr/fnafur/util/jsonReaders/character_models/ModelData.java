@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.util.jsonReaders.character_models;
 
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.animatronic.data.Part;
 import net.zephyr.fnafur.entity.animatronic.data.PartType;
 

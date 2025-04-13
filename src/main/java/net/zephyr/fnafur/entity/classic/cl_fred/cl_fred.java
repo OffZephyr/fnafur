@@ -21,7 +21,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.entity.goals.ShouldActiveTargetGoal;
 import net.zephyr.fnafur.entity.goals.ShouldLookAroundGoal;
@@ -38,99 +38,99 @@ public class cl_fred extends DefaultEntity {
 
     private final EntitySkin DEFAULT =
             new EntitySkin("entity.fnafur.cl_fred.default")
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/normalfreddyicon.png"));
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/normalfreddyicon.png"));
     private final EntitySkin CLEAN =
             new EntitySkin("entity.fnafur.cl_fred.default_clean")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/cl_fred_clean.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/cleanfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/cl_fred_clean.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/cleanfreddyicon.png"));
     private final EntitySkin DIRTY =
             new EntitySkin("entity.fnafur.cl_fred.default_dirty")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/cl_fred_dirty.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/dirtyfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/cl_fred_dirty.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/dirtyfreddyicon.png"));
     private final EntitySkin AR =
             new EntitySkin("entity.fnafur.cl_fred.ar")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/ar_cl_fred.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/arfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/ar_cl_fred.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/arfreddyicon.png"));
     private final EntitySkin YELLOW_BEAR_SKIN =
             new EntitySkin("entity.fnafur.cl_fred.yellow_bear")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/yellow_bear.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/yellowbearnormalicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/yellow_bear.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/yellowbearnormalicon.png"));
     private final EntitySkin YELLOW_BEAR_SKIN_CLEAN =
             new EntitySkin("entity.fnafur.cl_fred.yellow_bear_clean")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/yellow_bear_clean.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/yellowbearicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/yellow_bear_clean.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/yellowbearicon.png"));
     private final EntitySkin SHADOW_FREDDY_LIGHT_SKIN =
             new EntitySkin("entity.fnafur.cl_fred.shadow_freddy_light")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/shadow_freddy_light.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/white_glow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/shadowfreddylighticon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/shadow_freddy_light.png"))
+                    .glow_texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/white_glow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/shadowfreddylighticon.png"));
     private final EntitySkin SHADOW_FREDDY_NORMAL =
             new EntitySkin("entity.fnafur.cl_fred.shadow_freddy_normal")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/shadow_freddy_normal.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/shadowfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/shadow_freddy_normal.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/shadowfreddyicon.png"));
     private final EntitySkin SHADOW_FREDDY_SUIT =
             new EntitySkin("entity.fnafur.cl_fred.shadow_freddy_suit")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/shadow_freddy_suit.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/shadowfreddynormaleyesicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/shadow_freddy_suit.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/shadowfreddynormaleyesicon.png"));
     private final EntitySkin SHADOW_FREDDY_WHITE =
             new EntitySkin("entity.fnafur.cl_fred.shadow_freddy_white")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/shadow_freddy_white.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/white_glow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/shadowfreddywhiteeyesicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/shadow_freddy_white.png"))
+                    .glow_texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/white_glow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/shadowfreddywhiteeyesicon.png"));
     private final EntitySkin BLANK =
             new EntitySkin("entity.fnafur.cl_fred.default_blank")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/cl_fred_blank.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blankfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/cl_fred_blank.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/blankfreddyicon.png"));
     private final EntitySkin BLACKLIGHT =
             new EntitySkin("entity.fnafur.cl_fred.blacklight")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_glow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy.png"))
+                    .glow_texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_glow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddyicon.png"));
     private final EntitySkin BLACKLIGHT_YELLOW =
             new EntitySkin("entity.fnafur.cl_fred.blacklight_yellow")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_yellow.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_yellow_glow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddyyellowearsicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_yellow.png"))
+                    .glow_texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_yellow_glow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddyyellowearsicon.png"));
     private final EntitySkin BLACK =
             new EntitySkin("entity.fnafur.cl_fred.black")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/black.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/black_glow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blackfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/black.png"))
+                    .glow_texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/black_glow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/blackfreddyicon.png"));
     private final EntitySkin BLACKLIGHT_BGM =
             new EntitySkin("entity.fnafur.cl_fred.blacklight_bgm")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgm.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgm_glow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddybgmicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgm.png"))
+                    .glow_texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgm_glow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddybgmicon.png"));
     private final EntitySkin BLACKLIGHT_BGB =
             new EntitySkin("entity.fnafur.cl_fred.blacklight_bgb")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgb.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgb_glow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddybgbicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgb.png"))
+                    .glow_texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_bgb_glow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddybgbicon.png"));
     private final EntitySkin BLACKLIGHT_MBG =
             new EntitySkin("entity.fnafur.cl_fred.blacklight_mbg")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_mbg.png"))
-                    .glow_texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_mbg_glow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddymbgicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_mbg.png"))
+                    .glow_texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/blacklight_freddy_mbg_glow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/blacklightfreddymbgicon.png"));
     private final EntitySkin INVERTED =
             new EntitySkin("entity.fnafur.cl_fred.inverted")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/cl_fred_inverted.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/invertedfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/cl_fred_inverted.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/invertedfreddyicon.png"));
     private final EntitySkin GOLDEN_FREDDY =
             new EntitySkin("entity.fnafur.cl_fred.golden_freddy")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/golden_freddy.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/goldenfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/golden_freddy.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/goldenfreddyicon.png"));
     private final EntitySkin GOLDEN_FREDDY_CLEAN =
             new EntitySkin("entity.fnafur.cl_fred.golden_freddy_clean")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/golden_freddy_clean.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/goldenfreddycleanicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/golden_freddy_clean.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/goldenfreddycleanicon.png"));
     private final EntitySkin AR_GOLDEN_FREDDY =
             new EntitySkin("entity.fnafur.cl_fred.ar_golden_freddy")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/ar_golden_freddy.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/goldfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/ar_golden_freddy.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/goldfreddyicon.png"));
     private final EntitySkin AR_GOLDEN_FREDDY_GOLD =
             new EntitySkin("entity.fnafur.cl_fred.ar_golden_freddy_gold")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/ar_golden_freddy_gold.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_fred/icon/argoldenfreddyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/ar_golden_freddy_gold.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_fred/icon/argoldenfreddyicon.png"));
 
     public cl_fred(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -355,17 +355,17 @@ public class cl_fred extends DefaultEntity {
     }
     @Override
     public Identifier getDefaultTexture() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_fred/cl_fred.png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_fred/cl_fred.png");
     }
 
     @Override
     public Identifier getDefaultGeoModel() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/classic/cl_fred/cl_fred.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/classic/cl_fred/cl_fred.geo.json");
     }
 
     @Override
     public Identifier getDefaultAnimations() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/classic/cl_fred/cl_fred.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/cl_fred/cl_fred.animation.json");
     }
 
     @Override

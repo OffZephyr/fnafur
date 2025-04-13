@@ -12,7 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.init.SoundsInit;
@@ -102,7 +102,7 @@ public abstract class AbstractKillScreen extends GoopyScreen {
 
         Entity entity = MinecraftClient.getInstance().world.getEntityById(((IEntityDataSaver)MinecraftClient.getInstance().player).getPersistentData().getInt("JumpscareID"));
 
-        int jumpscareLength = entity instanceof DefaultEntity FnafUniverseResuitedEntity ? FnafUniverseResuitedEntity.JumpScareLength() : 0;
+        int jumpscareLength = entity instanceof DefaultEntity FnafUniverseRebuiltEntity ? FnafUniverseRebuiltEntity.JumpScareLength() : 0;
         if(this.tickSinceDeath < jumpscareLength - 2) return;
         int animationTick = this.tickSinceDeath - jumpscareLength;
 
@@ -141,7 +141,7 @@ public abstract class AbstractKillScreen extends GoopyScreen {
             drawResizableText(context, textRenderer, deathMessage, 1.25f, 10, this.height - 21, color, 0x00000000, false, false);
         }
 
-        Identifier staticTexture = Identifier.of(FnafUniverseResuited.MOD_ID, staticTexturePath + this.Static + ".png");
+        Identifier staticTexture = Identifier.of(FnafUniverseRebuilt.MOD_ID, staticTexturePath + this.Static + ".png");
         float alpha = animationTick < transitionMin ? 0.98f : animationTick > transitionMax ? 0.105f : MathHelper.lerp((animationTick - transitionMin)/(transitionMax - transitionMin), 0.98f, 0.11f);
         drawRecolorableTexture(context, staticTexture, 0, 0, 0, this.width, this.height, 0, 0, this.width, this.height, 1, 1, 1, alpha);
     }

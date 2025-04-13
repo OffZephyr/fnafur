@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "fnafur",
 	"version": "${version}",
-	"name": "Fnaf Universe Resuited",
+	"name": "Fnaf Universe Rebuilt",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
 		"ZephyrOff"
@@ -16,13 +16,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.zephyr.fnafur.FnafUniverseResuited"
+			"net.zephyr.fnafur.FnafUniverseRebuilt"
 		],
 		"client": [
-			"net.zephyr.fnafur.FnafUniverseResuitedClient"
+			"net.zephyr.fnafur.FnafUniverseRebuiltClient"
 		],
 		"fabric-datagen": [
-			"net.zephyr.fnafur.FnafUniverseResuitedDataGenerator"
+			"net.zephyr.fnafur.FnafUniverseRebuiltDataGenerator"
 		]
 	},
 	"mixins": [

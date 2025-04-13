@@ -24,7 +24,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.math.MathHelper;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.entity.base.DefaultEntityRenderer;
 import net.zephyr.fnafur.init.block_init.PropInit;
@@ -75,7 +75,7 @@ public class LivingEntityRendererMixin {
                         client.getEntityRenderDispatcher(), client.getItemModelManager(), client.getMapRenderer(), client.getBlockRenderManager(), client.getResourceManager(), client.getLoadedEntityModels(), new EquipmentModelLoader(), client.textRenderer
                 );
 
-                EntityRenderer<T, ?> renderer = (EntityRenderer<T, ?>) FnafUniverseResuited.RENDERER_FACTORIES.get(entityType).create(context);
+                EntityRenderer<T, ?> renderer = (EntityRenderer<T, ?>) FnafUniverseRebuilt.RENDERER_FACTORIES.get(entityType).create(context);
 
                 if (renderer != null) {
                     DefaultEntityRenderer<T> entityRenderer = (DefaultEntityRenderer<T>)renderer;

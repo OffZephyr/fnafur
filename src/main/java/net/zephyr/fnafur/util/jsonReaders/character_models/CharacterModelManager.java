@@ -10,7 +10,7 @@ import net.minecraft.resource.SinglePreparationResourceReloader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.profiler.Profiler;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.animatronic.data.CharacterData;
 
 import java.io.BufferedReader;
@@ -35,7 +35,7 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
     public static final String TORSO_ACCESSORIES = "torso_accessories";
 
     static final Gson GSON = new Gson();
-    public static Identifier DEFAULT_MODEL = Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/default/endo_01/endo_01.geo.json");
+    public static Identifier DEFAULT_MODEL = Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/default/endo_01/endo_01.geo.json");
     private static final TypeToken<Map<String, CharacterEntry>> CHARACTER_LIST_TYPE = new TypeToken<>() {};
     private static final TypeToken<Map<String, String>> STRING_LIST = new TypeToken<>() {};
     private static final TypeToken<Map<String, ModelDataEntry>> MODEL_LIST_TYPE = new TypeToken<>() {};
@@ -77,10 +77,10 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
                 for (Map.Entry<String, String> entry : layerEntries.entrySet()) {
                     MAPS.put(entry.getKey(), entry.getValue());
 
-                    FnafUniverseResuited.print(entry.getKey() + ": " + entry.getValue());
+                    FnafUniverseRebuilt.print(entry.getKey() + ": " + entry.getValue());
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
             }
         }
     }
@@ -99,11 +99,11 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
                     }
 
                     for(int i = 0; i <  entry.getValue().characters().size(); i++){
-                        FnafUniverseResuited.print(entry.getKey() + ": " + entry.getValue().characters().get(i).name);
+                        FnafUniverseRebuilt.print(entry.getKey() + ": " + entry.getValue().characters().get(i).name);
                     }
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
             }
         }
     }
@@ -116,10 +116,10 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
                 for (Map.Entry<String, String> entry : layerEntries.entrySet()) {
                     ACCESSORY_FILES.put(entry.getKey(), entry.getValue());
 
-                    FnafUniverseResuited.print(entry.getKey() + ": " + entry.getValue());
+                    FnafUniverseRebuilt.print(entry.getKey() + ": " + entry.getValue());
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
             }
         }
     }
@@ -135,11 +135,11 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
                     skinMap.put(entry.getKey(), entry.getValue());
                     MAP_DATA.put(mapName, skinMap);
 
-                    FnafUniverseResuited.print(mapName);
-                    FnafUniverseResuited.print(entry.getKey() + ": " + entry.getValue().sub().size());
+                    FnafUniverseRebuilt.print(mapName);
+                    FnafUniverseRebuilt.print(entry.getKey() + ": " + entry.getValue().sub().size());
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
             }
         }
     }
@@ -156,7 +156,7 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
                     CHARA_DEFAULT_ALT_MAP.put(character, entry.getValue().default_alt());
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
             }
         }
     }
@@ -173,16 +173,16 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
                     skinMap.put(entry.getKey(), entry.getValue());
                     MODEL_DATA.put(character, skinMap);
 
-                    FnafUniverseResuited.print(character.name);
-                    FnafUniverseResuited.print(entry.getValue().model);
+                    FnafUniverseRebuilt.print(character.name);
+                    FnafUniverseRebuilt.print(entry.getValue().model);
                     for(int i = 0; i <  entry.getValue().layers().size(); i++){
                         for(int j = 0; j <  entry.getValue().layers().get(i).variants.size(); j++){
-                            FnafUniverseResuited.print(entry.getValue().layers().get(i).name + ": " + entry.getValue().layers().get(i).variants.get(j).name);
+                            FnafUniverseRebuilt.print(entry.getValue().layers().get(i).name + ": " + entry.getValue().layers().get(i).variants.get(j).name);
                         }
                     }
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
             }
         }
     }
@@ -198,17 +198,17 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
                     skinMap.put(entry.getKey(), entry.getValue());
                     ACCESSORY_MODEL_DATA.put(boneName, skinMap);
 
-                    FnafUniverseResuited.print(boneName);
-                    FnafUniverseResuited.print(entry.getValue().model);
+                    FnafUniverseRebuilt.print(boneName);
+                    FnafUniverseRebuilt.print(entry.getValue().model);
 
                     for(int i = 0; i <  entry.getValue().layers().size(); i++){
                         for(int j = 0; j <  entry.getValue().layers().get(i).variants.size(); j++){
-                            FnafUniverseResuited.print(entry.getValue().layers().get(i).name + ": " + entry.getValue().layers().get(i).variants.get(j).name);
+                            FnafUniverseRebuilt.print(entry.getValue().layers().get(i).name + ": " + entry.getValue().layers().get(i).variants.get(j).name);
                         }
                     }
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
             }
         }
     }
@@ -265,7 +265,7 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
     public static Identifier getVariantModel(Chara character, String variant){
         Map<String, ModelEntry> map = MODEL_DATA.get(character);
         if(map != null && map.get(variant) instanceof ModelEntry entry){
-            return Identifier.of(FnafUniverseResuited.MOD_ID, entry.model());
+            return Identifier.of(FnafUniverseRebuilt.MOD_ID, entry.model());
         }
         return null;
     }
@@ -274,7 +274,7 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
         Map<String, ModelEntry> map = ACCESSORY_MODEL_DATA.get(type);
         if(map != null) {
             if (map.get(variant) instanceof ModelEntry entry) {
-                return Identifier.of(FnafUniverseResuited.MOD_ID, entry.model());
+                return Identifier.of(FnafUniverseRebuilt.MOD_ID, entry.model());
             }
         }
         return null;

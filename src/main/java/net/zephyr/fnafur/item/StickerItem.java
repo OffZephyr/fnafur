@@ -84,52 +84,48 @@ public class StickerItem extends Item {
                     nbt.put("BlockState", itemStack.toNbtAllowEmpty(context.getWorld().getRegistryManager()));
                 }
 
-                NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
+                if(context.getWorld().isClient()) {
+                    NbtCompound nbt = ((IEntityDataSaver) entity).getPersistentData();
 
-                String side = context.getSide().name();
+                    String side = context.getSide().name();
 
-                Direction direction = context.getSide();
-                String name = sticker_name();
-                StickerInit.Sticker sticker = StickerInit.getSticker(name);
+                    Direction direction = context.getSide();
+                    String name = sticker_name();
+                    StickerInit.Sticker sticker = StickerInit.getSticker(name);
 
-                if(sticker == null) return ActionResult.PASS;
+                    if (sticker == null) return ActionResult.PASS;
 
-                NbtList list = nbt.getList(side, NbtElement.STRING_TYPE);
-                NbtList offset_list = nbt.getList(side + "_offset", NbtElement.FLOAT_TYPE);
+                    NbtList list = nbt.getList(side, NbtElement.STRING_TYPE);
+                    NbtList offset_list = nbt.getList(side + "_offset", NbtElement.FLOAT_TYPE);
 
-                Vec3d hitPos = context.getHitPos();
-                BlockPos pos = context.getBlockPos();
+                    Vec3d hitPos = context.getHitPos();
+                    BlockPos pos = context.getBlockPos();
 
-                Vec3d stickerPos = stickerPos(pos, hitPos, direction, this, context.getPlayer(), context.getWorld());
+                    Vec3d stickerPos = stickerPos(pos, hitPos, direction, this, context.getPlayer(), context.getWorld());
 
-                float offset = 0;
+                    float offset = 0;
 
-                if (sticker.getDirection() == StickerInit.Movable.VERTICAL) {
-                    offset = (float)stickerPos.getY();
-                }
-                else {
-                    offset = direction.getAxis() == Direction.Axis.Z ? (float)stickerPos.getX() :
-                            direction.getAxis() == Direction.Axis.X ? (float)stickerPos.getZ() : offset;
-                }
-
-                if((isStackable() && list.size() < MAX_STICKER_AMOUNT) || (!isStackable() && list.isEmpty())) {
-                    list.add(NbtString.of(sticker_name()));
-                    offset_list.add(NbtFloat.of(offset));
-
-                    nbt.put(side, list);
-                    nbt.put(side + "_offset", offset_list);
-
-
-                    context.getWorld().playSound(context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 1, 1, true);
-
-                    if(context.getWorld().isClient()){
-                        GoopyNetworkingUtils.saveBlockNbt(entity.getPos(), nbt);
+                    if (sticker.getDirection() == StickerInit.Movable.VERTICAL) {
+                        offset = (float) stickerPos.getY();
+                    } else {
+                        offset = direction.getAxis() == Direction.Axis.Z ? (float) stickerPos.getX() :
+                                direction.getAxis() == Direction.Axis.X ? (float) stickerPos.getZ() : offset;
                     }
-                    //context.getWorld().updateListeners(pos, block.getDefaultState(), block.getDefaultState(), 3);
 
-                    return ActionResult.SUCCESS;
+                    if ((isStackable() && list.size() < MAX_STICKER_AMOUNT) || (!isStackable() && list.isEmpty())) {
+                        list.add(NbtString.of(sticker_name()));
+                        offset_list.add(NbtFloat.of(offset));
+
+                        context.getWorld().playSound(context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 1, 1, true);
+
+                        nbt.put(side, list);
+                        nbt.put(side + "_offset", offset_list);
+                        GoopyNetworkingUtils.saveBlockNbt(entity.getPos(), nbt);
+                        context.getWorld().updateListeners(pos, blockState, blockState, 3);
+
+                        return ActionResult.SUCCESS;
+                    }
                 }
-
             }
         }
         return ActionResult.PASS;

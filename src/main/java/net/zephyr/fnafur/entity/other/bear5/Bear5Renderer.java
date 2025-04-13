@@ -8,7 +8,7 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 public class Bear5Renderer extends EntityRenderer<Bear5Entity, Bear5RenderState> {
     public Bear5Renderer(EntityRendererFactory.Context context) {
@@ -31,7 +31,7 @@ public class Bear5Renderer extends EntityRenderer<Bear5Entity, Bear5RenderState>
     public void render(Bear5RenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 
         //if(state.target != null && MinecraftClient.getInstance().player.getUuid() == state.target.getUuid()){
-            Identifier texture = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/other/bear_five.png");
+            Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/other/bear_five.png");
 
             RenderSystem.enableCull();
             RenderSystem.depthMask(true);

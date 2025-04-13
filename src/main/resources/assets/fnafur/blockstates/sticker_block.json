@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "fnafur:block/mimic_frames_block"
+      "model": "fnafur:block/mimic_frame_block"
     }
   }
 }

@@ -5,7 +5,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.util.Computer.ComputerApp;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
@@ -13,7 +13,7 @@ import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import java.util.Objects;
 
 public class COMPBootupScreen extends COMPBaseScreen {
-    private Identifier BOOTUP_SCREEN = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/boot_0.png");
+    private Identifier BOOTUP_SCREEN = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/boot_0.png");
     private int bootProgress = 0;
     private final int bootProgressLength = 40;
 
@@ -36,13 +36,13 @@ public class COMPBootupScreen extends COMPBaseScreen {
         }
 
         if(bootProgress == 12)
-            BOOTUP_SCREEN = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/boot_1.png");
+            BOOTUP_SCREEN = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/boot_1.png");
         if(bootProgress == 28)
-            BOOTUP_SCREEN = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/boot_2.png");
+            BOOTUP_SCREEN = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/boot_2.png");
         if(bootProgress == 30)
-            BOOTUP_SCREEN = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/boot_3.png");
+            BOOTUP_SCREEN = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/boot_3.png");
         if(bootProgress == 38)
-            BOOTUP_SCREEN = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/boot_4.png");
+            BOOTUP_SCREEN = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/boot_4.png");
         super.tick();
     }
 

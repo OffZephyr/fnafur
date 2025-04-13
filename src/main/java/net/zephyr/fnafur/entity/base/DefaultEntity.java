@@ -27,7 +27,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
@@ -830,7 +830,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
         public EntitySkin(String name){
             this.name = name;
             this.icon = getDefaultIcon();
-            this.icon_outline = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/skins/default_outline.png");
+            this.icon_outline = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/skins/default_outline.png");
             this.glow_texture = null;
             this.texture = getDefaultTexture();
             this.geo = getDefaultGeoModel();
@@ -891,7 +891,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
     };
 
     public Identifier getDefaultIcon(){
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/skins/default_icon.png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/skins/default_icon.png");
     }
 
     public boolean isBoopable(){

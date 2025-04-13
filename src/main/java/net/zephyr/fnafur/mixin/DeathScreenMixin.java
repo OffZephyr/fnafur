@@ -16,7 +16,7 @@ public class DeathScreenMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void customDeathScreen(CallbackInfo ci) {
-        /*if(MinecraftClient.getInstance().player.getLastAttacker() instanceof FnafUniverseResuitedEntity entity && entity.hasJumpScare()) {
+        /*if(MinecraftClient.getInstance().player.getLastAttacker() instanceof FnafUniverseRebuiltEntity entity && entity.hasJumpScare()) {
             NbtCompound deathNbt = new NbtCompound();
             deathNbt.putBoolean("isHardcore", MinecraftClient.getInstance().world.getLevelProperties().isHardcore());
             String index = entity.killScreenID;

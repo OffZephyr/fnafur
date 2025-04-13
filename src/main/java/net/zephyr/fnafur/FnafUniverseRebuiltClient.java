@@ -9,7 +9,7 @@ import net.zephyr.fnafur.init.block_init.ModelLoading;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 
-public class FnafUniverseResuitedClient implements ClientModInitializer {
+public class FnafUniverseRebuiltClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
@@ -30,6 +30,6 @@ public class FnafUniverseResuitedClient implements ClientModInitializer {
 		NetworkingInit.registerClientReceivers();
 		net.zephyr.fnafur.networking.PayloadDef.registerS2CPackets();
 		HudRenderCallback.EVENT.register(new net.zephyr.fnafur.client.gui.TabOverlayClass());
-		FnafUniverseResuited.LOGGER.info("Client Initialized.");
+		FnafUniverseRebuilt.LOGGER.info("Client Initialized.");
 	}
 }

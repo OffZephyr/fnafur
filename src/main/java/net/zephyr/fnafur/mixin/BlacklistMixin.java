@@ -8,7 +8,7 @@ import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.BlacklistScreen;
 import net.zephyr.fnafur.util.GoopyBlacklist;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +32,7 @@ public class BlacklistMixin {
 	private void init(CallbackInfo info) {
 
 		String UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
-		FnafUniverseResuited.print(UUID);
+		FnafUniverseRebuilt.print(UUID);
 		String Username = MinecraftClient.getInstance().getSession().getUsername();
 		boolean BlacklistedName = GoopyBlacklist.getBlacklist().containsKey(Username);
 		boolean BlacklistedUUID = GoopyBlacklist.getBlacklist().containsValue(UUID);
@@ -42,7 +42,7 @@ public class BlacklistMixin {
 
 			MinecraftClient.getInstance().setOverlay((Overlay)null);
 			bl = true;
-			FnafUniverseResuited.LOGGER.info("UH OH! Seems like you were Blacklisted.");
+			FnafUniverseRebuilt.LOGGER.info("UH OH! Seems like you were Blacklisted.");
 			MinecraftClient.getInstance().setScreen(new BlacklistScreen());
 			//info.setReturnValue("test");
 			info.cancel();

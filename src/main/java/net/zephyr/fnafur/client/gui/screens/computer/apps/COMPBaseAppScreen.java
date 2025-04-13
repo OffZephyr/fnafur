@@ -5,14 +5,14 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.computer.COMPBaseScreen;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 
 public abstract class COMPBaseAppScreen extends COMPBaseScreen {
-    public Identifier BOTTOM_BAR = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/bottom_bar.png");
-    public Identifier WINDOW_BASE = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/window_base.png");
-    public Identifier BUTTONS = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/computer_buttons.png");
+    public Identifier BOTTOM_BAR = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/bottom_bar.png");
+    public Identifier WINDOW_BASE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/window_base.png");
+    public Identifier BUTTONS = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/computer_buttons.png");
     public COMPBaseAppScreen(Text title, NbtCompound nbt, long l) {
         super(title, nbt, l);
     }

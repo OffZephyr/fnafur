@@ -9,7 +9,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
@@ -17,7 +17,7 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 public class GlowLayer extends GeoRenderLayer<TabletItem> {
     private static final String texture = "textures/item/security_tablet_e.png";
-    private static Identifier LAYER = Identifier.of(FnafUniverseResuited.MOD_ID, texture);
+    private static Identifier LAYER = Identifier.of(FnafUniverseRebuilt.MOD_ID, texture);
 
     public GlowLayer(GeoRenderer<TabletItem> entityRendererIn) {
         super(entityRendererIn);

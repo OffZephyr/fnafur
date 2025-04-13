@@ -5,7 +5,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.util.Computer.ComputerPlaylist;
 import net.zephyr.fnafur.util.Computer.ComputerSong;
@@ -13,7 +13,7 @@ import net.zephyr.fnafur.util.Computer.ComputerSong;
 import java.util.*;
 
 public class COMPMusicPlayerScreen extends COMPBaseAppScreen {
-    public Identifier SMALL_BAR = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/window_smallbar_20.png");
+    public Identifier SMALL_BAR = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/window_smallbar_20.png");
     boolean playlistsScreen = false;
     float playlistOffset = 0;
     float playlistOffsetDiff = 0;
@@ -73,7 +73,7 @@ public class COMPMusicPlayerScreen extends COMPBaseAppScreen {
                     for (int j = 0; j < play.getList().size(); j++) {
                         int songYPos = yPos - 2 + spacingOffset + spacingOffset * j;
                         if (mouseX > topCornerX && mouseX < topCornerX + appAvailableSizeX && mouseY > songYPos && mouseY < songYPos  + (int) iconSize + 2 && !dragging) {
-                            FnafUniverseResuited.print(play.getList().get(j).getName());
+                            FnafUniverseRebuilt.print(play.getList().get(j).getName());
                         }
                     }
                     spacing += spacingOffset * (play.getList().size() + 1);

@@ -21,7 +21,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.entity_init.ClassicInit;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -54,7 +54,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         //floorX += delta/100f;
-        isFnafTab = Objects.equals(getSelectedItemGroup().getDisplayName().getString(), FnafUniverseResuited.MOD_ID);
+        isFnafTab = Objects.equals(getSelectedItemGroup().getDisplayName().getString(), FnafUniverseRebuilt.MOD_ID);
         if(isFnafTab){
             this.renderBackground(context, mouseX, mouseY, delta);
             context.fill(this.x + 1, this.y + 1, this.x + this.backgroundWidth - 2, this.y + this.backgroundHeight - 2, 0xFF000000);
@@ -87,13 +87,13 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     }
 
     public void renderDefaultBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        Identifier gridTexture = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/tab_grid.png");
+        Identifier gridTexture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/tab_grid.png");
         context.drawTexture(RenderLayer::getGuiTextured, gridTexture, this.x + 7, this.y + 20, 0, 0, this.backgroundWidth - 2, this.backgroundHeight - 2, 256, 256);
 
-        Identifier icon1 = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/icon_animatronics.png");
-        Identifier icon2 = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/icon_blocks.png");
-        Identifier icon3 = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/icon_props.png");
-        Identifier icon4 = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/icon_technical.png");
+        Identifier icon1 = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/icon_animatronics.png");
+        Identifier icon2 = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/icon_blocks.png");
+        Identifier icon3 = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/icon_props.png");
+        Identifier icon4 = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/icon_technical.png");
 
         int x1 = this.x + 10;
         int y1 = this.y + 23;
@@ -116,12 +116,12 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
     }
     public void renderBlocksBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        Identifier floorTexture = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/storage_floor.png");
+        Identifier floorTexture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/storage_floor.png");
         drawFloor(context, delta, mouseX, mouseY, floorTexture, this.x + 1, this.x + this.backgroundWidth - 1, this.y + ((this.backgroundHeight) / 4 * 3), this.y + this.backgroundHeight - 1);
 
     }
     public void renderPropsBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        Identifier floorTexture = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/storage_floor.png");
+        Identifier floorTexture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/storage_floor.png");
         drawFloor(context, delta, mouseX, mouseY, floorTexture, this.x + 1, this.x + this.backgroundWidth - 1, this.y + ((this.backgroundHeight) / 4 * 3), this.y + this.backgroundHeight - 1);
 
     }
@@ -173,7 +173,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
     protected void drawFnafBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         for (ItemGroup itemGroup : ItemGroups.getGroupsToDisplay()) {
-            if (itemGroup != getSelectedItemGroup() || Objects.equals(itemGroup.getDisplayName().getString(), FnafUniverseResuited.MOD_ID)) {
+            if (itemGroup != getSelectedItemGroup() || Objects.equals(itemGroup.getDisplayName().getString(), FnafUniverseRebuilt.MOD_ID)) {
                 this.renderTabIcon(context, itemGroup);
             }
         }
@@ -242,7 +242,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     protected void renderTabIcon(DrawContext context, ItemGroup group) {
         final FabricItemGroupImpl fabricItemGroup = (FabricItemGroupImpl) group;
 
-        if(!Objects.equals(group.getDisplayName().getString(), FnafUniverseResuited.MOD_ID) || fabricItemGroup.fabric_getPage() != getCurrentPage()){
+        if(!Objects.equals(group.getDisplayName().getString(), FnafUniverseRebuilt.MOD_ID) || fabricItemGroup.fabric_getPage() != getCurrentPage()){
             super.renderTabIcon(context, group);
             return;
         }
@@ -255,9 +255,9 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
         Identifier texture;
         if (bl2) {
-            texture = bl ? Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/tab_top_selected.png") : Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/tab_top_unselected.png");
+            texture = bl ? Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/tab_top_selected.png") : Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/tab_top_unselected.png");
         } else {
-            texture = bl ? Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/tab_bottom_selected.png") : Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/creative_inventory/tab_bottom_unselected.png");
+            texture = bl ? Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/tab_bottom_selected.png") : Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/tab_bottom_unselected.png");
         }
 
         float p = FreddyEntity.getScale();

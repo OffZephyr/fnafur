@@ -2,7 +2,7 @@ package net.zephyr.fnafur.blocks.props.base.geo;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;

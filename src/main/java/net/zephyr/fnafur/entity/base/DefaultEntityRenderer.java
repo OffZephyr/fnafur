@@ -9,7 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.shape.VoxelShapes;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -31,7 +31,7 @@ public abstract class DefaultEntityRenderer<T extends DefaultEntity> extends Geo
         T entity = getAnimatable();
 
         if(entity != null) {
-            if(entity.mimic) FnafUniverseResuited.print("t3");
+            if(entity.mimic) FnafUniverseRebuilt.print("t3");
 
             if (entity.boopBox != null && MinecraftClient.getInstance().getEntityRenderDispatcher().shouldRenderHitboxes()) {
                 poseStack.push();

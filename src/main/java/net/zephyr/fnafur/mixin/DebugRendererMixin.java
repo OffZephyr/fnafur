@@ -27,10 +27,13 @@ public class DebugRendererMixin {
     EnergyInteractionRenderer energyInteractionRenderer = new EnergyInteractionRenderer();
     @Unique
     TileDoorPlacingRenderer tileDoorPlacingRenderer = new TileDoorPlacingRenderer();
+    @Unique
+    SpecialBlockPlacingRenderer specialBlockPlacingRenderer = new SpecialBlockPlacingRenderer();
 
     @Inject(method = "render", at = @At("HEAD"))
     public void render(MatrixStack matrices, Frustum frustum, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ, CallbackInfo ci){
         mapRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
+        specialBlockPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         floorPropPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         wallPropPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         stickerPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);

@@ -7,15 +7,15 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 public class BlacklistScreen extends Screen {
     long backgroundFadeStart = 0;
-    Identifier BACKGROUND = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/blacklist/blacklist_bg.png");
-    Identifier TEXT1 = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/blacklist/blacklist_text_1.png");
-    Identifier TEXT2 = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/blacklist/blacklist_text_2.png");
-    Identifier TEXT_SCROLL = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/blacklist/blacklist_text_scroll.png");
-    Identifier ZEPHYR = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/blacklist/blacklist_zeph_1.png");
+    Identifier BACKGROUND = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/blacklist/blacklist_bg.png");
+    Identifier TEXT1 = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/blacklist/blacklist_text_1.png");
+    Identifier TEXT2 = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/blacklist/blacklist_text_2.png");
+    Identifier TEXT_SCROLL = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/blacklist/blacklist_text_scroll.png");
+    Identifier ZEPHYR = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/blacklist/blacklist_zeph_1.png");
     int textScroll = 0, bgScroll = 0, zephTimer;
     final int zephTimerMax = 40;
     int clickcolor = 0x00FFFFFF;
@@ -26,8 +26,8 @@ public class BlacklistScreen extends Screen {
     @Override
     public void tick() {
         ZEPHYR = zephTimer > zephTimerMax/2 ?
-                Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/blacklist/blacklist_zeph_2.png")
-                : Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/blacklist/blacklist_zeph_1.png");
+                Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/blacklist/blacklist_zeph_2.png")
+                : Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/blacklist/blacklist_zeph_1.png");
 
         zephTimer = zephTimer > zephTimerMax ? 0 : zephTimer + 1;
         super.tick();

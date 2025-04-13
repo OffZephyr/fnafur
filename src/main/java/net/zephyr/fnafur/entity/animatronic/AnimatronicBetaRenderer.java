@@ -7,7 +7,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.animatronic.data.PartType;
 import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
 import org.jetbrains.annotations.Nullable;
@@ -75,13 +75,13 @@ public class AnimatronicBetaRenderer<T extends AnimatronicEntity> extends GeoEnt
     public Identifier prevModel = CharacterModelManager.DEFAULT_MODEL;
 
     public static Identifier getTexture(String category, String character, String texture){
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/" + category + "/" + character + "/" + texture + ".png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/" + category + "/" + character + "/" + texture + ".png");
     }
     public static Identifier getModel(String category, String character, String texture){
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/" + category + "/" + character + "/" + texture + ".png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/" + category + "/" + character + "/" + texture + ".png");
     }
     public static Identifier getGeo(String category, String character, String texture){
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/" + category + "/" + character + "/" + texture + ".png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/" + category + "/" + character + "/" + texture + ".png");
     }
     T entity;
     int popAmount = 0;
@@ -275,27 +275,27 @@ public class AnimatronicBetaRenderer<T extends AnimatronicEntity> extends GeoEnt
             if(textureData != null) {
                 if (textureData.can_be_recolored() != null && textureData.can_be_recolored()) {
                     if (textureData.color_texture() != null && !textureData.color_texture().isEmpty()) {
-                        Identifier texture = Identifier.of(FnafUniverseResuited.MOD_ID, textureData.color_texture());
+                        Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, textureData.color_texture());
                         VertexConsumer renderLayer = bufferSource.getBuffer(RenderLayer.getEntityTranslucent(texture));
 
                         renderCubesOfBone(poseStack, modelBone, renderLayer, packedLight, packedOverlay, renderColor);
                     }
                     if (textureData.color_emissive() != null && !textureData.color_emissive().isEmpty()) {
-                        Identifier texture = Identifier.of(FnafUniverseResuited.MOD_ID, textureData.color_emissive());
+                        Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, textureData.color_emissive());
                         VertexConsumer renderLayer = bufferSource.getBuffer(RenderLayer.getEyes(texture));
 
                         renderCubesOfBone(poseStack, modelBone, renderLayer, packedLight, packedOverlay, renderColor);
                     }
                 }
                 if (textureData.overlay_texture() != null && !textureData.overlay_texture().isEmpty()) {
-                    Identifier texture = Identifier.of(FnafUniverseResuited.MOD_ID, textureData.overlay_texture());
+                    Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, textureData.overlay_texture());
                     //System.out.println(texture.getPath());
                     VertexConsumer renderLayer = bufferSource.getBuffer(RenderLayer.getEntityTranslucent(texture));
 
                     renderCubesOfBone(poseStack, modelBone, renderLayer, packedLight, packedOverlay, renderColor);
                 }
                 if (textureData.overlay_emissive() != null && !textureData.overlay_emissive().isEmpty()) {
-                    Identifier texture = Identifier.of(FnafUniverseResuited.MOD_ID, textureData.overlay_emissive());
+                    Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, textureData.overlay_emissive());
                     VertexConsumer renderLayer = bufferSource.getBuffer(RenderLayer.getEyes(texture));
 
                     renderCubesOfBone(poseStack, modelBone, renderLayer, packedLight, packedOverlay, renderColor);

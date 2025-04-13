@@ -12,7 +12,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
 import net.zephyr.fnafur.blocks.special.SeatEntity;
 import net.zephyr.fnafur.blocks.special.SeatEntityRenderer;
@@ -51,7 +51,7 @@ public class EntityInit {
     }
 
     private static RegistryKey<EntityType<?>> keyOf(String id) {
-        return RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, id));
+        return RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, id));
     }
 
     public static void registerEntities(){
@@ -63,7 +63,7 @@ public class EntityInit {
 
         ClassicInit.registerEntities();
 
-        FnafUniverseResuited.LOGGER.info("Registering Entities for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Entities for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
     public static void registerEntitiesOnClient(){
 
@@ -76,15 +76,15 @@ public class EntityInit {
 
         WorldRenderEvents.LAST.register(CameraRenderer::onRenderWorld);
 
-        FnafUniverseResuited.LOGGER.info("Registering Entities on CLIENT for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Entities on CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 
     public static <E extends AnimatronicEntity> void makeRenderer(EntityType<? extends E> entityType, EntityRendererFactory<E> entityRendererFactory) {
-        FnafUniverseResuited.RENDER_FACTORIES.put(entityType, entityRendererFactory);
+        FnafUniverseRebuilt.RENDER_FACTORIES.put(entityType, entityRendererFactory);
         EntityRendererRegistry.register(entityType, entityRendererFactory);
     }
     public static <E extends DefaultEntity> void createRenderer(EntityType<? extends E> entityType, EntityRendererFactory<E> entityRendererFactory) {
-        FnafUniverseResuited.RENDERER_FACTORIES.put(entityType, entityRendererFactory);
+        FnafUniverseRebuilt.RENDERER_FACTORIES.put(entityType, entityRendererFactory);
         EntityRendererRegistry.register(entityType, entityRendererFactory);
     }
 }

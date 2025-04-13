@@ -8,7 +8,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.item.StickerItem;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class StickerInit {
             16,
             0.75f,
             Movable.VERTICAL,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/black_white_red_wall_tiles")
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/black_white_red_wall_tiles")
     );
     public static final Item BLACK_WHITE_RED_WALL_BIG_TILES = registerSticker(
             "sticker_black_white_red_wall_big_tiles",
@@ -40,7 +40,7 @@ public class StickerInit {
             16,
             0.55f,
             Movable.VERTICAL,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/black_white_red_wall_big_tiles")
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/black_white_red_wall_big_tiles")
     );
     public static final Item BLACK_WHITE_BLACK_WALL_TILES = registerSticker(
             "sticker_black_white_black_wall_tiles",
@@ -51,7 +51,7 @@ public class StickerInit {
             16,
             0.75f,
             Movable.VERTICAL,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/black_white_black_wall_tiles")
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/black_white_black_wall_tiles")
     );
     public static final Item BLACK_WHITE_BLACK_DIRTY_WALL_TILES = registerSticker(
             "sticker_black_white_black_dirty_wall_tiles",
@@ -62,7 +62,7 @@ public class StickerInit {
             16,
             0.75f,
             Movable.VERTICAL,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/black_white_black_dirty_wall_tiles")
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/black_white_black_dirty_wall_tiles")
     );
     public static final Item WALL_GRUNGE = registerSticker(
             "sticker_wall_grunge",
@@ -71,10 +71,10 @@ public class StickerInit {
             "wall_grunge",
             0,
             16,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/wall_grunge_1"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/wall_grunge_2"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/wall_grunge_3"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/wall_grunge_4")
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_1"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_2"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_3"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_4")
     );
     public static final Item WALL_GRUNGE_2 = registerSticker(
             "sticker_wall_grunge_2",
@@ -83,7 +83,7 @@ public class StickerInit {
             "wall_grunge_2",
             0,
             16,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/wall_grunge_flat")
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_flat")
     );
     public static final Item COLORED_WHITE_WALL_TILES = registerSticker(
             "sticker_colored_white_wall_tiles",
@@ -94,7 +94,7 @@ public class StickerInit {
             16,
             0.75f,
             Movable.VERTICAL,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/colored_white_wall_tiles")
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/colored_white_wall_tiles")
     );
     public static final Item COLORED_WHITE_LONG_WALL_TILES = registerSticker(
             "sticker_colored_white_long_wall_tiles",
@@ -105,7 +105,7 @@ public class StickerInit {
             16,
             0.75f,
             Movable.VERTICAL,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "block/stickers/colored_white_long_wall_tiles")
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/colored_white_long_wall_tiles")
     );
 
     private static Item registerSticker(String itemName, Function<Item.Settings, Item> factory, Item.Settings settings, String stickerName, float size, int pixelDensity, Identifier... stickerTexture) {
@@ -131,7 +131,7 @@ public class StickerInit {
     private static Item registerSticker(String itemName, Function<Item.Settings, Item> factory, Item.Settings settings, String stickerName, float size, int pixelDensity, float mouseOffset, Movable direction, boolean isWallSticker, boolean isStackable, Identifier... stickerTexture) {
         STICKERS.put(stickerName, new Sticker(stickerName, direction, size, pixelDensity, stickerTexture));
 
-        final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(FnafUniverseResuited.MOD_ID, itemName));
+        final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(FnafUniverseRebuilt.MOD_ID, itemName));
         return ((StickerItem) Items.register(registryKey, factory, settings)).info(stickerName, mouseOffset, isWallSticker, isStackable);
     }
 
@@ -140,7 +140,7 @@ public class StickerInit {
     }
 
     public static void registerStickers() {
-        FnafUniverseResuited.LOGGER.info("Registering Sticker Items for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Sticker Items for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 
     public record Sticker(String name, Movable move, float size, int pixelDensity, Identifier... ids) {

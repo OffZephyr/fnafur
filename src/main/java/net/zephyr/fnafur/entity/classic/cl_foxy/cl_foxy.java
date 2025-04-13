@@ -13,7 +13,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.entity.goals.ShouldActiveTargetGoal;
 import net.zephyr.fnafur.entity.goals.ShouldLookAroundGoal;
@@ -29,56 +29,56 @@ public class cl_foxy extends DefaultEntity {
 
     private final EntitySkin DEFAULT =
             new EntitySkin("entity.fnafur.cl_foxy.default")
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/normalfoxyicon.png"));
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/normalfoxyicon.png"));
     private final EntitySkin FIXED =
             new EntitySkin("entity.fnafur.cl_foxy.fixed")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_fixed.png"))
-                    .geo(Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/classic/cl_foxy/cl_foxy_fixed.geo.json"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_fixed.png"))
+                    .geo(Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/classic/cl_foxy/cl_foxy_fixed.geo.json"));
     private final EntitySkin FIXED_TAIL =
             new EntitySkin("entity.fnafur.cl_foxy.fixed_tail")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_fixed_tail.png"))
-                    .geo(Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/classic/cl_foxy/cl_foxy_fixed_tail.geo.json"))
-                    .animations(Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/classic/cl_foxy/cl_foxy_tail.animation.json"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_fixed_tail.png"))
+                    .geo(Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/classic/cl_foxy/cl_foxy_fixed_tail.geo.json"))
+                    .animations(Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/cl_foxy/cl_foxy_tail.animation.json"));
     private final EntitySkin DIRTY =
             new EntitySkin("entity.fnafur.cl_foxy.dirty")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_dirty.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/dirtyfoxyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_dirty.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/dirtyfoxyicon.png"));
     private final EntitySkin STAINED_FABRIC =
             new EntitySkin("entity.fnafur.cl_foxy.stained_fabric")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_stained_fabric.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/stainedfabricfoxyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_stained_fabric.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/stainedfabricfoxyicon.png"));
     private final EntitySkin OLD =
             new EntitySkin("entity.fnafur.cl_foxy.old")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_old.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/oldfoxyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_old.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/oldfoxyicon.png"));
     private final EntitySkin BLACKLIGHT =
             new EntitySkin("entity.fnafur.cl_foxy.blacklight")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_blacklight.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/blacklightfoxyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_blacklight.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/blacklightfoxyicon.png"));
     private final EntitySkin BLACKLIGHT_PBG =
             new EntitySkin("entity.fnafur.cl_foxy.blacklight_pbg")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_blacklight_pbg.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/pbgblacklightfoxyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_blacklight_pbg.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/pbgblacklightfoxyicon.png"));
     private final EntitySkin INVERTED =
             new EntitySkin("entity.fnafur.cl_foxy.inverted")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_inverted.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/invertedfoxyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_inverted.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/invertedfoxyicon.png"));
     private final EntitySkin FIXED_INVERTED =
             new EntitySkin("entity.fnafur.cl_foxy.fixed_inverted")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_fixed_inverted.png"))
-                    .geo(Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/classic/cl_foxy/cl_foxy_fixed.geo.json"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_fixed_inverted.png"))
+                    .geo(Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/classic/cl_foxy/cl_foxy_fixed.geo.json"));
     private final EntitySkin SHADOW =
             new EntitySkin("entity.fnafur.cl_foxy.shadow")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_shadow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/shadowfoxyicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_shadow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/shadowfoxyicon.png"));
     private final EntitySkin SHADOW_WHITE_EYES =
             new EntitySkin("entity.fnafur.cl_foxy.shadow_white_eyes")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_shadow_white_eyes.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/shadowfoxywhiteeyesicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_shadow_white_eyes.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/shadowfoxywhiteeyesicon.png"));
     private final EntitySkin SHADOW_NORMAL_EYES =
             new EntitySkin("entity.fnafur.cl_foxy.shadow_normal_eyes")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_shadow_normal_eyes.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_foxy/icon/shadowfoxynormaleyesicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_shadow_normal_eyes.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/shadowfoxynormaleyesicon.png"));
 
     public cl_foxy(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -275,17 +275,17 @@ public class cl_foxy extends DefaultEntity {
     }
     @Override
     public Identifier getDefaultTexture() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy.png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy.png");
     }
 
     @Override
     public Identifier getDefaultGeoModel() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/classic/cl_foxy/cl_foxy.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/classic/cl_foxy/cl_foxy.geo.json");
     }
 
     @Override
     public Identifier getDefaultAnimations() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/classic/cl_foxy/cl_foxy.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/cl_foxy/cl_foxy.animation.json");
     }
 
     @Override

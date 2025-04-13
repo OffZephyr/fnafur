@@ -8,7 +8,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.block_init.GeoBlockInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
@@ -16,9 +16,9 @@ import net.zephyr.fnafur.init.block_init.PropInit;
 public class ItemGroupsInit {
 
     Item icon = new Item(new Item.Settings());
-    public static final ItemGroup FNAF_PROPS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, "props"),
+    public static final ItemGroup FNAF_PROPS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, "props"),
             FabricItemGroup.builder()
-                    .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".props"))
+                    .displayName(Text.translatable(FnafUniverseRebuilt.MOD_ID + ".props"))
                     .noRenderedName()
                     .icon(() -> new ItemStack(PropInit.FLOOR_MONITORS))
                     .entries((displayContext, entries) -> {
@@ -82,9 +82,9 @@ public class ItemGroupsInit {
                         entries.add(GeoBlockInit.BIG_GREEN_DOOR);
 
                     }).build());
-    public static final ItemGroup FNAF_TECHNICAL = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, "technical"),
+    public static final ItemGroup FNAF_TECHNICAL = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, "technical"),
             FabricItemGroup.builder()
-                    .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".technical"))
+                    .displayName(Text.translatable(FnafUniverseRebuilt.MOD_ID + ".technical"))
                     .noRenderedName()
                     .icon(() -> new ItemStack(ItemInit.PIPE_WRENCH))
                     .entries((displayContext, entries) -> {
@@ -97,6 +97,7 @@ public class ItemGroupsInit {
                         entries.add(ItemInit.PIPE_WRENCH);
                         entries.add(ItemInit.WRENCH);
                         entries.add(ItemInit.PAINTBRUSH);
+                        entries.add(ItemInit.SCRAPER);
                         entries.add(ItemInit.TAPEMEASURE);
                         entries.add(ItemInit.JERRYCAN);
 
@@ -117,9 +118,9 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.ELECTRICAL_LOCKER);
 
                     }).build());
-    public static final ItemGroup FNAF_BLOCKS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, "blocks"),
+    public static final ItemGroup FNAF_BLOCKS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, "blocks"),
             FabricItemGroup.builder()
-                    .displayName(Text.translatable(FnafUniverseResuited.MOD_ID + ".blocks"))
+                    .displayName(Text.translatable(FnafUniverseRebuilt.MOD_ID + ".blocks"))
                     .noRenderedName()
                     .icon(() -> new ItemStack(BlockInit.BLACK_WHITE_TILES))
                     .entries((displayContext, entries) -> {
@@ -311,17 +312,17 @@ public class ItemGroupsInit {
 
 
                     }).build());
-    public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseResuited.MOD_ID, FnafUniverseResuited.MOD_ID),
+    public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, FnafUniverseRebuilt.MOD_ID),
             FabricItemGroup.builder()
-                    .displayName(Text.literal(FnafUniverseResuited.MOD_ID))
+                    .displayName(Text.literal(FnafUniverseRebuilt.MOD_ID))
                     .noRenderedName()
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/tabs_fnaf.png"))
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/tabs_fnaf.png"))
                     .icon(() -> new ItemStack(SpawnItemInit.CL_FRED_SPAWN))
                     .entries((displayContext, entries) -> {
                         entries.add(SpawnItemInit.CL_FRED_SPAWN);
                     }).build());
 
     public static void registerItemGroups() {
-        FnafUniverseResuited.LOGGER.info("Registering Item Groups for " + FnafUniverseResuited.MOD_ID);
+        FnafUniverseRebuilt.LOGGER.info("Registering Item Groups for " + FnafUniverseRebuilt.MOD_ID);
     }
 }

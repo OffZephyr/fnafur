@@ -13,7 +13,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.PropRenderer;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
@@ -67,9 +67,9 @@ public class PropInit {
     public static final Block FNAF_1_DESK = registerGeoProp(
             "fnaf1desk",
             Fnaf1Desk::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/fnaf1desk.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fnaf1desk.geo.json"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fnaf1desk.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/fnaf1desk.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/block/props/fnaf1desk.animation.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -81,9 +81,9 @@ public class PropInit {
     public static final Block STAR_PLASTIC_CHAIR = registerGeoProp(
             "star_plastic_chair",
             StarPlasticChair::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/fnaf1chair.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fnaf1chair.geo.json"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fnaf1chair.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/fnaf1chair.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/block/props/fnaf1desk.animation.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -95,9 +95,9 @@ public class PropInit {
     public static final Block COSMO_GIFT = registerGeoProp(
             "cosmo_gift",
             CosmoGift::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/gift_boxes/cosmo_gift.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/giftbox.geo.json"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/cosmo_gift.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/gift_boxes/cosmo_gift.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/giftbox.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/block/props/cosmo_gift.animation.json"),
             AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -400,9 +400,9 @@ public class PropInit {
     public static final Block DOUBLE_DOOR_FRIDGE = registerGeoProp(
             "double_door_fridge",
             DoubleDoorFridge::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/double_fridge.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/double_door_fridge.geo.json"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/double_door_fridge.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/double_fridge.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/double_door_fridge.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/block/props/double_door_fridge.animation.json"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -415,9 +415,9 @@ public class PropInit {
     public static final Block FRIDGE = registerGeoProp(
             "fridge",
             Fridge::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/fridge.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/fridge.geo.json"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/fridge.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fridge.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/fridge.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/block/props/fridge.animation.json"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -430,9 +430,9 @@ public class PropInit {
     public static final Block WOODEN_CLOCK = registerGeoProp(
             "wooden_clock",
             WoodenClock::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/props/wooden_clock.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/wall_clock.geo.json"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "animations/block/props/wall_clock.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/wooden_clock.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/wall_clock.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/block/props/wall_clock.animation.json"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -550,7 +550,7 @@ public class PropInit {
     );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
-        final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
+        final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
@@ -558,7 +558,7 @@ public class PropInit {
         return block;
     }
     private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings) {
-        final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
+        final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
@@ -585,10 +585,10 @@ public class PropInit {
             BlockRenderLayerMap.INSTANCE.putBlock(((BlockItem)item).getBlock(), RenderLayer.getTranslucent());
         }
 
-        FnafUniverseResuited.LOGGER.info("Registering Props On CLIENT for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Props On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 
     public static void registerProps() {
-        FnafUniverseResuited.LOGGER.info("Registering Props for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Props for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 }

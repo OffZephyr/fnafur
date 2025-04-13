@@ -11,12 +11,12 @@
 
   "key.fnafur.crawl": "Crawl",
 
-  "fnafur.animatronics": "FNaF Universe Resuited: Animatronics",
-  "fnafur.blocks": "FNaF Universe Resuited: Blocks",
-  "fnafur.props": "FNaF Universe Resuited: Props",
-  "fnafur.technical": "FNaF Universe Resuited: Technical",
+  "fnafur.animatronics": "FNaF Universe Rebuilt: Animatronics",
+  "fnafur.blocks": "FNaF Universe Rebuilt: Blocks",
+  "fnafur.props": "FNaF Universe Rebuilt: Props",
+  "fnafur.technical": "FNaF Universe Rebuilt: Technical",
 
-  "block.fnafur.has_sticker": " With Sticker",
+  "block.fnafur.has_sticker": " With Decal",
 
   "block.fnafur.computer": "Computer",
   "block.fnafur.cosmo_gift": "§c§lCosmo Gift",
@@ -200,7 +200,7 @@
   "block.fnafur.floor_monitors": "Floor Monitors",
   "block.fnafur.wooden_shelf": "Wooden Shelf",
   "block.fnafur.office_door": "Office Door",
-  "block.fnafur.garage_door": "Garage_Door",
+  "block.fnafur.garage_door": "Garage Door",
   "block.fnafur.office_buttons": "Office Buttons",
   "block.fnafur.retro_table": "Retro Table",
   "block.fnafur.pirates_cove_stage": "Pirate's Cove Stage",
@@ -301,8 +301,15 @@
   "item.fnafur.cpu.description.0.2": "to start §bcustomizing the AI stored on it.",
 
   "item.fnafur.pipe_wrench": "Pipe Wrench",
-  "item.fnafur.wrench": "Standard Wrench",
+  "item.fnafur.wrench": "Wrench",
+  "item.fnafur.wrench.description": "§8Used to §7§lModify Technical Attributes",
+  "item.fnafur.wrench.description2": "§8of certain blocks and entities",
   "item.fnafur.paintbrush": "Paint Brush",
+  "item.fnafur.paintbrush.description": "§8Used to §7§lModify Visual Attributes",
+  "item.fnafur.paintbrush.description2": "§8of certain blocks and entities",
+  "item.fnafur.scraper": "Scraper",
+  "item.fnafur.scraper.description": "§8Used to scrape §7§lDecals",
+  "item.fnafur.scraper.description2": "§8off of walls",
   "item.fnafur.jerrycan": "Jerry Can",
   "item.fnafur.paintbrush.map_cam.line1": "Camera Map Coloring...",
   "item.fnafur.paintbrush.map_cam.line2": "§b§lClick on a line §bto change its color.",

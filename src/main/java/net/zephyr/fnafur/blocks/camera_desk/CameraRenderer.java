@@ -12,7 +12,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.mixinAccessing.IPostProcessorLoader;
 import net.zephyr.fnafur.util.compat.Iris;
 import org.jetbrains.annotations.Nullable;
@@ -27,8 +27,8 @@ public class CameraRenderer {
 
     PostEffectProcessor monitorPostProcessor;
     private boolean monitorPostProcessorEnabled;
-    private static final Identifier normalShader = Identifier.of(FnafUniverseResuited.MOD_ID, "shaders/post/camera_desk.json");
-    private static final Identifier nvShader = Identifier.of(FnafUniverseResuited.MOD_ID, "shaders/post/camera_desk_nightvision.json");
+    private static final Identifier normalShader = Identifier.of(FnafUniverseRebuilt.MOD_ID, "shaders/post/camera_desk.json");
+    private static final Identifier nvShader = Identifier.of(FnafUniverseRebuilt.MOD_ID, "shaders/post/camera_desk_nightvision.json");
     private static final Framebuffer[] framebuffers = new Framebuffer[3];
     private static int Deep;
     public static boolean nightVision;

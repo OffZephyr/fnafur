@@ -18,6 +18,7 @@ public class CPUItem extends Item {
             return Text.translatable(this.getTranslationKey(), ai.entityType().getName().getString());
         }
         return Text.translatable(this.getTranslationKey(), "Empty");
+
     }
 
     public static float getEntityID(String name){

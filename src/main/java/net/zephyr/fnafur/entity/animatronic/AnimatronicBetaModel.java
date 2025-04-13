@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.entity.animatronic;
 
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.entity_init.CharacterInit;
 import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
 import org.jetbrains.annotations.Nullable;
@@ -22,13 +22,13 @@ public class AnimatronicBetaModel<T extends AnimatronicEntity> extends GeoModel<
     @Override
     public Identifier getTextureResource(T animatable, @Nullable GeoRenderer<T> renderer) {
         String category = CharacterInit.CHARACTER_MAP.get(character).CATEGORY;
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/" + category + "/" + character + "/" + character + ".png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/" + category + "/" + character + "/" + character + ".png");
     }
 
     @Override
     public Identifier getAnimationResource(T animatable) {
-        //return Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/classic/" + characterBase + "/" + characterBase + ".animation.json");
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/classic/" + "cl_fred" + "/" + "cl_fred" + ".animation.json");
+        //return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/" + characterBase + "/" + characterBase + ".animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/" + "cl_fred" + "/" + "cl_fred" + ".animation.json");
     }
 
     public AnimatronicBetaModel<T> setCharacter(String character) {

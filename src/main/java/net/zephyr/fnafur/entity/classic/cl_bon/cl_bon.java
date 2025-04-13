@@ -13,7 +13,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.entity.goals.ShouldActiveTargetGoal;
 import net.zephyr.fnafur.entity.goals.ShouldLookAroundGoal;
@@ -29,39 +29,39 @@ public class cl_bon extends DefaultEntity {
 
     private final EntitySkin DEFAULT =
             new EntitySkin("entity.fnafur.cl_bon.default")
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_bon/icon/normalbonnieicon.png"));
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_bon/icon/normalbonnieicon.png"));
     private final EntitySkin CLEAN =
             new EntitySkin("entity.fnafur.cl_bon.default_clean")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_clean.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_bon/icon/bonniecleanicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_clean.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_bon/icon/bonniecleanicon.png"));
     private final EntitySkin BLACKLIGHT =
             new EntitySkin("entity.fnafur.cl_bon.blacklight")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_blacklight.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_bon/icon/blacklightbonnieicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_blacklight.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_bon/icon/blacklightbonnieicon.png"));
     private final EntitySkin BLACKLIGHT_MYB =
             new EntitySkin("entity.fnafur.cl_bon.blacklight_myb")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_blacklight_myb.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_bon/icon/blacklightbonniemybicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_blacklight_myb.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_bon/icon/blacklightbonniemybicon.png"));
     private final EntitySkin SHADOW =
             new EntitySkin("entity.fnafur.cl_bon.shadow")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_shadow.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_bon/icon/shadowclassicbonnieicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_shadow.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_bon/icon/shadowclassicbonnieicon.png"));
     private final EntitySkin SHADOW_SUIT =
             new EntitySkin("entity.fnafur.cl_bon.shadow_suit")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_shadow_suit.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_bon/icon/shadowclassicbonniesuiticon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_shadow_suit.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_bon/icon/shadowclassicbonniesuiticon.png"));
     private final EntitySkin SHADOW_SILVER =
             new EntitySkin("entity.fnafur.cl_bon.shadow_silver")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_shadow_silver.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_bon/icon/shadowclassicbonniesilvericon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_shadow_silver.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_bon/icon/shadowclassicbonniesilvericon.png"));
     private final EntitySkin SHADOW_WHITE =
             new EntitySkin("entity.fnafur.cl_bon.shadow_white")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_shadow_white.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_bon/icon/shadowclassicbonniewhiteicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_shadow_white.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_bon/icon/shadowclassicbonniewhiteicon.png"));
     private final EntitySkin INVERTED =
             new EntitySkin("entity.fnafur.cl_bon.inverted")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_inverted.png"))
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID,"textures/entity/classic/cl_bon/icon/bonnieinvertedicon.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_bon/cl_bon_inverted.png"))
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_bon/icon/bonnieinvertedicon.png"));
 
     public cl_bon(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -274,17 +274,17 @@ public class cl_bon extends DefaultEntity {
     }
     @Override
     public Identifier getDefaultTexture() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_bon/cl_bon.png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_bon/cl_bon.png");
     }
 
     @Override
     public Identifier getDefaultGeoModel() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/classic/cl_bon/cl_bon.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/classic/cl_bon/cl_bon.geo.json");
     }
 
     @Override
     public Identifier getDefaultAnimations() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/classic/cl_bon/cl_bon.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/cl_bon/cl_bon.animation.json");
     }
 
     @Override

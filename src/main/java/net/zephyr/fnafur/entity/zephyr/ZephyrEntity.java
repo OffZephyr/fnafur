@@ -9,7 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.entity.goals.ShouldActiveTargetGoal;
 import net.zephyr.fnafur.entity.goals.ShouldLookAroundGoal;
@@ -29,8 +29,8 @@ public class ZephyrEntity extends DefaultEntity {
 
     private final EntitySkin NEON_SKIN =
             new EntitySkin("entity.fnafur.zephyr.neon")
-                    .icon(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/zephyr/icons/neon.png"))
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/zephyr/zephyr_neon.png"));
+                    .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/zephyr/icons/neon.png"))
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/zephyr/zephyr_neon.png"));
 
     public static DefaultAttributeContainer.Builder setAttributes() {
 
@@ -198,22 +198,22 @@ public class ZephyrEntity extends DefaultEntity {
 
     @Override
     public Identifier getDefaultTexture() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/zephyr/zephyr.png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/zephyr/zephyr.png");
     }
 
     @Override
     public Identifier getDefaultGeoModel() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/zephyr/zephyr.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/zephyr/zephyr.geo.json");
     }
 
     @Override
     public Identifier getDefaultAnimations() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/zephyr/zephyr.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/zephyr/zephyr.animation.json");
     }
 
     @Override
     public Identifier getDefaultIcon() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/zephyr/icons/default.png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/zephyr/icons/default.png");
     }
 
     @Override

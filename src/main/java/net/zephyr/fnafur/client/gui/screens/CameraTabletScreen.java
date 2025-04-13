@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.GoopyBlockEntity;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class CameraTabletScreen extends GoopyScreen {
     boolean closing = false;
-    Identifier overlay = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/camera/camera_overlay.png");
+    Identifier overlay = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/camera/camera_overlay.png");
     Identifier normalShader = Identifier.ofVanilla("post_effects/camera.json");
     Identifier nvShader = Identifier.ofVanilla("post_effects/camera_nightvision.json");
     int Static = 0;
@@ -113,7 +113,7 @@ public class CameraTabletScreen extends GoopyScreen {
         boolean hasNoSignal = currentCam == 0 || !Active || !bl;
         if(hasNoSignal) context.fill(0, 0, this.width, this.height, 0xFF000000);
 
-        Identifier staticTexture = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/static/" + this.Static + ".png");
+        Identifier staticTexture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/static/" + this.Static + ".png");
         float alpha = 0.15f + (0.85f * (transition / 4f));
         drawRecolorableTexture(context, staticTexture, 0, 0, 0, this.width, this.height, 0, 0, this.width, this.height, 1, 1, 1, alpha);
 

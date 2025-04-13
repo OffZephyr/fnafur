@@ -10,7 +10,7 @@ import net.minecraft.resource.SinglePreparationResourceReloader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.profiler.Profiler;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -60,7 +60,7 @@ public class LayeredBlockManager extends SinglePreparationResourceReloader<List<
                             layers.add(layer);
                         }
                     } catch (RuntimeException runtimeException) {
-                        FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", "layer_data.json", resource.getPackId(), runtimeException);
+                        FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", "layer_data.json", resource.getPackId(), runtimeException);
                     }
                 }
             } catch (IOException iOException) {
@@ -75,7 +75,7 @@ public class LayeredBlockManager extends SinglePreparationResourceReloader<List<
         this.Layers.clear();
         this.Layers = prepared;
         for (LayeredBlockLayer layer : prepared) {
-            FnafUniverseResuited.print(layer.getName());
+            FnafUniverseRebuilt.print(layer.getName());
         }
     }
 }

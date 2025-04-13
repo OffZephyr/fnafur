@@ -3,7 +3,7 @@ package net.zephyr.fnafur.blocks.tile_doors.beta;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 public class OfficeDoor extends TileDoorBlock{
     public OfficeDoor(Settings settings) {
@@ -12,7 +12,7 @@ public class OfficeDoor extends TileDoorBlock{
 
     @Override
     public Identifier blockTexture() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/office_door.png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/office_door.png");
     }
 
     @Override

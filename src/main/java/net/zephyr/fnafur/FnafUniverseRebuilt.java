@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class FnafUniverseResuited implements ModInitializer {
+public class FnafUniverseRebuilt implements ModInitializer {
 
 	public static final Map<EntityType<? extends DefaultEntity>, EntityRendererFactory<?>> RENDERER_FACTORIES = new Object2ObjectOpenHashMap<>();
 	public static final Map<EntityType<? extends AnimatronicEntity>, EntityRendererFactory<?>> RENDER_FACTORIES = new Object2ObjectOpenHashMap<>();

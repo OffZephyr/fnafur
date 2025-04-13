@@ -11,7 +11,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IPostProcessorLoader;
@@ -143,9 +143,9 @@ public class GameRendererMixin implements IPostProcessorLoader {
             //monitorPostProcessor.setupDimensions(this.client.getWindow().getFramebufferWidth(), this.client.getWindow().getFramebufferHeight());
             monitorPostProcessors.put(framebuffer, monitorPostProcessor);
         } catch (IOException iOException) {
-            FnafUniverseResuited.LOGGER.warn("Failed to load shader: {}", (Object)id, (Object)iOException);
+            FnafUniverseRebuilt.LOGGER.warn("Failed to load shader: {}", (Object)id, (Object)iOException);
         } catch (JsonSyntaxException jsonSyntaxException) {
-            FnafUniverseResuited.LOGGER.warn("Failed to parse shader: {}", (Object)id, (Object)jsonSyntaxException);
+            FnafUniverseRebuilt.LOGGER.warn("Failed to parse shader: {}", (Object)id, (Object)jsonSyntaxException);
         }
     }*/
 }

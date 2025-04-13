@@ -8,7 +8,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropModel;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;

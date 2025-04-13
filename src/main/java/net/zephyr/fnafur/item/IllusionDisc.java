@@ -9,7 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.util.ItemNbtUtil;
@@ -46,7 +46,7 @@ public class IllusionDisc extends Item {
                     ItemNbtUtil.setNbt(stack, nbt.copy());
                     ItemNbtUtil.setNbt(user.getMainHandStack(), nbt.copy());
                     user.sendMessage(Text.translatable("item.fnafur.illusion_disc.entity_updated"), true);
-                    FnafUniverseResuited.print(ItemNbtUtil.getNbt(stack).getCompound("entityData").asString());
+                    FnafUniverseRebuilt.print(ItemNbtUtil.getNbt(stack).getCompound("entityData").asString());
                     return ActionResult.SUCCESS;
                 }
             }

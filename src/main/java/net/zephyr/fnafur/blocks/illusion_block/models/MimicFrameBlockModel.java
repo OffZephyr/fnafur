@@ -1,9 +1,10 @@
-package net.zephyr.fnafur.blocks.illusion_block;
+package net.zephyr.fnafur.blocks.illusion_block.models;
 
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.*;
 import net.minecraft.client.texture.Sprite;
@@ -20,32 +21,48 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
+import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.item_init.StickerInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class MimicFrameBlockModel extends StickerBlockModel {
+    public final BlockState defaultState;
 
-    public MimicFrameBlockModel(UnbakedModel model){
+    public MimicFrameBlockModel(UnbakedModel model, BlockState state){
         super(model);
+        this.defaultState = state;
     }
+
     @Override
-    public Sprite getParticleSprite() {
-        return new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_1")).getSprite();
+    public void emitItemQuads(QuadEmitter emitter, Supplier<Random> randomSupplier) {
+
+        int matrixSize = ((MimicFrames)defaultState.getBlock()).getMatrixSize();
+        byte[] cubeArray = new byte[matrixSize * matrixSize * matrixSize];
+        for(int i = 0; i < matrixSize * matrixSize * matrixSize; i++){
+            cubeArray[i] = 1;
+        }
+        NbtCompound nbt = new NbtCompound();
+        nbt.putByteArray("cubeMatrix", cubeArray);
+
+        emitQuads(defaultState, BlockPos.ORIGIN, nbt, emitter);
     }
 
     @Override
     public void emitBaseCube(BlockState baseState, BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt) {
-
         if(!(baseState.getBlock() instanceof MimicFrames)) {
             super.emitBaseCube(baseState, state, pos, emitter, nbt);
             return;
         }
+
+        this.particlesprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")).getSprite();
 
         World world = MinecraftClient.getInstance().world;
         if (state.getBlock() instanceof MimicFrames block) {
@@ -99,7 +116,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
     public void emitSide(QuadEmitter emitter, NbtCompound nbt, Direction direction, Block sideBlock, BlockPos pos, boolean reColor, int matrixSize, int x, int y, int z, int colorIndex) {
 
         int frameSize = matrixSize * matrixSize;
-        Sprite frame = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseResuited.MOD_ID, "block/mimic_frame_" + frameSize)).getSprite();
+        Sprite frame = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_" + frameSize)).getSprite();
 
         if (frame == null) return;
 

@@ -6,6 +6,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.property.EnumProperty;
@@ -19,13 +20,15 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
+import net.zephyr.fnafur.init.item_init.ItemInit;
+import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -52,6 +55,11 @@ public class AnimatronicBlock extends FloorPropBlock<DemoAnimationList> {
         }
 
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+    }
+
+    @Override
+    public boolean canChangeState(Item item) {
+        return item instanceof WrenchItem;
     }
 
     @Override

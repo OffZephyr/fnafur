@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.GoopyBlacklist;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -18,7 +18,7 @@ import java.io.*;
 public class BlackWhitelistInit {
     public static void Init() throws IOException {
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpGet request = new HttpGet("https://raw.githubusercontent.com/OffZephyr/FnafUniverseResuited-Public/main/BlackAndWhiteList.json");
+            HttpGet request = new HttpGet("https://raw.githubusercontent.com/OffZephyr/FnafUniverseRebuilt-Public/main/BlackAndWhiteList.json");
             CloseableHttpResponse response = httpClient.execute(request);
             HttpEntity entity = response.getEntity();
 
@@ -39,6 +39,6 @@ public class BlackWhitelistInit {
             GoopyBlacklist.addToWhitelist(username, uuid);
         }
 
-        FnafUniverseResuited.LOGGER.info("BLACKLIST initialized.");
+        FnafUniverseRebuilt.LOGGER.info("BLACKLIST initialized.");
     }
 }

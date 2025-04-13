@@ -4,7 +4,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.computer.COMPBaseScreen;
 
 public class COMPBrowserScreen extends COMPBaseAppScreen {

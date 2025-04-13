@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.GoopyBlockEntity;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
@@ -41,7 +41,7 @@ public class CameraDeskBlockEntity extends GoopyBlockEntity {
             posList.add(blockEntity.getPos());
             CameraRenderer.setDirty(blockEntity.getPos(), true);
             blockEntity.updateCams();
-            FnafUniverseResuited.print("CameraDeskBlockEntity added at " + blockEntity.getPos());
+            FnafUniverseRebuilt.print("CameraDeskBlockEntity added at " + blockEntity.getPos());
         }
     }
 
@@ -125,6 +125,6 @@ public class CameraDeskBlockEntity extends GoopyBlockEntity {
         float maxAnimatedCounter = 180;
         animatedCounter = animatedCounter + deltaTick < maxAnimatedCounter ? animatedCounter + deltaTick : animatedCounter + deltaTick - maxAnimatedCounter;
         int num = animatedCounter < maxAnimatedCounter/4 ? 0 : animatedCounter < maxAnimatedCounter/2 ? 1 : animatedCounter < (maxAnimatedCounter/4) * 3 ? 2 : 3;
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/static/" + num + ".png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/static/" + num + ".png");
     }
 }

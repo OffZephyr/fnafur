@@ -13,7 +13,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.entity.goals.ShouldActiveTargetGoal;
 import net.zephyr.fnafur.entity.goals.ShouldLookAroundGoal;
@@ -31,22 +31,22 @@ public class cl_chica extends DefaultEntity {
             new EntitySkin("entity.fnafur.cl_chica.default");
     private final EntitySkin CLEAN =
             new EntitySkin("entity.fnafur.cl_chica.clean")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_clean.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_clean.png"));
     private final EntitySkin DIRTY =
             new EntitySkin("entity.fnafur.cl_chica.dirty")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_dirty.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_dirty.png"));
     private final EntitySkin BLACKLIGHT =
             new EntitySkin("entity.fnafur.cl_chica.blacklight")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight.png"));
     private final EntitySkin BLACKLIGHT_MGB =
             new EntitySkin("entity.fnafur.cl_chica.blacklight_mgb")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight_mgb.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight_mgb.png"));
     private final EntitySkin BLACKLIGHT_INVERTED =
             new EntitySkin("entity.fnafur.cl_chica.blacklight_inverted")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight_inverted.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight_inverted.png"));
     private final EntitySkin INVERTED =
             new EntitySkin("entity.fnafur.cl_chica.inverted")
-                    .texture(Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_inverted.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_inverted.png"));
 
     public cl_chica(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -258,17 +258,17 @@ public class cl_chica extends DefaultEntity {
 
     @Override
     public Identifier getDefaultTexture() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/classic/cl_chica/cl_chica.png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica.png");
     }
 
     @Override
     public Identifier getDefaultGeoModel() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/classic/cl_chica/cl_chica.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/classic/cl_chica/cl_chica.geo.json");
     }
 
     @Override
     public Identifier getDefaultAnimations() {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/classic/cl_chica/cl_chica.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/cl_chica/cl_chica.animation.json");
     }
 
     @Override

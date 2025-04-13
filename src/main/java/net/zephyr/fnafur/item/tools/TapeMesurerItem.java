@@ -24,7 +24,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.CallableByMesurer;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.tablet.TabletItem;
@@ -51,7 +51,7 @@ public class TapeMesurerItem extends Item {
     void resetTape(ItemStack stack, PlayerEntity player, World world){
         NbtCompound data = stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
         data.putBoolean("hasData", false);
-        Text resetText = Text.translatable(FnafUniverseResuited.MOD_ID + ".tape_measure.reset");
+        Text resetText = Text.translatable(FnafUniverseRebuilt.MOD_ID + ".tape_measure.reset");
         player.sendMessage(resetText, true);
         world.playSound(player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_SPYGLASS_STOP_USING, SoundCategory.PLAYERS, 1, 1, true);
         stack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(currentNbt -> {

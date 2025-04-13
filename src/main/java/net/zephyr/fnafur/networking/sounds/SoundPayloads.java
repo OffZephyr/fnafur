@@ -4,13 +4,13 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 public class SoundPayloads {
-    public static final Identifier PlaySoundS2C = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_play_sound");
-    public static final Identifier PlaySoundC2S = Identifier.of(FnafUniverseResuited.MOD_ID, "c2s_play_sound");
-    public static final Identifier StopSoundS2C = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_stop_sound");
-    public static final Identifier StopSoundC2S = Identifier.of(FnafUniverseResuited.MOD_ID, "c2s_stop_sound");
+    public static final Identifier PlaySoundS2C = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_play_sound");
+    public static final Identifier PlaySoundC2S = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_play_sound");
+    public static final Identifier StopSoundS2C = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_stop_sound");
+    public static final Identifier StopSoundC2S = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_stop_sound");
 
     public static void registerPayloads() {
         PayloadTypeRegistry.playS2C().register(PlaySoundS2CPayload.ID, PlaySoundS2CPayload.CODEC);

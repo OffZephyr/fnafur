@@ -31,7 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.item_init.StickerInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
@@ -49,9 +49,10 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
         super(model);
     }
 
-    Sprite particlesprite;
+    public Sprite particlesprite;
 
     Block block;
+    public BlockEntity forceEnt = null;
     public static float STICKER_OFFSET = -0.002f;
 
     Random random = Random.create();
@@ -90,7 +91,7 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
     @Override
     public BakedModel bake(ModelTextures textures, Baker baker, ModelBakeSettings settings, boolean ambientOcclusion, boolean isSideLit, ModelTransformation transformation) {
 
-        FnafUniverseResuited.print("BAKE BAKE");
+        FnafUniverseRebuilt.print("BAKE BAKE");
         /*Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         MeshBuilder builder = renderer.meshBuilder();*/
         return this;
@@ -106,7 +107,7 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
     public void emitBlockQuads(QuadEmitter emitter, BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, Predicate<@Nullable Direction> cullTest) {
 
         block = state.getBlock();
-        BlockEntity entity = blockView.getBlockEntity(pos);
+        BlockEntity entity = forceEnt == null ? blockView.getBlockEntity(pos) : forceEnt;
 
         if (entity instanceof BlockEntity ent) {
             if(((IEntityDataSaver) ent).getPersistentData().isEmpty()){
@@ -139,7 +140,6 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
     public void emitBaseCube(BlockState baseState, BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
         MinecraftClient client = MinecraftClient.getInstance();
         BakedModel model = client.getBakedModelManager().getBlockModels().getModel(state);
-        particlesprite = model.getParticleSprite();
 
         for(Direction direction : Direction.values()) {
 
@@ -151,6 +151,7 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
             final RenderMaterial defaultMaterial = model.useAmbientOcclusion() ? STANDARD_MATERIAL : NO_AO_MATERIAL;
 
             for (BakedQuad quad : quadList) {
+                if(direction == Direction.UP) particlesprite = quad.getSprite();
                 emitter.fromVanilla(quad, defaultMaterial, direction);
                 emitter.emit();
             }

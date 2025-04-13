@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.zephyr.fnafur.datagen.*;
 
-public class FnafUniverseResuitedDataGenerator implements DataGeneratorEntrypoint {
+public class FnafUniverseRebuiltDataGenerator implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 

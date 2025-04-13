@@ -11,7 +11,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.item.EntitySpawnItem;
@@ -27,8 +27,8 @@ import java.util.Objects;
 
 public class COMPRemoteScreen extends COMPBaseAppScreen {
     List<DefaultEntity> entities = new ArrayList<>();
-    public Identifier LIST = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/window_smallbar.png");
-    public Identifier LIST_OFF = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/window_smallbar_off.png");
+    public Identifier LIST = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/window_smallbar.png");
+    public Identifier LIST_OFF = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/window_smallbar_off.png");
     DefaultEntity control = null;
 
     int selected = -1;
@@ -47,7 +47,7 @@ public class COMPRemoteScreen extends COMPBaseAppScreen {
 
     @Override
     public void tick() {
-        FnafUniverseResuited.print(MinecraftClient.getInstance().getSoundManager().getDebugString());
+        FnafUniverseRebuilt.print(MinecraftClient.getInstance().getSoundManager().getDebugString());
         super.tick();
     }
 
@@ -182,7 +182,7 @@ public class COMPRemoteScreen extends COMPBaseAppScreen {
                     ));
 
                     int strength = (int) distance / 25;
-                    Identifier signal = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/signal_" + strength + ".png");
+                    Identifier signal = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/signal_" + strength + ".png");
                     int signalTextureSize = 16;
                     drawTextureOnScreen(context, signal, (int) topCornerX + (int) appAvailableSizeX - signalTextureSize - 1, (int) y + 1, 0, signalTextureSize, signalTextureSize, 0, 0, signalTextureSize, signalTextureSize, 1, 1, 1, 1);
 

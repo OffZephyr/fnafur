@@ -5,7 +5,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.geo_doors.GeoDoorEntity;
 import net.zephyr.fnafur.blocks.props.other.pirates_cove.curtain.PiratesCoveCurtainBlockEntity;
 import net.zephyr.fnafur.blocks.props.other.pirates_cove.stage.PiratesCoveStageBlockEntity;
@@ -17,19 +17,19 @@ public class GeoBlockEntityInit {
     public static void registerBlockEntities() {
 
         PIRATES_COVE_STAGE =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "pirates_cove_stage"),
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "pirates_cove_stage"),
                         FabricBlockEntityTypeBuilder.create(PiratesCoveStageBlockEntity::new,
                                 GeoBlockInit.PIRATES_COVE_STAGE
                         ).build());
 
         PIRATES_COVE_CURTAIN =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "pirates_cove_curtain"),
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "pirates_cove_curtain"),
                         FabricBlockEntityTypeBuilder.create(PiratesCoveCurtainBlockEntity::new,
                                 GeoBlockInit.PIRATES_COVE_CURTAIN
                         ).build());
 
         GEO_DOOR =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, "geo_door"),
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo_door"),
                         FabricBlockEntityTypeBuilder.create(GeoDoorEntity::new,
                                 GeoBlockInit.SMALL_GRAY_DOOR,
                                 GeoBlockInit.TWO_FIVE_RED_DOOR,
@@ -47,6 +47,6 @@ public class GeoBlockEntityInit {
                                 GeoBlockInit.BIG_GREEN_DOOR
                         ).build());
 
-        FnafUniverseResuited.LOGGER.info("Registering Geo Block Entities for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Geo Block Entities for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 }

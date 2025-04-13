@@ -1,6 +1,6 @@
 package net.zephyr.fnafur.init.entity_init;
 
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.animatronic.data.CharacterData;
 
 import java.util.HashMap;
@@ -22,6 +22,6 @@ public class CharacterInit {
     }
 
     public static void registerCharacters(){
-        FnafUniverseResuited.LOGGER.info("Registering Entities on CLIENT for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Entities on CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 }

@@ -10,12 +10,12 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class GoopyBlockEntity extends BlockEntity {
     NbtCompound customData = new NbtCompound();
-    String NbtIndex = FnafUniverseResuited.MOD_ID;
+    String NbtIndex = FnafUniverseRebuilt.MOD_ID;
     public GoopyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }

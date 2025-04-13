@@ -10,7 +10,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.entity_init.ClassicInit;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.item.EntitySpawnItem;
@@ -51,10 +51,10 @@ public class SpawnItemInit {
 
 
     public static Item registerItem(String path, Function<Item.Settings, Item> factory, Item.Settings settings, EntityType<? extends LivingEntity> type) {
-        final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(FnafUniverseResuited.MOD_ID, path));
+        final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(FnafUniverseRebuilt.MOD_ID, path));
         return ((EntitySpawnItem)Items.register(registryKey, factory, settings)).setEntity(type);
     }
     public static void registerSpawnItems() {
-        FnafUniverseResuited.LOGGER.info("Registering Spawn Items for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Spawn Items for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 }

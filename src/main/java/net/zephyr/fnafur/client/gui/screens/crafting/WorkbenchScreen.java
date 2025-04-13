@@ -13,7 +13,7 @@ import net.minecraft.nbt.NbtTypes;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class WorkbenchScreen extends GoopyScreen {
-    public static final Identifier TEXTURE = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/workbench.png");
+    public static final Identifier TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench.png");
     int tab = 0;
     String suit_subtab = "";
     Object[] right_list = new String[0];
@@ -108,7 +108,7 @@ public class WorkbenchScreen extends GoopyScreen {
         button.on = tab != goal;
 
         tab = button.on ? goal : 0;
-        FnafUniverseResuited.print(button.setting);
+        FnafUniverseRebuilt.print(button.setting);
     }
 
     @Override

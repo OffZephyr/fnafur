@@ -18,7 +18,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockEntity;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
 import net.zephyr.fnafur.client.JavaModels;
@@ -69,7 +69,7 @@ public class CameraBlockRenderer implements BlockEntityRenderer<CameraBlockEntit
         matrices.translate(0.5f, -0.125f, 0.5f);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-f + 180));
         String id = "block/camera";
-        Identifier texture = Identifier.of(FnafUniverseResuited.MOD_ID, id);
+        Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, id);
         SpriteIdentifier spriteIdentifier = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, texture);
         VertexConsumer vertexConsumer = spriteIdentifier.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout);
 
@@ -91,7 +91,7 @@ public class CameraBlockRenderer implements BlockEntityRenderer<CameraBlockEntit
         if(data.getBoolean("isUsed") && data.getBoolean("Active")){
             String on_id = "block/camera_on";
 
-            Identifier textureOn = Identifier.of(FnafUniverseResuited.MOD_ID, on_id);
+            Identifier textureOn = Identifier.of(FnafUniverseRebuilt.MOD_ID, on_id);
             SpriteIdentifier spriteIdentifier2 = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, textureOn);
             VertexConsumer vertexConsumer2 = spriteIdentifier2.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout);
 

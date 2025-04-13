@@ -11,7 +11,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.jsonReaders.entity_skins.EntitySkin;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class EntitySkinScreen extends GoopyScreen{
-    Identifier background = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/skins/quad_bg.png");
+    Identifier background = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/skins/quad_bg.png");
     float bg_scroll_x = 0;
     float bg_scroll_y = 0;
     float entity_rotation = 180;

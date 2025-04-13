@@ -1,6 +1,6 @@
 {
-    "model": {
-      "type": "minecraft:model",
-      "model": "fnafur:props/mimic_frame_block"
-  }
+  "model": {
+    "type": "minecraft:model",
+    "model": "fnafur:block/sticker_block"
+}
 }

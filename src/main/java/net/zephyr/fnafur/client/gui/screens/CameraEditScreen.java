@@ -9,7 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CameraEditScreen extends GoopyScreen {
-    Identifier texture = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/camera/camera_edit.png");
+    Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/camera/camera_edit.png");
     boolean isActive = false;
     private TextFieldWidget nameField;
     private TextFieldWidget actionName;

@@ -6,7 +6,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 
 import java.util.*;
@@ -35,7 +35,7 @@ public class CpuConfigScreen extends GoopyScreen {
             {3, 0},
             {4, 5}
     };
-    public static final Identifier TEXTURE = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/cpu_config_screen.png");
+    public static final Identifier TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/cpu_config_screen.png");
     public CpuConfigScreen(Text text, NbtCompound nbtCompound, Object o) {
 
         super(text, nbtCompound, o);
@@ -124,20 +124,20 @@ public class CpuConfigScreen extends GoopyScreen {
     }
 
     public void UpClick() {
-        FnafUniverseResuited.print("UP");
+        FnafUniverseRebuilt.print("UP");
     }
     private void ConfirmClick() {
-        FnafUniverseResuited.print("CONFIRM");
+        FnafUniverseRebuilt.print("CONFIRM");
     }
     private void BackClick() {
-        FnafUniverseResuited.print("BACK");
+        FnafUniverseRebuilt.print("BACK");
     }
     private void DownClick() {
-        FnafUniverseResuited.print("DOWN");
+        FnafUniverseRebuilt.print("DOWN");
     }
     private void ToggleClick(GUIToggle button) {
         button.on = !button.on;
-        FnafUniverseResuited.print(button.setting + ": " + button.on);
+        FnafUniverseRebuilt.print(button.setting + ": " + button.on);
     }
 
     @Override

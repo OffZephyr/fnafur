@@ -7,7 +7,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +32,7 @@ public class AnimatronicBlockColoredLayer<T extends AnimatronicBlockEntity> exte
                 String texture = altNbt.getString("recolorable_textures" + i);
                 int[] color = altNbt.getIntArray("color" + i);
 
-                RenderLayer translucentRenderType = RenderLayer.getEntityTranslucent(Identifier.of(FnafUniverseResuited.MOD_ID, texture));
+                RenderLayer translucentRenderType = RenderLayer.getEntityTranslucent(Identifier.of(FnafUniverseRebuilt.MOD_ID, texture));
 
                 getRenderer().reRender(getDefaultBakedModel(animatable, renderer), poseStack, bufferSource, animatable, translucentRenderType, bufferSource.getBuffer(translucentRenderType), partialTick, packedLight, packedOverlay, ColorHelper.getArgb(255, color[0], color[1], color[2]));
             }

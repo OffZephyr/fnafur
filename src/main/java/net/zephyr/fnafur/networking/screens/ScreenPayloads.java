@@ -3,14 +3,14 @@ package net.zephyr.fnafur.networking.screens;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 public class ScreenPayloads {
-    public static final Identifier SetBlockScreen = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_block_screen_open");
-    public static final Identifier SetEntityScreen = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_entity_screen_open");
-    public static final Identifier SetItemScreen = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_item_screen_open");
-    public static final Identifier SetNbtScreen = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_nbt_screen_open");
-    public static final Identifier SetScreen = Identifier.of(FnafUniverseResuited.MOD_ID, "s2c_screen_open");
+    public static final Identifier SetBlockScreen = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_block_screen_open");
+    public static final Identifier SetEntityScreen = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_entity_screen_open");
+    public static final Identifier SetItemScreen = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_item_screen_open");
+    public static final Identifier SetNbtScreen = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_nbt_screen_open");
+    public static final Identifier SetScreen = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_screen_open");
 
 
     public static void registerPayloads() {

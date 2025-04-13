@@ -12,7 +12,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
@@ -75,8 +75,8 @@ public class WoodenClock extends WallPropBlock<WoodenClockColorEnum> implements 
 
     @Override
     public Identifier getModel(BlockState state, BlockPos pos) {
-        Identifier noSeconds = Identifier.of(FnafUniverseResuited.MOD_ID,"geo/block/props/wall_clock.geo.json");
-        Identifier seconds = Identifier.of(FnafUniverseResuited.MOD_ID,"geo/block/props/wall_clock_seconds.geo.json");
+        Identifier noSeconds = Identifier.of(FnafUniverseRebuilt.MOD_ID,"geo/block/props/wall_clock.geo.json");
+        Identifier seconds = Identifier.of(FnafUniverseRebuilt.MOD_ID,"geo/block/props/wall_clock_seconds.geo.json");
 
         this.model = state.get(COLOR_PROPERTY()) == WoodenClockColorEnum.SECONDS ? seconds : noSeconds;
 

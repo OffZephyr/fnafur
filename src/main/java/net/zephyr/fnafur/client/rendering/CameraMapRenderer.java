@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 
@@ -158,12 +158,12 @@ public class CameraMapRenderer {
 
     Identifier getLineTexture(int index){
         return switch(index){
-            default -> Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/camera_map/line.png");
-            case 1, 2 -> Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/camera_map/end.png");
-            case 3 -> Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/camera_map/square.png");
-            case 4, 5, 6, 7 -> Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/camera_map/t_split.png");
-            case 8 -> Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/camera_map/x_split.png");
-            case 9, 10, 11, 12 -> Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/camera_map/corner.png");
+            default -> Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/camera_map/line.png");
+            case 1, 2 -> Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/camera_map/end.png");
+            case 3 -> Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/camera_map/square.png");
+            case 4, 5, 6, 7 -> Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/camera_map/t_split.png");
+            case 8 -> Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/camera_map/x_split.png");
+            case 9, 10, 11, 12 -> Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/camera_map/corner.png");
         };
     }
     int getLinePartShape(BlockPos pos, BlockPos pos1, BlockPos pos2, Direction direction, Direction lineDirection, NbtList mapNbt){

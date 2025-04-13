@@ -11,7 +11,7 @@ import net.minecraft.resource.SinglePreparationResourceReloader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.profiler.Profiler;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class EntityDataManager extends SinglePreparationResourceReloader<Map<Ent
                             DefaultEntityData skinEntry = JsonHelper.deserialize(GSON, reader, DefaultEntityData.class);
                             data.put(entityType, skinEntry);
                         } catch (RuntimeException runtimeException) {
-                            FnafUniverseResuited.LOGGER.warn("Invalid {} in resourcepack: '{}'", "entity_skins.json", resource.getPackId(), runtimeException);
+                            FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", "entity_skins.json", resource.getPackId(), runtimeException);
                         }
                     }
                 }
@@ -80,7 +80,7 @@ public class EntityDataManager extends SinglePreparationResourceReloader<Map<Ent
         for(EntityType<?> type : prepared.keySet()){
             this.Skins.put(type, prepared.get(type).skins());
             for(EntitySkin skin : prepared.get(type).skins()) {
-                FnafUniverseResuited.print(skin.getName());
+                FnafUniverseRebuilt.print(skin.getName());
             }
         }
     }

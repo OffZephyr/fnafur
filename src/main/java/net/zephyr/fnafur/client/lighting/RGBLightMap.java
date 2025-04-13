@@ -22,7 +22,7 @@ import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.profiler.Profilers;
 import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.LightType;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.system.MemoryUtil;

@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.networking.nbt_updates.computer.ComputerEjectPayload;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateCrawlingC2SPayload;
 import net.zephyr.fnafur.networking.payloads.*;

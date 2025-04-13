@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.item_init.StickerInit;
 import net.zephyr.fnafur.item.StickerItem;
 
@@ -51,7 +51,7 @@ public class StickerPlacingRenderer {
                                         0;
                         int num = dirPos % sticker.getTextures().length;
                         String path = "textures/" + sticker.getTextures()[num].getPath() + ".png";
-                        Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, path);
+                        Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, path);
 
                         float tWidth = 0.5f;
                         float tHeight = 0.5f;

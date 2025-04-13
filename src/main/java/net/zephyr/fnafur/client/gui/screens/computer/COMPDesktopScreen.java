@@ -5,13 +5,13 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 
 public class COMPDesktopScreen extends COMPBaseScreen {
-    public Identifier BOTTOM_BAR = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/bottom_bar.png");
-    public Identifier WALLPAPER_MENU = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/wallpapers_window.png");
+    public Identifier BOTTOM_BAR = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/bottom_bar.png");
+    public Identifier WALLPAPER_MENU = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/wallpapers_window.png");
     public COMPDesktopScreen(Text title, NbtCompound nbt, long l) {
         super(title, nbt, l);
     }
@@ -35,7 +35,7 @@ public class COMPDesktopScreen extends COMPBaseScreen {
         this.holding = false;
         dragging = false;
         this.wallpaperSelect = false;
-        this.BOTTOM_BAR = Identifier.of(FnafUniverseResuited.MOD_ID, "textures/gui/computer/bottom_bar.png");
+        this.BOTTOM_BAR = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/computer/bottom_bar.png");
         iconGrid = 4;
 
         saveData();

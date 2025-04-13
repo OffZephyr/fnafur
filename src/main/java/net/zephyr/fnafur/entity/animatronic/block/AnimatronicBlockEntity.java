@@ -9,7 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
@@ -86,11 +86,11 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
             NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt");
             String texture = nbt.getString("texture");
             if(!texture.isEmpty()){
-                return Identifier.of(FnafUniverseResuited.MOD_ID, texture);
+                return Identifier.of(FnafUniverseRebuilt.MOD_ID, texture);
             }
         }
 
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "textures/entity/default/endo_01/endo_01.png");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/default/endo_01/endo_01.png");
     }
     public Identifier getReRenderTexture(World world){
         return getTexture(world);
@@ -101,11 +101,11 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
             NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt");
             String model = nbt.getString("model");
             if(!model.isEmpty()){
-                return Identifier.of(FnafUniverseResuited.MOD_ID, model);
+                return Identifier.of(FnafUniverseRebuilt.MOD_ID, model);
             }
         }
 
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "geo/entity/default/endo_01/endo_01.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/default/endo_01/endo_01.geo.json");
     }
 
     public Identifier getReRenderModel(World world){
@@ -117,11 +117,11 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
             NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt");
             String animations = nbt.getString("animations");
             if(!animations.isEmpty()){
-                return Identifier.of(FnafUniverseResuited.MOD_ID, animations);
+                return Identifier.of(FnafUniverseRebuilt.MOD_ID, animations);
             }
         }
 
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/classic/cl_fred/cl_fred.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/cl_fred/cl_fred.animation.json");
     }
 
     public String prefixAnim(String animation){

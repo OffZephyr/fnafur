@@ -3,14 +3,18 @@ package net.zephyr.fnafur.init.block_init;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.minecraft.world.BlockView;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.ColoredLight;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
@@ -41,6 +45,7 @@ import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBl
 import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
+import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,8 +105,8 @@ public class BlockInit {
             "mimic_frame_block",
             MimicFrames::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
-                    .solidBlock(Blocks::never)
                     .nonOpaque()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
     );
@@ -109,21 +114,19 @@ public class BlockInit {
             "mimic_frame_2",
             MimicFrames2x2::new,
             AbstractBlock.Settings.copy(MIMIC_FRAME)
-                    .solidBlock(Blocks::never)
                     .nonOpaque()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
-                    .replaceable()
     );
     public static final Block MIMIC_FRAME_4x4 = registerFrame(
             "mimic_frame_4",
             MimicFrames4x4::new,
             AbstractBlock.Settings.copy(MIMIC_FRAME)
-                    .solidBlock(Blocks::never)
                     .nonOpaque()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
-                    .replaceable()
     );
 
     public static final Block CAMERA = registerBlock(
@@ -1054,7 +1057,7 @@ public class BlockInit {
     );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
-        final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
+        final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
@@ -1062,7 +1065,7 @@ public class BlockInit {
         return block;
     }
     private static Block registerTileDoor(String name, Function<AbstractBlock.Settings, Block> factory, TileDoorDirection direction, AbstractBlock.Settings settings) {
-        final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
+        final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final TileDoorBlock block = (TileDoorBlock) Blocks.register(registryKey, factory, settings);
@@ -1072,14 +1075,14 @@ public class BlockInit {
 
     private static Block registerFrame(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
         Block block = registerBlock(name, factory, settings);
-        MimicFrames.IDs.add(Identifier.of(FnafUniverseResuited.MOD_ID, "block/" + name));
+        MimicFrames.IDs.add(Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/" + name));
         return block;
     }
 
     public static void registerBlocks(){
         PropInit.registerProps();
         GeoBlockInit.registerGeoBlocks();
-        FnafUniverseResuited.LOGGER.info("Registering Blocks for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Blocks for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 
     public static void registerBlocksOnClient() {
@@ -1101,11 +1104,11 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.ELECTRICAL_LOCKER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.WAREHOUSE_SHELF, RenderLayer.getCutout());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getTranslucent());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getTranslucent());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_SLIT, RenderLayer.getTranslucent());
@@ -1127,7 +1130,7 @@ public class BlockInit {
 
         PropInit.registerPropsOnClient();
         GeoBlockInit.registerGeoBlocksOnClient();
-        FnafUniverseResuited.LOGGER.info("Registering Blocks On CLIENT for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Blocks On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 
 }

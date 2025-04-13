@@ -12,7 +12,7 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.geo_doors.doors.Geo2x3Door;
 import net.zephyr.fnafur.blocks.geo_doors.GeoDoor;
 import net.zephyr.fnafur.blocks.geo_doors.doors.Geo1x2Door;
@@ -52,8 +52,8 @@ public class GeoBlockInit {
     public static final Block SMALL_GRAY_DOOR = registerDoor(
             "small_gray_door",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/door_gray_small.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/small_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/door_gray_small.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/small_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -64,8 +64,8 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_RED_DOOR = registerDoor(
             "two_five_red_door",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/red_door.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/red_door.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -76,8 +76,8 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_BLACK_DOOR = registerDoor(
             "two_five_black_door",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/black_door.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/black_door.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -88,8 +88,8 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_GREEN_DOOR = registerDoor(
             "two_five_green_door",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/green_door.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/green_door.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -100,8 +100,8 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_CYAN_DOOR = registerDoor(
             "two_five_cyan_door",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/cyan_door.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/cyan_door.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -112,8 +112,8 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_BROWN_DOOR = registerDoor(
             "two_five_brown_door",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/brown_door.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/brown_door.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -124,9 +124,9 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_RED_DOOR_WINDOW = registerDoor(
             "two_five_red_door_window",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/red_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/red_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -137,9 +137,9 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_BLACK_DOOR_WINDOW = registerDoor(
             "two_five_black_door_window",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/black_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/black_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -150,9 +150,9 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_GREEN_DOOR_WINDOW = registerDoor(
             "two_five_green_door_window",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/green_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/green_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -163,9 +163,9 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_CYAN_DOOR_WINDOW = registerDoor(
             "two_five_cyan_door_window",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/cyan_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/cyan_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -176,9 +176,9 @@ public class GeoBlockInit {
     public static final Block TWO_FIVE_BROWN_DOOR_WINDOW = registerDoor(
             "two_five_brown_door_window",
             Geo1x2Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/brown_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/brown_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -189,8 +189,8 @@ public class GeoBlockInit {
     public static final Block BIG_GRAY_DOOR = registerDoor(
             "big_gray_door",
             Geo2x3Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/door_gray_big.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/big_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/door_gray_big.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/big_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -201,8 +201,8 @@ public class GeoBlockInit {
     public static final Block BIG_MAGENTA_DOOR = registerDoor(
             "big_magenta_door",
             Geo2x3Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/door_magenta_big.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/big_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/door_magenta_big.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/big_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -213,8 +213,8 @@ public class GeoBlockInit {
     public static final Block BIG_GREEN_DOOR = registerDoor(
             "big_green_door",
             Geo2x3Door::new,
-            Identifier.of(FnafUniverseResuited.MOD_ID, "textures/block/doors/door_green_big.png"),
-            Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/doors/big_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/door_green_big.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/big_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -224,7 +224,7 @@ public class GeoBlockInit {
     );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
-        final Identifier identifier = Identifier.of(FnafUniverseResuited.MOD_ID, name);
+        final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
@@ -254,10 +254,10 @@ public class GeoBlockInit {
             BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTranslucent());
         }
 
-        FnafUniverseResuited.LOGGER.info("Registering Geo Blocks On CLIENT for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Geo Blocks On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 
     public static void registerGeoBlocks() {
-        FnafUniverseResuited.LOGGER.info("Registering Geo Blocks for " + FnafUniverseResuited.MOD_ID.toUpperCase());
+        FnafUniverseRebuilt.LOGGER.info("Registering Geo Blocks for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
@@ -49,11 +50,14 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
         return VoxelShapes.fullCube();
     }
 
+    public boolean canChangeState(Item item){
+        return item == ItemInit.PAINTBRUSH;
+    }
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         ItemStack stack = player.getMainHandStack();
-        if(stack != null && stack.getItem() == ItemInit.PAINTBRUSH && state.contains(COLOR_PROPERTY())) {
+        if(stack != null && canChangeState(stack.getItem()) && state.contains(COLOR_PROPERTY())) {
             world.setBlockState(pos, state.cycle(COLOR_PROPERTY()));
             return ActionResult.SUCCESS;
         }

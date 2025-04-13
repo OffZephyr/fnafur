@@ -6,7 +6,7 @@ import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.block.entity.EndPortalBlockEntityRenderer;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.mixinAccessing.IUniverseRenderLayers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,9 +30,9 @@ public class RenderLayerMixin implements IUniverseRenderLayers {
     // CUSTOM SPACE LAYERS
 
     @Unique
-    private static final Identifier COSMO_SKY_TEXTURE = Identifier.of(FnafUniverseResuited.MOD_ID,"textures/block/props/gift_boxes/cosmo_sky.png");
+    private static final Identifier COSMO_SKY_TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/block/props/gift_boxes/cosmo_sky.png");
     @Unique
-    private static final Identifier COSMO_STARS_TEXTURE = Identifier.of(FnafUniverseResuited.MOD_ID,"textures/block/props/gift_boxes/cosmo_stars.png");
+    private static final Identifier COSMO_STARS_TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/block/props/gift_boxes/cosmo_stars.png");
 
     @Unique
     private static final RenderLayer COSMO_SPACE = of(

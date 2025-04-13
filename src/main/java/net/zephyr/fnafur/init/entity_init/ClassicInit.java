@@ -11,7 +11,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.classic.cl_fred.*;
 import net.zephyr.fnafur.entity.classic.cl_bon.*;
 import net.zephyr.fnafur.entity.classic.cl_chica.*;
@@ -43,7 +43,7 @@ public class ClassicInit {
     }
 
     private static RegistryKey<EntityType<?>> keyOf(String id) {
-        return RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(FnafUniverseResuited.MOD_ID, id));
+        return RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, id));
     }
 
     public static void registerEntities(){

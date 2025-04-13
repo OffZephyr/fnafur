@@ -3,7 +3,7 @@ package net.zephyr.fnafur.init.block_init;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
-import net.zephyr.fnafur.blocks.illusion_block.MimicFrameBlockModel;
+import net.zephyr.fnafur.blocks.illusion_block.models.MimicFrameBlockModel;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
 
 @Environment(EnvType.CLIENT)
@@ -19,7 +19,10 @@ public class ModelLoading implements ModelLoadingPlugin {
                     return new StickerBlockModel(original);
                 }
                 else if (context.id().toString().contains(MIMIC_BLOCK_ID)) {
-                    return new MimicFrameBlockModel(original);
+                    if(context.id().toString().contains("_2")) return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME_2x2.getDefaultState());
+                    else if(context.id().toString().contains("_4")) return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME_4x4.getDefaultState());
+
+                    return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME.getDefaultState());
                 }
             }
             return original;

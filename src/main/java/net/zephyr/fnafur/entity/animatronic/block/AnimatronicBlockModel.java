@@ -2,7 +2,7 @@ package net.zephyr.fnafur.entity.animatronic.block;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
@@ -43,7 +43,7 @@ public class AnimatronicBlockModel<T extends AnimatronicBlockEntity> extends Geo
     @Override
     public Identifier[] getAnimationResourceFallbacks(T animatable, GeoRenderer<T> renderer) {
         Identifier[] array = new Identifier[]{
-                Identifier.of(FnafUniverseResuited.MOD_ID, "animations/entity/classic/cl_fred/cl_fred.animation.json")
+                Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/cl_fred/cl_fred.animation.json")
         };
         return array;
     }

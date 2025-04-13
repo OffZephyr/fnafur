@@ -4,7 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseResuited;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
@@ -43,7 +43,7 @@ public class GalaxyLayerGeoPropEntity extends GeoPropBlockEntity implements GeoB
 
     @Override
     public Identifier getReRenderModel(World world) {
-        return Identifier.of(FnafUniverseResuited.MOD_ID, "geo/block/props/giftbox_overlay.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/giftbox_overlay.geo.json");
     }
 
     @Override
