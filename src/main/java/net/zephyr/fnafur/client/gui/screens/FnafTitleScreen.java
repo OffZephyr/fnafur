@@ -469,6 +469,8 @@ public class FnafTitleScreen extends Screen {
 
             GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) ((width / 2) - (sprite_width / 2)), 0, 0, sprite_width, sprite_height / 2f, 0, 0, sprite_width, sprite_height, 1, 1, 1, 1);
             GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) ((width / 2) - (star_width / 2)), (int) y, 0, star_width, star_height, sprite_width - star_width, sprite_height - star_height, sprite_width, sprite_height, 1, 1, 1, 1);
+
+            context.drawText(textRenderer, Text.literal(FnafUniverseRebuilt.MOD_VERSION), width/2 - textRenderer.getWidth(FnafUniverseRebuilt.MOD_VERSION)/2, height - textRenderer.fontHeight - 1, 0x88FFFFFF, false);
         }
         GoopyScreen.drawRecolorableTexture(context, STARS, (int) ((deltaAmount/2) - xDelta), (int) ((deltaAmount/2) - yDelta), 0, largeWidth, largeHeight, 0, 0, largeWidth, largeHeight, 1, 1, 1, 0.55f);
         GoopyScreen.drawRecolorableTexture(context, STATIC[(int)staticIndex], 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.15f);
@@ -522,25 +524,22 @@ public class FnafTitleScreen extends Screen {
         else if(tab == 1){
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(536), (int) onWidth(500), (int) onHeight(64))) {
                 // TYCOON
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1f, Random.create(), BlockPos.ORIGIN);
+                SoundInstance instance = new PositionedSoundInstance(SoundsInit.OFFICE_DOOR_ERROR.id(), SoundCategory.MASTER, 0.5f, 1, Random.create(), false, 0, SoundInstance.AttenuationType.NONE, 0, 0, 0, false);
                 MinecraftClient.getInstance().getSoundManager().play(instance);
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(636), (int) onWidth(500), (int) onHeight(64))) {
                 SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.2f, Random.create(), BlockPos.ORIGIN);
                 MinecraftClient.getInstance().getSoundManager().play(instance);
-                music = null;
                 this.client.setScreen(new SelectWorldScreen(this));
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(736), (int) onWidth(500), (int) onHeight(64))) {
                 SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.2f, Random.create(), BlockPos.ORIGIN);
                 MinecraftClient.getInstance().getSoundManager().play(instance);
-                music = null;
                 this.client.setScreen(new MultiplayerScreen(this));
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(836), (int) onWidth(500), (int) onHeight(64))) {
                 SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.2f, Random.create(), BlockPos.ORIGIN);
                 MinecraftClient.getInstance().getSoundManager().play(instance);
-                music = null;
                 this.client.setScreen(new RealmsMainScreen(this));
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(936), (int) onWidth(500), (int) onHeight(64))) {
@@ -556,11 +555,16 @@ public class FnafTitleScreen extends Screen {
 
     @Override
     public void removed() {
-
-        MinecraftClient.getInstance().getSoundManager().stop(music);
         if (this.realmsNotificationGui != null) {
             this.realmsNotificationGui.removed();
         }
+    }
+
+    @Override
+    public void close() {
+        MinecraftClient.getInstance().getSoundManager().stop(music);
+        music = null;
+        super.close();
     }
 
     @Override
