@@ -36,6 +36,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.water_dispenser.WaterDispenser
 import net.zephyr.fnafur.blocks.props.floor_props.wet_floor_sign.WetFloorSign;
 import net.zephyr.fnafur.blocks.props.floor_props.wooden_shelf.WoodenShelf;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVent;
+import net.zephyr.fnafur.blocks.props.other.hanging_stars.HangingStarsBlock;
 import net.zephyr.fnafur.blocks.props.tiling.TableBlock;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVentBlack;
 import net.zephyr.fnafur.blocks.props.wall_props.ac_unit.AcUnit;
@@ -51,6 +52,7 @@ import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
 import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSign;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
 import net.zephyr.fnafur.blocks.props.wall_props.electricity.wall_outlet.WallOutlet;
+import net.zephyr.fnafur.blocks.props.wall_props.wall_pizza.WallPizza;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.CosmoGift;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropRenderer;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntityRenderer;
@@ -142,6 +144,32 @@ public class PropInit {
             "wall_clouds",
             WallClouds::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+
+    public static final Block WALL_PIZZA = registerBlock(
+            "wall_pizza",
+            WallPizza::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+
+    public static final Block HANGING_STARS = registerBlock(
+            "hanging_stars",
+            HangingStarsBlock::new,
+            AbstractBlock.Settings.copy(Blocks.COBWEB)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/barrier"
+    "model": "fnafur:block/mimic_block_item"
   }
 }

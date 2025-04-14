@@ -76,6 +76,7 @@ public class BlockEntityInit {
                                 PropInit.RETRO_TABLE,
 
                                 PropInit.WALL_CLOUDS,
+                                PropInit.WALL_PIZZA,
                                 PropInit.RESTROOM_SIGN,
                                 PropInit.BROOM,
                                 PropInit.MOP_BUCKET,

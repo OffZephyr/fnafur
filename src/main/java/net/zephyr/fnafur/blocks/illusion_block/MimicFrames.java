@@ -1,11 +1,13 @@
 package net.zephyr.fnafur.blocks.illusion_block;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.LivingEntity;
@@ -24,6 +26,7 @@ import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -33,6 +36,7 @@ import net.minecraft.world.WorldView;
 import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CGetFromClientPayload;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
 import net.zephyr.fnafur.util.ItemNbtUtil;
@@ -46,8 +50,6 @@ import java.util.List;
 public class MimicFrames extends BlockWithSticker {
     public static final BooleanProperty IS_FULL = BooleanProperty.of("full");
     public static List<Identifier> IDs = new ArrayList<>();
-
-    Vec3i latestMatrixPos;
     public MimicFrames(Settings settings) {
         super(settings);
         setDefaultState(getDefaultState().with(IS_FULL, true));
@@ -76,12 +78,10 @@ public class MimicFrames extends BlockWithSticker {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        Vec3d offset = ctx.getSide().getDoubleVector().multiply(0.01f);
-        latestMatrixPos = getMatrixPos(ctx.getHitPos().add(offset), ctx.getBlockPos());
-
         byte[] data = ItemNbtUtil.getNbt(ctx.getStack()).getByteArray("cubeMatrix");
         return getDefaultState().with(IS_FULL, isFullCube(data));
     }
+
     public static boolean[][][] arrayToMatrix(byte[] array, int size){
         boolean[][][] matrix = new boolean[size][size][size];
         if(array.length > 0) {
@@ -113,18 +113,25 @@ public class MimicFrames extends BlockWithSticker {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         BlockEntity entity = world.getBlockEntity(pos);
-        if(entity != null) {
-            Vec3i matrixPos = latestMatrixPos;
-            byte[] data = ItemNbtUtil.getNbt(itemStack).getByteArray("cubeMatrix");
-            boolean[][][] matrix = new boolean[getMatrixSize()][getMatrixSize()][getMatrixSize()];
-            matrix[Math.clamp(matrixPos.getX(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getY(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getZ(), 0, getMatrixSize()-1)] = true;
+        if(world.isClient()){
+            if(entity != null) {
+                Vec3d offset = ((BlockHitResult)MinecraftClient.getInstance().crosshairTarget).getSide().getDoubleVector().multiply(0.01f);
+                Vec3i matrixPos = getMatrixPos(MinecraftClient.getInstance().crosshairTarget.getPos().add(offset), pos);
+                byte[] data = ItemNbtUtil.getNbt(itemStack).getByteArray("cubeMatrix");
+                boolean[][][] matrix = new boolean[getMatrixSize()][getMatrixSize()][getMatrixSize()];
+                matrix[Math.clamp(matrixPos.getX(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getY(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getZ(), 0, getMatrixSize()-1)] = true;
 
-            byte[] array = matrixToArray(matrix, getMatrixSize());
-            for(int i = 0; i < data.length; i++){
-                array[i] = (byte) Math.max(data[i], array[i]);
+                byte[] array = matrixToArray(matrix, getMatrixSize());
+                for(int i = 0; i < data.length; i++){
+                    array[i] = (byte) Math.max(data[i], array[i]);
+                }
+                ((IEntityDataSaver)entity).getPersistentData().putByteArray("cubeMatrix", array);
             }
-            ((IEntityDataSaver)entity).getPersistentData().putByteArray("cubeMatrix", array);
-
+        }
+        else{
+            for(ServerPlayerEntity p : PlayerLookup.all(world.getServer())){
+                ServerPlayNetworking.send(p, new UpdateBlockNbtS2CGetFromClientPayload(pos.asLong()));
+            }
         }
         super.onPlaced(world, pos, state, placer, itemStack);
     }
@@ -305,6 +312,7 @@ public class MimicFrames extends BlockWithSticker {
     }
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+
         BlockEntity entity = world.getBlockEntity(pos);
         ItemStack stack = player.getMainHandStack();
         if(entity != null) {
@@ -322,17 +330,41 @@ public class MimicFrames extends BlockWithSticker {
             }
 
 
+            int holdTime = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getInt("holdTime");
+
             if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
-                if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null) {
+                if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null || (currentBlock == blockItem.getBlock() && holdTime > 0)) {
 
-                    saveBlockTexture(
-                            setBlockTexture(nbt, stack, hit.getSide(), world, matrixPos),
-                            world,
-                            pos,
-                            player.getServer()
-                    );
+                    ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putInt("holdTime", holdTime + 1);
+                    ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putInt("holding", 10);
 
-                    world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
+                    if(holdTime == 0){
+                        saveBlockTexture(
+                                setBlockTexture(nbt, stack, hit.getSide(), world, matrixPos),
+                                world,
+                                pos,
+                                player.getServer()
+                        );
+
+                        world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
+                    }
+                    if(holdTime == 20){
+                        for(int x = 0; x < getMatrixSize(); x++){
+                            for(int y = 0; y < getMatrixSize(); y++) {
+
+                                Vec3i matrixPos2 = getMatrixPos(hit.getPos().offset(hit.getSide(), -0.1), hit.getBlockPos());
+                                saveBlockTexture(
+                                        setBlockTexture(nbt, stack, hit.getSide(), world, matrixPos2),
+                                        world,
+                                        pos,
+                                        player.getServer()
+                                );
+                            }
+                        }
+                    }
+                    if(holdTime == 30){
+                        // FILL BLOCK
+                    }
                     return ActionResult.SUCCESS;
                 }
             }

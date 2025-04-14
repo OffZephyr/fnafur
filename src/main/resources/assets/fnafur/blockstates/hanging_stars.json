@@ -1,0 +1,124 @@
+{
+  "variants": {
+    "facing=north,color=white,string=false": {
+      "model": "fnafur:props/hanging_stars/white_hanging_stars"
+    },
+    "facing=east,color=white,string=false": {
+      "model": "fnafur:props/hanging_stars/white_hanging_stars",
+      "y": 90
+    },
+    "facing=south,color=white,string=false": {
+      "model": "fnafur:props/hanging_stars/white_hanging_stars",
+      "y": 180
+    },
+    "facing=west,color=white,string=false": {
+      "model": "fnafur:props/hanging_stars/white_hanging_stars",
+      "y": 270
+    },
+    "facing=north,color=white,string=true": {
+      "model": "fnafur:props/hanging_stars/white_hanging_strings"
+    },
+    "facing=east,color=white,string=true": {
+      "model": "fnafur:props/hanging_stars/white_hanging_strings",
+      "y": 90
+    },
+    "facing=south,color=white,string=true": {
+      "model": "fnafur:props/hanging_stars/white_hanging_strings",
+      "y": 180
+    },
+    "facing=west,color=white,string=true": {
+      "model": "fnafur:props/hanging_stars/white_hanging_strings",
+      "y": 270
+    },
+    "facing=north,color=black,string=false": {
+      "model": "fnafur:props/hanging_stars/black_hanging_stars"
+    },
+    "facing=east,color=black,string=false": {
+      "model": "fnafur:props/hanging_stars/black_hanging_stars",
+      "y": 90
+    },
+    "facing=south,color=black,string=false": {
+      "model": "fnafur:props/hanging_stars/black_hanging_stars",
+      "y": 180
+    },
+    "facing=west,color=black,string=false": {
+      "model": "fnafur:props/hanging_stars/black_hanging_stars",
+      "y": 270
+    },
+    "facing=north,color=black,string=true": {
+      "model": "fnafur:props/hanging_stars/black_hanging_strings"
+    },
+    "facing=east,color=black,string=true": {
+      "model": "fnafur:props/hanging_stars/black_hanging_strings",
+      "y": 90
+    },
+    "facing=south,color=black,string=true": {
+      "model": "fnafur:props/hanging_stars/black_hanging_strings",
+      "y": 180
+    },
+    "facing=west,color=black,string=true": {
+      "model": "fnafur:props/hanging_stars/black_hanging_strings",
+      "y": 270
+    },
+    "facing=north,color=white_colored,string=false": {
+      "model": "fnafur:props/hanging_stars/white_colored_hanging_stars"
+    },
+    "facing=east,color=white_colored,string=false": {
+      "model": "fnafur:props/hanging_stars/white_colored_hanging_stars",
+      "y": 90
+    },
+    "facing=south,color=white_colored,string=false": {
+      "model": "fnafur:props/hanging_stars/white_colored_hanging_stars",
+      "y": 180
+    },
+    "facing=west,color=white_colored,string=false": {
+      "model": "fnafur:props/hanging_stars/white_colored_hanging_stars",
+      "y": 270
+    },
+    "facing=north,color=white_colored,string=true": {
+      "model": "fnafur:props/hanging_stars/white_hanging_strings"
+    },
+    "facing=east,color=white_colored,string=true": {
+      "model": "fnafur:props/hanging_stars/white_hanging_strings",
+      "y": 90
+    },
+    "facing=south,color=white_colored,string=true": {
+      "model": "fnafur:props/hanging_stars/white_hanging_strings",
+      "y": 180
+    },
+    "facing=west,color=white_colored,string=true": {
+      "model": "fnafur:props/hanging_stars/white_hanging_strings",
+      "y": 270
+    },
+    "facing=north,color=black_colored,string=false": {
+      "model": "fnafur:props/hanging_stars/black_colored_hanging_stars"
+    },
+    "facing=east,color=black_colored,string=false": {
+      "model": "fnafur:props/hanging_stars/black_colored_hanging_stars",
+      "y": 90
+    },
+    "facing=south,color=black_colored,string=false": {
+      "model": "fnafur:props/hanging_stars/black_colored_hanging_stars",
+      "y": 180
+    },
+    "facing=west,color=black_colored,string=false": {
+      "model": "fnafur:props/hanging_stars/black_colored_hanging_stars",
+      "y": 270
+    },
+    "facing=north,color=black_colored,string=true": {
+      "model": "fnafur:props/hanging_stars/black_hanging_strings"
+    },
+    "facing=east,color=black_colored,string=true": {
+      "model": "fnafur:props/hanging_stars/black_hanging_strings",
+      "y": 90
+    },
+    "facing=south,color=black_colored,string=true": {
+      "model": "fnafur:props/hanging_stars/black_hanging_strings",
+      "y": 180
+    },
+    "facing=west,color=black_colored,string=true": {
+      "model": "fnafur:props/hanging_stars/black_hanging_strings",
+      "y": 270
+    }
+  }
+}

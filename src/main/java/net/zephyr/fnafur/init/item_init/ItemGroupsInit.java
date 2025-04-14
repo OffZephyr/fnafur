@@ -29,7 +29,9 @@ public class ItemGroupsInit {
                         entries.add(PropInit.PARTY_HAT);
                         entries.add(PropInit.STAR_PLASTIC_CHAIR);
                         entries.add(PropInit.WOODEN_CHAIR);
+                        entries.add(PropInit.WALL_PIZZA);
                         entries.add(PropInit.WALL_CLOUDS);
+                        entries.add(PropInit.HANGING_STARS);
                         entries.add(PropInit.PRESENT_STACK);
                         entries.add(PropInit.EXIT_SIGN);
                         entries.add(PropInit.LIGHT_SWITCH);

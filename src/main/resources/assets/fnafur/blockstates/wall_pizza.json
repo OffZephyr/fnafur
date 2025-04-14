@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,color=default": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_full"
+    },
+    "facing=east,color=default": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_full",
+      "y": 90
+    },
+    "facing=south,color=default": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_full",
+      "y": 180
+    },
+    "facing=west,color=default": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_full",
+      "y": 270
+    },
+    "facing=north,color=pepperoni": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_full_pepperoni"
+    },
+    "facing=east,color=pepperoni": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_full_pepperoni",
+      "y": 90
+    },
+    "facing=south,color=pepperoni": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_full_pepperoni",
+      "y": 180
+    },
+    "facing=west,color=pepperoni": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_full_pepperoni",
+      "y": 270
+    }
+  }
+}
