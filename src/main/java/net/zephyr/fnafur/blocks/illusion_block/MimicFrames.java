@@ -88,7 +88,10 @@ public class MimicFrames extends BlockWithSticker {
             for (int x = 0; x < size; x++) {
                 for (int y = 0; y < size; y++) {
                     for (int z = 0; z < size; z++) {
-                        matrix[x][y][z] = array[(x * size * size) + (y * size) + z] == 1;
+                        int index = (x * size * size) + (y * size) + z;
+                        if(array.length > index) {
+                            matrix[x][y][z] = array[index] == 1;
+                        }
                     }
                 }
             }
@@ -199,7 +202,7 @@ public class MimicFrames extends BlockWithSticker {
 
             context.getWorld().updateListeners(context.getBlockPos(), state, newState, 3);
             context.getWorld().playSoundAtBlockCenter(context.getBlockPos(), state.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 1, 1, true);
-            return false;
+            return !isFullCube(array);
         }
     }
 
