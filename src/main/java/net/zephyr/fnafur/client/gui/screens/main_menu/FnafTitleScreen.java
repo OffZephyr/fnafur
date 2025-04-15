@@ -385,7 +385,13 @@ public class FnafTitleScreen extends Screen {
 
         int deltaAmount = 20;
         float largeWidth = width + onWidth(deltaAmount);
-        float largeHeight = height + onHeight(deltaAmount);
+        float largeHeight = ((width + onWidth(deltaAmount)) / 1920f) * 1080f;
+
+        boolean bl = largeHeight < height;
+        if(bl){
+            largeWidth = ((height + onHeight(deltaAmount)) / 1080f) * 1920f;
+            largeHeight = height + onHeight(deltaAmount);
+        }
 
         float xMouseDelta = (float) mouseX / width;
         float yMouseDelta = (float) mouseY / height;
@@ -406,16 +412,18 @@ public class FnafTitleScreen extends Screen {
 
         Identifier render = RENDERS[renderIndex][renderGlitchIndex];
 
-        GoopyScreen.drawRecolorableTexture(context, render, (int) ((deltaAmount/2) - xDelta), (int) ((deltaAmount/2) - yDelta), 0, largeWidth, largeHeight, 0, 0, largeWidth, largeHeight, 1, 1, 1, MathHelper.lerp(bgFadeTimer / bgFadeTimerGoal, bgFadeStart, bgFadeGoal));
+        int renderX = !bl ? (int) ((deltaAmount/2) - xDelta) : (int) ((deltaAmount/2) - xDelta -  (largeWidth/2f) + (width/2f));
+        int renderY = bl ? (int) ((deltaAmount/2) - yDelta) : (int) ((deltaAmount/2) - yDelta -  (largeHeight/2f) + (height/2f));
+        GoopyScreen.drawRecolorableTexture(context, render, renderX, renderY, 0, largeWidth, largeHeight, 0, 0, largeWidth, largeHeight, 1, 1, 1, MathHelper.lerp(bgFadeTimer / bgFadeTimerGoal, bgFadeStart, bgFadeGoal));
 
-        float sprite_width = onWidth(2048);
+        float sprite_width = onHeight(2048);
         float sprite_height = onHeight(2048);
 
         staticIndex = (int)(staticIndex + 0.5f) == STATIC.length ? 0 : staticIndex + 0.5f;
 
         if(tab == 1) {
             bgScroll++;
-            float scroll_width = onWidth(1500);
+            float scroll_width = onHeight(1500);
             float scroll_height = onHeight(1500);
             context.getMatrices().push();
             context.getMatrices().translate(-scroll_width/2.25f, scroll_height/1.5f, 0);
@@ -424,38 +432,38 @@ public class FnafTitleScreen extends Screen {
             context.getMatrices().pop();
 
 
-            GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) onWidth(32), (int) onHeight(55), 0, sprite_width / 2f, sprite_height / 2f, 0, sprite_height / 2f, sprite_width, sprite_height, 1, 1, 1, 1);
+            GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) onHeight(32), (int) onHeight(55), 0, sprite_width / 2f, sprite_height / 2f, 0, sprite_height / 2f, sprite_width, sprite_height, 1, 1, 1, 1);
 
-            float arrow_width = onWidth(66);
+            float arrow_width = onHeight(66);
             float arrow_height = onHeight(33);
             float star_height = onHeight(50);
             float y = -200;
-            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(536), (int) onWidth(500), (int) onHeight(64))) {
+            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onHeight(120), (int) onHeight(536), (int) onHeight(500), (int) onHeight(64))) {
                 y = 546;
             }
-            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(636), (int) onWidth(500), (int) onHeight(64))) {
+            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onHeight(120), (int) onHeight(636), (int) onHeight(500), (int) onHeight(64))) {
                 y = 646;
             }
-            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(736), (int) onWidth(500), (int) onHeight(64))) {
+            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onHeight(120), (int) onHeight(736), (int) onHeight(500), (int) onHeight(64))) {
                 y = 746;
             }
-            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(836), (int) onWidth(500), (int) onHeight(64))) {
+            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onHeight(120), (int) onHeight(836), (int) onHeight(500), (int) onHeight(64))) {
                 y = 846;
             }
-            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(936), (int) onWidth(500), (int) onHeight(64))) {
+            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onHeight(120), (int) onHeight(936), (int) onHeight(500), (int) onHeight(64))) {
                 y = 946;
             }
 
             y = onHeight(y);
 
-            GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int)onWidth(75), (int) y, 0, arrow_width, arrow_height, sprite_width - arrow_width, sprite_height - star_height - arrow_height, sprite_width, sprite_height, 1, 1, 1, 1);
+            GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int)onHeight(75), (int) y, 0, arrow_width, arrow_height, sprite_width - arrow_width, sprite_height - star_height - arrow_height, sprite_width, sprite_height, 1, 1, 1, 1);
 
         }
 
         GoopyScreen.drawRecolorableTexture(context, OUTLINE, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 1);
 
         if(tab == 0) {
-            float star_width = onWidth(448);
+            float star_width = onHeight(448);
             float star_height = onHeight(50);
             float y = -200; // 680 825 952
 

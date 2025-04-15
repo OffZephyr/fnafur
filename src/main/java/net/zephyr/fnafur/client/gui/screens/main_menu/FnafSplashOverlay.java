@@ -79,7 +79,7 @@ public class FnafSplashOverlay extends SplashOverlay {
 
         if (f >= 1.0F) {
             if (this.client.currentScreen != null) {
-                this.client.currentScreen.render(context, 0, 0, delta);
+                this.client.currentScreen.render(context, mouseX, mouseY, delta);
             }
 
             h = 1.0F - MathHelper.clamp(f - 1.0F, 0.0F, 1.0F);
@@ -112,8 +112,8 @@ public class FnafSplashOverlay extends SplashOverlay {
 
         context.drawTexture(identifier -> RenderLayer.getGuiTextured(LOADING), LOADING, width - (int) loadingWidth - (int) borderWidth, height - (int) loadingHeight - (int) borderWidth, 0, 0, (int) loadingWidth, (int) loadingHeight, 512, 128, 512, 512, ColorHelper.getWhite(h));
 
-        float x2 = MathHelper.lerp(Math.clamp(f, 0, 1), width - (int) loadingWidth + (int) borderWidth, width);
-        context.fill(width - (int) loadingWidth + (int) borderWidth, height - (int) progressHeight - (int) borderWidth - (int) borderWidth - (int) borderWidth - (int) borderWidth, (int) width - (int) loadingWidth + (int) borderWidth, height - (int) borderWidth - (int) borderWidth - (int) borderWidth - (int) borderWidth, ColorHelper.getWhite(h));
+        float x2 = MathHelper.lerp(this.progress, width - (int) loadingWidth + (int) borderWidth, (int) width  - (int) borderWidth - (int) borderWidth);
+        context.fill(width - (int) loadingWidth + (int) borderWidth, height - (int) progressHeight - (int) borderWidth - (int) borderWidth - (int) borderWidth - (int) borderWidth, (int) x2, height - (int) borderWidth - (int) borderWidth - (int) borderWidth - (int) borderWidth, ColorHelper.getWhite(h));
 
         float gearWidth = (82f / 1080f) * height;
 
