@@ -74,6 +74,7 @@ public class BlockEntityInit {
                                 PropInit.WOODEN_SHELF,
                                 PropInit.AC_UNIT,
                                 PropInit.RETRO_TABLE,
+                                PropInit.RETRO_STOOL,
 
                                 PropInit.WALL_CLOUDS,
                                 PropInit.WALL_PIZZA,
@@ -94,6 +95,7 @@ public class BlockEntityInit {
                                 PropInit.POTS_AND_PANS_RACK,
                                 PropInit.SKEEBALL_ARCADE,
                                 PropInit.WOODEN_CHAIR,
+                                PropInit.WOODEN_STOOL,
                                 PropInit.PARTY_HAT,
                                 PropInit.TOILET_PAPER_ROLL,
                                 PropInit.TOILET,

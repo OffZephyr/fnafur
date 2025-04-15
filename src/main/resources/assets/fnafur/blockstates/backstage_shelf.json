@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:block/backstage_shelf/backstage_shelf"
+    },
+    "facing=east": {
+      "model": "fnafur:block/backstage_shelf/backstage_shelf",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:block/backstage_shelf/backstage_shelf",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:block/backstage_shelf/backstage_shelf",
+      "y": 270
+
+    }
+  }
+}

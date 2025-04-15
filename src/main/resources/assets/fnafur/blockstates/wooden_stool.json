@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/wooden_stool",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "fnafur:props/wooden_stool",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/wooden_stool",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/wooden_stool",
+      "y": 270
+    }
+  }
+}

@@ -21,6 +21,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.WOODEN_SHELF)
                 .add(PropInit.AC_UNIT)
                 .add(PropInit.RETRO_TABLE)
+                .add(PropInit.RETRO_STOOL)
                 .add(PropInit.RESTROOM_SIGN)
                 .add(PropInit.WALL_CLOUDS)
                 .add(PropInit.WALL_PIZZA)

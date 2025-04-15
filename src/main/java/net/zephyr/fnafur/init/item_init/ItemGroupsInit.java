@@ -24,11 +24,13 @@ public class ItemGroupsInit {
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
                         entries.add(PropInit.WOODEN_CLOCK);
+                        entries.add(BlockInit.BACKSTAGE_SHELF);
                         entries.add(PropInit.PARTY_TABLE);
                         entries.add(PropInit.PARTY_TABLE_CONFETTI);
                         entries.add(PropInit.PARTY_HAT);
                         entries.add(PropInit.STAR_PLASTIC_CHAIR);
                         entries.add(PropInit.WOODEN_CHAIR);
+                        entries.add(PropInit.WOODEN_STOOL);
                         entries.add(PropInit.WALL_PIZZA);
                         entries.add(PropInit.WALL_CLOUDS);
                         entries.add(PropInit.HANGING_STARS);
@@ -42,6 +44,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.WOODEN_SHELF);
                         entries.add(PropInit.AC_UNIT);
                         entries.add(PropInit.RETRO_TABLE);
+                        entries.add(PropInit.RETRO_STOOL);
 
                         entries.add(PropInit.AIR_VENT);
                         entries.add(PropInit.CEILING_TILE_VENT);

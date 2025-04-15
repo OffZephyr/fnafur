@@ -3,18 +3,14 @@ package net.zephyr.fnafur.init.block_init;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.blocks.decorations.BackstageShelfBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.ColoredLight;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
@@ -45,7 +41,6 @@ import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBl
 import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -197,6 +192,15 @@ public class BlockInit {
             "warehouse_shelf",
             WarehouseShelfBlock::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BARS)
+                    .nonOpaque()
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+    );
+    public static final Block BACKSTAGE_SHELF = registerBlock(
+            "backstage_shelf",
+            BackstageShelfBlock::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
                     .nonOpaque()
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
@@ -1103,6 +1107,7 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.FUEL_GENERATOR, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.ELECTRICAL_LOCKER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.WAREHOUSE_SHELF, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BACKSTAGE_SHELF, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getTranslucent());

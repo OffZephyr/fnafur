@@ -1,0 +1,50 @@
+{
+  "variants": {
+    "color=color_0": {
+      "model": "fnafur:props/retro_stool/retro_stool_red"
+    },
+    "color=color_1": {
+      "model": "fnafur:props/retro_stool/retro_stool_orange"
+    },
+    "color=color_2": {
+      "model": "fnafur:props/retro_stool/retro_stool_yellow"
+    },
+    "color=color_3": {
+      "model": "fnafur:props/retro_stool/retro_stool_lime"
+    },
+    "color=color_4": {
+      "model": "fnafur:props/retro_stool/retro_stool_green"
+    },
+    "color=color_5": {
+      "model": "fnafur:props/retro_stool/retro_stool_cyan"
+    },
+    "color=color_6": {
+      "model": "fnafur:props/retro_stool/retro_stool_light_blue"
+    },
+    "color=color_7": {
+      "model": "fnafur:props/retro_stool/retro_stool_blue"
+    },
+    "color=color_8": {
+      "model": "fnafur:props/retro_stool/retro_stool_purple"
+    },
+    "color=color_9": {
+      "model": "fnafur:props/retro_stool/retro_stool_magenta"
+    },
+    "color=color_10": {
+      "model": "fnafur:props/retro_stool/retro_stool_pink"
+    },
+    "color=color_11": {
+      "model": "fnafur:props/retro_stool/retro_stool_white"
+    },
+    "color=color_12": {
+      "model": "fnafur:props/retro_stool/retro_stool_light_gray"
+    },
+    "color=color_13": {
+      "model": "fnafur:props/retro_stool/retro_stool_gray"
+    },
+    "color=color_14": {
+      "model": "fnafur:props/retro_stool/retro_stool_black"
+
+      }
+    }
+  }

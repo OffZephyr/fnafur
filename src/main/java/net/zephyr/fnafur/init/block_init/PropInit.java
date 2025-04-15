@@ -18,8 +18,10 @@ import net.zephyr.fnafur.blocks.props.base.PropRenderer;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.blocks.props.floor_props.arcade.SkeeballArcade;
+import net.zephyr.fnafur.blocks.props.floor_props.chairs.RetroStool;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.StarPlasticChair;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
+import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenStool;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_trash.FloorTrash;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.*;
@@ -209,6 +211,7 @@ public class PropInit {
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
+                    .noCollision()
     );
     public static final Block RETRO_TABLE = registerBlock(
             "retro_table",
@@ -219,6 +222,17 @@ public class PropInit {
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
+    );
+    public static final Block RETRO_STOOL = registerBlock(
+            "retro_stool",
+           RetroStool::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
     );
     public static final Block OFFICE_BUTTONS = registerBlock(
             "office_buttons",
@@ -344,6 +358,18 @@ public class PropInit {
     public static final Block WOODEN_CHAIR = registerBlock(
             "wooden_chair",
             WoodenChair::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block WOODEN_STOOL = registerBlock(
+            "wooden_stool",
+            WoodenStool::new,
             AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
