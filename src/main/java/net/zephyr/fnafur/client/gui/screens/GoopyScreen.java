@@ -3,6 +3,7 @@ package net.zephyr.fnafur.client.gui.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.ShaderLoader;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -27,6 +28,7 @@ import software.bernie.geckolib.loading.json.raw.FaceUV;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class GoopyScreen extends Screen {
     public static List<GUIButton> BUTTONS = new ArrayList<>();
@@ -229,7 +231,6 @@ public abstract class GoopyScreen extends Screen {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.disableBlend();
     }
-
     public static void drawResizableText(DrawContext context, TextRenderer textRenderer, Text text, float scale, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
 
         x = x / scale;

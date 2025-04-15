@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/punch_in_cards"
+      "model": "fnafur:item/punchcards"
   }
 }

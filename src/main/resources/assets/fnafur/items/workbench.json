@@ -1,7 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/tall_workbench",
-      "y": 90
+      "model": "fnafur:item/workbench"
   }
 }

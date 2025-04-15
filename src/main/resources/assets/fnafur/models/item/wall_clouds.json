@@ -1,3 +1,6 @@
 {
-	"parent": "fnafur:props/wall_clouds"
+    "parent": "item/generated",
+    "textures": {
+      "layer0": "fnafur:item/wallclouds_item"
+    }
 }

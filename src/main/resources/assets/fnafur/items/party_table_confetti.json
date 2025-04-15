@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:block/tiling/party_table_confetti/party_table_confetti_single"
+      "model": "fnafur:item/party_table_confetti"
   }
 }

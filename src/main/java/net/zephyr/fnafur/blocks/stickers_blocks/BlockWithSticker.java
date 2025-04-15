@@ -122,37 +122,37 @@ public class BlockWithSticker extends BlockWithEntity {
                 NbtList list = nbt.getList(side, NbtElement.STRING_TYPE);
                 NbtList offset_list = nbt.getList(side + "_offset", NbtElement.FLOAT_TYPE);
 
-                if(list.isEmpty()) return ActionResult.PASS;
+                if(!list.isEmpty()) {
 
-                list.removeLast();
-                offset_list.removeLast();
+                    list.removeLast();
+                    offset_list.removeLast();
 
-                if(list.isEmpty()) nbt.remove(side);
-                else nbt.put(side, list);
+                    if (list.isEmpty()) nbt.remove(side);
+                    else nbt.put(side, list);
 
-                if(offset_list.isEmpty()) nbt.remove(side + "_offset");
-                else nbt.put(side + "_offset", offset_list);
+                    if (offset_list.isEmpty()) nbt.remove(side + "_offset");
+                    else nbt.put(side + "_offset", offset_list);
 
-                world.playSound(pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 0.125f, 1.25f, true);
-                world.playSound(pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 0.5f, 1.1f, true);
+                    world.playSound(pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 0.125f, 1.25f, true);
+                    world.playSound(pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 0.5f, 1.1f, true);
 
-                if(hasNoStickers(nbt)){
-                    ItemStack blockStack = ItemStack.fromNbtOrEmpty(MinecraftClient.getInstance().world.getRegistryManager(), nbt.getCompound("BlockState"));
+                    if (hasNoStickers(nbt)) {
+                        ItemStack blockStack = ItemStack.fromNbtOrEmpty(MinecraftClient.getInstance().world.getRegistryManager(), nbt.getCompound("BlockState"));
 
-                    BlockState newState = !blockStack.isEmpty() ? blockStack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem)blockStack.getItem()).getBlock().getDefaultState()) : state;
+                        BlockState newState = !blockStack.isEmpty() ? blockStack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem) blockStack.getItem()).getBlock().getDefaultState()) : state;
 
-                    world.setBlockState(pos, newState, Block.NOTIFY_ALL_AND_REDRAW);
-                }
-                else{
+                        world.setBlockState(pos, newState, Block.NOTIFY_ALL_AND_REDRAW);
+                    } else {
 
-                    if(world.isClient()){
-                        ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), nbt));
+                        if (world.isClient()) {
+                            ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), nbt));
+                        }
+                        world.setBlockState(pos, state, Block.NOTIFY_ALL_AND_REDRAW);
+                        world.updateListeners(pos, state, state, Block.NOTIFY_ALL_AND_REDRAW);
                     }
-                    world.setBlockState(pos, state, Block.NOTIFY_ALL_AND_REDRAW);
-                    world.updateListeners(pos, state, state, Block.NOTIFY_ALL_AND_REDRAW);
-                }
 
-                return ActionResult.SUCCESS;
+                    return ActionResult.SUCCESS;
+                }
             }
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);

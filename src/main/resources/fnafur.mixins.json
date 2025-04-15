@@ -21,6 +21,7 @@
     "PlayerEntityRendererMixin",
     "PostEffectProcessorMixin",
     "RenderLayerMixin",
+    "SplashOverlayMixin",
     "TitleScreenMixin",
     "WorldRendererMixin"
   ],

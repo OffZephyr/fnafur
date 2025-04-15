@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/wall_clouds"
+      "model": "fnafur:item/wall_clouds"
   }
 }

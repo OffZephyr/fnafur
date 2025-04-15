@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/barrier"
+    "model": "fnafur:item/block_with_sticker_item"
 }
 }

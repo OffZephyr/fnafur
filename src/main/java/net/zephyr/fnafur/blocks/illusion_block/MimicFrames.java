@@ -36,12 +36,14 @@ import net.minecraft.world.WorldView;
 import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
+import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CGetFromClientPayload;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -332,11 +334,37 @@ public class MimicFrames extends BlockWithSticker {
 
             int holdTime = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getInt("holdTime");
 
-            if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
+            if (stack != null && stack.isOf(ItemInit.SCRAPER) && currentBlock != null) {
+                saveBlockTexture(
+                        removeBlockTexture(nbt, hit.getSide(), matrixPos),
+                        world,
+                        pos,
+                        player.getServer()
+                );
+
+                if(!world.isClient()) {
+                    world.playSound(null, pos, SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 1, 1.25f);
+                }
+
+                    world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
+                return ActionResult.SUCCESS;
+            }
+            else if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
                 if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null || (currentBlock == blockItem.getBlock() && holdTime > 0)) {
+
+                    BlockPos prevPos = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("prevPos"));
+
+                    if(!prevPos.equals(new BlockPos(matrixPos))) {
+                        holdTime = 0;
+                    }
 
                     ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putInt("holdTime", holdTime + 1);
                     ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putInt("holding", 10);
+                    ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putLong("prevPos", new BlockPos(matrixPos).asLong());
+
+                    if(!world.isClient()) {
+                        world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1, MathHelper.lerp(Math.clamp(holdTime / 12f, 0, 1), 0.75f, 1.5f));
+                    }
 
                     if(holdTime == 0){
                         saveBlockTexture(
@@ -348,22 +376,60 @@ public class MimicFrames extends BlockWithSticker {
 
                         world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
                     }
-                    if(holdTime == 20){
+
+                    byte[] cubeArray = nbt.getByteArray("cubeMatrix");
+                    boolean[][][] cubeMatrix = MimicFrames.arrayToMatrix(cubeArray, getMatrixSize());
+
+                    if(holdTime == 8){
+                        Direction direction = hit.getSide();
+                        NbtCompound nbt2 = new NbtCompound();
                         for(int x = 0; x < getMatrixSize(); x++){
                             for(int y = 0; y < getMatrixSize(); y++) {
 
-                                Vec3i matrixPos2 = getMatrixPos(hit.getPos().offset(hit.getSide(), -0.1), hit.getBlockPos());
-                                saveBlockTexture(
-                                        setBlockTexture(nbt, stack, hit.getSide(), world, matrixPos2),
-                                        world,
-                                        pos,
-                                        player.getServer()
-                                );
+                                Vec3d posVec = direction.getAxis() == Direction.Axis.X ? new Vec3d(hit.getPos().getX(),  hit.getBlockPos().getY() + (double) y / getMatrixSize(), hit.getBlockPos().getZ() + (double) x / getMatrixSize()) : direction.getAxis() == Direction.Axis.Z ? new Vec3d(hit.getBlockPos().getX() + (double) x / getMatrixSize(), hit.getBlockPos().getY() + (double) y / getMatrixSize(), hit.getPos().getZ()) :  new Vec3d(hit.getBlockPos().getX() + (double) x / getMatrixSize(), hit.getPos().getY(), hit.getBlockPos().getZ() + (double) y / getMatrixSize());
+                                Vec3i matrixPos2 = getMatrixPos(posVec.offset(direction, -0.05f), hit.getBlockPos());
+
+
+                                currentBlock = getCurrentBlock(nbt, world, hit.getSide(), matrixPos2);
+                                if(currentBlock == null && cubeMatrix[Math.clamp(matrixPos2.getX(), 0, getMatrixSize()-1)][Math.clamp(matrixPos2.getY(), 0, getMatrixSize()-1)][Math.clamp(matrixPos2.getZ(), 0, getMatrixSize()-1)]){
+                                    nbt2 = setBlockTexture(nbt, stack, hit.getSide(), world, matrixPos2);
+                                }
                             }
                         }
+
+                        saveBlockTexture(
+                                nbt2,
+                                world,
+                                pos,
+                                player.getServer()
+                        );
                     }
-                    if(holdTime == 30){
-                        // FILL BLOCK
+                    if(holdTime == 12){
+                        NbtCompound nbt2 = new NbtCompound();
+                        for(Direction direction :  Direction.values()) {
+                            for (int x = 0; x < getMatrixSize(); x++) {
+                                for (int y = 0; y < getMatrixSize(); y++) {
+                                    for (int z = 0; z < getMatrixSize(); z++) {
+
+                                        Vec3d posVec = new Vec3d(hit.getBlockPos().getX() + (double) x / getMatrixSize(), hit.getBlockPos().getY() + (double) y / getMatrixSize(), hit.getBlockPos().getZ() + (double) z / getMatrixSize());
+                                        Vec3i matrixPos2 = getMatrixPos(posVec, hit.getBlockPos());
+
+                                        currentBlock = getCurrentBlock(nbt, world, direction, matrixPos2);
+                                        if(currentBlock == null && cubeMatrix[x][y][z]){
+                                            System.out.println(x + " " + y + " " + z);
+                                            nbt2 = setBlockTexture(nbt, stack, direction, world, matrixPos2);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        nbt2.putInt("holdTime", 0);
+                        saveBlockTexture(
+                                nbt2,
+                                world,
+                                pos,
+                                player.getServer()
+                        );
                     }
                     return ActionResult.SUCCESS;
                 }
@@ -382,6 +448,16 @@ public class MimicFrames extends BlockWithSticker {
         NbtCompound blockNbt = nbt.getCompound("BlockData").getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ());
 
         blockNbt.put(direction.getName(), stack.toNbtAllowEmpty(world.getRegistryManager()));
+        NbtCompound blockData = nbt.getCompound("BlockData");
+        blockData.put("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ(), blockNbt);
+        nbt.put("BlockData", blockData);
+        return nbt;
+    }
+    public NbtCompound removeBlockTexture(NbtCompound nbt, Direction direction, Vec3i matrixPos){
+
+        NbtCompound blockNbt = nbt.getCompound("BlockData").getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ());
+
+        blockNbt.put(direction.getName(), new NbtCompound());
         NbtCompound blockData = nbt.getCompound("BlockData");
         blockData.put("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ(), blockNbt);
         nbt.put("BlockData", blockData);

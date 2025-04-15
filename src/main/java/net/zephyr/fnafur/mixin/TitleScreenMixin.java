@@ -2,7 +2,7 @@ package net.zephyr.fnafur.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.zephyr.fnafur.client.gui.screens.FnafTitleScreen;
+import net.zephyr.fnafur.client.gui.screens.main_menu.FnafTitleScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,7 +13,6 @@ public class TitleScreenMixin {
 
     @Inject(method = "init", at = @At("HEAD"))
     public void newScreen(CallbackInfo ci){
-        System.out.println("SHOULD BE NEW MENU");
         MinecraftClient.getInstance().setScreen(new FnafTitleScreen());
     }
 }

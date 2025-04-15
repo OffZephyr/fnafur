@@ -26,10 +26,15 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Attack", 1, this::attackAnimController));
+        controllers.add(new AnimationController<>(this, "Upper", 1, this::upperAnimController));
+        controllers.add(new AnimationController<>(this, "Lower", 1, this::lowerAnimController));
     }
 
-    private PlayState attackAnimController(AnimationState<AnimatronicEntity> animatronicEntityAnimationState) {
+    private PlayState lowerAnimController(AnimationState<AnimatronicEntity> animatronicEntityAnimationState) {
+        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop("animation.cl_fred.loweridle"));
+    }
+
+    private PlayState upperAnimController(AnimationState<AnimatronicEntity> animatronicEntityAnimationState) {
         if(isMenu) {
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop("animation.cl_fred.skinmenuidle"));
         }
