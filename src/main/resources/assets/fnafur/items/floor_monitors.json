@@ -5,119 +5,119 @@
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/black_floor_monitor_0"
+            "model": "fnafur:item/floor_monitors/black_floor_monitor_0"
           },
           "when": "black_0"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/black_floor_monitor_1"
+            "model": "fnafur:item/floor_monitors/black_floor_monitor_1"
           },
           "when": "black_1"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/black_floor_monitor_2"
+            "model": "fnafur:item/floor_monitors/black_floor_monitor_2"
           },
           "when": "black_2"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/black_floor_monitor_3"
+            "model": "fnafur:item/floor_monitors/black_floor_monitor_3"
           },
           "when": "black_3"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/black_floor_monitor_4"
+            "model": "fnafur:item/floor_monitors/black_floor_monitor_4"
           },
           "when": "black_4"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/black_floor_monitor_5"
+            "model": "fnafur:item/floor_monitors/black_floor_monitor_5"
           },
           "when": "black_5"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/black_floor_monitor_6"
+            "model": "fnafur:item/floor_monitors/black_floor_monitor_6"
           },
           "when": "black_6"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/black_floor_monitor_7"
+            "model": "fnafur:item/floor_monitors/black_floor_monitor_7"
           },
           "when": "black_7"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/beige_floor_monitor_0"
+            "model": "fnafur:item/floor_monitors/beige_floor_monitor_0"
           },
           "when": "beige_0"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/beige_floor_monitor_1"
+            "model": "fnafur:item/floor_monitors/beige_floor_monitor_1"
           },
           "when": "beige_1"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/beige_floor_monitor_2"
+            "model": "fnafur:item/floor_monitors/beige_floor_monitor_2"
           },
           "when": "beige_2"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/beige_floor_monitor_3"
+            "model": "fnafur:item/floor_monitors/beige_floor_monitor_3"
           },
           "when": "beige_3"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/beige_floor_monitor_4"
+            "model": "fnafur:item/floor_monitors/beige_floor_monitor_4"
           },
           "when": "beige_4"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/beige_floor_monitor_5"
+            "model": "fnafur:item/floor_monitors/beige_floor_monitor_5"
           },
           "when": "beige_5"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/beige_floor_monitor_6"
+            "model": "fnafur:item/floor_monitors/beige_floor_monitor_6"
           },
           "when": "beige_6"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/floor_monitors/beige_floor_monitor_7"
+            "model": "fnafur:item/floor_monitors/beige_floor_monitor_7"
           },
           "when": "beige_7"
         }
       ],
       "fallback": {
           "type": "minecraft:model",
-          "model": "fnafur:props/floor_monitors/black_floor_monitor_0"
+          "model": "fnafur:item/floor_monitors/black_floor_monitor_0"
         },
         "block_state_property": "color",
       "property": "minecraft:block_state"

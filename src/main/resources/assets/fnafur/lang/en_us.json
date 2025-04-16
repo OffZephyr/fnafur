@@ -200,8 +200,8 @@
 
   "block.fnafur.floor_monitors": "Floor Monitors",
   "block.fnafur.wooden_shelf": "Wooden Shelf",
-  "block.fnafur.office_door": "Office Door",
-  "block.fnafur.heavy_door": "Heavy Door",
+  "block.fnafur.heavy_door": "Office Door",
+  "block.fnafur.warning_heavy_door": "Warning Office Door",
   "block.fnafur.heavy_door.speed": "§a§lDoor speed set at: %s",
   "block.fnafur.garage_door": "Garage Door",
   "block.fnafur.office_buttons": "Office Buttons",
@@ -262,6 +262,12 @@
   "block.fnafur.water_dispenser": "Water Dispenser",
   "block.fnafur.cpu_config_panel": "CPU Config Panel",
   "block.fnafur.ice_cream_dispenser": "Ice Cream Machine",
+  "block.fnafur.backstage_shelf": "Backstage Shelf",
+  "block.fnafur.wooden_stool": "Wooden Stool",
+  "block.fnafur.retro_stool": "Retro Stool",
+  "block.fnafur.wall_pizza": "Wall Pizza",
+  "block.fnafur.hanging_stars": "Hanging Stars",
+  "block.fnafur.serious_cutout": "Serious Cutout",
 
 
   "block.fnafur.camera": "Security Camera",
@@ -480,5 +486,16 @@
   "fnafur.computer.behavior.option.walking_animation": "Custom Walking animation ?",
   "fnafur.computer.behavior.option.running_animation": "Custom Running animation ?",
   "fnafur.computer.behavior.option.look_around": "Should look around ?",
-  "fnafur.computer.behavior.option.look_nearby_entities": "Should look at nearby entities ?"
+  "fnafur.computer.behavior.option.look_nearby_entities": "Should look at nearby entities ?",
+
+  "sounds.fnafur.dasen_place": "PEE PEE POO POO",
+  "sounds.fnafur.dasen": "PEE PEE POO POO MAN OUT OF CONTEXT",
+  "sounds.fnafur.markiplier_place": "KING OF FNAF",
+  "sounds.fnafur.markiplier": "KING OF FNAF OUT OF CONTEXT",
+  "sounds.fnafur.matpat_place": "ITS JUST A THEORY",
+  "sounds.fnafur.matpat": "THEORIST OUT OF CONTEXT",
+  "sounds.fnafur.dawko_place": "OOF",
+  "sounds.fnafur.dawko": "DAWKO OUT OF CONTEXT",
+  "sounds.fnafur.bear5": "SOMETHING TERRIBLE IS COMING"
+
 }

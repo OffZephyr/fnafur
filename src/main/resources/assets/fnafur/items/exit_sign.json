@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/exit_sign_wall"
+      "model": "fnafur:item/exit_sign"
   }
 }

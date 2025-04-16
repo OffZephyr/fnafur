@@ -1,7 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/broom",
-      "y": 90
+      "model": "fnafur:item/broom"
   }
 }

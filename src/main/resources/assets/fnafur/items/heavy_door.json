@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:item/light_switch"
+      "model": "fnafur:item/heavy_door"
   }
 }

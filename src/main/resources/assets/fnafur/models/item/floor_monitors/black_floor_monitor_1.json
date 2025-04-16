@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "fnafur:item/wooden_shelf_item"
+    "layer0": "fnafur:item/monitor_black1_item"
   }
 }

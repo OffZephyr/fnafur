@@ -70,7 +70,7 @@ public class AnimatronicBlock extends FloorPropBlock<DemoAnimationList> {
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.5f, 0, -0.5f, 1.5f, 2, 1.5f)));
+        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.1f, 0, 0f, 1f, 2.5, 1f)));
         return drawingOutline ? shape : VoxelShapes.fullCube();
     }
 

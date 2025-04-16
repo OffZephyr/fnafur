@@ -1,7 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/mop_bucket",
-      "y": 90
+      "model": "fnafur:item/mop_bucket"
   }
 }

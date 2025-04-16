@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/skeeball_arcade"
+      "model": "fnafur:item/skeeball_machine"
   }
 }
