@@ -32,16 +32,16 @@ import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
 import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockRenderer;
-import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlock;
-import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntityRenderer;
-import net.zephyr.fnafur.blocks.tile_doors.TileDoorDirection;
-import net.zephyr.fnafur.blocks.tile_doors.TileDoorItem;
+import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlock;
+import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntityRenderer;
+import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorDirection;
+import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorItem;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlockRenderer;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
-import net.zephyr.fnafur.blocks.tile_doors.beta.OfficeDoor;
+import net.zephyr.fnafur.blocks.props.tiling.tile_doors.beta.OfficeDoor;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
@@ -112,7 +112,7 @@ public class BlockInit {
             MimicFrames::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
-                    .solidBlock(Blocks::never)
+                    .solidBlock(MimicFrames::isFullSolidBlock)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never),
             List.of(
@@ -124,7 +124,7 @@ public class BlockInit {
             MimicFrames2x2::new,
             AbstractBlock.Settings.copy(MIMIC_FRAME)
                     .nonOpaque()
-                    .solidBlock(Blocks::never)
+                    .solidBlock(MimicFrames::isFullSolidBlock)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never),
             List.of(
@@ -136,7 +136,7 @@ public class BlockInit {
             MimicFrames4x4::new,
             AbstractBlock.Settings.copy(MIMIC_FRAME)
                     .nonOpaque()
-                    .solidBlock(Blocks::never)
+                    .solidBlock(MimicFrames::isFullSolidBlock)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never),
             List.of(
@@ -239,7 +239,36 @@ public class BlockInit {
                     .nonOpaque()
                     .notSolid()
                     .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+                    .blockVision(Blocks::never),
+            List.of(
+                    Text.translatable("fnafur.symbol.wrench")
+            )
+    );
+    public static final Block HEAVY_DOOR = registerTileDoor(
+            "heavy_door",
+            TileDoorBlock::new,
+            TileDoorDirection.UP,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .notSolid()
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never),
+            List.of(
+                    Text.translatable("fnafur.symbol.wrench")
+            )
+    );
+    public static final Block WARNING_HEAVY_DOOR = registerTileDoor(
+            "warning_heavy_door",
+            TileDoorBlock::new,
+            TileDoorDirection.UP,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .notSolid()
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never),
+            List.of(
+                    Text.translatable("fnafur.symbol.wrench")
+            )
     );
 
     //BASIC CUBE BLOCKS START HERE!!!
@@ -1096,12 +1125,12 @@ public class BlockInit {
         }
         return block;
     }
-    private static Block registerTileDoor(String name, Function<AbstractBlock.Settings, Block> factory, TileDoorDirection direction, AbstractBlock.Settings settings) {
+    private static Block registerTileDoor(String name, Function<AbstractBlock.Settings, Block> factory, TileDoorDirection direction, AbstractBlock.Settings settings, List<Text> description) {
         final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final TileDoorBlock block = (TileDoorBlock) Blocks.register(registryKey, factory, settings);
-        Items.register(block, TileDoorItem::new);
+        Items.register(block, TileDoorItem::new, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description)));
         return block;
     }
 

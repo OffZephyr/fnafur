@@ -14,7 +14,7 @@ import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.wall_props.clocks.GeoClockPropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
-import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
+import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlockEntity;
@@ -63,7 +63,9 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "tile_door"),
                         FabricBlockEntityTypeBuilder.create(TileDoorBlockEntity::new,
                                 BlockInit.OFFICE_DOOR,
-                                BlockInit.GARAGE_DOOR
+                                BlockInit.GARAGE_DOOR,
+                                BlockInit.HEAVY_DOOR,
+                                BlockInit.WARNING_HEAVY_DOOR
                         ).build());
         PROPS =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "props"),

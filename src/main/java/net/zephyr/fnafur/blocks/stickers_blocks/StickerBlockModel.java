@@ -1,6 +1,5 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
-import net.fabricmc.fabric.api.client.model.loading.v1.WrapperGroupableModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.WrapperUnbakedModel;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
@@ -9,7 +8,6 @@ import net.fabricmc.fabric.api.renderer.v1.material.ShadeMode;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
-import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -34,14 +32,12 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
-import net.zephyr.fnafur.init.item_init.StickerInit;
+import net.zephyr.fnafur.init.StickerInit;
 import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -177,26 +173,28 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
 
                 for (int i = 0; i < list.size(); i++) {
                     String name = list.getString(i);
-                    StickerInit.Sticker sticker = StickerInit.getSticker(name);
-                    if (name.isEmpty() || sticker == null) continue;
+
+                    StickerInit.Decal decal = StickerInit.getSticker(name);
+
+                    if (name.isEmpty() || decal == null) continue;
                     int dirPos = direction.getAxis() == Direction.Axis.Z ? Math.abs(pos.getX()) :
                             direction.getAxis() == Direction.Axis.X ? Math.abs(pos.getZ()) :
                                     0;
-                    int num = dirPos % sticker.getTextures().length;
-                    Identifier identifier = sticker.getTextures()[num];
+                    int num = dirPos % decal.getTextures().length;
+                    Identifier identifier = decal.getTextures()[num];
 
                     Sprite sprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier).getSprite();
 
                     float Offset = offset_list.getFloat(i);
-                    float xOffset = sticker.getDirection() == StickerInit.Movable.HORIZONTAL ? Offset : 0;
-                    float yOffset = sticker.getDirection() == StickerInit.Movable.VERTICAL ? Offset : 0;
+                    float xOffset = decal.getDirection() == StickerInit.Movable.HORIZONTAL ? Offset : 0;
+                    float yOffset = decal.getDirection() == StickerInit.Movable.VERTICAL ? Offset : 0;
 
                     boolean snapBelow = client.world.getBlockState(pos.down()).isSideSolidFullSquare(client.world, pos.down(), direction);
                     boolean snapAbove = client.world.getBlockState(pos.up()).isSideSolidFullSquare(client.world, pos.up(), direction);
 
-                    float textureSize = sticker.getPixelDensity() - sticker.getSize();
-                    float scaledSpace = (float) sticker.getSize() / sticker.getPixelDensity();
-                    float textureSizeY = sticker.getDirection() == StickerInit.Movable.VERTICAL ? (float) textureSize / sticker.getPixelDensity() : 1.0f;
+                    float textureSize = decal.getPixelDensity() - decal.getSize();
+                    float scaledSpace = (float) decal.getSize() / decal.getPixelDensity();
+                    float textureSizeY = decal.getDirection() == StickerInit.Movable.VERTICAL ? (float) textureSize / decal.getPixelDensity() : 1.0f;
 
                     float bottom = snapBelow ? yOffset : yOffset > 0 ? yOffset : 0.0f;
                     float top = snapAbove ? 1.0f + yOffset : 1.0f + yOffset < 1 ? 1.0f + yOffset : 1.0f;

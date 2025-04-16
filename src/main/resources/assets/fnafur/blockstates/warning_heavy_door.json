@@ -1,0 +1,244 @@
+{
+  "variants": {
+    "facing=north,type=top_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_tl"
+    },
+    "facing=east,type=top_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_tl",
+      "y": 90
+    },
+    "facing=south,type=top_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_tl",
+      "y": 180
+    },
+    "facing=west,type=top_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_tl",
+      "y": 270
+    },
+    "facing=north,type=top": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_t"
+    },
+    "facing=east,type=top": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_t",
+      "y": 90
+    },
+    "facing=south,type=top": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_t",
+      "y": 180
+    },
+    "facing=west,type=top": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_t",
+      "y": 270
+    },
+    "facing=north,type=top_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_tr"
+    },
+    "facing=east,type=top_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_tr",
+      "y": 90
+    },
+    "facing=south,type=top_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_tr",
+      "y": 180
+    },
+    "facing=west,type=top_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_tr",
+      "y": 270
+    },
+    "facing=north,type=left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_l"
+    },
+    "facing=east,type=left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_l",
+      "y": 90
+    },
+    "facing=south,type=left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_l",
+      "y": 180
+    },
+    "facing=west,type=left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_l",
+      "y": 270
+    },
+    "facing=north,type=center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_c"
+    },
+    "facing=east,type=center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_c",
+      "y": 90
+    },
+    "facing=south,type=center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_c",
+      "y": 180
+    },
+    "facing=west,type=center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_c",
+      "y": 270
+    },
+    "facing=north,type=right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_r"
+    },
+    "facing=east,type=right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_r",
+      "y": 90
+    },
+    "facing=south,type=right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_r",
+      "y": 180
+    },
+    "facing=west,type=right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_r",
+      "y": 270
+    },
+    "facing=north,type=bottom_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_bl"
+    },
+    "facing=east,type=bottom_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_bl",
+      "y": 90
+    },
+    "facing=south,type=bottom_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_bl",
+      "y": 180
+    },
+    "facing=west,type=bottom_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_bl",
+      "y": 270
+    },
+    "facing=north,type=bottom": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_b"
+    },
+    "facing=east,type=bottom": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_b",
+      "y": 90
+    },
+    "facing=south,type=bottom": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_b",
+      "y": 180
+    },
+    "facing=west,type=bottom": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_b",
+      "y": 270
+    },
+    "facing=north,type=bottom_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_br"
+    },
+    "facing=east,type=bottom_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_br",
+      "y": 90
+    },
+    "facing=south,type=bottom_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_br",
+      "y": 180
+    },
+    "facing=west,type=bottom_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_br",
+      "y": 270
+    },
+    "facing=north,type=horizontal_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hl"
+    },
+    "facing=east,type=horizontal_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hl",
+      "y": 90
+    },
+    "facing=south,type=horizontal_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hl",
+      "y": 180
+    },
+    "facing=west,type=horizontal_left": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hl",
+      "y": 270
+    },
+    "facing=north,type=horizontal_center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hc"
+    },
+    "facing=east,type=horizontal_center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hc",
+      "y": 90
+    },
+    "facing=south,type=horizontal_center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hc",
+      "y": 180
+    },
+    "facing=west,type=horizontal_center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hc",
+      "y": 270
+    },
+    "facing=north,type=horizontal_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hr"
+    },
+    "facing=east,type=horizontal_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hr",
+      "y": 90
+    },
+    "facing=south,type=horizontal_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hr",
+      "y": 180
+    },
+    "facing=west,type=horizontal_right": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_hr",
+      "y": 270
+    },
+    "facing=north,type=vertical_top": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vt"
+    },
+    "facing=east,type=vertical_top": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vt",
+      "y": 90
+    },
+    "facing=south,type=vertical_top": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vt",
+      "y": 180
+    },
+    "facing=west,type=vertical_top": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vt",
+      "y": 270
+    },
+    "facing=north,type=vertical_center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vc"
+    },
+    "facing=east,type=vertical_center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vc",
+      "y": 90
+    },
+    "facing=south,type=vertical_center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vc",
+      "y": 180
+    },
+    "facing=west,type=vertical_center": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vc",
+      "y": 270
+    },
+    "facing=north,type=vertical_bottom": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vb"
+    },
+    "facing=east,type=vertical_bottom": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vb",
+      "y": 90
+    },
+    "facing=south,type=vertical_bottom": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vb",
+      "y": 180
+    },
+    "facing=west,type=vertical_bottom": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_vb",
+      "y": 270
+    },
+    "facing=north,type=single": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_s"
+    },
+    "facing=east,type=single": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_s",
+      "y": 90
+    },
+    "facing=south,type=single": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_s",
+      "y": 180
+    },
+    "facing=west,type=single": {
+      "model": "fnafur:block/tiling/doors/warning_office_door/warning_office_door_s",
+      "y": 270
+    }
+  }
+}

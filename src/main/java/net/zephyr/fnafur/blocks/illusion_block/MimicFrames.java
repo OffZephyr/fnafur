@@ -58,6 +58,18 @@ public class MimicFrames extends BlockWithSticker {
     }
 
     @Override
+    protected boolean hasSidedTransparency(BlockState state) {
+        return !state.get(IS_FULL);
+    }
+
+    public static boolean isFullSolidBlock(BlockState state, BlockView world, BlockPos pos) {
+        if(world.getBlockEntity(pos) instanceof BlockEntity ent){
+            byte[] data = ((IEntityDataSaver)ent).getPersistentData().getByteArray("cubeMatrix");
+            return MimicFrames.isFullCube(data) || state.get(IS_FULL);
+        }
+        return state.get(IS_FULL);
+    }
+    @Override
     protected boolean isTransparent(BlockState state) {
         return !state.get(IS_FULL);
     }
@@ -230,7 +242,7 @@ public class MimicFrames extends BlockWithSticker {
         super.neighborUpdate(state, world, pos, sourceBlock, wireOrientation, notify);
     }
 
-    public boolean isFullCube(byte[] cubeArray){
+    public static boolean isFullCube(byte[] cubeArray){
         if(cubeArray.length == 0) return false;
 
         for(int i = 0; i < cubeArray.length; i++){

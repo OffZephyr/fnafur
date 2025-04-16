@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -19,12 +18,11 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.WallHalfProperty;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
-import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
+import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -203,21 +201,28 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
     public void toggleDoor(BlockState state, World world, BlockPos pos, @Nullable PlayerEntity player) {
         state = state.cycle(DOOR_ON);
         world.setBlockState(pos, state, Block.NOTIFY_ALL);
-        //this.updateNeighbors(state, world, pos);
-
 
         BlockPos leftPos = pos.offset(state.get(FACING).getOpposite()).offset(state.get(FACING).rotateYCounterclockwise());
         BlockPos rightPos = pos.offset(state.get(FACING).getOpposite()).offset(state.get(FACING).rotateYClockwise());
+
+        BlockPos upPos = pos.offset(state.get(FACING).getOpposite()).up();
+        BlockPos downPos = pos.offset(state.get(FACING).getOpposite()).down();
+
+
         if(world.getBlockEntity(leftPos) instanceof TileDoorBlockEntity entity2){
             entity2.setStatus(state.get(DOOR_ON));
-
-            world.updateNeighborsAlways(leftPos, this);
         }
         if(world.getBlockEntity(rightPos) instanceof TileDoorBlockEntity entity2){
             entity2.setStatus(state.get(DOOR_ON));
-
-            world.updateNeighborsAlways(rightPos, this);
         }
+        if(world.getBlockEntity(upPos) instanceof TileDoorBlockEntity entity2){
+            entity2.setStatus(state.get(DOOR_ON));
+        }
+        if(world.getBlockEntity(downPos) instanceof TileDoorBlockEntity entity2){
+            entity2.setStatus(state.get(DOOR_ON));
+        }
+
+        this.updateNeighbors(state, world, pos);
 
         // PLAY SOUND
         //world.emitGameEvent(player, state.get(DOOR_ON) ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE, pos);
@@ -225,7 +230,12 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
     public void toggleLight(BlockState state, World world, BlockPos pos, @Nullable PlayerEntity player) {
         state = state.cycle(LIGHT_ON);
         world.setBlockState(pos, state, Block.NOTIFY_ALL);
-        //this.updateNeighbors(state, world, pos);
+
+        for(BlockPos pos1 : getLightCheckPoses(pos, state.get(FACING), false)){
+            this.updateNeighbors(state, world, pos1);
+        }
+        // LIGHT TRIGGER
+
         // PLAY SOUND
         //world.emitGameEvent(player, state.get(LIGHT_ON) ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE, pos);
     }
@@ -349,5 +359,38 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
             case FLOOR -> Direction.UP;
             default -> state.get(FACING);
         };
+    }
+
+
+    public static BlockPos[] getLightCheckPoses(BlockPos pos, Direction direction, boolean big) {
+        return big ?
+                new BlockPos[]{
+                        pos,
+                        pos.up(),
+                        pos.down(),
+                        pos.offset(direction.rotateYClockwise()),
+                        pos.offset(direction.rotateYCounterclockwise()),
+                        pos.offset(direction),
+                        pos.offset(direction).up(),
+                        pos.offset(direction).up().offset(direction.rotateYClockwise()),
+                        pos.offset(direction).up().offset(direction.rotateYCounterclockwise()),
+                        pos.offset(direction).up().up(),
+                        pos.offset(direction).down(),
+                        pos.offset(direction).down().offset(direction.rotateYClockwise()),
+                        pos.offset(direction).down().offset(direction.rotateYCounterclockwise()),
+                        pos.offset(direction).down().down(),
+                        pos.offset(direction).offset(direction.rotateYClockwise()),
+                        pos.offset(direction).offset(direction.rotateYClockwise()).offset(direction.rotateYClockwise()),
+                        pos.offset(direction).offset(direction.rotateYCounterclockwise()),
+                        pos.offset(direction).offset(direction.rotateYCounterclockwise()).offset(direction.rotateYCounterclockwise())
+                }
+                :
+                new BlockPos[]{
+                        pos,
+                        pos.up(),
+                        pos.down(),
+                        pos.offset(direction.rotateYClockwise()),
+                        pos.offset(direction.rotateYCounterclockwise())
+                };
     }
 }

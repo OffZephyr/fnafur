@@ -12,11 +12,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.init.StickerInit;
 import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.IllusionDisc;
 import net.zephyr.fnafur.item.energy.JerryCanItem;
 import net.zephyr.fnafur.item.tablet.TabletItem;
+import net.zephyr.fnafur.item.tools.DecalBookItem;
 import net.zephyr.fnafur.item.tools.PaintbrushItem;
 import net.zephyr.fnafur.item.tools.TapeMesurerItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
@@ -74,6 +76,16 @@ public class ItemInit {
                     .component(DataComponentTypes.LORE, new LoreComponent(List.of(
                             Text.translatable("item.fnafur.scraper.description"),
                             Text.translatable("item.fnafur.scraper.description2")
+                    )))
+    );
+    public static final Item DECAL_BOOK = registerItem(
+            "decal_book",
+            DecalBookItem::new,
+            new Item.Settings()
+                    .maxCount(1)
+                    .rarity(Rarity.COMMON)
+                    .component(DataComponentTypes.LORE, new LoreComponent(List.of(
+                            Text.translatable("item.fnafur.decal_book.description")
                     )))
     );
     public static final Item TAPEMEASURE = registerItem(

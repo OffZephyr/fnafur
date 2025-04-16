@@ -38,6 +38,8 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.CAMERA)
                 .add(BlockInit.FOG_BLOCK)
                 .add(BlockInit.GARAGE_DOOR)
+                .add(BlockInit.HEAVY_DOOR)
+                .add(BlockInit.WARNING_HEAVY_DOOR)
                 .add(PropInit.FNAF_1_DESK)
                 .add(PropInit.STAR_PLASTIC_CHAIR)
                 .add(PropInit.CEILING_TILE_VENT)

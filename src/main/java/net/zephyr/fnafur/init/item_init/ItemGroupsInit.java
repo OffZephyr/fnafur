@@ -24,6 +24,8 @@ public class ItemGroupsInit {
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
                         entries.add(BlockInit.GARAGE_DOOR);
+                        entries.add(BlockInit.HEAVY_DOOR);
+                        entries.add(BlockInit.WARNING_HEAVY_DOOR);
                         //entries.add(BlockInit.OFFICE_DOOR);
                         entries.add(PropInit.OFFICE_BUTTONS);
                         entries.add(PropInit.WOODEN_CLOCK);
@@ -102,6 +104,7 @@ public class ItemGroupsInit {
                         entries.add(ItemInit.WRENCH);
                         entries.add(ItemInit.PAINTBRUSH);
                         entries.add(ItemInit.SCRAPER);
+                        entries.add(ItemInit.DECAL_BOOK);
                         //entries.add(ItemInit.TAPEMEASURE);
                         //entries.add(ItemInit.JERRYCAN);
 
@@ -304,18 +307,6 @@ public class ItemGroupsInit {
 
                         entries.add(BlockInit.CHEESE_BLOCK);
                         entries.add(BlockInit.CHEESE_BLOCK_WHITE);
-
-                        // STICKERS
-                        entries.add(StickerInit.BLACK_WHITE_RED_WALL_TILES);
-                        entries.add(StickerInit.BLACK_WHITE_RED_WALL_BIG_TILES);
-                        entries.add(StickerInit.BLACK_WHITE_BLACK_WALL_TILES);
-                        entries.add(StickerInit.BLACK_WHITE_BLACK_DIRTY_WALL_TILES);
-                        entries.add(StickerInit.COLORED_WHITE_WALL_TILES);
-                        entries.add(StickerInit.COLORED_WHITE_LONG_WALL_TILES);
-                        entries.add(StickerInit.WALL_GRUNGE);
-                        entries.add(StickerInit.WALL_GRUNGE_2);
-
-
                     }).build());
     /*public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, FnafUniverseRebuilt.MOD_ID),
             FabricItemGroup.builder()

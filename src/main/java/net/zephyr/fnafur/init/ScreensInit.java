@@ -2,6 +2,7 @@ package net.zephyr.fnafur.init;
 
 import net.zephyr.fnafur.client.gui.screens.CameraEditScreen;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
+import net.zephyr.fnafur.client.gui.screens.DecalBookEditScreen;
 import net.zephyr.fnafur.client.gui.screens.crafting.CpuConfigScreen;
 import net.zephyr.fnafur.client.gui.screens.EntitySkinScreen;
 import net.zephyr.fnafur.client.gui.screens.computer.COMPBootupScreen;
@@ -22,6 +23,7 @@ public class ScreensInit {
     public static final String CPU_CONFIG = "cpu_config";
     public static final String WORKBENCH = "workbench";
     public static final String PAINTBRUSH = "paintbrush";
+    public static final String DECAL_BOOK_EDIT = "decal_book_edit";
     public static final String SKINS = "skins";
     public static final String DEFAULT_KILLSCREEN = "death_goopy_default";
     public static final String ZEPHYR_KILLSCREEN = "death_goopy";
@@ -36,6 +38,8 @@ public class ScreensInit {
         GoopyNetworkingUtils.registerScreen(CPU_CONFIG, CpuConfigScreen::new);
         GoopyNetworkingUtils.registerScreen(WORKBENCH, WorkbenchScreen::new);
         GoopyNetworkingUtils.registerScreen(SKINS, EntitySkinScreen::new);
+
+        GoopyNetworkingUtils.registerScreen(DECAL_BOOK_EDIT, DecalBookEditScreen::new);
 
         GoopyNetworkingUtils.registerScreen(DEFAULT_KILLSCREEN, DefaultKillScreen::new);
         GoopyNetworkingUtils.registerScreen(ZEPHYR_KILLSCREEN, ZephyrKillScreen::new);

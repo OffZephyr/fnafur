@@ -3,6 +3,7 @@
   "package": "net.zephyr.fnafur.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AbstractBlockMixin",
     "BlacklistMixin",
     "BlockEntityMixin",
     "BlockMixin",
@@ -12,7 +13,6 @@
     "DebugRendererMixin",
     "DrawContextMixin",
     "GameRendererMixin",
-    "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
     "MinecraftClientMixin",

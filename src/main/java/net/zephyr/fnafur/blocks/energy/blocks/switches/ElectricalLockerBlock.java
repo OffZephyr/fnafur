@@ -183,27 +183,28 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 
-        BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("mainBlock"));
-        if(!state.get(MAIN)) return this.onUse(world.getBlockState(mainPos), world, mainPos, player, hit);
-        BlockPos sidePos = mainPos.offset(state.get(FACING).rotateYCounterclockwise());
+        if(world.getBlockEntity(pos) instanceof BlockEntity entity) {
+            BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) entity).getPersistentData().getLong("mainBlock"));
+            if (!state.get(MAIN)) return this.onUse(world.getBlockState(mainPos), world, mainPos, player, hit);
+            BlockPos sidePos = mainPos.offset(state.get(FACING).rotateYCounterclockwise());
 
-        buildLevers();
+            buildLevers();
 
-        // open the locker
-        if(state.get(OPEN)) {
+            // open the locker
+            if (state.get(OPEN)) {
 
-            float[][] leverOffsets = getLeverOffsets(state.get(FACING));
-            for(int i = 0; i < 6; i++){
-                Box box = new Box(pos.getX() + leverOffsets[i][0], pos.getY() + leverOffsets[i][1], pos.getZ() + leverOffsets[i][2], pos.getX() + leverOffsets[i][0] + 0.25f, pos.getY() + leverOffsets[i][1] + 0.25f, pos.getZ() + leverOffsets[i][2] + 0.25f).expand(0.025f);
+                float[][] leverOffsets = getLeverOffsets(state.get(FACING));
+                for (int i = 0; i < 6; i++) {
+                    Box box = new Box(pos.getX() + leverOffsets[i][0], pos.getY() + leverOffsets[i][1], pos.getZ() + leverOffsets[i][2], pos.getX() + leverOffsets[i][0] + 0.25f, pos.getY() + leverOffsets[i][1] + 0.25f, pos.getZ() + leverOffsets[i][2] + 0.25f).expand(0.025f);
 
-                if(box.contains(hit.getPos())){
-                    world.setBlockState(pos, state.cycle(LEVERS.get(i)));
-                    System.out.println("LEVER " + i);
-                    return ActionResult.SUCCESS;
+                    if (box.contains(hit.getPos())) {
+                        world.setBlockState(pos, state.cycle(LEVERS.get(i)));
+                        System.out.println("LEVER " + i);
+                        return ActionResult.SUCCESS;
+                    }
                 }
-            }
 
-            // check for levers
+                // check for levers
             /*for (int i = 0; i < levers.length; i++) {
                 HitResult hitResult = player.raycast(20.0, 0.0f, false);
                 if (!(hitResult.getType() == HitResult.Type.BLOCK && hitResult instanceof BlockHitResult blockHit))
@@ -216,19 +217,21 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
                 return ActionResult.SUCCESS;
             }
              */
+            }
+            // close the locker
+            world.setBlockState(pos, state.cycle(OPEN));
+
+            BlockState newState = world.getBlockState(pos).with(MAIN, false);
+
+            world.setBlockState(pos.down(), newState);
+            world.setBlockState(pos.up(), newState);
+            world.setBlockState(sidePos.down(), newState.with(SIDE, true));
+            world.setBlockState(sidePos, newState.with(SIDE, true));
+            world.setBlockState(sidePos.up(), newState.with(SIDE, true));
+
+            return ActionResult.SUCCESS;
         }
-        // close the locker
-        world.setBlockState(pos, state.cycle(OPEN));
-
-        BlockState newState = world.getBlockState(pos).with(MAIN, false);
-
-        world.setBlockState(pos.down(), newState);
-        world.setBlockState(pos.up(), newState);
-        world.setBlockState(sidePos.down(), newState.with(SIDE, true));
-        world.setBlockState(sidePos, newState.with(SIDE, true));
-        world.setBlockState(sidePos.up(), newState.with(SIDE, true));
-
-        return ActionResult.SUCCESS;
+        return ActionResult.PASS;
     }
 
     @Override

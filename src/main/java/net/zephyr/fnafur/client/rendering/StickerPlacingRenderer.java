@@ -4,39 +4,41 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.BufferRenderer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.init.item_init.StickerInit;
-import net.zephyr.fnafur.item.StickerItem;
+import net.zephyr.fnafur.init.StickerInit;
+import net.zephyr.fnafur.item.tools.DecalBookItem;
 
 public class StickerPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
 
             MinecraftClient client = MinecraftClient.getInstance();
             ClientPlayerEntity player = client.player;
-            if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof StickerItem item) {
+            if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof DecalBookItem) {
+                StickerInit.Decal decal = DecalBookItem.getDecal(player.getMainHandStack());
                 HitResult blockHit = client.crosshairTarget;
-                if (blockHit.getType() == HitResult.Type.BLOCK) {
+                if (decal != null && blockHit.getType() == HitResult.Type.BLOCK) {
                     BlockPos pos = ((BlockHitResult) blockHit).getBlockPos();
                     Direction direction = ((BlockHitResult) blockHit).getSide();
                     if (client.world.getBlockState(pos).isSideSolidFullSquare(client.world, pos, direction)) {
 
-                        if (item.isWallSticker() && (((BlockHitResult) blockHit).getSide() == Direction.UP || ((BlockHitResult) blockHit).getSide() == Direction.DOWN)) {
+                        if (decal.isWallSticker() && (((BlockHitResult) blockHit).getSide() == Direction.UP || ((BlockHitResult) blockHit).getSide() == Direction.DOWN)) {
                             return;
                         }
 
                         Vec3d hitPos = blockHit.getPos();
-                        String name = item.sticker_name();
-                        StickerInit.Sticker sticker = StickerInit.getSticker(name);
 
-                        if (sticker == null) return;
-
-                        Vec3d stickerPos = StickerItem.stickerPos(pos, hitPos, direction, item, player, client.world);
+                        Vec3d stickerPos = DecalBookItem.stickerPos(pos, hitPos, direction, decal, player, client.world);
 
                         matrices.push();
                         matrices.translate(-cameraX + 0.5f, -cameraY, -cameraZ + 0.5f);
@@ -49,8 +51,8 @@ public class StickerPlacingRenderer {
                         int dirPos = direction == Direction.NORTH || direction == Direction.SOUTH ? Math.abs(pos.getX()) :
                                 direction == Direction.WEST || direction == Direction.EAST ? Math.abs(pos.getZ()) :
                                         0;
-                        int num = dirPos % sticker.getTextures().length;
-                        String path = "textures/" + sticker.getTextures()[num].getPath() + ".png";
+                        int num = dirPos % decal.getTextures().length;
+                        String path = "textures/" + decal.getTextures()[num].getPath() + ".png";
                         Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, path);
 
                         float tWidth = 0.5f;

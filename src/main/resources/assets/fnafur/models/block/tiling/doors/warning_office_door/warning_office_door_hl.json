@@ -1,0 +1,33 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "fnafur:block/office_door_stylized",
+		"1": "fnafur:block/office_door_sides",
+		"particle": "fnafur:block/office_door_stylized"
+	},
+	"elements": [
+		{
+			"name": "hl",
+			"from": [0, 0, 6],
+			"to": [16, 16, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 12, 4, 16], "texture": "#0"},
+				"east": {"uv": [6, 0, 8, 8], "texture": "#1"},
+				"south": {"uv": [8, 12, 12, 16], "texture": "#0"},
+				"west": {"uv": [6, 0, 8, 8], "texture": "#1"},
+				"up": {"uv": [0, 9, 8, 11], "texture": "#1"},
+				"down": {"uv": [0, 9, 8, 11], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "bone",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

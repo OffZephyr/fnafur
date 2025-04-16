@@ -557,7 +557,6 @@ public class FnafTitleScreen extends Screen {
         if(easterEggMap.containsKey(RENDERS[renderIndex][renderGlitchIndex])) {
             triggerSoundZone zone = easterEggMap.get(RENDERS[renderIndex][renderGlitchIndex]);
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) (offsetX + onHeight(zone.x)), (int) (offsetY + onHeight(zone.y)), (int) onHeight(zone.width), (int) onHeight(zone.height))) {
-                System.out.println("HONK");
 
                 PositionedSoundInstance sound = new PositionedSoundInstance(zone.sound().id(), SoundCategory.MASTER, 1, 1, Random.create(), false, 0, SoundInstance.AttenuationType.NONE, 0, 0, 0, false);
                 MinecraftClient.getInstance().getSoundManager().play(sound);
