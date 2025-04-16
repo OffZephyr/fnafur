@@ -43,6 +43,8 @@ public class SoundsInit {
     public static final SoundEvent MARKIPLIER = registerSoundEvent("markiplier");
     public static final SoundEvent MATPAT_PLACE = registerSoundEvent("matpat_place");
     public static final SoundEvent MATPAT = registerSoundEvent("matpat");
+    public static final SoundEvent DASEN = registerSoundEvent("dasen");
+    public static final SoundEvent DASEN_PLACE = registerSoundEvent("dasen_place");
 
     public static SoundEvent getSound(String name){
         return sounds.get(name);

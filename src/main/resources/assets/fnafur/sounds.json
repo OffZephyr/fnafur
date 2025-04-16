@@ -189,7 +189,8 @@
       "fnafur:props/cutouts/markiplier2",
       "fnafur:props/cutouts/markiplier3",
       "fnafur:props/cutouts/markiplier4",
-      "fnafur:props/cutouts/markiplier5"
+      "fnafur:props/cutouts/markiplier5",
+      "fnafur:props/cutouts/markiplier6"
     ]
   },
   "matpat_place": {
@@ -206,7 +207,26 @@
       "fnafur:props/cutouts/matpat3",
       "fnafur:props/cutouts/matpat4",
       "fnafur:props/cutouts/matpat5",
-      "fnafur:props/cutouts/matpat6"
+      "fnafur:props/cutouts/matpat6",
+      "fnafur:props/cutouts/matpat7"
     ]
-  }
-}
+   },
+    "dasen_place": {
+      "subtitle": "sounds.fnafur.dasen_place",
+      "sounds": [
+        "fnafur:props/cutouts/dasen_place"
+      ]
+    },
+    "dasen": {
+      "subtitle": "sounds.fnafur.dasen",
+      "sounds": [
+        "fnafur:props/cutouts/dasen1",
+        "fnafur:props/cutouts/dasen2",
+        "fnafur:props/cutouts/dasen3",
+        "fnafur:props/cutouts/dasen4",
+        "fnafur:props/cutouts/dasen5",
+        "fnafur:props/cutouts/dasen6",
+        "fnafur:props/cutouts/dasen7"
+        ]
+      }
+    }

@@ -11,7 +11,7 @@ public enum SeriousCutoutColors implements StringIdentifiable, ColorEnumInterfac
     MARKIPLIER("markiplier", 2, SoundsInit.MARKIPLIER, SoundsInit.MARKIPLIER_PLACE),
     DAWKO("dawko", 3, SoundsInit.DAWKO, SoundsInit.DAWKO_PLACE),
     MATPAT("matpat", 4, SoundsInit.MATPAT, SoundsInit.MATPAT_PLACE),
-    DASEN("dasen", 5, null, null),
+    DASEN("dasen", 5, SoundsInit.DASEN, SoundsInit.DASEN_PLACE),
     ZEPHYR("zephyr", 6, null, null)
     ;
     private final String name;
