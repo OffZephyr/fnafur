@@ -20,7 +20,7 @@ public class ItemGroupsInit {
             FabricItemGroup.builder()
                     .displayName(Text.translatable(FnafUniverseRebuilt.MOD_ID + ".props"))
                     .noRenderedName()
-                    .icon(() -> new ItemStack(PropInit.FLOOR_MONITORS))
+                    .icon(() -> new ItemStack(PropInit.PRESENT_STACK))
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
                         entries.add(BlockInit.GARAGE_DOOR);
