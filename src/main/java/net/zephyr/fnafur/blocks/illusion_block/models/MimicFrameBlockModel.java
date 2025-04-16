@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
-import net.zephyr.fnafur.init.StickerInit;
+import net.zephyr.fnafur.init.DecalInit;
 
 import java.util.function.Supplier;
 
@@ -186,7 +186,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
 
             for (int i = 0; i < list.size(); i++) {
                 String name = list.getString(i);
-                StickerInit.Decal decal = StickerInit.getSticker(name);
+                DecalInit.Decal decal = DecalInit.getDecal(name);
                 if (name.isEmpty() || decal == null) continue;
                 int dirPos = direction.getAxis() == Direction.Axis.Z ? Math.abs(pos.getX()) :
                         direction.getAxis() == Direction.Axis.X ? Math.abs(pos.getZ()) :
@@ -196,15 +196,15 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                 Sprite sprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier).getSprite();
 
                 float Offset = offset_list.getFloat(i);
-                float xOffset = decal.getDirection() == StickerInit.Movable.HORIZONTAL ? Offset : 0;
-                float yOffset = decal.getDirection() == StickerInit.Movable.VERTICAL ? Offset : 0;
+                float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;
+                float yOffset = decal.getDirection() == DecalInit.Movable.VERTICAL ? Offset : 0;
 
                 boolean snapBelow = client.world.getBlockState(pos.down()).isSideSolidFullSquare(client.world, pos.down(), direction);
                 boolean snapAbove = client.world.getBlockState(pos.up()).isSideSolidFullSquare(client.world, pos.up(), direction);
 
                 float textureSize = decal.getPixelDensity() - decal.getSize();
                 float scaledSpace = (float) decal.getSize() / decal.getPixelDensity();
-                float textureSizeY = decal.getDirection() == StickerInit.Movable.VERTICAL ? (float) textureSize / decal.getPixelDensity() : 1.0f;
+                float textureSizeY = decal.getDirection() == DecalInit.Movable.VERTICAL ? (float) textureSize / decal.getPixelDensity() : 1.0f;
 
                 float bottom = snapBelow ? yOffset : yOffset > 0 ? yOffset : 0.0f;
                 float top = snapAbove ? 1.0f + yOffset : 1.0f + yOffset < 1 ? 1.0f + yOffset : 1.0f;

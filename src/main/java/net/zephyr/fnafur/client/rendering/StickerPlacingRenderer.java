@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.init.StickerInit;
+import net.zephyr.fnafur.init.DecalInit;
 import net.zephyr.fnafur.item.tools.DecalBookItem;
 
 public class StickerPlacingRenderer {
@@ -25,7 +25,7 @@ public class StickerPlacingRenderer {
             MinecraftClient client = MinecraftClient.getInstance();
             ClientPlayerEntity player = client.player;
             if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof DecalBookItem) {
-                StickerInit.Decal decal = DecalBookItem.getDecal(player.getMainHandStack());
+                DecalInit.Decal decal = DecalBookItem.getDecal(player.getMainHandStack());
                 HitResult blockHit = client.crosshairTarget;
                 if (decal != null && blockHit.getType() == HitResult.Type.BLOCK) {
                     BlockPos pos = ((BlockHitResult) blockHit).getBlockPos();

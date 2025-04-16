@@ -12,6 +12,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Property;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +21,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.init.block_init.BlockInit;
-import net.zephyr.fnafur.init.StickerInit;
+import net.zephyr.fnafur.init.DecalInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -32,18 +33,28 @@ public class DecalBookItem extends Item {
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        if(getDecal(user.getMainHandStack()) == null || user.isSneaking()) {
-            GoopyNetworkingUtils.setScreen(user, "decal_book_edit");
-            return ActionResult.SUCCESS;
-        }
-        return super.use(world, user, hand);
+    public boolean allowContinuingBlockBreaking(PlayerEntity player, ItemStack oldStack, ItemStack newStack) {
+        System.out.println("test");
+        return super.allowContinuingBlockBreaking(player, oldStack, newStack);
     }
 
-    public static StickerInit.Decal getDecal(ItemStack stack){
+    @Override
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
+        if(user.isSneaking()){
+            NbtCompound nbt = ItemNbtUtil.getNbt(user.getMainHandStack());
+            nbt.putString("activeDecal", "");
+            ItemNbtUtil.setNbt(user.getMainHandStack(), nbt);
+            user.sendMessage(Text.translatable("decal_book.clear"), true);
+            return ActionResult.SUCCESS;
+        }
+        GoopyNetworkingUtils.setScreen(user, "decal_book_edit");
+        return ActionResult.SUCCESS;
+    }
+
+    public static DecalInit.Decal getDecal(ItemStack stack){
         String name = ItemNbtUtil.getNbt(stack).getString("activeDecal");
         if(!name.isEmpty()){
-            return StickerInit.getSticker(name);
+            return DecalInit.getDecal(name);
         }
         return null;
     }
@@ -53,7 +64,7 @@ public class DecalBookItem extends Item {
     public ActionResult useOnBlock(ItemUsageContext context) {
         if(context.getWorld().getBlockState(context.getBlockPos()).isSideSolidFullSquare(context.getWorld(), context.getBlockPos(), context.getSide())){
 
-            StickerInit.Decal decal = getDecal(context.getStack());
+            DecalInit.Decal decal = getDecal(context.getStack());
 
             if(decal != null && (!decal.isWallSticker() || (context.getSide() != Direction.UP && context.getSide() != Direction.DOWN))){
                 BlockState blockState = context.getWorld().getBlockState(context.getBlockPos());
@@ -96,7 +107,7 @@ public class DecalBookItem extends Item {
 
                     float offset = 0;
 
-                    if (decal.getDirection() == StickerInit.Movable.VERTICAL) {
+                    if (decal.getDirection() == DecalInit.Movable.VERTICAL) {
                         offset = (float) stickerPos.getY();
                     } else {
                         offset = direction.getAxis() == Direction.Axis.Z ? (float) stickerPos.getX() :
@@ -122,7 +133,7 @@ public class DecalBookItem extends Item {
         return ActionResult.PASS;
     }
 
-    public static Vec3d stickerPos(BlockPos pos, Vec3d hitPos, Direction direction, StickerInit.Decal decal, PlayerEntity player, World world){
+    public static Vec3d stickerPos(BlockPos pos, Vec3d hitPos, Direction direction, DecalInit.Decal decal, PlayerEntity player, World world){
 
         boolean snapBelow = world.getBlockState(pos.down()).isSideSolidFullSquare(world, pos.down(), direction);
         boolean snapAbove = world.getBlockState(pos.up()).isSideSolidFullSquare(world, pos.up(), direction);
@@ -146,7 +157,7 @@ public class DecalBookItem extends Item {
             SnapGrid = 1f / (grid / 12f);
         }*/
 
-        if (decal.getDirection() == StickerInit.Movable.VERTICAL) {
+        if (decal.getDirection() == DecalInit.Movable.VERTICAL) {
             y = yOffset;
 
             y = Math.round(y / SnapGrid) * SnapGrid;
@@ -160,7 +171,7 @@ public class DecalBookItem extends Item {
             if(!snapBelow) y = Math.clamp(y, -space / grid, 1);
             if(!snapAbove) y = Math.clamp(y, -1, 0);
         }
-        if (decal.getDirection() == StickerInit.Movable.HORIZONTAL) {
+        if (decal.getDirection() == DecalInit.Movable.HORIZONTAL) {
             x = (xOffset / grid) * space;
 
             x = Math.round(x / SnapGrid) * SnapGrid;

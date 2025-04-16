@@ -12,7 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.init.StickerInit;
+import net.zephyr.fnafur.init.DecalInit;
 import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.IllusionDisc;
@@ -85,7 +85,9 @@ public class ItemInit {
                     .maxCount(1)
                     .rarity(Rarity.COMMON)
                     .component(DataComponentTypes.LORE, new LoreComponent(List.of(
-                            Text.translatable("item.fnafur.decal_book.description")
+                            Text.translatable("item.fnafur.decal_book.description"),
+                            Text.translatable("item.fnafur.decal_book.description2"),
+                            Text.translatable("item.fnafur.decal_book.description3")
                     )))
     );
     public static final Item TAPEMEASURE = registerItem(
@@ -137,7 +139,7 @@ public class ItemInit {
     }
 
     public static void registerItems() {
-        StickerInit.registerStickers();
+        DecalInit.registerStickers();
         SpawnItemInit.registerSpawnItems();
         FnafUniverseRebuilt.LOGGER.info("Registering Items for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }

@@ -17,8 +17,6 @@
   "fnafur.props": "FNaF Universe Rebuilt: Props",
   "fnafur.technical": "FNaF Universe Rebuilt: Technical",
 
-  "block.fnafur.has_sticker": " With Decal",
-
   "block.fnafur.computer": "Computer",
   "block.fnafur.cosmo_gift": "§c§lCosmo Gift",
 
@@ -321,6 +319,18 @@
   "item.fnafur.scraper.description2": "§8off of walls",
   "item.fnafur.decal_book": "Decal Book",
   "item.fnafur.decal_book.description": "§8Used to apply §7§lDecals §8on walls",
+  "item.fnafur.decal_book.description2": "§7§lShift-click in the air to clear",
+  "item.fnafur.decal_book.description3": "§7§lthe currently selected Decal.",
+
+  "block.fnafur.has_sticker": " With Decal",
+  "decal_book.summary": "§lSUMMARY:",
+  "decal_book.clear": "§c§lCLEARED DATA",
+  "decal.category.wall_tiles": "Wall Tiles",
+  "decal.category.tiny_wall_tiles": "Tiny Wall Tiles",
+  "decal.category.large_wall_tiles": "Large Wall Tiles",
+  "decal.category.horizontal_trims": "Horizontal Trims",
+  "decal.category.wall_grunge": "Wall Grunge",
+
   "item.fnafur.jerrycan": "Jerry Can",
   "item.fnafur.paintbrush.map_cam.line1": "Camera Map Coloring...",
   "item.fnafur.paintbrush.map_cam.line2": "§b§lClick on a line §bto change its color.",
