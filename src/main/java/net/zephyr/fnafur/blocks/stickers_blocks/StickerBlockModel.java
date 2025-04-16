@@ -87,6 +87,7 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
 
     @Override
     public Sprite getParticleSprite() {
+        if(particlesprite == null) return new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")).getSprite();
         return particlesprite;
     }
 

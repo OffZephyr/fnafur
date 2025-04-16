@@ -5,9 +5,14 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.block.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.LoreComponent;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.decorations.BackstageShelfBlock;
@@ -58,7 +63,10 @@ public class BlockInit {
                     .nonOpaque()
                     .notSolid()
                     .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+                    .blockVision(Blocks::never),
+            List.of(
+                    Text.translatable("fnafur.symbol.wrench")
+            )
     );
 
 
@@ -94,7 +102,10 @@ public class BlockInit {
             "sticker_block",
             BlockWithSticker::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
-                    .mapColor(MapColor.GRAY)
+                    .mapColor(MapColor.GRAY),
+            List.of(
+                    Text.translatable("fnafur.symbol.scraper")
+            )
     );
     public static final Block MIMIC_FRAME = registerFrame(
             "mimic_frame_block",
@@ -103,7 +114,10 @@ public class BlockInit {
                     .nonOpaque()
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+                    .blockVision(Blocks::never),
+            List.of(
+                    Text.translatable("fnafur.symbol.scraper")
+            )
     );
     public static final Block MIMIC_FRAME_2x2 = registerFrame(
             "mimic_frame_2",
@@ -112,7 +126,10 @@ public class BlockInit {
                     .nonOpaque()
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+                    .blockVision(Blocks::never),
+            List.of(
+                    Text.translatable("fnafur.symbol.scraper")
+            )
     );
     public static final Block MIMIC_FRAME_4x4 = registerFrame(
             "mimic_frame_4",
@@ -121,7 +138,10 @@ public class BlockInit {
                     .nonOpaque()
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+                    .blockVision(Blocks::never),
+            List.of(
+                    Text.translatable("fnafur.symbol.scraper")
+            )
     );
 
     public static final Block CAMERA = registerBlock(
@@ -1061,11 +1081,19 @@ public class BlockInit {
     );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+        return registerBlock(name, factory, settings, List.of());
+    }
+    private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, List<Text> description) {
         final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
-        Items.register(block);
+        if(description.isEmpty()){
+            Items.register(block);
+        }
+        else{
+            Items.register(block, BlockItem::new, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description)));
+        }
         return block;
     }
     private static Block registerTileDoor(String name, Function<AbstractBlock.Settings, Block> factory, TileDoorDirection direction, AbstractBlock.Settings settings) {
@@ -1077,8 +1105,8 @@ public class BlockInit {
         return block;
     }
 
-    private static Block registerFrame(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
-        Block block = registerBlock(name, factory, settings);
+    private static Block registerFrame(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, List<Text> description) {
+        Block block = registerBlock(name, factory, settings, description);
         MimicFrames.IDs.add(Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/" + name));
         return block;
     }

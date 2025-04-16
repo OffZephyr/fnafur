@@ -1,0 +1,62 @@
+{
+    "model": {
+      "type": "minecraft:select",
+      "cases":[
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/cutouts/bear5"
+          },
+          "when": "bear5"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/cutouts/helpy"
+          },
+          "when": "helpy"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/cutouts/markiplier"
+          },
+          "when": "markiplier"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/cutouts/dawko"
+          },
+          "when": "dawko"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/cutouts/matpat"
+          },
+          "when": "matpat"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/cutouts/dasen"
+          },
+          "when": "dasen"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:props/cutouts/zephyr"
+          },
+          "when": "zephyr"
+        }
+      ],
+      "fallback": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/cutouts/bear5"
+        },
+        "block_state_property": "color",
+      "property": "minecraft:block_state"
+    }
+  }

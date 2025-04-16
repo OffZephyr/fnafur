@@ -30,10 +30,19 @@ public class SoundsInit {
     public static final SoundEvent BEAR5 = registerSoundEvent("bear5", true);
     public static final SoundEvent ANIMATRONIC_HURT = registerSoundEvent("animatronic_hurt");
     public static final SoundEvent ANIMATRONIC_DEATH = registerSoundEvent("animatronic_death");
+    public static final SoundEvent HONK = registerSoundEvent("honk");
     public static final SoundEvent OFFICE_DOOR_ACTIVATE = registerSoundEvent("office_door_activate");
     public static final SoundEvent OFFICE_DOOR_ERROR = registerSoundEvent("office_door_error");
     public static final SoundEvent OFFICE_DOOR_KNOCK = registerSoundEvent("office_door_knock");
     public static final SoundEvent OFFICE_DOOR_LIGHT = registerSoundEvent("office_door_light");
+
+    // CUTOUTS
+    public static final SoundEvent DAWKO_PLACE = registerSoundEvent("dawko_place");
+    public static final SoundEvent DAWKO = registerSoundEvent("dawko");
+    public static final SoundEvent MARKIPLIER_PLACE = registerSoundEvent("markiplier_place");
+    public static final SoundEvent MARKIPLIER = registerSoundEvent("markiplier");
+    public static final SoundEvent MATPAT_PLACE = registerSoundEvent("matpat_place");
+    public static final SoundEvent MATPAT = registerSoundEvent("matpat");
 
     public static SoundEvent getSound(String name){
         return sounds.get(name);

@@ -23,6 +23,9 @@ public class ItemGroupsInit {
                     .icon(() -> new ItemStack(PropInit.FLOOR_MONITORS))
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
+                        entries.add(BlockInit.GARAGE_DOOR);
+                        //entries.add(BlockInit.OFFICE_DOOR);
+                        entries.add(PropInit.OFFICE_BUTTONS);
                         entries.add(PropInit.WOODEN_CLOCK);
                         entries.add(BlockInit.BACKSTAGE_SHELF);
                         entries.add(PropInit.PARTY_TABLE);
@@ -85,6 +88,7 @@ public class ItemGroupsInit {
                         entries.add(GeoBlockInit.BIG_GRAY_DOOR);
                         entries.add(GeoBlockInit.BIG_MAGENTA_DOOR);
                         entries.add(GeoBlockInit.BIG_GREEN_DOOR);
+                        entries.add(PropInit.SERIOUS_CUTOUT);
 
                     }).build());
     public static final ItemGroup FNAF_TECHNICAL = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, "technical"),
@@ -93,35 +97,36 @@ public class ItemGroupsInit {
                     .noRenderedName()
                     .icon(() -> new ItemStack(ItemInit.PIPE_WRENCH))
                     .entries((displayContext, entries) -> {
-                        entries.add(BlockInit.ANIMATRONIC_BLOCK);
-                        entries.add(PropInit.COSMO_GIFT);
-                        entries.add(ItemInit.DEATHCOIN);
-                        entries.add(ItemInit.CPU);
-                        entries.add(ItemInit.ILLUSIONDISC);
 
                         entries.add(ItemInit.PIPE_WRENCH);
                         entries.add(ItemInit.WRENCH);
                         entries.add(ItemInit.PAINTBRUSH);
                         entries.add(ItemInit.SCRAPER);
-                        entries.add(ItemInit.TAPEMEASURE);
-                        entries.add(ItemInit.JERRYCAN);
+                        //entries.add(ItemInit.TAPEMEASURE);
+                        //entries.add(ItemInit.JERRYCAN);
 
-                        entries.add(BlockInit.CAMERA);
-                        entries.add(ItemInit.TABLET);
-                        entries.add(BlockInit.FOG_BLOCK);
-
-                        entries.add(BlockInit.GARAGE_DOOR);
-                        entries.add(BlockInit.OFFICE_DOOR);
-                        entries.add(PropInit.OFFICE_BUTTONS);
-
-                        entries.add(BlockInit.COMPUTER);
-                        entries.add(BlockInit.CPU_CONFIG_PANEL);
+                        entries.add(BlockInit.ANIMATRONIC_BLOCK);
+                        entries.add(PropInit.COSMO_GIFT);
+                        entries.add(ItemInit.DEATHCOIN);
                         entries.add(BlockInit.WORKBENCH);
+                        entries.add(BlockInit.CPU_CONFIG_PANEL);
+                        //entries.add(ItemInit.CPU);
+                        //entries.add(ItemInit.ILLUSIONDISC);
+
+                        // MIMIC FRAMES
+                        entries.add(BlockInit.MIMIC_FRAME);
+                        entries.add(BlockInit.MIMIC_FRAME_2x2);
+                        entries.add(BlockInit.MIMIC_FRAME_4x4);
+
+                        //entries.add(BlockInit.CAMERA);
+                        //entries.add(ItemInit.TABLET);
+                        //entries.add(BlockInit.FOG_BLOCK);
+
+                        //entries.add(BlockInit.COMPUTER);
 
                         entries.add(BlockInit.FUEL_GENERATOR);
                         entries.add(BlockInit.REDSTONE_CONVERTER);
                         entries.add(BlockInit.ELECTRICAL_LOCKER);
-
                     }).build());
     public static final ItemGroup FNAF_BLOCKS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, "blocks"),
             FabricItemGroup.builder()
@@ -129,11 +134,6 @@ public class ItemGroupsInit {
                     .noRenderedName()
                     .icon(() -> new ItemStack(BlockInit.BLACK_WHITE_TILES))
                     .entries((displayContext, entries) -> {
-
-                        // MIMIC FRAMES
-                        entries.add(BlockInit.MIMIC_FRAME);
-                        entries.add(BlockInit.MIMIC_FRAME_2x2);
-                        entries.add(BlockInit.MIMIC_FRAME_4x4);
 
                         // TILES
                         entries.add(BlockInit.GROUT_TILE);
@@ -317,7 +317,7 @@ public class ItemGroupsInit {
 
 
                     }).build());
-    public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, FnafUniverseRebuilt.MOD_ID),
+    /*public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, FnafUniverseRebuilt.MOD_ID),
             FabricItemGroup.builder()
                     .displayName(Text.literal(FnafUniverseRebuilt.MOD_ID))
                     .noRenderedName()
@@ -325,7 +325,7 @@ public class ItemGroupsInit {
                     .icon(() -> new ItemStack(SpawnItemInit.CL_FRED_SPAWN))
                     .entries((displayContext, entries) -> {
                         entries.add(SpawnItemInit.CL_FRED_SPAWN);
-                    }).build());
+                    }).build());*/
 
     public static void registerItemGroups() {
         FnafUniverseRebuilt.LOGGER.info("Registering Item Groups for " + FnafUniverseRebuilt.MOD_ID);

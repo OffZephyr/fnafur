@@ -132,13 +132,7 @@ public class TileDoorBlock extends BlockWithEntity {
                 BlockPos testPos = mainPos.offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
                 Direction direction = world.getBlockState(testPos).getBlock() instanceof TileDoorBlock ? state.get(TileDoorBlock.FACING).rotateYCounterclockwise() : state.get(TileDoorBlock.FACING).rotateYClockwise();
 
-                boolean powered = false;
-                for (int x = 0; x <= width; x++) {
-                    for (int y = 0; y <= height; y++) {
-                        BlockPos updatePos = mainPos.up(y).offset(direction, x);
-                        if(world.isReceivingRedstonePower(updatePos)) powered = true;
-                    }
-                }
+                boolean powered = ((IEntityDataSaver) ent2).getPersistentData().getBoolean("open");
 
                 world.setBlockState(mainPos, world.getBlockState(mainPos).with(OPEN, powered), 0);
 

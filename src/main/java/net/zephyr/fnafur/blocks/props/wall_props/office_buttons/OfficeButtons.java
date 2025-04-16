@@ -24,6 +24,7 @@ import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.WallHalfProperty;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
+import net.zephyr.fnafur.blocks.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -146,8 +147,15 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         
         ItemStack stack = player.getMainHandStack();
-        if(stack != null && stack.getItem() == ItemInit.PAINTBRUSH)
-            return super.onUse(state, world, pos, player, hit);
+        if(stack != null && stack.getItem() == ItemInit.PAINTBRUSH){
+            if(state.get(DOOR_ON)){
+                toggleDoor(state, world, pos, player);
+            }
+            if(state.get(LIGHT_ON)){
+                toggleLight(state, world, pos, player);
+            }
+            return super.onUse(world.getBlockState(pos), world, pos, player, hit);
+        }
 
         checkingButtons = true;
         ActionResult result = super.onUse(state, world, pos, player, hit);
@@ -179,20 +187,12 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
                 ).expand(0.1f);
 
                 if (door.contains(blockHit.getPos())) {
-                    if (world.isClient) {
-                        result = ActionResult.SUCCESS;
-                    } else {
-                        this.toggleDoor(state, world, pos, null);
-                        result = ActionResult.CONSUME;
-                    }
+                    this.toggleDoor(state, world, pos, null);
+                    return ActionResult.SUCCESS;
                 }
                 if (light.contains(blockHit.getPos())) {
-                    if (world.isClient) {
-                        result = ActionResult.SUCCESS;
-                    } else {
-                        this.toggleLight(state, world, pos, null);
-                        result = ActionResult.CONSUME;
-                    }
+                    this.toggleLight(state, world, pos, null);
+                    return ActionResult.SUCCESS;
                 }
             }
         }
@@ -203,16 +203,31 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
     public void toggleDoor(BlockState state, World world, BlockPos pos, @Nullable PlayerEntity player) {
         state = state.cycle(DOOR_ON);
         world.setBlockState(pos, state, Block.NOTIFY_ALL);
-        this.updateNeighbors(state, world, pos);
+        //this.updateNeighbors(state, world, pos);
+
+
+        BlockPos leftPos = pos.offset(state.get(FACING).getOpposite()).offset(state.get(FACING).rotateYCounterclockwise());
+        BlockPos rightPos = pos.offset(state.get(FACING).getOpposite()).offset(state.get(FACING).rotateYClockwise());
+        if(world.getBlockEntity(leftPos) instanceof TileDoorBlockEntity entity2){
+            entity2.setStatus(state.get(DOOR_ON));
+
+            world.updateNeighborsAlways(leftPos, this);
+        }
+        if(world.getBlockEntity(rightPos) instanceof TileDoorBlockEntity entity2){
+            entity2.setStatus(state.get(DOOR_ON));
+
+            world.updateNeighborsAlways(rightPos, this);
+        }
+
         // PLAY SOUND
-        world.emitGameEvent(player, state.get(DOOR_ON) ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE, pos);
+        //world.emitGameEvent(player, state.get(DOOR_ON) ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE, pos);
     }
     public void toggleLight(BlockState state, World world, BlockPos pos, @Nullable PlayerEntity player) {
         state = state.cycle(LIGHT_ON);
         world.setBlockState(pos, state, Block.NOTIFY_ALL);
-        this.updateNeighbors(state, world, pos);
+        //this.updateNeighbors(state, world, pos);
         // PLAY SOUND
-        world.emitGameEvent(player, state.get(LIGHT_ON) ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE, pos);
+        //world.emitGameEvent(player, state.get(LIGHT_ON) ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE, pos);
     }
 
     public Box getLightHitbox(BlockState state) {

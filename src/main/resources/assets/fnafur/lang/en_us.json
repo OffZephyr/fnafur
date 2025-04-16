@@ -2,8 +2,9 @@
   "fnafur.mod_name": "fnafur",
   "fnafur.computer_category.classic": "Classics",
 
-  "fnafur.symbol.wrench": "§c§l🔧",
-  "fnafur.symbol.paintbrush": "§a§l🖌",
+  "fnafur.symbol.wrench": "§c§l🔧: §cWrench can be used",
+  "fnafur.symbol.paintbrush": "§a§l🖌: §aPaintbrush can be used",
+  "fnafur.symbol.scraper": "§7§l🪚: §7Scraper can be used",
   "fnafur.symbol.tapemeasure": "§e§l📏",
   "fnafur.symbol.coin": "§7§l●",
   "fnafur.symbol.cpu": "§d§l💾",

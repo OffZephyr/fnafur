@@ -35,6 +35,7 @@ import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -54,6 +55,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
@@ -69,6 +71,7 @@ public class FnafTitleScreen extends Screen {
     private static final Identifier BG = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/bg.png");
     private static final Identifier OUTLINE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/outline.png");
     private static final Identifier BUTTONS = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/buttons.png");
+    private static final Identifier DISCLAIMER = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/demo_disclaimer.png");
     float bgFadeTimer = 0;
     float bgFadeTimerGoal = 0;
     float bgFadeStart = 0;
@@ -80,6 +83,14 @@ public class FnafTitleScreen extends Screen {
     float  renderGlitchTimerGoal = 0;
     int renderGlitchIndex = 0;
     int renderIndex = 0;
+
+    private record triggerSoundZone(SoundEvent sound, int x, int y, int width, int height){
+
+    }
+
+    //context.fill(renderX + (int)(onHeight(1550)), renderY + (int)(onHeight(567)), renderX + (int)(onHeight(1550)) + (int)(onHeight(250)), renderY + (int)(onHeight(567) )+ (int)(onHeight(136)), 0xFFFFFFFF);
+
+    int offsetX = 0, offsetY = 0;
     private static final Identifier[][] RENDERS = new Identifier[][]{
         {
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/main.png"),
@@ -95,6 +106,9 @@ public class FnafTitleScreen extends Screen {
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/4.png"),
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/5.png")
     };
+    private Map<Identifier, triggerSoundZone> easterEggMap = Map.of(
+            RENDERS[0][0], new triggerSoundZone(SoundsInit.HONK, 1550, 567, 250, 136)
+    );
     private static final float field_49900 = 2000.0F;
     @Nullable
     private SplashTextRenderer splashText;
@@ -202,9 +216,7 @@ public class FnafTitleScreen extends Screen {
             music = new PositionedSoundInstance(SoundsInit.MAIN_MENU.id(), SoundCategory.MASTER, 0.35f, 1, Random.create(), true, 0, SoundInstance.AttenuationType.NONE, 0, 0, 0, false);
             MinecraftClient.getInstance().getSoundManager().play(music);
         }
-        if(client.getOverlay() != null){
-            fadeBackground(6, 0.35f);
-        }
+        fadeBackground(6, 0.35f);
     }
 
     private int addDevelopmentWidgets(int y, int spacingY) {
@@ -330,10 +342,6 @@ public class FnafTitleScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
 
-        if(bgFadeTimerGoal == 0 && client.getOverlay() != null){
-            fadeBackground(6, 0.35f);
-        }
-
         /*if (this.backgroundFadeStart == 0L && this.doBackgroundFade) {
             this.backgroundFadeStart = Util.getMeasuringTimeMs();
         }
@@ -379,7 +387,7 @@ public class FnafTitleScreen extends Screen {
             }
         }
 */
-        if(bgFadeTimer < bgFadeTimerGoal){
+        if(client.getOverlay() == null && bgFadeTimer < bgFadeTimerGoal){
             bgFadeTimer = Math.clamp(bgFadeTimer + delta/20f, 0, bgFadeTimerGoal);
         }
 
@@ -415,6 +423,9 @@ public class FnafTitleScreen extends Screen {
         int renderX = !bl ? (int) ((deltaAmount/2) - xDelta) : (int) ((deltaAmount/2) - xDelta -  (largeWidth/2f) + (width/2f));
         int renderY = bl ? (int) ((deltaAmount/2) - yDelta) : (int) ((deltaAmount/2) - yDelta -  (largeHeight/2f) + (height/2f));
         GoopyScreen.drawRecolorableTexture(context, render, renderX, renderY, 0, largeWidth, largeHeight, 0, 0, largeWidth, largeHeight, 1, 1, 1, MathHelper.lerp(bgFadeTimer / bgFadeTimerGoal, bgFadeStart, bgFadeGoal));
+
+        offsetX = renderX;
+        offsetY = renderY;
 
         float sprite_width = onHeight(2048);
         float sprite_height = onHeight(2048);
@@ -462,19 +473,21 @@ public class FnafTitleScreen extends Screen {
 
         GoopyScreen.drawRecolorableTexture(context, OUTLINE, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 1);
 
-        if(tab == 0) {
+        if(tab == 0 || tab == -1) {
             float star_width = onHeight(448);
             float star_height = onHeight(50);
             float y = -200; // 680 825 952
 
-            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(635), (int) onWidth(490), (int) onHeight(137))) {
-                y = 680;
-            }
-            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(812), (int) onWidth(490), (int) onHeight(85))) {
-                y = 825;
-            }
-            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(938), (int) onWidth(490), (int) onHeight(85))) {
-                y = 952;
+            if(tab == 0) {
+                if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(635), (int) onWidth(490), (int) onHeight(137))) {
+                    y = 680;
+                }
+                if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(812), (int) onWidth(490), (int) onHeight(85))) {
+                    y = 825;
+                }
+                if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(938), (int) onWidth(490), (int) onHeight(85))) {
+                    y = 952;
+                }
             }
 
             y = onHeight(y);
@@ -483,6 +496,23 @@ public class FnafTitleScreen extends Screen {
             GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) ((width / 2) - (star_width / 2)), (int) y, 0, star_width, star_height, sprite_width - star_width, sprite_height - star_height, sprite_width, sprite_height, 1, 1, 1, 1);
 
             context.drawText(textRenderer, Text.literal(FnafUniverseRebuilt.MOD_VERSION), width/2 - textRenderer.getWidth(FnafUniverseRebuilt.MOD_VERSION)/2, height - textRenderer.fontHeight - 1, 0x88FFFFFF, false);
+
+            if(tab == -1){
+
+                if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(636), (int) onHeight(789), (int) onWidth(660), (int) onHeight(98))) {
+                    y = 818;
+                }
+                y = onHeight(y);
+                GoopyScreen.drawRecolorableTexture(context, BG, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.5f);
+
+                float disclaimer_width = onHeight(1024);
+                float disclaimer_height = onHeight(1024);
+                float popup_height = onHeight(840);
+                float star2_height = onHeight(42);
+
+                GoopyScreen.drawRecolorableTexture(context, DISCLAIMER, (int) ((width / 2) - (disclaimer_width / 2)), (int) ((height / 2) - ((popup_height) / 2)), 0, disclaimer_width, popup_height, 0, 0, disclaimer_width, disclaimer_height, 1, 1, 1, 1);
+                GoopyScreen.drawRecolorableTexture(context, DISCLAIMER, (int) ((width / 2) - (disclaimer_width / 2)), (int) y, 0, disclaimer_width, star2_height, 0, popup_height, disclaimer_width, disclaimer_height, 1, 1, 1, 1);
+            }
         }
 
 
@@ -523,7 +553,25 @@ public class FnafTitleScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if(tab == 0){
+
+        if(easterEggMap.containsKey(RENDERS[renderIndex][renderGlitchIndex])) {
+            triggerSoundZone zone = easterEggMap.get(RENDERS[renderIndex][renderGlitchIndex]);
+            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) (offsetX + onHeight(zone.x)), (int) (offsetY + onHeight(zone.y)), (int) onHeight(zone.width), (int) onHeight(zone.height))) {
+                System.out.println("HONK");
+
+                PositionedSoundInstance sound = new PositionedSoundInstance(zone.sound().id(), SoundCategory.MASTER, 1, 1, Random.create(), false, 0, SoundInstance.AttenuationType.NONE, 0, 0, 0, false);
+                MinecraftClient.getInstance().getSoundManager().play(sound);
+            }
+        }
+
+        if(tab == -1){
+            if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(636), (int) onHeight(789), (int) onWidth(660), (int) onHeight(98))) {
+                tab = 0;
+                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.15f, Random.create(), BlockPos.ORIGIN);
+                MinecraftClient.getInstance().getSoundManager().play(instance);
+            }
+        }
+        else if(tab == 0){
 
             if(GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(635), (int) onWidth(490), (int) onHeight(137))){
                 tab = 1;

@@ -79,6 +79,9 @@ public class FnafSplashOverlay extends SplashOverlay {
 
         if (f >= 1.0F) {
             if (this.client.currentScreen != null) {
+                if(this.client.currentScreen instanceof FnafTitleScreen title){
+                    title.tab = -1;
+                }
                 this.client.currentScreen.render(context, mouseX, mouseY, delta);
             }
 

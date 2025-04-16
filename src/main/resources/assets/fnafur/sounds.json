@@ -103,6 +103,39 @@
       "fnafur:animatronics/death/animatronic_death"
     ]
   },
+  "honk": {
+    "subtitle": "sounds.fnafur.honk",
+    "sounds": [
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk",
+      "fnafur:animatronics/interactions/honk_rare"
+    ]
+  },
   "office_door_activate": {
     "subtitle": "sounds.fnafur.office_door_activate",
     "sounds": [
@@ -125,6 +158,55 @@
     "subtitle": "sounds.fnafur.office_door_light",
     "sounds": [
       "fnafur:props/door/door_light"
+    ]
+  },
+  "dawko_place": {
+    "subtitle": "sounds.fnafur.dawko_place",
+    "sounds": [
+      "fnafur:props/cutouts/dawko_place"
+    ]
+  },
+  "dawko": {
+    "subtitle": "sounds.fnafur.dawko",
+    "sounds": [
+      "fnafur:props/cutouts/dawko1",
+      "fnafur:props/cutouts/dawko2",
+      "fnafur:props/cutouts/dawko3",
+      "fnafur:props/cutouts/dawko4",
+      "fnafur:props/cutouts/dawko5"
+    ]
+  },
+  "markiplier_place": {
+    "subtitle": "sounds.fnafur.markiplier_place",
+    "sounds": [
+      "fnafur:props/cutouts/markiplier_place"
+    ]
+  },
+  "markiplier": {
+    "subtitle": "sounds.fnafur.markiplier",
+    "sounds": [
+      "fnafur:props/cutouts/markiplier1",
+      "fnafur:props/cutouts/markiplier2",
+      "fnafur:props/cutouts/markiplier3",
+      "fnafur:props/cutouts/markiplier4",
+      "fnafur:props/cutouts/markiplier5"
+    ]
+  },
+  "matpat_place": {
+    "subtitle": "sounds.fnafur.matpat_place",
+    "sounds": [
+      "fnafur:props/cutouts/matpat_place"
+    ]
+  },
+  "matpat": {
+    "subtitle": "sounds.fnafur.matpat",
+    "sounds": [
+      "fnafur:props/cutouts/matpat1",
+      "fnafur:props/cutouts/matpat2",
+      "fnafur:props/cutouts/matpat3",
+      "fnafur:props/cutouts/matpat4",
+      "fnafur:props/cutouts/matpat5",
+      "fnafur:props/cutouts/matpat6"
     ]
   }
 }

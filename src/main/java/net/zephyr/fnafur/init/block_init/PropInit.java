@@ -6,12 +6,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.PropRenderer;
@@ -22,6 +25,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.chairs.RetroStool;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.StarPlasticChair;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenStool;
+import net.zephyr.fnafur.blocks.props.floor_props.cutouts.SeriousCutout;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_trash.FloorTrash;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.*;
@@ -165,7 +169,10 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
 
     public static final Block HANGING_STARS = registerBlock(
@@ -178,7 +185,10 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block FLOOR_MONITORS = registerBlock(
             "floor_monitors",
@@ -189,7 +199,10 @@ public class PropInit {
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block WOODEN_SHELF = registerBlock(
             "wooden_shelf",
@@ -232,7 +245,10 @@ public class PropInit {
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block OFFICE_BUTTONS = registerBlock(
             "office_buttons",
@@ -243,7 +259,10 @@ public class PropInit {
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block CEILING_TILE_VENT = registerBlock(
             "ceiling_tile_vent",
@@ -279,7 +298,10 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block BROOM = registerBlock(
             "broom",
@@ -353,7 +375,10 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block WOODEN_CHAIR = registerBlock(
             "wooden_chair",
@@ -494,7 +519,10 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block KITCHEN_PREP_TABLE = registerBlock(
             "kitchen_prep_table",
@@ -558,7 +586,10 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
                     .offset(AbstractBlock.OffsetType.NONE)
-                    .sounds(BlockSoundGroup.COBWEB)
+                    .sounds(BlockSoundGroup.COBWEB),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
 
     );
     public static final Block TOILET_PAPER_ROLL = registerBlock(
@@ -599,25 +630,61 @@ public class PropInit {
                     .blockVision(Blocks::never)
                     .breakInstantly()
                     .noCollision()
-                    .sounds(BlockSoundGroup.COBWEB)
+                    .sounds(BlockSoundGroup.COBWEB),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
+
+    );
+    public static final Block SERIOUS_CUTOUT = registerBlock(
+            "serious_cutout",
+            SeriousCutout::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+                    .sounds(BlockSoundGroup.BAMBOO),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
 
     );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+        return registerBlock(name, factory, settings, List.of());
+    }
+    private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, List<Text> description) {
         final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
-        PROPS.add(Items.register(block));
+        if(description.isEmpty()){
+            PROPS.add(Items.register(block));
+        }
+        else{
+            PROPS.add(Items.register(block, BlockItem::new, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description))));
+        }
         return block;
     }
     private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings) {
+        return registerGeoProp(name, factory, texture, model, animations, settings, List.of());
+    }
+    private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings, List<Text> description) {
         final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
         ((GeoPropBlock)block).setModelInfo(texture, model, animations);
-        GEO_PROPS.add(Items.register(block));
+        if(description.isEmpty()){
+            GEO_PROPS.add(Items.register(block));
+        }
+        else{
+            GEO_PROPS.add(Items.register(block, BlockItem::new, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description))));
+        }
         return block;
     }
 

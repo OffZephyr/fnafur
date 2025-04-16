@@ -1,0 +1,109 @@
+{
+  "variants": {
+    "facing=north,color=bear5": {
+      "model": "fnafur:props/cutouts/bear5"
+    },
+    "facing=east,color=bear5": {
+      "model": "fnafur:props/cutouts/bear5",
+      "y": 90
+    },
+    "facing=south,color=bear5": {
+      "model": "fnafur:props/cutouts/bear5",
+      "y": 180
+    },
+    "facing=west,color=bear5": {
+      "model": "fnafur:props/cutouts/bear5",
+      "y": 270
+    },
+    "facing=north,color=helpy": {
+      "model": "fnafur:props/cutouts/helpy"
+    },
+    "facing=east,color=helpy": {
+      "model": "fnafur:props/cutouts/helpy",
+      "y": 90
+    },
+    "facing=south,color=helpy": {
+      "model": "fnafur:props/cutouts/helpy",
+      "y": 180
+    },
+    "facing=west,color=helpy": {
+      "model": "fnafur:props/cutouts/helpy",
+      "y": 270
+    },
+    "facing=north,color=markiplier": {
+      "model": "fnafur:props/cutouts/markiplier"
+    },
+    "facing=east,color=markiplier": {
+      "model": "fnafur:props/cutouts/markiplier",
+      "y": 90
+    },
+    "facing=south,color=markiplier": {
+      "model": "fnafur:props/cutouts/markiplier",
+      "y": 180
+    },
+    "facing=west,color=markiplier": {
+      "model": "fnafur:props/cutouts/markiplier",
+      "y": 270
+    },
+    "facing=north,color=dawko": {
+      "model": "fnafur:props/cutouts/dawko"
+    },
+    "facing=east,color=dawko": {
+      "model": "fnafur:props/cutouts/dawko",
+      "y": 90
+    },
+    "facing=south,color=dawko": {
+      "model": "fnafur:props/cutouts/dawko",
+      "y": 180
+    },
+    "facing=west,color=dawko": {
+      "model": "fnafur:props/cutouts/dawko",
+      "y": 270
+    },
+    "facing=north,color=matpat": {
+      "model": "fnafur:props/cutouts/matpat"
+    },
+    "facing=east,color=matpat": {
+      "model": "fnafur:props/cutouts/matpat",
+      "y": 90
+    },
+    "facing=south,color=matpat": {
+      "model": "fnafur:props/cutouts/matpat",
+      "y": 180
+    },
+    "facing=west,color=matpat": {
+      "model": "fnafur:props/cutouts/matpat",
+      "y": 270
+    },
+    "facing=north,color=dasen": {
+      "model": "fnafur:props/cutouts/dasen"
+    },
+    "facing=east,color=dasen": {
+      "model": "fnafur:props/cutouts/dasen",
+      "y": 90
+    },
+    "facing=south,color=dasen": {
+      "model": "fnafur:props/cutouts/dasen",
+      "y": 180
+    },
+    "facing=west,color=dasen": {
+      "model": "fnafur:props/cutouts/dasen",
+      "y": 270
+    },
+    "facing=north,color=zephyr": {
+      "model": "fnafur:props/cutouts/zephyr"
+    },
+    "facing=east,color=zephyr": {
+      "model": "fnafur:props/cutouts/zephyr",
+      "y": 90
+    },
+    "facing=south,color=zephyr": {
+      "model": "fnafur:props/cutouts/zephyr",
+      "y": 180
+    },
+    "facing=west,color=zephyr": {
+      "model": "fnafur:props/cutouts/zephyr",
+      "y": 270
+    }
+  }
+}

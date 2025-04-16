@@ -1,18 +1,34 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,type=single": {
       "model": "fnafur:block/backstage_shelf/backstage_shelf"
     },
-    "facing=east": {
+    "facing=east,type=single": {
       "model": "fnafur:block/backstage_shelf/backstage_shelf",
       "y": 90
     },
-    "facing=south": {
+    "facing=south,type=single": {
       "model": "fnafur:block/backstage_shelf/backstage_shelf",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,type=single": {
       "model": "fnafur:block/backstage_shelf/backstage_shelf",
+      "y": 270
+
+    },
+    "facing=north,type=corner": {
+      "model": "fnafur:block/backstage_shelf/backstage_shelf_corner"
+    },
+    "facing=east,type=corner": {
+      "model": "fnafur:block/backstage_shelf/backstage_shelf_corner",
+      "y": 90
+    },
+    "facing=south,type=corner": {
+      "model": "fnafur:block/backstage_shelf/backstage_shelf_corner",
+      "y": 180
+    },
+    "facing=west,type=corner": {
+      "model": "fnafur:block/backstage_shelf/backstage_shelf_corner",
       "y": 270
 
     }
