@@ -5,6 +5,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
@@ -31,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
-
     public static boolean checkingButtons = false;
     public static final BooleanProperty DOOR_ON = BooleanProperty.of("door");
     public static final BooleanProperty LIGHT_ON = BooleanProperty.of("light");
@@ -124,11 +124,6 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
     }
 
     @Override
-    protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
-        return VoxelShapes.empty();
-    }
-
-    @Override
     public List<Box> getClickHitBoxes(BlockState state) {
         List<Box> list = new ArrayList<>();
         list.add(getDoorHitbox(state));
@@ -143,13 +138,13 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        
+
         ItemStack stack = player.getMainHandStack();
-        if(stack != null && stack.getItem() == ItemInit.PAINTBRUSH){
-            if(state.get(DOOR_ON)){
+        if (stack != null && stack.getItem() == ItemInit.PAINTBRUSH) {
+            if (state.get(DOOR_ON)) {
                 toggleDoor(state, world, pos, player);
             }
-            if(state.get(LIGHT_ON)){
+            if (state.get(LIGHT_ON)) {
                 toggleLight(state, world, pos, player);
             }
             return super.onUse(world.getBlockState(pos), world, pos, player, hit);
@@ -157,41 +152,37 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
 
         checkingButtons = true;
         ActionResult result = super.onUse(state, world, pos, player, hit);
-        HitResult hitResult = player.raycast(20.0, 0.0f, false);
-        if(hitResult.getType() == HitResult.Type.BLOCK && hitResult instanceof BlockHitResult blockHit) {
+        BlockEntity entity = world.getBlockEntity(pos);
+        if (entity instanceof PropBlockEntity ent) {
 
-            BlockEntity entity = world.getBlockEntity(pos);
-            if (entity instanceof PropBlockEntity ent) {
+            double offsetX = ((IEntityDataSaver) ent).getPersistentData().getDouble("xOffset");
+            double offsetY = ((IEntityDataSaver) ent).getPersistentData().getDouble("yOffset");
+            double offsetZ = ((IEntityDataSaver) ent).getPersistentData().getDouble("zOffset");
 
-                double offsetX = ((IEntityDataSaver) ent).getPersistentData().getDouble("xOffset");
-                double offsetY = ((IEntityDataSaver) ent).getPersistentData().getDouble("yOffset");
-                double offsetZ = ((IEntityDataSaver) ent).getPersistentData().getDouble("zOffset");
+            Box door = new Box(
+                    getDoorHitbox(state).minX + pos.getX() + offsetX - 0.5f,
+                    getDoorHitbox(state).minY + pos.getY() + offsetY - 0.5f,
+                    getDoorHitbox(state).minZ + pos.getZ() + offsetZ - 0.5f,
+                    getDoorHitbox(state).maxX + pos.getX() + offsetX - 0.5f,
+                    getDoorHitbox(state).maxY + pos.getY() + offsetY - 0.5f,
+                    getDoorHitbox(state).maxZ + pos.getZ() + offsetZ - 0.5f
+            ).expand(0.025f);
+            Box light = new Box(
+                    getLightHitbox(state).minX + pos.getX() + offsetX - 0.5f,
+                    getLightHitbox(state).minY + pos.getY() + offsetY - 0.5f,
+                    getLightHitbox(state).minZ + pos.getZ() + offsetZ - 0.5f,
+                    getLightHitbox(state).maxX + pos.getX() + offsetX - 0.5f,
+                    getLightHitbox(state).maxY + pos.getY() + offsetY - 0.5f,
+                    getLightHitbox(state).maxZ + pos.getZ() + offsetZ - 0.5f
+            ).expand(0.025f);
 
-                Box door = new Box(
-                        getDoorHitbox(state).minX + pos.getX() + offsetX - 0.5f,
-                        getDoorHitbox(state).minY + pos.getY() + offsetY - 0.59f,
-                        getDoorHitbox(state).minZ + pos.getZ() + offsetZ - 0.5f,
-                        getDoorHitbox(state).maxX + pos.getX() + offsetX - 0.5f,
-                        getDoorHitbox(state).maxY + pos.getY() + offsetY - 0.59f,
-                        getDoorHitbox(state).maxZ + pos.getZ() + offsetZ - 0.5f
-                ).expand(0.1f);
-                Box light = new Box(
-                        getLightHitbox(state).minX + pos.getX() + offsetX - 0.5f,
-                        getLightHitbox(state).minY + pos.getY() + offsetY - 0.59f,
-                        getLightHitbox(state).minZ + pos.getZ() + offsetZ - 0.5f,
-                        getLightHitbox(state).maxX + pos.getX() + offsetX - 0.5f,
-                        getLightHitbox(state).maxY + pos.getY() + offsetY - 0.59f,
-                        getLightHitbox(state).maxZ + pos.getZ() + offsetZ - 0.5f
-                ).expand(0.1f);
-
-                if (door.contains(blockHit.getPos())) {
-                    this.toggleDoor(state, world, pos, null);
-                    return ActionResult.SUCCESS;
-                }
-                if (light.contains(blockHit.getPos())) {
-                    this.toggleLight(state, world, pos, null);
-                    return ActionResult.SUCCESS;
-                }
+            if (door.contains(hit.getPos())) {
+                this.toggleDoor(state, world, pos, null);
+                return ActionResult.SUCCESS;
+            }
+            if (light.contains(hit.getPos())) {
+                this.toggleLight(state, world, pos, null);
+                return ActionResult.SUCCESS;
             }
         }
         checkingButtons = false;

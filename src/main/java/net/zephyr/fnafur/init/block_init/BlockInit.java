@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
@@ -45,6 +46,7 @@ import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBl
 import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
+import net.zephyr.fnafur.init.SoundsInit;
 
 import java.util.List;
 import java.util.function.Function;
@@ -232,6 +234,9 @@ public class BlockInit {
             "garage_door",
             TileDoorBlock::new,
             TileDoorDirection.UP,
+            false,
+            SoundsInit.OFFICE_DOOR_ACTIVATE,
+            SoundsInit.OFFICE_DOOR_ACTIVATE,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .solidBlock(Blocks::never)
@@ -245,6 +250,9 @@ public class BlockInit {
             "heavy_door",
             TileDoorBlock::new,
             TileDoorDirection.UP,
+            true,
+            SoundsInit.OFFICE_DOOR_ACTIVATE,
+            SoundsInit.OFFICE_DOOR_ACTIVATE,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .solidBlock(Blocks::never)
@@ -258,6 +266,9 @@ public class BlockInit {
             "warning_heavy_door",
             TileDoorBlock::new,
             TileDoorDirection.UP,
+            true,
+            SoundsInit.OFFICE_DOOR_ACTIVATE,
+            SoundsInit.OFFICE_DOOR_ACTIVATE,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .solidBlock(Blocks::never)
@@ -1122,11 +1133,11 @@ public class BlockInit {
         }
         return block;
     }
-    private static Block registerTileDoor(String name, Function<AbstractBlock.Settings, Block> factory, TileDoorDirection direction, AbstractBlock.Settings settings, List<Text> description) {
+    private static Block registerTileDoor(String name, Function<AbstractBlock.Settings, Block> factory, TileDoorDirection direction, boolean isInverted, SoundEvent openSound, SoundEvent closeSound, AbstractBlock.Settings settings, List<Text> description) {
         final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
-        final TileDoorBlock block = ((TileDoorBlock) Blocks.register(registryKey, factory, settings)).setDirection(direction);
+        final TileDoorBlock block = ((TileDoorBlock) Blocks.register(registryKey, factory, settings)).setDirection(direction).setInverted(isInverted).setOpenCloseSounds(openSound, closeSound);
         Items.register(block, TileDoorItem::new, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description)));
         return block;
     }

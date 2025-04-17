@@ -14,6 +14,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -40,10 +41,14 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
 public class TileDoorBlock extends BlockWithEntity {
+    public SoundEvent openSound;
+    public SoundEvent closeSound;
+
     public static final EnumProperty<Direction> FACING = EnumProperty.of("facing", Direction.class);
     public static final BooleanProperty MAIN = BooleanProperty.of("main");
     public static final BooleanProperty OPEN = BooleanProperty.of("open");
     public TileDoorDirection doorDirection;
+    public boolean isInverted;
     public static final EnumProperty<VerticalTileStates> TYPE = EnumProperty.of("type", VerticalTileStates.class);
     public TileDoorBlock(Settings settings) {
         super(settings);
@@ -163,7 +168,9 @@ public class TileDoorBlock extends BlockWithEntity {
 
                 boolean powered = ((IEntityDataSaver) ent2).getPersistentData().getBoolean("open");
 
-                world.setBlockState(mainPos, world.getBlockState(mainPos).with(OPEN, powered), 0);
+                powered = isInverted != powered;
+
+                        world.setBlockState(mainPos, world.getBlockState(mainPos).with(OPEN, powered), 0);
 
                 for (int x = 0; x <= width; x++) {
                     for (int y = 0; y <= height; y++) {
@@ -240,6 +247,15 @@ public class TileDoorBlock extends BlockWithEntity {
 
     public TileDoorBlock setDirection(TileDoorDirection direction) {
         this.doorDirection = direction;
+        return this;
+    }
+    public TileDoorBlock setInverted(boolean inverted) {
+        this.isInverted = inverted;
+        return this;
+    }
+    public TileDoorBlock setOpenCloseSounds(SoundEvent openSound, SoundEvent closeSound) {
+        this.openSound = openSound;
+        this.closeSound = closeSound;
         return this;
     }
 }
