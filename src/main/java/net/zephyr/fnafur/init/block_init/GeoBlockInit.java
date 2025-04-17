@@ -6,17 +6,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.geo_doors.doors.Geo2x3Door;
 import net.zephyr.fnafur.blocks.geo_doors.GeoDoor;
-import net.zephyr.fnafur.blocks.geo_doors.doors.Geo1x2Door;
 import net.zephyr.fnafur.blocks.geo_doors.GeoDoorRenderer;
+import net.zephyr.fnafur.blocks.geo_doors.doors.Geo1x2Door;
+import net.zephyr.fnafur.blocks.geo_doors.doors.Geo2x3Door;
 import net.zephyr.fnafur.blocks.props.other.pirates_cove.curtain.PiratesCoveCurtain;
 import net.zephyr.fnafur.blocks.props.other.pirates_cove.curtain.PiratesCoveCurtainRenderer;
 import net.zephyr.fnafur.blocks.props.other.pirates_cove.stage.PiratesCoveStage;
@@ -255,9 +253,5 @@ public class GeoBlockInit {
         }
 
         FnafUniverseRebuilt.LOGGER.info("Registering Geo Blocks On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
-    }
-
-    public static void registerGeoBlocks() {
-        FnafUniverseRebuilt.LOGGER.info("Registering Geo Blocks for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 }

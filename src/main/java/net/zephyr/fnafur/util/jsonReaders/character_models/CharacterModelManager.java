@@ -150,7 +150,7 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
             try (BufferedReader reader = resource.getReader();) {
                 Map<String, DataEntry> layerEntries = JsonHelper.deserialize(GSON, reader, CHARA_DATA_TYPE);
                 for (Map.Entry<String, DataEntry> entry : layerEntries.entrySet()) {
-                    System.out.println(character.name() + " has " + entry.getValue().alts().size() + " alts");
+                    //System.out.println(character.name() + " has " + entry.getValue().alts().size() + " alts");
 
                     CHARA_ALT_MAP.put(character, entry.getValue().alts());
                     CHARA_DEFAULT_ALT_MAP.put(character, entry.getValue().default_alt());

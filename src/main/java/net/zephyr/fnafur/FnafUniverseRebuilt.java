@@ -28,10 +28,10 @@ public class FnafUniverseRebuilt implements ModInitializer {
 	public static final Map<EntityType<? extends DefaultEntity>, EntityRendererFactory<?>> RENDERER_FACTORIES = new Object2ObjectOpenHashMap<>();
 	public static final Map<EntityType<? extends AnimatronicEntity>, EntityRendererFactory<?>> RENDER_FACTORIES = new Object2ObjectOpenHashMap<>();
 
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 
 	public static final String MOD_ID = "fnafur";
-	public static final String MOD_VERSION = "Fnaf Universe: ReBuilt - V0.7 - INDEV";
+	public static final String MOD_VERSION = "Fnaf Universe: ReBuilt - V0.8 - INDEV";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	@Override
 	public void onInitialize() {

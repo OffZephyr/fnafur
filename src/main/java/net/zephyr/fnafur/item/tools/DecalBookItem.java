@@ -34,7 +34,6 @@ public class DecalBookItem extends Item {
 
     @Override
     public boolean allowContinuingBlockBreaking(PlayerEntity player, ItemStack oldStack, ItemStack newStack) {
-        System.out.println("test");
         return super.allowContinuingBlockBreaking(player, oldStack, newStack);
     }
 

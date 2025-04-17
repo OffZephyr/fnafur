@@ -708,8 +708,4 @@ public class PropInit {
 
         FnafUniverseRebuilt.LOGGER.info("Registering Props On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
-
-    public static void registerProps() {
-        FnafUniverseRebuilt.LOGGER.info("Registering Props for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
-    }
 }

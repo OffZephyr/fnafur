@@ -28,8 +28,6 @@ public class DeathScreenMixin {
         deathNbt.putBoolean("isHardcore", MinecraftClient.getInstance().world.getLevelProperties().isHardcore());
         String index = entity.killScreenID;
 
-        System.out.println(index);
-
         GoopyNetworkingUtils.setClientScreen(index, deathNbt, entity.getId());
         }
 

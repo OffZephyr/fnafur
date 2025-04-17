@@ -361,7 +361,7 @@ public class MimicFrames extends BlockWithSticker {
                     world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
                 return ActionResult.SUCCESS;
             }
-            else if (stack != null && stack.getItem() instanceof BlockItem blockItem) {
+            else if (stack != null && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock().getDefaultState().isSolidBlock(world, pos)) {
                 if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null || (currentBlock == blockItem.getBlock() && holdTime > 0)) {
 
                     BlockPos prevPos = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("prevPos"));
@@ -428,7 +428,7 @@ public class MimicFrames extends BlockWithSticker {
 
                                         currentBlock = getCurrentBlock(nbt, world, direction, matrixPos2);
                                         if(currentBlock == null && cubeMatrix[x][y][z]){
-                                            System.out.println(x + " " + y + " " + z);
+                                            //System.out.println(x + " " + y + " " + z);
                                             nbt2 = setBlockTexture(nbt, stack, direction, world, matrixPos2);
                                         }
                                     }

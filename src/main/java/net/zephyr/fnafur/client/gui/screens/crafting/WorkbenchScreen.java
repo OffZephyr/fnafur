@@ -76,7 +76,6 @@ public class WorkbenchScreen extends GoopyScreen {
                 .clickExec(this::SaveButton);
 
         if(!getNbtData().getCompound("GiftData").isEmpty()){
-            System.out.println("TEST");
             ((IEntityDataSaver)entity).getPersistentData().put("alt", getNbtData().getCompound("GiftData"));
         }
 

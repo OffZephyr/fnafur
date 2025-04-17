@@ -1,5 +1,7 @@
 package net.zephyr.fnafur.blocks.special;
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
@@ -8,11 +10,13 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -55,22 +59,21 @@ public class SeatEntity extends Entity {
     public void tick() {
 
         BlockPos pos = BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("chair"));
-        if (getWorld().getBlockEntity(pos) instanceof BlockEntity ent) {
-            int timer = ((IEntityDataSaver) ent).getPersistentData().getInt("despawnTimer");
-            if (!hasPassengers() || getWorld().getBlockState(pos).isOf(Blocks.AIR)) {
+        int timer = ((IEntityDataSaver) this).getPersistentData().getInt("despawnTimer");
+        if (!hasPassengers() || getWorld().getBlockState(pos).isOf(Blocks.AIR)) {
+            if (timer >= 5) {
 
-                if (timer >= 20) {
-
+                if (getWorld().getBlockEntity(pos) instanceof BlockEntity ent) {
                     ((IEntityDataSaver) ent).getPersistentData().putBoolean("playerSitting", false);
-                    remove(RemovalReason.DISCARDED);
+                }
+                remove(RemovalReason.DISCARDED);
 
-                } else {
-                    ((IEntityDataSaver) ent).getPersistentData().putInt("despawnTimer", timer + 1);
-                }
             } else {
-                if (timer != 0) {
-                    ((IEntityDataSaver) ent).getPersistentData().putInt("despawnTimer", 0);
-                }
+                ((IEntityDataSaver) this).getPersistentData().putInt("despawnTimer", timer + 1);
+            }
+        } else {
+            if (timer != 0) {
+                ((IEntityDataSaver) this).getPersistentData().putInt("despawnTimer", 0);
             }
         }
     }

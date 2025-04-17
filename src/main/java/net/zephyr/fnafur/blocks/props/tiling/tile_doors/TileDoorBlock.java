@@ -43,6 +43,7 @@ public class TileDoorBlock extends BlockWithEntity {
     public static final EnumProperty<Direction> FACING = EnumProperty.of("facing", Direction.class);
     public static final BooleanProperty MAIN = BooleanProperty.of("main");
     public static final BooleanProperty OPEN = BooleanProperty.of("open");
+    public TileDoorDirection doorDirection;
     public static final EnumProperty<VerticalTileStates> TYPE = EnumProperty.of("type", VerticalTileStates.class);
     public TileDoorBlock(Settings settings) {
         super(settings);
@@ -104,7 +105,6 @@ public class TileDoorBlock extends BlockWithEntity {
 
     @Override
     protected void onBlockBreakStart(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-        System.out.println("TEST");
         super.onBlockBreakStart(state, world, pos, player);
     }
     @Override
@@ -236,5 +236,10 @@ public class TileDoorBlock extends BlockWithEntity {
     @Override
     protected boolean canPathfindThrough(BlockState state, NavigationType type) {
         return !state.get(OPEN);
+    }
+
+    public TileDoorBlock setDirection(TileDoorDirection direction) {
+        this.doorDirection = direction;
+        return this;
     }
 }

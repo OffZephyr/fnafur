@@ -199,7 +199,6 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
 
                     if (box.contains(hit.getPos())) {
                         world.setBlockState(pos, state.cycle(LEVERS.get(i)));
-                        System.out.println("LEVER " + i);
                         return ActionResult.SUCCESS;
                     }
                 }

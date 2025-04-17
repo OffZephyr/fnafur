@@ -1,11 +1,17 @@
 package net.zephyr.fnafur.blocks.special;
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
+import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.UpdateEntityNbtS2CPongPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public interface SeatBlock {
@@ -33,18 +39,24 @@ public interface SeatBlock {
         entity.setPitch(0);
 
         entity.setPosition(getSittingPos(player.getWorld(), getSittingAngle(player.getWorld(), pos), getSittingOffset(player.getWorld(), pos), getSittingHeight(player.getWorld(), pos), pos));
-
         ((IEntityDataSaver)entity).getPersistentData().putLong("chair", pos.asLong());
 
         ((IEntityDataSaver)entity).getPersistentData().putInt("playerID", player.getId());
 
         player.getWorld().spawnEntity(entity);
 
+        if(!player.getWorld().isClient()){
+            for(ServerPlayerEntity p : PlayerLookup.all(player.getWorld().getServer())){
+                ServerPlayNetworking.send(p, new UpdateEntityNbtS2CPongPayload(entity.getId(), ((IEntityDataSaver)entity).getPersistentData()));
+            }
+        }
+
         player.setHeadYaw(getSittingAngle(player.getWorld(), pos));
         player.setYaw(getSittingAngle(player.getWorld(), pos));
         player.setBodyYaw(getSittingAngle(player.getWorld(), pos));
 
         ((IEntityDataSaver)player.getWorld().getBlockEntity(pos)).getPersistentData().putBoolean("playerSitting", true);
+
         return entity;
     }
     default boolean isUsed(World world, BlockPos pos){

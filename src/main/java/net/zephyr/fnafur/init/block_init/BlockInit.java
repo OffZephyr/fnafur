@@ -15,44 +15,41 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.decorations.BackstageShelfBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.ColoredLight;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
+import net.zephyr.fnafur.blocks.camera.CameraBlock;
+import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
+import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
+import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockRenderer;
+import net.zephyr.fnafur.blocks.decorations.BackstageShelfBlock;
 import net.zephyr.fnafur.blocks.decorations.WarehouseShelfBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.CircuitBreakerBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.ElectricalLockerBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.RedstoneConverterBlock;
+import net.zephyr.fnafur.blocks.fog.FogBlock;
+import net.zephyr.fnafur.blocks.fog.FogBlockRenderer;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames2x2;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames4x4;
-import net.zephyr.fnafur.blocks.camera.CameraBlock;
-import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
-import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
-import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockRenderer;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlock;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntityRenderer;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorDirection;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorItem;
-import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlock;
-import net.zephyr.fnafur.blocks.fog.FogBlock;
-import net.zephyr.fnafur.blocks.fog.FogBlockRenderer;
-import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
-import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlock;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.beta.OfficeDoor;
+import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
+import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
 public class BlockInit {
-    public static List<StickerBlock> STICKER_BLOCKS = new ArrayList<>();
 
 
     /* CUSTOM MODELS */
@@ -61,7 +58,7 @@ public class BlockInit {
             AnimatronicBlock::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
-                    .notSolid()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never),
             List.of(
@@ -75,7 +72,7 @@ public class BlockInit {
             ComputerBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
-                    .notSolid()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
     );
@@ -85,7 +82,7 @@ public class BlockInit {
             CpuConfigPanelBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
-                    .notSolid()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
     );
@@ -94,7 +91,7 @@ public class BlockInit {
             WorkbenchBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
-                    .notSolid()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
     );
@@ -237,7 +234,20 @@ public class BlockInit {
             TileDoorDirection.UP,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
-                    .notSolid()
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never),
+            List.of(
+                    Text.translatable("fnafur.symbol.wrench")
+            )
+    );
+    public static final Block GARAGE_DOOR2 = registerTileDoor(
+            "garage_door",
+            TileDoorBlock::new,
+            TileDoorDirection.LEFT,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never),
             List.of(
@@ -250,7 +260,7 @@ public class BlockInit {
             TileDoorDirection.UP,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
-                    .notSolid()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never),
             List.of(
@@ -263,7 +273,7 @@ public class BlockInit {
             TileDoorDirection.UP,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
-                    .notSolid()
+                    .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never),
             List.of(
@@ -1129,7 +1139,7 @@ public class BlockInit {
         final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
-        final TileDoorBlock block = (TileDoorBlock) Blocks.register(registryKey, factory, settings);
+        final TileDoorBlock block = ((TileDoorBlock) Blocks.register(registryKey, factory, settings)).setDirection(direction);
         Items.register(block, TileDoorItem::new, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description)));
         return block;
     }
@@ -1138,12 +1148,6 @@ public class BlockInit {
         Block block = registerBlock(name, factory, settings, description);
         MimicFrames.IDs.add(Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/" + name));
         return block;
-    }
-
-    public static void registerBlocks(){
-        PropInit.registerProps();
-        GeoBlockInit.registerGeoBlocks();
-        FnafUniverseRebuilt.LOGGER.info("Registering Blocks for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 
     public static void registerBlocksOnClient() {
@@ -1166,11 +1170,11 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.WAREHOUSE_SHELF, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BACKSTAGE_SHELF, RenderLayer.getCutout());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getCutout());
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_SLIT, RenderLayer.getTranslucent());
@@ -1180,15 +1184,10 @@ public class BlockInit {
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BIG_WINDOW_WHITE, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BIG_WINDOW_DARK, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.DIRTY_GLASS, RenderLayer.getTranslucent());
-
-
+        
         BlockEntityRendererFactories.register(BlockEntityInit.FOG_BLOCK, FogBlockRenderer::new);
 
         BlockEntityRendererFactories.register(BlockEntityInit.TILE_DOOR, TileDoorBlockEntityRenderer::new);
-
-        for (StickerBlock block: STICKER_BLOCKS) {
-            BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getTripwire());
-        }
 
         PropInit.registerPropsOnClient();
         GeoBlockInit.registerGeoBlocksOnClient();
