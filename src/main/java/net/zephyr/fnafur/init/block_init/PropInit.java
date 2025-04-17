@@ -32,6 +32,8 @@ import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenStool;
 import net.zephyr.fnafur.blocks.props.floor_props.cutouts.SeriousCutout;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_trash.FloorTrash;
+import net.zephyr.fnafur.blocks.props.floor_props.flying_v_guitar.FlyingVGuitar;
+import net.zephyr.fnafur.blocks.props.floor_props.flying_v_guitar.FlyingVGuitarItem;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.*;
 import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
@@ -70,6 +72,7 @@ import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntityRenderer
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class PropInit {
@@ -82,6 +85,21 @@ public class PropInit {
             Fnaf1Desk::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fnaf1desk.png"),
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/fnaf1desk.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+    public static final Block FLYING_V_GUITAR = registerGeoProp(
+            "flying_v_guitar",
+            FlyingVGuitar::new,
+            FlyingVGuitarItem::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/flying_v_guitar.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/flying_v_guitar.geo.json"),
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/block/props/fnaf1desk.animation.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
@@ -749,16 +767,22 @@ public class PropInit {
         return registerGeoProp(name, factory, texture, model, animations, settings, List.of());
     }
     private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings, List<Text> description) {
+        return registerGeoProp(name, factory, BlockItem::new, texture, model, animations, settings, description);
+    }
+    private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, BiFunction<Block, Item.Settings, Item> factory2, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings) {
+        return registerGeoProp(name, factory, factory2, texture, model, animations, settings, List.of());
+    }
+    private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, BiFunction<Block, Item.Settings, Item> factory2, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings, List<Text> description) {
         final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
         ((GeoPropBlock)block).setModelInfo(texture, model, animations);
         if(description.isEmpty()){
-            GEO_PROPS.add(Items.register(block));
+            GEO_PROPS.add(Items.register(block, factory2));
         }
         else{
-            GEO_PROPS.add(Items.register(block, BlockItem::new, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description))));
+            GEO_PROPS.add(Items.register(block, factory2, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description))));
         }
         return block;
     }

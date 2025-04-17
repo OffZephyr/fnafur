@@ -19,6 +19,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
@@ -26,6 +27,7 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
+import net.zephyr.fnafur.util.IHasArmPos;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IUniverseRenderLayers;
@@ -36,7 +38,7 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import java.util.List;
 import java.util.Map;
 
-public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements GeoPropBlock {
+public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements GeoPropBlock, IHasArmPos {
     private Identifier texture;
     private Identifier model;
     private Identifier animations;
@@ -133,5 +135,15 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
     @Override
     public RawAnimation getCurrentAnimation(BlockState state, BlockPos pos) {
         return null;
+    }
+
+    @Override
+    public Vec3d getLeftArmPos(boolean isMainStack) {
+        return new Vec3d(0, -45, 0);
+    }
+
+    @Override
+    public Vec3d getRightArmPos(boolean isMainStack) {
+        return new Vec3d(0, -45, 0);
     }
 }

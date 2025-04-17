@@ -29,6 +29,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.OFFICE_BUTTONS);
                         entries.add(PropInit.WOODEN_CLOCK);
                         entries.add(BlockInit.BACKSTAGE_SHELF);
+                        entries.add(PropInit.FLYING_V_GUITAR);
                         entries.add(PropInit.PARTY_TABLE);
                         entries.add(PropInit.PARTY_TABLE_CONFETTI);
                         entries.add(PropInit.PARTY_HAT);

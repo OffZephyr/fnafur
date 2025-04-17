@@ -31,6 +31,9 @@ public class WallPropPlacingRenderer {
 
             MinecraftClient client = MinecraftClient.getInstance();
             ClientPlayerEntity player = client.player;
+
+            if(!player.getAbilities().allowModifyWorld) return;
+
             if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof BlockItem blockItem) {
                 if (blockItem.getBlock() instanceof WallPropBlock<?> block) {
                     WallPropBlock.drawingOutline = true;

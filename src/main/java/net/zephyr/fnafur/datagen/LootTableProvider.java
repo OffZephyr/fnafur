@@ -26,6 +26,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.HEAVY_DOOR);
         addDrop(BlockInit.WARNING_HEAVY_DOOR);
         addDrop(PropInit.FNAF_1_DESK);
+        addDrop(PropInit.FLYING_V_GUITAR);
         addDrop(PropInit.STAR_PLASTIC_CHAIR);
         addDrop(PropInit.WALL_CLOUDS);
         addDrop(PropInit.WALL_PIZZA);

@@ -32,6 +32,9 @@ public class FloorPropPlacingRenderer {
 
             MinecraftClient client = MinecraftClient.getInstance();
             ClientPlayerEntity player = client.player;
+
+            if(!player.getAbilities().allowModifyWorld) return;
+
             if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof BlockItem blockItem) {
                 if (blockItem.getBlock() instanceof FloorPropBlock block) {
                     FloorPropBlock.drawingOutline = true;

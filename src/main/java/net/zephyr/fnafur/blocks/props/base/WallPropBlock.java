@@ -77,7 +77,7 @@ public abstract class WallPropBlock<T extends Enum<T> & ColorEnumInterface & Str
             half = ctx.getSide() == Direction.UP ? WallHalfProperty.FLOOR : WallHalfProperty.CEILING;
         }
         else {
-            facing = ctx.getHorizontalPlayerFacing().getOpposite();
+            facing = ctx.getSide();
             half = WallHalfProperty.WALL;
         }
         return getDefaultState()

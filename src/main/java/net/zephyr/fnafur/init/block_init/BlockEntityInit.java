@@ -113,6 +113,7 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo_props"),
                         FabricBlockEntityTypeBuilder.create(GeoPropBlockEntity::new,
                                 PropInit.FNAF_1_DESK,
+                                PropInit.FLYING_V_GUITAR,
                                 PropInit.STAR_PLASTIC_CHAIR,
                                 PropInit.DOUBLE_DOOR_FRIDGE,
                                 PropInit.FRIDGE

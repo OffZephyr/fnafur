@@ -39,6 +39,7 @@ public class DecalBookEditScreen extends GoopyScreen{
             if(pageAmount % 2 != 0) pageAmount++;
             categoryMap.put(category, pageAmount);
             pageAmount += (Math.max(0, (list.size() - 6)) / 6) + 1;
+            if(list.size() > 12 && list.size() % 12 <= 6) pageAmount++;
             categoryNextMap.put(category, pageAmount);
         }
         pageAmount--;

@@ -22,12 +22,16 @@ import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Arm;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.entity.base.DefaultEntityRenderer;
 import net.zephyr.fnafur.init.block_init.PropInit;
+import net.zephyr.fnafur.util.IHasArmPos;
 import net.zephyr.fnafur.util.mixinAccessing.IPlayerCustomModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,13 +55,17 @@ public class LivingEntityRendererMixin {
     public <T extends DefaultEntity, S extends LivingEntityRenderState> void renderArms(S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci){
 
         if(player != null) {
-            if(player.getMainHandStack().isOf(PropInit.COSMO_GIFT.asItem())) {
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).rightArm.pitch = -45;
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).rightArm.yaw = 0;
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).rightArm.roll = 0;
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).leftArm.pitch = -45;
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).leftArm.yaw = 0;
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).leftArm.roll = 0;
+            if(player.getMainHandStack().getItem() instanceof BlockItem bi && bi.getBlock() instanceof IHasArmPos hasArmPos) {
+                Vec3d leftArmPos = hasArmPos.getLeftArmPos(player.getMainArm() == Arm.LEFT);
+                Vec3d rightArmPos = hasArmPos.getRightArmPos(player.getMainArm() == Arm.RIGHT);
+
+                ((BipedEntityModel<BipedEntityRenderState>) this.model).rightArm.yaw = (float) rightArmPos.x * MathHelper.RADIANS_PER_DEGREE;
+                ((BipedEntityModel<BipedEntityRenderState>) this.model).rightArm.pitch = (float) rightArmPos.y * MathHelper.RADIANS_PER_DEGREE;
+                ((BipedEntityModel<BipedEntityRenderState>) this.model).rightArm.roll = (float) rightArmPos.z * MathHelper.RADIANS_PER_DEGREE;
+
+                ((BipedEntityModel<BipedEntityRenderState>) this.model).leftArm.yaw = (float) leftArmPos.x * MathHelper.RADIANS_PER_DEGREE;
+                ((BipedEntityModel<BipedEntityRenderState>) this.model).leftArm.pitch = (float) leftArmPos.y * MathHelper.RADIANS_PER_DEGREE;
+                ((BipedEntityModel<BipedEntityRenderState>) this.model).leftArm.roll = (float) leftArmPos.z * MathHelper.RADIANS_PER_DEGREE;
             }
         }
     }
