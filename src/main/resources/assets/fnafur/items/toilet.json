@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/restroom/toilet"
+      "model": "fnafur:item/toilet"
   }
 }
