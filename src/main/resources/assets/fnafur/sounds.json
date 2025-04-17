@@ -229,6 +229,19 @@
         "fnafur:props/cutouts/dasen5",
         "fnafur:props/cutouts/dasen6",
         "fnafur:props/cutouts/dasen7"
-        ]
-      }
-    }
+      ]
+    },
+   "helpules_place": {
+     "subtitle": "sounds.fnafur.helpules_place",
+     "sounds": [
+       "fnafur:props/cutouts/helpules_place"
+     ]
+   },
+   "helpules": {
+     "subtitle": "sounds.fnafur.helpules",
+     "sounds": [
+       "fnafur:props/cutouts/helpules1",
+       "fnafur:props/cutouts/helpules2"
+     ]
+   }
+}

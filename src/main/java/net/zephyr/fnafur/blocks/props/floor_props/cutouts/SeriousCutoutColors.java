@@ -7,7 +7,7 @@ import net.zephyr.fnafur.init.SoundsInit;
 
 public enum SeriousCutoutColors implements StringIdentifiable, ColorEnumInterface {
     BEAR5("bear5", 0, SoundsInit.BEAR5, SoundsInit.BEAR5),
-    HELPY("helpy", 1, null, null),
+    HELPY("helpy", 1, SoundsInit.HELPULES, SoundsInit.HELPULES_PLACE),
     MARKIPLIER("markiplier", 2, SoundsInit.MARKIPLIER, SoundsInit.MARKIPLIER_PLACE),
     DAWKO("dawko", 3, SoundsInit.DAWKO, SoundsInit.DAWKO_PLACE),
     MATPAT("matpat", 4, SoundsInit.MATPAT, SoundsInit.MATPAT_PLACE),
