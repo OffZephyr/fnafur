@@ -198,8 +198,8 @@
 
   "block.fnafur.floor_monitors": "Floor Monitors",
   "block.fnafur.wooden_shelf": "Wooden Shelf",
-  "block.fnafur.heavy_door": "Office Door",
-  "block.fnafur.warning_heavy_door": "Warning Office Door",
+  "block.fnafur.heavy_door": "Heavy Door",
+  "block.fnafur.warning_heavy_door": "Warning Heavy Door",
   "block.fnafur.heavy_door.speed": "§a§lDoor speed set at: %s",
   "block.fnafur.garage_door": "Garage Door",
   "block.fnafur.office_buttons": "Office Buttons",
@@ -271,6 +271,8 @@
   "block.fnafur.hanging_light": "Hanging Light",
   "block.fnafur.hanging_lightbulb": "Hanging Lightbulb",
   "block.fnafur.poster": "Poster",
+  "block.fnafur.flying_v_guitar": "Flying V Guitar",
+  "block.fnafur.standing_menu": "Standing Menu",
 
 
   "block.fnafur.camera": "Security Camera",

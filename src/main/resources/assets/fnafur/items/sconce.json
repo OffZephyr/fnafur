@@ -5,133 +5,133 @@
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_black_purple"
+          "model": "fnafur:item/sconce"
           },
           "when": "black_purple"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_brown_red"
+          "model": "fnafur:item/sconce"
           },
           "when": "brown_red"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_black"
+          "model": "fnafur:item/sconce"
           },
           "when": "black"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_gray"
+          "model": "fnafur:item/sconce"
           },
           "when": "gray"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_light_gray"
+          "model": "fnafur:item/sconce"
           },
           "when": "light_gray"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_white"
+          "model": "fnafur:item/sconce"
           },
           "when": "white"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_brown"
+          "model": "fnafur:item/sconce"
           },
           "when": "brown"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_red"
+          "model": "fnafur:item/sconce"
           },
           "when": "red"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_orange"
+          "model": "fnafur:item/sconce"
           },
           "when": "orange"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_yellow"
+          "model": "fnafur:item/sconce"
           },
           "when": "yellow"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_lime"
+          "model": "fnafur:item/sconce"
           },
           "when": "lime"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_green"
+          "model": "fnafur:item/sconce"
           },
           "when": "green"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_cyan"
+          "model": "fnafur:item/sconce"
           },
           "when": "cyan"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_light_blue"
+          "model": "fnafur:item/sconce"
           },
           "when": "light_blue"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_blue"
+          "model": "fnafur:item/sconce"
           },
           "when": "blue"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_purple"
+          "model": "fnafur:item/sconce"
           },
           "when": "purple"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_magenta"
+          "model": "fnafur:item/sconce"
           },
           "when": "magenta"
         },
         {
           "model": {
             "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_pink"
+          "model": "fnafur:item/sconce"
           },
           "when": "pink"
         }
       ],
       "fallback": {
           "type": "minecraft:model",
-          "model": "fnafur:block/sconce/sconce_black_purple"
+          "model": "fnafur:item/sconce"
         },
         "block_state_property": "color",
       "property": "minecraft:block_state"

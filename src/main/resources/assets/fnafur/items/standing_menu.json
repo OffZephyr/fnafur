@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:item/ceiling_tile_vent"
+      "model": "fnafur:item/standing_menu"
   }
 }

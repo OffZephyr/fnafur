@@ -106,6 +106,7 @@ public class BlockEntityInit {
                                 PropInit.WATER_DISPENSER,
                                 PropInit.ICE_CREAM_DISPENSER,
                                 PropInit.SERIOUS_CUTOUT,
+                                PropInit.STANDING_MENU,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

@@ -67,6 +67,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.TRASH_BIN);
                         entries.add(PropInit.WET_FLOOR_SIGN);
 
+                        entries.add(PropInit.STANDING_MENU);
                         entries.add(PropInit.PIZZA_OVEN);
                         entries.add(PropInit.FRIDGE);
                         entries.add(PropInit.DOUBLE_DOOR_FRIDGE);

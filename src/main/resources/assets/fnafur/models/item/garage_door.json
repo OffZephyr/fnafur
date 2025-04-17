@@ -1,0 +1,6 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "fnafur:item/garage_door_item"
+	}
+}

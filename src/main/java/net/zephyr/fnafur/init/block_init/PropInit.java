@@ -39,6 +39,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.present_stack.PresentStack;
 import net.zephyr.fnafur.blocks.props.floor_props.restroom.Toilet;
+import net.zephyr.fnafur.blocks.props.floor_props.standing_menu.StandingMenu;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.RetroTableBlock;
@@ -394,6 +395,19 @@ public class PropInit {
     public static final Block WET_FLOOR_SIGN = registerBlock(
             "wet_floor_sign",
             WetFloorSign::new,
+            AbstractBlock.Settings.copy(Blocks.BAMBOO)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .offset(AbstractBlock.OffsetType.NONE)
+                    .noCollision()
+    );
+    public static final Block STANDING_MENU = registerBlock(
+            "standing_menu",
+            StandingMenu::new,
             AbstractBlock.Settings.copy(Blocks.BAMBOO)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
