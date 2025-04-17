@@ -26,7 +26,6 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.GARAGE_DOOR);
                         entries.add(BlockInit.HEAVY_DOOR);
                         entries.add(BlockInit.WARNING_HEAVY_DOOR);
-                        //entries.add(BlockInit.OFFICE_DOOR);
                         entries.add(PropInit.OFFICE_BUTTONS);
                         entries.add(PropInit.WOODEN_CLOCK);
                         entries.add(BlockInit.BACKSTAGE_SHELF);
@@ -36,6 +35,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.STAR_PLASTIC_CHAIR);
                         entries.add(PropInit.WOODEN_CHAIR);
                         entries.add(PropInit.WOODEN_STOOL);
+                        entries.add(PropInit.SPOT_LIGHT);
                         entries.add(PropInit.SCONCE);
                         entries.add(PropInit.HANGING_LIGHT);
                         entries.add(PropInit.HANGING_LIGHTBULB);
@@ -105,7 +105,6 @@ public class ItemGroupsInit {
                     .entries((displayContext, entries) -> {
 
                         entries.add(ItemInit.PIPE_WRENCH);
-                        entries.add(ItemInit.WRENCH);
                         entries.add(ItemInit.PAINTBRUSH);
                         entries.add(ItemInit.SCRAPER);
                         entries.add(ItemInit.DECAL_BOOK);

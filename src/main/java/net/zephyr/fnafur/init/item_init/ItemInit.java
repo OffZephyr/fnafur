@@ -44,17 +44,7 @@ public class ItemInit {
                             Text.translatable("item.fnafur.wrench.description"),
                             Text.translatable("item.fnafur.wrench.description2")
                     )))
-    );
-    public static final Item WRENCH = registerItem(
-            "wrench",
-            WrenchItem::new,
-            new Item.Settings()
-                    .maxCount(1)
-                    .rarity(Rarity.COMMON)
-                    .component(DataComponentTypes.LORE, new LoreComponent(List.of(
-                            Text.translatable("item.fnafur.wrench.description"),
-                            Text.translatable("item.fnafur.wrench.description2")
-                    )))
+
     );
     public static final Item PAINTBRUSH = registerItem(
             "paintbrush",

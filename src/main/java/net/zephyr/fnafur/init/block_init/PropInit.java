@@ -19,6 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.light.ChainLight;
+import net.zephyr.fnafur.blocks.light.HorizontalFacingLight;
 import net.zephyr.fnafur.blocks.light.Sconce;
 import net.zephyr.fnafur.blocks.props.base.PropRenderer;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
@@ -310,14 +311,15 @@ public class PropInit {
     public static final Block POSTER = registerBlock(
             "poster",
             Poster::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
-                    .noCollision(),
+                    .noCollision()
+                    .sounds(BlockSoundGroup.COBWEB),
             List.of(
                     Text.translatable("fnafur.symbol.paintbrush")
             )
@@ -445,6 +447,19 @@ public class PropInit {
             AbstractBlock.Settings.copy(Blocks.CHAIN)
                     .nonOpaque()
                     .luminance(state -> (state.get(Properties.LIT) && !state.get(ChainLight.CHAIN)) ? 12 : 0 )
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block SPOT_LIGHT = registerBlock(
+            "spot_light",
+            HorizontalFacingLight::new,
+            AbstractBlock.Settings.copy(Blocks.CHAIN)
+                    .nonOpaque()
+                    .luminance(Blocks.createLightLevelFromLitBlockState(12))
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)

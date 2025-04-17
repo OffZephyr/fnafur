@@ -57,6 +57,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.WOODEN_CHAIR);
         addDrop(PropInit.SCONCE);
         addDrop(PropInit.HANGING_LIGHT);
+        addDrop(PropInit.SPOT_LIGHT);
         addDrop(PropInit.HANGING_LIGHTBULB);
         addDrop(PropInit.WOODEN_STOOL);
         addDrop(PropInit.PARTY_HAT);
