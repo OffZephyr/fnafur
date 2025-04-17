@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:props/air_vent"
+      "model": "fnafur:item/air_vent"
   }
 }

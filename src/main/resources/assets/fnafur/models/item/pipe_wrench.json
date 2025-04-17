@@ -3,8 +3,7 @@
 	"ambientocclusion": false,
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "fnafur:item/pipe_wrench",
-		"particle": "fnafur:item/pipe_wrench"
+		"0": "fnafur:item/pipe_wrench"
 	},
 	"elements": [
 		{
