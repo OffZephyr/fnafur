@@ -23,6 +23,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.RETRO_TABLE)
                 .add(PropInit.RETRO_STOOL)
                 .add(PropInit.RESTROOM_SIGN)
+                .add(PropInit.POSTER)
                 .add(PropInit.WALL_CLOUDS)
                 .add(PropInit.WALL_PIZZA)
                 .add(PropInit.HANGING_STARS)

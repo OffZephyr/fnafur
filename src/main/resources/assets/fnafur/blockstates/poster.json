@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,color=freddy_lets_party": {
+      "model": "fnafur:props/posters/freddy_lets_party_poster"
+    },
+    "facing=east,color=freddy_lets_party": {
+      "model": "fnafur:props/posters/freddy_lets_party_poster",
+      "y": 90
+    },
+    "facing=south,color=freddy_lets_party": {
+      "model": "fnafur:props/posters/freddy_lets_party_poster",
+      "y": 180
+    },
+    "facing=west,color=freddy_lets_party": {
+      "model": "fnafur:props/posters/freddy_lets_party_poster",
+      "y": 270
+    },
+    "facing=north,color=foxy_play_time": {
+      "model": "fnafur:props/posters/foxy_party_time_poster"
+    },
+    "facing=east,color=foxy_play_time": {
+      "model": "fnafur:props/posters/foxy_party_time_poster",
+      "y": 90
+    },
+    "facing=south,color=foxy_play_time": {
+      "model": "fnafur:props/posters/foxy_party_time_poster",
+      "y": 180
+    },
+    "facing=west,color=foxy_play_time": {
+      "model": "fnafur:props/posters/foxy_party_time_poster",
+      "y": 270
+    }
+  }
+}

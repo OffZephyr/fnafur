@@ -36,6 +36,9 @@ public class ItemGroupsInit {
                         entries.add(PropInit.STAR_PLASTIC_CHAIR);
                         entries.add(PropInit.WOODEN_CHAIR);
                         entries.add(PropInit.WOODEN_STOOL);
+                        entries.add(PropInit.SCONCE);
+                        entries.add(PropInit.HANGING_LIGHT);
+                        entries.add(PropInit.HANGING_LIGHTBULB);
                         entries.add(PropInit.WALL_PIZZA);
                         entries.add(PropInit.WALL_CLOUDS);
                         entries.add(PropInit.HANGING_STARS);
@@ -72,6 +75,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.ICE_CREAM_DISPENSER);
 
                         entries.add(PropInit.SKEEBALL_ARCADE);
+                        entries.add(PropInit.POSTER);
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 

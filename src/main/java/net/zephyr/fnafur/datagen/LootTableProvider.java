@@ -39,6 +39,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.CEILING_TILE_VENT);
         addDrop(PropInit.CEILING_TILE_VENT_BLACK);
         addDrop(PropInit.RESTROOM_SIGN);
+        addDrop(PropInit.POSTER);
         addDrop(PropInit.BROOM);
         addDrop(PropInit.MOP_BUCKET);
         addDrop(PropInit.TRASH_BIN);
@@ -54,6 +55,9 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.PUNCH_IN_CARDS);
         addDrop(PropInit.SKEEBALL_ARCADE);
         addDrop(PropInit.WOODEN_CHAIR);
+        addDrop(PropInit.SCONCE);
+        addDrop(PropInit.HANGING_LIGHT);
+        addDrop(PropInit.HANGING_LIGHTBULB);
         addDrop(PropInit.WOODEN_STOOL);
         addDrop(PropInit.PARTY_HAT);
         addDrop(PropInit.DOUBLE_DOOR_FRIDGE);

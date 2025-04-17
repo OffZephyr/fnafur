@@ -64,7 +64,6 @@ public class BlockEntityInit {
                         FabricBlockEntityTypeBuilder.create(TileDoorBlockEntity::new,
                                 BlockInit.OFFICE_DOOR,
                                 BlockInit.GARAGE_DOOR,
-                                BlockInit.GARAGE_DOOR2,
                                 BlockInit.HEAVY_DOOR,
                                 BlockInit.WARNING_HEAVY_DOOR
                         ).build());
@@ -82,6 +81,7 @@ public class BlockEntityInit {
                                 PropInit.WALL_CLOUDS,
                                 PropInit.WALL_PIZZA,
                                 PropInit.RESTROOM_SIGN,
+                                PropInit.POSTER,
                                 PropInit.BROOM,
                                 PropInit.MOP_BUCKET,
                                 PropInit.TRASH_BIN,

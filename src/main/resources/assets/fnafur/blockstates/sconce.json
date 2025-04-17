@@ -1,126 +1,274 @@
 {
   "variants": {
-    "facing=north,color=sconce_0": {
-      "model": "fnafur:props/sconce/sconce"
+    "facing=north,color=black_purple": {
+      "model": "fnafur:block/sconce/sconce_black_purple"
     },
-    "facing=east,color=sconce_0": {
-      "model": "fnafur:props/sconce/sconce",
+    "facing=east,color=black_purple": {
+      "model": "fnafur:block/sconce/sconce_black_purple",
       "y": 90
     },
-    "facing=south,color=sconce_0": {
-      "model": "fnafur:props/sconce/sconce",
+    "facing=south,color=black_purple": {
+      "model": "fnafur:block/sconce/sconce_black_purple",
       "y": 180
     },
-    "facing=west,color=sconce_0": {
-      "model": "fnafur:props/sconce/sconce",
+    "facing=west,color=black_purple": {
+      "model": "fnafur:block/sconce/sconce_black_purple",
       "y": 270
     },
-    "facing=north,color=sconce_1": {
-      "model": "fnafur:props/sconce/sconce_2"
+    "facing=north,color=brown_red": {
+      "model": "fnafur:block/sconce/sconce_brown_red"
     },
-    "facing=east,color=sconce_1": {
-      "model": "fnafur:props/sconce/sconce_2",
+    "facing=east,color=brown_red": {
+      "model": "fnafur:block/sconce/sconce_brown_red",
       "y": 90
     },
-    "facing=south,color=sconce_1": {
-      "model": "fnafur:props/sconce/sconce_2",
+    "facing=south,color=brown_red": {
+      "model": "fnafur:block/sconce/sconce_brown_red",
       "y": 180
     },
-    "facing=west,color=sconce_1": {
-      "model": "fnafur:props/sconce/sconce_2",
+    "facing=west,color=brown_red": {
+      "model": "fnafur:block/sconce/sconce_brown_red",
       "y": 270
     },
-    "facing=north,color=sconce_2": {
-      "model": "fnafur:props/sconce/sconce_3"
+    "facing=north,color=black": {
+      "model": "fnafur:block/sconce/sconce_black"
     },
-    "facing=east,color=sconce_2": {
-      "model": "fnafur:props/sconce/sconce_3",
+    "facing=east,color=black": {
+      "model": "fnafur:block/sconce/sconce_black",
       "y": 90
     },
-    "facing=south,color=sconce_2": {
-      "model": "fnafur:props/sconce/sconce_3",
+    "facing=south,color=black": {
+      "model": "fnafur:block/sconce/sconce_black",
       "y": 180
     },
-    "facing=west,color=sconce_2": {
-      "model": "fnafur:props/sconce/sconce_3",
+    "facing=west,color=black": {
+      "model": "fnafur:block/sconce/sconce_black",
       "y": 270
     },
-    "facing=north,color=sconce_3": {
-      "model": "fnafur:props/sconce/sconce_4"
+    "facing=north,color=gray": {
+      "model": "fnafur:block/sconce/sconce_gray"
     },
-    "facing=east,color=sconce_3": {
-      "model": "fnafur:props/sconce/sconce_4",
+    "facing=east,color=gray": {
+      "model": "fnafur:block/sconce/sconce_gray",
       "y": 90
     },
-    "facing=south,color=sconce_3": {
-      "model": "fnafur:props/sconce/sconce_4",
+    "facing=south,color=gray": {
+      "model": "fnafur:block/sconce/sconce_gray",
       "y": 180
     },
-    "facing=west,color=sconce_3": {
-      "model": "fnafur:props/sconce/sconce_4",
+    "facing=west,color=gray": {
+      "model": "fnafur:block/sconce/sconce_gray",
       "y": 270
     },
-    "facing=north,color=sconce_4": {
-      "model": "fnafur:props/sconce/sconce_5"
+    "facing=north,color=light_gray": {
+      "model": "fnafur:block/sconce/sconce_light_gray"
     },
-    "facing=east,color=sconce_4": {
-      "model": "fnafur:props/sconce/sconce_5",
+    "facing=east,color=light_gray": {
+      "model": "fnafur:block/sconce/sconce_light_gray",
       "y": 90
     },
-    "facing=south,color=sconce_4": {
-      "model": "fnafur:props/sconce/sconce_5",
+    "facing=south,color=light_gray": {
+      "model": "fnafur:block/sconce/sconce_light_gray",
       "y": 180
     },
-    "facing=west,color=sconce_4": {
-      "model": "fnafur:props/sconce/sconce_5",
+    "facing=west,color=light_gray": {
+      "model": "fnafur:block/sconce/sconce_light_gray",
       "y": 270
     },
-    "facing=north,color=sconce_5": {
-      "model": "fnafur:props/sconce/sconce_6"
+    "facing=north,color=white": {
+      "model": "fnafur:block/sconce/sconce_white"
     },
-    "facing=east,color=sconce_5": {
-      "model": "fnafur:props/sconce/sconce_6",
+    "facing=east,color=white": {
+      "model": "fnafur:block/sconce/sconce_white",
       "y": 90
     },
-    "facing=south,color=sconce_5": {
-      "model": "fnafur:props/sconce/sconce_6",
+    "facing=south,color=white": {
+      "model": "fnafur:block/sconce/sconce_white",
       "y": 180
     },
-    "facing=west,color=sconce_5": {
-      "model": "fnafur:props/sconce/sconce_6",
+    "facing=west,color=white": {
+      "model": "fnafur:block/sconce/sconce_white",
       "y": 270
     },
-    "facing=north,color=sconce_6": {
-      "model": "fnafur:props/sconce/sconce_7"
+    "facing=north,color=brown": {
+      "model": "fnafur:block/sconce/sconce_brown"
     },
-    "facing=east,color=sconce_6": {
-      "model": "fnafur:props/sconce/sconce_7",
+    "facing=east,color=brown": {
+      "model": "fnafur:block/sconce/sconce_brown",
       "y": 90
     },
-    "facing=south,color=sconce_6": {
-      "model": "fnafur:props/sconce/sconce_7",
+    "facing=south,color=brown": {
+      "model": "fnafur:block/sconce/sconce_brown",
       "y": 180
     },
-    "facing=west,color=sconce_6": {
-      "model": "fnafur:props/sconce/sconce_7",
+    "facing=west,color=brown": {
+      "model": "fnafur:block/sconce/sconce_brown",
       "y": 270
     },
-    "facing=north,color=sconce_7": {
-      "model": "fnafur:props/sconce/sconce_8"
+    "facing=north,color=red": {
+      "model": "fnafur:block/sconce/sconce_red"
     },
-    "facing=east,color=sconce_7": {
-      "model": "fnafur:props/sconce/sconce_8",
+    "facing=east,color=red": {
+      "model": "fnafur:block/sconce/sconce_red",
       "y": 90
     },
-    "facing=south,color=sconce_7": {
-      "model": "fnafur:props/sconce/sconce_8",
+    "facing=south,color=red": {
+      "model": "fnafur:block/sconce/sconce_red",
       "y": 180
     },
-    "facing=west,color=sconce_7": {
-      "model": "fnafur:props/sconce/sconce_8",
+    "facing=west,color=red": {
+      "model": "fnafur:block/sconce/sconce_red",
       "y": 270
-
+    },
+    "facing=north,color=orange": {
+      "model": "fnafur:block/sconce/sconce_orange"
+    },
+    "facing=east,color=orange": {
+      "model": "fnafur:block/sconce/sconce_orange",
+      "y": 90
+    },
+    "facing=south,color=orange": {
+      "model": "fnafur:block/sconce/sconce_orange",
+      "y": 180
+    },
+    "facing=west,color=orange": {
+      "model": "fnafur:block/sconce/sconce_orange",
+      "y": 270
+    },
+    "facing=north,color=yellow": {
+      "model": "fnafur:block/sconce/sconce_yellow"
+    },
+    "facing=east,color=yellow": {
+      "model": "fnafur:block/sconce/sconce_yellow",
+      "y": 90
+    },
+    "facing=south,color=yellow": {
+      "model": "fnafur:block/sconce/sconce_yellow",
+      "y": 180
+    },
+    "facing=west,color=yellow": {
+      "model": "fnafur:block/sconce/sconce_yellow",
+      "y": 270
+    },
+    "facing=north,color=lime": {
+      "model": "fnafur:block/sconce/sconce_lime"
+    },
+    "facing=east,color=lime": {
+      "model": "fnafur:block/sconce/sconce_lime",
+      "y": 90
+    },
+    "facing=south,color=lime": {
+      "model": "fnafur:block/sconce/sconce_lime",
+      "y": 180
+    },
+    "facing=west,color=lime": {
+      "model": "fnafur:block/sconce/sconce_lime",
+      "y": 270
+    },
+    "facing=north,color=green": {
+      "model": "fnafur:block/sconce/sconce_green"
+    },
+    "facing=east,color=green": {
+      "model": "fnafur:block/sconce/sconce_green",
+      "y": 90
+    },
+    "facing=south,color=green": {
+      "model": "fnafur:block/sconce/sconce_green",
+      "y": 180
+    },
+    "facing=west,color=green": {
+      "model": "fnafur:block/sconce/sconce_green",
+      "y": 270
+    },
+    "facing=north,color=cyan": {
+      "model": "fnafur:block/sconce/sconce_cyan"
+    },
+    "facing=east,color=cyan": {
+      "model": "fnafur:block/sconce/sconce_cyan",
+      "y": 90
+    },
+    "facing=south,color=cyan": {
+      "model": "fnafur:block/sconce/sconce_cyan",
+      "y": 180
+    },
+    "facing=west,color=cyan": {
+      "model": "fnafur:block/sconce/sconce_cyan",
+      "y": 270
+    },
+    "facing=north,color=light_blue": {
+      "model": "fnafur:block/sconce/sconce_light_blue"
+    },
+    "facing=east,color=light_blue": {
+      "model": "fnafur:block/sconce/sconce_light_blue",
+      "y": 90
+    },
+    "facing=south,color=light_blue": {
+      "model": "fnafur:block/sconce/sconce_light_blue",
+      "y": 180
+    },
+    "facing=west,color=light_blue": {
+      "model": "fnafur:block/sconce/sconce_light_blue",
+      "y": 270
+    },
+    "facing=north,color=blue": {
+      "model": "fnafur:block/sconce/sconce_blue"
+    },
+    "facing=east,color=blue": {
+      "model": "fnafur:block/sconce/sconce_blue",
+      "y": 90
+    },
+    "facing=south,color=blue": {
+      "model": "fnafur:block/sconce/sconce_blue",
+      "y": 180
+    },
+    "facing=west,color=blue": {
+      "model": "fnafur:block/sconce/sconce_blue",
+      "y": 270
+    },
+    "facing=north,color=purple": {
+      "model": "fnafur:block/sconce/sconce_purple"
+    },
+    "facing=east,color=purple": {
+      "model": "fnafur:block/sconce/sconce_purple",
+      "y": 90
+    },
+    "facing=south,color=purple": {
+      "model": "fnafur:block/sconce/sconce_purple",
+      "y": 180
+    },
+    "facing=west,color=purple": {
+      "model": "fnafur:block/sconce/sconce_purple",
+      "y": 270
+    },
+    "facing=north,color=magenta": {
+      "model": "fnafur:block/sconce/sconce_magenta"
+    },
+    "facing=east,color=magenta": {
+      "model": "fnafur:block/sconce/sconce_magenta",
+      "y": 90
+    },
+    "facing=south,color=magenta": {
+      "model": "fnafur:block/sconce/sconce_magenta",
+      "y": 180
+    },
+    "facing=west,color=magenta": {
+      "model": "fnafur:block/sconce/sconce_magenta",
+      "y": 270
+    },
+    "facing=north,color=pink": {
+      "model": "fnafur:block/sconce/sconce_pink"
+    },
+    "facing=east,color=pink": {
+      "model": "fnafur:block/sconce/sconce_pink",
+      "y": 90
+    },
+    "facing=south,color=pink": {
+      "model": "fnafur:block/sconce/sconce_pink",
+      "y": 180
+    },
+    "facing=west,color=pink": {
+      "model": "fnafur:block/sconce/sconce_pink",
+      "y": 270
     }
-
   }
 }

@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,powered=false": {
       "model": "fnafur:props/light_switch"
     },
-    "facing=east": {
+    "facing=east,powered=false": {
       "model": "fnafur:props/light_switch",
       "y": 90
     },
-    "facing=south": {
+    "facing=south,powered=false": {
       "model": "fnafur:props/light_switch",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,powered=false": {
       "model": "fnafur:props/light_switch",
+      "y": 270
+    },
+    "facing=north,powered=true": {
+      "model": "fnafur:props/light_switch_on"
+    },
+    "facing=east,powered=true": {
+      "model": "fnafur:props/light_switch_on",
+      "y": 90
+    },
+    "facing=south,powered=true": {
+      "model": "fnafur:props/light_switch_on",
+      "y": 180
+    },
+    "facing=west,powered=true": {
+      "model": "fnafur:props/light_switch_on",
       "y": 270
     }
   }

@@ -14,9 +14,12 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.blocks.light.ChainLight;
+import net.zephyr.fnafur.blocks.light.Sconce;
 import net.zephyr.fnafur.blocks.props.base.PropRenderer;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
@@ -52,6 +55,7 @@ import net.zephyr.fnafur.blocks.props.wall_props.clocks.WoodenClock;
 import net.zephyr.fnafur.blocks.props.wall_props.kitchen.PotsAndPansRack;
 import net.zephyr.fnafur.blocks.props.wall_props.electricity.light_switch.LightSwitch;
 import net.zephyr.fnafur.blocks.props.wall_props.office_buttons.OfficeButtons;
+import net.zephyr.fnafur.blocks.props.wall_props.poster.Poster;
 import net.zephyr.fnafur.blocks.props.wall_props.punch_in_cards.PunchInCards;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom.ToiletPaperRoll;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
@@ -303,6 +307,21 @@ public class PropInit {
                     Text.translatable("fnafur.symbol.paintbrush")
             )
     );
+    public static final Block POSTER = registerBlock(
+            "poster",
+            Poster::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
+    );
     public static final Block BROOM = registerBlock(
             "broom",
             Broom::new,
@@ -390,13 +409,55 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
-                    .noCollision()
     );
     public static final Block WOODEN_STOOL = registerBlock(
             "wooden_stool",
             WoodenStool::new,
             AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
                     .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+
+    public static final Block SCONCE = registerBlock(
+            "sconce",
+            Sconce::new,
+            AbstractBlock.Settings.copy(Blocks.CHAIN)
+                    .nonOpaque()
+                    .luminance(Blocks.createLightLevelFromLitBlockState(10))
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
+    );
+    public static final Block HANGING_LIGHT = registerBlock(
+            "hanging_light",
+            ChainLight::new,
+            AbstractBlock.Settings.copy(Blocks.CHAIN)
+                    .nonOpaque()
+                    .luminance(state -> (state.get(Properties.LIT) && !state.get(ChainLight.CHAIN)) ? 12 : 0 )
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block HANGING_LIGHTBULB = registerBlock(
+            "hanging_lightbulb",
+            ChainLight::new,
+            AbstractBlock.Settings.copy(Blocks.CHAIN)
+                    .nonOpaque()
+                    .luminance(state -> (state.get(Properties.LIT) && !state.get(ChainLight.CHAIN)) ? 10 : 0 )
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
@@ -651,7 +712,6 @@ public class PropInit {
             List.of(
                     Text.translatable("fnafur.symbol.paintbrush")
             )
-
     );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {

@@ -241,19 +241,6 @@ public class BlockInit {
                     Text.translatable("fnafur.symbol.wrench")
             )
     );
-    public static final Block GARAGE_DOOR2 = registerTileDoor(
-            "garage_door",
-            TileDoorBlock::new,
-            TileDoorDirection.LEFT,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never),
-            List.of(
-                    Text.translatable("fnafur.symbol.wrench")
-            )
-    );
     public static final Block HEAVY_DOOR = registerTileDoor(
             "heavy_door",
             TileDoorBlock::new,

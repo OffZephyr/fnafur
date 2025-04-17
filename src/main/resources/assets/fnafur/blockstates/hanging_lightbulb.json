@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=north,chain=true,lit=false": {
+      "model": "fnafur:block/ceiling_light_chain"
+    },
+    "facing=east,chain=true,lit=false": {
+      "model": "fnafur:block/ceiling_light_chain",
+      "y": 90
+    },
+    "facing=south,chain=true,lit=false": {
+      "model": "fnafur:block/ceiling_light_chain",
+      "y": 180
+    },
+    "facing=west,chain=true,lit=false": {
+      "model": "fnafur:block/ceiling_light_chain",
+      "y": 270
+    },
+    "facing=north,chain=true,lit=true": {
+      "model": "fnafur:block/ceiling_light_chain"
+    },
+    "facing=east,chain=true,lit=true": {
+      "model": "fnafur:block/ceiling_light_chain",
+      "y": 90
+    },
+    "facing=south,chain=true,lit=true": {
+      "model": "fnafur:block/ceiling_light_chain",
+      "y": 180
+    },
+    "facing=west,chain=true,lit=true": {
+      "model": "fnafur:block/ceiling_light_chain",
+      "y": 270
+    },
+    "facing=north,chain=false,lit=false": {
+      "model": "fnafur:block/ceiling_lightbulb"
+    },
+    "facing=east,chain=false,lit=false": {
+      "model": "fnafur:block/ceiling_lightbulb",
+      "y": 90
+    },
+    "facing=south,chain=false,lit=false": {
+      "model": "fnafur:block/ceiling_lightbulb",
+      "y": 180
+    },
+    "facing=west,chain=false,lit=false": {
+      "model": "fnafur:block/ceiling_lightbulb",
+      "y": 270
+    },
+    "facing=north,chain=false,lit=true": {
+      "model": "fnafur:block/ceiling_lightbulb"
+    },
+    "facing=east,chain=false,lit=true": {
+      "model": "fnafur:block/ceiling_lightbulb",
+      "y": 90
+    },
+    "facing=south,chain=false,lit=true": {
+      "model": "fnafur:block/ceiling_lightbulb",
+      "y": 180
+    },
+    "facing=west,chain=false,lit=true": {
+      "model": "fnafur:block/ceiling_lightbulb",
+      "y": 270
+    }
+  }
+}

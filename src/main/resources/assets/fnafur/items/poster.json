@@ -1,0 +1,27 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases":[
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/posters/freddy_lets_party_poster"
+        },
+        "when": "freddy_lets_party"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/posters/foxy_party_time_poster"
+        },
+        "when": "foxy_play_time"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "fnafur:props/posters/freddy_lets_party_poster"
+    },
+    "block_state_property": "color",
+    "property": "minecraft:block_state"
+  }
+}
