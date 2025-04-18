@@ -34,7 +34,7 @@ public class cl_chica extends DefaultEntity {
                     .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_clean.png"));
     private final EntitySkin DIRTY =
             new EntitySkin("entity.fnafur.cl_chica.dirty")
-                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_dirty.png"));
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica.png"));
     private final EntitySkin BLACKLIGHT =
             new EntitySkin("entity.fnafur.cl_chica.blacklight")
                     .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_chica/cl_chica_blacklight.png"));

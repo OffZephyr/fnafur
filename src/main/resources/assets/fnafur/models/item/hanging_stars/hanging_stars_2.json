@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+      "layer0": "fnafur:item/hanging_stars/hanging_stars_2_item"
+    }
+}

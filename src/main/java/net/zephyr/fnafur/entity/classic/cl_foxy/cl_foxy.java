@@ -45,7 +45,7 @@ public class cl_foxy extends DefaultEntity {
                     .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/dirtyfoxyicon.png"));
     private final EntitySkin STAINED_FABRIC =
             new EntitySkin("entity.fnafur.cl_foxy.stained_fabric")
-                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy_stained_fabric.png"))
+                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/classic/cl_foxy/cl_foxy.png"))
                     .icon(Identifier.of(FnafUniverseRebuilt.MOD_ID,"textures/entity/classic/cl_foxy/icon/stainedfabricfoxyicon.png"));
     private final EntitySkin OLD =
             new EntitySkin("entity.fnafur.cl_foxy.old")

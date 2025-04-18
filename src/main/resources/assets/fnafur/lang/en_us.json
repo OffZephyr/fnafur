@@ -273,6 +273,7 @@
   "block.fnafur.poster": "Poster",
   "block.fnafur.flying_v_guitar": "Flying V Guitar",
   "block.fnafur.standing_menu": "Standing Menu",
+  "block.fnafur.speaker": "Speaker",
 
 
   "block.fnafur.camera": "Security Camera",
@@ -515,5 +516,7 @@
   "sounds.fnafur.dawko": "DAWKO OUT OF CONTEXT",
   "sounds.fnafur.bear5": "SOMETHING TERRIBLE IS COMING",
   "sounds.fnafur.helpules_place": "*Crack*",
-  "sounds.fnafur.helpules": "PEAKETH AT MY MUSKLES"
+  "sounds.fnafur.helpules": "PEAKETH AT MY MUSKLES",
+
+  "sounds.fnafur.office_door_activate": "Heavy Door Activates"
 }

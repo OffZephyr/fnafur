@@ -5,112 +5,112 @@
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_red"
+            "model": "fnafur:item/retro_stool/retro_stool_red"
           },
           "when": "color_0"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_orange"
+            "model": "fnafur:item/retro_stool/retro_stool_orange"
           },
           "when": "color_1"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_yellow"
+            "model": "fnafur:item/retro_stool/retro_stool_yellow"
           },
           "when": "color_2"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_lime"
+            "model": "fnafur:item/retro_stool/retro_stool_lime"
           },
           "when": "color_3"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_green"
+            "model": "fnafur:item/retro_stool/retro_stool_green"
           },
           "when": "color_4"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_cyan"
+            "model": "fnafur:item/retro_stool/retro_stool_cyan"
           },
           "when": "color_5"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_light_blue"
+            "model": "fnafur:item/retro_stool/retro_stool_light_blue"
           },
           "when": "color_6"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_blue"
+            "model": "fnafur:item/retro_stool/retro_stool_blue"
           },
           "when": "color_7"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_purple"
+            "model": "fnafur:item/retro_stool/retro_stool_purple"
           },
           "when": "color_8"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_magenta"
+            "model": "fnafur:item/retro_stool/retro_stool_magenta"
           },
           "when": "color_9"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_pink"
+            "model": "fnafur:item/retro_stool/retro_stool_pink"
           },
           "when": "color_10"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_white"
+            "model": "fnafur:item/retro_stool/retro_stool_white"
           },
           "when": "color_11"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_light_gray"
+            "model": "fnafur:item/retro_stool/retro_stool_light_gray"
           },
           "when": "color_12"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_gray"
+            "model": "fnafur:item/retro_stool/retro_stool_gray"
           },
           "when": "color_13"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/retro_stool/retro_stool_black"
+            "model": "fnafur:item/retro_stool/retro_stool_black"
           },
           "when": "color_14"
         }
       ],
       "fallback": {
           "type": "minecraft:model",
-          "model": "fnafur:props/retro_stool/retro_stool_red"
+          "model": "fnafur:item/retro_stool/retro_stool_red"
         },
         "block_state_property": "color",
       "property": "minecraft:block_state"

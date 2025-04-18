@@ -5,28 +5,28 @@
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/hanging_stars/white_hanging_stars"
+            "model": "fnafur:item/hanging_stars/hanging_stars_1"
           },
           "when": "white"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/hanging_stars/black_hanging_stars"
+            "model": "fnafur:item/hanging_stars/hanging_stars_2"
           },
           "when": "black"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/hanging_stars/white_colored_hanging_stars"
+            "model": "fnafur:item/hanging_stars/hanging_stars_3"
           },
           "when": "white_colored"
         },
         {
           "model": {
             "type": "minecraft:model",
-            "model": "fnafur:props/hanging_stars/black_colored_hanging_stars"
+            "model": "fnafur:item/hanging_stars/hanging_stars_4"
           },
           "when": "black_colored"
         }
@@ -34,7 +34,7 @@
                ],
       "fallback": {
           "type": "minecraft:model",
-          "model": "fnafur:props/hanging_stars/white_hanging_stars"
+          "model": "fnafur:item/hanging_stars/hanging_stars_1"
         },
         "block_state_property": "color",
       "property": "minecraft:block_state"

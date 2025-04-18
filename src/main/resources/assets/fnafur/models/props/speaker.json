@@ -1,0 +1,58 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [1026, 2051],
+	"textures": {
+		"2": "fnafur:block/props/fnaf1desk",
+		"particle": "fnafur:block/props/fnaf1desk"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 2.9],
+			"to": [14, 16, 13.1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 9.6]},
+			"faces": {
+				"north": {"uv": [4.13255, 8.94003, 4.88109, 9.4393], "texture": "#2"},
+				"east": {"uv": [3.57115, 10.65627, 4.21053, 11.15553], "texture": "#2"},
+				"south": {"uv": [3.94542, 10.157, 4.69396, 10.65627], "texture": "#2"},
+				"west": {"uv": [5.38012, 8.0039, 6.01949, 8.50317], "texture": "#2"},
+				"up": {"uv": [6.12865, 8.82301, 5.38012, 8.50317], "texture": "#2"},
+				"down": {"uv": [1.94932, 10.68747, 1.20078, 11.00731], "texture": "#2"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 225, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"translation": [0, -1, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"head": {
+			"translation": [0, 14.75, -0.5]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
+		}
+	}
+}

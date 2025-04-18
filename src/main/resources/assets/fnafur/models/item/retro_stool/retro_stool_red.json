@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+      "layer0": "fnafur:item/retro_stool/stool_red_item"
+    }
+}

@@ -1,6 +1,6 @@
 {
     "model": {
       "type": "minecraft:model",
-      "model": "fnafur:block/ceiling_lightbulb"
+      "model": "fnafur:item/ceiling_lightbulb"
   }
 }

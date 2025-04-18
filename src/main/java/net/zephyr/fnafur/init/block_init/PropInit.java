@@ -39,6 +39,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.present_stack.PresentStack;
 import net.zephyr.fnafur.blocks.props.floor_props.restroom.Toilet;
+import net.zephyr.fnafur.blocks.props.floor_props.speaker.Speaker;
 import net.zephyr.fnafur.blocks.props.floor_props.standing_menu.StandingMenu;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
@@ -717,6 +718,19 @@ public class PropInit {
     public static final Block TOILET = registerBlock(
             "toilet",
             Toilet::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+
+    );
+    public static final Block SPEAKER = registerBlock(
+            "speaker",
+            Speaker::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)

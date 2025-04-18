@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/speaker"
+    },
+    "facing=east": {
+      "model": "fnafur:props/speaker",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/speaker",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/speaker",
+      "y": 270
+    }
+  }
+}
