@@ -2,6 +2,8 @@ package net.zephyr.fnafur.blocks.props.tiling.tile_doors;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -34,6 +36,13 @@ public class TileDoorBlockEntity extends BlockEntity {
 
             BlockPos testPos = mainPos.offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
             Direction direction = getWorld().getBlockState(testPos).getBlock() instanceof TileDoorBlock ? state.get(TileDoorBlock.FACING).rotateYCounterclockwise() : state.get(TileDoorBlock.FACING).rotateYClockwise();
+
+            if (getWorld().getBlockState(mainPos).getBlock() instanceof TileDoorBlock block) {
+                SoundEvent sound = open ? block.openSound : block.closeSound;
+                BlockPos pos = mainPos.offset(direction, (int) (width/2f));
+                getWorld().playSound(pos.getX(), pos.getY(), pos.getZ(), sound, SoundCategory.BLOCKS, 1f, 1f, true);
+            }
+
 
             for (int x = 0; x <= width; x++) {
                 for (int y = 0; y <= height; y++) {

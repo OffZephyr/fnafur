@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -25,6 +26,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -33,6 +35,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.props.tiling.VerticalTileStates;
 import net.zephyr.fnafur.client.rendering.TileDoorPlacingRenderer;
+import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.networking.block.TileDoorUpdateS2CPayload;
@@ -88,7 +91,7 @@ public class TileDoorBlock extends BlockWithEntity {
                     );
 
                     if(world.canPlace(state.with(MAIN, placePos.equals(pos1)), placePos, ShapeContext.of(placer))){
-                        world.setBlockState(placePos, state.with(MAIN, placePos.equals(pos1)).with(TYPE, VerticalTileStates.get(y != v, x != h, y != 0, x != 0)),Block.NOTIFY_LISTENERS);
+                        world.setBlockState(placePos, state.with(OPEN, isInverted).with(MAIN, placePos.equals(pos1)).with(TYPE, VerticalTileStates.get(y != v, x != h, y != 0, x != 0)),Block.NOTIFY_LISTENERS);
 
                         if(world.getBlockEntity(placePos) instanceof BlockEntity ent){
                             ((IEntityDataSaver)ent).getPersistentData().putLong("main", pos1.asLong());
@@ -121,6 +124,8 @@ public class TileDoorBlock extends BlockWithEntity {
                 if(speed + add > 5) speed = 0.75f;
                 float newSpeed = Math.clamp(speed + add, 1, 5);
                 ent.setSpeed(newSpeed);
+                world.playSoundAtBlockCenter(pos, SoundEvents.BLOCK_NOTE_BLOCK_HAT.value(), SoundCategory.BLOCKS, 1, MathHelper.lerp(newSpeed / 5f, 0.75f, 1.5f), true);
+
                 player.sendMessage(Text.translatable("block.fnafur.heavy_door.speed", " " + newSpeed), true);
                 return ActionResult.SUCCESS;
             }
@@ -154,6 +159,8 @@ public class TileDoorBlock extends BlockWithEntity {
     @Override
     protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
 
+        world.playSoundAtBlockCenter(pos, openSound, SoundCategory.MASTER, 1, 1, true);
+
         if (world.getBlockEntity(pos) instanceof TileDoorBlockEntity ent) {
             BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("main"));
 
@@ -162,22 +169,13 @@ public class TileDoorBlock extends BlockWithEntity {
                 int width = ((IEntityDataSaver) ent2).getPersistentData().getInt("width");
                 int height = ((IEntityDataSaver) ent2).getPersistentData().getInt("height");
 
-
                 BlockPos testPos = mainPos.offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
                 Direction direction = world.getBlockState(testPos).getBlock() instanceof TileDoorBlock ? state.get(TileDoorBlock.FACING).rotateYCounterclockwise() : state.get(TileDoorBlock.FACING).rotateYClockwise();
 
                 boolean powered = ((IEntityDataSaver) ent2).getPersistentData().getBoolean("open");
 
                 powered = isInverted != powered;
-
-                boolean isDifferent = world.getBlockState(mainPos).get(OPEN) != powered;
-
-                if (isDifferent) {
-                    SoundEvent sound = powered ? openSound : closeSound;
-                    world.playSound(pos.getX(), pos.getY(), pos.getZ(), sound, SoundCategory.BLOCKS, 1, 1, true);
-                }
-
-                        world.setBlockState(mainPos, world.getBlockState(mainPos).with(OPEN, powered), 0);
+                world.setBlockState(mainPos, world.getBlockState(mainPos).with(OPEN, powered), 0);
 
                 for (int x = 0; x <= width; x++) {
                     for (int y = 0; y <= height; y++) {

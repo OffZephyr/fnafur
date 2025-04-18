@@ -36,8 +36,6 @@ public class TileDoorPlacingRenderer {
             if(nbt.contains("pos1")){
                 BlockState state = item.getBlock().getDefaultState();
 
-
-
                 state = state.with(TileDoorBlock.FACING, player.getHorizontalFacing().getAxis().getNegativeDirection());
 
 

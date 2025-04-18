@@ -35,7 +35,7 @@ public class GeoPropBlockEntity extends PropBlockEntity implements GeoBlockEntit
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "main", 0, this::mainController));
+        controllers.add(new AnimationController<>(this, "main", 2, this::mainController));
     }
 
     private PlayState mainController(AnimationState<GeoPropBlockEntity> geoPropBlockEntityAnimationState) {
