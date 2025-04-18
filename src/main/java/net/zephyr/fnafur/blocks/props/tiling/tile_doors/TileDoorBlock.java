@@ -14,6 +14,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -33,7 +34,6 @@ import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.props.tiling.VerticalTileStates;
 import net.zephyr.fnafur.client.rendering.TileDoorPlacingRenderer;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
-import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.networking.block.TileDoorUpdateS2CPayload;
 import net.zephyr.fnafur.util.ItemNbtUtil;
@@ -169,6 +169,13 @@ public class TileDoorBlock extends BlockWithEntity {
                 boolean powered = ((IEntityDataSaver) ent2).getPersistentData().getBoolean("open");
 
                 powered = isInverted != powered;
+
+                boolean isDifferent = world.getBlockState(mainPos).get(OPEN) != powered;
+
+                if (isDifferent) {
+                    SoundEvent sound = powered ? openSound : closeSound;
+                    world.playSound(pos.getX(), pos.getY(), pos.getZ(), sound, SoundCategory.BLOCKS, 1, 1, true);
+                }
 
                         world.setBlockState(mainPos, world.getBlockState(mainPos).with(OPEN, powered), 0);
 
