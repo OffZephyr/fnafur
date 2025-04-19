@@ -14,7 +14,7 @@ public class SoundPayloads {
 
     public static void registerPayloads() {
         PayloadTypeRegistry.playS2C().register(PlaySoundS2CPayload.ID, PlaySoundS2CPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(StopSoundS2CPayload.ID, StopSoundS2CPayload.CODEC);
+        //PayloadTypeRegistry.playS2C().register(StopSoundS2CPayload.ID, StopSoundS2CPayload.CODEC);
 
         PayloadTypeRegistry.playC2S().register(PlaySoundPingC2SPayload.ID, PlaySoundPingC2SPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(StopSoundPingC2SPayload.ID, StopSoundPingC2SPayload.CODEC);
@@ -28,7 +28,7 @@ public class SoundPayloads {
 
     public static void registerClientReceivers(){
         ClientPlayNetworking.registerGlobalReceiver(PlaySoundS2CPayload.ID, PlaySoundS2CPayload::receive);
-        ClientPlayNetworking.registerGlobalReceiver(StopSoundS2CPayload.ID, StopSoundS2CPayload::receive);
+        //ClientPlayNetworking.registerGlobalReceiver(StopSoundS2CPayload.ID, StopSoundS2CPayload::receive);
 
     }
 }
