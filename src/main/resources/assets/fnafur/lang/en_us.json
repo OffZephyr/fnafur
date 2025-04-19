@@ -387,7 +387,7 @@
 
   "entity.fnafur.cl_fred": "Freddy Fazbear",
 
-  "entity_alts.fnafur.cl_fred.default": "FNAF 1",
+  "entity_alts.fnafur.cl_fred.default": "FNaF 1",
   "entity_alts.fnafur.cl_fred.golden": "Golden Fur",
   "entity_alts.fnafur.cl_fred.colorable": "Colorable",
 
@@ -397,9 +397,31 @@
   "entity_eyes.fnafur.cl_fred.colorable": "Colorable",
 
   "entity.fnafur.cl_bon": "Bonnie",
+
+  "entity_alts.fnafur.cl_bon.default": "FNaF 1",
+  "entity_alts.fnafur.cl_bon.colorable": "Colorable",
+
+  "entity_eyes.fnafur.cl_bon.default": "Pink",
+  "entity_eyes.fnafur.cl_bon.colorable": "Colorable",
+
   "entity.fnafur.cl_chica": "Chica",
+
+  "entity_alts.fnafur.cl_chica.default": "FNaF 1",
+  "entity_alts.fnafur.cl_chica.colorable": "Colorable",
+
+  "entity_eyes.fnafur.cl_chica.default": "Magenta",
+  "entity_eyes.fnafur.cl_chica.colorable": "Colorable",
+
   "entity.fnafur.cl_foxy": "Foxy",
+
+  "entity_alts.fnafur.cl_foxy.default": "FNaF 1",
+  "entity_alts.fnafur.cl_foxy.colorable": "Colorable",
+
+  "entity_eyes.fnafur.cl_foxy.default": "Yellow",
+  "entity_eyes.fnafur.cl_foxy.colorable": "Colorable",
+
   "entity.fnafur.cl_sparky": "Sparky",
+
 
   "entity.fnafur.spring_bonnie": "Spring Bonnie",
   "entity.fnafur.spring_freddy": "Spring Freddy",
