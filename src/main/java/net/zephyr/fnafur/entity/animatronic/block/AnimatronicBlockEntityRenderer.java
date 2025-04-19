@@ -13,13 +13,14 @@ public class AnimatronicBlockEntityRenderer<T extends AnimatronicBlockEntity> ex
     public AnimatronicBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
         super(new AnimatronicBlockModel<>());
         addRenderLayer(new AnimatronicBlockColoredLayer<>(this));
+        addRenderLayer(new AnimatronicBlockEyeLayer<>(this));
+        addRenderLayer(new AnimatronicBlockColoredEyeLayer<>(this));
     }
 
     @Override
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if(!(MinecraftClient.getInstance().currentScreen instanceof WorkbenchScreen || MinecraftClient.getInstance().currentScreen instanceof CpuConfigScreen)){
             matrices.push();
-            //0.68
             super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay);
             matrices.pop();
         }

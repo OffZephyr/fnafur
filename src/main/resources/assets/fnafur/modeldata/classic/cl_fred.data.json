@@ -17,8 +17,76 @@
                 "eyes":{
     
                     "default": {
-                        "texture": "textures/entity/classic/cl_fred/cl_fred.png",
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_blue.png",
                         "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+
+                    "brown": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_brown.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "black": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_full_black.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "colorable": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    }
+    
+                }
+            },
+
+            "golden": {
+                "model": "geo/entity/classic/cl_fred/cl_fred.geo.json",
+                "texture": "textures/entity/classic/cl_fred/cl_gold_fred.png",
+                "recolorable_textures": [],
+                "emissive": "",
+                "recolorable_emissive": [],
+                
+                "animations": "animations/entity/classic/cl_fred/cl_fred.animation.json",
+    
+                "default_eyes": "brown",
+                "eyes":{
+    
+                    "default": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_blue.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+
+                    "brown": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_brown.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "black": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_full_black.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "colorable": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
+                        ],
                         "emissive": "",
                         "recolorable_emissive": []
                     }
@@ -32,19 +100,43 @@
                 "texture": "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred.png",
                 "recolorable_textures": [
                     "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred_color0.png",
-                    "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred_color1.png"
+                    "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred_color1.png",
+                    "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred_color2.png"
                 ],
                 "emissive": "",
                 "recolorable_emissive": [],
                 
                 "animations": "animations/entity/classic/cl_fred/cl_fred.animation.json",
     
-                "default_eyes": "default",
+                "default_eyes": "colorable",
                 "eyes":{
     
                     "default": {
-                        "texture": "textures/entity/classic/cl_fred/cl_fred.png",
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_blue.png",
                         "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+
+                    "brown": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_brown.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "black": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_full_black.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "colorable": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
+                        ],
                         "emissive": "",
                         "recolorable_emissive": []
                     }

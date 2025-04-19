@@ -17,7 +17,7 @@
                 "eyes":{
     
                     "default": {
-                        "texture": "geo/entity/classic/cl_bon/cl_bon.geo.json",
+                        "texture": "textures/entity/classic/cl_bon/cl_bon.png",
                         "recolorable_textures": [],
                         "emissive": "",
                         "recolorable_emissive": []

@@ -9,6 +9,8 @@ public class AnimatronicRenderer<T extends AnimatronicEntity> extends GeoEntityR
         super(renderManager, new AnimatronicModel<>());
 
         addRenderLayer(new AnimatronicColoredLayer<>(this));
+        addRenderLayer(new AnimatronicEyeLayer<>(this));
+        addRenderLayer(new AnimatronicColoredEyeLayer<>(this));
     }
 
 }

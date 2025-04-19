@@ -35,6 +35,7 @@ public class WorkbenchScreen extends GoopyScreen {
     AnimatronicEntity entity;
 
     int[][] colors;
+    int[][] eye_colors;
 
     String chara = "";
     String alt = "";
@@ -217,7 +218,68 @@ public class WorkbenchScreen extends GoopyScreen {
                 break;
             }
             case 4: {
+                if(!this.chara.isEmpty() && !this.alt.isEmpty()){
+                    Map<String, CharacterModelManager.DataEntry.Eyes> eyes = CharacterModelManager.CHARA_ALT_MAP.get(CharacterModelManager.ALL_CHARACTERS.get(this.chara)).get(this.alt).eyes();
+                    right_list = eyes.keySet().toArray();
+                    prefix = "entity_eyes.fnafur." + this.chara + ".";
+                }
 
+                NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt");
+
+                if(!altNbt.isEmpty() && altNbt.contains("eyes_recolorable_textures_size")) {
+                    int size = altNbt.getInt("eyes_recolorable_textures_size");
+
+                    for (int i = 0; i < size; i++) {
+
+                        int height = 154 / size;
+                        int offset = i * (height + 2);
+
+                        int colorWidth = 12;
+                        int width = colorWidth + 3;
+
+                        boolean isOn = isOnButton(mouseX, mouseY, windowX + 4, windowY + 252 - height - offset, colorWidth * 4 + 3, height);
+
+                        if(isOn){
+                            width = colorWidth * 3 + 3;
+
+                            int redNone = ColorHelper.getArgb(255, 0, eye_colors[i][1], eye_colors[i][2]);
+                            int redAll = ColorHelper.getArgb(255, 255, eye_colors[i][1], eye_colors[i][2]);
+
+                            int greenNone = ColorHelper.getArgb(255, eye_colors[i][0], 0, eye_colors[i][2]);
+                            int greenAll = ColorHelper.getArgb(255, eye_colors[i][0], 255, eye_colors[i][2]);
+
+                            int blueNone = ColorHelper.getArgb(255, eye_colors[i][0], eye_colors[i][1], 0);
+                            int blueAll = ColorHelper.getArgb(255, eye_colors[i][0], eye_colors[i][1], 255);
+
+                            float redHeight = windowY + 248 - ((float) (height - 6) * eye_colors[i][0]/256f) - offset;
+                            float greenHeight = windowY + 248 - ((float) (height - 6) * eye_colors[i][1]/256f) - offset;
+                            float blueHeight = windowY + 248 - ((float) (height - 6) * eye_colors[i][2]/256f) - offset;
+
+                            context.fill(windowX + 6 + (0 * colorWidth), windowY + 252 - height + 1 - offset, windowX + 6 + (1 * colorWidth) - 1, windowY + 252 - 2 - offset, 0xFFFFFFFF);
+                            context.fillGradient(windowX + 6 + (0 * colorWidth) + 1, windowY + 252 - height + 2 - offset, windowX + 6 + (1 * colorWidth) - 2, windowY + 252 - 3 - offset, redAll, redNone);
+                            context.fill(windowX + 6 + (0 * colorWidth), (int) redHeight - 1, windowX + 6 + (1 * colorWidth) - 1, (int) redHeight + 2, 0xFFFF0000);
+
+                            context.fill(windowX + 6 + (1 * colorWidth), windowY + 252 - height + 1 - offset, windowX + 6 + (2 * colorWidth) - 1, windowY + 252 - 2 - offset, 0xFFFFFFFF);
+                            context.fillGradient(windowX + 6 + (1 * colorWidth) + 1, windowY + 252 - height + 2 - offset, windowX + 6 + (2 * colorWidth) - 2, windowY + 252 - 3 - offset, greenAll, greenNone);
+                            context.fill(windowX + 6 + (1 * colorWidth), (int) greenHeight - 1, windowX + 6 + (2 * colorWidth) - 1, (int) greenHeight + 2, 0xFF00FF00);
+
+                            context.fill(windowX + 6 + (2 * colorWidth), windowY + 252 - height + 1 - offset, windowX + 6 + (3 * colorWidth) - 1, windowY + 252 - 2 - offset, 0xFFFFFFFF);
+                            context.fillGradient(windowX + 6 + (2 * colorWidth) + 1, windowY + 252 - height + 2 - offset, windowX + 6 + (3 * colorWidth) - 2, windowY + 252 - 3 - offset, blueAll, blueNone);
+                            context.fill(windowX + 6 + (2 * colorWidth), (int) blueHeight - 1, windowX + 6 + (3 * colorWidth) - 1, (int) blueHeight + 2, 0xFF0000FF);
+                        }
+                        else {
+                            int color = ColorHelper.getArgb(255, eye_colors[i][0], eye_colors[i][1], eye_colors[i][2]);
+
+                            context.fill(windowX + 6 + (0 * colorWidth), windowY + 252 - height + 1 - offset, windowX + 6 + (1 * colorWidth) - 1, windowY + 252 - 2 - offset, 0xFFFFFFFF);
+                            context.fill(windowX + 6 + (0 * colorWidth) + 1, windowY + 252 - height + 2 - offset, windowX + 6 + (1 * colorWidth) - 2, windowY + 252 - 3 - offset, color);
+                        }
+
+                        context.fill(windowX + 4, windowY + 251 - offset, windowX + 4 + width, windowY + 252 - offset, 0xFFFFFFFF);
+                        context.fill(windowX + 4, windowY + 252 - height - offset, windowX + 5, windowY + 252 - offset, 0xFFFFFFFF);
+                        context.fill(windowX + 4 + width - 1, windowY + 252 - height - offset, windowX + 4 + width, windowY + 252 - offset, 0xFFFFFFFF);
+                        context.fill(windowX + 4, windowY + 252 - height - 1 - offset, windowX + 4 + width, windowY + 252 - height - offset, 0xFFFFFFFF);
+                    }
+                }
                 break;
             }
         }
@@ -241,7 +303,7 @@ public class WorkbenchScreen extends GoopyScreen {
 
         }
 
-        drawEntity(context, entity, 1.35f * 40, windowX + 128, windowY + 251, 200, new Quaternionf().rotationXYZ((float) 0f, (float) Math.PI, (float) Math.PI));
+        drawEntity(context, entity, 2f * 40, windowX + 128, windowY + 251, 200, new Quaternionf().rotationXYZ((float) 0f, (float) Math.PI, (float) Math.PI));
 
         super.render(context, mouseX, mouseY, delta);
     }
@@ -282,21 +344,37 @@ public class WorkbenchScreen extends GoopyScreen {
                                 if(CharacterModelManager.CHARA_ALT_MAP.containsKey(CharacterModelManager.ALL_CHARACTERS.get(s))) {
                                     this.chara = s;
                                     this.alt = CharacterModelManager.CHARA_DEFAULT_ALT_MAP.get(CharacterModelManager.ALL_CHARACTERS.get(s));
-                                    this.eyes = CharacterModelManager.CHARA_ALT_MAP.get(CharacterModelManager.ALL_CHARACTERS.get(s)).get(this.alt).default_eyes();
 
-                                    int size = CharacterModelManager.CHARA_ALT_MAP.get(CharacterModelManager.ALL_CHARACTERS.get(this.chara)).get(this.alt).recolorable_textures().size();
+                                    CharacterModelManager.DataEntry.Alt alt = CharacterModelManager.CHARA_ALT_MAP.get(CharacterModelManager.ALL_CHARACTERS.get(this.chara)).get(this.alt);
+                                    this.eyes = alt.default_eyes();
+
+                                    int size = alt.recolorable_textures().size();
                                     this.colors = new int[size][3];
+
+                                    int size2 = alt.eyes().get(this.eyes).recolorable_textures().size();
+                                    this.eye_colors = new int[size2][3];
 
                                     for(int j = 0; j < size; j++){
                                         colors[j][0] = 255;
                                         colors[j][1] = 255;
                                         colors[j][2] = 255;
                                     }
+
+                                    for (int j = 0; j < size2; j++) {
+                                        eye_colors[j][0] = 255;
+                                        eye_colors[j][1] = 255;
+                                        eye_colors[j][2] = 255;
+                                    }
+
+                                    updateColors(mouseX, mouseY);
+                                    updateEyeColors(mouseX, mouseY);
                                 }
                                 else{
                                     this.chara = "";
                                     this.alt = "";
                                     this.eyes = "";
+                                    this.colors = new int[1][3];
+                                    this.eye_colors = new int[1][3];
                                 }
                                 updateEntity();
                             }
@@ -318,14 +396,25 @@ public class WorkbenchScreen extends GoopyScreen {
                     if(isOnButton(mouseX, mouseY, sX - 2, sY - 2, sWidth + 4, 13)) {
 
                         this.alt = s;
+                        CharacterModelManager.DataEntry.Alt alt = CharacterModelManager.CHARA_ALT_MAP.get(CharacterModelManager.ALL_CHARACTERS.get(this.chara)).get(this.alt);
+                        this.eyes = alt.default_eyes();
 
-                        int size = CharacterModelManager.CHARA_ALT_MAP.get(CharacterModelManager.ALL_CHARACTERS.get(this.chara)).get(this.alt).recolorable_textures().size();
+                        int size = alt.recolorable_textures().size();
                         this.colors = new int[size][3];
+
+                        int size2 = alt.eyes().get(this.eyes).recolorable_textures().size();
+                        this.eye_colors = new int[size2][3];
 
                         for(int j = 0; j < size; j++){
                             colors[j][0] = 255;
                             colors[j][1] = 255;
                             colors[j][2] = 255;
+                        }
+
+                        for (int j = 0; j < size2; j++) {
+                            eye_colors[j][0] = 255;
+                            eye_colors[j][1] = 255;
+                            eye_colors[j][2] = 255;
                         }
 
                         updateEntity();
@@ -334,7 +423,33 @@ public class WorkbenchScreen extends GoopyScreen {
                 break;
             }
             case 4: {
+                updateEyeColors(mouseX, mouseY);
+                for (int i = 0; i < right_list.length; i++) {
 
+                    String s = (String) right_list[i];
+                    Text t = Text.translatable(prefix + s);
+                    int sWidth = textRenderer.getWidth(t);
+                    int sX = windowX - sWidth + 242;
+                    int sY = windowY + 6 + 14 * i;
+
+                    if(isOnButton(mouseX, mouseY, sX - 2, sY - 2, sWidth + 4, 13)) {
+
+                        if(!this.chara.isEmpty() && !this.alt.isEmpty()) {
+                            this.eyes = s;
+
+                            int size = CharacterModelManager.CHARA_ALT_MAP.get(CharacterModelManager.ALL_CHARACTERS.get(this.chara)).get(this.alt).eyes().get(this.eyes).recolorable_textures().size();
+                            this.eye_colors = new int[size][3];
+
+                            for (int j = 0; j < size; j++) {
+                                eye_colors[j][0] = 255;
+                                eye_colors[j][1] = 255;
+                                eye_colors[j][2] = 255;
+                            }
+
+                            updateEntity();
+                        }
+                    }
+                }
                 break;
             }
         }
@@ -345,6 +460,9 @@ public class WorkbenchScreen extends GoopyScreen {
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if(tab == 3){
             updateColors(mouseX, mouseY);
+        }
+        if(tab == 4){
+            updateEyeColors(mouseX, mouseY);
         }
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
@@ -376,6 +494,37 @@ public class WorkbenchScreen extends GoopyScreen {
                 }
 
                 altNbt.putIntArray("color" + i, colors[i]);
+            }
+        }
+    }
+
+    void updateEyeColors(double mouseX, double mouseY){
+        NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt");
+
+        if(!altNbt.isEmpty() && altNbt.contains("eyes_recolorable_textures_size")) {
+            int size = altNbt.getInt("eyes_recolorable_textures_size");
+
+            for (int i = 0; i < size; i++) {
+
+                int height = 154 / size;
+                int offset = i * (height + 2);
+
+                int colorWidth = 12;
+                int width = colorWidth * 3 + 3;
+
+                int x = windowX + 4;
+                int y = windowY + 252 - height - offset;
+
+                boolean isOn = isOnButton(mouseX, mouseY, x, y, width, height);
+
+                int colorX = (int)(((mouseX - x) / width) * 3);
+                double colorY = Math.clamp(1 - ((mouseY - y - 3) / (height - 6)), 0, 1);
+
+                if (isOn) {
+                    eye_colors[i][colorX] = (int) (colorY * 255);
+                }
+
+                altNbt.putIntArray("eye_color" + i, eye_colors[i]);
             }
         }
     }
@@ -432,12 +581,16 @@ public class WorkbenchScreen extends GoopyScreen {
 
         altNbt.putString("eyes_texture", eyes_texture);
 
+        altNbt.putInt("eyes_recolorable_textures_size", eyes_recolorable_textures.size());
         for(int i = 0; i < eyes_recolorable_textures.size(); i++){
             altNbt.putString("eyes_recolorable_textures" + i, eyes_recolorable_textures.get(i));
+
+            altNbt.putIntArray("eye_color" + i, eye_colors[i]);
         }
 
         altNbt.putString("eyes_emissive", eyes_emissive);
 
+        altNbt.putInt("eyes_recolorable_emissive_size", eyes_recolorable_emissive.size());
         for(int i = 0; i < eyes_recolorable_emissive.size(); i++){
             altNbt.putString("eyes_recolorable_emissive" + i, eyes_recolorable_emissive.get(i));
         }

@@ -388,9 +388,13 @@
   "entity.fnafur.cl_fred": "Freddy Fazbear",
 
   "entity_alts.fnafur.cl_fred.default": "FNAF 1",
+  "entity_alts.fnafur.cl_fred.golden": "Golden Fur",
   "entity_alts.fnafur.cl_fred.colorable": "Colorable",
 
   "entity_eyes.fnafur.cl_fred.default": "Blue",
+  "entity_eyes.fnafur.cl_fred.brown": "Brown",
+  "entity_eyes.fnafur.cl_fred.black": "Full Black",
+  "entity_eyes.fnafur.cl_fred.colorable": "Colorable",
 
   "entity.fnafur.cl_bon": "Bonnie",
   "entity.fnafur.cl_chica": "Chica",
