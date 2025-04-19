@@ -16,6 +16,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallHalfProperty;
@@ -62,7 +63,9 @@ public class FloorPropPlacingRenderer {
 
                         if (block.snapsVertically() && blockHitResult.getSide() == Direction.UP) pos = pos.up();
                         if (block.snapsVertically() && blockHitResult.getSide() == Direction.DOWN) pos = pos.down();
-                        if (!(block instanceof WallPropBlock<?>) && !block.snapsVertically()) pos = pos.up();
+
+                        if (!(block instanceof WallPropBlock<?>) && !FnafUniverseRebuilt.DEBUG) pos = pos.up();
+
                         if (block instanceof WallPropBlock<?>) pos = pos.offset(blockHitResult.getSide());
 
                         if(player.isSneaking()){
