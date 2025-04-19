@@ -6,10 +6,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
-import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
-import net.zephyr.fnafur.client.gui.screens.computer.apps.COMPRemoteScreen;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
 import net.zephyr.fnafur.util.jsonReaders.entity_skins.EntityDataManager;
@@ -81,14 +79,7 @@ public class MinecraftClientMixin implements IGetClientManagers {
 
 	@Inject(method = "getCameraEntity", at = @At("HEAD"), cancellable = true)
 	public void getCameraEntity(CallbackInfoReturnable<Entity> cir) {
-		MinecraftClient client = ((MinecraftClient) (Object) this);
-		if (client.currentScreen instanceof COMPRemoteScreen screen && screen.getControl() != null) {
-			Entity entity = MinecraftClient.getInstance().player;
-			Vec3d pos = entity.getPos();
-			entity.setPosition(screen.getControl().getPos());
-			cir.setReturnValue(entity);
-			entity.setPosition(pos);
-		}
+
 	}
 	@Override
 	public LayeredBlockManager getLayerManager() {

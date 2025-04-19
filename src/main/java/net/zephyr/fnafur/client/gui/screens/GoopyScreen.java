@@ -3,32 +3,25 @@ package net.zephyr.fnafur.client.gui.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.ShaderLoader;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ColorHelper;
-import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
-import net.zephyr.fnafur.client.gui.screens.computer.apps.COMPCodeScreen;
-import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.util.mixinAccessing.IDCVertexConsumersAcc;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import software.bernie.geckolib.loading.json.raw.FaceUV;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public abstract class GoopyScreen extends Screen {
     public static List<GUIButton> BUTTONS = new ArrayList<>();

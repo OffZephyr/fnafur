@@ -5,9 +5,6 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.networking.nbt_updates.*;
-import net.zephyr.fnafur.networking.nbt_updates.computer.ComputerEjectPayload;
-import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.*;
 
 public class EntityPayloads {
     public static final Identifier C2SWalkSoundPlayer = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_walk_sound_player");

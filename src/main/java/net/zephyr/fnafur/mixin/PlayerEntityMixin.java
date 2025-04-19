@@ -3,14 +3,8 @@ package net.zephyr.fnafur.mixin;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.world.World;
-import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
-import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import net.zephyr.fnafur.util.ItemNbtUtil;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IPlayerCustomModel;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,14 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin implements IPlayerCustomModel {
     boolean crawling = false;
-    @Nullable DefaultEntity currentEntity;
+    @Nullable LivingEntity currentEntity;
     float mimicBodyYaw = 0;
     @Inject (method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo ci) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
         ItemStack stack = player.getInventory().armor.get(2);
         if(stack.isOf(ItemInit.ILLUSIONDISC)){
-
+            /*
             String animatronic = ItemNbtUtil.getNbt(stack).getString("entity");
             NbtCompound animatronicData = ItemNbtUtil.getNbt(stack).getCompound("entityData");
             if (!animatronic.isEmpty() && ComputerData.getAIAnimatronic(animatronic) instanceof ComputerData.Initializer.AnimatronicAI ai) {
@@ -60,6 +54,7 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
 
                 player.calculateDimensions();
             }
+            */
         }
         else {
             resetCurrentEntity();
@@ -78,11 +73,11 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
     @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
     public void getBaseDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> ci){
         if(getCurrentEntity() != null) {
-            ci.setReturnValue(getCurrentEntity().getBaseDimensions(pose));
+            ci.setReturnValue(getCurrentEntity().getType().getDimensions().scaled(getCurrentEntity().getScaleFactor()));
         }
     }
     @Override
-    public DefaultEntity getCurrentEntity() {
+    public LivingEntity getCurrentEntity() {
         return currentEntity;
     }
 
@@ -94,7 +89,7 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
     public void resetCurrentEntity() {
         PlayerEntity player = ((PlayerEntity) (Object)this);
         if(currentEntity != null) {
-            currentEntity.mimicPlayer.calculateDimensions();
+            //currentEntity.mimicPlayer.calculateDimensions(); //TODO FIX THIS
             currentEntity.remove(Entity.RemovalReason.DISCARDED);
             currentEntity = null;
             player.calculateDimensions();

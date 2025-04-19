@@ -61,8 +61,6 @@ public class EntityInit {
         FabricDefaultAttributeRegistry.register(EntityInit.ANIMATRONIC, AnimatronicEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(EntityInit.BEAR5, Bear5Entity.setAttributes());
 
-        ClassicInit.registerEntities();
-
         FnafUniverseRebuilt.LOGGER.info("Registering Entities for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
     public static void registerEntitiesOnClient(){
@@ -71,8 +69,6 @@ public class EntityInit {
         EntityRendererRegistry.register(EntityInit.BEAR5, Bear5Renderer::new);
         makeRenderer(EntityInit.ANIMATRONIC, AnimatronicRenderer::new);
         EntityRendererRegistry.register(EntityInit.SEAT, SeatEntityRenderer::new);
-
-        ClassicInit.registerEntitiesOnClient();
 
         WorldRenderEvents.LAST.register(CameraRenderer::onRenderWorld);
 

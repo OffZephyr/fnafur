@@ -17,7 +17,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -28,19 +27,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
-import net.zephyr.fnafur.init.SoundsInit;
-import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.init.ScreensInit;
+import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.item.EntitySpawnItem;
 import net.zephyr.fnafur.networking.entity.WalkSoundPlayerC2SPayload;
-import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.AIBehaviorUpdateS2CPayload;
 import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.UpdateEntityNbtS2CPongPayload;
 import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.UpdateJumpscareDataS2CPayload;
-import net.zephyr.fnafur.util.Computer.ComputerAI;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemNbtUtil;
-import net.zephyr.fnafur.util.SoundUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IPlayerCustomModel;
 import org.jetbrains.annotations.Nullable;
@@ -538,6 +532,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
 
+        /*
         if(boopBox != null) {
             if (boopBox.expand(0.1f).contains(getPos().add(hitPos))) {
 
@@ -578,6 +573,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
                 return ActionResult.SUCCESS;
             }
         }
+        */
         return super.interactAt(player, hitPos, hand);
     }
 
@@ -693,7 +689,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
         return getAIData(entity, entity.getWorld()).getString("" + index);
     }
     public int getIndex(String behavior, String option) {
-        if(!this.getWorld().isClient()){
+       /* if(!this.getWorld().isClient()){
             for(ServerPlayerEntity p : PlayerLookup.all(getServer())) {
                 if(behavior != null && option != null) {
                     ServerPlayNetworking.send(p, new AIBehaviorUpdateS2CPayload(behavior, option, getId()));
@@ -705,7 +701,7 @@ public abstract class DefaultEntity extends PathAwareEntity implements GeoEntity
             if (ComputerData.getAIBehavior(behavior) instanceof ComputerAI ai) {
                 return ai.getOptionIndex(option);
             }
-        }
+        }*/
         return -1;
     }
 

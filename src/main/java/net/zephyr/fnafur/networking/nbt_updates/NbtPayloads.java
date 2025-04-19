@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.networking.nbt_updates.computer.ComputerEjectPayload;
 import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.*;
 
 public class NbtPayloads {
@@ -40,7 +39,6 @@ public class NbtPayloads {
 
         PayloadTypeRegistry.playC2S().register(AIBehaviorUpdateC2SPayload.ID, AIBehaviorUpdateC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(AIBehaviorUpdateS2CPayload.ID, AIBehaviorUpdateS2CPayload.CODEC);
-        PayloadTypeRegistry.playC2S().register(ComputerEjectPayload.ID, ComputerEjectPayload.CODEC);
 
         PayloadTypeRegistry.playC2S().register(UpdateCrawlingC2SPayload.ID, UpdateCrawlingC2SPayload.CODEC);
     }
@@ -61,7 +59,6 @@ public class NbtPayloads {
 
         ServerPlayNetworking.registerGlobalReceiver(UpdateJumpscarePosC2SPayload.ID, UpdateJumpscarePosC2SPayload::receive);
         ServerPlayNetworking.registerGlobalReceiver(AIBehaviorUpdateC2SPayload.ID, AIBehaviorUpdateC2SPayload::receive);
-        ServerPlayNetworking.registerGlobalReceiver(ComputerEjectPayload.ID, ComputerEjectPayload::receive);
 
         ServerPlayNetworking.registerGlobalReceiver(UpdateCrawlingC2SPayload.ID, UpdateCrawlingC2SPayload::receive);
     }

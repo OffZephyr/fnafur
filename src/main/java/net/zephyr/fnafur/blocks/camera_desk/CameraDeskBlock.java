@@ -23,14 +23,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.GoopyBlockWithEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.item.tablet.TabletItem;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
-public class CameraDeskBlock extends GoopyBlockWithEntity {
+public class CameraDeskBlock extends BlockWithEntity {
     public static EnumProperty<Direction> FACING =  Properties.HORIZONTAL_FACING;
     public CameraDeskBlock(Settings settings) {
         super(settings);

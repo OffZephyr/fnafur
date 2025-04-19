@@ -15,13 +15,11 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.wall_props.clocks.GeoClockPropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlockEntity;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 
 public class BlockEntityInit {
-    public static BlockEntityType<ComputerBlockEntity> COMPUTER;
     public static BlockEntityType<CpuConfigPanelBlockEntity> CPU_CONFIG_PANEL;
     public static BlockEntityType<CameraBlockEntity> CAMERA;
     public static BlockEntityType<CameraDeskBlockEntity> CAMERA_DESK;
@@ -36,10 +34,6 @@ public class BlockEntityInit {
     public static BlockEntityType<BaseEnergyBlockEntity> ENERGY;
 
     public static void registerBlockEntities() {
-        COMPUTER =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "computer"),
-                        FabricBlockEntityTypeBuilder.create(ComputerBlockEntity::new,
-                                BlockInit.COMPUTER).build());
         CPU_CONFIG_PANEL =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "cpu_config_panel"),
                         FabricBlockEntityTypeBuilder.create(CpuConfigPanelBlockEntity::new,

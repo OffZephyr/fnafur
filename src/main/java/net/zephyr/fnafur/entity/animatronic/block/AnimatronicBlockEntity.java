@@ -136,7 +136,7 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
             return anim;
         }
 
-        return "animation.cl_fred." + animation;
+        return "animation.default." + animation;
     }
 
     public RenderLayer getRenderType(){

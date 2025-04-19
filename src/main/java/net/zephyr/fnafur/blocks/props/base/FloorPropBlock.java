@@ -34,6 +34,11 @@ public abstract class FloorPropBlock<@Nullable T extends Enum<T> & ColorEnumInte
     }
 
     @Override
+    public boolean snapsVertically() {
+        return true;
+    }
+
+    @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         if (world.getBlockEntity(pos) != null && placer instanceof PlayerEntity player) {
             if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof BlockItem blockItem) {
@@ -54,12 +59,14 @@ public abstract class FloorPropBlock<@Nullable T extends Enum<T> & ColorEnumInte
 
                         if (player.isSneaking()) {
                             x = Math.round(x / PropBlock.gridSnap) * PropBlock.gridSnap;
+                            y = Math.round(y / PropBlock.gridSnap) * PropBlock.gridSnap;
                             z = Math.round(z / PropBlock.gridSnap) * PropBlock.gridSnap;
 
                             rotation = Math.round(rotation / angleSnap) * angleSnap;
                         }
                         ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putFloat("Rotation", rotation);
                         ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("xOffset", x);
+                        ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("yOffset", y);
                         ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("zOffset", z);
 
                     }

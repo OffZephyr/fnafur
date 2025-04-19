@@ -3,8 +3,6 @@ package net.zephyr.fnafur.item;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
-import net.zephyr.fnafur.util.ItemNbtUtil;
 
 public class CPUItem extends Item {
     public CPUItem(Settings settings) {
@@ -13,10 +11,6 @@ public class CPUItem extends Item {
 
     @Override
     public Text getName(ItemStack stack) {
-        String animatronic = ItemNbtUtil.getNbt(stack).getString("entity");
-        if (!animatronic.isEmpty() && ComputerData.getAIAnimatronic(animatronic) instanceof ComputerData.Initializer.AnimatronicAI ai) {
-            return Text.translatable(this.getTranslationKey(), ai.entityType().getName().getString());
-        }
         return Text.translatable(this.getTranslationKey(), "Empty");
 
     }

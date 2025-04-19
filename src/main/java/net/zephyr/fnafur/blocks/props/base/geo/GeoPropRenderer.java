@@ -79,9 +79,13 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
             double offsetZ = nbt.getDouble("zOffset");
 
             matrices.translate(-0.5f, 0, -0.5f);
-            matrices.translate(offsetX, offsetY, offsetZ);
+            matrices.translate(offsetX, 0, offsetZ);
+            if(!block.snapsVertically()) {
+                matrices.translate(0, offsetY, 0);
+                matrices.translate(0, -1, 0);
+            }
             if(state.getBlock() instanceof WallPropBlock<?>) {
-                matrices.translate(0, -0.5f, 0);
+                matrices.translate(0, 0.5f, 0);
             }
             else {
                 float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
@@ -98,10 +102,14 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
 
                 matrices.push();
                 matrices.translate(-0.5f, 0, -0.5f);
-                if(state.getBlock() instanceof WallPropBlock<?>) {
-                    matrices.translate(0, -0.5f, 0);
+                if(!block.snapsVertically()) {
+                    matrices.translate(0, -2, 0);
+                    matrices.translate(0, offsetY, 0);
                 }
-                matrices.translate(offsetX, offsetY, offsetZ);
+                if(state.getBlock() instanceof WallPropBlock<?>) {
+                    matrices.translate(0, 0.5f, 0);
+                }
+                matrices.translate(offsetX, 0, offsetZ);
                 for (Box box : block.getClickHitBoxes(state)) {
                     VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), VoxelShapes.cuboid(box), 0, 0, 0, 0xFF00FF00);
                 }

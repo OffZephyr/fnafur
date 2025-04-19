@@ -3,11 +3,8 @@ package net.zephyr.fnafur.init;
 import net.zephyr.fnafur.client.gui.screens.CameraEditScreen;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.client.gui.screens.DecalBookEditScreen;
-import net.zephyr.fnafur.client.gui.screens.crafting.CpuConfigScreen;
 import net.zephyr.fnafur.client.gui.screens.EntitySkinScreen;
-import net.zephyr.fnafur.client.gui.screens.computer.COMPBootupScreen;
-import net.zephyr.fnafur.client.gui.screens.computer.COMPDesktopScreen;
-import net.zephyr.fnafur.client.gui.screens.computer.apps.COMPCodeScreen;
+import net.zephyr.fnafur.client.gui.screens.crafting.CpuConfigScreen;
 import net.zephyr.fnafur.client.gui.screens.crafting.WorkbenchScreen;
 import net.zephyr.fnafur.client.gui.screens.killscreens.DefaultKillScreen;
 import net.zephyr.fnafur.client.gui.screens.killscreens.ZephyrKillScreen;
@@ -29,10 +26,6 @@ public class ScreensInit {
     public static final String ZEPHYR_KILLSCREEN = "death_goopy";
     public static void init(){
         GoopyNetworkingUtils.registerScreen(CAMERA_TABLET, CameraTabletScreen::new);
-
-        GoopyNetworkingUtils.registerScreen(COMPUTER_BOOT, COMPBootupScreen::new);
-        GoopyNetworkingUtils.registerScreen(COMPUTER_DESKTOP, COMPDesktopScreen::new);
-        GoopyNetworkingUtils.registerScreen(COMPUTER_CODE, COMPCodeScreen::new);
 
         GoopyNetworkingUtils.registerScreen(CAMERA_EDIT, CameraEditScreen::new);
         GoopyNetworkingUtils.registerScreen(CPU_CONFIG, CpuConfigScreen::new);

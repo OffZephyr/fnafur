@@ -75,9 +75,9 @@ public class WorldRendererMixin {
 
             matrices.translate(-cameraX,-cameraY,-cameraZ);
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-rotation));
-            matrices.translate(-0.5f, 0, -0.5f);
+            matrices.translate(-0.5f, -1, -0.5f);
             if(state.getBlock() instanceof WallPropBlock<?>) {
-                matrices.translate(0, -0.5f, 0);
+                matrices.translate(0, 0.5f, 0);
             }
 
             VertexRendering.drawOutline(

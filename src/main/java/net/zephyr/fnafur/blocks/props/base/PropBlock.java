@@ -85,6 +85,7 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     }
 
     public abstract boolean rotates();
+    public abstract boolean snapsVertically();
 
     @Override
     protected boolean canPathfindThrough(BlockState state, NavigationType type) {

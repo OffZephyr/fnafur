@@ -44,6 +44,11 @@ public class AnimatronicBlock extends FloorPropBlock<DemoAnimationList> {
     }
 
     @Override
+    public boolean snapsVertically() {
+        return false;
+    }
+
+    @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(stack.isOf(PropInit.COSMO_GIFT.asItem())){
             NbtCompound nbt = ItemNbtUtil.getNbt(stack);
@@ -70,7 +75,7 @@ public class AnimatronicBlock extends FloorPropBlock<DemoAnimationList> {
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.1f, 0, 0f, 1f, 2.5, 1f)));
+        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0f, 0, 0f, 1f, 2.5, 1f)));
         return drawingOutline ? shape : VoxelShapes.fullCube();
     }
 

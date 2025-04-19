@@ -14,10 +14,7 @@ public class FnafUniverseRebuiltClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 
-		net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData.addInitializer(new DefaultComputerInit());
-
 		ModelLoadingPlugin.register(new ModelLoading());
-		net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData.runInitializersClient();
 		ItemInit.clientRegisterItem();
 		ScreensInit.init();
 		BlockInit.registerBlocksOnClient();

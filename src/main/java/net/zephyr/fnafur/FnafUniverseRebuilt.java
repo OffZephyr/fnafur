@@ -6,7 +6,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.entity.EntityType;
-import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerData;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.init.*;
@@ -40,7 +39,6 @@ public class FnafUniverseRebuilt implements ModInitializer {
 		GeoBlockEntityInit.registerBlockEntities();
 		ItemGroupsInit.registerItemGroups();
 		SoundsInit.registerSounds();
-		ComputerData.runInitializers();
 		ItemInit.registerItems();
 		ParticlesInit.registerParticles();
 

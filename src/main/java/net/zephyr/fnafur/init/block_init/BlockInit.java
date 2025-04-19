@@ -41,7 +41,6 @@ import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorDirection;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorItem;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.beta.OfficeDoor;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
-import net.zephyr.fnafur.blocks.utility_blocks.computer.ComputerBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
@@ -66,17 +65,6 @@ public class BlockInit {
             List.of(
                     Text.translatable("fnafur.symbol.wrench")
             )
-    );
-
-
-    public static final Block COMPUTER = registerBlock(
-            "computer",
-            ComputerBlock::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
     );
 
     public static final Block CPU_CONFIG_PANEL = registerBlock(

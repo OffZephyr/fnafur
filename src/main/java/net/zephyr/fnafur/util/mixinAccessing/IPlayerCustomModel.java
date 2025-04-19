@@ -1,9 +1,10 @@
 package net.zephyr.fnafur.util.mixinAccessing;
 
+import net.minecraft.entity.LivingEntity;
 import net.zephyr.fnafur.entity.base.DefaultEntity;
 
 public interface IPlayerCustomModel {
-    DefaultEntity getCurrentEntity();
+    LivingEntity getCurrentEntity();
     void setCurrentEntity(DefaultEntity entity);
     void resetCurrentEntity();
     float getMimicYaw();

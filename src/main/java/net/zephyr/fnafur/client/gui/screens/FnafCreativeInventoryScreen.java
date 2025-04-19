@@ -4,29 +4,18 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.impl.itemgroup.FabricItemGroupImpl;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.resource.featuretoggle.FeatureSet;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.init.entity_init.ClassicInit;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import java.util.Objects;
 
@@ -38,8 +27,6 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     public float garageDoorIndex = 0;
     public static FnafSubTab SubTab = FnafSubTab.DEFAULT;
     public static FnafSubTab GoalSubTab = FnafSubTab.DEFAULT;
-    LivingEntity FreddyEntity = ClassicInit.CL_FRED.create(MinecraftClient.getInstance().world, SpawnReason.LOAD);
-
     public FnafCreativeInventoryScreen(ClientPlayerEntity player, FeatureSet enabledFeatures, boolean operatorTabEnabled) {
         super(player, enabledFeatures, operatorTabEnabled);
         SubTab = FnafSubTab.DEFAULT;
@@ -234,7 +221,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
     @Override
     public void close() {
-        FreddyEntity.remove(Entity.RemovalReason.DISCARDED);
+        //FreddyEntity.remove(Entity.RemovalReason.DISCARDED);
         super.close();
     }
 
@@ -259,14 +246,6 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         } else {
             texture = bl ? Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/tab_bottom_selected.png") : Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/tab_bottom_unselected.png");
         }
-
-        float p = FreddyEntity.getScale();
-
-        Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI);
-        Quaternionf quaternionf2 = new Quaternionf().rotateY((float) Math.PI);
-        Vector3f vector3f = new Vector3f(0.0F, FreddyEntity.getHeight() / 2.0F + 0.0625F * p, 0.0F);
-        quaternionf.mul(quaternionf2);
-        //InventoryScreen.drawEntity(context, j + 13, k, 20, vector3f, quaternionf, quaternionf2, FreddyEntity);
 
         //GoopyScreen.drawRecolorableTexture(context, texture, j, k, 32, 26, 0, 0, 32, 26, 0xFFFFFFFF);
         context.drawTexture(RenderLayer::getGuiTextured, texture, j, k, 0, 0, 26, 32, 26, 32);

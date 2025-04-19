@@ -3,11 +3,8 @@ package net.zephyr.fnafur.networking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.networking.nbt_updates.computer.ComputerEjectPayload;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateCrawlingC2SPayload;
-import net.zephyr.fnafur.networking.payloads.*;
+import net.zephyr.fnafur.networking.payloads.MoneySyncDataC2SPayload;
+import net.zephyr.fnafur.networking.payloads.MoneySyncDataS2CPayload;
 
 public class PayloadDef {
 

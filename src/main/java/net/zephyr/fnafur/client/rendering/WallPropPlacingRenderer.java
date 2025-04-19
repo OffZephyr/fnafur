@@ -29,6 +29,10 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 public class WallPropPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
 
+            if(true){
+                return;
+            }
+
             MinecraftClient client = MinecraftClient.getInstance();
             ClientPlayerEntity player = client.player;
 

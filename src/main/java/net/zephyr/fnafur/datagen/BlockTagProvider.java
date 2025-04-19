@@ -33,7 +33,6 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
         getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(BlockInit.ANIMATRONIC_BLOCK)
-                .add(BlockInit.COMPUTER)
                 .add(BlockInit.CPU_CONFIG_PANEL)
                 .add(BlockInit.WORKBENCH)
                 .add(BlockInit.CAMERA)

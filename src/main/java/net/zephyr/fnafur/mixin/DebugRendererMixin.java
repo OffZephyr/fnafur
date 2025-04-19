@@ -20,8 +20,6 @@ public class DebugRendererMixin {
     @Unique
     FloorPropPlacingRenderer floorPropPlacingRenderer = new FloorPropPlacingRenderer();
     @Unique
-    WallPropPlacingRenderer wallPropPlacingRenderer = new WallPropPlacingRenderer();
-    @Unique
     StickerPlacingRenderer stickerPlacingRenderer = new StickerPlacingRenderer();
     @Unique
     EnergyInteractionRenderer energyInteractionRenderer = new EnergyInteractionRenderer();
@@ -35,7 +33,6 @@ public class DebugRendererMixin {
         mapRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         specialBlockPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         floorPropPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
-        wallPropPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         stickerPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         energyInteractionRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         tileDoorPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);

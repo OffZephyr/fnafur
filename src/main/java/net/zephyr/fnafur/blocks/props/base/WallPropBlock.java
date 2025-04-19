@@ -34,6 +34,10 @@ public abstract class WallPropBlock<T extends Enum<T> & ColorEnumInterface & Str
     }
 
     @Override
+    public boolean snapsVertically() {
+        return false;
+    }
+    @Override
     public boolean rotates() {
         return true;
     }

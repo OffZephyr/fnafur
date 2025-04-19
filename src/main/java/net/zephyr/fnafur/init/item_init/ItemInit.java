@@ -130,7 +130,6 @@ public class ItemInit {
 
     public static void registerItems() {
         DecalInit.registerStickers();
-        SpawnItemInit.registerSpawnItems();
         FnafUniverseRebuilt.LOGGER.info("Registering Items for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 
