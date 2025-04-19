@@ -37,7 +37,7 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "main", 3, this::mainController));
         controllers.add(new AnimationController<>(this, "lower", 3, this::lowerController));
-        controllers.add(new AnimationController<>(this, "blink", 0, this::blinkController));
+        controllers.add(new AnimationController<>(this, "blink", 3, this::blinkController));
     }
 
     private PlayState mainController(AnimationState<AnimatronicBlockEntity> geoPropBlockEntityAnimationState) {

@@ -36,7 +36,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     private PlayState upperAnimController(AnimationState<AnimatronicEntity> animatronicEntityAnimationState) {
         if(isMenu) {
-            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop("animation.cl_fred.skinmenuidle"));
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop("animation.cl_fred.menuidle"));
         }
         return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop("animation.cl_fred.performance"));
     }
