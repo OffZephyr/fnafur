@@ -48,6 +48,7 @@ import org.joml.Vector2i;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MimicFrames extends BlockWithSticker {
     public static final BooleanProperty IS_FULL = BooleanProperty.of("full");
@@ -210,13 +211,10 @@ public class MimicFrames extends BlockWithSticker {
             byte[] array = matrixToArray(matrix, getMatrixSize());
 
             BlockState newState = state.with(IS_FULL, isFullCube(array));
+
             if(entity.getWorld().isClient()){
                 ((IEntityDataSaver)entity).getPersistentData().putByteArray("cubeMatrix", array);
-            }
-            else{
-                for(ServerPlayerEntity p : PlayerLookup.all(entity.getWorld().getServer())) {
-                    ServerPlayNetworking.send(p, new UpdateBlockNbtS2CGetFromClientPayload(pos.asLong()));
-                }
+                ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), ((IEntityDataSaver)entity).getPersistentData()));
             }
 
             entity.getWorld().setBlockState(pos, newState);
@@ -333,7 +331,7 @@ public class MimicFrames extends BlockWithSticker {
 
             Vec3i matrixPos = getMatrixPos(hit.getPos().offset(hit.getSide(), -0.1), hit.getBlockPos());
 
-            NbtCompound nbt = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData();
+            NbtCompound nbt = ((IEntityDataSaver) entity).getPersistentData();
             Block currentBlock = getCurrentBlock(nbt, world, hit.getSide(), matrixPos);
 
             byte[] data = nbt.getByteArray("cubeMatrix");
@@ -344,14 +342,13 @@ public class MimicFrames extends BlockWithSticker {
             }
 
 
-            int holdTime = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getInt("holdTime");
+            int holdTime = ((IEntityDataSaver)entity).getPersistentData().getInt("holdTime");
 
             if (stack != null && stack.isOf(ItemInit.SCRAPER) && currentBlock != null) {
                 saveBlockTexture(
                         removeBlockTexture(nbt, hit.getSide(), matrixPos),
                         world,
-                        pos,
-                        player.getServer()
+                        pos
                 );
 
                 if(!world.isClient()) {
@@ -365,14 +362,16 @@ public class MimicFrames extends BlockWithSticker {
                 if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null || (currentBlock == blockItem.getBlock() && holdTime > 0)) {
 
                     BlockPos prevPos = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("prevPos"));
+                    String prevDir = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getString("prevDir");
 
-                    if(!prevPos.equals(new BlockPos(matrixPos))) {
+                    if(!prevPos.equals(new BlockPos(matrixPos)) || !Objects.equals(prevDir, hit.getSide().getName())) {
                         holdTime = 0;
                     }
 
                     ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putInt("holdTime", holdTime + 1);
                     ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putInt("holding", 10);
                     ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putLong("prevPos", new BlockPos(matrixPos).asLong());
+                    ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putString("prevDir", hit.getSide().getName());
 
                     if(!world.isClient()) {
                         world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1, MathHelper.lerp(Math.clamp(holdTime / 12f, 0, 1), 0.75f, 1.5f));
@@ -382,8 +381,7 @@ public class MimicFrames extends BlockWithSticker {
                         saveBlockTexture(
                                 setBlockTexture(nbt, stack, hit.getSide(), world, matrixPos),
                                 world,
-                                pos,
-                                player.getServer()
+                                pos
                         );
 
                         world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
@@ -412,8 +410,7 @@ public class MimicFrames extends BlockWithSticker {
                         saveBlockTexture(
                                 nbt2,
                                 world,
-                                pos,
-                                player.getServer()
+                                pos
                         );
                     }
                     if(holdTime == 12){
@@ -439,8 +436,7 @@ public class MimicFrames extends BlockWithSticker {
                         saveBlockTexture(
                                 nbt2,
                                 world,
-                                pos,
-                                player.getServer()
+                                pos
                         );
                     }
                     return ActionResult.SUCCESS;
@@ -475,13 +471,11 @@ public class MimicFrames extends BlockWithSticker {
         nbt.put("BlockData", blockData);
         return nbt;
     }
-    public void saveBlockTexture(NbtCompound nbt, World world, BlockPos pos, MinecraftServer server){
+    public void saveBlockTexture(NbtCompound nbt, World world, BlockPos pos){
 
-        if(!world.isClient()) {
+        if(world.isClient()) {
             world.playSound(null, pos, SoundEvents.BLOCK_COPPER_GRATE_PLACE, SoundCategory.BLOCKS, 1, 1);
-            for (ServerPlayerEntity p : PlayerLookup.all(server)) {
-                ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(pos.asLong(), nbt));
-            }
+            ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), nbt));
         }
 
         world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);

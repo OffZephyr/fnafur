@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.entity.animatronic.block;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
@@ -29,6 +30,7 @@ import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -53,10 +55,12 @@ public class AnimatronicBlock extends FloorPropBlock<DemoAnimationList> {
         if(stack.isOf(PropInit.COSMO_GIFT.asItem())){
             NbtCompound nbt = ItemNbtUtil.getNbt(stack);
 
-            if(world.getBlockEntity(pos) instanceof AnimatronicBlockEntity ent){
+            if(world.isClient() && world.getBlockEntity(pos) instanceof AnimatronicBlockEntity ent){
                 ((IEntityDataSaver)ent).getPersistentData().put("alt", nbt);
-                return ActionResult.SUCCESS;
+
+                ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), ((IEntityDataSaver)ent).getPersistentData()));
             }
+            return ActionResult.SUCCESS;
         }
 
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
