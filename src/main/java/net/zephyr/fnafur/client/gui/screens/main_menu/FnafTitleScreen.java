@@ -101,7 +101,7 @@ public class FnafTitleScreen extends Screen {
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/5.png")
     };
     private Map<Identifier, triggerSoundZone> easterEggMap = Map.of(
-            RENDERS[0][0], new triggerSoundZone(SoundsInit.HONK, 1550, 567, 250, 136)
+            RENDERS[0][0], new triggerSoundZone(SoundsInit.HONK, 1600, 600, 187, 90)
     );
     private static final float field_49900 = 2000.0F;
     @Nullable
