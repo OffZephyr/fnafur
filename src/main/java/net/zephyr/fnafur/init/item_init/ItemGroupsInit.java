@@ -116,9 +116,9 @@ public class ItemGroupsInit {
 
                         entries.add(BlockInit.ANIMATRONIC_BLOCK);
                         entries.add(PropInit.COSMO_GIFT);
-                        entries.add(ItemInit.DEATHCOIN);
+                        //entries.add(ItemInit.DEATHCOIN);
                         entries.add(BlockInit.WORKBENCH);
-                        entries.add(BlockInit.CPU_CONFIG_PANEL);
+                        //entries.add(BlockInit.CPU_CONFIG_PANEL);
                         //entries.add(ItemInit.CPU);
                         //entries.add(ItemInit.ILLUSIONDISC);
 
