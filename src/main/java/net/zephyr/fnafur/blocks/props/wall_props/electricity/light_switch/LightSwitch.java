@@ -6,6 +6,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -33,6 +35,8 @@ public class LightSwitch extends WallPropBlock<DefaultPropColorEnum> {
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 
         world.setBlockState(pos, state.cycle(POWERED));
+        float f = (Boolean)state.get(POWERED) ? 1.75F : 1.5F;
+        world.playSoundAtBlockCenter(pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3f, f, true);
         this.updateNeighbors(state, world, pos);
         return ActionResult.SUCCESS;
     }
