@@ -23,6 +23,7 @@ import net.minecraft.world.block.OrientationHelper;
 import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
+import net.zephyr.fnafur.init.SoundsInit;
 
 public class LightSwitch extends WallPropBlock<DefaultPropColorEnum> {
     public static final BooleanProperty POWERED = Properties.POWERED;
@@ -33,10 +34,13 @@ public class LightSwitch extends WallPropBlock<DefaultPropColorEnum> {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        float pitch = (Boolean) state.get(POWERED) ? 1.75f : 1.5f;
+        // float pitch = (Boolean) state.get(POWERED) ? 1.05f : 0.85f;
+        world.playSoundAtBlockCenter(pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, .3f, pitch, true);
+        // I can't get the custom sound to work :(
+        // world.playSoundAtBlockCenter(pos, SoundsInit.LIGHT_SWITCH_FLIP, SoundCategory.BLOCKS, 1f, pitch, true);
 
         world.setBlockState(pos, state.cycle(POWERED));
-        float f = (Boolean)state.get(POWERED) ? 1.75F : 1.5F;
-        world.playSoundAtBlockCenter(pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3f, f, true);
         this.updateNeighbors(state, world, pos);
         return ActionResult.SUCCESS;
     }
