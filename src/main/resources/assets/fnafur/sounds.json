@@ -268,6 +268,12 @@
       "sounds": [
         "fnafur:props/switches/switch_flip"
       ]
+    },
+    "desk_fan": {
+      "subtitle": "sounds.fnafur.desk_fan",
+      "sounds": [
+        "fnafur:props/fnaf1desk/desk_fan"
+      ]
     }
   }
 }
