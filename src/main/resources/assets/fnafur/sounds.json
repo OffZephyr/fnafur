@@ -243,5 +243,31 @@
        "fnafur:props/cutouts/helpules1",
        "fnafur:props/cutouts/helpules2"
      ]
-   }
+   },
+  "electrical_locker_open": {
+    "subtitle": "sounds.fnafur.electrical_locker_open",
+    "sounds": [
+      "fnafur:props/electrical_locker/electrical_locker_door_open"
+    ]
+  },
+
+  "electrical_locker_close": {
+    "subtitle": "sounds.fnafur.electrical_locker_close",
+    "sounds": [
+      "fnafur:props/electrical_locker/electrical_locker_door_close"
+  ],
+
+    "electrical_locker_switch": {
+      "subtitle": "sounds.fnafur.electrical_locker_switch",
+      "sounds": [
+        "fnafur:props/electrical_locker/electrical_locker_switch_activate"
+      ]
+    },
+    "switch_flip": {
+      "subtitle": "sounds.fnafur.switch_flip",
+      "sounds": [
+        "fnafur:props/switches/switch_flip"
+      ]
+    }
+  }
 }

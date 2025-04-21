@@ -35,6 +35,10 @@ public class SoundsInit {
     public static final SoundEvent OFFICE_DOOR_ERROR = registerSoundEvent("office_door_error");
     public static final SoundEvent OFFICE_DOOR_KNOCK = registerSoundEvent("office_door_knock");
     public static final SoundEvent OFFICE_DOOR_LIGHT = registerSoundEvent("office_door_light");
+    public static final SoundEvent ELECTRICAL_LOCKER_OPEN = registerSoundEvent("electrical_locker_open");
+    public static final SoundEvent ELECTRICAL_LOCKER_CLOSE = registerSoundEvent("electrical_locker_close");
+    public static final SoundEvent ELECTRICAL_LOCKER_SWITCH = registerSoundEvent("electrical_locker_switch");
+    public static final SoundEvent SWITCH_FLIP = registerSoundEvent("switch_flip");
 
     // CUTOUTS
     public static final SoundEvent DAWKO_PLACE = registerSoundEvent("dawko_place");
