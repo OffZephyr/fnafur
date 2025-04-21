@@ -39,6 +39,7 @@ public class SoundsInit {
     public static final SoundEvent ELECTRICAL_LOCKER_CLOSE = registerSoundEvent("electrical_locker_close");
     public static final SoundEvent ELECTRICAL_LOCKER_SWITCH = registerSoundEvent("electrical_locker_switch");
     public static final SoundEvent LIGHT_SWITCH_FLIP = registerSoundEvent("switch_flip");
+    public static final SoundEvent DESK_FAN = registerSoundEvent("desk_fan");
 
     // CUTOUTS
     public static final SoundEvent DAWKO_PLACE = registerSoundEvent("dawko_place");
