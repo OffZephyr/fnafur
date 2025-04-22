@@ -255,8 +255,8 @@
     "subtitle": "sounds.fnafur.electrical_locker_close",
     "sounds": [
       "fnafur:props/electrical_locker/electrical_locker_door_close"
-  ],
-
+    ]
+  },
     "electrical_locker_switch": {
       "subtitle": "sounds.fnafur.electrical_locker_switch",
       "sounds": [

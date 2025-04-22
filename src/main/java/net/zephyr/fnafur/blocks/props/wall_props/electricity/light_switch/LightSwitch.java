@@ -34,11 +34,9 @@ public class LightSwitch extends WallPropBlock<DefaultPropColorEnum> {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        float pitch = (Boolean) state.get(POWERED) ? 1.75f : 1.5f;
-        // float pitch = (Boolean) state.get(POWERED) ? 1.05f : 0.85f;
-        world.playSoundAtBlockCenter(pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, .3f, pitch, true);
-        // I can't get the custom sound to work :(
-        // world.playSoundAtBlockCenter(pos, SoundsInit.LIGHT_SWITCH_FLIP, SoundCategory.BLOCKS, 1f, pitch, true);
+        float pitch = (Boolean) state.get(POWERED) ? 1f : 1.1f;
+        world.playSoundAtBlockCenter(pos, SoundsInit.LIGHT_SWITCH_FLIP, SoundCategory.BLOCKS, .3f, pitch, true);
+
 
         world.setBlockState(pos, state.cycle(POWERED));
         this.updateNeighbors(state, world, pos);
