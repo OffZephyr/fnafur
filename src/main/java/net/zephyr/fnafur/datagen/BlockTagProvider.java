@@ -25,6 +25,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.RESTROOM_SIGN)
                 .add(PropInit.POSTER)
                 .add(PropInit.WALL_CLOUDS)
+                .add(PropInit.STAGE_SUN)
                 .add(PropInit.WALL_PIZZA)
                 .add(PropInit.HANGING_STARS)
                 .add(PropInit.PARTY_TABLE)

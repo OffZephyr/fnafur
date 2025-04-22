@@ -43,6 +43,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.HANGING_LIGHTBULB);
                         entries.add(PropInit.WALL_PIZZA);
                         entries.add(PropInit.WALL_CLOUDS);
+                        entries.add(PropInit.STAGE_SUN);
                         entries.add(PropInit.HANGING_STARS);
                         entries.add(PropInit.PRESENT_STACK);
                         entries.add(PropInit.EXIT_SIGN);

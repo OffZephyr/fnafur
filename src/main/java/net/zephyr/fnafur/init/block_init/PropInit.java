@@ -65,6 +65,7 @@ import net.zephyr.fnafur.blocks.props.wall_props.punch_in_cards.PunchInCards;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom.ToiletPaperRoll;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
 import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSign;
+import net.zephyr.fnafur.blocks.props.wall_props.stage.StageSun;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
 import net.zephyr.fnafur.blocks.props.wall_props.electricity.wall_outlet.WallOutlet;
 import net.zephyr.fnafur.blocks.props.wall_props.wall_pizza.WallPizza;
@@ -174,7 +175,19 @@ public class PropInit {
     public static final Block WALL_CLOUDS = registerBlock(
             "wall_clouds",
             WallClouds::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block STAGE_SUN = registerBlock(
+            "stage_sun",
+            StageSun::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)

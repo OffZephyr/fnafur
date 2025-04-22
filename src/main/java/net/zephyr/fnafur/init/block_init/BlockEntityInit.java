@@ -73,6 +73,7 @@ public class BlockEntityInit {
                                 PropInit.RETRO_STOOL,
 
                                 PropInit.WALL_CLOUDS,
+                                PropInit.STAGE_SUN,
                                 PropInit.WALL_PIZZA,
                                 PropInit.RESTROOM_SIGN,
                                 PropInit.POSTER,
