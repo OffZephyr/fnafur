@@ -1,9 +1,12 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
@@ -17,13 +20,9 @@ public class StickerBlockEntity extends BlockEntity {
     }
     public void tick(World world, BlockPos blockPos, BlockState state, StickerBlockEntity entity){
         if(world.isClient()){
-            if(((IEntityDataSaver)this).getServerUpdateStatus()){
-                ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver)this).getPersistentData()));
-            }
-
             if(!((IEntityDataSaver)entity).getPersistentData().getBoolean("synced")){
                 ClientPlayNetworking.send(new UpdateBlockNbtC2SGetFromServerPayload(getPos().asLong()));
-                ((IEntityDataSaver)entity).getPersistentData().putBoolean("synced", true);
+                world.setBlockState(blockPos, world.getBlockState(blockPos), Block.NOTIFY_ALL_AND_REDRAW);
             }
         }
 
@@ -36,6 +35,13 @@ public class StickerBlockEntity extends BlockEntity {
         }
         else if (holdTime > 0){
             ((IEntityDataSaver)this).getPersistentData().putInt("holdTime", 0);
+        }
+
+        if(world.isClient()){
+            if(((IEntityDataSaver)this).getServerUpdateStatus()){
+                MinecraftClient.getInstance().player.sendMessage(Text.literal("SYNCING STICKER"), false);
+                ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver)this).getPersistentData()));
+            }
         }
     }
 }

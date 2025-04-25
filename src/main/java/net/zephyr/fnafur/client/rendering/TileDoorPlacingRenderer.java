@@ -23,13 +23,13 @@ import net.zephyr.fnafur.util.ItemNbtUtil;
 public class TileDoorPlacingRenderer {
     public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
 
-        matrices.translate(-cameraX, -cameraY, -cameraZ);
         MinecraftClient client = MinecraftClient.getInstance();
         PlayerEntity player = client.player;
 
         if(!player.getAbilities().allowModifyWorld) return;
 
         matrices.push();
+        matrices.translate(-cameraX, -cameraY, -cameraZ);
         ItemStack stack = player.getMainHandStack();
         if(stack.getItem() instanceof TileDoorItem item){
             NbtCompound nbt = ItemNbtUtil.getNbt(stack);

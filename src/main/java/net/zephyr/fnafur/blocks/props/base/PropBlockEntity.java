@@ -1,9 +1,12 @@
 package net.zephyr.fnafur.blocks.props.base;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
@@ -19,15 +22,16 @@ public class PropBlockEntity extends BlockEntity {
         super(type, pos, state);
     }
 
-    public void tick(World world, BlockPos blockPos, BlockState state, PropBlockEntity entity){
-        if(world.isClient()){
-            if(((IEntityDataSaver)this).getServerUpdateStatus()){
-                ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver)this).getPersistentData()));
+    public void tick(World world, BlockPos blockPos, BlockState state, PropBlockEntity entity) {
+        if (world.isClient()) {
+            if (!((IEntityDataSaver) entity).getPersistentData().getBoolean("synced")) {
+                ClientPlayNetworking.send(new UpdateBlockNbtC2SGetFromServerPayload(getPos().asLong()));
+                world.setBlockState(blockPos, world.getBlockState(blockPos), Block.NOTIFY_ALL_AND_REDRAW);
             }
 
-            if(!((IEntityDataSaver)entity).getPersistentData().getBoolean("synced")){
-                ClientPlayNetworking.send(new UpdateBlockNbtC2SGetFromServerPayload(pos.asLong()));
-                ((IEntityDataSaver)entity).getPersistentData().putBoolean("synced", true);
+            if (((IEntityDataSaver) this).getServerUpdateStatus()) {
+                MinecraftClient.getInstance().player.sendMessage(Text.literal("SYNCING PROP"), false);
+                ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver) this).getPersistentData()));
             }
         }
     }

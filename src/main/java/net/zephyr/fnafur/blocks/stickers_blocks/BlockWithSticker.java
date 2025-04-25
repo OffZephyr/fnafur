@@ -110,8 +110,10 @@ public class BlockWithSticker extends BlockWithEntity {
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(stack.isOf(ItemInit.SCRAPER)){
+            System.out.println("SCRAPE");
 
             if(world.getBlockEntity(pos) instanceof StickerBlockEntity ent){
+                System.out.println("SCRAPE2");
                 NbtCompound nbt = ((IEntityDataSaver)ent).getPersistentData();
                 String side = hit.getSide().name();
 
@@ -119,6 +121,7 @@ public class BlockWithSticker extends BlockWithEntity {
                 NbtList offset_list = nbt.getList(side + "_offset", NbtElement.FLOAT_TYPE);
 
                 if(!list.isEmpty()) {
+                    System.out.println("SCRAPE3");
 
                     list.removeLast();
                     offset_list.removeLast();
@@ -132,21 +135,19 @@ public class BlockWithSticker extends BlockWithEntity {
                     world.playSound(pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 0.125f, 1.25f, true);
                     world.playSound(pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 0.5f, 1.1f, true);
 
-                    if (hasNoStickers(nbt)) {
-                        ItemStack blockStack = ItemStack.fromNbtOrEmpty(MinecraftClient.getInstance().world.getRegistryManager(), nbt.getCompound("BlockState"));
+                    if(world.isClient()) {
+                        if (hasNoStickers(nbt) && !(asBlock() instanceof MimicFrames)) {
+                            System.out.println("SCRAPE5");
+                            ItemStack blockStack = ItemStack.fromNbtOrEmpty(world.getRegistryManager(), nbt.getCompound("BlockState"));
 
-                        BlockState newState = !blockStack.isEmpty() ? blockStack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem) blockStack.getItem()).getBlock().getDefaultState()) : state;
-
-                        world.setBlockState(pos, newState, Block.NOTIFY_ALL_AND_REDRAW);
-                    } else {
-
-                        if (world.isClient()) {
-                            ((IEntityDataSaver)ent).setServerUpdateStatus(true);
+                            state = !blockStack.isEmpty() ? blockStack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem) blockStack.getItem()).getBlock().getDefaultState()) : state;
+                        } else {
+                            ((IEntityDataSaver) ent).setServerUpdateStatus(true);
+                            ((IEntityDataSaver) ent).getPersistentData().putBoolean("synced", false);
                         }
                         world.setBlockState(pos, state, Block.NOTIFY_ALL_AND_REDRAW);
                         world.updateListeners(pos, state, state, Block.NOTIFY_ALL_AND_REDRAW);
                     }
-
                     return ActionResult.SUCCESS;
                 }
             }

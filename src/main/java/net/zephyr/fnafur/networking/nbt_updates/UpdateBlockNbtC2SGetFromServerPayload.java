@@ -9,6 +9,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -24,6 +25,7 @@ public record UpdateBlockNbtC2SGetFromServerPayload(long pos) implements CustomP
         BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
         if (entity == null) return;
         for (ServerPlayerEntity p : PlayerLookup.all(context.server())) {
+            p.sendMessage(Text.literal("UPDATING FROM SERVER"), false);
             ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(payload.pos(), ((IEntityDataSaver) entity).getPersistentData()));
         }
 

@@ -26,6 +26,11 @@ public class BlockEntityMixin implements IEntityDataSaver {
     }
 
     @Override
+    public void setPersistentData(NbtCompound nbt) {
+        this.persistentData = nbt;
+    }
+
+    @Override
     public void setServerUpdateStatus(boolean value) {
         requiresServerUpdate = value;
     }

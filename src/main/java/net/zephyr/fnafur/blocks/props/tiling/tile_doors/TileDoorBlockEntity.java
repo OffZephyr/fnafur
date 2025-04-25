@@ -1,13 +1,17 @@
 package net.zephyr.fnafur.blocks.props.tiling.tile_doors;
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
+import net.zephyr.fnafur.networking.sounds.PlayBlockSoundS2CPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class TileDoorBlockEntity extends BlockEntity {
@@ -39,8 +43,13 @@ public class TileDoorBlockEntity extends BlockEntity {
 
             if (getWorld().getBlockState(mainPos).getBlock() instanceof TileDoorBlock block) {
                 SoundEvent sound = open ? block.openSound : block.closeSound;
-                BlockPos pos = mainPos.offset(direction, (int) (width/2f));
-                getWorld().playSound(pos.getX(), pos.getY(), pos.getZ(), sound, SoundCategory.BLOCKS, 1f, 1f, true);
+                BlockPos pos = mainPos.offset(direction, (int) (width / 2f));
+
+                if (!getWorld().isClient()) {
+                    for (ServerPlayerEntity p : PlayerLookup.all(getWorld().getServer())) {
+                        ServerPlayNetworking.send(p, new PlayBlockSoundS2CPayload(pos.asLong(), sound.id().getPath(), SoundCategory.BLOCKS.getName(), 1f, 1f));
+                    }
+                }
             }
 
 

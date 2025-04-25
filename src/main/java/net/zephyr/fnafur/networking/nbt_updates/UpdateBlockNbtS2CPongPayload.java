@@ -2,6 +2,7 @@ package net.zephyr.fnafur.networking.nbt_updates;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -9,6 +10,7 @@ import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -26,8 +28,15 @@ public record UpdateBlockNbtS2CPongPayload(long pos, NbtCompound data) implement
         context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos), context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos())));
         if (entity == null) return;
         ((IEntityDataSaver) entity).setServerUpdateStatus(false);
-        ((IEntityDataSaver) entity).getPersistentData().copyFrom(payload.data());
+        NbtCompound newNbt = payload.data().copy();
+        newNbt.putBoolean("synced", true);
+        ((IEntityDataSaver) entity).setPersistentData(newNbt);
         entity.markDirty();
+
+        BlockState state = context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos));
+        context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos), state, Block.NOTIFY_ALL_AND_REDRAW);
+        context.player().getWorld().updateListeners(BlockPos.fromLong(payload.pos), state, state, Block.NOTIFY_ALL_AND_REDRAW);
+        context.player().sendMessage(Text.literal("§9" +"SYNC CLIENT"), false);
     }
 
     @Override

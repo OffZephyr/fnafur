@@ -8,12 +8,14 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 public class SoundPayloads {
     public static final Identifier PlaySoundS2C = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_play_sound");
+    public static final Identifier PlayBlockSoundS2C = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_play_block_sound");
     public static final Identifier PlaySoundC2S = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_play_sound");
     public static final Identifier StopSoundS2C = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_stop_sound");
     public static final Identifier StopSoundC2S = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_stop_sound");
 
     public static void registerPayloads() {
         PayloadTypeRegistry.playS2C().register(PlaySoundS2CPayload.ID, PlaySoundS2CPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(PlayBlockSoundS2CPayload.ID, PlayBlockSoundS2CPayload.CODEC);
         //PayloadTypeRegistry.playS2C().register(StopSoundS2CPayload.ID, StopSoundS2CPayload.CODEC);
 
         PayloadTypeRegistry.playC2S().register(PlaySoundPingC2SPayload.ID, PlaySoundPingC2SPayload.CODEC);
@@ -28,6 +30,7 @@ public class SoundPayloads {
 
     public static void registerClientReceivers(){
         ClientPlayNetworking.registerGlobalReceiver(PlaySoundS2CPayload.ID, PlaySoundS2CPayload::receive);
+        ClientPlayNetworking.registerGlobalReceiver(PlayBlockSoundS2CPayload.ID, PlayBlockSoundS2CPayload::receive);
         //ClientPlayNetworking.registerGlobalReceiver(StopSoundS2CPayload.ID, StopSoundS2CPayload::receive);
 
     }

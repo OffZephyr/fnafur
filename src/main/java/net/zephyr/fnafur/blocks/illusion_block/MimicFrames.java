@@ -328,19 +328,21 @@ public class MimicFrames extends BlockWithSticker {
 
             int holdTime = ((IEntityDataSaver)entity).getPersistentData().getInt("holdTime");
 
-            if (stack != null && stack.isOf(ItemInit.SCRAPER) && currentBlock != null) {
-                saveBlockTexture(
-                        removeBlockTexture(nbt, hit.getSide(), matrixPos),
-                        world,
-                        pos
-                );
+            if (stack != null && stack.isOf(ItemInit.SCRAPER)) {
+                if(currentBlock != null) {
+                    saveBlockTexture(
+                            removeBlockTexture(nbt, hit.getSide(), matrixPos),
+                            world,
+                            pos
+                    );
 
-                if(!world.isClient()) {
-                    world.playSound(null, pos, SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 1, 1.25f);
+                    if (!world.isClient()) {
+                        world.playSound(null, pos, SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 1, 1.25f);
+                    } else {
+                        ((IEntityDataSaver) world.getBlockEntity(pos)).setServerUpdateStatus(true);
+                    }
+                    return ActionResult.SUCCESS;
                 }
-
-                    world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
-                return ActionResult.SUCCESS;
             }
             else if (stack != null && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock().getDefaultState().isSolidBlock(world, pos)) {
                 if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null || (currentBlock == blockItem.getBlock() && holdTime > 0)) {
@@ -459,10 +461,12 @@ public class MimicFrames extends BlockWithSticker {
 
         if(world.isClient()) {
             world.playSound(null, pos, SoundEvents.BLOCK_COPPER_GRATE_PLACE, SoundCategory.BLOCKS, 1, 1);
+            ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().copyFrom(nbt);
             ((IEntityDataSaver)world.getBlockEntity(pos)).setServerUpdateStatus(true);
         }
 
-        world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
+        world.setBlockState(pos, getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
+        world.updateListeners(pos, getDefaultState(), getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
     }
 
     public static Block getBlockFromNbt(NbtCompound nbt, World world){

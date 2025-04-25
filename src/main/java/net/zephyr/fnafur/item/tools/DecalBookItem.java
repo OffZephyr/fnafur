@@ -121,7 +121,8 @@ public class DecalBookItem extends Item {
 
                         nbt.put(side, list);
                         nbt.put(side + "_offset", offset_list);
-                        GoopyNetworkingUtils.saveBlockNbt(entity.getPos(), nbt);
+
+                        ((IEntityDataSaver)entity).setServerUpdateStatus(true);
                         context.getWorld().updateListeners(pos, blockState, blockState, 3);
 
                         return ActionResult.SUCCESS;

@@ -9,6 +9,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -25,11 +26,11 @@ public record UpdateBlockNbtC2SPayload(long pos, NbtCompound data) implements Cu
         BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
         context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos), context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos())));
         if (entity == null) return;
-        System.out.println("NOT NULL");
-        ((IEntityDataSaver) entity).getPersistentData().copyFrom(payload.data());
+        ((IEntityDataSaver) entity).setPersistentData(payload.data());
         entity.markDirty();
         for (ServerPlayerEntity p : PlayerLookup.all(context.server())) {
-            ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(payload.pos(), ((IEntityDataSaver) entity).getPersistentData()));
+            p.sendMessage(Text.literal("§6" + "SYNC SERVER"), false);
+            ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(payload.pos(), payload.data()));
         }
     }
 

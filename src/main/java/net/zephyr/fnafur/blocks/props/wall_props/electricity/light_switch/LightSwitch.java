@@ -1,11 +1,16 @@
 package net.zephyr.fnafur.blocks.props.wall_props.electricity.light_switch;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.client.sound.Sound;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -24,6 +29,8 @@ import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.init.SoundsInit;
+import net.zephyr.fnafur.networking.sounds.PlayBlockSoundS2CPayload;
+import net.zephyr.fnafur.networking.sounds.PlaySoundS2CPayload;
 
 public class LightSwitch extends WallPropBlock<DefaultPropColorEnum> {
     public static final BooleanProperty POWERED = Properties.POWERED;
@@ -35,9 +42,14 @@ public class LightSwitch extends WallPropBlock<DefaultPropColorEnum> {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         float pitch = (Boolean) state.get(POWERED) ? 1f : 1.1f;
-        world.playSoundAtBlockCenter(pos, SoundsInit.LIGHT_SWITCH_FLIP, SoundCategory.BLOCKS, .3f, pitch, true);
 
+        //world.playSoundAtBlockCenter(pos, SoundsInit.LIGHT_SWITCH_FLIP, SoundCategory.BLOCKS, .3f, pitch, true);
 
+        if (!world.isClient()) {
+            for (ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
+                ServerPlayNetworking.send(p, new PlayBlockSoundS2CPayload(pos.asLong(), "switch_flip", SoundCategory.BLOCKS.getName(), .3f, pitch));
+            }
+        }
         world.setBlockState(pos, state.cycle(POWERED));
         this.updateNeighbors(state, world, pos);
         return ActionResult.SUCCESS;
