@@ -1,7 +1,6 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.WrapperUnbakedModel;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.material.ShadeMode;
@@ -33,7 +32,6 @@ import net.minecraft.world.BlockRenderView;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.DecalInit;
-import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -110,11 +108,6 @@ public class StickerBlockModel extends WrapperUnbakedModel implements BakedModel
 
         if (entity instanceof BlockEntity ent) {
             NbtCompound nbt = ((IEntityDataSaver) ent).getPersistentData();
-            if(!nbt.contains("synced")){
-                ClientPlayNetworking.send(new SyncBlockNbtC2SPayload(pos.asLong()));
-
-                nbt = ((IEntityDataSaver)entity).getPersistentData();
-            }
             emitQuads(state, pos, nbt, emitter);
         }
     }

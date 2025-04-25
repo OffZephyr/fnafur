@@ -1,16 +1,14 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CGetFromClientPayload;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SGetFromServerPayload;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class StickerBlockEntity extends BlockEntity {
@@ -18,11 +16,13 @@ public class StickerBlockEntity extends BlockEntity {
         super(BlockEntityInit.STICKER_BLOCK, pos, state);
     }
     public void tick(World world, BlockPos blockPos, BlockState state, StickerBlockEntity entity){
-        if(!world.isClient()){
+        if(world.isClient()){
+            if(((IEntityDataSaver)this).getServerUpdateStatus()){
+                ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver)this).getPersistentData()));
+            }
+
             if(!((IEntityDataSaver)entity).getPersistentData().getBoolean("synced")){
-                for(ServerPlayerEntity p : PlayerLookup.all(entity.getWorld().getServer())){
-                    ServerPlayNetworking.send(p, new UpdateBlockNbtS2CGetFromClientPayload(blockPos.asLong()));
-                }
+                ClientPlayNetworking.send(new UpdateBlockNbtC2SGetFromServerPayload(getPos().asLong()));
                 ((IEntityDataSaver)entity).getPersistentData().putBoolean("synced", true);
             }
         }

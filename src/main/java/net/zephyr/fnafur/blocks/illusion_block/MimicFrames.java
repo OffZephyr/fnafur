@@ -1,32 +1,25 @@
 package net.zephyr.fnafur.blocks.illusion_block;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Property;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -37,16 +30,11 @@ import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CGetFromClientPayload;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector2i;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -141,11 +129,7 @@ public class MimicFrames extends BlockWithSticker {
                     array[i] = (byte) Math.max(data[i], array[i]);
                 }
                 ((IEntityDataSaver)entity).getPersistentData().putByteArray("cubeMatrix", array);
-            }
-        }
-        else{
-            for(ServerPlayerEntity p : PlayerLookup.all(world.getServer())){
-                ServerPlayNetworking.send(p, new UpdateBlockNbtS2CGetFromClientPayload(pos.asLong()));
+                ((IEntityDataSaver)entity).setServerUpdateStatus(true);
             }
         }
         super.onPlaced(world, pos, state, placer, itemStack);
@@ -214,7 +198,7 @@ public class MimicFrames extends BlockWithSticker {
 
             if(entity.getWorld().isClient()){
                 ((IEntityDataSaver)entity).getPersistentData().putByteArray("cubeMatrix", array);
-                ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), ((IEntityDataSaver)entity).getPersistentData()));
+                ((IEntityDataSaver)entity).setServerUpdateStatus(true);
             }
 
             entity.getWorld().setBlockState(pos, newState);
@@ -475,7 +459,7 @@ public class MimicFrames extends BlockWithSticker {
 
         if(world.isClient()) {
             world.playSound(null, pos, SoundEvents.BLOCK_COPPER_GRATE_PLACE, SoundCategory.BLOCKS, 1, 1);
-            ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), nbt));
+            ((IEntityDataSaver)world.getBlockEntity(pos)).setServerUpdateStatus(true);
         }
 
         world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);

@@ -1,7 +1,6 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -12,7 +11,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,8 +34,6 @@ import net.minecraft.world.WorldView;
 import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -84,7 +80,7 @@ public class BlockWithSticker extends BlockWithEntity {
         //itemStack.set(DataComponentTypes.BLOCK_STATE, component);
         NbtCompound nbt = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData();
 
-        ItemStack stack = ItemStack.fromNbtOrEmpty(MinecraftClient.getInstance().world.getRegistryManager(), nbt.getCompound("BlockState"));
+        ItemStack stack = ItemStack.fromNbtOrEmpty(world.getRegistryManager(), nbt.getCompound("BlockState"));
         BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem)stack.getItem()).getBlock().getDefaultState()) : state;
 
         if(!(state.getBlock() instanceof MimicFrames)){
@@ -102,11 +98,11 @@ public class BlockWithSticker extends BlockWithEntity {
         NbtCompound data = ItemNbtUtil.getNbt(itemStack);
 
         world.setBlockState(pos, state);
-        if (world.getBlockEntity(pos) instanceof BlockEntity entity) {
-            ((IEntityDataSaver) entity).getPersistentData().copyFrom(data);
-        }
         if (world.isClient()) {
-            GoopyNetworkingUtils.getNbtFromServer(pos);
+            if (world.getBlockEntity(pos) instanceof BlockEntity entity) {
+                ((IEntityDataSaver) entity).getPersistentData().copyFrom(data);
+                ((IEntityDataSaver)entity).setServerUpdateStatus(true);
+            }
             world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
         }
     }
@@ -145,7 +141,7 @@ public class BlockWithSticker extends BlockWithEntity {
                     } else {
 
                         if (world.isClient()) {
-                            ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), nbt));
+                            ((IEntityDataSaver)ent).setServerUpdateStatus(true);
                         }
                         world.setBlockState(pos, state, Block.NOTIFY_ALL_AND_REDRAW);
                         world.updateListeners(pos, state, state, Block.NOTIFY_ALL_AND_REDRAW);

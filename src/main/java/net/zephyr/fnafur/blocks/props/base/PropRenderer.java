@@ -19,7 +19,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CGetFromClientPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 @Environment(EnvType.CLIENT)

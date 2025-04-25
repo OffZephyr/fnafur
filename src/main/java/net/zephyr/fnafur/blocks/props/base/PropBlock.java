@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.blocks.props.base;
 
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -9,6 +10,7 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -28,6 +30,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
+import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -68,6 +72,17 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
         if(COLOR_ENUM() == null) return COLOR;
         if(COLOR == null) COLOR = EnumProperty.of("color", COLOR_ENUM());
         return COLOR;
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        if(world.isClient()){
+            if(world.getBlockEntity(pos) instanceof PropBlockEntity ent){
+                ((IEntityDataSaver)ent).setServerUpdateStatus(true);
+            }
+        }
+
+        super.onPlaced(world, pos, state, placer, itemStack);
     }
 
     @Override

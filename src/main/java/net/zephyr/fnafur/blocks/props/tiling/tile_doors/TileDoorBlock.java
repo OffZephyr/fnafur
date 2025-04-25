@@ -73,12 +73,12 @@ public class TileDoorBlock extends BlockWithEntity {
             BlockPos pos2 = BlockPos.fromLong(nbt.getLong("pos2"));
 
             Direction dir = placer.getHorizontalFacing().getOpposite();
-            Vec3i distance = TileDoorPlacingRenderer.getDistance(pos1, pos2, dir);
+            Vec3i distance = TileDoorItem.getDistance(pos1, pos2, dir);
 
             int h = Math.clamp(Math.max(distance.getX(), distance.getZ()), 0, 16);
             int v = Math.clamp(distance.getY(), 0, 16);
 
-            Vec3i minPos = TileDoorPlacingRenderer.getMin(pos1, pos2);
+            Vec3i minPos = TileDoorItem.getMin(pos1, pos2);
             if(minPos.getY() < pos1.getY()) v = 0;
 
             for(int x = 0; x <= h; x++){
@@ -124,7 +124,10 @@ public class TileDoorBlock extends BlockWithEntity {
                 if(speed + add > 5) speed = 0.75f;
                 float newSpeed = Math.clamp(speed + add, 1, 5);
                 ent.setSpeed(newSpeed);
-                world.playSoundAtBlockCenter(pos, SoundEvents.BLOCK_NOTE_BLOCK_HAT.value(), SoundCategory.BLOCKS, 1, MathHelper.lerp(newSpeed / 5f, 0.75f, 1.5f), true);
+
+                if(!world.isClient()) {
+                    world.playSoundAtBlockCenter(pos, SoundEvents.BLOCK_NOTE_BLOCK_HAT.value(), SoundCategory.BLOCKS, 1, MathHelper.lerp(newSpeed / 5f, 0.75f, 1.5f), true);
+                }
 
                 player.sendMessage(Text.translatable("block.fnafur.heavy_door.speed", " " + newSpeed), true);
                 return ActionResult.SUCCESS;
@@ -159,7 +162,9 @@ public class TileDoorBlock extends BlockWithEntity {
     @Override
     protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
 
-        world.playSoundAtBlockCenter(pos, openSound, SoundCategory.MASTER, 1, 1, true);
+        if(!world.isClient()) {
+            world.playSoundAtBlockCenter(pos, openSound, SoundCategory.MASTER, 1, 1, true);
+        }
 
         if (world.getBlockEntity(pos) instanceof TileDoorBlockEntity ent) {
             BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("main"));

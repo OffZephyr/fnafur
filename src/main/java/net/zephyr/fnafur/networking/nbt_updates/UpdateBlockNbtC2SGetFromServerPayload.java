@@ -12,25 +12,21 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
-public record UpdateBlockNbtC2SPayload(long pos, NbtCompound data) implements CustomPayload {
+public record UpdateBlockNbtC2SGetFromServerPayload(long pos) implements CustomPayload {
 
-    public static final Id<UpdateBlockNbtC2SPayload> ID = new Id<>(NbtPayloads.C2SBlockUpdate);
+    public static final Id<UpdateBlockNbtC2SGetFromServerPayload> ID = new Id<>(NbtPayloads.S2CBlockUpdateClient);
 
-    public static final PacketCodec<RegistryByteBuf, UpdateBlockNbtC2SPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.VAR_LONG, UpdateBlockNbtC2SPayload::pos,
-            PacketCodecs.NBT_COMPOUND, UpdateBlockNbtC2SPayload::data,
-            UpdateBlockNbtC2SPayload::new);
+    public static final PacketCodec<RegistryByteBuf, UpdateBlockNbtC2SGetFromServerPayload> CODEC = PacketCodec.tuple(
+            PacketCodecs.VAR_LONG, UpdateBlockNbtC2SGetFromServerPayload::pos,
+            UpdateBlockNbtC2SGetFromServerPayload::new);
 
-    public static void receive(UpdateBlockNbtC2SPayload payload, ServerPlayNetworking.Context context) {
+    public static void receive(UpdateBlockNbtC2SGetFromServerPayload payload, ServerPlayNetworking.Context context) {
         BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
-        context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos), context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos())));
         if (entity == null) return;
-        System.out.println("NOT NULL");
-        ((IEntityDataSaver) entity).getPersistentData().copyFrom(payload.data());
-        entity.markDirty();
         for (ServerPlayerEntity p : PlayerLookup.all(context.server())) {
             ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(payload.pos(), ((IEntityDataSaver) entity).getPersistentData()));
         }
+
     }
 
     @Override

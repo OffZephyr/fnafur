@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -13,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockEntity.class)
 public class BlockEntityMixin implements IEntityDataSaver {
+    @Unique
+    boolean requiresServerUpdate = false;
     private NbtCompound persistentData;
     @Override
     public NbtCompound getPersistentData() {
@@ -20,6 +23,16 @@ public class BlockEntityMixin implements IEntityDataSaver {
             this.persistentData = new NbtCompound();
         }
         return persistentData;
+    }
+
+    @Override
+    public void setServerUpdateStatus(boolean value) {
+        requiresServerUpdate = value;
+    }
+
+    @Override
+    public boolean getServerUpdateStatus() {
+        return requiresServerUpdate;
     }
 
     @Inject(method = "writeNbt", at = @At("HEAD"))
