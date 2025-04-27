@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.entity.animatronic;
 
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -8,33 +9,43 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 
 public class AnimatronicModel<T extends AnimatronicEntity> extends GeoModel<T> {
+
+    public boolean reRender = false;
     @Override
     public Identifier getModelResource(T animatable, @Nullable GeoRenderer<T> renderer) {
-        String model = ((IEntityDataSaver)animatable).getPersistentData().getCompound("alt").getString("model");
-        if(!model.isEmpty()){
-            return Identifier.of(FnafUniverseRebuilt.MOD_ID, model);
+        if (animatable != null && animatable.getWorld() != null) {
+            return reRender ? animatable.getReRenderModel(animatable.getWorld()) : animatable.getModel(animatable.getWorld());
         }
-
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/default/endo_01/endo_01.geo.json");
+        return null;
     }
 
     @Override
     public Identifier getTextureResource(T animatable, @Nullable GeoRenderer<T> renderer) {
-        String texture = ((IEntityDataSaver)animatable).getPersistentData().getCompound("alt").getString("texture");
-        if(!texture.isEmpty()){
-            return Identifier.of(FnafUniverseRebuilt.MOD_ID, texture);
-        }
-
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/default/endo_01/endo_01.png");
+        if(animatable != null && animatable.getWorld() != null)
+            return reRender ? animatable.getReRenderTexture(animatable.getWorld()) : animatable.getTexture(animatable.getWorld());
+        return null;
     }
 
     @Override
     public Identifier getAnimationResource(T animatable) {
-        String animations = ((IEntityDataSaver) animatable).getPersistentData().getCompound("alt").getString("animations");
-        if (!animations.isEmpty()) {
-            return Identifier.of(FnafUniverseRebuilt.MOD_ID, animations);
-        }
+        if(animatable != null && animatable.getWorld() != null)
+            return animatable.getAnimations(animatable.getWorld());
+        return null;
+    }
 
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/cl_fred/cl_fred.animation.json");
+    @Override
+    public @Nullable RenderLayer getRenderType(T animatable, Identifier texture) {
+        if(animatable != null && animatable.getWorld() != null && animatable.getRenderType() != null)
+            return animatable.getRenderType();
+
+        return super.getRenderType(animatable, texture);
+    }
+
+    @Override
+    public Identifier[] getAnimationResourceFallbacks(T animatable, GeoRenderer<T> renderer) {
+        Identifier[] array = new Identifier[]{
+                Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/default.animation.json")
+        };
+        return array;
     }
 }
