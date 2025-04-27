@@ -36,7 +36,7 @@ public record UpdateBlockNbtS2CPongPayload(long pos, NbtCompound data) implement
         BlockState state = context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos));
         context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos), state, Block.NOTIFY_ALL_AND_REDRAW);
         context.player().getWorld().updateListeners(BlockPos.fromLong(payload.pos), state, state, Block.NOTIFY_ALL_AND_REDRAW);
-        context.player().sendMessage(Text.literal("§9" +"SYNC CLIENT"), false);
+        //context.player().sendMessage(Text.literal("§9" +"SYNC CLIENT"), false);
     }
 
     @Override

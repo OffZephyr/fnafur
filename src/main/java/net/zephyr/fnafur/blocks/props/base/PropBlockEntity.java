@@ -30,7 +30,7 @@ public class PropBlockEntity extends BlockEntity {
             }
 
             if (((IEntityDataSaver) this).getServerUpdateStatus()) {
-                MinecraftClient.getInstance().player.sendMessage(Text.literal("SYNCING PROP"), false);
+                //MinecraftClient.getInstance().player.sendMessage(Text.literal("SYNCING PROP"), false);
                 ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver) this).getPersistentData()));
             }
         }

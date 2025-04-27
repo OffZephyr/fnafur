@@ -39,7 +39,7 @@ public class StickerBlockEntity extends BlockEntity {
 
         if(world.isClient()){
             if(((IEntityDataSaver)this).getServerUpdateStatus()){
-                MinecraftClient.getInstance().player.sendMessage(Text.literal("SYNCING STICKER"), false);
+                //MinecraftClient.getInstance().player.sendMessage(Text.literal("SYNCING STICKER"), false);
                 ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver)this).getPersistentData()));
             }
         }

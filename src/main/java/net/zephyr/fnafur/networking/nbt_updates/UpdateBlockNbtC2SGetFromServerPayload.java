@@ -25,7 +25,7 @@ public record UpdateBlockNbtC2SGetFromServerPayload(long pos) implements CustomP
         BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
         if (entity == null) return;
         for (ServerPlayerEntity p : PlayerLookup.all(context.server())) {
-            p.sendMessage(Text.literal("UPDATING FROM SERVER"), false);
+            //p.sendMessage(Text.literal("UPDATING FROM SERVER"), false);
             ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(payload.pos(), ((IEntityDataSaver) entity).getPersistentData()));
         }
 

@@ -29,7 +29,7 @@ public record UpdateBlockNbtC2SPayload(long pos, NbtCompound data) implements Cu
         ((IEntityDataSaver) entity).setPersistentData(payload.data());
         entity.markDirty();
         for (ServerPlayerEntity p : PlayerLookup.all(context.server())) {
-            p.sendMessage(Text.literal("§6" + "SYNC SERVER"), false);
+            //p.sendMessage(Text.literal("§6" + "SYNC SERVER"), false);
             ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(payload.pos(), payload.data()));
         }
     }
