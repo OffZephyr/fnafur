@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,color=default": {
+      "model": "fnafur:props/restroom/bathroom_sink"
+    },
+    "facing=east,color=default": {
+      "model": "fnafur:props/restroom/bathroom_sink",
+      "y": 90
+    },
+    "facing=south,color=default": {
+      "model": "fnafur:props/restroom/bathroom_sink",
+      "y": 180
+    },
+    "facing=west,color=default": {
+      "model": "fnafur:props/restroom/bathroom_sink",
+      "y": 270
+    },
+    "facing=north,color=stains_1": {
+      "model": "fnafur:props/restroom/bathroom_sink_2"
+    },
+    "facing=east,color=stains_1": {
+      "model": "fnafur:props/restroom/bathroom_sink_2",
+      "y": 90
+    },
+    "facing=south,color=stains_1": {
+      "model": "fnafur:props/restroom/bathroom_sink_2",
+      "y": 180
+    },
+    "facing=west,color=stains_1": {
+      "model": "fnafur:props/restroom/bathroom_sink_2",
+      "y": 270
+    }
+  }
+}

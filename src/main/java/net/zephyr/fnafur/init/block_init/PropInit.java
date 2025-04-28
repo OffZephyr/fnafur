@@ -62,6 +62,7 @@ import net.zephyr.fnafur.blocks.props.wall_props.electricity.light_switch.LightS
 import net.zephyr.fnafur.blocks.props.wall_props.office_buttons.OfficeButtons;
 import net.zephyr.fnafur.blocks.props.wall_props.poster.Poster;
 import net.zephyr.fnafur.blocks.props.wall_props.punch_in_cards.PunchInCards;
+import net.zephyr.fnafur.blocks.props.wall_props.restroom.BathroomSink;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom.ToiletPaperRoll;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
 import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSign;
@@ -731,6 +732,19 @@ public class PropInit {
     public static final Block TOILET = registerBlock(
             "toilet",
             Toilet::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+
+    );
+    public static final Block BATHROOM_SINK = registerBlock(
+            "bathroom_sink",
+            BathroomSink::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)

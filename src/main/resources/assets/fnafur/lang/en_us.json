@@ -238,6 +238,7 @@
   "block.fnafur.party_hats": "Party Hats",
   "block.fnafur.wooden_chair": "Wooden Chair",
   "block.fnafur.toilet_paper_roll": "Toilet Paper Roll",
+  "block.fnafur.bathroom_sink": "Bathroom Sink",
   "block.fnafur.fridge": "Fridge",
   "block.fnafur.double_door_fridge": "Double Door Fridge",
   "block.fnafur.kitchen_prep_table": "Kitchen Prep Table",
@@ -576,6 +577,10 @@
   "sounds.fnafur.fnaf1_jumpscare": "An Animatronic Attacks",
   "sounds.fnafur.foxy_footsteps": "Foxy Moves",
   "sounds.fnafur.honk": "Honk!",
+  "sounds.fnafur.cosmo_gift_use": "An Animatronic Becomes Suited",
+  "sounds.fnafur.freddy_music_box": "Toreador March Plays",
+  "sounds.fnafur.freddy_laugh": "Freddy Laughs",
+  "sounds.fnafur.animatronic_groan": "An Animatronic Groans",
 
   "sounds.fnafur.main_menu": "Main Menu Music Plays"
 }

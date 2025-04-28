@@ -97,6 +97,7 @@ public class BlockEntityInit {
                                 PropInit.PARTY_HAT,
                                 PropInit.TOILET_PAPER_ROLL,
                                 PropInit.TOILET,
+                                PropInit.BATHROOM_SINK,
                                 PropInit.FLOOR_TRASH,
                                 PropInit.WATER_DISPENSER,
                                 PropInit.ICE_CREAM_DISPENSER,

@@ -63,6 +63,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.RESTROOM_SIGN);
                         entries.add(PropInit.TOILET_PAPER_ROLL);
                         entries.add(PropInit.TOILET);
+                        entries.add(PropInit.BATHROOM_SINK);
                         entries.add(PropInit.FLOOR_TRASH);
                         entries.add(PropInit.BROOM);
                         entries.add(PropInit.MOP_BUCKET);
