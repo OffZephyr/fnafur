@@ -30,6 +30,10 @@ public class SoundsInit {
     public static final SoundEvent BEAR5 = registerSoundEvent("bear5", true);
     public static final SoundEvent ANIMATRONIC_HURT = registerSoundEvent("animatronic_hurt");
     public static final SoundEvent ANIMATRONIC_DEATH = registerSoundEvent("animatronic_death");
+    public static final SoundEvent COSMO_GIFT_USE = registerSoundEvent("cosmo_gift_use");
+    public static final SoundEvent FREDDY_LAUGH = registerSoundEvent("freddy_laugh");
+    public static final SoundEvent FREDDY_MUSIC_BOX = registerSoundEvent("freddy_music_box");
+    public static final SoundEvent ANIMATRONIC_GROAN = registerSoundEvent("animatronic_groan");
     public static final SoundEvent HONK = registerSoundEvent("honk");
     public static final SoundEvent OFFICE_DOOR_ACTIVATE = registerSoundEvent("office_door_activate");
     public static final SoundEvent OFFICE_DOOR_ERROR = registerSoundEvent("office_door_error");
@@ -39,7 +43,7 @@ public class SoundsInit {
     public static final SoundEvent ELECTRICAL_LOCKER_CLOSE = registerSoundEvent("electrical_locker_close");
     public static final SoundEvent ELECTRICAL_LOCKER_SWITCH = registerSoundEvent("electrical_locker_switch");
     public static final SoundEvent LIGHT_SWITCH_FLIP = registerSoundEvent("switch_flip");
-    public static final SoundEvent DESK_FAN = registerSoundEvent("desk_fan");
+    public static final SoundEvent DESK_FAN = registerSoundEvent("desk_fan", true);
 
     // CUTOUTS
     public static final SoundEvent DAWKO_PLACE = registerSoundEvent("dawko_place");

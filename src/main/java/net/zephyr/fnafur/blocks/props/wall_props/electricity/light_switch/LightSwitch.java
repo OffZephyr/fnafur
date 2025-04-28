@@ -43,8 +43,6 @@ public class LightSwitch extends WallPropBlock<DefaultPropColorEnum> {
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         float pitch = (Boolean) state.get(POWERED) ? 1f : 1.1f;
 
-        //world.playSoundAtBlockCenter(pos, SoundsInit.LIGHT_SWITCH_FLIP, SoundCategory.BLOCKS, .3f, pitch, true);
-
         if (!world.isClient()) {
             for (ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
                 ServerPlayNetworking.send(p, new PlayBlockSoundS2CPayload(pos.asLong(), "switch_flip", SoundCategory.BLOCKS.getName(), .3f, pitch));

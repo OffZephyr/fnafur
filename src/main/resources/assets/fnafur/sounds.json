@@ -103,6 +103,29 @@
       "fnafur:animatronics/death/animatronic_death"
     ]
   },
+  "animatronic_groan": {
+    "subtitle": "sounds.fnafur.animatronic_groan",
+    "sounds": [
+      "fnafur:animatronics/ambient/animatronic_groan1",
+      "fnafur:animatronics/ambient/animatronic_groan2",
+      "fnafur:animatronics/ambient/animatronic_groan3",
+      "fnafur:animatronics/ambient/animatronic_groan4"
+    ]
+  },
+  "freddy_laugh": {
+    "subtitle": "sounds.fnafur.freddy_laugh",
+    "sounds": [
+      "fnafur:animatronics/ambient/freddy_laugh1",
+      "fnafur:animatronics/ambient/freddy_laugh2",
+      "fnafur:animatronics/ambient/freddy_laugh3"
+    ]
+  },
+  "freddy_music_box": {
+    "subtitle": "sounds.fnafur.freddy_music_box",
+    "sounds": [
+      "fnafur:animatronics/interactions/freddy_music_box"
+    ]
+  },
   "honk": {
     "subtitle": "sounds.fnafur.honk",
     "sounds": [
@@ -134,6 +157,12 @@
       "fnafur:animatronics/interactions/honk",
       "fnafur:animatronics/interactions/honk",
       "fnafur:animatronics/interactions/honk_rare"
+    ]
+  },
+  "cosmo_gift_use": {
+    "subtitle": "sounds.fnafur.cosmo_gift_use",
+    "sounds": [
+      "fnafur:animatronics/interactions/cosmo_gift_use"
     ]
   },
   "office_door_activate": {
@@ -250,7 +279,6 @@
       "fnafur:props/electrical_locker/electrical_locker_door_open"
     ]
   },
-
   "electrical_locker_close": {
     "subtitle": "sounds.fnafur.electrical_locker_close",
     "sounds": [
