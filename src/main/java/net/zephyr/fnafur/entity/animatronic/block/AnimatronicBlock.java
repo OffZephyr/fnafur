@@ -1,6 +1,8 @@
 package net.zephyr.fnafur.entity.animatronic.block;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
@@ -10,6 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -31,6 +35,7 @@ import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
+import net.zephyr.fnafur.networking.sounds.PlayBlockSoundS2CPayload;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -60,6 +65,13 @@ public class AnimatronicBlock extends FloorPropBlock<DemoAnimationList> {
 
                 ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), ((IEntityDataSaver)ent).getPersistentData()));
             }
+
+            if (!world.isClient()) {
+                for (ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
+                    ServerPlayNetworking.send(p, new PlayBlockSoundS2CPayload(pos.asLong(), "cosmo_gift_use", SoundCategory.BLOCKS.getName(), 1f, 1f));
+                }
+            }
+
             return ActionResult.SUCCESS;
         }
 
