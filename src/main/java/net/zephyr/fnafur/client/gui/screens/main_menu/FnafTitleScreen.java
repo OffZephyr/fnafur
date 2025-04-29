@@ -87,9 +87,15 @@ public class FnafTitleScreen extends Screen {
     int offsetX = 0, offsetY = 0;
     private static final Identifier[][] RENDERS = new Identifier[][]{
         {
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/main.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/test0.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/test1.png")
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/main.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/freddyglitch1.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/freddyglitch2.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/bonnieglitch1.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/bonnieglitch2.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/chicaglitch1.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/chicaglitch2.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/foxyglitch1.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/foxyglitch2.png"),
         }
     };
     private static final Identifier[] STATIC = new Identifier[]{
@@ -101,7 +107,7 @@ public class FnafTitleScreen extends Screen {
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/5.png")
     };
     private Map<Identifier, triggerSoundZone> easterEggMap = Map.of(
-            RENDERS[0][0], new triggerSoundZone(SoundsInit.HONK, 1600, 600, 187, 90)
+            RENDERS[0][0], new triggerSoundZone(SoundsInit.HONK, 1550, 560, 187, 90)
     );
     private static final float field_49900 = 2000.0F;
     @Nullable
@@ -525,6 +531,28 @@ public class FnafTitleScreen extends Screen {
         GoopyScreen.drawRecolorableTexture(context, STARS, (int) ((deltaAmount2 / 2) - xDelta2), (int) ((deltaAmount2 / 2) - yDelta2), 0, largeWidth2, largeHeight2, 0, 0, largeWidth2, largeHeight2, 1, 1, 1, 0.55f);
         GoopyScreen.drawRecolorableTexture(context, STATIC[(int) staticIndex], 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.15f);
         GoopyScreen.drawRecolorableTexture(context, PIXELS, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.05f);
+
+
+        // SET TO TRUE TO VISUALIZE EASTER EGG HIT-BOXES
+        if (false) {
+            if(easterEggMap.containsKey(RENDERS[renderIndex][renderGlitchIndex])) {
+                triggerSoundZone zone = easterEggMap.get(RENDERS[renderIndex][renderGlitchIndex]);
+
+                int x = (int) (offsetX + onWidth(zone.x));
+                int y = (int) (offsetY + onWidth(zone.y));
+                int width = (int) onWidth(zone.width);
+                int height = (int) onWidth(zone.height);
+                if (bl) {
+                    x = (int) (offsetX + onHeight(zone.x));
+                    y = (int) (offsetY + onHeight(zone.y));
+                    width = (int) onHeight(zone.width);
+                    height = (int) onHeight(zone.height);
+                }
+
+                context.fill(x, y, x + width, y + height, 0xFFFFFFFF);
+            }
+        }
+
     }
 
     void fadeBackground(float time, float opacity){
