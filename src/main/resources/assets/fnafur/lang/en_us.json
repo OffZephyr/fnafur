@@ -397,6 +397,7 @@
   "entity_eyes.fnafur.cl_fred.brown": "Brown",
   "entity_eyes.fnafur.cl_fred.black": "Full Black",
   "entity_eyes.fnafur.cl_fred.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_fred.none": "None",
 
   "entity.fnafur.cl_bon": "Bonnie",
 
@@ -404,7 +405,9 @@
   "entity_alts.fnafur.cl_bon.colorable": "Colorable",
 
   "entity_eyes.fnafur.cl_bon.default": "Pink",
+  "entity_eyes.fnafur.cl_bon.black": "Full Black",
   "entity_eyes.fnafur.cl_bon.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_bon.none": "None",
 
   "entity.fnafur.cl_chica": "Chica",
 
@@ -412,7 +415,9 @@
   "entity_alts.fnafur.cl_chica.colorable": "Colorable",
 
   "entity_eyes.fnafur.cl_chica.default": "Magenta",
+  "entity_eyes.fnafur.cl_chica.black": "Full Black",
   "entity_eyes.fnafur.cl_chica.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_chica.none": "None",
 
   "entity.fnafur.cl_foxy": "Foxy",
 
@@ -420,13 +425,15 @@
   "entity_alts.fnafur.cl_foxy.colorable": "Colorable",
 
   "entity_eyes.fnafur.cl_foxy.default": "Yellow",
+  "entity_eyes.fnafur.cl_foxy.black": "Full Black",
   "entity_eyes.fnafur.cl_foxy.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_foxy.none": "None",
 
-  "entity.fnafur.cl_sparky": "Sparky",
+  "entity.fnafur.cl_sparky": "§mSparky",
 
 
-  "entity.fnafur.spring_bonnie": "Spring Bonnie",
-  "entity.fnafur.spring_freddy": "Spring Freddy",
+  "entity.fnafur.spring_bonnie": "§mSpring Bonnie",
+  "entity.fnafur.spring_freddy": "§mSpring Freddy",
 
   "death.fnafur.back": "Back",
   "death.fnafur.confirm": "Confirm",

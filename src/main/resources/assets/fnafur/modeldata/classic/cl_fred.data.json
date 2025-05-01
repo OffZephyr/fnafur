@@ -36,7 +36,7 @@
                         "emissive": "",
                         "recolorable_emissive": []
                     },
-    
+
                     "colorable": {
                         "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_base.png",
                         "recolorable_textures": [
@@ -44,7 +44,15 @@
                         ],
                         "emissive": "",
                         "recolorable_emissive": []
+                    },
+    
+                    "none": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_none.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
                     }
+    
     
                 }
             },
@@ -87,6 +95,13 @@
                         "recolorable_textures": [
                             "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
                         ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "none": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_none.png",
+                        "recolorable_textures": [],
                         "emissive": "",
                         "recolorable_emissive": []
                     }
@@ -137,6 +152,13 @@
                         "recolorable_textures": [
                             "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
                         ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "none": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_none.png",
+                        "recolorable_textures": [],
                         "emissive": "",
                         "recolorable_emissive": []
                     }

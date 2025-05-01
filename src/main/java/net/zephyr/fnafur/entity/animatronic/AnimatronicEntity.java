@@ -38,7 +38,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     }
 
     private PlayState lowerAnimController(AnimationState<AnimatronicEntity> animatronicEntityAnimationState) {
-        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop("loweridle"));
+        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("loweridle")));
     }
 
     private PlayState upperAnimController(AnimationState<AnimatronicEntity> animatronicEntityAnimationState) {

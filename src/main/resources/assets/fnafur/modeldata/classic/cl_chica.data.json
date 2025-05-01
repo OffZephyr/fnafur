@@ -1,6 +1,6 @@
 {
 
-    "cl_fred":{
+    "cl_chica":{
         "default_alt": "default",
         "alts":{
 
@@ -17,12 +17,86 @@
                 "eyes":{
     
                     "default": {
-                        "texture": "textures/entity/classic/cl_chica/cl_chica.png",
+                        "texture": "textures/entity/classic/cl_chica/eyes/cl_chica_eye_pink.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "black": {
+                        "texture": "textures/entity/classic/cl_chica/eyes/cl_chica_eye_full_black.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "colorable": {
+                        "texture": "textures/entity/classic/cl_chica/eyes/cl_chica_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_chica/eyes/cl_chica_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "none": {
+                        "texture": "textures/entity/classic/cl_chica/eyes/cl_chica_eye_none.png",
                         "recolorable_textures": [],
                         "emissive": "",
                         "recolorable_emissive": []
                     }
     
+                }
+            },
+            
+            "colorable": {
+                "model": "geo/entity/classic/cl_chica/cl_chica.geo.json",
+                "texture": "textures/entity/classic/cl_chica/colorable_skin/colorable_cl_chica.png",
+                "recolorable_textures": [
+                    "textures/entity/classic/cl_chica/colorable_skin/colorable_cl_chica_color0.png",
+                    "textures/entity/classic/cl_chica/colorable_skin/colorable_cl_chica_color1.png",
+                    "textures/entity/classic/cl_chica/colorable_skin/colorable_cl_chica_color2.png",
+                    "textures/entity/classic/cl_chica/colorable_skin/colorable_cl_chica_color3.png",
+                    "textures/entity/classic/cl_chica/colorable_skin/colorable_cl_chica_color4.png"
+                ],
+                "emissive": "",
+                "recolorable_emissive": [],
+                
+                "animations": "animations/entity/classic/cl_chica/cl_chica.animation.json",
+    
+                "default_eyes": "colorable",
+                "eyes":{
+    
+                    "default": {
+                        "texture": "textures/entity/classic/cl_chica/eyes/cl_chica_eye_pink.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "black": {
+                        "texture": "textures/entity/classic/cl_chica/eyes/cl_chica_eye_full_black.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "colorable": {
+                        "texture": "textures/entity/classic/cl_chica/eyes/cl_chica_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_chica/eyes/cl_chica_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "none": {
+                        "texture": "textures/entity/classic/cl_chica/eyes/cl_chica_eye_none.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    }
+
                 }
             }
 

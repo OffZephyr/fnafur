@@ -1,6 +1,6 @@
 {
 
-    "cl_fred":{
+    "cl_foxy":{
         "default_alt": "default",
         "alts":{
 
@@ -17,12 +17,84 @@
                 "eyes":{
     
                     "default": {
-                        "texture": "textures/entity/classic/cl_foxy/cl_foxy.png",
+                        "texture": "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_yellow.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "black": {
+                        "texture": "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_full_black.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "colorable": {
+                        "texture": "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "none": {
+                        "texture": "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_none.png",
                         "recolorable_textures": [],
                         "emissive": "",
                         "recolorable_emissive": []
                     }
     
+                }
+            },
+            
+            "colorable": {
+                "model": "geo/entity/classic/cl_foxy/cl_foxy.geo.json",
+                "texture": "textures/entity/classic/cl_foxy/colorable_skin/colorable_cl_foxy.png",
+                "recolorable_textures": [
+                    "textures/entity/classic/cl_foxy/colorable_skin/colorable_cl_foxy_color0.png",
+                    "textures/entity/classic/cl_foxy/colorable_skin/colorable_cl_foxy_color1.png",
+                    "textures/entity/classic/cl_foxy/colorable_skin/colorable_cl_foxy_color2.png"
+                ],
+                "emissive": "",
+                "recolorable_emissive": [],
+                
+                "animations": "animations/entity/classic/cl_foxy/cl_foxy.animation.json",
+    
+                "default_eyes": "colorable",
+                "eyes":{
+    
+                    "default": {
+                        "texture": "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_yellow.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "black": {
+                        "texture": "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_full_black.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "colorable": {
+                        "texture": "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "none": {
+                        "texture": "textures/entity/classic/cl_foxy/eyes/cl_foxy_eye_none.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    }
+
                 }
             }
 

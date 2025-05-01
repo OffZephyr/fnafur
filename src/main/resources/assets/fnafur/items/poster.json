@@ -5,9 +5,44 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "fnafur:props/posters/fnafone_celebrate_poster"
+        },
+        "when": "fnafone_celebrate"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/posters/fnafone_celebrate_small_poster"
+        },
+        "when": "fnafone_celebrate_small"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "fnafur:props/posters/freddy_lets_party_poster"
         },
         "when": "freddy_lets_party"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/posters/freddy_fun_time_poster"
+        },
+        "when": "freddy_fun_time"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/posters/bonnie_party_time_poster"
+        },
+        "when": "bonnie_party_time"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/posters/chica_eating_time_poster"
+        },
+        "when": "chica_eating_time"
       },
       {
         "model": {
@@ -19,7 +54,7 @@
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "fnafur:props/posters/freddy_lets_party_poster"
+      "model": "fnafur:props/posters/fnafone_celebrate_poster"
     },
     "block_state_property": "color",
     "property": "minecraft:block_state"

@@ -4,8 +4,13 @@ import net.minecraft.util.StringIdentifiable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
 public enum PosterTextures implements ColorEnumInterface, StringIdentifiable {
-    FREDDY_LETS_PARTY("freddy_lets_party", 0),
-    FOXY_PLAY_TIME("foxy_play_time", 1)
+    FNAFONE_CELEBRATE_SMALL("fnafone_celebrate_small", 0),
+    FNAFONE_CELEBRATE("fnafone_celebrate", 1),
+    FREDDY_FUN_TIME("freddy_fun_time", 2),
+    BONNIE_PARTY_TIME("bonnie_party_time", 3),
+    CHICA_EATING_TIME("chica_eating_time", 4),
+    FOXY_PLAY_TIME("foxy_play_time", 5),
+    FREDDY_LETS_PARTY("freddy_lets_party", 6)
     ;
     private final String name;
     private final int index;

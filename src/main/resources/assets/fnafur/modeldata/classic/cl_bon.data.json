@@ -1,6 +1,6 @@
 {
 
-    "cl_fred":{
+    "cl_bon":{
         "default_alt": "default",
         "alts":{
 
@@ -17,12 +17,84 @@
                 "eyes":{
     
                     "default": {
-                        "texture": "textures/entity/classic/cl_bon/cl_bon.png",
+                        "texture": "textures/entity/classic/cl_bon/eyes/cl_bon_eye_pink.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "black": {
+                        "texture": "textures/entity/classic/cl_bon/eyes/cl_bon_eye_full_black.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "colorable": {
+                        "texture": "textures/entity/classic/cl_bon/eyes/cl_bon_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_bon/eyes/cl_bon_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "none": {
+                        "texture": "textures/entity/classic/cl_bon/eyes/cl_bon_eye_none.png",
                         "recolorable_textures": [],
                         "emissive": "",
                         "recolorable_emissive": []
                     }
     
+                }
+            },
+            
+            "colorable": {
+                "model": "geo/entity/classic/cl_bon/cl_bon.geo.json",
+                "texture": "textures/entity/classic/cl_bon/colorable_skin/colorable_cl_bon.png",
+                "recolorable_textures": [
+                    "textures/entity/classic/cl_bon/colorable_skin/colorable_cl_bon_color0.png",
+                    "textures/entity/classic/cl_bon/colorable_skin/colorable_cl_bon_color1.png",
+                    "textures/entity/classic/cl_bon/colorable_skin/colorable_cl_bon_color2.png"
+                ],
+                "emissive": "",
+                "recolorable_emissive": [],
+                
+                "animations": "animations/entity/classic/cl_bon/cl_bon.animation.json",
+    
+                "default_eyes": "colorable",
+                "eyes":{
+    
+                    "default": {
+                        "texture": "textures/entity/classic/cl_bon/eyes/cl_bon_eye_pink.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "black": {
+                        "texture": "textures/entity/classic/cl_bon/eyes/cl_bon_eye_full_black.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "colorable": {
+                        "texture": "textures/entity/classic/cl_bon/eyes/cl_bon_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_bon/eyes/cl_bon_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+    
+                    "none": {
+                        "texture": "textures/entity/classic/cl_bon/eyes/cl_bon_eye_none.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    }
+
                 }
             }
 

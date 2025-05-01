@@ -30,7 +30,7 @@ public class FnafUniverseRebuilt implements ModInitializer {
 	public static final boolean DEBUG = false;
 
 	public static final String MOD_ID = "fnafur";
-	public static final String MOD_VERSION = "Fnaf Universe: ReBuilt - PRE-DEMO 1";
+	public static final String MOD_VERSION = "Fnaf Universe: ReBuilt - RELEASE CANDIDATE 1";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	@Override
 	public void onInitialize() {

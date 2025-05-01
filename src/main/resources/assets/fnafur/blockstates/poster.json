@@ -1,18 +1,48 @@
 {
   "variants": {
-    "facing=north,color=freddy_lets_party": {
-      "model": "fnafur:props/posters/freddy_lets_party_poster"
+    "facing=north,color=freddy_fun_time": {
+      "model": "fnafur:props/posters/freddy_fun_time_poster"
     },
-    "facing=east,color=freddy_lets_party": {
-      "model": "fnafur:props/posters/freddy_lets_party_poster",
+    "facing=east,color=freddy_fun_time": {
+      "model": "fnafur:props/posters/freddy_fun_time_poster",
       "y": 90
     },
-    "facing=south,color=freddy_lets_party": {
-      "model": "fnafur:props/posters/freddy_lets_party_poster",
+    "facing=south,color=freddy_fun_time": {
+      "model": "fnafur:props/posters/freddy_fun_time_poster",
       "y": 180
     },
-    "facing=west,color=freddy_lets_party": {
-      "model": "fnafur:props/posters/freddy_lets_party_poster",
+    "facing=west,color=freddy_fun_time": {
+      "model": "fnafur:props/posters/freddy_fun_time_poster",
+      "y": 270
+    },
+    "facing=north,color=bonnie_party_time": {
+      "model": "fnafur:props/posters/bonnie_party_time_poster"
+    },
+    "facing=east,color=bonnie_party_time": {
+      "model": "fnafur:props/posters/bonnie_party_time_poster",
+      "y": 90
+    },
+    "facing=south,color=bonnie_party_time": {
+      "model": "fnafur:props/posters/bonnie_party_time_poster",
+      "y": 180
+    },
+    "facing=west,color=bonnie_party_time": {
+      "model": "fnafur:props/posters/bonnie_party_time_poster",
+      "y": 270
+    },
+    "facing=north,color=chica_eating_time": {
+      "model": "fnafur:props/posters/chica_eating_time_poster"
+    },
+    "facing=east,color=chica_eating_time": {
+      "model": "fnafur:props/posters/chica_eating_time_poster",
+      "y": 90
+    },
+    "facing=south,color=chica_eating_time": {
+      "model": "fnafur:props/posters/chica_eating_time_poster",
+      "y": 180
+    },
+    "facing=west,color=chica_eating_time": {
+      "model": "fnafur:props/posters/chica_eating_time_poster",
       "y": 270
     },
     "facing=north,color=foxy_play_time": {
@@ -28,6 +58,51 @@
     },
     "facing=west,color=foxy_play_time": {
       "model": "fnafur:props/posters/foxy_party_time_poster",
+      "y": 270
+    },
+    "facing=north,color=freddy_lets_party": {
+      "model": "fnafur:props/posters/freddy_lets_party_poster"
+    },
+    "facing=east,color=freddy_lets_party": {
+      "model": "fnafur:props/posters/freddy_lets_party_poster",
+      "y": 90
+    },
+    "facing=south,color=freddy_lets_party": {
+      "model": "fnafur:props/posters/freddy_lets_party_poster",
+      "y": 180
+    },
+    "facing=west,color=freddy_lets_party": {
+      "model": "fnafur:props/posters/freddy_lets_party_poster",
+      "y": 270
+    },
+    "facing=north,color=fnafone_celebrate": {
+      "model": "fnafur:props/posters/fnafone_celebrate_poster"
+    },
+    "facing=east,color=fnafone_celebrate": {
+      "model": "fnafur:props/posters/fnafone_celebrate_poster",
+      "y": 90
+    },
+    "facing=south,color=fnafone_celebrate": {
+      "model": "fnafur:props/posters/fnafone_celebrate_poster",
+      "y": 180
+    },
+    "facing=west,color=fnafone_celebrate": {
+      "model": "fnafur:props/posters/fnafone_celebrate_poster",
+      "y": 270
+    },
+    "facing=north,color=fnafone_celebrate_small": {
+      "model": "fnafur:props/posters/fnafone_celebrate_small_poster"
+    },
+    "facing=east,color=fnafone_celebrate_small": {
+      "model": "fnafur:props/posters/fnafone_celebrate_small_poster",
+      "y": 90
+    },
+    "facing=south,color=fnafone_celebrate_small": {
+      "model": "fnafur:props/posters/fnafone_celebrate_small_poster",
+      "y": 180
+    },
+    "facing=west,color=fnafone_celebrate_small": {
+      "model": "fnafur:props/posters/fnafone_celebrate_small_poster",
       "y": 270
     }
   }
