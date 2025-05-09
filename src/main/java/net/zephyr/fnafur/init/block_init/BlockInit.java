@@ -583,6 +583,12 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
     );
+    public static final Block VENT_BLOCK = registerBlock(
+            "vent_block",
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .sounds(SoundsInit.VENT_BLOCK_SOUNDS)
+    );
 
     /* Custom Wall Tiles and Floors */
 

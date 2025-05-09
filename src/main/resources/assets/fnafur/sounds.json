@@ -241,8 +241,8 @@
       "fnafur:props/cutouts/matpat6",
       "fnafur:props/cutouts/matpat7"
     ]
-   },
-    "dasen_place": {
+  },
+  "dasen_place": {
       "subtitle": "sounds.fnafur.dasen_place",
       "sounds": [
         "fnafur:props/cutouts/dasen_place"
@@ -302,5 +302,35 @@
       "sounds": [
         "fnafur:props/fnaf1desk/desk_fan"
       ]
-    }
+    },
+  "vent_block_break": {
+    "subtitle": "sounds.fnafur.vent_block_break",
+    "sounds": [
+      "fnafur:blocks/vent_block"
+    ]
+  },
+  "vent_block_step": {
+    "subtitle": "sounds.fnafur.vent_block_step",
+    "sounds": [
+      "fnafur:blocks/vent_block_louder"
+    ]
+  },
+  "vent_block_place": {
+    "subtitle": "sounds.fnafur.vent_block_place",
+    "sounds": [
+      "fnafur:blocks/vent_block"
+    ]
+  },
+  "vent_block_hit": {
+    "subtitle": "sounds.fnafur.vent_block_hit",
+    "sounds": [
+      "fnafur:blocks/vent_block_louder"
+    ]
+  },
+  "vent_block_fall": {
+    "subtitle": "sounds.fnafur.vent_block_fall",
+    "sounds": [
+      "fnafur:blocks/vent_block_louder"
+    ]
   }
+}

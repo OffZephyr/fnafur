@@ -191,6 +191,8 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CHEESE_BLOCK);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CHEESE_BLOCK_WHITE);
 
+        // VENT BLOCK
+        blockStateModelGenerator.registerSimpleCubeAll(BlockInit.VENT_BLOCK);
     }
 
     @Override

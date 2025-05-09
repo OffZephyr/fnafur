@@ -2,6 +2,7 @@ package net.zephyr.fnafur.init;
 
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
@@ -44,6 +45,16 @@ public class SoundsInit {
     public static final SoundEvent ELECTRICAL_LOCKER_SWITCH = registerSoundEvent("electrical_locker_switch");
     public static final SoundEvent LIGHT_SWITCH_FLIP = registerSoundEvent("switch_flip");
     public static final SoundEvent DESK_FAN = registerSoundEvent("desk_fan", true);
+
+    // BLOCK SOUNDS & SOUND GROUPS
+    public static final SoundEvent VENT_BLOCK_BREAK = registerSoundEvent("vent_block_break");
+    public static final SoundEvent VENT_BLOCK_STEP = registerSoundEvent("vent_block_step");
+    public static final SoundEvent VENT_BLOCK_PLACE = registerSoundEvent("vent_block_place");
+    public static final SoundEvent VENT_BLOCK_HIT = registerSoundEvent("vent_block_hit");
+    public static final SoundEvent VENT_BLOCK_FALL = registerSoundEvent("vent_block_fall");
+    public static final BlockSoundGroup VENT_BLOCK_SOUNDS = new BlockSoundGroup(1f, 1f,
+            VENT_BLOCK_BREAK, VENT_BLOCK_STEP, VENT_BLOCK_PLACE, VENT_BLOCK_HIT, VENT_BLOCK_FALL);
+
 
     // CUTOUTS
     public static final SoundEvent DAWKO_PLACE = registerSoundEvent("dawko_place");

@@ -199,6 +199,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.TURQUOISE_SMALL_TILES);
                         entries.add(BlockInit.PURPLE_SMALL_TILES);
                         entries.add(BlockInit.SMALL_STONE_TILES);
+                        entries.add(BlockInit.VENT_BLOCK);
 
                         // GLASS
                         entries.add(BlockInit.TILED_GLASS);

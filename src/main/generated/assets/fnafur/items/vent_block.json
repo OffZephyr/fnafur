@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "fnafur:block/computer"
+    "model": "fnafur:block/vent_block"
   }
 }

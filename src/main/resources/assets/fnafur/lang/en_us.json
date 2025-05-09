@@ -168,6 +168,7 @@
   "block.fnafur.bright_purple_bricks": "Bright Purple Bricks",
   "block.fnafur.teal_bricks": "Teal Bricks",
   "block.fnafur.green_bricks": "Green Bricks",
+  "block.fnafur.vent_block": "Vent Block",
 
   "block.fnafur.tiled_glass": "Tiled Glass",
   "block.fnafur.tiled_glass_slit": "Slit Tiled Glass",
@@ -589,5 +590,9 @@
   "sounds.fnafur.freddy_laugh": "Freddy Laughs",
   "sounds.fnafur.animatronic_groan": "An Animatronic Groans",
 
-  "sounds.fnafur.main_menu": "Main Menu Music Plays"
+  "sounds.fnafur.main_menu": "Main Menu Music Plays",
+
+  "sounds.fnafur.vent_block_break": "Block broken",
+  "sounds.fnafur.vent_block_step": "Vent footsteps",
+  "sounds.fnafur.vent_block_place": "Block placed"
 }

@@ -243,5 +243,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(BlockInit.CHEESE_BLOCK);
         addDrop(BlockInit.CHEESE_BLOCK_WHITE);
 
+        // VENT BLOCK
+        addDrop(BlockInit.VENT_BLOCK);
     }
 }
