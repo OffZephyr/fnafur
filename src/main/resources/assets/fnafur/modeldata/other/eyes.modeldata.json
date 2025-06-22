@@ -1,6 +1,6 @@
 {
   "endo01_eye": {
-    "model": "geo/entity/eyes/endo01/endo01_eye.geo.json",
+    "model": "geckolib/models/entity/eyes/endo01/endo01_eye.geo.json",
     "layers": [
       {
         "name": "eyelids",

@@ -1,14 +1,13 @@
 package net.zephyr.fnafur.client.gui.screens;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.impl.itemgroup.FabricItemGroupImpl;
-import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.resource.featuretoggle.FeatureSet;
@@ -189,12 +188,8 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         int y1 = y;
         int y2 = maxY;
 
-        RenderSystem.setShaderTexture(0, texture);
-        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
-        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        VertexConsumer buffer = client.getBufferBuilders().getEntityVertexConsumers().getBuffer(RenderLayer.getGuiTextured(texture));
 
         int max = 128;
         float multiplier = 0.25f;
@@ -208,15 +203,11 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             float bottomU = MathHelper.lerp(u, 0 + multiplier, 1 - multiplier);
             float bottomU2 = MathHelper.lerp(u2, 0 + multiplier, 1 - multiplier);
 
-            bufferBuilder.vertex(matrix4f, (float)thisX, (float)y1, (float)0).texture(u + floorX, v1);
-            bufferBuilder.vertex(matrix4f, (float)thisX, (float)y2, (float)0).texture(bottomU + floorX, v2);
-            bufferBuilder.vertex(matrix4f, (float)nextX, (float)y2, (float)0).texture(bottomU2 + floorX, v2);
-            bufferBuilder.vertex(matrix4f, (float)nextX, (float)y1, (float)0).texture(u2 + floorX, v1);
+            buffer.vertex(matrix4f, (float)thisX, (float)y1, (float)0).texture(u + floorX, v1);
+            buffer.vertex(matrix4f, (float)thisX, (float)y2, (float)0).texture(bottomU + floorX, v2);
+            buffer.vertex(matrix4f, (float)nextX, (float)y2, (float)0).texture(bottomU2 + floorX, v2);
+            buffer.vertex(matrix4f, (float)nextX, (float)y1, (float)0).texture(u2 + floorX, v1);
         }
-
-        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.disableBlend();
     }
 
     @Override

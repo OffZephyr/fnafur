@@ -51,7 +51,7 @@ public class GeoBlockInit {
             "small_gray_door",
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/door_gray_small.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/small_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/small_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -63,7 +63,7 @@ public class GeoBlockInit {
             "two_five_red_door",
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/red_door.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -75,7 +75,7 @@ public class GeoBlockInit {
             "two_five_black_door",
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/black_door.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -87,7 +87,7 @@ public class GeoBlockInit {
             "two_five_green_door",
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/green_door.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -99,7 +99,7 @@ public class GeoBlockInit {
             "two_five_cyan_door",
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/cyan_door.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -111,7 +111,7 @@ public class GeoBlockInit {
             "two_five_brown_door",
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/brown_door.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -124,7 +124,7 @@ public class GeoBlockInit {
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/red_door_window.png"),
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -137,7 +137,7 @@ public class GeoBlockInit {
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/black_door_window.png"),
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -150,7 +150,7 @@ public class GeoBlockInit {
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/green_door_window.png"),
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -163,7 +163,7 @@ public class GeoBlockInit {
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/cyan_door_window.png"),
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -176,7 +176,7 @@ public class GeoBlockInit {
             Geo1x2Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/brown_door_window.png"),
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/2_5_door_window.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/two_five_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/two_five_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -188,7 +188,7 @@ public class GeoBlockInit {
             "big_gray_door",
             Geo2x3Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/door_gray_big.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/big_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/big_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -200,7 +200,7 @@ public class GeoBlockInit {
             "big_magenta_door",
             Geo2x3Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/door_magenta_big.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/big_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/big_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -212,7 +212,7 @@ public class GeoBlockInit {
             "big_green_door",
             Geo2x3Door::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/doors/door_green_big.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/doors/big_geo_door.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/doors/big_geo_door.geo.json"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)

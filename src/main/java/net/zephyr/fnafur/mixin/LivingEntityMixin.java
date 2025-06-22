@@ -1,6 +1,5 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -8,9 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
-import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -36,23 +33,23 @@ public class LivingEntityMixin{
             }
         }
     }
-    @Inject(method = "updatePostDeath", at = @At("HEAD"), cancellable = true)
-    public void updatePostDeath(CallbackInfo info) {
-        LivingEntity player = ((LivingEntity) (Object) this);
-        if(player != null) {
-        Entity entity = player.getWorld().getEntityById(((IEntityDataSaver)player).getPersistentData().getInt("JumpscareID"));
+    //@Inject(method = "updatePostDeath", at = @At("HEAD"), cancellable = true)
+    //public void updatePostDeath(CallbackInfo info) {
+    //    LivingEntity player = ((LivingEntity) (Object) this);
+    //    if (player != null) {
+    //        Entity entity = player.getWorld().getEntityById(((IEntityDataSaver) player).getPersistentData().getInt("JumpscareID"));
 
-        if (player.getRecentDamageSource() != null &&
-                player.getRecentDamageSource().getAttacker() instanceof DefaultEntity &&
-                entity instanceof DefaultEntity ent &&
-                ent.hasJumpScare()) {
-            ++player.deathTime;
+    //        if (player.getRecentDamageSource() != null &&
+    //                player.getRecentDamageSource().getAttacker() instanceof DefaultEntity &&
+    //                entity instanceof DefaultEntity ent &&
+    //                ent.hasJumpScare()) {
+    //            ++player.deathTime;
 
-            if (player.deathTime >= ent.JumpScareLength()) {
-                player.remove(Entity.RemovalReason.KILLED);
-            }
-            info.cancel();
-        }
-    }
-    }
+    //            if (player.deathTime >= ent.JumpScareLength()) {
+    //                player.remove(Entity.RemovalReason.KILLED);
+    //            }
+    //            info.cancel();
+    //        }
+    //    }
+    //}
 }

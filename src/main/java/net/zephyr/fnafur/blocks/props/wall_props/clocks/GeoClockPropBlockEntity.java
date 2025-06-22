@@ -15,6 +15,7 @@ import net.zephyr.fnafur.client.gui.TabOverlayClass;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.util.GeckoLibUtil;

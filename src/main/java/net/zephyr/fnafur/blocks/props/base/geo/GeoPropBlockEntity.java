@@ -10,11 +10,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animatable.processing.AnimationController;
+import software.bernie.geckolib.animatable.processing.AnimationTest;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -35,16 +36,16 @@ public class GeoPropBlockEntity extends PropBlockEntity implements GeoBlockEntit
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "main", 2, this::mainController));
+        controllers.add(new AnimationController<>("main", 2, this::mainController));
     }
 
-    private PlayState mainController(AnimationState<GeoPropBlockEntity> geoPropBlockEntityAnimationState) {
+    private PlayState mainController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
         BlockState state = getWorld().getBlockState(getPos());
 
         if(block.getCurrentAnimation(state, getPos()) != null){
             state = state.getBlock() instanceof GeoPropBlock ? state : ((Block)block).getDefaultState();
 
-            return geoPropBlockEntityAnimationState.setAndContinue(block.getCurrentAnimation(state, getPos()));
+            return geoAnimatableAnimationTest.setAndContinue(block.getCurrentAnimation(state, getPos()));
         }
         return PlayState.CONTINUE;
     }

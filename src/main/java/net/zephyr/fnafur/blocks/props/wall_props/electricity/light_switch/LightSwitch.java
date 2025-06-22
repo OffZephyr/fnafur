@@ -3,14 +3,12 @@ package net.zephyr.fnafur.blocks.props.wall_props.electricity.light_switch;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.client.sound.Sound;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -80,15 +78,12 @@ public class LightSwitch extends WallPropBlock<DefaultPropColorEnum> {
     }
 
     @Override
-    protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (!moved && !state.isOf(newState.getBlock())) {
-            if ((Boolean)state.get(POWERED)) {
-                this.updateNeighbors(state, world, pos);
-            }
-
-            super.onStateReplaced(state, world, pos, newState, moved);
+    protected void onStateReplaced(BlockState state, ServerWorld world, BlockPos pos, boolean moved) {
+        if (!moved && (Boolean)state.get(POWERED)) {
+            this.updateNeighbors(state, world, pos);
         }
     }
+
     private void updateNeighbors(BlockState state, World world, BlockPos pos) {
         Direction direction = state.get(FACING).getOpposite();
         WireOrientation wireOrientation = OrientationHelper.getEmissionOrientation(

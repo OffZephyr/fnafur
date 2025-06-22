@@ -51,7 +51,7 @@ public class DecalBookItem extends Item {
     }
 
     public static DecalInit.Decal getDecal(ItemStack stack){
-        String name = ItemNbtUtil.getNbt(stack).getString("activeDecal");
+        String name = ItemNbtUtil.getNbt(stack).getString("activeDecal").orElse("");
         if(!name.isEmpty()){
             return DecalInit.getDecal(name);
         }
@@ -85,7 +85,7 @@ public class DecalBookItem extends Item {
 
                     itemStack.set(DataComponentTypes.BLOCK_STATE, component);
 
-                    nbt.put("BlockState", itemStack.toNbtAllowEmpty(context.getWorld().getRegistryManager()));
+                    nbt.put("BlockState", itemStack.toNbt(context.getWorld().getRegistryManager()));
                 }
 
                 if(context.getWorld().isClient()) {
@@ -96,8 +96,8 @@ public class DecalBookItem extends Item {
                     Direction direction = context.getSide();
                     String name = decal.name();
 
-                    NbtList list = nbt.getList(side, NbtElement.STRING_TYPE);
-                    NbtList offset_list = nbt.getList(side + "_offset", NbtElement.FLOAT_TYPE);
+                    NbtList list = nbt.getList(side).orElse(new NbtList());
+                    NbtList offset_list = nbt.getList(side + "_offset").orElse(new NbtList());
 
                     Vec3d hitPos = context.getHitPos();
                     BlockPos pos = context.getBlockPos();
@@ -117,7 +117,8 @@ public class DecalBookItem extends Item {
                         list.add(NbtString.of(name));
                         offset_list.add(NbtFloat.of(offset));
 
-                        context.getWorld().playSound(context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 1, 1, true);
+                        //context.getWorld().playSound(context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 1, 1, true);
+                        // TODO PLAYSOUND FIX
 
                         nbt.put(side, list);
                         nbt.put(side + "_offset", offset_list);

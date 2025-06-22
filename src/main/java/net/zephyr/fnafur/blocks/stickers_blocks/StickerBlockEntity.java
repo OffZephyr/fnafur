@@ -4,9 +4,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
@@ -20,15 +18,15 @@ public class StickerBlockEntity extends BlockEntity {
     }
     public void tick(World world, BlockPos blockPos, BlockState state, StickerBlockEntity entity){
         if(world.isClient()){
-            if(!((IEntityDataSaver)entity).getPersistentData().getBoolean("synced")){
+            if(!((IEntityDataSaver)entity).getPersistentData().contains("synced")){
                 ClientPlayNetworking.send(new UpdateBlockNbtC2SGetFromServerPayload(getPos().asLong()));
                 world.setBlockState(blockPos, world.getBlockState(blockPos), Block.NOTIFY_ALL_AND_REDRAW);
             }
         }
 
         NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData();
-        int holding = nbt.getInt("holding");
-        int holdTime = nbt.getInt("holdTime");
+        int holding = nbt.getInt("holding").orElse(0);
+        int holdTime = nbt.getInt("holdTime").orElse(0);
 
         if(holding > 0) {
             ((IEntityDataSaver)this).getPersistentData().putInt("holding", Math.clamp(holding - 1, 0, holding));

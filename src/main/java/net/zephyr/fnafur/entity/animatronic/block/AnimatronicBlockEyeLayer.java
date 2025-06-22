@@ -6,30 +6,32 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.base.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class AnimatronicBlockEyeLayer<T extends AnimatronicBlockEntity> extends GeoRenderLayer<T> {
-    public AnimatronicBlockEyeLayer(GeoRenderer<T> entityRendererIn) {
-        super(entityRendererIn);
+public class AnimatronicBlockEyeLayer<T extends AnimatronicBlockEntity, O, R extends GeoRenderState> extends GeoRenderLayer<T, O, R> {
+
+    public AnimatronicBlockEyeLayer(GeoRenderer<T, O, R> renderer) {
+        super(renderer);
     }
 
     @Override
-    public void render(MatrixStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int renderColor) {
+    public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
 
-        NbtCompound altNbt = ((IEntityDataSaver) animatable).getPersistentData().getCompound("alt");
+        NbtCompound altNbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA).getCompound("alt").get();
 
-        String texture = altNbt.getString("eyes_texture");
+        String texture = altNbt.getString("eyes_texture").get();
 
         if(texture.isEmpty()) return;
 
         RenderLayer translucentRenderType = RenderLayer.getEntityTranslucent(Identifier.of(FnafUniverseRebuilt.MOD_ID, texture));
 
-        getRenderer().reRender(getDefaultBakedModel(animatable, renderer), poseStack, bufferSource, animatable, translucentRenderType, bufferSource.getBuffer(translucentRenderType), partialTick, packedLight, packedOverlay, 0xFFFFFFFF);
+        getRenderer().reRender(renderState, poseStack, getDefaultBakedModel(renderState), bufferSource, translucentRenderType, bufferSource.getBuffer(translucentRenderType), packedLight, packedOverlay, 0xFFFFFFFF);
     }
 }

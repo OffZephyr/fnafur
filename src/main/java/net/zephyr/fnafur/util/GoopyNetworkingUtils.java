@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.networking.nbt_updates.*;
-import net.zephyr.fnafur.networking.nbt_updates.goopy_entity.UpdateEntityNbtS2CPongPayload;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtS2CPongPayload;
 import net.zephyr.fnafur.networking.screens.*;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 

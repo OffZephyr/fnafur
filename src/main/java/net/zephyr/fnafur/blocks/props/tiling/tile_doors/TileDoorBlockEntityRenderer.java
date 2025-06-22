@@ -4,13 +4,15 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -20,7 +22,7 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
 
     }
     @Override
-    public void render(TileDoorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(TileDoorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
 
         if(((IEntityDataSaver)entity).getPersistentData().isEmpty()){
             GoopyNetworkingUtils.getNbtFromServer(entity.getPos());
@@ -29,11 +31,11 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
         BlockState state = entity.getWorld().getBlockState(entity.getPos());
 
         if(state.getBlock() instanceof TileDoorBlock && state.get(TileDoorBlock.MAIN)){
-            int width = ((IEntityDataSaver) entity).getPersistentData().getInt("width");
-            int height = ((IEntityDataSaver) entity).getPersistentData().getInt("height");
+            int width = ((IEntityDataSaver) entity).getPersistentData().getInt("width").get();
+            int height = ((IEntityDataSaver) entity).getPersistentData().getInt("height").get();
 
-            float openDelta = ((IEntityDataSaver) entity).getPersistentData().getFloat("openDelta");
-            float speed = Math.clamp(((IEntityDataSaver) entity).getPersistentData().getFloat("speed"), 1, 5);
+            float openDelta = ((IEntityDataSaver) entity).getPersistentData().getFloat("openDelta").get();
+            float speed = Math.clamp(((IEntityDataSaver) entity).getPersistentData().getFloat("speed").get(), 1, 5);
             if(state.get(TileDoorBlock.OPEN) && openDelta != 1) {
                 ((IEntityDataSaver) entity).getPersistentData().putFloat("openDelta", Math.clamp(openDelta + (tickDelta/100f) * speed, 0, 1));
             }
@@ -55,11 +57,11 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
                     BlockPos updatePos = entity.getPos().up(y).offset(direction, x);
 
                     BlockState posState = entity.getWorld().getBlockState(updatePos);
-                    BakedModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(posState);
+                    BlockStateModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(posState);
 
                     matrices.push();
                     matrices.translate(updatePos.getX() - entity.getPos().getX(),updatePos.getY() - entity.getPos().getY(),updatePos.getZ() - entity.getPos().getZ());
-                    MinecraftClient.getInstance().getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), state, model, 1, 1, 1, light, overlay);
+                    BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), model, 1, 1, 1, light, overlay);
                     matrices.pop();
                 }
             }

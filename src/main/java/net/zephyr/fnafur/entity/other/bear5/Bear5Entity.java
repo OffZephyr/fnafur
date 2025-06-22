@@ -84,7 +84,7 @@ public class Bear5Entity extends PathAwareEntity {
             if(!getWorld().isClient()){
                 GoopyNetworkingUtils.saveEntityNbt(getId(), ((IEntityDataSaver)this).getPersistentData(), getWorld());
             }
-            UUID targetID = ((IEntityDataSaver)this).getPersistentData().getUuid("TargetID");
+            UUID targetID = UUID.fromString(((IEntityDataSaver)this).getPersistentData().getString("TargetID").get());
             PlayerEntity entity = getWorld().getPlayerByUuid(targetID);
             if(entity != null){
                 entity.sendMessage(Text.literal("§9Something §1§lWICKED §9this way comes......"), true);

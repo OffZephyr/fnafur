@@ -4,31 +4,25 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
-import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropModel;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.base.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class GeoPropAddedLayer<T extends GeoPropBlockEntity> extends GeoRenderLayer<T> {
+public class GeoPropAddedLayer<T extends GeoPropBlockEntity, O, R extends GeoRenderState> extends GeoRenderLayer<T, O, R> {
     final RenderLayer layer;
-    public GeoPropAddedLayer(GeoRenderer<T> entityRendererIn, RenderLayer layer) {
+    public GeoPropAddedLayer(GeoRenderer<T, O, R> entityRendererIn, RenderLayer layer) {
         super(entityRendererIn);
         this.layer = layer;
     }
 
     @Override
-    public void render(MatrixStack poseStack, T animatable, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay, int renderColor) {
-
+    public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
         if(((GeoPropModel<T>)getGeoModel()).reRender){
-            getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, layer, bufferSource.getBuffer(layer), partialTick, packedLight, packedOverlay, renderColor);
+            getRenderer().reRender(renderState, poseStack, bakedModel, bufferSource, layer, bufferSource.getBuffer(layer), packedLight, packedOverlay, renderColor);
         }
     }
 }

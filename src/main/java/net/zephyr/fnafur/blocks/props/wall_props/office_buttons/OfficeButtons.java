@@ -19,6 +19,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.block.OrientationHelper;
+import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.WallHalfProperty;
@@ -64,9 +66,9 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
 
         if (entity != null) {
 
-            double offsetX = ((IEntityDataSaver) entity).getPersistentData().getDouble("xOffset");
-            double offsetY = ((IEntityDataSaver) entity).getPersistentData().getDouble("yOffset");
-            double offsetZ = ((IEntityDataSaver) entity).getPersistentData().getDouble("zOffset");
+            double offsetX = ((IEntityDataSaver) entity).getPersistentData().getDouble("xOffset").get();
+            double offsetY = ((IEntityDataSaver) entity).getPersistentData().getDouble("yOffset").get();
+            double offsetZ = ((IEntityDataSaver) entity).getPersistentData().getDouble("zOffset").get();
 
             Box door = new Box(
                     getDoorHitbox(state).minX + offsetX - 0.5f,
@@ -155,9 +157,9 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
         BlockEntity entity = world.getBlockEntity(pos);
         if (entity instanceof PropBlockEntity ent) {
 
-            double offsetX = ((IEntityDataSaver) ent).getPersistentData().getDouble("xOffset");
-            double offsetY = ((IEntityDataSaver) ent).getPersistentData().getDouble("yOffset");
-            double offsetZ = ((IEntityDataSaver) ent).getPersistentData().getDouble("zOffset");
+            double offsetX = ((IEntityDataSaver) ent).getPersistentData().getDouble("xOffset").get();
+            double offsetY = ((IEntityDataSaver) ent).getPersistentData().getDouble("yOffset").get();
+            double offsetZ = ((IEntityDataSaver) ent).getPersistentData().getDouble("zOffset").get();
 
             Box door = new Box(
                     getDoorHitbox(state).minX + pos.getX() + offsetX - 0.5f,
@@ -335,8 +337,12 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
     }
 
     private void updateNeighbors(BlockState state, World world, BlockPos pos) {
-        world.updateNeighborsAlways(pos, this);
-        world.updateNeighborsAlways(pos.offset(getDirection(state).getOpposite()), this);
+        Direction direction = getDirection(state).getOpposite();
+        WireOrientation wireOrientation = OrientationHelper.getEmissionOrientation(
+                world, direction, direction.getAxis().isHorizontal() ? Direction.UP : state.get(FACING)
+        );
+        world.updateNeighborsAlways(pos, this, wireOrientation);
+        world.updateNeighborsAlways(pos.offset(direction), this, wireOrientation);
     }
 
     @Override

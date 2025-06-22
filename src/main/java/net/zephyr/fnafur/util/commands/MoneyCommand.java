@@ -44,9 +44,9 @@ public class MoneyCommand {
     public static int add(CommandContext<ServerCommandSource> context, int amount, PlayerEntity player) throws CommandSyntaxException {
         if( player instanceof ServerPlayerEntity p) {
 
-            if(((IEntityDataSaver)p).getPersistentData().getInt("Credits") <= 0) set(context, amount, player);
+            if(((IEntityDataSaver)p).getPersistentData().getInt("Credits").get() <= 0) set(context, amount, player);
 
-            int money = ((IEntityDataSaver)p).getPersistentData().getInt("Credits");
+            int money = ((IEntityDataSaver)p).getPersistentData().getInt("Credits").get();
             ((IEntityDataSaver)p).getPersistentData().putInt("Credits", money + amount);
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeInt(money + amount);
@@ -60,7 +60,7 @@ public class MoneyCommand {
                           PlayerEntity player) throws CommandSyntaxException {
         if(player instanceof ServerPlayerEntity p) {
 
-            int money = ((IEntityDataSaver)p).getPersistentData().getInt("Credits");
+            int money = ((IEntityDataSaver)p).getPersistentData().getInt("Credits").get();
             context.getSource().sendFeedback(() -> Text.translatable("fnafur.commands.money", p.getName(), money), true);
             return money;
         }

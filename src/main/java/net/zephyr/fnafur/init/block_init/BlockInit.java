@@ -17,13 +17,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
-import net.zephyr.fnafur.blocks.basic_blocks.ColoredLight;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
 import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
-import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlock;
-import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockRenderer;
 import net.zephyr.fnafur.blocks.decorations.BackstageShelfBlock;
 import net.zephyr.fnafur.blocks.decorations.WarehouseShelfBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
@@ -39,7 +36,6 @@ import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlock;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntityRenderer;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorDirection;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorItem;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.beta.OfficeDoor;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
@@ -142,16 +138,6 @@ public class BlockInit {
                     .blockVision(Blocks::never)
                     .noCollision()
     );
-    public static final Block CAMERA_DESK = registerBlock(
-            "camera_desk",
-            CameraDeskBlock::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-    );
     public static final Block FOG_BLOCK = registerBlock(
             "fog_block",
             FogBlock::new,
@@ -162,18 +148,6 @@ public class BlockInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
-    );
-
-    public static final Block OFFICE_DOOR = registerBlock(
-            "office_door",
-            OfficeDoor::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .luminance(state -> 0)
     );
 
     public static final Block FUEL_GENERATOR = registerBlock(
@@ -929,7 +903,7 @@ public class BlockInit {
     );
     public static final Block CEILING_TILE_LIGHT = registerBlock(
             "ceiling_tile_light",
-            ColoredLight::new,
+            RedstoneLampBlock::new,
             AbstractBlock.Settings.copy(Blocks.REDSTONE_LAMP)
     );
     public static final Block CEILING_TILES_STAINED = registerBlock(
@@ -1140,13 +1114,7 @@ public class BlockInit {
         EntityModelLayerRegistry.registerModelLayer(JavaModels.CAMERA_HEAD, CameraBlockRenderer::getTexturedModelData);
         BlockEntityRendererFactories.register(BlockEntityInit.CAMERA, CameraBlockRenderer::new);
 
-        EntityModelLayerRegistry.registerModelLayer(JavaModels.CAMERA_SCREEN, CameraDeskBlockRenderer::getTexturedModelData);
-
-
-        BlockEntityRendererFactories.register(BlockEntityInit.CAMERA_DESK, CameraDeskBlockRenderer::new);
-
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA_DESK, RenderLayer.getCutout());
 
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CPU_CONFIG_PANEL, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.WORKBENCH, RenderLayer.getCutout());

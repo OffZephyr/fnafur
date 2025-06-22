@@ -32,11 +32,11 @@ public class TileDoorBlockEntity extends BlockEntity {
     }
 
     public void setStatus(boolean open) {
-        BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("main"));
+        BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("main").get());
         if (getWorld().getBlockEntity(mainPos) instanceof TileDoorBlockEntity entity) {
             BlockState state = getWorld().getBlockState(getPos());
-            int width = ((IEntityDataSaver) entity).getPersistentData().getInt("width");
-            int height = ((IEntityDataSaver) entity).getPersistentData().getInt("height");
+            int width = ((IEntityDataSaver) entity).getPersistentData().getInt("width").get();
+            int height = ((IEntityDataSaver) entity).getPersistentData().getInt("height").get();
 
             BlockPos testPos = mainPos.offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
             Direction direction = getWorld().getBlockState(testPos).getBlock() instanceof TileDoorBlock ? state.get(TileDoorBlock.FACING).rotateYCounterclockwise() : state.get(TileDoorBlock.FACING).rotateYClockwise();
@@ -65,11 +65,11 @@ public class TileDoorBlockEntity extends BlockEntity {
         }
     }
     public void setSpeed(float speed) {
-        BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("main"));
+        BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("main").get());
         if (getWorld().getBlockEntity(mainPos) instanceof TileDoorBlockEntity entity) {
             BlockState state = getWorld().getBlockState(getPos());
-            int width = ((IEntityDataSaver) entity).getPersistentData().getInt("width");
-            int height = ((IEntityDataSaver) entity).getPersistentData().getInt("height");
+            int width = ((IEntityDataSaver) entity).getPersistentData().getInt("width").get();
+            int height = ((IEntityDataSaver) entity).getPersistentData().getInt("height").get();
 
             BlockPos testPos = mainPos.offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
             Direction direction = getWorld().getBlockState(testPos).getBlock() instanceof TileDoorBlock ? state.get(TileDoorBlock.FACING).rotateYCounterclockwise() : state.get(TileDoorBlock.FACING).rotateYClockwise();

@@ -22,8 +22,6 @@ public class DebugRendererMixin {
     @Unique
     StickerPlacingRenderer stickerPlacingRenderer = new StickerPlacingRenderer();
     @Unique
-    EnergyInteractionRenderer energyInteractionRenderer = new EnergyInteractionRenderer();
-    @Unique
     TileDoorPlacingRenderer tileDoorPlacingRenderer = new TileDoorPlacingRenderer();
     @Unique
     SpecialBlockPlacingRenderer specialBlockPlacingRenderer = new SpecialBlockPlacingRenderer();
@@ -34,7 +32,6 @@ public class DebugRendererMixin {
         specialBlockPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         floorPropPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         stickerPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
-        energyInteractionRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         tileDoorPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
     }
 }

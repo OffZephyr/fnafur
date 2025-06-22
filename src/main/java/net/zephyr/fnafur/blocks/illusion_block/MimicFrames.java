@@ -53,7 +53,7 @@ public class MimicFrames extends BlockWithSticker {
 
     public static boolean isFullSolidBlock(BlockState state, BlockView world, BlockPos pos) {
         if(world.getBlockEntity(pos) instanceof BlockEntity ent){
-            byte[] data = ((IEntityDataSaver)ent).getPersistentData().getByteArray("cubeMatrix");
+            byte[] data = ((IEntityDataSaver)ent).getPersistentData().getByteArray("cubeMatrix").get();
             return MimicFrames.isFullCube(data) || state.get(IS_FULL);
         }
         return state.get(IS_FULL);
@@ -81,7 +81,7 @@ public class MimicFrames extends BlockWithSticker {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        byte[] data = ItemNbtUtil.getNbt(ctx.getStack()).getByteArray("cubeMatrix");
+        byte[] data = ItemNbtUtil.getNbt(ctx.getStack()).getByteArray("cubeMatrix").orElse(new byte[0]);
         return getDefaultState().with(IS_FULL, isFullCube(data));
     }
 
@@ -120,7 +120,7 @@ public class MimicFrames extends BlockWithSticker {
             if(entity != null) {
                 Vec3d offset = ((BlockHitResult)MinecraftClient.getInstance().crosshairTarget).getSide().getDoubleVector().multiply(0.01f);
                 Vec3i matrixPos = getMatrixPos(MinecraftClient.getInstance().crosshairTarget.getPos().add(offset), pos);
-                byte[] data = ItemNbtUtil.getNbt(itemStack).getByteArray("cubeMatrix");
+                byte[] data = ItemNbtUtil.getNbt(itemStack).getByteArray("cubeMatrix").orElse(new byte[0]);
                 boolean[][][] matrix = new boolean[getMatrixSize()][getMatrixSize()][getMatrixSize()];
                 matrix[Math.clamp(matrixPos.getX(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getY(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getZ(), 0, getMatrixSize()-1)] = true;
 
@@ -144,7 +144,7 @@ public class MimicFrames extends BlockWithSticker {
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         BlockEntity entity = world.getBlockEntity(pos);
         if(entity != null) {
-            byte[] cubeArray = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix");
+            byte[] cubeArray = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix").orElse(new byte[0]);
             if(cubeArray.length <= 1) return VoxelShapes.fullCube();
             boolean[][][] cubeMatrix = arrayToMatrix(cubeArray, getMatrixSize());
             float part = 1.0f / getMatrixSize();
@@ -187,7 +187,7 @@ public class MimicFrames extends BlockWithSticker {
 
             if(!pos.equals(context.getBlockPos())) return false;
 
-            byte[] data = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix");
+            byte[] data = ((IEntityDataSaver)entity).getPersistentData().getByteArray("cubeMatrix").orElse(new byte[0]);
             boolean[][][] matrix = arrayToMatrix(data, getMatrixSize());
 
             matrix[Math.clamp(matrixPos.getX(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getY(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getZ(), 0, getMatrixSize()-1)] = true;
@@ -204,7 +204,7 @@ public class MimicFrames extends BlockWithSticker {
             entity.getWorld().setBlockState(pos, newState);
 
             context.getWorld().updateListeners(context.getBlockPos(), state, newState, 3);
-            context.getWorld().playSoundAtBlockCenter(context.getBlockPos(), state.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 1, 1, true);
+            //context.getWorld().playSoundAtBlockCenter(context.getBlockPos(), state.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 1, 1, true);
             return !isFullCube(array);
         }
     }
@@ -213,7 +213,7 @@ public class MimicFrames extends BlockWithSticker {
     protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
 
         if(world.getBlockEntity(pos) instanceof BlockEntity ent){
-            byte[] data = ((IEntityDataSaver)ent).getPersistentData().getByteArray("cubeMatrix");
+            byte[] data = ((IEntityDataSaver)ent).getPersistentData().getByteArray("cubeMatrix").orElse(new byte[0]);
 
             boolean isFull =  isFullCube(data);
             if(state.get(IS_FULL) != isFull){
@@ -242,11 +242,11 @@ public class MimicFrames extends BlockWithSticker {
         BlockEntity entity = world.getBlockEntity(pos);
         BlockEntity entity2 = world.getBlockEntity(framePos);
         if (entity != null && entity2 != null) {
-            byte[] data = ((IEntityDataSaver) entity).getPersistentData().getByteArray("cubeMatrix");
+            byte[] data = ((IEntityDataSaver) entity).getPersistentData().getByteArray("cubeMatrix").orElse(new byte[0]);
             boolean[][][] matrix = arrayToMatrix(data, matrixSize);
             boolean[][][] matrix2;
 
-            byte[] data2 = ((IEntityDataSaver) entity2).getPersistentData().getByteArray("cubeMatrix");
+            byte[] data2 = ((IEntityDataSaver) entity2).getPersistentData().getByteArray("cubeMatrix").orElse(new byte[0]);
             matrix2 = arrayToMatrix(data2, matrixSize2);
 
             boolean full = true;
@@ -318,7 +318,7 @@ public class MimicFrames extends BlockWithSticker {
             NbtCompound nbt = ((IEntityDataSaver) entity).getPersistentData();
             Block currentBlock = getCurrentBlock(nbt, world, hit.getSide(), matrixPos);
 
-            byte[] data = nbt.getByteArray("cubeMatrix");
+            byte[] data = nbt.getByteArray("cubeMatrix").orElse(new byte[0]);
 
             boolean isFull = isFullCube(data);
             if (state.get(IS_FULL) != isFull) {
@@ -326,7 +326,7 @@ public class MimicFrames extends BlockWithSticker {
             }
 
 
-            int holdTime = ((IEntityDataSaver)entity).getPersistentData().getInt("holdTime");
+            int holdTime = ((IEntityDataSaver)entity).getPersistentData().getInt("holdTime").orElse(0);
 
             if (stack != null && stack.isOf(ItemInit.SCRAPER)) {
                 if(currentBlock != null) {
@@ -347,17 +347,17 @@ public class MimicFrames extends BlockWithSticker {
             else if (stack != null && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock().getDefaultState().isSolidBlock(world, pos)) {
                 if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null || (currentBlock == blockItem.getBlock() && holdTime > 0)) {
 
-                    BlockPos prevPos = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("prevPos"));
-                    String prevDir = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getString("prevDir");
+                    BlockPos prevPos = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("prevPos").orElse(0L));
+                    String prevDir = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getString("prevDir").orElse("");
 
-                    if(!prevPos.equals(new BlockPos(matrixPos)) || !Objects.equals(prevDir, hit.getSide().getName())) {
+                    if(!prevPos.equals(new BlockPos(matrixPos)) || !Objects.equals(prevDir, hit.getSide().getId())) {
                         holdTime = 0;
                     }
 
                     ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putInt("holdTime", holdTime + 1);
                     ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putInt("holding", 10);
                     ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putLong("prevPos", new BlockPos(matrixPos).asLong());
-                    ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putString("prevDir", hit.getSide().getName());
+                    ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putString("prevDir", hit.getSide().getId());
 
                     if(!world.isClient()) {
                         world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1, MathHelper.lerp(Math.clamp(holdTime / 12f, 0, 1), 0.75f, 1.5f));
@@ -373,7 +373,7 @@ public class MimicFrames extends BlockWithSticker {
                         world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
                     }
 
-                    byte[] cubeArray = nbt.getByteArray("cubeMatrix");
+                    byte[] cubeArray = nbt.getByteArray("cubeMatrix").orElse(new byte[0]);
                     boolean[][][] cubeMatrix = MimicFrames.arrayToMatrix(cubeArray, getMatrixSize());
 
                     if(holdTime == 8){
@@ -433,26 +433,26 @@ public class MimicFrames extends BlockWithSticker {
     }
 
     public Block getCurrentBlock(NbtCompound nbt, World world, Direction direction, Vec3i matrixPos){
-        NbtCompound blockNbt = nbt.getCompound("BlockData").getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ());
-        return getBlockFromNbt(blockNbt.getCompound(direction.getName()), world);
+        NbtCompound blockNbt = nbt.getCompound("BlockData").orElse(new NbtCompound()).getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ()).orElse(new NbtCompound());
+        return getBlockFromNbt(blockNbt.getCompound(direction.getId()).orElse(new NbtCompound()), world);
     }
 
     public NbtCompound setBlockTexture(NbtCompound nbt, ItemStack stack, Direction direction, World world, Vec3i matrixPos){
 
-        NbtCompound blockNbt = nbt.getCompound("BlockData").getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ());
+        NbtCompound blockNbt = nbt.getCompound("BlockData").orElse(new NbtCompound()).getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ()).orElse(new NbtCompound());
 
-        blockNbt.put(direction.getName(), stack.toNbtAllowEmpty(world.getRegistryManager()));
-        NbtCompound blockData = nbt.getCompound("BlockData");
+        blockNbt.put(direction.getId(), stack.toNbt(world.getRegistryManager()));
+        NbtCompound blockData = nbt.getCompound("BlockData").orElse(new NbtCompound());
         blockData.put("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ(), blockNbt);
         nbt.put("BlockData", blockData);
         return nbt;
     }
     public NbtCompound removeBlockTexture(NbtCompound nbt, Direction direction, Vec3i matrixPos){
 
-        NbtCompound blockNbt = nbt.getCompound("BlockData").getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ());
+        NbtCompound blockNbt = nbt.getCompound("BlockData").orElse(new NbtCompound()).getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ()).orElse(new NbtCompound());
 
-        blockNbt.put(direction.getName(), new NbtCompound());
-        NbtCompound blockData = nbt.getCompound("BlockData");
+        blockNbt.put(direction.getId(), new NbtCompound());
+        NbtCompound blockData = nbt.getCompound("BlockData").orElse(new NbtCompound());
         blockData.put("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ(), blockNbt);
         nbt.put("BlockData", blockData);
         return nbt;
@@ -470,7 +470,7 @@ public class MimicFrames extends BlockWithSticker {
     }
 
     public static Block getBlockFromNbt(NbtCompound nbt, World world){
-        ItemStack stack = ItemStack.fromNbtOrEmpty(world.getRegistryManager(), nbt);
+        ItemStack stack = ItemStack.fromNbt(world.getRegistryManager(), nbt).orElse(ItemStack.EMPTY);
         if(stack.getItem() instanceof BlockItem blockItem){
             return blockItem.getBlock();
         }

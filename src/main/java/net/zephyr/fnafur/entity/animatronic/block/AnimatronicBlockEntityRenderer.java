@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropModel;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.client.gui.screens.crafting.CpuConfigScreen;
@@ -18,10 +19,10 @@ public class AnimatronicBlockEntityRenderer<T extends AnimatronicBlockEntity> ex
     }
 
     @Override
-    public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        if(!(MinecraftClient.getInstance().currentScreen instanceof WorkbenchScreen || MinecraftClient.getInstance().currentScreen instanceof CpuConfigScreen)){
+    public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPosition) {
+        if(!(MinecraftClient.getInstance().currentScreen instanceof WorkbenchScreen || MinecraftClient.getInstance().currentScreen instanceof CpuConfigScreen)) {
             matrices.push();
-            super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+            super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay, cameraPosition);
             matrices.pop();
         }
     }

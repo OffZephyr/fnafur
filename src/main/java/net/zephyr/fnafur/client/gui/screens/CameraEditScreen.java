@@ -54,21 +54,21 @@ public class CameraEditScreen extends GoopyScreen {
         int i = this.width / 2 - 43;
         int j = this.height / 2 - 25;
 
-        this.isActive = getNbtData().getBoolean("Active");
-        this.modeX = getNbtData().getByte("ModeX");
-        this.modeY = getNbtData().getByte("ModeY");
-        this.xSlider = -getNbtData().getDouble("yaw");
-        this.ySlider = -getNbtData().getDouble("pitch");
-        this.xRange0 = getNbtData().getDouble("minYaw");
-        this.xRange1 = getNbtData().getDouble("maxYaw");
-        this.yRange0 = getNbtData().getDouble("minPitch");
-        this.yRange1 = getNbtData().getDouble("maxPitch");
-        this.speedX = getNbtData().getByte("yawSpeed");
-        this.speedY = getNbtData().getByte("pitchSpeed");
+        this.isActive = getNbtData().getBoolean("Active").get();
+        this.modeX = getNbtData().getByte("ModeX").get();
+        this.modeY = getNbtData().getByte("ModeY").get();
+        this.xSlider = -getNbtData().getDouble("yaw").get();
+        this.ySlider = -getNbtData().getDouble("pitch").get();
+        this.xRange0 = getNbtData().getDouble("minYaw").get();
+        this.xRange1 = getNbtData().getDouble("maxYaw").get();
+        this.yRange0 = getNbtData().getDouble("minPitch").get();
+        this.yRange1 = getNbtData().getDouble("maxPitch").get();
+        this.speedX = getNbtData().getByte("yawSpeed").get();
+        this.speedY = getNbtData().getByte("pitchSpeed").get();
 
-        this.flashlight = getNbtData().getBoolean("Flashlight");
-        this.action = getNbtData().getBoolean("Action");
-        this.nightvision = getNbtData().getByte("NightVision");
+        this.flashlight = getNbtData().getBoolean("Flashlight").get();
+        this.action = getNbtData().getBoolean("Action").get();
+        this.nightvision = getNbtData().getByte("NightVision").get();
 
 
         this.nameField = new TextFieldWidget(this.textRenderer, i, j, 82, 12, Text.translatable("container.repair"));
@@ -78,7 +78,7 @@ public class CameraEditScreen extends GoopyScreen {
         this.nameField.setDrawsBackground(false);
         this.nameField.setMaxLength(50);
         this.nameField.setChangedListener(this::onRenamed);
-        this.nameField.setText(getNbtData().getString("Name"));
+        this.nameField.setText(getNbtData().getString("Name").get());
         this.addSelectableChild(this.nameField);
         this.nameField.setEditable(true);
 
@@ -89,7 +89,7 @@ public class CameraEditScreen extends GoopyScreen {
         this.actionName.setDrawsBackground(true);
         this.actionName.setMaxLength(24);
         this.actionName.setChangedListener(this::onActionRenamed);
-        this.actionName.setText(getNbtData().getString("ActionName"));
+        this.actionName.setText(getNbtData().getString("ActionName").get());
         this.addSelectableChild(this.actionName);
         this.actionName.setEditable(true);
 

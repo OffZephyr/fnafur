@@ -1,14 +1,11 @@
 package net.zephyr.fnafur.client.gui.screens.main_menu;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.opengl.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.ShaderLoader;
-import net.minecraft.client.gl.ShaderProgramDefinition;
-import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Overlay;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.resource.metadata.TextureResourceMetadata;
@@ -17,7 +14,6 @@ import net.minecraft.client.texture.ReloadableTexture;
 import net.minecraft.client.texture.TextureContents;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceFactory;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceReload;
 import net.minecraft.util.Identifier;
@@ -26,16 +22,12 @@ import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
-import net.zephyr.fnafur.util.mixinAccessing.IShaderLoaderAccessor;
-import net.zephyr.fnafur.util.mixinAccessing.IUniverseRenderLayers;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class FnafSplashOverlay extends SplashOverlay {
     private static final Identifier BG = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/bg.png");
@@ -93,10 +85,10 @@ public class FnafSplashOverlay extends SplashOverlay {
 
             h = MathHelper.clamp(g, 0.0F, 1.0F);
         } else {
-            float m = 0;
-            float n = 0;
-            float o = 0;
-            GlStateManager._clearColor(m, n, o, 1.0F);
+            int m = 0;
+            int n = 0;
+            int o = 0;
+            RenderSystem.getDevice().createCommandEncoder().clearColorTexture(this.client.getFramebuffer().getColorAttachment(), ColorHelper.getArgb(255, m, n, o));
             GlStateManager._clear(16384);
             h = 1.0F;
         }

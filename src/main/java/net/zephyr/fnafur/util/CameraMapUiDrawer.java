@@ -23,20 +23,20 @@ public class CameraMapUiDrawer {
     public float mapAlpha = 100;
     public void drawMap(DrawContext context, int mouseX, int mouseY, float delta, NbtCompound data, int mapEndPosX, int mapEndPosY, int mapCornerPosX, int mapCornerPosY, float mapAlpha, boolean isMonitor, boolean nvOutline, long currentCam){
         List<Long> cams = new ArrayList<>();
-        long[] camsData = data.getLongArray("Cameras");
+        long[] camsData = data.getLongArray("Cameras").get();
         for (long cam : camsData) {
             if(MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(cam)) instanceof CameraBlockEntity) cams.add(cam);
         }
-        BlockPos minPos = BlockPos.fromLong(data.getLong("mapMinCorner"));
-        BlockPos maxPos = BlockPos.fromLong(data.getLong("mapMaxCorner"));
+        BlockPos minPos = BlockPos.fromLong(data.getLong("mapMinCorner").get());
+        BlockPos maxPos = BlockPos.fromLong(data.getLong("mapMaxCorner").get());
 
-        boolean bl = data.getList("CamMap", NbtElement.LONG_ARRAY_TYPE).isEmpty();
+        boolean bl = data.getList("CamMap").get().isEmpty();
         if(!bl) {
 
             int mapMaxWidth = mapEndPosX - mapCornerPosX;
             int mapMaxHeight = mapEndPosY - mapCornerPosY;
 
-            NbtList mapNbt = data.getList("CamMap", NbtElement.LONG_ARRAY_TYPE).copy();
+            NbtList mapNbt = data.getList("CamMap").get().copy();
 
             mapWidth = Math.abs(maxPos.getX() - minPos.getX());
             mapHeight = Math.abs(maxPos.getZ() - minPos.getZ());
@@ -64,8 +64,8 @@ public class CameraMapUiDrawer {
 
             for(int i = 0; i < mapNbt.size(); i++) {
                 if (mapNbt.get(i).getType() == NbtElement.LONG_ARRAY_TYPE) {
-                    BlockPos pos1 = BlockPos.fromLong(mapNbt.getLongArray(i)[0]);
-                    BlockPos pos2 = BlockPos.fromLong(mapNbt.getLongArray(i)[1]);
+                    BlockPos pos1 = BlockPos.fromLong(mapNbt.getLongArray(i).get()[0]);
+                    BlockPos pos2 = BlockPos.fromLong(mapNbt.getLongArray(i).get()[1]);
 
                     int x1 = (Math.min(pos1.getX(), pos2.getX())- minPos.getX()) * mapMultiplier;
                     int z1 = (Math.min(pos1.getZ(), pos2.getZ())- minPos.getZ()) * mapMultiplier;
@@ -102,7 +102,7 @@ public class CameraMapUiDrawer {
 
                 if(isMonitor){
                     if (bl2 && MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().world.getBlockEntity(pos) != null) {
-                        String name = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(pos)).getPersistentData().getString("Name");
+                        String name = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(pos)).getPersistentData().getString("Name").get();
                         matrices.pop();
                         context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(name), mouseX, mouseY);
                         matrices.push();

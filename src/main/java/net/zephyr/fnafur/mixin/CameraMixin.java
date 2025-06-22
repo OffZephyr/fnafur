@@ -7,12 +7,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
-import net.zephyr.fnafur.entity.base.DefaultEntity;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IPlayerCustomModel;
 import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
 import org.joml.Quaternionf;
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,7 +32,7 @@ public class CameraMixin implements IEditCamera {
     @Shadow float pitch;
     @Shadow float yaw;
     float roll = 0;
-    @Shadow float lastTickDelta;
+    @Shadow float lastTickProgress;
 
     @Shadow
     void setRotation(float yaw, float pitch) {
@@ -68,14 +67,14 @@ public class CameraMixin implements IEditCamera {
     private static final Vector3f DIAGONAL = new Vector3f(-1.0f, 0.0f, 0.0f);
 
 
-
+    // TODO Illusion Disc
     @Inject(method = "updateEyeHeight", at = @At("HEAD"), cancellable = true)
     public void updateEyeHeight(CallbackInfo ci) {
-        if(((IPlayerCustomModel)MinecraftClient.getInstance().player).getCurrentEntity() instanceof DefaultEntity gu) {
-            this.lastCameraY = this.cameraY;
-            this.cameraY = this.cameraY + (gu.getBaseDimensions(gu.mimicPlayer.getPose()).eyeHeight() - this.cameraY) * 0.5F;
-            ci.cancel();
-        }
+        //if(((IPlayerCustomModel)MinecraftClient.getInstance().player).getCurrentEntity() instanceof AnimatronicEntity gu) {
+        //    this.lastCameraY = this.cameraY;
+        //    this.cameraY = this.cameraY + (gu.getBaseDimensions(gu.mimicPlayer.getPose()).eyeHeight() - this.cameraY) * 0.5F;
+        //    ci.cancel();
+        //}
     }
 
     @Inject(method = "update", at = @At("HEAD"), cancellable = true)
@@ -84,11 +83,11 @@ public class CameraMixin implements IEditCamera {
         this.area = area;
         this.focusedEntity = focusedEntity;
         this.thirdPerson = thirdPerson || this.forceThirdPerson;
-        this.lastTickDelta = tickDelta;
+        this.lastTickProgress = tickDelta;
 
         PlayerEntity player = MinecraftClient.getInstance().player;
 
-        Entity entity = MinecraftClient.getInstance().world.getEntityById(((IEntityDataSaver)player).getPersistentData().getInt("JumpscareID"));
+        //Entity entity = MinecraftClient.getInstance().world.getEntityById(((IEntityDataSaver)player).getPersistentData().getInt("JumpscareID"));
 
         if(MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen screen){
             Vec3d pos = screen.camPos();
@@ -100,15 +99,16 @@ public class CameraMixin implements IEditCamera {
 
             info.cancel();
         }
-        else if(player != null &&
-                player.isDead() &&
-                player.getRecentDamageSource() != null &&
-                player.getRecentDamageSource().getAttacker() instanceof DefaultEntity &&
-                entity instanceof DefaultEntity ent &&
-                ent.hasJumpScare()
-        ) {
-            info.cancel();
-        }
+        //else if(player != null &&
+        //        player.isDead() &&
+        //        player.getRecentDamageSource() != null &&
+        //        player.getRecentDamageSource().getAttacker() instanceof AnimatronicEntity &&
+        //        entity instanceof AnimatronicEntity ent &&
+        //        ent.hasJumpScare()
+        //) {
+        //    info.cancel();
+        //}
+        // TODO Jumpscare
     }
 
     @Override

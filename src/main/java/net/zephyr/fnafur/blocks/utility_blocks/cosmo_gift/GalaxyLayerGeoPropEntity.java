@@ -12,6 +12,10 @@ import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animatable.processing.AnimationController;
+import software.bernie.geckolib.animatable.processing.AnimationState;
+import software.bernie.geckolib.animatable.processing.AnimationTest;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -26,24 +30,24 @@ public class GalaxyLayerGeoPropEntity extends GeoPropBlockEntity implements GeoB
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spawn", 0, this::spawnController));
-        controllers.add(new AnimationController<>(this, "idle", 0, this::idleController));
+        controllers.add(new AnimationController<>("spawn", 0, this::spawnController));
+        controllers.add(new AnimationController<>("idle", 0, this::idleController));
     }
 
-    private PlayState spawnController(AnimationState<GalaxyLayerGeoPropEntity> galaxyLayerGeoPropEntityAnimationState) {
+    private PlayState spawnController(AnimationTest<GeoAnimatable> galaxyLayerGeoPropEntityAnimationState) {
         if(item) {
             item = false;
             return PlayState.CONTINUE;
         }
         return galaxyLayerGeoPropEntityAnimationState.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.cosmo_gift.spawn"));
     }
-    private PlayState idleController(AnimationState<GalaxyLayerGeoPropEntity> galaxyLayerGeoPropEntityAnimationState) {
+    private PlayState idleController(AnimationTest<GeoAnimatable> galaxyLayerGeoPropEntityAnimationState) {
         return galaxyLayerGeoPropEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop("animation.cosmo_gift.idle"));
     }
 
     @Override
     public Identifier getReRenderModel(World world) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/block/props/giftbox_overlay.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/giftbox_overlay.geo.json");
     }
 
     @Override

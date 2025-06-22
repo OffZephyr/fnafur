@@ -16,11 +16,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockEntity;
-import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
 import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -38,7 +37,7 @@ public class CameraBlockRenderer implements BlockEntityRenderer<CameraBlockEntit
 
        ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, -2.0F, -6.0F, 4.0F, 4.0F, 8.0F, new Dilation(0.0F))
                .uv(20, 0).cuboid(-0.5F, -0.5F, -8.2F, 1.0F, 1.0F, 4.9F, new Dilation(0.2F))
-               .uv(14, 19).cuboid(-0.95F, -0.95F, -9.0F, 1.9F, 1.9F, 1.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 13.0F, 3.0F));
+               .uv(14, 19).cuboid(-0.95F, -0.95F, -9.0F, 1.9F, 1.9F, 1.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 13.0F, 3.0F));
 
        ModelPartData cube_r1 = head.addChild("cube_r1", ModelPartBuilder.create().uv(0, 12).mirrored().cuboid(0.0F, -1.3F, -3.0F, 0.0F, 3.9F, 6.0F, new Dilation(0.0F)).mirrored(false), ModelTransform.of(1.0F, -0.5F, 1.9F, 0.0F, 0.0F, 0.3927F));
 
@@ -48,13 +47,13 @@ public class CameraBlockRenderer implements BlockEntityRenderer<CameraBlockEntit
     }
 
     @Override
-    public void render(CameraBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(CameraBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
 
-        for (BlockPos pos : CameraDeskBlockEntity.posList) {
-            if (entity.getWorld().getBlockEntity(pos) instanceof CameraDeskBlockEntity mirror) {
-                if(CameraRenderer.isDrawing() && BlockPos.fromLong(mirror.currentCam).equals(entity.getPos())) return;
-            }
-        }
+        //for (BlockPos pos : CameraDeskBlockEntity.posList) {
+        //    if (entity.getWorld().getBlockEntity(pos) instanceof CameraDeskBlockEntity mirror) {
+        //        if(CameraRenderer.isDrawing() && BlockPos.fromLong(mirror.currentCam).equals(entity.getPos())) return;
+        //    }
+        //}
 
         BlockPos pos = entity.getPos();
 
@@ -73,10 +72,10 @@ public class CameraBlockRenderer implements BlockEntityRenderer<CameraBlockEntit
         SpriteIdentifier spriteIdentifier = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, texture);
         VertexConsumer vertexConsumer = spriteIdentifier.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout);
 
-        float pitch = data.getFloat("pitch");
-        float yaw = data.getFloat("yaw");
+        float pitch = data.getFloat("pitch").get();
+        float yaw = data.getFloat("yaw").get();
 
-        if(data.getBoolean("Active")) {
+        if(data.getBoolean("Active").get()) {
             model.roll = (float) Math.PI / 180 * 180;
             model.pitch = (float) Math.PI / 180 * pitch;
             model.yaw = (float) Math.PI / 180 * yaw;
@@ -88,7 +87,7 @@ public class CameraBlockRenderer implements BlockEntityRenderer<CameraBlockEntit
         }
         model.render(matrices, vertexConsumer, getLightLevel(world, pos), overlay);
 
-        if(data.getBoolean("isUsed") && data.getBoolean("Active")){
+        if(data.getBoolean("isUsed").get() && data.getBoolean("Active").get()){
             String on_id = "block/camera_on";
 
             Identifier textureOn = Identifier.of(FnafUniverseRebuilt.MOD_ID, on_id);

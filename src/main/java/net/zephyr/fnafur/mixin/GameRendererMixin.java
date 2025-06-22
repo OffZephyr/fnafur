@@ -1,18 +1,13 @@
 package net.zephyr.fnafur.mixin;
 
-import com.google.gson.JsonSyntaxException;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.PostEffectProcessor;
 import net.minecraft.client.render.DefaultFramebufferSet;
 import net.minecraft.client.render.FrameGraphBuilder;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IPostProcessorLoader;
 import net.zephyr.fnafur.util.mixinAccessing.IPostProcessorUniform;
@@ -23,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +52,8 @@ public class GameRendererMixin implements IPostProcessorLoader {
     }
     @Inject(method = "onResized", at = @At(value = "HEAD"))
     private void illusions$onResized$HEAD(int width, int height, CallbackInfo ci) {
-        CameraRenderer.onResize(width, height);
+        //CameraRenderer.onResize(width, height);
+        //TODO CamRenderer
     }
 
     public void resizePostProcessor(Framebuffer framebuffer, int width, int height){
@@ -76,10 +71,10 @@ public class GameRendererMixin implements IPostProcessorLoader {
     @Override
     public void render(FrameGraphBuilder builder, int textureWidth, int textureHeight, PostEffectProcessor.FramebufferSet framebufferSet) {
 
-        PostEffectProcessor postProcessor = this.client.getShaderLoader().loadPostEffect(this.postProcessorId, DefaultFramebufferSet.MAIN_ONLY);
-        if(postProcessor != null){
-            postProcessor.render(builder, textureWidth, textureHeight, framebufferSet);
-        }
+        //PostEffectProcessor postProcessor = this.client.getShaderLoader().loadPostEffect(this.postProcessorId, DefaultFramebufferSet.MAIN_ONLY);
+        //if(postProcessor != null){
+        //    postProcessor.render(builder, textureWidth, textureHeight, framebufferSet);
+        //}
     }
     @Override
     public void setMonitorPostProcessor(Identifier id, Framebuffer framebuffer) {
@@ -90,13 +85,13 @@ public class GameRendererMixin implements IPostProcessorLoader {
     }
     @Override
     public void renderMonitor(float delta, boolean bool, Framebuffer framebuffer) {
-        PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(framebuffer);
-        if(bool && monitorPostProcessor != null){
-            RenderSystem.disableBlend();
-            RenderSystem.disableDepthTest();
-            RenderSystem.resetTextureMatrix();
-            //monitorPostProcessor.render(delta);
-        }
+        //PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(framebuffer);
+        //if(bool && monitorPostProcessor != null){
+        //    RenderSystem.disableBlend();
+        //    RenderSystem.disableDepthTest();
+        //    RenderSystem.resetTextureMatrix();
+        //    //monitorPostProcessor.render(delta);
+        //}
     }
 
     @Override
@@ -115,10 +110,10 @@ public class GameRendererMixin implements IPostProcessorLoader {
     }
     @Override
     public void setMonitorUniform(Framebuffer buffer, String uniform, float value1) {
-        PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(buffer);
-        if(monitorPostProcessor != null) {
-            monitorPostProcessor.setUniforms(uniform, value1);
-        }
+        //PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(buffer);
+        //if(monitorPostProcessor != null) {
+        //    monitorPostProcessor.setUniforms(uniform, value1);
+        //}
     }
 
     @Override

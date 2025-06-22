@@ -15,6 +15,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
@@ -25,12 +26,15 @@ import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GeoPropAddedLayer;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockModel;
 import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
+import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.base.GeoRenderer;
 
 @Environment(EnvType.CLIENT)
 public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRenderer<T> implements BlockEntityRenderer<T> {
@@ -50,14 +54,26 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
     }
 
     public void render(T entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-
         entity.item = true;
-        if(getGeoModel().getModelResource(entity, this) == null) return;
-        super.render(entity, MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(true), matrices, vertexConsumers, light, overlay);
+        super.render(entity, MinecraftClient.getInstance().getRenderTickCounter().getFixedDeltaTicks(), matrices, vertexConsumers, light, overlay, client.cameraEntity.getClientCameraPosVec(MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true)));
     }
 
     @Override
-    public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public GeoRenderState fillRenderState(T animatable, Void relatedObject, GeoRenderState renderState, float partialTick) {
+        GeoRenderState state = super.fillRenderState(animatable, relatedObject, renderState, partialTick);
+
+        state.addGeckolibData(CustomDataTickets.ENTITY_DATA, ((IEntityDataSaver)animatable).getPersistentData().copy());
+        state.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.getWorld()));
+        state.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.getWorld()));
+        state.addGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE, animatable.getReRenderTexture(animatable.getWorld()));
+        state.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.getWorld()));
+        state.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.getRenderType());
+
+        return state;
+    }
+
+    @Override
+    public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPosition) {
 
         BlockPos pos = entity.getPos();
         BlockState state = client.world.getBlockState(pos);
@@ -72,11 +88,11 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
                 nbt = ((IEntityDataSaver)entity).getPersistentData();
             }
 
-            float rotation = nbt.getFloat("Rotation");
+            float rotation = nbt.getFloat("Rotation").get();
 
-            double offsetX = nbt.getDouble("xOffset");
-            double offsetY = nbt.getDouble("yOffset");
-            double offsetZ = nbt.getDouble("zOffset");
+            double offsetX = nbt.getDouble("xOffset").get();
+            double offsetY = nbt.getDouble("yOffset").get();
+            double offsetZ = nbt.getDouble("zOffset").get();
 
             matrices.translate(-0.5f, 0, -0.5f);
             matrices.translate(offsetX, 0, offsetZ);
@@ -94,7 +110,7 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-rotation));
                 matrices.translate(-0.5f, 0, -0.5f);
             }
-            super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+            super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay, cameraPosition);
             //this.renderModel(pos, state, matrices, vertexConsumers, entity.getWorld(), false, overlay);
             matrices.pop();
 

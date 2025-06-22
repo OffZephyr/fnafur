@@ -171,8 +171,9 @@ public class DecalBookEditScreen extends GoopyScreen{
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        int add = verticalAmount > 0 ? 1 : -1;
+        int add = verticalAmount > 0 ? 2 : -2;
         page += add;
+        page = Math.clamp(page, 0, pageAmount);
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 

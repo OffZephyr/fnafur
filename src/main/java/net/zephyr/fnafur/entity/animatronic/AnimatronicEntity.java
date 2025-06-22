@@ -16,8 +16,12 @@ import net.zephyr.fnafur.init.entity_init.CharacterInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
-import software.bernie.geckolib.cache.GeckoLibCache;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animatable.processing.AnimationController;
+import software.bernie.geckolib.animatable.processing.AnimationTest;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.cache.GeckoLibResources;
 import software.bernie.geckolib.loading.object.BakedAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -33,15 +37,15 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Upper", 1, this::upperAnimController));
-        controllers.add(new AnimationController<>(this, "Lower", 1, this::lowerAnimController));
+        controllers.add(new AnimationController<>("Upper", 1, this::upperAnimController));
+        controllers.add(new AnimationController<>("Lower", 1, this::lowerAnimController));
     }
 
-    private PlayState lowerAnimController(AnimationState<AnimatronicEntity> animatronicEntityAnimationState) {
+    private PlayState lowerAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
         return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("loweridle")));
     }
 
-    private PlayState upperAnimController(AnimationState<AnimatronicEntity> animatronicEntityAnimationState) {
+    private PlayState upperAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
         if(isMenu) {
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("menuidle")));
         }
@@ -88,8 +92,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     public Identifier getTexture(World world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt");
-            String texture = nbt.getString("texture");
+            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+            String texture = nbt.getString("texture").orElse("");
             if(!texture.isEmpty()){
                 return Identifier.of(FnafUniverseRebuilt.MOD_ID, texture);
             }
@@ -103,14 +107,14 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     public Identifier getModel(World world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt");
-            String model = nbt.getString("model");
+            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+            String model = nbt.getString("model").orElse("");
             if(!model.isEmpty()){
                 return Identifier.of(FnafUniverseRebuilt.MOD_ID, model);
             }
         }
 
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/default/endo_01/endo_01.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/entity/default/endo_01/endo_01.geo.json");
     }
 
     public Identifier getReRenderModel(World world){
@@ -119,26 +123,32 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     public Identifier getAnimations(World world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt");
-            String animations = nbt.getString("animations");
+            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+            String animations = nbt.getString("animations").orElse("");
             if(!animations.isEmpty()){
                 return Identifier.of(FnafUniverseRebuilt.MOD_ID, animations);
             }
         }
 
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/entity/classic/cl_fred/cl_fred.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/entity/classic/cl_fred/cl_fred.animation.json");
     }
 
     public String prefixAnim(String animation){
         Identifier location = getAnimations(getWorld());
-        BakedAnimations bakedAnimations = GeckoLibCache.getBakedAnimations().get(location);
 
-        NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt");
-        String name = nbt.getString("chara");
-        String anim = "animation." + name + "." + animation;
-        if(bakedAnimations != null && bakedAnimations.animations().containsKey(anim)) {
+        if(GeckoLibResources.getBakedAnimations().containsKey(location)) {
+            BakedAnimations bakedAnimations = GeckoLibResources.getBakedAnimations().get(location);
 
-            return anim;
+            NbtCompound nbt = ((IEntityDataSaver) this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+
+            if (nbt.isEmpty()) return "animation.default." + animation;
+
+            String name = nbt.getString("chara").get();
+            String anim = "animation." + name + "." + animation;
+            if (bakedAnimations != null && bakedAnimations.animations().containsKey(anim)) {
+
+                return anim;
+            }
         }
 
         return "animation.default." + animation;

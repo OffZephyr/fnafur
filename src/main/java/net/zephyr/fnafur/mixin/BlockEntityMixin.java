@@ -47,8 +47,8 @@ public class BlockEntityMixin implements IEntityDataSaver {
 
     @Inject(method = "readNbt", at = @At("HEAD"))
     protected void injectReadMethod(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup, CallbackInfo info) {
-        if (nbt.contains("fnafur.persistent", 10)) {
-            persistentData = nbt.getCompound("fnafur.persistent");
+        if (nbt.contains("fnafur.persistent")) {
+            persistentData = nbt.getCompound("fnafur.persistent").get();
         }
     }
 }

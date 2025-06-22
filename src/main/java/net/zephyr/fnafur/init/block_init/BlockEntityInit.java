@@ -7,14 +7,13 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
-import net.zephyr.fnafur.blocks.camera_desk.CameraDeskBlockEntity;
 import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
 import net.zephyr.fnafur.blocks.fog.FogBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
+import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.blocks.props.wall_props.clocks.GeoClockPropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlockEntity;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
@@ -22,7 +21,6 @@ import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 public class BlockEntityInit {
     public static BlockEntityType<CpuConfigPanelBlockEntity> CPU_CONFIG_PANEL;
     public static BlockEntityType<CameraBlockEntity> CAMERA;
-    public static BlockEntityType<CameraDeskBlockEntity> CAMERA_DESK;
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
     public static BlockEntityType<AnimatronicBlockEntity> ANIMATRONIC_BLOCK;
@@ -43,11 +41,6 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "camera"),
                         FabricBlockEntityTypeBuilder.create(CameraBlockEntity::new,
                                 BlockInit.CAMERA).build());
-
-        CAMERA_DESK =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "camera_desk"),
-                        FabricBlockEntityTypeBuilder.create(CameraDeskBlockEntity::new,
-                                BlockInit.CAMERA_DESK).build());
         FOG_BLOCK =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "fog_block"),
                         FabricBlockEntityTypeBuilder.create(FogBlockEntity::new,
@@ -56,7 +49,6 @@ public class BlockEntityInit {
         TILE_DOOR =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "tile_door"),
                         FabricBlockEntityTypeBuilder.create(TileDoorBlockEntity::new,
-                                BlockInit.OFFICE_DOOR,
                                 BlockInit.GARAGE_DOOR,
                                 BlockInit.HEAVY_DOOR,
                                 BlockInit.WARNING_HEAVY_DOOR

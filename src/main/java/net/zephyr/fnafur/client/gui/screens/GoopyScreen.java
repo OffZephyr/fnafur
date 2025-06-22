@@ -1,13 +1,18 @@
 package net.zephyr.fnafur.client.gui.screens;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.textures.GpuTexture;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.ShaderProgramKeys;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.render.*;
+import net.minecraft.client.texture.AbstractTexture;
+import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -210,19 +215,28 @@ public abstract class GoopyScreen extends Screen {
         int y1 = y;
         int x2 = x + (int)regionWidth;
         int y2 = y + (int)regionHeight;
-        RenderSystem.setShaderTexture(0, texture);
-        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(red, green, blue, alpha);
-        Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
-        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-        bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)z).texture(u1, v1);
-        bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)z).texture(u1, v2);
-        bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)z).texture(u2, v2);
-        bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)z).texture(u2, v1);
-        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.disableBlend();
+
+        TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
+        AbstractTexture abstractTexture = textureManager.getTexture(texture);
+        RenderSystem.setShaderTexture(0, abstractTexture.getGlTexture());
+
+        context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, (int) regionWidth, (int) regionHeight, (int) textureWidth, (int) textureHeight, ColorHelper.getArgb((int)(alpha * 255),(int)(red * 255),(int)(green * 255),(int)(blue * 255)));
+        //RenderPipeline renderPipeline = RenderPipelines.GUI_TEXTURED;
+        //renderPass.setPipeline(renderPipeline);
+        //RenderSystem.setShader(RenderPipelines.POSITION_TEX);
+        //RenderSystem.enableBlend();
+        //RenderSystem.setShaderColor(red, green, blue, alpha);
+        //Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
+        //BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        //bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)z).texture(u1, v1);
+        //bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)z).texture(u1, v2);
+        //bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)z).texture(u2, v2);
+        //bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)z).texture(u2, v1);
+        //BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+        //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        //RenderSystem.disableBlend();
+
+
     }
     public static void drawResizableText(DrawContext context, TextRenderer textRenderer, Text text, float scale, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
 

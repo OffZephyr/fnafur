@@ -24,7 +24,7 @@ public class PropBlockEntity extends BlockEntity {
 
     public void tick(World world, BlockPos blockPos, BlockState state, PropBlockEntity entity) {
         if (world.isClient()) {
-            if (!((IEntityDataSaver) entity).getPersistentData().getBoolean("synced")) {
+            if (!((IEntityDataSaver) entity).getPersistentData().contains("synced")) {
                 ClientPlayNetworking.send(new UpdateBlockNbtC2SGetFromServerPayload(getPos().asLong()));
                 world.setBlockState(blockPos, world.getBlockState(blockPos), Block.NOTIFY_ALL_AND_REDRAW);
             }

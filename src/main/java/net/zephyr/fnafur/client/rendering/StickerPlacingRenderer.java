@@ -1,13 +1,8 @@
 package net.zephyr.fnafur.client.rendering;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -60,32 +55,36 @@ public class StickerPlacingRenderer {
                         float vWidth = 0.5f;
                         float vHeight = 0.5f;
 
-                        RenderSystem.enableDepthTest();
-                        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX_COLOR);
+                        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(identifier));
 
-                        var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-
-                        RenderSystem.setShaderTexture(0, identifier);
-                        RenderSystem.setShaderColor(1, 1, 1, 0.6f);
-
-                        buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, -vHeight)
+                        vertexConsumer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, -vHeight)
                                 .texture(0.5f - tWidth, 0.5f - tHeight)
-                                .color(0xFFFFFFFF);
-                        buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, vHeight)
+                                .color(0xFFFFFFFF)
+                                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
+                                .overlay(OverlayTexture.DEFAULT_UV)
+                                .normal(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ())
+                        ;
+                        vertexConsumer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, vHeight)
                                 .texture(0.5f - tWidth, 0.5f + tHeight)
-                                .color(0xFFFFFFFF);
-                        buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, vHeight)
+                                .color(0xFFFFFFFF)
+                                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
+                                .overlay(OverlayTexture.DEFAULT_UV)
+                                .normal(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ())
+                        ;
+                        vertexConsumer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, vHeight)
                                 .texture(0.5f + tWidth, 0.5f + tHeight)
-                                .color(0xFFFFFFFF);
-                        buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, -vHeight)
+                                .color(0xFFFFFFFF)
+                                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
+                                .overlay(OverlayTexture.DEFAULT_UV)
+                                .normal(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ())
+                        ;
+                        vertexConsumer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, -vHeight)
                                 .texture(0.5f + tWidth, 0.5f - tHeight)
-                                .color(0xFFFFFFFF);
-
-                        RenderSystem.setShaderColor(1, 1, 1, 1f);
-
-                        BufferRenderer.drawWithGlobalProgram(buffer.end());
-
-                        RenderSystem.disableDepthTest();
+                                .color(0xFFFFFFFF)
+                                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
+                                .overlay(OverlayTexture.DEFAULT_UV)
+                                .normal(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ())
+                        ;
 
                         matrices.pop();
                     }

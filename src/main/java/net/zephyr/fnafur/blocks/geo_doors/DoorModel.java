@@ -2,24 +2,24 @@ package net.zephyr.fnafur.blocks.geo_doors;
 
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.geo_doors.GeoDoorEntity;
-import org.jetbrains.annotations.Nullable;
+import net.zephyr.fnafur.util.CustomDataTickets;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public class DoorModel extends GeoModel<GeoDoorEntity> {
+
     @Override
-    public Identifier getModelResource(GeoDoorEntity animatable, @Nullable GeoRenderer<GeoDoorEntity> renderer) {
-        return animatable.getModel();
+    public Identifier getModelResource(GeoRenderState renderState) {
+        return renderState.getGeckolibData(CustomDataTickets.MODEL);
     }
 
     @Override
-    public Identifier getTextureResource(GeoDoorEntity animatable, @Nullable GeoRenderer<GeoDoorEntity> renderer) {
-        return animatable.getTexture();
+    public Identifier getTextureResource(GeoRenderState renderState) {
+        return renderState.getGeckolibData(CustomDataTickets.TEXTURE);
     }
 
     @Override
     public Identifier getAnimationResource(GeoDoorEntity animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "animations/block/door/geo_door.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/door/geo_door.animation.json");
     }
 }

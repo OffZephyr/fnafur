@@ -36,7 +36,7 @@ public class Bear5Command {
 
         Bear5Entity entity = EntityInit.BEAR5.create(player.getWorld(), SpawnReason.COMMAND);
         entity.setPosition(player.getPos().offset(player.getFacing().getOpposite(), 20));
-        ((IEntityDataSaver) entity).getPersistentData().putUuid("TargetID", player.getUuid());
+        ((IEntityDataSaver) entity).getPersistentData().putString("TargetID", player.getUuid().toString());
         player.getWorld().spawnEntity(entity);
         return 0;
     }

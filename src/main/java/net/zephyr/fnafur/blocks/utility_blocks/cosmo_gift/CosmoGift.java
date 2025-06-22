@@ -90,11 +90,11 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(player.getMainHandStack().isEmpty()){
             if(world.getBlockEntity(pos) instanceof GalaxyLayerGeoPropEntity ent){
-                ItemStack stack = ItemNbtUtil.setNbt(new ItemStack(PropInit.COSMO_GIFT, 1), ((IEntityDataSaver)ent).getPersistentData().getCompound("contains"));
+                ItemStack stack = ItemNbtUtil.setNbt(new ItemStack(PropInit.COSMO_GIFT, 1), ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get());
 
-                String chara = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").getString("chara");
-                String alt = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").getString("alt");
-                String eyes = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").getString("eyes");
+                String chara = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get().getString("chara").get();
+                String alt = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get().getString("alt").get();
+                String eyes = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get().getString("eyes").get();
 
                 alt = alt.isEmpty() ? "entity_alts.fnafur.none" : "entity_alts.fnafur." + chara + "." + alt;
                 eyes = eyes.isEmpty() ? "entity_eyes.fnafur.none" : "entity_eyes.fnafur." + chara + "." + eyes;

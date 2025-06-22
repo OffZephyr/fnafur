@@ -3,8 +3,6 @@ package net.zephyr.fnafur.mixin;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.zephyr.fnafur.entity.base.DefaultEntity;
-import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.mixinAccessing.IPlayerCustomModel;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,8 +19,8 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
     @Inject (method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo ci) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
-        ItemStack stack = player.getInventory().armor.get(2);
-        if(stack.isOf(ItemInit.ILLUSIONDISC)){
+        //ItemStack stack = player.getInventory()..get(2);
+        //if(stack.isOf(ItemInit.ILLUSIONDISC)){
             /*
             String animatronic = ItemNbtUtil.getNbt(stack).getString("entity");
             NbtCompound animatronicData = ItemNbtUtil.getNbt(stack).getCompound("entityData");
@@ -55,10 +53,10 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
                 player.calculateDimensions();
             }
             */
-        }
-        else {
-            resetCurrentEntity();
-        }
+        //}
+        //else {
+        //    resetCurrentEntity();
+        //}
     }
 
     @Inject(method = "updatePose", at = @At("HEAD"), cancellable = true)
@@ -82,7 +80,7 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
     }
 
     @Override
-    public void setCurrentEntity(@Nullable DefaultEntity entity) {
+    public void setCurrentEntity(@Nullable LivingEntity entity) {
         currentEntity = entity;
     }
     @Override
@@ -116,8 +114,8 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
         this.crawling = crawling;
     }
 
-    @Inject(method = "getEquippedStack", at = @At("HEAD"), cancellable = true)
-    public void getDualHandItem(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> ci) {
+    //@Inject(method = "getEquippedStack", at = @At("HEAD"), cancellable = true)
+    //public void getDualHandItem(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> ci) {
         /*if(slot == EquipmentSlot.MAINHAND || slot == EquipmentSlot.OFFHAND){
             ItemStack stack = ItemStack.fromNbtOrEmpty(((PlayerEntity)(Object)this).getWorld().getRegistryManager(),((IEntityDataSaver)((Object)this)).getPersistentData().getCompound("dualHandItem"));
 
@@ -125,5 +123,5 @@ public class PlayerEntityMixin implements IPlayerCustomModel {
                 ci.setReturnValue(stack);
             }
         }*/
-    }
+    //}
 }

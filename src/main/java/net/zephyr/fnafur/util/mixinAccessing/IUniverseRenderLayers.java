@@ -5,5 +5,4 @@ import net.minecraft.util.Identifier;
 
 public interface IUniverseRenderLayers {
     RenderLayer getCosmoGift();
-    RenderLayer getLoading(Identifier texture);
 }

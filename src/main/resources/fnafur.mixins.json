@@ -5,7 +5,6 @@
   "mixins": [
     "AbstractBlockMixin",
     "BlockEntityMixin",
-    "BlockMixin",
     "CameraMixin",
     "CreativeInventoryScreenMixin",
     "DeathScreenMixin",

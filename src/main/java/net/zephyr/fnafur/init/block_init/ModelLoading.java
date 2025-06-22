@@ -16,9 +16,11 @@ public class ModelLoading implements ModelLoadingPlugin {
         pluginContext.modifyModelOnLoad().register((original, context) -> {
             if(context.id() != null && original != null) {
                 if (context.id().toString().contains(STICKER_BLOCK_ID)) {
+                    System.out.println("GUH");
                     return new StickerBlockModel(original);
                 }
                 else if (context.id().toString().contains(MIMIC_BLOCK_ID)) {
+                    System.out.println("GUH but mimic");
                     if(context.id().toString().contains("_2")) return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME_2x2.getDefaultState());
                     else if(context.id().toString().contains("_4")) return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME_4x4.getDefaultState());
 

@@ -50,13 +50,13 @@ public class BaseWallSwitchBlock extends WallPropBlock implements BlockEntityPro
         if(pos == toAdd) return ActionResult.FAIL;
         if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return ActionResult.FAIL;
         List<Long> p = new ArrayList<>(
-                Arrays.stream(base.getData().getLongArray(BaseEnergyBlockEntity.KEY_NODES)).boxed().toList()
+                Arrays.stream(base.getData().getLongArray(BaseEnergyBlockEntity.KEY_NODES).get()).boxed().toList()
         );
 
         if(p.contains(toAdd.asLong()))return ActionResult.SUCCESS;
         p.add(toAdd.asLong());
 
-        base.setData(BaseEnergyBlockEntity.KEY_NODES, new NbtLongArray(p) );
+        //base.setData(BaseEnergyBlockEntity.KEY_NODES, new NbtLongArray(p) );
         //System.out.println("[SWITCH]: data nodes : "+ base.getNodes().toString());
         return ActionResult.SUCCESS;
     }
@@ -65,11 +65,11 @@ public class BaseWallSwitchBlock extends WallPropBlock implements BlockEntityPro
     public ActionResult remNode(World world, BlockPos pos, BlockPos toRem, Vec3d hit) {
         if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return ActionResult.FAIL;
         List<Long> p = new ArrayList<>(
-                Arrays.stream(base.getData().getLongArray(BaseEnergyBlockEntity.KEY_NODES)).boxed().toList()
+                Arrays.stream(base.getData().getLongArray(BaseEnergyBlockEntity.KEY_NODES).get()).boxed().toList()
         );
 
         p.remove(toRem.asLong());
-        base.setData(BaseEnergyBlockEntity.KEY_NODES, new NbtLongArray(p) );
+        //base.setData(BaseEnergyBlockEntity.KEY_NODES, new NbtLongArray(p) );
         return ActionResult.SUCCESS;
     }
 
@@ -95,12 +95,12 @@ public class BaseWallSwitchBlock extends WallPropBlock implements BlockEntityPro
     public ActionResult ExecuteAction(ItemUsageContext context) {
         NbtCompound data = context.getStack().getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
 
-        if(data.getBoolean("needConnection")){
+        if(data.getBoolean("needConnection").get()){
             if(context.getPlayer().isSneaking()){
                 remNode(
                         context.getWorld(),
                         context.getBlockPos(),
-                        BlockPos.fromLong(data.getLong("posConnection")),
+                        BlockPos.fromLong(data.getLong("posConnection").get()),
                         context.getHitPos()
                 );
                 //System.out.println("[SWITCH] node removed! ");
@@ -108,7 +108,7 @@ public class BaseWallSwitchBlock extends WallPropBlock implements BlockEntityPro
                 addNode(
                         context.getWorld(),
                         context.getBlockPos(),
-                        BlockPos.fromLong(data.getLong("posConnection")),
+                        BlockPos.fromLong(data.getLong("posConnection").get()),
                         context.getHitPos()
                 );
                 //System.out.println("[SWITCH] node added! ");

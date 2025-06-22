@@ -35,7 +35,7 @@ public class CharacterModelManager extends SinglePreparationResourceReloader<Lis
     public static final String TORSO_ACCESSORIES = "torso_accessories";
 
     static final Gson GSON = new Gson();
-    public static Identifier DEFAULT_MODEL = Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo/entity/default/endo_01/endo_01.geo.json");
+    public static Identifier DEFAULT_MODEL = Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/entity/default/endo_01/endo_01.geo.json");
     private static final TypeToken<Map<String, CharacterEntry>> CHARACTER_LIST_TYPE = new TypeToken<>() {};
     private static final TypeToken<Map<String, String>> STRING_LIST = new TypeToken<>() {};
     private static final TypeToken<Map<String, ModelDataEntry>> MODEL_LIST_TYPE = new TypeToken<>() {};

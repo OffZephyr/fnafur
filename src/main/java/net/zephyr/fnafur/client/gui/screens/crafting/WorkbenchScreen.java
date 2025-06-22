@@ -1,15 +1,9 @@
 package net.zephyr.fnafur.client.gui.screens.crafting;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.*;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtString;
-import net.minecraft.nbt.NbtTypes;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
@@ -20,9 +14,7 @@ import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.networking.entity.WorkbenchSaveC2SPayload;
 import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
-import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.Map;
@@ -77,13 +69,13 @@ public class WorkbenchScreen extends GoopyScreen {
                 .clickExec(this::SaveButton);
 
         if(!getNbtData().getCompound("GiftData").isEmpty()){
-            ((IEntityDataSaver)entity).getPersistentData().put("alt", getNbtData().getCompound("GiftData"));
+            ((IEntityDataSaver)entity).getPersistentData().put("alt", getNbtData().getCompound("GiftData").get());
         }
 
     }
 
     private void SaveButton() {
-        ClientPlayNetworking.send(new WorkbenchSaveC2SPayload(getBlockPos().up().asLong(), ((IEntityDataSaver)entity).getPersistentData().getCompound("alt")));
+        ClientPlayNetworking.send(new WorkbenchSaveC2SPayload(getBlockPos().up().asLong(), ((IEntityDataSaver)entity).getPersistentData().getCompound("alt").get()));
         close();
     }
 
@@ -159,10 +151,10 @@ public class WorkbenchScreen extends GoopyScreen {
                 }
 
 
-                NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt");
+                NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt").orElse(new NbtCompound());
 
                 if(!altNbt.isEmpty() && altNbt.contains("recolorable_textures_size")) {
-                    int size = altNbt.getInt("recolorable_textures_size");
+                    int size = altNbt.getInt("recolorable_textures_size").orElse(0);
 
                     for (int i = 0; i < size; i++) {
 
@@ -224,10 +216,10 @@ public class WorkbenchScreen extends GoopyScreen {
                     prefix = "entity_eyes.fnafur." + this.chara + ".";
                 }
 
-                NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt");
+                NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt").orElse(new NbtCompound());
 
                 if(!altNbt.isEmpty() && altNbt.contains("eyes_recolorable_textures_size")) {
-                    int size = altNbt.getInt("eyes_recolorable_textures_size");
+                    int size = altNbt.getInt("eyes_recolorable_textures_size").orElse(0);
 
                     for (int i = 0; i < size; i++) {
 
@@ -468,10 +460,12 @@ public class WorkbenchScreen extends GoopyScreen {
     }
 
     void updateColors(double mouseX, double mouseY){
-        NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt");
+        NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+
+        if(altNbt.isEmpty()) return;
 
         if(!altNbt.isEmpty() && altNbt.contains("recolorable_textures_size")) {
-            int size = altNbt.getInt("recolorable_textures_size");
+            int size = altNbt.getInt("recolorable_textures_size").get();
 
             for (int i = 0; i < size; i++) {
 
@@ -499,10 +493,12 @@ public class WorkbenchScreen extends GoopyScreen {
     }
 
     void updateEyeColors(double mouseX, double mouseY){
-        NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt");
+        NbtCompound altNbt = ((IEntityDataSaver)entity).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+
+        if(altNbt.isEmpty()) return;
 
         if(!altNbt.isEmpty() && altNbt.contains("eyes_recolorable_textures_size")) {
-            int size = altNbt.getInt("eyes_recolorable_textures_size");
+            int size = altNbt.getInt("eyes_recolorable_textures_size").get();
 
             for (int i = 0; i < size; i++) {
 
@@ -629,17 +625,17 @@ public class WorkbenchScreen extends GoopyScreen {
         int y1 = 0;
         int x2 = width;
         int y2 = height;
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
-        RenderSystem.enableBlend();
-        Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
-        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-        bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)50).texture(u1, v1);
-        bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)50).texture(u1, v2);
-        bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)50).texture(u2, v2);
-        bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)50).texture(u2, v1);
-        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.disableBlend();
+        //RenderSystem.setShaderTexture(0, TEXTURE);
+        //RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
+        //RenderSystem.enableBlend();
+        //Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
+        //BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        //bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)50).texture(u1, v1);
+        //bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)50).texture(u1, v2);
+        //bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)50).texture(u2, v2);
+        //bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)50).texture(u2, v1);
+        //BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+        //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        //RenderSystem.disableBlend();
     }
 }

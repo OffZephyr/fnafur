@@ -1,14 +1,12 @@
-package net.zephyr.fnafur.networking.nbt_updates.goopy_entity;
+package net.zephyr.fnafur.networking.nbt_updates;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
-import net.zephyr.fnafur.networking.nbt_updates.NbtPayloads;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public record UpdateEntityNbtS2CPongPayload(int entityID, NbtCompound data) implements CustomPayload {

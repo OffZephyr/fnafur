@@ -1,38 +1,20 @@
 package net.zephyr.fnafur.mixin;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.item.ItemModelManager;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.MapRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.equipment.EquipmentModelLoader;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.entity.model.LoadedEntityModels;
-import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BlockItem;
-import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.entity.base.DefaultEntity;
-import net.zephyr.fnafur.entity.base.DefaultEntityRenderer;
-import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.util.IHasArmPos;
-import net.zephyr.fnafur.util.mixinAccessing.IPlayerCustomModel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,7 +34,7 @@ public class LivingEntityRendererMixin {
         }
     }
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;isVisible(Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;)Z"))
-    public <T extends DefaultEntity, S extends LivingEntityRenderState> void renderArms(S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci){
+    public <T extends LivingEntity, S extends LivingEntityRenderState> void renderArms(S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci){
 
         if(player != null) {
             if(player.getMainHandStack().getItem() instanceof BlockItem bi && bi.getBlock() instanceof IHasArmPos hasArmPos) {
@@ -70,10 +52,10 @@ public class LivingEntityRendererMixin {
         }
     }
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public <T extends DefaultEntity, S extends LivingEntityRenderState> void render(S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci){
+    public <T extends LivingEntity, S extends LivingEntityRenderState> void render(S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci){
 
         MinecraftClient client = MinecraftClient.getInstance();
-        if(player != null) {
+        /*if(player != null) {
             T entity = (T) ((IPlayerCustomModel) player).getCurrentEntity();
             if (entity != null) {
 
@@ -110,6 +92,6 @@ public class LivingEntityRendererMixin {
                 }
                 ci.cancel();
             }
-        }
+        }*/
     }
 }

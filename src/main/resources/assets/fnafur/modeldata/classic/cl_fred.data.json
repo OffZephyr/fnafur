@@ -5,13 +5,13 @@
         "alts":{
 
             "default": {
-                "model": "geo/entity/classic/cl_fred/cl_fred.geo.json",
+                "model": "geckolib/models/entity/classic/cl_fred/cl_fred.geo.json",
                 "texture": "textures/entity/classic/cl_fred/cl_fred.png",
                 "recolorable_textures": [],
                 "emissive": "",
                 "recolorable_emissive": [],
                 
-                "animations": "animations/entity/classic/cl_fred/cl_fred.animation.json",
+                "animations": "geckolib/animations/entity/classic/cl_fred/cl_fred.animation.json",
     
                 "default_eyes": "default",
                 "eyes":{
@@ -58,13 +58,13 @@
             },
 
             "golden": {
-                "model": "geo/entity/classic/cl_fred/cl_fred.geo.json",
+                "model": "geckolib/models/entity/classic/cl_fred/cl_fred.geo.json",
                 "texture": "textures/entity/classic/cl_fred/cl_gold_fred.png",
                 "recolorable_textures": [],
                 "emissive": "",
                 "recolorable_emissive": [],
                 
-                "animations": "animations/entity/classic/cl_fred/cl_fred.animation.json",
+                "animations": "geckolib/animations/entity/classic/cl_fred/cl_fred.animation.json",
     
                 "default_eyes": "brown",
                 "eyes":{
@@ -111,7 +111,7 @@
             
 
             "colorable": {
-                "model": "geo/entity/classic/cl_fred/cl_fred.geo.json",
+                "model": "geckolib/models/entity/classic/cl_fred/cl_fred.geo.json",
                 "texture": "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred.png",
                 "recolorable_textures": [
                     "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred_color0.png",
@@ -121,7 +121,7 @@
                 "emissive": "",
                 "recolorable_emissive": [],
                 
-                "animations": "animations/entity/classic/cl_fred/cl_fred.animation.json",
+                "animations": "geckolib/animations/entity/classic/cl_fred/cl_fred.animation.json",
     
                 "default_eyes": "colorable",
                 "eyes":{

@@ -40,7 +40,7 @@ public class FuelGeneratorBlock extends  BaseGeneratorBlock {
         BlockEntity entity = world.getBlockEntity(pos);
         if(!(entity instanceof BaseEnergyBlockEntity base)) return;
 
-        int newQuantity = Math.min(base.getData().getInt(KEY_FUEL) + amount, MAX_CAPACITY);
+        int newQuantity = Math.min(base.getData().getInt(KEY_FUEL).get() + amount, MAX_CAPACITY);
         base.setData(KEY_FUEL, NbtInt.of(newQuantity));
 
         System.out.println("[FUEL_GEN]: refuel!");
@@ -62,7 +62,7 @@ public class FuelGeneratorBlock extends  BaseGeneratorBlock {
             BlockEntity ent = world1.getBlockEntity(pos);
             if(!(ent instanceof BaseEnergyBlockEntity base)) return;
 
-            int newQuantity = Math.max(base.getData().getInt(KEY_FUEL) - FUEL_CONSUMPTION, 0);
+            int newQuantity = Math.max(base.getData().getInt(KEY_FUEL).get() - FUEL_CONSUMPTION, 0);
             base.setData(KEY_FUEL,NbtInt.of(newQuantity));
 
         });
@@ -72,7 +72,7 @@ public class FuelGeneratorBlock extends  BaseGeneratorBlock {
     public boolean isPowered(BlockView world, BlockPos pos) {
         BlockEntity ent = world.getBlockEntity(pos);
         if(!(ent instanceof BaseEnergyBlockEntity base)) return false;
-        return world.getBlockState(pos).get(ACTIVED) && base.getData().getInt(KEY_FUEL) > 0;
+        return world.getBlockState(pos).get(ACTIVED) && base.getData().getInt(KEY_FUEL).get() > 0;
     }
 
     @Override

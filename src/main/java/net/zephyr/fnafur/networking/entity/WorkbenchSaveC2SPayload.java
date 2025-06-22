@@ -3,7 +3,6 @@ package net.zephyr.fnafur.networking.entity;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -14,11 +13,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
-import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropEntity;
-import net.zephyr.fnafur.entity.base.DefaultEntity;
 import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -38,11 +34,11 @@ public record WorkbenchSaveC2SPayload(long pos, NbtCompound nbt) implements Cust
                 NbtCompound nbt2 = ((IEntityDataSaver) ent2).getPersistentData().copy();
                 BlockState state = context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos()).down());
 
-                float rotation = nbt2.getFloat("Rotation") + 270;
+                float rotation = nbt2.getFloat("Rotation").get() + 270;
 
-                double offsetX = nbt2.getDouble("xOffset");
-                double offsetY = nbt2.getDouble("yOffset");
-                double offsetZ = nbt2.getDouble("zOffset");
+                double offsetX = nbt2.getDouble("xOffset").get();
+                double offsetY = nbt2.getDouble("yOffset").get();
+                double offsetZ = nbt2.getDouble("zOffset").get();
 
                 float rot = (rotation) * MathHelper.RADIANS_PER_DEGREE;
                 Vec2f angle = new Vec2f(MathHelper.cos(rot), MathHelper.sin(rot)).multiply(0.25f);

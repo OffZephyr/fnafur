@@ -6,7 +6,8 @@ import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.block.BlockModelRenderer;
+import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -39,7 +40,7 @@ public class TileDoorPlacingRenderer {
                 state = state.with(TileDoorBlock.FACING, player.getHorizontalFacing().getAxis().getNegativeDirection());
 
 
-                BlockPos pos1 = BlockPos.fromLong(nbt.getLong("pos1"));
+                BlockPos pos1 = BlockPos.fromLong(nbt.getLong("pos1").get());
                 if(client.crosshairTarget instanceof BlockHitResult hitResult){
                     BlockPos pos2 = hitResult.getBlockPos().offset(hitResult.getSide());
 
@@ -59,7 +60,7 @@ public class TileDoorPlacingRenderer {
                             boolean left = state.get(TileDoorBlock.FACING).getAxis() == Direction.Axis.Z ? x != 0 : x != h;
                             state = state.with(TileDoorBlock.TYPE, VerticalTileStates.get(y != v, right, y != 0, left));
 
-                            BakedModel model = client.getBakedModelManager().getBlockModels().getModel(state);
+                            BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);
 
                             Vec3i pos = new Vec3i(
                                     h == distance.getZ() ? pos1.getX() : minPos.getX() + (Math.abs(dir.getVector().getZ()) * x),
@@ -70,7 +71,7 @@ public class TileDoorPlacingRenderer {
                             matrices.push();
                             matrices.translate(pos.getX(), pos.getY(), pos.getZ());
 
-                            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), state, model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
 
                             matrices.pop();
                         }

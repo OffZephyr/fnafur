@@ -17,11 +17,6 @@ public class IllusionDisc extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) throws NumberFormatException {
-        super.appendTooltip(stack, context, tooltip, type);
-    }
-
-    @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         /*if(entity instanceof DefaultEntity ent) {
             for (ComputerData.Initializer.AnimatronicAI ai: ComputerData.getAIAnimatronics())

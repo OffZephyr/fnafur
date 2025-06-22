@@ -34,7 +34,7 @@ public class BaseEnergyBlockEntity extends PropBlockEntity {
     /// Get the nodes connected to this entity block
     public BlockPos[] getNodes(){
         if(getData().getLongArray(KEY_NODES) == null) return new BlockPos[]{};
-        long[] longs = getData().getLongArray(KEY_NODES);
+        long[] longs = getData().getLongArray(KEY_NODES).get();
         List<BlockPos> poses = new ArrayList<>();
         for(long l: longs){
             poses.add(BlockPos.fromLong(l));

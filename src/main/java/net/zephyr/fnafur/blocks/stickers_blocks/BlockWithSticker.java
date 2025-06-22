@@ -80,7 +80,7 @@ public class BlockWithSticker extends BlockWithEntity {
         //itemStack.set(DataComponentTypes.BLOCK_STATE, component);
         NbtCompound nbt = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData();
 
-        ItemStack stack = ItemStack.fromNbtOrEmpty(world.getRegistryManager(), nbt.getCompound("BlockState"));
+        ItemStack stack = ItemStack.fromNbt(world.getRegistryManager(), nbt.getCompound("BlockState").get()).get();
         BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem)stack.getItem()).getBlock().getDefaultState()) : state;
 
         if(!(state.getBlock() instanceof MimicFrames)){
@@ -117,8 +117,8 @@ public class BlockWithSticker extends BlockWithEntity {
                 NbtCompound nbt = ((IEntityDataSaver)ent).getPersistentData();
                 String side = hit.getSide().name();
 
-                NbtList list = nbt.getList(side, NbtElement.STRING_TYPE);
-                NbtList offset_list = nbt.getList(side + "_offset", NbtElement.FLOAT_TYPE);
+                NbtList list = nbt.getList(side).get();
+                NbtList offset_list = nbt.getList(side + "_offset").get();
 
                 if(!list.isEmpty()) {
                     System.out.println("SCRAPE3");
@@ -132,13 +132,13 @@ public class BlockWithSticker extends BlockWithEntity {
                     if (offset_list.isEmpty()) nbt.remove(side + "_offset");
                     else nbt.put(side + "_offset", offset_list);
 
-                    world.playSound(pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 0.125f, 1.25f, true);
-                    world.playSound(pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 0.5f, 1.1f, true);
+                    world.playSound(player, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 0.125f, 1.25f);
+                    world.playSound(player, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 0.5f, 1.1f);
 
                     if(world.isClient()) {
                         if (hasNoStickers(nbt) && !(asBlock() instanceof MimicFrames)) {
                             System.out.println("SCRAPE5");
-                            ItemStack blockStack = ItemStack.fromNbtOrEmpty(world.getRegistryManager(), nbt.getCompound("BlockState"));
+                            ItemStack blockStack = ItemStack.fromNbt(world.getRegistryManager(), nbt.getCompound("BlockState").get()).get();
 
                             state = !blockStack.isEmpty() ? blockStack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem) blockStack.getItem()).getBlock().getDefaultState()) : state;
                         } else {
@@ -159,7 +159,7 @@ public class BlockWithSticker extends BlockWithEntity {
         boolean empty = true;
 
         for(Direction d : Direction.values()){
-            if(nbt.contains(d.getName().toUpperCase())) empty = false;
+            if(nbt.contains(d.getId().toUpperCase())) empty = false;
         }
 
         return empty;

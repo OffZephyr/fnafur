@@ -28,11 +28,6 @@ public class BallpitBlock extends Grid2x2Block {
     }
 
     @Override
-    protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        //entity.slowMovement(state, new Vec3d(0.9F, 1.5, 0.9F));
-    }
-
-    @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         if (context instanceof EntityShapeContext entityShapeContext) {
             Entity entity = entityShapeContext.getEntity();

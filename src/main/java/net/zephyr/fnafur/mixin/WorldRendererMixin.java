@@ -3,30 +3,26 @@ package net.zephyr.fnafur.mixin;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.Camera;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexRendering;
+import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.LightType;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
-import net.zephyr.fnafur.blocks.camera_desk.CameraRenderer;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
-import net.zephyr.fnafur.client.lighting.RGBLightMap;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
@@ -42,18 +38,7 @@ public class WorldRendererMixin {
     )
 
     public boolean Goopy_player_isThirdPerson(Camera camera) {
-        return camera.isThirdPerson()|| CameraRenderer.isDrawing() || MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen;
-    }
-
-    @Inject(method = "getLightmapCoordinates(Lnet/minecraft/world/BlockRenderView;Lnet/minecraft/block/BlockState;Lnet/minecraft/util/math/BlockPos;)I", at = @At("HEAD"), cancellable = true)
-    private static void getLightmapCoordinates(BlockRenderView world, BlockState state, BlockPos pos, CallbackInfoReturnable<Integer> ci){
-        ci.setReturnValue(RGBLightMap.getLightmapCoordinates(world, state, pos));
-        ci.cancel();
-    }
-    @Inject(method = "getLightmapCoordinates(Lnet/minecraft/world/BlockRenderView;Lnet/minecraft/util/math/BlockPos;)I", at = @At("HEAD"), cancellable = true)
-    private static void getLightmapCoordinates(BlockRenderView world, BlockPos pos, CallbackInfoReturnable<Integer> ci){
-        ci.setReturnValue(RGBLightMap.getLightmapCoordinates(world, world.getBlockState(pos), pos));
-        ci.cancel();
+        return camera.isThirdPerson()|| /*CameraRenderer.isDrawing() ||*/ MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen;
     }
 
     @Inject(method = "drawBlockOutline", at = @At("HEAD"), cancellable = true)
@@ -61,11 +46,11 @@ public class WorldRendererMixin {
         if(state.getBlock() instanceof PropBlock) {
             FloorPropBlock.drawingOutline = true;
             matrices.push();
-            float rotation = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getFloat("Rotation") + 180;
+            float rotation = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getFloat("Rotation").orElse(0.0f) + 180;
 
-            double offsetX = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("xOffset");
-            double offsetY = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("yOffset");
-            double offsetZ = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("zOffset");
+            double offsetX = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("xOffset").orElse(0.0);
+            double offsetY = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("yOffset").orElse(0.0);
+            double offsetZ = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("zOffset").orElse(0.0);
 
             double posX = pos.getX();
             double posY = pos.getY();

@@ -12,6 +12,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
@@ -26,6 +27,7 @@ import net.zephyr.fnafur.util.mixinAccessing.IUniverseRenderLayers;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 import java.util.List;
@@ -37,27 +39,12 @@ public class GalaxyLayerGeoPropRenderer<T extends GalaxyLayerGeoPropEntity> exte
         addRenderLayer(new GeoPropAddedLayer<>(this, ((IUniverseRenderLayers)RenderLayer.getEndGateway()).getCosmoGift()));
     }
     @Override
-    public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPosition) {
 
-        super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+        super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay, cameraPosition);
 
         ((GeoPropModel)getGeoModel()).reRender = true;
-        super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay);
+        super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay, cameraPosition);
         ((GeoPropModel)getGeoModel()).reRender = false;
-    }
-
-    @Override
-    public void preRender(MatrixStack poseStack, T animatable, BakedGeoModel model, @Nullable VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
-    }
-
-    @Override
-    public void postRender(MatrixStack poseStack, T animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
-        super.postRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
-    }
-
-    @Override
-    public List<GeoRenderLayer<T>> getRenderLayers() {
-        return super.getRenderLayers();
     }
 }

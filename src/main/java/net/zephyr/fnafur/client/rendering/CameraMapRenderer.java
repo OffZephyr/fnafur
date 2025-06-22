@@ -1,15 +1,11 @@
 package net.zephyr.fnafur.client.rendering;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.ShaderProgramKey;
-import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtLongArray;
 import net.minecraft.util.Identifier;
@@ -23,6 +19,7 @@ import net.zephyr.fnafur.util.ItemNbtUtil;
 public class CameraMapRenderer {
     public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ){
 
+        /*
         MinecraftClient client = MinecraftClient.getInstance();
         ClientPlayerEntity player = client.player;
         NbtCompound MainData = ItemNbtUtil.getNbt(player.getMainHandStack());
@@ -31,9 +28,9 @@ public class CameraMapRenderer {
         matrices.push();
         matrices.translate(-cameraX + 0.5f, -cameraY, -cameraZ + 0.5f);
         if((player.getMainHandStack().isOf(ItemInit.TAPEMEASURE) || (player.getMainHandStack().isOf(ItemInit.PAINTBRUSH)) && player.getOffHandStack().isOf(ItemInit.TABLET))){
-            if(MainData.getBoolean("hasCorner")){
-                BlockPos pos1 = BlockPos.fromLong(MainData.getLong("setupCorner1"));
-                BlockPos pos2 = BlockPos.fromLong(MainData.getLong("setupCorner2"));
+            if(MainData.getBoolean("hasCorner").get()){
+                BlockPos pos1 = BlockPos.fromLong(MainData.getLong("setupCorner1").get());
+                BlockPos pos2 = BlockPos.fromLong(MainData.getLong("setupCorner2").get());
 
                 long[] line = new long[] {pos1.asLong(), pos2.asLong()};
                 NbtLongArray lineNbt = new NbtLongArray(line);
@@ -42,19 +39,19 @@ public class CameraMapRenderer {
                 renderLine(matrices, pos1, pos2, 0.75f, 1.0f, 0.5f, 1f, true, list);
             }
 
-            if(!OffData.getList("CamMap", NbtElement.LONG_ARRAY_TYPE).isEmpty()){
-                NbtList mapNbt = OffData.getList("CamMap", NbtElement.LONG_ARRAY_TYPE).copy();
+            if(!OffData.getList("CamMap").get().isEmpty()){
+                NbtList mapNbt = OffData.getList("CamMap").get().copy();
 
                 HitResult blockHit = MinecraftClient.getInstance().player.raycast(20.0, 0.0f, false);
                 BlockPos pos = ((BlockHitResult)blockHit).getBlockPos();
 
                 for(int i = 0; i < mapNbt.size(); i++){
-                    if(mapNbt.getLongArray(i).length > 0){
-                        BlockPos pos1 = BlockPos.fromLong(mapNbt.getLongArray(i)[0]);
-                        BlockPos pos2 = BlockPos.fromLong(mapNbt.getLongArray(i)[1]);
+                    if(mapNbt.getLongArray(i).get().length > 0){
+                        BlockPos pos1 = BlockPos.fromLong(mapNbt.getLongArray(i).get()[0]);
+                        BlockPos pos2 = BlockPos.fromLong(mapNbt.getLongArray(i).get()[1]);
                         Box line = new Box(pos1.toCenterPos(), pos2.toCenterPos()).expand(0.5f);
 
-                        if(MinecraftClient.getInstance().player.getMainHandStack().isOf(ItemInit.TAPEMEASURE) && (!MainData.getBoolean("hasCorner") && line.contains(pos.toCenterPos()))){
+                        if(MinecraftClient.getInstance().player.getMainHandStack().isOf(ItemInit.TAPEMEASURE) && (!MainData.getBoolean("hasCorner").get() && line.contains(pos.toCenterPos()))){
                             long[] line2 = new long[] {pos1.asLong(), pos2.asLong()};
                             NbtLongArray lineNbt = new NbtLongArray(line2);
                             NbtList list = new NbtList();
@@ -68,7 +65,7 @@ public class CameraMapRenderer {
                             }
                         }
                         else {
-                            long color = mapNbt.getLongArray(i).length >= 3 ? mapNbt.getLongArray(i)[2] : 0xFFFFFFFFL;
+                            long color = mapNbt.getLongArray(i).get().length >= 3 ? mapNbt.getLongArray(i).get()[2] : 0xFFFFFFFFL;
                             float red = ColorHelper.getRed((int)color) / 255f;
                             float green = ColorHelper.getGreen((int)color) / 255f;
                             float blue = ColorHelper.getBlue((int)color) / 255f;
@@ -89,6 +86,7 @@ public class CameraMapRenderer {
 
         }
         matrices.pop();
+        */
     }
 
 
@@ -133,21 +131,21 @@ public class CameraMapRenderer {
                 float vWidth = 0.5f;
                 float vHeight = 0.5f;
 
-                RenderSystem.enableBlend();
-                RenderSystem.enableDepthTest();
-                RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX_COLOR);
+                //RenderSystem.enableBlend();
+                //RenderSystem.enableDepthTest();
+                //RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX_COLOR);
 
-                var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+                //var buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
 
-                RenderSystem.setShaderTexture(0, texture);
-                RenderSystem.setShaderColor(red, green, blue, alpha);
+                //RenderSystem.setShaderTexture(0, texture);
+                //RenderSystem.setShaderColor(red, green, blue, alpha);
 
-                buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, -vHeight).texture(0.5f - tWidth, 0.5f + tHeight).color(color);
-                buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, vHeight).texture(0.5f - tWidth, 0.5f - tHeight).color(color);
-                buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, vHeight).texture(0.5f + tWidth, 0.5f - tHeight).color(color);
-                buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, -vHeight).texture(0.5f + tWidth, 0.5f + tHeight).color(color);
-                BufferRenderer.drawWithGlobalProgram(buffer.end());
-                RenderSystem.setShaderColor(1, 1, 1, 1);
+                //buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, -vHeight).texture(0.5f - tWidth, 0.5f + tHeight).color(color);
+                //buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, vHeight).texture(0.5f - tWidth, 0.5f - tHeight).color(color);
+                //buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, vHeight).texture(0.5f + tWidth, 0.5f - tHeight).color(color);
+                //buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, -vHeight).texture(0.5f + tWidth, 0.5f + tHeight).color(color);
+                //BufferRenderer.drawWithGlobalProgram(buffer.end());
+                //RenderSystem.setShaderColor(1, 1, 1, 1);
                 matrices.pop();
             }
             pos = pos.offset(lineDirection);
@@ -310,9 +308,9 @@ public class CameraMapRenderer {
 
     boolean isPartOfLine(BlockPos pos, NbtList mapNbt){
         for(int i = 0; i < mapNbt.size(); i++) {
-            if (mapNbt.getLongArray(i).length > 0) {
-                BlockPos pos1 = BlockPos.fromLong(mapNbt.getLongArray(i)[0]);
-                BlockPos pos2 = BlockPos.fromLong(mapNbt.getLongArray(i)[1]);
+            if (mapNbt.getLongArray(i).get().length > 0) {
+                BlockPos pos1 = BlockPos.fromLong(mapNbt.getLongArray(i).get()[0]);
+                BlockPos pos2 = BlockPos.fromLong(mapNbt.getLongArray(i).get()[1]);
                 Box box = new Box(pos1.toCenterPos(), pos2.toCenterPos()).expand(0.25);
                 if(!box.contains(pos.toCenterPos())) continue;
                 return true;

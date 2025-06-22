@@ -17,10 +17,8 @@ import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.IllusionDisc;
 import net.zephyr.fnafur.item.energy.JerryCanItem;
-import net.zephyr.fnafur.item.tablet.TabletItem;
 import net.zephyr.fnafur.item.tools.DecalBookItem;
 import net.zephyr.fnafur.item.tools.PaintbrushItem;
-import net.zephyr.fnafur.item.tools.TapeMesurerItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 
 import java.util.List;
@@ -79,20 +77,6 @@ public class ItemInit {
                             Text.translatable("item.fnafur.decal_book.description2"),
                             Text.translatable("item.fnafur.decal_book.description3")
                     )))
-    );
-    public static final Item TAPEMEASURE = registerItem(
-            "tapemeasure",
-            TapeMesurerItem::new,
-            new Item.Settings()
-                    .maxCount(1)
-                    .rarity(Rarity.COMMON)
-    );
-    public static final Item TABLET = registerItem(
-            "tablet",
-            TabletItem::new,
-            new Item.Settings()
-                    .maxCount(1)
-                    .rarity(Rarity.COMMON)
     );
     public static final Item DEATHCOIN = registerItem(
             "deathcoin",

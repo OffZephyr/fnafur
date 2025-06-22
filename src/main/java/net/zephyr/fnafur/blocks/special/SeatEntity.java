@@ -58,8 +58,8 @@ public class SeatEntity extends Entity {
     @Override
     public void tick() {
 
-        BlockPos pos = BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("chair"));
-        int timer = ((IEntityDataSaver) this).getPersistentData().getInt("despawnTimer");
+        BlockPos pos = BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("chair").get());
+        int timer = ((IEntityDataSaver) this).getPersistentData().getInt("despawnTimer").get();
         if (!hasPassengers() || getWorld().getBlockState(pos).isOf(Blocks.AIR)) {
             if (timer >= 5) {
 
@@ -81,7 +81,7 @@ public class SeatEntity extends Entity {
     @Override
     public void onRemove(RemovalReason reason) {
 
-        BlockPos pos = BlockPos.fromLong(((IEntityDataSaver)this).getPersistentData().getLong("chair"));
+        BlockPos pos = BlockPos.fromLong(((IEntityDataSaver)this).getPersistentData().getLong("chair").get());
         if(getWorld().getBlockEntity(pos) instanceof BlockEntity ent){
             ((IEntityDataSaver)ent).getPersistentData().putBoolean("playerSitting", false);
         }

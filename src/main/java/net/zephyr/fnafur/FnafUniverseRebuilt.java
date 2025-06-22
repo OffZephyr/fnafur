@@ -2,13 +2,13 @@ package net.zephyr.fnafur;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.entity.EntityType;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
-import net.zephyr.fnafur.entity.base.DefaultEntity;
-import net.zephyr.fnafur.init.*;
+import net.zephyr.fnafur.init.NetworkingInit;
+import net.zephyr.fnafur.init.ParticlesInit;
+import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.block_init.GeoBlockEntityInit;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
@@ -24,7 +24,6 @@ import java.util.Map;
 
 public class FnafUniverseRebuilt implements ModInitializer {
 
-	public static final Map<EntityType<? extends DefaultEntity>, EntityRendererFactory<?>> RENDERER_FACTORIES = new Object2ObjectOpenHashMap<>();
 	public static final Map<EntityType<? extends AnimatronicEntity>, EntityRendererFactory<?>> RENDER_FACTORIES = new Object2ObjectOpenHashMap<>();
 
 	public static final boolean DEBUG = false;

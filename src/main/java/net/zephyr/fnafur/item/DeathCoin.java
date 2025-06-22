@@ -17,7 +17,7 @@ public class DeathCoin extends Item {
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if(target.getWorld() instanceof ServerWorld level) {
             double width = target.getBoundingBox().getLengthX() / 2f;
             double height = target.getBoundingBox().getLengthY() / 2f;
@@ -35,6 +35,5 @@ public class DeathCoin extends Item {
         }
 
         stack.decrementUnlessCreative(1, attacker);
-        return super.postHit(stack, target, attacker);
     }
 }

@@ -2,27 +2,23 @@ package net.zephyr.fnafur.blocks.props.base.geo;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.util.CustomDataTickets;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public class GeoPropModel<T extends GeoPropBlockEntity> extends GeoModel<T> {
 
     public boolean reRender = false;
+
     @Override
-    public Identifier getModelResource(T animatable, @Nullable GeoRenderer<T> renderer) {
-        if (animatable != null && animatable.getWorld() != null) {
-            return reRender ? animatable.getReRenderModel(animatable.getWorld()) : animatable.getModel(animatable.getWorld());
-        }
-        return null;
+    public Identifier getModelResource(GeoRenderState renderState) {
+        return reRender ? renderState.getGeckolibData(CustomDataTickets.RE_RENDER_MODEL) : renderState.getGeckolibData(CustomDataTickets.MODEL);
     }
 
     @Override
-    public Identifier getTextureResource(T animatable, @Nullable GeoRenderer<T> renderer) {
-        if(animatable != null && animatable.getWorld() != null)
-            return reRender ? animatable.getReRenderTexture(animatable.getWorld()) : animatable.getTexture(animatable.getWorld());
-        return null;
+    public Identifier getTextureResource(GeoRenderState renderState) {
+        return reRender ? renderState.getGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE) : renderState.getGeckolibData(CustomDataTickets.TEXTURE);
     }
 
     @Override
@@ -33,10 +29,7 @@ public class GeoPropModel<T extends GeoPropBlockEntity> extends GeoModel<T> {
     }
 
     @Override
-    public @Nullable RenderLayer getRenderType(T animatable, Identifier texture) {
-        if(animatable != null && animatable.getWorld() != null && animatable.getRenderType() != null)
-            return animatable.getRenderType();
-
-        return super.getRenderType(animatable, texture);
+    public @Nullable RenderLayer getRenderType(GeoRenderState renderState, Identifier texture) {
+        return renderState.getGeckolibData(CustomDataTickets.RENDER_LAYER) == null ? super.getRenderType(renderState, texture) : renderState.getGeckolibData(CustomDataTickets.RENDER_LAYER);
     }
 }

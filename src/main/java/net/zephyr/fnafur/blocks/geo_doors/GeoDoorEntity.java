@@ -5,21 +5,21 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.block_init.GeoBlockEntityInit;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animatable.processing.AnimationController;
+import software.bernie.geckolib.animatable.processing.AnimationTest;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
-import java.util.Objects;
 
 public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -31,14 +31,14 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "idle", 1, this::animController));
+        controllers.add(new AnimationController<>("idle", 1, this::animController));
     }
 
-    private PlayState animController(AnimationState<GeoDoorEntity> geoDoorEntityAnimationState) {
+    private PlayState animController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
         String openAnim = front ? "animation.geo_door.open_back" : "animation.geo_door.open";
         String closeAnim = front ? "animation.geo_door.close_back" : "animation.geo_door.close";
-        if(open) return geoDoorEntityAnimationState.setAndContinue(RawAnimation.begin().thenPlayAndHold(openAnim));
-        else return geoDoorEntityAnimationState.setAndContinue(RawAnimation.begin().thenPlayAndHold(closeAnim));
+        if(open) return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold(openAnim));
+        else return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold(closeAnim));
     }
 
     @Override

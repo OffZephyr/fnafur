@@ -17,7 +17,7 @@ public record MoneySyncDataC2SPayload(int credits, boolean shouldUpdate) impleme
             MoneySyncDataC2SPayload::new);
     public static void receive(MoneySyncDataC2SPayload payload, ServerPlayNetworking.Context context) {
         if(payload.shouldUpdate()) ((IEntityDataSaver)context.player()).getPersistentData().putInt("Credits", payload.credits());
-        int money = payload.shouldUpdate() ? payload.credits() : ((IEntityDataSaver)context.player()).getPersistentData().getInt("Credits");
+        int money = payload.shouldUpdate() ? payload.credits() : ((IEntityDataSaver)context.player()).getPersistentData().getInt("Credits").get();
         ServerPlayNetworking.send(context.player(), new MoneySyncDataS2CPayload(money));
     }
 

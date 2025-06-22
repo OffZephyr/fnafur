@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.zephyr.fnafur.init.block_init.GeoBlockEntityInit;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class PiratesCoveStageBlockEntity extends BlockEntity implements GeoBlockEntity {

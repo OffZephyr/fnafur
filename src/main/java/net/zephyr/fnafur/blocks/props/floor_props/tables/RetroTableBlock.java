@@ -38,8 +38,8 @@ public class RetroTableBlock extends FloorPropBlock<DefaultPropColorEnum> {
     protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
         if(world.getBlockEntity(pos) instanceof PropBlockEntity entity) {
-            double offsetX = ((IEntityDataSaver) entity).getPersistentData().getDouble("xOffset");
-            double offsetZ = ((IEntityDataSaver) entity).getPersistentData().getDouble("zOffset");
+            double offsetX = ((IEntityDataSaver) entity).getPersistentData().getDouble("xOffset").get();
+            double offsetZ = ((IEntityDataSaver) entity).getPersistentData().getDouble("zOffset").get();
             shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(Math.max(-0.5f + offsetX, 0), 0.9f, Math.max(-0.5f + offsetZ, 0), Math.min(0.5f + offsetX, 1), 1, Math.min(0.5f + offsetZ, 1))));
             return shape;
         }
