@@ -5,6 +5,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
@@ -113,7 +114,7 @@ public class WallPropPlacingRenderer {
                         }
                         else {
                             BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);
-                            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
                         }
 
                         matrices.translate(0.5f, 0, 0.5f);

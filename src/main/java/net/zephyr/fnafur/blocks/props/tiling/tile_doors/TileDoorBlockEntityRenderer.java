@@ -31,11 +31,11 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
         BlockState state = entity.getWorld().getBlockState(entity.getPos());
 
         if(state.getBlock() instanceof TileDoorBlock && state.get(TileDoorBlock.MAIN)){
-            int width = ((IEntityDataSaver) entity).getPersistentData().getInt("width").get();
-            int height = ((IEntityDataSaver) entity).getPersistentData().getInt("height").get();
+            int width = ((IEntityDataSaver) entity).getPersistentData().getInt("width").orElse(0);
+            int height = ((IEntityDataSaver) entity).getPersistentData().getInt("height").orElse(0);
 
-            float openDelta = ((IEntityDataSaver) entity).getPersistentData().getFloat("openDelta").get();
-            float speed = Math.clamp(((IEntityDataSaver) entity).getPersistentData().getFloat("speed").get(), 1, 5);
+            float openDelta = ((IEntityDataSaver) entity).getPersistentData().getFloat("openDelta").orElse(0f);
+            float speed = Math.clamp(((IEntityDataSaver) entity).getPersistentData().getFloat("speed").orElse(0f), 1, 5);
             if(state.get(TileDoorBlock.OPEN) && openDelta != 1) {
                 ((IEntityDataSaver) entity).getPersistentData().putFloat("openDelta", Math.clamp(openDelta + (tickDelta/100f) * speed, 0, 1));
             }
@@ -61,7 +61,7 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
 
                     matrices.push();
                     matrices.translate(updatePos.getX() - entity.getPos().getX(),updatePos.getY() - entity.getPos().getY(),updatePos.getZ() - entity.getPos().getZ());
-                    BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), model, 1, 1, 1, light, overlay);
+                    BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(state)), model, 1, 1, 1, light, overlay);
                     matrices.pop();
                 }
             }

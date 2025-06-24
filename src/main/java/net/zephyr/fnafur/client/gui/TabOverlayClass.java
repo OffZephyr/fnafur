@@ -21,6 +21,7 @@ import net.zephyr.fnafur.util.CameraMapUiDrawer;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IDCVertexConsumersAcc;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
+import org.joml.Matrix3x2fStack;
 
 public class TabOverlayClass implements HudRenderCallback {
     @Override
@@ -44,20 +45,20 @@ public class TabOverlayClass implements HudRenderCallback {
                 timeX = ((width / scale) / 48) * 47;
                 y = (height / scale) / 24;
                 NbtCompound data = ((IEntityDataSaver) client.player).getPersistentData();
-                int money = data.getInt("Credits").get();
+                int money = data.getInt("Credits").orElse(0);
 
                 String HourDisplay = renderClock()[0];
                 String day = renderClock()[1];
 
-                MatrixStack matrices = drawContext.getMatrices();
-                VertexConsumerProvider verticies = ((IDCVertexConsumersAcc)drawContext).getVertexConsumers();
+                Matrix3x2fStack matrices = drawContext.getMatrices();
+                //VertexConsumerProvider verticies = ((IDCVertexConsumersAcc)drawContext).getVertexConsumers();
 
-                matrices.push();
-                matrices.scale(scale, scale, scale);
-                renderer.draw("F$: " + money, moneyX, y, 0xFFFFFFFF, false, matrices.peek().getPositionMatrix(), verticies, TextRenderer.TextLayerType.NORMAL, 0, 0xF000F0);
-                renderer.draw(HourDisplay, timeX - renderer.getWidth(HourDisplay), y, 0xFFFFFFFF, false, matrices.peek().getPositionMatrix(), verticies, TextRenderer.TextLayerType.NORMAL, 0, 0xF000F0);
-                matrices.pop();
-                renderer.draw(day, timeX * scale - renderer.getWidth(day), y * scale + (scale * 9), 0xFFFFFFFF, false, matrices.peek().getPositionMatrix(), verticies, TextRenderer.TextLayerType.NORMAL, 0, 0xF000F0);
+                //matrices.pushMatrix();
+                //matrices.scale(scale, scale, scale);
+                //renderer.draw("F$: " + money, moneyX, y, 0xFFFFFFFF, false, matrices., verticies, TextRenderer.TextLayerType.NORMAL, 0, 0xF000F0);
+                //renderer.draw(HourDisplay, timeX - renderer.getWidth(HourDisplay), y, 0xFFFFFFFF, false, matrices.peek().getPositionMatrix(), verticies, TextRenderer.TextLayerType.NORMAL, 0, 0xF000F0);
+                //matrices.popMatrix();
+                //renderer.draw(day, timeX * scale - renderer.getWidth(day), y * scale + (scale * 9), 0xFFFFFFFF, false, matrices.peek().getPositionMatrix(), verticies, TextRenderer.TextLayerType.NORMAL, 0, 0xF000F0);
             }
         }
     }

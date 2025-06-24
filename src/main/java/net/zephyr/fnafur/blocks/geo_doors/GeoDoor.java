@@ -95,7 +95,7 @@ public abstract class GeoDoor extends BlockWithEntity {
     protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         BlockEntity entity = world.getBlockEntity(pos);
         if(entity instanceof GeoDoorEntity ent) {
-            BlockPos origin = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("origin").get());
+            BlockPos origin = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("origin").orElse(0L));
             BlockState originState = world.getBlockState(origin);
             return !(state.contains(OPEN) && state.get(OPEN)) || originState.contains(LOCKED) && originState.get(LOCKED) ? super.getCollisionShape(state, world, pos, context) : VoxelShapes.empty();
         }
@@ -144,7 +144,7 @@ public abstract class GeoDoor extends BlockWithEntity {
     void breakWholeDoor(World world, BlockPos pos, BlockState state){
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if(blockEntity instanceof GeoDoorEntity geoDoor) {
-            BlockPos origin = BlockPos.fromLong(((IEntityDataSaver)geoDoor).getPersistentData().getLong("origin").get());
+            BlockPos origin = BlockPos.fromLong(((IEntityDataSaver)geoDoor).getPersistentData().getLong("origin").orElse(0L));
             for(BlockPos pos1 : doorPos(state, origin)){
                 world.setBlockState(pos1, Blocks.AIR.getDefaultState());
             }

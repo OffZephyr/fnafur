@@ -71,7 +71,7 @@ public class TileDoorPlacingRenderer {
                             matrices.push();
                             matrices.translate(pos.getX(), pos.getY(), pos.getZ());
 
-                            BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
 
                             matrices.pop();
                         }

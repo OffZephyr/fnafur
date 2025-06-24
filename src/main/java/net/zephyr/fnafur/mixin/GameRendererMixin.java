@@ -28,8 +28,6 @@ public class GameRendererMixin implements IPostProcessorLoader {
     MinecraftClient client;
     @Shadow
     private Identifier postProcessorId;
-    @Shadow
-    ResourceManager resourceManager;
     private Map<Framebuffer, PostEffectProcessor> monitorPostProcessors = new HashMap<>();
 
     @Shadow

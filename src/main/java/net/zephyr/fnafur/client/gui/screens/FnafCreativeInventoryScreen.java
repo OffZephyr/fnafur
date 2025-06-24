@@ -3,6 +3,7 @@ package net.zephyr.fnafur.client.gui.screens;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.impl.itemgroup.FabricItemGroupImpl;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -64,7 +65,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             double garageHeightIndex = Math.sin(garageDoorIndex * Math.PI);
             int garageHeight = (int) MathHelper.lerp(garageHeightIndex, 0, this.backgroundHeight - 26);
 
-            context.drawTexture(RenderLayer::getGuiTextured, getSelectedItemGroup().getTexture(), this.x + 7, this.y + 20, 32, 136 + (this.backgroundHeight - 27 - garageHeight), this.backgroundWidth - 14, garageHeight, 256, 256);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, getSelectedItemGroup().getTexture(), this.x + 7, this.y + 20, 32, 136 + (this.backgroundHeight - 27 - garageHeight), this.backgroundWidth - 14, garageHeight, 256, 256);
 
             this.drawMouseoverTooltip(context, mouseX, mouseY);
             return;
@@ -74,7 +75,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
     public void renderDefaultBackground(DrawContext context, int mouseX, int mouseY, float delta) {
         Identifier gridTexture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/tab_grid.png");
-        context.drawTexture(RenderLayer::getGuiTextured, gridTexture, this.x + 7, this.y + 20, 0, 0, this.backgroundWidth - 2, this.backgroundHeight - 2, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, gridTexture, this.x + 7, this.y + 20, 0, 0, this.backgroundWidth - 2, this.backgroundHeight - 2, 256, 256);
 
         Identifier icon1 = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/icon_animatronics.png");
         Identifier icon2 = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/icon_blocks.png");
@@ -92,10 +93,10 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         int v3 = GoopyScreen.isOnButton(mouseX, mouseY, x1, y2, 84, 48) ? 48 : 0;
         int v4 = GoopyScreen.isOnButton(mouseX, mouseY, x2, y2, 84, 48) ? 48 : 0;
 
-        context.drawTexture(RenderLayer::getGuiTextured, icon1, x1, y1, 0, v1, 84, 48, 128, 128);
-        context.drawTexture(RenderLayer::getGuiTextured, icon2, x2, y1, 0, v2, 84, 48, 128, 128);
-        context.drawTexture(RenderLayer::getGuiTextured, icon3, x1, y2, 0, v3, 84, 48, 128, 128);
-        context.drawTexture(RenderLayer::getGuiTextured, icon4, x2, y2, 0, v4, 84, 48, 128, 128);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon1, x1, y1, 0, v1, 84, 48, 128, 128);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon2, x2, y1, 0, v2, 84, 48, 128, 128);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon3, x1, y2, 0, v3, 84, 48, 128, 128);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon4, x2, y2, 0, v4, 84, 48, 128, 128);
 
     }
     public void renderAnimatronicsBackground(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -172,16 +173,16 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             case TECHNICAL -> renderTechBackground(context, mouseX, mouseY, delta);
         }
 
-        context.drawTexture(RenderLayer::getGuiTextured, getSelectedItemGroup().getTexture(), this.x, this.y, 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, getSelectedItemGroup().getTexture(), this.x, this.y, 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 256, 256);
 
-        context.drawTexture(RenderLayer::getGuiTextured, getSelectedItemGroup().getTexture(), this.x + 8, this.y + 6, 0.0F, this.backgroundHeight + (SubTab.index * 5), 28, 5, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, getSelectedItemGroup().getTexture(), this.x + 8, this.y + 6, 0.0F, this.backgroundHeight + (SubTab.index * 5), 28, 5, 256, 256);
 
         if(!isFnafTab) {
             this.renderTabIcon(context, getSelectedItemGroup());
         }
     }
     protected void drawFloor(DrawContext context, float delta, int mouseX, int mouseY, Identifier texture, int x, int maxX, int y, int maxY){
-
+/*
         float v1 = 0;
         float v2 = 1;
 
@@ -208,6 +209,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             buffer.vertex(matrix4f, (float)nextX, (float)y2, (float)0).texture(bottomU2 + floorX, v2);
             buffer.vertex(matrix4f, (float)nextX, (float)y1, (float)0).texture(u2 + floorX, v1);
         }
+ */
     }
 
     @Override
@@ -239,7 +241,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         }
 
         //GoopyScreen.drawRecolorableTexture(context, texture, j, k, 32, 26, 0, 0, 32, 26, 0xFFFFFFFF);
-        context.drawTexture(RenderLayer::getGuiTextured, texture, j, k, 0, 0, 26, 32, 26, 32);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, j, k, 0, 0, 26, 32, 26, 32);
     }
     private int getTabX(ItemGroup group) {
         int i = group.getColumn();

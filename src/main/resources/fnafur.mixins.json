@@ -9,7 +9,6 @@
     "CreativeInventoryScreenMixin",
     "DeathScreenMixin",
     "DebugRendererMixin",
-    "DrawContextMixin",
     "GameRendererMixin",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
@@ -19,6 +18,7 @@
     "PlayerEntityRendererMixin",
     "PostEffectProcessorMixin",
     "RenderLayerMixin",
+    "RenderPipelinesMixin",
     "SplashOverlayMixin",
     "TitleScreenMixin",
     "WorldRendererMixin"

@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.client.gui.screens;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EquipmentSlot;
@@ -71,8 +72,8 @@ public class DecalBookEditScreen extends GoopyScreen{
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.fill(RenderLayer.getGuiOverlay(), 0, 0, width, height, 10, 0x66000000);
-        context.drawTexture((identifier -> RenderLayer.getGuiTexturedOverlay(TEXTURE)), TEXTURE, cornerX, cornerY, 0, 0, 256, 187, 256, 256);
+        context.fill(RenderPipelines.GUI, 0, 0, width, height,0x66000000);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY, 0, 0, 256, 187, 256, 256);
 
         String category = getCategory();
 
@@ -133,10 +134,10 @@ public class DecalBookEditScreen extends GoopyScreen{
             }
         }
 
-        context.drawTexture((identifier -> RenderLayer.getGuiTexturedOverlay(TEXTURE)), TEXTURE, cornerX, cornerY + 190, u0, 198, 9, 9, 256, 256);
-        context.drawTexture((identifier -> RenderLayer.getGuiTexturedOverlay(TEXTURE)), TEXTURE, cornerX + 12, cornerY + 189, u2, 198, 18, 10, 256, 256);
-        context.drawTexture((identifier -> RenderLayer.getGuiTexturedOverlay(TEXTURE)), TEXTURE, cornerX + 256 - 30, cornerY + 189, u3, 188, 18, 10, 256, 256);
-        context.drawTexture((identifier -> RenderLayer.getGuiTexturedOverlay(TEXTURE)), TEXTURE, cornerX + 256 - 9, cornerY + 190, u1, 188, 9, 9, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY + 190, u0, 198, 9, 9, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 12, cornerY + 189, u2, 198, 18, 10, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 256 - 30, cornerY + 189, u3, 188, 18, 10, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 256 - 9, cornerY + 190, u1, 188, 9, 9, 256, 256);
 
         super.render(context, mouseX, mouseY, delta);
     }
@@ -162,8 +163,8 @@ public class DecalBookEditScreen extends GoopyScreen{
 
                 int color = isOnButton(mouseX, mouseY, x - 1, y  - 1, 50, 50) ? 0x55AA8877 : 0x55886655;
 
-                context.fill(RenderLayer.getGuiOverlay(), x - 1, y  - 1, x + 49, y + 49, color);
-                context.drawTexture((identifier -> RenderLayer.getGuiTexturedOverlay(id)), id, x, y, 0, 0, 48, 48, 48, 48);
+                context.fill(RenderPipelines.GUI, x - 1, y  - 1, x + 49, y + 49, color);
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, id, x, y, 0, 0, 48, 48, 48, 48);
 
             }
         }

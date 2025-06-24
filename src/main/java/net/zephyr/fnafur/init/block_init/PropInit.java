@@ -1,9 +1,10 @@
 package net.zephyr.fnafur.init.block_init;
 
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.component.DataComponentTypes;
@@ -851,13 +852,13 @@ public class PropInit {
         BlockEntityRendererFactories.register(BlockEntityInit.GALAXY_GEO_PROPS, GalaxyLayerGeoPropRenderer::new);
 
         for (Item item : PROPS) {
-            BlockRenderLayerMap.INSTANCE.putBlock(((BlockItem)item).getBlock(), RenderLayer.getCutout());
+            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.CUTOUT);
         }
         for (Item item : GEO_PROPS) {
-            BlockRenderLayerMap.INSTANCE.putBlock(((BlockItem)item).getBlock(), RenderLayer.getCutout());
+            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.CUTOUT);
         }
         for (Item item : GEO_PROPS_TRANSLUCENT) {
-            BlockRenderLayerMap.INSTANCE.putBlock(((BlockItem)item).getBlock(), RenderLayer.getTranslucent());
+            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.TRANSLUCENT);
         }
 
         FnafUniverseRebuilt.LOGGER.info("Registering Props On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());

@@ -27,7 +27,7 @@ public class AnimatronicEyeLayer<T extends AnimatronicEntity, O, R extends GeoRe
 
         if(altNbt.isEmpty()) return;
 
-        String texture = altNbt.getString("eyes_texture").get();
+        String texture = altNbt.getString("eyes_texture").orElse("");
 
         if(texture.isEmpty()) return;
 

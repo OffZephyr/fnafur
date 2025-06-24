@@ -88,11 +88,11 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
                 nbt = ((IEntityDataSaver)entity).getPersistentData();
             }
 
-            float rotation = nbt.getFloat("Rotation").get();
+            float rotation = nbt.getFloat("Rotation").orElse(0f);
 
-            double offsetX = nbt.getDouble("xOffset").get();
-            double offsetY = nbt.getDouble("yOffset").get();
-            double offsetZ = nbt.getDouble("zOffset").get();
+            double offsetX = nbt.getDouble("xOffset").orElse(0.0);
+            double offsetY = nbt.getDouble("yOffset").orElse(0.0);
+            double offsetZ = nbt.getDouble("zOffset").orElse(0.0);
 
             matrices.translate(-0.5f, 0, -0.5f);
             matrices.translate(offsetX, 0, offsetZ);

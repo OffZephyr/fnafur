@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.blocks.fog;
 
+import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -22,7 +23,7 @@ public class FogBlockRenderer implements BlockEntityRenderer<FogBlockEntity> {
     private void renderModel(BlockPos pos, BlockState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, World world, boolean cull, int overlay) {
         this.manager
                 .getModelRenderer()
-                .render(world, this.manager.getModel(state), state, pos, matrices, vertexConsumers, cull, state.getRenderingSeed(pos), overlay);
+                .render(world, this.manager.getModel(state), state, pos, matrices, RenderLayerHelper.movingDelegate(vertexConsumers), cull, state.getRenderingSeed(pos), overlay);
     }
 
     @Override

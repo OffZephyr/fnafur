@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import net.minecraft.client.render.RenderLayer;
@@ -96,8 +97,8 @@ public class FnafSplashOverlay extends SplashOverlay {
         float u = this.reload.getProgress();
         this.progress = MathHelper.clamp(this.progress * 0.95F + u * 0.050000012F, 0.0F, 1.0F);
 
-        context.fill(RenderLayer.getGuiOverlay(),0, 0, width, height, ColorHelper.getArgb((int) (h * 255), 0, 0, 0));
-        context.drawTexture(identifier -> RenderLayer.getGuiTextured(BG), BG, 0, 0, 0, 0, width, height, 8, 8, 8, 8, ColorHelper.getWhite(h));
+        context.fill(RenderPipelines.GUI,0, 0, width, height, ColorHelper.getArgb((int) (h * 255), 0, 0, 0));
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, BG, 0, 0, 0, 0, width, height, 8, 8, 8, 8, ColorHelper.getWhite(h));
 
         float loadingWidth = (512f / 1080f) * height;
         float loadingHeight = (128f / 1080f) * height;
@@ -105,7 +106,7 @@ public class FnafSplashOverlay extends SplashOverlay {
         float borderWidth = (4f / 1080f) * height;
         float progressHeight = (34f / 1080f) * height;
 
-        context.drawTexture(identifier -> RenderLayer.getGuiTextured(LOADING), LOADING, width - (int) loadingWidth - (int) borderWidth, height - (int) loadingHeight - (int) borderWidth, 0, 0, (int) loadingWidth, (int) loadingHeight, 512, 128, 512, 512, ColorHelper.getWhite(h));
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, LOADING, width - (int) loadingWidth - (int) borderWidth, height - (int) loadingHeight - (int) borderWidth, 0, 0, (int) loadingWidth, (int) loadingHeight, 512, 128, 512, 512, ColorHelper.getWhite(h));
 
         float x2 = MathHelper.lerp(this.progress, width - (int) loadingWidth + (int) borderWidth, (int) width  - (int) borderWidth - (int) borderWidth);
         context.fill(width - (int) loadingWidth + (int) borderWidth, height - (int) progressHeight - (int) borderWidth - (int) borderWidth - (int) borderWidth - (int) borderWidth, (int) x2, height - (int) borderWidth - (int) borderWidth - (int) borderWidth - (int) borderWidth, ColorHelper.getWhite(h));
@@ -114,20 +115,20 @@ public class FnafSplashOverlay extends SplashOverlay {
 
         this.gearRotation += (delta/20f) * 45f;
 
-        context.getMatrices().push();
-        context.getMatrices().translate(borderWidth + borderWidth + borderWidth + borderWidth + borderWidth, height - gearWidth - borderWidth - borderWidth - borderWidth, 0);
-        context.getMatrices().translate(gearWidth/2f, gearWidth/2f, 0);
-        context.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees(gearRotation));
-        context.getMatrices().translate(-gearWidth/2f, -gearWidth/2f, 0);
-        context.drawTexture(identifier -> RenderLayer.getGuiTextured(LOADING), LOADING, 0, 0, 512-82, 512-82, (int) gearWidth, (int) gearWidth, 82, 82, 512, 512, ColorHelper.getWhite(h));
-        context.getMatrices().pop();
+        context.getMatrices().pushMatrix();
+        context.getMatrices().translate(borderWidth + borderWidth + borderWidth + borderWidth + borderWidth, height - gearWidth - borderWidth - borderWidth - borderWidth);
+        context.getMatrices().translate(gearWidth/2f, gearWidth/2f);
+        context.getMatrices().rotate(gearRotation * MathHelper.RADIANS_PER_DEGREE);
+        context.getMatrices().translate(-gearWidth/2f, -gearWidth/2f);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, LOADING, 0, 0, 512-82, 512-82, (int) gearWidth, (int) gearWidth, 82, 82, 512, 512, ColorHelper.getWhite(h));
+        context.getMatrices().popMatrix();
 
         float hatHeight = (52f / 1080f) * height;
         float hatWidth = (120f / 1080f) * height;
-        context.drawTexture(identifier -> RenderLayer.getGuiTextured(LOADING), LOADING, (int) borderWidth, height - (int) gearWidth - (int) hatHeight - (int) borderWidth, 0, 512-52, (int) hatWidth, (int) hatHeight, 120, 52, 512, 512, ColorHelper.getWhite(h));
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, LOADING, (int) borderWidth, height - (int) gearWidth - (int) hatHeight - (int) borderWidth, 0, 512-52, (int) hatWidth, (int) hatHeight, 120, 52, 512, 512, ColorHelper.getWhite(h));
 
-        context.drawTexture(identifier -> RenderLayer.getGuiTextured(STARS), STARS, 0, 0, 0, 0, width, height, 8, 8, 8, 8, ColorHelper.getArgb((int) (h * ColorHelper.getAlpha(0x8dFFFFFF)), 255, 255, 255));
-        context.drawTexture(identifier -> RenderLayer.getGuiTextured(PIXELS), PIXELS, 0, 0, 0, 0, width, height, 8, 8, 8, 8, ColorHelper.getArgb((int) (h * ColorHelper.getAlpha(0x0dFFFFFF)), 255, 255, 255));
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, STARS, 0, 0, 0, 0, width, height, 8, 8, 8, 8, ColorHelper.getArgb((int) (h * ColorHelper.getAlpha(0x8dFFFFFF)), 255, 255, 255));
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, PIXELS, 0, 0, 0, 0, width, height, 8, 8, 8, 8, ColorHelper.getArgb((int) (h * ColorHelper.getAlpha(0x0dFFFFFF)), 255, 255, 255));
 
 
         this.fadeTimer = Math.clamp(this.fadeTimer + delta/20f, 0, fadeTimerGoal);
@@ -158,41 +159,5 @@ public class FnafSplashOverlay extends SplashOverlay {
         //textureManager.registerTexture(PIXELS, new LoadingTexture(PIXELS));
         //textureManager.registerTexture(LOADING, new LoadingTexture(LOADING));
         //textureManager.registerTexture(BG, new LoadingTexture(BG));
-    }
-
-    @Environment(EnvType.CLIENT)
-    static class LoadingTexture extends ReloadableTexture {
-        private final Identifier TEXTURE;
-        public LoadingTexture(Identifier texture) {
-            super(texture);
-            this.TEXTURE = texture;
-        }
-
-        @Override
-        public TextureContents loadContents(ResourceManager resourceManager) throws IOException {
-            List<Resource> list = resourceManager.getAllResources(TEXTURE);
-            InputStream inputStream = list.getFirst().getInputStream();
-
-            TextureContents var4;
-            try {
-                var4 = new TextureContents(NativeImage.read(inputStream), new TextureResourceMetadata(true, true));
-            } catch (Throwable var7) {
-                if (inputStream != null) {
-                    try {
-                        inputStream.close();
-                    } catch (Throwable var6) {
-                        var7.addSuppressed(var6);
-                    }
-                }
-
-                throw var7;
-            }
-
-            if (inputStream != null) {
-                inputStream.close();
-            }
-
-            return var4;
-        }
     }
 }

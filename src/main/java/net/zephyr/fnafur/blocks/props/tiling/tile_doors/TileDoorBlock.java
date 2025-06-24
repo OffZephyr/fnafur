@@ -120,7 +120,7 @@ public class TileDoorBlock extends BlockWithEntity {
         if(stack.getItem() instanceof WrenchItem){
             if(world.getBlockEntity(pos) instanceof TileDoorBlockEntity ent){
                 float add = player.isSneaking() ? -0.25f : 0.25f;
-                float speed = ((IEntityDataSaver)ent).getPersistentData().getFloat("speed").get();
+                float speed = ((IEntityDataSaver)ent).getPersistentData().getFloat("speed").orElse(0f);
                 if(speed + add > 5) speed = 0.75f;
                 float newSpeed = Math.clamp(speed + add, 1, 5);
                 ent.setSpeed(newSpeed);
@@ -142,8 +142,8 @@ public class TileDoorBlock extends BlockWithEntity {
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         if(world.getBlockEntity(pos) instanceof BlockEntity ent){
             BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver)ent).getPersistentData().getLong("main").get());
-            int width = ((IEntityDataSaver)ent).getPersistentData().getInt("width").get();
-            int height = ((IEntityDataSaver)ent).getPersistentData().getInt("height").get();
+            int width = ((IEntityDataSaver)ent).getPersistentData().getInt("width").orElse(0);
+            int height = ((IEntityDataSaver)ent).getPersistentData().getInt("height").orElse(0);
 
 
             BlockPos testPos = mainPos.offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
@@ -169,17 +169,17 @@ public class TileDoorBlock extends BlockWithEntity {
         }
 
         if (world.getBlockEntity(pos) instanceof TileDoorBlockEntity ent) {
-            BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("main").get());
+            BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("main").orElse(0L));
 
             if(world.getBlockEntity(mainPos) instanceof TileDoorBlockEntity ent2) {
 
-                int width = ((IEntityDataSaver) ent2).getPersistentData().getInt("width").get();
-                int height = ((IEntityDataSaver) ent2).getPersistentData().getInt("height").get();
+                int width = ((IEntityDataSaver) ent2).getPersistentData().getInt("width").orElse(0);
+                int height = ((IEntityDataSaver) ent2).getPersistentData().getInt("height").orElse(0);
 
                 BlockPos testPos = mainPos.offset(state.get(TileDoorBlock.FACING).rotateYCounterclockwise());
                 Direction direction = world.getBlockState(testPos).getBlock() instanceof TileDoorBlock ? state.get(TileDoorBlock.FACING).rotateYCounterclockwise() : state.get(TileDoorBlock.FACING).rotateYClockwise();
 
-                boolean powered = ((IEntityDataSaver) ent2).getPersistentData().getBoolean("open").get();
+                boolean powered = ((IEntityDataSaver) ent2).getPersistentData().getBoolean("open").orElse(false);
 
                 powered = isInverted != powered;
                 world.setBlockState(mainPos, world.getBlockState(mainPos).with(OPEN, powered), 0);

@@ -3,6 +3,7 @@ package net.zephyr.fnafur.blocks.props.base;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
@@ -96,6 +97,6 @@ public class PropRenderer<T extends BlockEntity> implements BlockEntityRenderer<
     private void renderModel(BlockPos pos, BlockState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, World world, boolean cull, int overlay) {
         this.manager
                 .getModelRenderer()
-                .render(world, this.manager.getModel(state), state, pos, matrices, vertexConsumers, cull, state.getRenderingSeed(pos), overlay);
+                .render(world, this.manager.getModel(state), state, pos, matrices, RenderLayerHelper.movingDelegate(vertexConsumers), cull, state.getRenderingSeed(pos), overlay);
     }
 }

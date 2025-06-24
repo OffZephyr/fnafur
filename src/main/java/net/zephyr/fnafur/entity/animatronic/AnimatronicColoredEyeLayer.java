@@ -29,11 +29,11 @@ public class AnimatronicColoredEyeLayer<T extends AnimatronicEntity, O, R extend
         if(altNbt.isEmpty()) return;
 
         if(!altNbt.isEmpty() && altNbt.contains("eyes_recolorable_textures_size")){
-            int size = altNbt.getInt("eyes_recolorable_textures_size").get();
+            int size = altNbt.getInt("eyes_recolorable_textures_size").orElse(0);
 
             for(int i = 0; i < size; i++){
-                String texture = altNbt.getString("eyes_recolorable_textures" + i).get();
-                int[] color = altNbt.getIntArray("eye_color" + i).get();
+                String texture = altNbt.getString("eyes_recolorable_textures" + i).orElse("");
+                int[] color = altNbt.getIntArray("eye_color" + i).orElse(new int[0]);
 
                 RenderLayer translucentRenderType = RenderLayer.getEntityTranslucent(Identifier.of(FnafUniverseRebuilt.MOD_ID, texture));
 

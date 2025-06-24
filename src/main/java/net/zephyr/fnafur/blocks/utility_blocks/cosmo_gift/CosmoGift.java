@@ -79,7 +79,6 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new GalaxyLayerGeoPropEntity(pos, state, this);
     }
-
     @Override
     public @Nullable BlockEntityTicker<GeoPropBlockEntity> getTicker(World world, BlockState state, BlockEntityType type) {
         return validateTicker(type, BlockEntityInit.GALAXY_GEO_PROPS,
@@ -92,13 +91,13 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
             if(world.getBlockEntity(pos) instanceof GalaxyLayerGeoPropEntity ent){
                 ItemStack stack = ItemNbtUtil.setNbt(new ItemStack(PropInit.COSMO_GIFT, 1), ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get());
 
-                String chara = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get().getString("chara").get();
-                String alt = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get().getString("alt").get();
-                String eyes = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get().getString("eyes").get();
+                NbtCompound nbt = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").orElse(new NbtCompound());
 
-                alt = alt.isEmpty() ? "entity_alts.fnafur.none" : "entity_alts.fnafur." + chara + "." + alt;
-                eyes = eyes.isEmpty() ? "entity_eyes.fnafur.none" : "entity_eyes.fnafur." + chara + "." + eyes;
-                chara = chara.isEmpty() ? "entity.fnafur.none" : "entity.fnafur." + chara;
+                boolean isEmpty = nbt.isEmpty();
+
+                String chara = isEmpty ? "entity.fnafur.none" : "entity.fnafur." + nbt.getString("chara").orElse("");
+                String alt = isEmpty ? "entity.fnafur.none" : "entity_alts.fnafur." + chara + "." + nbt.getString("alt").orElse("");
+                String eyes = isEmpty ? "entity.fnafur.none" : "entity_eyes.fnafur." + chara + "." + nbt.getString("eyes").orElse("");
 
                 List<Text> lore = List.of(
                         Text.literal("§8Use on Inactive Animatronic"),

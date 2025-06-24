@@ -66,9 +66,9 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
 
         if (entity != null) {
 
-            double offsetX = ((IEntityDataSaver) entity).getPersistentData().getDouble("xOffset").get();
-            double offsetY = ((IEntityDataSaver) entity).getPersistentData().getDouble("yOffset").get();
-            double offsetZ = ((IEntityDataSaver) entity).getPersistentData().getDouble("zOffset").get();
+            double offsetX = ((IEntityDataSaver) entity).getPersistentData().getDouble("xOffset").orElse(0.0);
+            double offsetY = ((IEntityDataSaver) entity).getPersistentData().getDouble("yOffset").orElse(0.0);
+            double offsetZ = ((IEntityDataSaver) entity).getPersistentData().getDouble("zOffset").orElse(0.0);
 
             Box door = new Box(
                     getDoorHitbox(state).minX + offsetX - 0.5f,
@@ -157,9 +157,9 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
         BlockEntity entity = world.getBlockEntity(pos);
         if (entity instanceof PropBlockEntity ent) {
 
-            double offsetX = ((IEntityDataSaver) ent).getPersistentData().getDouble("xOffset").get();
-            double offsetY = ((IEntityDataSaver) ent).getPersistentData().getDouble("yOffset").get();
-            double offsetZ = ((IEntityDataSaver) ent).getPersistentData().getDouble("zOffset").get();
+            double offsetX = ((IEntityDataSaver) ent).getPersistentData().getDouble("xOffset").orElse(0.0);
+            double offsetY = ((IEntityDataSaver) ent).getPersistentData().getDouble("yOffset").orElse(0.0);
+            double offsetZ = ((IEntityDataSaver) ent).getPersistentData().getDouble("zOffset").orElse(0.0);
 
             Box door = new Box(
                     getDoorHitbox(state).minX + pos.getX() + offsetX - 0.5f,

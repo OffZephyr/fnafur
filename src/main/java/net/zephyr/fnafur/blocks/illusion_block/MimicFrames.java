@@ -433,16 +433,31 @@ public class MimicFrames extends BlockWithSticker {
     }
 
     public Block getCurrentBlock(NbtCompound nbt, World world, Direction direction, Vec3i matrixPos){
-        NbtCompound blockNbt = nbt.getCompound("BlockData").orElse(new NbtCompound()).getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ()).orElse(new NbtCompound());
-        return getBlockFromNbt(blockNbt.getCompound(direction.getId()).orElse(new NbtCompound()), world);
+        String key = "" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ();
+
+        NbtCompound data = nbt.getCompound("BlockData").orElse(new NbtCompound());
+        if(data.isEmpty()) return null;
+
+        System.out.println(key);
+        NbtCompound cube = data.getCompound(key).orElse(new NbtCompound());
+        if(cube.isEmpty()) return null;
+
+        System.out.println(direction.getId());
+        ItemStack stack = cube.get(direction.getId(), ItemStack.CODEC).orElse(ItemStack.EMPTY);
+
+        System.out.println("GOT STACK");
+        if(stack.getItem() instanceof BlockItem blockItem){
+            return blockItem.getBlock();
+        }
+        return null;
     }
 
     public NbtCompound setBlockTexture(NbtCompound nbt, ItemStack stack, Direction direction, World world, Vec3i matrixPos){
 
-        NbtCompound blockNbt = nbt.getCompound("BlockData").orElse(new NbtCompound()).getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ()).orElse(new NbtCompound());
-
-        blockNbt.put(direction.getId(), stack.toNbt(world.getRegistryManager()));
         NbtCompound blockData = nbt.getCompound("BlockData").orElse(new NbtCompound());
+        NbtCompound blockNbt = blockData.getCompound("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ()).orElse(new NbtCompound());
+
+        blockNbt.put(direction.getId(), ItemStack.CODEC, stack);
         blockData.put("" + matrixPos.getX() + matrixPos.getY() + matrixPos.getZ(), blockNbt);
         nbt.put("BlockData", blockData);
         return nbt;
@@ -467,14 +482,6 @@ public class MimicFrames extends BlockWithSticker {
 
         world.setBlockState(pos, getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
         world.updateListeners(pos, getDefaultState(), getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
-    }
-
-    public static Block getBlockFromNbt(NbtCompound nbt, World world){
-        ItemStack stack = ItemStack.fromNbt(world.getRegistryManager(), nbt).orElse(ItemStack.EMPTY);
-        if(stack.getItem() instanceof BlockItem blockItem){
-            return blockItem.getBlock();
-        }
-        return null;
     }
 
     @Nullable

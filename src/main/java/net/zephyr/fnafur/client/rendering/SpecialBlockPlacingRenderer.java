@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.client.rendering;
 
+import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
@@ -56,7 +57,7 @@ public class SpecialBlockPlacingRenderer {
                             ((IEntityDataSaver)entity).getPersistentData().copyFrom(ItemNbtUtil.getNbt(client.player.getMainHandStack()));
 
                             m.forceEnt = entity;
-                            client.getBlockRenderManager().getModelRenderer().render(client.world, m, state, pos, matrices, vertexConsumers, false, 0, OverlayTexture.DEFAULT_UV);
+                            client.getBlockRenderManager().getModelRenderer().render(client.world, m, state, pos, matrices, RenderLayerHelper.movingDelegate(vertexConsumers), false, 0, OverlayTexture.DEFAULT_UV);
                             m.forceEnt = null;
 
 

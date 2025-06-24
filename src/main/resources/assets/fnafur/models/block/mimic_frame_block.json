@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "fnafur:block/mimic_frame_block",
-		"1": "fnafur:block/mimic_frame_block_center",
-		"particle": "fnafur:block/mimic_frame_block"
+		"0": "fnafur:block/mimic_frame_1",
+		"1": "fnafur:block/mimic_frame_4",
+		"particle": "fnafur:block/mimic_frame_1"
 	},
 	"elements": [
 		{

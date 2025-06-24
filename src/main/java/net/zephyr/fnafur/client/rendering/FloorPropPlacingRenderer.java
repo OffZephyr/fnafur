@@ -155,7 +155,7 @@ public class FloorPropPlacingRenderer {
                         }
                         else {
                             BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);
-                            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
                         }
 
                         matrices.translate(0.5f, 0, 0.5f);

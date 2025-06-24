@@ -17,7 +17,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        getOrCreateTagBuilder(BlockTags.PLANKS)
+        valueLookupBuilder(BlockTags.PLANKS)
                 .add(PropInit.WOODEN_SHELF)
                 .add(PropInit.AC_UNIT)
                 .add(PropInit.RETRO_TABLE)
@@ -32,7 +32,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.PARTY_TABLE_CONFETTI)
         ;
 
-        getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
+        valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(BlockInit.ANIMATRONIC_BLOCK)
                 .add(BlockInit.CPU_CONFIG_PANEL)
                 .add(BlockInit.WORKBENCH)
@@ -205,7 +205,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                ;
 
                 // CARPETS
-        getOrCreateTagBuilder(BlockTags.WOOL)
+        valueLookupBuilder(BlockTags.WOOL)
                 .add(BlockInit.CARPET_STAR_GREEN)
                 .add(BlockInit.CARPET_STAR_CYAN)
                 .add(BlockInit.CARPET_STAR_BLUE)
@@ -223,13 +223,13 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
         // CHEESE BLOCKS
 
-        getOrCreateTagBuilder(BlockTags.SWORD_EFFICIENT)
+        valueLookupBuilder(BlockTags.SWORD_EFFICIENT)
                 .add(BlockInit.CHEESE_BLOCK)
                 .add(BlockInit.CHEESE_BLOCK_WHITE)
         ;
         // BALLPIT
 
-        getOrCreateTagBuilder(BlockTags.CLIMBABLE)
+        valueLookupBuilder(BlockTags.CLIMBABLE)
                 .add(BlockInit.BALLPIT)
                 ;
     }

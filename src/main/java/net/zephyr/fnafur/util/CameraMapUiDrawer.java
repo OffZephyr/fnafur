@@ -12,6 +12,7 @@ import net.minecraft.util.math.ColorHelper;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
+import org.joml.Matrix3x2fStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,10 +83,10 @@ public class CameraMapUiDrawer {
             }
 
             float camScale = 0.25f;
-            MatrixStack matrices = context.getMatrices();
+            Matrix3x2fStack matrices = context.getMatrices();
 
-            matrices.push();
-            matrices.scale(camScale, camScale, camScale);
+            matrices.pushMatrix();
+            matrices.scale(camScale, camScale);
             for (Long cam : cams) {
                 BlockPos pos = BlockPos.fromLong(cam);
 
@@ -103,10 +104,10 @@ public class CameraMapUiDrawer {
                 if(isMonitor){
                     if (bl2 && MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().world.getBlockEntity(pos) != null) {
                         String name = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(pos)).getPersistentData().getString("Name").get();
-                        matrices.pop();
+                        matrices.popMatrix();
                         context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(name), mouseX, mouseY);
-                        matrices.push();
-                        matrices.scale(camScale, camScale, camScale);
+                        matrices.pushMatrix();
+                        matrices.scale(camScale, camScale);
                     }
                 }
 
@@ -120,7 +121,7 @@ public class CameraMapUiDrawer {
                 context.fill(x - (mapMultiplier / 2) * (int)(1 / camScale), z - (mapMultiplier / 2) * (int)(1 / camScale), x + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), z + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), camOutline);
                 context.fill(x - ((mapMultiplier / 4) * (int)(1 / camScale)), z - ((mapMultiplier / 4) * (int)(1 / camScale)), x + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 4) * (int)(1 / camScale)), z + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 4) * (int)(1 / camScale)), camColor);
             }
-            matrices.pop();
+            matrices.popMatrix();
         }
     }
 }

@@ -4,6 +4,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -40,15 +42,13 @@ public class BlockEntityMixin implements IEntityDataSaver {
         return requiresServerUpdate;
     }
 
-    @Inject(method = "writeNbt", at = @At("HEAD"))
-    protected void injectWriteMethod(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup, CallbackInfo info) {
-        nbt.put("fnafur.persistent", getPersistentData());
+    @Inject(method = "writeData", at = @At("HEAD"))
+    protected void injectWriteMethod(WriteView view, CallbackInfo info) {
+        view.put("fnafur.persistent", NbtCompound.CODEC, getPersistentData());
     }
 
-    @Inject(method = "readNbt", at = @At("HEAD"))
-    protected void injectReadMethod(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup, CallbackInfo info) {
-        if (nbt.contains("fnafur.persistent")) {
-            persistentData = nbt.getCompound("fnafur.persistent").get();
-        }
+    @Inject(method = "readData", at = @At("HEAD"))
+    protected void injectReadMethod(ReadView view, CallbackInfo info) {
+        persistentData = view.read("fnafur.persistent", NbtCompound.CODEC).orElse(new NbtCompound());
     }
 }

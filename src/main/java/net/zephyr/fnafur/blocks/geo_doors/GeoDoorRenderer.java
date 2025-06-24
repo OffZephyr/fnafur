@@ -32,6 +32,7 @@ public class GeoDoorRenderer extends GeoBlockRenderer<GeoDoorEntity> {
 
         GeoRenderState state = super.fillRenderState(animatable, relatedObject, renderState, partialTick);
 
+        state.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel());
         state.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture());
         state.addGeckolibData(CustomDataTickets.DOOR_WINDOW_TEXTURE, animatable.getWindowTexture());
 

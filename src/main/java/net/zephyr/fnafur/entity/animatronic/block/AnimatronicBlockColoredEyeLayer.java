@@ -24,14 +24,14 @@ public class AnimatronicBlockColoredEyeLayer<T extends AnimatronicBlockEntity, O
     @Override
     public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
 
-        NbtCompound altNbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA).getCompound("alt").get();
+        NbtCompound altNbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA).getCompound("alt").orElse(new NbtCompound());
 
         if(!altNbt.isEmpty() && altNbt.contains("eyes_recolorable_textures_size")){
-            int size = altNbt.getInt("eyes_recolorable_textures_size").get();
+            int size = altNbt.getInt("eyes_recolorable_textures_size").orElse(0);
 
             for(int i = 0; i < size; i++){
-                String texture = altNbt.getString("eyes_recolorable_textures" + i).get();
-                int[] color = altNbt.getIntArray("eye_color" + i).get();
+                String texture = altNbt.getString("eyes_recolorable_textures" + i).orElse("");
+                int[] color = altNbt.getIntArray("eye_color" + i).orElse(new int[0]);
 
                 if(texture.isEmpty()) return;
 

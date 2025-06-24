@@ -8,7 +8,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.CustomDataTickets;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
@@ -24,9 +23,9 @@ public class AnimatronicBlockEyeLayer<T extends AnimatronicBlockEntity, O, R ext
     @Override
     public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
 
-        NbtCompound altNbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA).getCompound("alt").get();
+        NbtCompound altNbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA).getCompound("alt").orElse(new NbtCompound());
 
-        String texture = altNbt.getString("eyes_texture").get();
+        String texture = altNbt.getString("eyes_texture").orElse("");
 
         if(texture.isEmpty()) return;
 

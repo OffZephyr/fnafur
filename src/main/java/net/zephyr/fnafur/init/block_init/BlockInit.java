@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.init.block_init;
 
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.block.*;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
@@ -1114,30 +1114,30 @@ public class BlockInit {
         EntityModelLayerRegistry.registerModelLayer(JavaModels.CAMERA_HEAD, CameraBlockRenderer::getTexturedModelData);
         BlockEntityRendererFactories.register(BlockEntityInit.CAMERA, CameraBlockRenderer::new);
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CAMERA, RenderLayer.getCutout());
+        BlockRenderLayerMap.putBlock(BlockInit.CAMERA, BlockRenderLayer.CUTOUT);
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.CPU_CONFIG_PANEL, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.WORKBENCH, RenderLayer.getCutout());
+        BlockRenderLayerMap.putBlock(BlockInit.CPU_CONFIG_PANEL, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(BlockInit.WORKBENCH, BlockRenderLayer.CUTOUT);
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.FUEL_GENERATOR, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.ELECTRICAL_LOCKER, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.WAREHOUSE_SHELF, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BACKSTAGE_SHELF, RenderLayer.getCutout());
+        BlockRenderLayerMap.putBlock(BlockInit.FUEL_GENERATOR, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(BlockInit.ELECTRICAL_LOCKER, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(BlockInit.WAREHOUSE_SHELF, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(BlockInit.BACKSTAGE_SHELF, BlockRenderLayer.CUTOUT);
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_2x2, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.MIMIC_FRAME_4x4, RenderLayer.getCutout());
+        BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_2x2, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_4x4, BlockRenderLayer.CUTOUT);
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.STICKER_BLOCK, RenderLayer.getCutout());
+        BlockRenderLayerMap.putBlock(BlockInit.STICKER_BLOCK, BlockRenderLayer.CUTOUT);
 
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_SLIT, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_COLORED, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.TILED_GLASS_SLIT_COLORED, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BIG_WINDOW, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BIG_WINDOW_WHITE, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.BIG_WINDOW_DARK, RenderLayer.getTranslucent());
-        BlockRenderLayerMap.INSTANCE.putBlock(BlockInit.DIRTY_GLASS, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS_SLIT, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS_COLORED, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS_SLIT_COLORED, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(BlockInit.BIG_WINDOW, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(BlockInit.BIG_WINDOW_WHITE, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(BlockInit.BIG_WINDOW_DARK, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(BlockInit.DIRTY_GLASS, BlockRenderLayer.TRANSLUCENT);
         
         BlockEntityRendererFactories.register(BlockEntityInit.FOG_BLOCK, FogBlockRenderer::new);
 

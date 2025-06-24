@@ -9,6 +9,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TriState;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.mixinAccessing.IUniverseRenderLayers;
+import net.zephyr.fnafur.util.mixinAccessing.IUniverseRenderPipelines;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -44,22 +45,14 @@ public class RenderLayerMixin implements IUniverseRenderLayers {
             1536,
             false,
             false,
-            RenderPipelines.END_PORTAL,
+            IUniverseRenderPipelines.getCosmoSpace(),
             RenderLayer.MultiPhaseParameters.builder()
                     .texture(
                             RenderPhase.Textures.create()
-                                    .add(COSMO_SKY_TEXTURE, false, false)
-                                    .add(COSMO_STARS_TEXTURE, false, false)
+                                    .add(COSMO_SKY_TEXTURE, false)
+                                    .add(COSMO_STARS_TEXTURE, false)
                                     .build()
                     )
-                    .build(false)
-    );
-    private static final RenderLayer.MultiPhase LOADING = of(
-            "mojang_logo",
-            786432,
-            RenderPipelines.MOJANG_LOGO,
-            RenderLayer.MultiPhaseParameters.builder()
-                    .texture(new RenderPhase.Texture(SplashOverlay.LOGO, TriState.DEFAULT, false))
                     .build(false)
     );
 

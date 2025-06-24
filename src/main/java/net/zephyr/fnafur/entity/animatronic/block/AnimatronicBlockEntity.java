@@ -79,8 +79,8 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
     public Identifier getTexture(World world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").get();
-            String texture = nbt.getString("texture").get();
+            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+            String texture = nbt.getString("texture").orElse("");
             if(!texture.isEmpty()){
                 return Identifier.of(FnafUniverseRebuilt.MOD_ID, texture);
             }
@@ -94,8 +94,8 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
     public Identifier getModel(World world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").get();
-            String model = nbt.getString("model").get();
+            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+            String model = nbt.getString("model").orElse("");
             if(!model.isEmpty()){
                 return Identifier.of(FnafUniverseRebuilt.MOD_ID, model);
             }
@@ -110,8 +110,8 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
     public Identifier getAnimations(World world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").get();
-            String animations = nbt.getString("animations").get();
+            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+            String animations = nbt.getString("animations").orElse("");
             if(!animations.isEmpty()){
                 return Identifier.of(FnafUniverseRebuilt.MOD_ID, animations);
             }
@@ -124,8 +124,8 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
         Identifier location = getAnimations(getWorld());
         BakedAnimations bakedAnimations = GeckoLibResources.getBakedAnimations().get(location);
 
-        NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").get();
-        String name = nbt.getString("chara").get();
+        NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+        String name = nbt.getString("chara").orElse("");
         String anim = "animation." + name + "." + animation;
         if(bakedAnimations != null && bakedAnimations.animations().containsKey(anim)) {
 

@@ -21,6 +21,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ColorHelper;
 import net.zephyr.fnafur.util.mixinAccessing.IDCVertexConsumersAcc;
+import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -162,39 +163,39 @@ public abstract class GoopyScreen extends Screen {
 
     public void renderButton(Identifier texture, DrawContext context, int x, int y, int u, int v, int u2, int v2, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY){
         if(isOnButton(mouseX, mouseY, x, y, width, height)){
-            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
         }
         else {
-            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
     public void renderButton(Identifier texture, DrawContext context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding){
         if(isOnButton(mouseX, mouseY, x, y, width, height)) {
             if(holding){
-                context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
             }
             else {
-                context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
             }
         }
         else {
-            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
     public void renderButton(Identifier texture, DrawContext context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding, boolean condition){
         if(condition){
-            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
         }
         else if(isOnButton(mouseX, mouseY, x, y, width, height)) {
             if(holding){
-                context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
             }
             else {
-                context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
             }
         }
         else {
-            context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, width, height, textureWidth, textureHeight);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
 
@@ -218,9 +219,9 @@ public abstract class GoopyScreen extends Screen {
 
         TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
         AbstractTexture abstractTexture = textureManager.getTexture(texture);
-        RenderSystem.setShaderTexture(0, abstractTexture.getGlTexture());
+        //RenderSystem.setShaderTexture(0, abstractTexture.getGlTexture());
 
-        context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, (int) regionWidth, (int) regionHeight, (int) textureWidth, (int) textureHeight, ColorHelper.getArgb((int)(alpha * 255),(int)(red * 255),(int)(green * 255),(int)(blue * 255)));
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, (int) regionWidth, (int) regionHeight, (int) textureWidth, (int) textureHeight, ColorHelper.getArgb((int)(alpha * 255),(int)(red * 255),(int)(green * 255),(int)(blue * 255)));
         //RenderPipeline renderPipeline = RenderPipelines.GUI_TEXTURED;
         //renderPass.setPipeline(renderPipeline);
         //RenderSystem.setShader(RenderPipelines.POSITION_TEX);
@@ -244,13 +245,13 @@ public abstract class GoopyScreen extends Screen {
         y = y / scale;
         if(centered) x -= (textRenderer.getWidth(text) / 2f);
 
-        MatrixStack matrices = context.getMatrices();
-        VertexConsumerProvider verticies = ((IDCVertexConsumersAcc)context).getVertexConsumers();
+        Matrix3x2fStack matrices = context.getMatrices();
 
-        matrices.push();
-        matrices.scale(scale, scale, scale);
-        textRenderer.draw(text, x, y, color, shadow, matrices.peek().getPositionMatrix(), verticies, TextRenderer.TextLayerType.NORMAL, backgroundColor, 0xF000F0);
-        matrices.pop();
+        matrices.pushMatrix();
+        matrices.scale(scale, scale);
+        context.drawText(textRenderer, text, (int)x, (int)y, color, false);
+        //textRenderer.draw(text, x, y, color, shadow, matrices.peek().getPositionMatrix(), vertices, TextRenderer.TextLayerType.NORMAL, backgroundColor, 0xF000F0);
+        matrices.popMatrix();
     }
     public void drawAutoResizedText(DrawContext context, TextRenderer textRenderer, Text text, float baseScale, float maxTextWidth, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
         float scale = (textRenderer.getWidth(text) * baseScale) > maxTextWidth ? (baseScale / textRenderer.getWidth(text)) * maxTextWidth : baseScale;
@@ -262,10 +263,11 @@ public abstract class GoopyScreen extends Screen {
     }
 
     protected static void drawEntity(DrawContext context, LivingEntity entity, float scale, float x, float y, float z, Quaternionf rotation) {
-        context.getMatrices().push();
-        context.getMatrices().translate(0, 0, z);
-        InventoryScreen.drawEntity(context, x, y, scale, new Vector3f(), rotation, null, entity);
-        context.getMatrices().pop();
+        context.getMatrices().pushMatrix();
+        context.getMatrices().translate(0, 0);
+        //InventoryScreen.drawEntity(context, x, y, x + );
+        //InventoryScreen.drawEntity(context, x, y, scale, new Vector3f(), rotation, null, entity);
+        context.getMatrices().popMatrix();
     }
     public record GUISprite(Identifier texture, int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight, int color){
     }

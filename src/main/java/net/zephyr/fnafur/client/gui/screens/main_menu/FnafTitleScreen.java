@@ -150,13 +150,6 @@ public class FnafTitleScreen extends Screen {
         }
     }
 
-    public static void registerTextures(TextureManager textureManager) {
-        textureManager.registerTexture(LogoDrawer.LOGO_TEXTURE);
-        textureManager.registerTexture(LogoDrawer.EDITION_TEXTURE);
-        textureManager.registerTexture(RotatingCubeMapRenderer.OVERLAY_TEXTURE);
-        PANORAMA_RENDERER.registerTextures(textureManager);
-    }
-
     @Override
     public boolean shouldPause() {
         return false;
@@ -442,11 +435,11 @@ public class FnafTitleScreen extends Screen {
             bgScroll++;
             float scroll_width = onHeight(1500);
             float scroll_height = onHeight(1500);
-            context.getMatrices().push();
-            context.getMatrices().translate(-scroll_width / 2.25f, scroll_height / 1.5f, 0);
-            context.getMatrices().multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(75));
+            context.getMatrices().pushMatrix();
+            context.getMatrices().translate(-scroll_width / 2.25f, scroll_height / 1.5f);
+            context.getMatrices().rotate(-75 * MathHelper.RADIANS_PER_DEGREE);
             GoopyScreen.drawRecolorableTexture(context, SCROLLING_TEXTURE, 0, 0, 0, scroll_height, scroll_width, -bgScroll / 2f, 0, scroll_height, scroll_width, 1, 1, 1, 0.75f);
-            context.getMatrices().pop();
+            context.getMatrices().popMatrix();
 
 
             GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) onHeight(32), (int) onHeight(55), 0, sprite_width / 2f, sprite_height / 2f, 0, sprite_height / 2f, sprite_width, sprite_height, 1, 1, 1, 1);
@@ -574,9 +567,10 @@ public class FnafTitleScreen extends Screen {
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
     }
 
+
     @Override
-    protected void renderPanoramaBackground(DrawContext context, float delta) {
-        ROTATING_PANORAMA_RENDERER.render(context, this.width, this.height, this.backgroundAlpha, delta);
+    protected void renderPanoramaBackground(DrawContext context, float deltaTicks) {
+        super.renderPanoramaBackground(context, deltaTicks);
     }
 
     @Override

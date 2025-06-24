@@ -283,10 +283,10 @@ public class WorkbenchScreen extends GoopyScreen {
             int sX = windowX - sWidth + 242;
             int sY = windowY + 6 + 14 * i;
 
-            context.fill(sX - 2, sY - 2,  sX + sWidth + 2, sY - 1, 0, 0xFFFFFFFF);
-            context.fill(sX - 2, sY + 9, sX + sWidth + 2, sY + 10, 0, 0xFFFFFFFF);
-            context.fill(sX - 2, sY - 2, sX - 1, sY + 10, 0, 0xFFFFFFFF);
-            context.fill(sX + sWidth + 1, sY - 2, sX + sWidth + 2, sY + 10, 0, 0xFFFFFFFF);
+            context.fill(sX - 2, sY - 2,  sX + sWidth + 2, sY - 1, 0xFFFFFFFF);
+            context.fill(sX - 2, sY + 9, sX + sWidth + 2, sY + 10, 0xFFFFFFFF);
+            context.fill(sX - 2, sY - 2, sX - 1, sY + 10, 0xFFFFFFFF);
+            context.fill(sX + sWidth + 1, sY - 2, sX + sWidth + 2, sY + 10, 0xFFFFFFFF);
             context.drawText(textRenderer, t, sX, sY, 0xFFFFFFFF, false);
 
             if(isOnButton(mouseX, mouseY, sX - 2, sY - 2, sWidth + 4, 12)){
@@ -295,7 +295,7 @@ public class WorkbenchScreen extends GoopyScreen {
 
         }
 
-        drawEntity(context, entity, 2f * 40, windowX + 128, windowY + 251, 200, new Quaternionf().rotationXYZ((float) 0f, (float) Math.PI, (float) Math.PI));
+        //drawEntity(context, entity, 2f * 40, windowX + 128, windowY + 251, 200, new Quaternionf().rotationXYZ((float) 0f, (float) Math.PI, (float) Math.PI));
 
         super.render(context, mouseX, mouseY, delta);
     }

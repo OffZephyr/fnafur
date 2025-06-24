@@ -80,7 +80,7 @@ public class BlockWithSticker extends BlockWithEntity {
         //itemStack.set(DataComponentTypes.BLOCK_STATE, component);
         NbtCompound nbt = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData();
 
-        ItemStack stack = ItemStack.fromNbt(world.getRegistryManager(), nbt.getCompound("BlockState").get()).get();
+        ItemStack stack = nbt.get("BlockState", ItemStack.CODEC).orElse(ItemStack.EMPTY);
         BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem)stack.getItem()).getBlock().getDefaultState()) : state;
 
         if(!(state.getBlock() instanceof MimicFrames)){
@@ -138,7 +138,7 @@ public class BlockWithSticker extends BlockWithEntity {
                     if(world.isClient()) {
                         if (hasNoStickers(nbt) && !(asBlock() instanceof MimicFrames)) {
                             System.out.println("SCRAPE5");
-                            ItemStack blockStack = ItemStack.fromNbt(world.getRegistryManager(), nbt.getCompound("BlockState").get()).get();
+                            ItemStack blockStack = nbt.get("BlockState", ItemStack.CODEC).orElse(ItemStack.EMPTY);
 
                             state = !blockStack.isEmpty() ? blockStack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem) blockStack.getItem()).getBlock().getDefaultState()) : state;
                         } else {

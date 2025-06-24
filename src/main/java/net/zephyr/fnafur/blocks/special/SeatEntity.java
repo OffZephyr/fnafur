@@ -1,23 +1,17 @@
 package net.zephyr.fnafur.blocks.special;
 
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtS2CPongPayload;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class SeatEntity extends Entity {
@@ -35,15 +29,6 @@ public class SeatEntity extends Entity {
         return false;
     }
 
-    @Override
-    protected void readCustomDataFromNbt(NbtCompound nbt) {
-
-    }
-
-    @Override
-    protected void writeCustomDataToNbt(NbtCompound nbt) {
-
-    }
 
     @Override
     public Vec3d getPassengerRidingPos(Entity passenger) {
@@ -53,6 +38,16 @@ public class SeatEntity extends Entity {
     @Override
     public boolean shouldRender(double cameraX, double cameraY, double cameraZ) {
         return false;
+    }
+
+    @Override
+    protected void readCustomData(ReadView view) {
+
+    }
+
+    @Override
+    protected void writeCustomData(WriteView view) {
+
     }
 
     @Override

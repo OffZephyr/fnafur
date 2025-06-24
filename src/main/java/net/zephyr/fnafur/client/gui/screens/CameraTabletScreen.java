@@ -22,6 +22,7 @@ import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.util.CameraMapUiDrawer;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
+import org.joml.Matrix3x2fStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -337,10 +338,10 @@ public class CameraTabletScreen extends GoopyScreen {
             }
 
             float camScale = 0.25f;
-            MatrixStack matrices = context.getMatrices();
+            Matrix3x2fStack matrices = context.getMatrices();
 
-            matrices.push();
-            matrices.scale(camScale, camScale, camScale);
+            matrices.pushMatrix();
+            matrices.scale(camScale, camScale);
             for (Long cam : cams) {
                 BlockPos pos = BlockPos.fromLong(cam);
 
@@ -357,16 +358,16 @@ public class CameraTabletScreen extends GoopyScreen {
 
                 if (bl2 && MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().world.getBlockEntity(pos) instanceof CameraBlockEntity) {
                     String name = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(pos)).getPersistentData().getString("Name").get();
-                    matrices.scale(1 / camScale, 1 / camScale, 1 / camScale);
+                    matrices.scale(1 / camScale, 1 / camScale);
                     context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(name), mouseX, mouseY);
-                    matrices.scale(camScale, camScale, camScale);
+                    matrices.scale(camScale, camScale);
                 }
                 int camColor = bl2 || cam == currentCam ? ColorHelper.getArgb(alpha, 75, 255, 75) : ColorHelper.getArgb(alpha, 100, 100, 100);
                 int camOutline = allowNightVision && enableNightVision && cam == currentCam ? ColorHelper.getArgb(alpha, 133, 210, 255) : ColorHelper.getArgb(alpha, 255, 255, 255);
                 context.fill(x - (mapMultiplier / 2) * (int)(1 / camScale), z - (mapMultiplier / 2) * (int)(1 / camScale), x + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), z + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), camOutline);
                 context.fill(x - ((mapMultiplier / 4) * (int)(1 / camScale)), z - ((mapMultiplier / 4) * (int)(1 / camScale)), x + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 4) * (int)(1 / camScale)), z + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 4) * (int)(1 / camScale)), camColor);
             }
-            matrices.scale(1 / camScale, 1 / camScale, 1 / camScale);
+            matrices.scale(1 / camScale, 1 / camScale);
         }
     }
 

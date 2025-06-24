@@ -85,7 +85,7 @@ public class DecalBookItem extends Item {
 
                     itemStack.set(DataComponentTypes.BLOCK_STATE, component);
 
-                    nbt.put("BlockState", itemStack.toNbt(context.getWorld().getRegistryManager()));
+                    nbt.put("BlockState", ItemStack.CODEC, itemStack);
                 }
 
                 if(context.getWorld().isClient()) {

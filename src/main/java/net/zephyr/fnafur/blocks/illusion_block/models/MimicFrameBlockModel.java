@@ -23,12 +23,13 @@ import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
 import net.zephyr.fnafur.init.DecalInit;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class MimicFrameBlockModel extends StickerBlockModel {
     public final BlockState defaultState;
 
-    public MimicFrameBlockModel(UnbakedModel model, BlockState state){
+    public MimicFrameBlockModel(UnbakedGrouped model, BlockState state){
         super(model);
         this.defaultState = state;
     }
@@ -44,8 +45,9 @@ public class MimicFrameBlockModel extends StickerBlockModel {
 
         World world = MinecraftClient.getInstance().world;
         if (state.getBlock() instanceof MimicFrames block) {
+
             int matrixSize = block.getMatrixSize();
-            byte[] cubeArray = nbt.getByteArray("cubeMatrix").get();
+            byte[] cubeArray = nbt.getByteArray("cubeMatrix").orElse(new byte[0]);
             if (cubeArray.length == 0) {
                 cubeArray = new byte[matrixSize * matrixSize * matrixSize];
                 cubeArray[0] = 1;
@@ -132,7 +134,17 @@ public class MimicFrameBlockModel extends StickerBlockModel {
         }
         emitter.square(direction, x0, z0, x1, z1, depth);
 
-        Sprite sprite = sideBlock == null ? frame : MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(sideBlock.getDefaultState()).getParts(Random.create()).get(0).getQuads(direction).get(0).sprite();
+        Sprite sprite;
+        if(sideBlock != null){
+            BlockState textureState = sideBlock.getDefaultState();
+            BlockStateModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(textureState);
+            List<BlockModelPart> parts = model.getParts(Random.create());
+            sprite = parts.get(0).getQuads(direction).get(0).sprite();
+        }
+        else{
+            sprite = frame;
+        }
+
         emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
         int color = reColor ? getColor(direction, colorIndex) : 0xFFFFFFFF;
         emitter.color(color, color, color, color);
@@ -167,11 +179,11 @@ public class MimicFrameBlockModel extends StickerBlockModel {
         if (!nbt.isEmpty()) {
 
             MinecraftClient client = MinecraftClient.getInstance();
-            NbtList list = nbt.getList(direction.name()).get();
-            NbtList offset_list = nbt.getList(direction.name() + "_offset").get();
+            NbtList list = nbt.getList(direction.name()).orElse(new NbtList());
+            NbtList offset_list = nbt.getList(direction.name() + "_offset").orElse(new NbtList());
 
             for (int i = 0; i < list.size(); i++) {
-                String name = list.getString(i).get();
+                String name = list.getString(i).orElse("");
                 DecalInit.Decal decal = DecalInit.getDecal(name);
                 if (name.isEmpty() || decal == null) continue;
                 int dirPos = direction.getAxis() == Direction.Axis.Z ? Math.abs(pos.getX()) :
@@ -181,7 +193,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                 Identifier identifier = decal.getTextures()[num];
                 Sprite sprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier).getSprite();
 
-                float Offset = offset_list.getFloat(i).get();
+                float Offset = offset_list.getFloat(i).orElse(0f);
                 float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;
                 float yOffset = decal.getDirection() == DecalInit.Movable.VERTICAL ? Offset : 0;
 
