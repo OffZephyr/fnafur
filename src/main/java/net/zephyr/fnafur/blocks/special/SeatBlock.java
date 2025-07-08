@@ -58,6 +58,6 @@ public interface SeatBlock {
         return entity;
     }
     default boolean isUsed(World world, BlockPos pos){
-        return ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getBoolean("playerSitting").get();
+        return ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getBoolean("playerSitting").orElse(false);
     }
 }

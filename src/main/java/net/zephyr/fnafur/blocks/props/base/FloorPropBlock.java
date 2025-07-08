@@ -51,6 +51,8 @@ public abstract class FloorPropBlock<@Nullable T extends Enum<T> & ColorEnumInte
                         double y = blockHitResult.getPos().getY() - blockHitResult.getBlockPos().getY();
                         double z = blockHitResult.getPos().getZ() - blockHitResult.getBlockPos().getZ();
 
+                        y = blockHitResult.getSide().getAxis() != Direction.Axis.Y ? y + 1 : y;
+
                         float rotation = player.getHeadYaw();
 
                         x = Math.clamp(x, 0, 1);

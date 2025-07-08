@@ -21,10 +21,12 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.cache.GeckoLibResources;
 import software.bernie.geckolib.loading.object.BakedAnimations;
 
+import java.util.Map;
 import java.util.Random;
 
 public class AnimatronicBlockEntity extends GeoPropBlockEntity{
     int blinkDelay;
+    public BlockState previewState = null;
     public AnimatronicBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityInit.ANIMATRONIC_BLOCK, pos, state);
     }
@@ -37,14 +39,32 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
     }
 
     private PlayState mainController(AnimationTest<AnimatronicBlockEntity> geoPropBlockEntityAnimationState) {
+
+        geoPropBlockEntityAnimationState.controller().transitionLength(3);
+        if(item) {
+            geoPropBlockEntityAnimationState.controller().transitionLength(0);
+        }
+
         BlockState state = getWorld().getBlockState(getPos()).isOf(BlockInit.ANIMATRONIC_BLOCK) ? getWorld().getBlockState(getPos()) : BlockInit.ANIMATRONIC_BLOCK.getDefaultState();
-        String anim = ((DemoAnimationList)state.get(((PropBlock)state.getBlock()).COLOR_PROPERTY())).getMain();
-        return geoPropBlockEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim(anim)));
+        if(previewState != null) state = previewState;
+        String anim = state.get(AnimatronicBlock.POSES).getMain();
+        if(anim != null){
+            return geoPropBlockEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim(anim)));
+        }
+        return PlayState.STOP;
     }
 
     private PlayState lowerController(AnimationTest<AnimatronicBlockEntity> animatronicBlockEntityAnimationState) {
+
+        animatronicBlockEntityAnimationState.controller().transitionLength(3);
+        if(item) {
+            animatronicBlockEntityAnimationState.controller().transitionLength(0);
+        }
+
         BlockState state = getWorld().getBlockState(getPos()).isOf(BlockInit.ANIMATRONIC_BLOCK) ? getWorld().getBlockState(getPos()) : BlockInit.ANIMATRONIC_BLOCK.getDefaultState();
-        String anim = ((DemoAnimationList)state.get(((PropBlock)state.getBlock()).COLOR_PROPERTY())).getLower();
+        if(previewState != null) state = previewState;
+        String anim = state.get(AnimatronicBlock.POSES).getLower();
+
         if(anim != null){
             return animatronicBlockEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim(anim)));
         }
@@ -55,7 +75,7 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
 
         BlockState state = getWorld().getBlockState(getPos()).isOf(BlockInit.ANIMATRONIC_BLOCK) ? getWorld().getBlockState(getPos()) : BlockInit.ANIMATRONIC_BLOCK.getDefaultState();
 
-        if(((DemoAnimationList)state.get(((PropBlock)state.getBlock()).COLOR_PROPERTY())).blinks()) {
+        if(false) {
 
             if (blinkDelay == 0) {
                 animatronicBlockEntityAnimationState.resetCurrentAnimation();
@@ -107,28 +127,35 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity{
     public Identifier getReRenderModel(World world){
         return getModel(world);
     }
-    public Identifier getAnimations(World world){
-
+    public String getAnimationsPath(World world){
         if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
             NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
             String animations = nbt.getString("animations").orElse("");
             if(!animations.isEmpty()){
-                return Identifier.of(FnafUniverseRebuilt.MOD_ID, animations);
+                return animations;
             }
         }
+        return "";
+    }
+    public Identifier getAnimations(World world){
 
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/entity/classic/cl_fred/cl_fred.animation.json");
+        String animation = getAnimationsPath(world);
+        if(!animation.isEmpty()){
+            return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/" + animation + ".animation.json");
+        }
+
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/entity/default.animation.json");
     }
 
     public String prefixAnim(String animation){
-        Identifier location = getAnimations(getWorld());
-        BakedAnimations bakedAnimations = GeckoLibResources.getBakedAnimations().get(location);
+        Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, getAnimationsPath(getWorld()));
+        Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations();
+        BakedAnimations bakedAnimations = animations.get(location);
 
         NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
         String name = nbt.getString("chara").orElse("");
         String anim = "animation." + name + "." + animation;
         if(bakedAnimations != null && bakedAnimations.animations().containsKey(anim)) {
-
             return anim;
         }
 

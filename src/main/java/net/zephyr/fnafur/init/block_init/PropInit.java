@@ -4,8 +4,9 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
@@ -56,6 +57,7 @@ import net.zephyr.fnafur.blocks.props.tiling.TableBlock;
 import net.zephyr.fnafur.blocks.props.other.CeilingTileVentBlack;
 import net.zephyr.fnafur.blocks.props.wall_props.ac_unit.AcUnit;
 import net.zephyr.fnafur.blocks.props.wall_props.air_vent.AirVent;
+import net.zephyr.fnafur.blocks.props.wall_props.bulletin_board.BulletinBoard;
 import net.zephyr.fnafur.blocks.props.wall_props.clocks.GeoClockPropRenderer;
 import net.zephyr.fnafur.blocks.props.wall_props.clocks.WoodenClock;
 import net.zephyr.fnafur.blocks.props.wall_props.kitchen.PotsAndPansRack;
@@ -71,8 +73,8 @@ import net.zephyr.fnafur.blocks.props.wall_props.stage.StageSun;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
 import net.zephyr.fnafur.blocks.props.wall_props.electricity.wall_outlet.WallOutlet;
 import net.zephyr.fnafur.blocks.props.wall_props.wall_pizza.WallPizza;
-import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.CosmoGift;
-import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropRenderer;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.CosmoGift;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropRenderer;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntityRenderer;
 
 import java.util.ArrayList;
@@ -698,6 +700,19 @@ public class PropInit {
                     .noCollision()
                     .offset(AbstractBlock.OffsetType.NONE)
     );
+    public static final Block BULLETIN_BOARD = registerBlock(
+            "bulletin_board",
+            BulletinBoard::new,
+            AbstractBlock.Settings.copy(Blocks.BAMBOO)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+                    .offset(AbstractBlock.OffsetType.NONE)
+    );
     public static final Block PARTY_HAT = registerBlock(
             "party_hats",
             PartyHats::new,
@@ -844,6 +859,8 @@ public class PropInit {
     }
 
     public static void registerPropsOnClient() {
+        BlockColors colors = MinecraftClient.getInstance().getBlockColors();
+
         BlockEntityRendererFactories.register(BlockEntityInit.PROPS, PropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.ENERGY, PropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GEO_PROPS, GeoPropRenderer::new);

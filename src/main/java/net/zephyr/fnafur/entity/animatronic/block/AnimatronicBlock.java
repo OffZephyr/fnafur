@@ -3,17 +3,21 @@ package net.zephyr.fnafur.entity.animatronic.block;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -21,6 +25,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -41,7 +46,9 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public class AnimatronicBlock extends FloorPropBlock<DemoAnimationList> {
+public class AnimatronicBlock extends FloorPropBlock<AnimationList> {
+
+    public static final EnumProperty<AnimationList> POSES = EnumProperty.of("poses", AnimationList.class);
     public AnimatronicBlock(Settings settings) {
         super(settings);
     }
@@ -91,13 +98,38 @@ public class AnimatronicBlock extends FloorPropBlock<DemoAnimationList> {
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0f, 0, 0f, 1f, 2.5, 1f)));
+        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0f, 0, 0f, 1f, 1f, 1f)));
         return drawingOutline ? shape : VoxelShapes.fullCube();
     }
 
     @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        super.appendProperties(builder.add(POSES));
+    }
+
+    public static AnimationList getPose(World world, BlockPos pos, Direction direction){
+        BlockPos backWall = pos.offset(direction.getOpposite());
+        BlockPos table_like = pos.offset(direction).down();
+
+        boolean bl1 = world.getBlockState(backWall).isOf(Blocks.AIR) ||  world.getBlockState(backWall).isReplaceable();
+        boolean bl2 = world.getBlockState(table_like).isOf(Blocks.AIR) ||  world.getBlockState(table_like).isReplaceable();
+
+        if(bl2){
+            return AnimationList.OFF_SIT;
+        } else if (!bl1) {
+            return AnimationList.FLOOR_SIT;
+        }
+        return AnimationList.FLOOR_LAY;
+    }
+
+    @Override
+    public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
+        return super.getPlacementState(ctx).with(POSES, getPose(ctx.getWorld(), ctx.getBlockPos(), ctx.getHorizontalPlayerFacing().getOpposite()));
+    }
+
+    @Override
     public Class COLOR_ENUM() {
-        return DemoAnimationList.class;
+        return null;
     }
 
     @Override

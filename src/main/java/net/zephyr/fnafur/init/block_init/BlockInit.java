@@ -37,8 +37,10 @@ import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntityRende
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorDirection;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorItem;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
-import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlock;
-import net.zephyr.fnafur.blocks.utility_blocks.workbench.WorkbenchBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.server_monitor.ServerMonitorBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
 import net.zephyr.fnafur.init.SoundsInit;
@@ -66,6 +68,24 @@ public class BlockInit {
     public static final Block CPU_CONFIG_PANEL = registerBlock(
             "cpu_config_panel",
             CpuConfigPanelBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+    );
+    public static final Block CHIP_READER = registerBlock(
+            "chip_reader",
+            ChipReaderBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+    );
+    public static final Block SERVER_MONITOR = registerBlock(
+            "server_monitor",
+            ServerMonitorBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .solidBlock(Blocks::never)
@@ -1117,6 +1137,8 @@ public class BlockInit {
         BlockRenderLayerMap.putBlock(BlockInit.CAMERA, BlockRenderLayer.CUTOUT);
 
         BlockRenderLayerMap.putBlock(BlockInit.CPU_CONFIG_PANEL, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(BlockInit.CHIP_READER, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(BlockInit.SERVER_MONITOR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.WORKBENCH, BlockRenderLayer.CUTOUT);
 
         BlockRenderLayerMap.putBlock(BlockInit.FUEL_GENERATOR, BlockRenderLayer.CUTOUT);

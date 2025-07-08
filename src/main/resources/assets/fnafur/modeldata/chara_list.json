@@ -23,14 +23,22 @@
             }
         ]
     },
-    "springlocks": {
+    "spring": {
         "characters": [
             {
-                "name": "spring_bonnie",
+                "name": "sp_bon",
                 "endo": "springlock_endo"
             },
             {
-               "name": "spring_freddy",
+               "name": "sp_fred",
+               "endo": "springlock_endo"
+            },
+            {
+               "name": "sp_chica",
+               "endo": "springlock_endo"
+            },
+            {
+               "name": "sp_foxy",
                "endo": "springlock_endo"
             }
         ]

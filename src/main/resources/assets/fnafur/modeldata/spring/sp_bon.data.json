@@ -1,0 +1,32 @@
+{
+
+    "sp_bon":{
+        "default_alt": "default",
+        "alts":{
+
+            "default": {
+                "model": "geckolib/models/entity/spring/sp_bon/sp_bon.geo.json",
+                "texture": "textures/entity/spring/sp_bon/sp_bon.png",
+                "recolorable_textures": [],
+                "emissive": "",
+                "recolorable_emissive": [],
+                
+                "animations": "entity/classic/cl_fred/cl_fred",
+    
+                "default_eyes": "default",
+                "eyes":{
+    
+                    "default": {
+                        "texture": "textures/entity/spring/sp_bon/sp_bon.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    }
+    
+                }
+            }
+
+        }
+    }
+    
+}

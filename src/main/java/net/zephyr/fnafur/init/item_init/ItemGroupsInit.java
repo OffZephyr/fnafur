@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.init.item_init;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -50,6 +51,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.LIGHT_SWITCH);
                         entries.add(PropInit.WALL_OUTLET);
                         entries.add(PropInit.PUNCH_IN_CARDS);
+                        entries.add(PropInit.BULLETIN_BOARD);
 
                         entries.add(PropInit.FLOOR_MONITORS);
                         entries.add(PropInit.WOODEN_SHELF);
@@ -109,19 +111,21 @@ public class ItemGroupsInit {
                     .icon(() -> new ItemStack(ItemInit.PIPE_WRENCH))
                     .entries((displayContext, entries) -> {
 
+                        entries.add(ItemInit.VANNI_MASK);
                         entries.add(ItemInit.PIPE_WRENCH);
                         entries.add(ItemInit.PAINTBRUSH);
                         entries.add(ItemInit.SCRAPER);
                         entries.add(ItemInit.DECAL_BOOK);
                         //entries.add(ItemInit.TAPEMEASURE);
-                        //entries.add(ItemInit.JERRYCAN);
 
                         entries.add(BlockInit.ANIMATRONIC_BLOCK);
+                        entries.add(ItemInit.CPU);
                         entries.add(PropInit.COSMO_GIFT);
-                        //entries.add(ItemInit.DEATHCOIN);
+                        entries.add(ItemInit.DEATHCOIN);
                         entries.add(BlockInit.WORKBENCH);
-                        //entries.add(BlockInit.CPU_CONFIG_PANEL);
-                        //entries.add(ItemInit.CPU);
+                        entries.add(BlockInit.CPU_CONFIG_PANEL);
+                        entries.add(BlockInit.CHIP_READER);
+                        entries.add(BlockInit.SERVER_MONITOR);
                         //entries.add(ItemInit.ILLUSIONDISC);
 
                         // MIMIC FRAMES
@@ -135,6 +139,7 @@ public class ItemGroupsInit {
 
                         //entries.add(BlockInit.COMPUTER);
 
+                        entries.add(ItemInit.JERRYCAN);
                         entries.add(BlockInit.FUEL_GENERATOR);
                         entries.add(BlockInit.REDSTONE_CONVERTER);
                         entries.add(BlockInit.ELECTRICAL_LOCKER);
@@ -316,15 +321,15 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.CHEESE_BLOCK);
                         entries.add(BlockInit.CHEESE_BLOCK_WHITE);
                     }).build());
-    /*public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, FnafUniverseRebuilt.MOD_ID),
+    public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, FnafUniverseRebuilt.MOD_ID),
             FabricItemGroup.builder()
                     .displayName(Text.literal(FnafUniverseRebuilt.MOD_ID))
                     .noRenderedName()
                     .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/tabs_fnaf.png"))
-                    .icon(() -> new ItemStack(SpawnItemInit.CL_FRED_SPAWN))
+                    .icon(() -> new ItemStack(Blocks.STONE))
                     .entries((displayContext, entries) -> {
-                        entries.add(SpawnItemInit.CL_FRED_SPAWN);
-                    }).build());*/
+                        entries.add(Blocks.STONE);
+                    }).build());
 
     public static void registerItemGroups() {
         FnafUniverseRebuilt.LOGGER.info("Registering Item Groups for " + FnafUniverseRebuilt.MOD_ID);

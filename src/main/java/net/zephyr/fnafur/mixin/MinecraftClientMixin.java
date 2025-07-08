@@ -26,6 +26,8 @@ import java.util.concurrent.CompletableFuture;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin implements IGetClientManagers {
 	@Shadow
+	private long startTime;
+	@Shadow
 	ReloadableResourceManagerImpl resourceManager;
 	@Shadow
 	public Screen currentScreen;
@@ -87,5 +89,10 @@ public class MinecraftClientMixin implements IGetClientManagers {
 	@Override
 	public EntityDataManager getEntityDataManager() {
 		return this.entityDataManager;
+	}
+
+	@Override
+	public long getStartTime() {
+		return startTime;
 	}
 }

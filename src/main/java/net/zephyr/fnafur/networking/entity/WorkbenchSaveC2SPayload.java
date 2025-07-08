@@ -14,7 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 

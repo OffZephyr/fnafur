@@ -262,12 +262,31 @@ public abstract class GoopyScreen extends Screen {
         return 8 * scale;
     }
 
-    protected static void drawEntity(DrawContext context, LivingEntity entity, float scale, float x, float y, float z, Quaternionf rotation) {
-        context.getMatrices().pushMatrix();
-        context.getMatrices().translate(0, 0);
-        //InventoryScreen.drawEntity(context, x, y, x + );
-        //InventoryScreen.drawEntity(context, x, y, scale, new Vector3f(), rotation, null, entity);
-        context.getMatrices().popMatrix();
+    protected static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, LivingEntity entity) {
+        context.enableScissor(x1, y1, x2, y2);
+        Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI);
+        Quaternionf quaternionf2 = rotation;
+        quaternionf.mul(quaternionf2);
+        float j = entity.bodyYaw;
+        float k = entity.getYaw();
+        float l = entity.getPitch();
+        float m = entity.lastHeadYaw;
+        float n = entity.headYaw;
+        entity.bodyYaw = 0;
+        entity.setYaw(0);
+        entity.setPitch(0);
+        entity.headYaw = entity.getYaw();
+        entity.lastHeadYaw = entity.getYaw();
+        float o = entity.getScale();
+        Vector3f vector3f = new Vector3f(0.0F, entity.getHeight() / 2.0F + scale * o, 0.0F);
+        float p = size / o;
+        InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
+        entity.bodyYaw = j;
+        entity.setYaw(k);
+        entity.setPitch(l);
+        entity.lastHeadYaw = m;
+        entity.headYaw = n;
+        context.disableScissor();
     }
     public record GUISprite(Identifier texture, int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight, int color){
     }
@@ -326,13 +345,15 @@ public abstract class GoopyScreen extends Screen {
     public class GUIToggle extends GUIButton{
         public String setting;
         public boolean on;
-        public GUIToggle(int x, int y, int width, int height, String setting) {
-            this(x, y, width, height, setting, false);
+        public boolean leftText;
+        public GUIToggle(int x, int y, int width, int height, boolean leftText, String setting) {
+            this(x, y, width, height, leftText, setting, false);
         }
-        GUIToggle(int x, int y, int width, int height, String setting, boolean defaultValue) {
+        public GUIToggle(int x, int y, int width, int height, boolean leftText,String setting,  boolean defaultValue) {
             super(x, y, width, height);
             this.setting = setting;
             this.on = defaultValue;
+            this.leftText = leftText;
         }
     }
 }

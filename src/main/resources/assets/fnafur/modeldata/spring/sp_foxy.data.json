@@ -1,0 +1,32 @@
+{
+
+    "sp_foxy":{
+        "default_alt": "default",
+        "alts":{
+
+            "default": {
+                "model": "geckolib/models/entity/spring/sp_foxy/sp_foxy.geo.json",
+                "texture": "textures/entity/spring/sp_foxy/sp_foxy.png",
+                "recolorable_textures": [],
+                "emissive": "",
+                "recolorable_emissive": [],
+                
+                "animations": "entity/classic/sp_foxy/sp_foxy",
+    
+                "default_eyes": "default",
+                "eyes":{
+    
+                    "default": {
+                        "texture": "textures/entity/spring/sp_foxy/sp_foxy.png",
+                        "recolorable_textures": [],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    }
+    
+                }
+            }
+
+        }
+    }
+    
+}

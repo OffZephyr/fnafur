@@ -2,6 +2,7 @@ package net.zephyr.fnafur.entity.animatronic;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -15,6 +16,7 @@ import net.zephyr.fnafur.entity.animatronic.data.CharacterData;
 import net.zephyr.fnafur.init.entity_init.CharacterInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -25,9 +27,12 @@ import software.bernie.geckolib.cache.GeckoLibResources;
 import software.bernie.geckolib.loading.object.BakedAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Map;
+
 public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     private CharacterData character;
+    public double force_age = 0;
     public boolean isMenu = false;
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -37,16 +42,18 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>("Upper", 1, this::upperAnimController));
-        controllers.add(new AnimationController<>("Lower", 1, this::lowerAnimController));
+        controllers.add(new AnimationController<>("Upper", 3, this::upperAnimController));
+        controllers.add(new AnimationController<>("Lower", 3, this::lowerAnimController));
     }
 
     private PlayState lowerAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
+        if(isMenu) animatronicEntityAnimationState.controller().transitionLength(0);
         return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("loweridle")));
     }
 
     private PlayState upperAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
         if(isMenu) {
+            animatronicEntityAnimationState.controller().transitionLength(0);
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("menuidle")));
         }
         return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("performance")));
@@ -59,6 +66,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     @Override
     public void tick() {
+        if(isMenu){
+            age++;
+        }
         super.tick();
     }
 
@@ -101,6 +111,18 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
         return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/default/endo_01/endo_01.png");
     }
+    public Identifier getEyeTexture(World world){
+
+        if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
+            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+            String texture = nbt.getString("eyes_texture").orElse("");
+            if(!texture.isEmpty()){
+                return Identifier.of(FnafUniverseRebuilt.MOD_ID, texture);
+            }
+        }
+
+        return getTexture(world);
+    }
     public Identifier getReRenderTexture(World world){
         return getTexture(world);
     }
@@ -120,41 +142,43 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     public Identifier getReRenderModel(World world){
         return getModel(world);
     }
-    public Identifier getAnimations(World world){
 
+    public String getAnimationsPath(World world){
         if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
             NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
             String animations = nbt.getString("animations").orElse("");
             if(!animations.isEmpty()){
-                return Identifier.of(FnafUniverseRebuilt.MOD_ID, animations);
+                return animations;
             }
         }
+        return "";
+    }
+    public Identifier getAnimations(World world){
 
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/entity/classic/cl_fred/cl_fred.animation.json");
+        String animation = getAnimationsPath(world);
+        if(!animation.isEmpty()){
+            return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/" + animation + ".animation.json");
+        }
+
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/entity/default.animation.json");
     }
 
     public String prefixAnim(String animation){
-        Identifier location = getAnimations(getWorld());
+        Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, getAnimationsPath(getWorld()));
+        Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations();
+        BakedAnimations bakedAnimations = animations.get(location);
 
-        if(GeckoLibResources.getBakedAnimations().containsKey(location)) {
-            BakedAnimations bakedAnimations = GeckoLibResources.getBakedAnimations().get(location);
-
-            NbtCompound nbt = ((IEntityDataSaver) this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
-
-            if (nbt.isEmpty()) return "animation.default." + animation;
-
-            String name = nbt.getString("chara").get();
-            String anim = "animation." + name + "." + animation;
-            if (bakedAnimations != null && bakedAnimations.animations().containsKey(anim)) {
-
-                return anim;
-            }
+        NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
+        String name = nbt.getString("chara").orElse("");
+        String anim = "animation." + name + "." + animation;
+        if(bakedAnimations != null && bakedAnimations.animations().containsKey(anim)) {
+            return anim;
         }
 
         return "animation.default." + animation;
     }
 
-    public RenderLayer getRenderType(){
-        return RenderLayer.getEntityTranslucent(getTexture(getWorld()));
+    public RenderLayer getRenderType(Identifier texture){
+        return RenderLayer.getEntityTranslucent(texture);
     }
 }

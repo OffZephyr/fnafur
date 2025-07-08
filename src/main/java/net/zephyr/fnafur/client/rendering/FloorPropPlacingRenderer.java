@@ -5,32 +5,37 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.model.BakedQuad;
+import net.minecraft.client.render.model.BlockModelPart;
 import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.BlockItem;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.RotationAxis;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
-import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
-import net.zephyr.fnafur.blocks.props.base.PropBlock;
-import net.zephyr.fnafur.blocks.props.base.WallHalfProperty;
-import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
+import net.zephyr.fnafur.blocks.props.base.*;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
-import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.CosmoGift;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.CosmoGift;
+import net.zephyr.fnafur.entity.animatronic.block.AnimationList;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockInit;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
+
+import java.util.List;
 
 public class FloorPropPlacingRenderer {
+
+    private static final Direction[] DIRECTIONS = Direction.values();
+    GeoPropBlockEntity placementEntity = null;
+    BlockEntityRenderer<GeoPropBlockEntity> renderer = null;
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
 
             MinecraftClient client = MinecraftClient.getInstance();
@@ -124,7 +129,7 @@ public class FloorPropPlacingRenderer {
                             matrices.translate(-0.5f, 0, -0.5f);
                         }
 
-                        if(block instanceof GeoPropBlock){
+                        if(block instanceof GeoPropBlock || block instanceof AnimatronicBlock){
 
                             matrices.push();
 
@@ -134,39 +139,68 @@ public class FloorPropPlacingRenderer {
                                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-offsetRotation2));
                                 matrices.translate(-0.5f, 0, -0.5f);
                             }
-                            GeoPropBlockEntity entity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
+                            if(!(placementEntity instanceof GeoPropBlockEntity) || !placementEntity.getCachedState().equals(block.getDefaultState())){
+                                placementEntity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
+                                placementEntity.setWorld(MinecraftClient.getInstance().world);
 
-                            entity.setWorld(MinecraftClient.getInstance().world);
-                            if(MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(entity) instanceof GeoPropRenderer<GeoPropBlockEntity> geo){
-                                geo.render(entity, matrices, vertexConsumers, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                                renderer = MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(placementEntity);
+                            }
+
+                            if(renderer instanceof GeoPropRenderer<GeoPropBlockEntity> geo){
+
+                                if(block instanceof AnimatronicBlock){
+                                    AnimationList pose = AnimatronicBlock.getPose(client.world, pos, player.getHorizontalFacing().getOpposite());
+                                    ((AnimatronicBlockEntity)placementEntity).previewState = state.with(AnimatronicBlock.POSES, pose);
+                                }
+
+                                geo.render(placementEntity, matrices, vertexConsumers, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
                             }
                             matrices.pop();
                         }
-                        else if(block instanceof AnimatronicBlock){
-                            GeoPropBlockEntity entity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
-                            NbtCompound nbt = ItemNbtUtil.getNbt(player.getMainHandStack());
-
-                            entity.setWorld(MinecraftClient.getInstance().world);
-                            if(MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(entity) instanceof GeoPropRenderer<GeoPropBlockEntity> geo){
-                                matrices.push();
-                                geo.render(entity, matrices, vertexConsumers, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
-                                matrices.pop();
-                            }
-                        }
                         else {
+
                             BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);
-                            client.getBlockRenderManager().getModelRenderer().render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            renderBakedModel(matrices.peek(), vertexConsumers.getBuffer(RenderLayer.getTranslucentMovingBlock()), model, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+
                         }
 
                         matrices.translate(0.5f, 0, 0.5f);
                         float boxRot = block instanceof WallPropBlock ? 180 : -offsetRotation;
                         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
                         matrices.translate(-0.5f, 0, -0.5f);
-                        VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), shape, 0, 0, 0, 0x88FFFFFF);
+                        //VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), shape, 0, 0, 0, 0x88FFFFFF);
                         matrices.pop();
                         FloorPropBlock.drawingOutline = false;
                     }
                 }
             }
+            else{
+                renderer = null;
+                placementEntity = null;
+            }
         }
+
+
+    public static void renderBakedModel(
+            MatrixStack.Entry entry, VertexConsumer vertexConsumer, BlockStateModel model, int light, int overlay
+    ) {
+        for (BlockModelPart blockModelPart : model.getParts(Random.create(42L))) {
+            for (Direction direction : DIRECTIONS) {
+                renderQuads(entry, vertexConsumer, blockModelPart.getQuads(direction), light, overlay);
+            }
+
+            renderQuads(entry, vertexConsumer, blockModelPart.getQuads(null), light, overlay);
+        }
+    }
+
+    private static void renderQuads(
+            MatrixStack.Entry entry, VertexConsumer vertexConsumer, List<BakedQuad> quads, int light, int overlay
+    ) {
+        for (BakedQuad bakedQuad : quads) {
+            double time = (System.currentTimeMillis() - ((IGetClientManagers)MinecraftClient.getInstance()).getStartTime()) / 200.0;
+            double index = Math.sin(time);
+            float alpha = 0.5f + (0.25f * (float)index);
+            vertexConsumer.quad(entry, bakedQuad, 1, 1, 1, alpha, light, overlay);
+        }
+    }
 }

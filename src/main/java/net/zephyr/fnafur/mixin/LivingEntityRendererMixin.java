@@ -1,20 +1,29 @@
 package net.zephyr.fnafur.mixin;
 
+import net.minecraft.block.AbstractSkullBlock;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.item.ItemModelManager;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemDisplayContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.util.IHasArmPos;
+import net.zephyr.fnafur.util.mixinAccessing.ILivingEntityMaskRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,11 +35,26 @@ public class LivingEntityRendererMixin {
 
     @Shadow
     protected EntityModel<? super BipedEntityRenderState> model;
+    @Shadow
+    protected ItemModelManager itemModelResolver;
     LivingEntity player;
     @Inject(method = "updateRenderState(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;F)V", at = @At("HEAD"))
     public <T extends LivingEntity, S extends LivingEntityRenderState> void updateRenderState(T livingEntity, S livingEntityRenderState, float f, CallbackInfo ci){
         if(livingEntity instanceof AbstractClientPlayerEntity p){
             player = p;
+            ItemStack itemStack = p.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
+
+            if (itemStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof AbstractSkullBlock abstractSkullBlock) {
+                ((ILivingEntityMaskRenderState)livingEntityRenderState).getState().clear();
+            } else {
+                livingEntityRenderState.wearingSkullType = null;
+                livingEntityRenderState.wearingSkullProfile = null;
+                if (!ArmorFeatureRenderer.hasModel(itemStack, EquipmentSlot.HEAD)) {
+                    this.itemModelResolver.updateForLivingEntity(((ILivingEntityMaskRenderState)livingEntityRenderState).getState(), itemStack, ItemDisplayContext.HEAD, livingEntity);
+                } else {
+                    ((ILivingEntityMaskRenderState)livingEntityRenderState).getState().clear();
+                }
+            }
         }
     }
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;isVisible(Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;)Z"))

@@ -308,14 +308,8 @@
   "item.fnafur.tablet.description.0.4": "and §b§lclick again §rto §bset the second point",
   "item.fnafur.tablet.description.0.5": "§bof a line.",
 
-  "item.fnafur.cpu": "%s CPU",
-  "item.fnafur.cpu.wrong_entity": "§cEntity does not match the currently saved Entity Type.",
-  "item.fnafur.cpu.entity_updated": "§aEntity AI Successfully updated.",
-  "item.fnafur.cpu.entity_name": "§3Currently saved: %s",
-  "item.fnafur.cpu.description.0.length": "3",
-  "item.fnafur.cpu.description.0.0": "§rThis item §bholds a custom entity's AI.",
-  "item.fnafur.cpu.description.0.1": "§b§lINSERT §rthis item into the §6§lCOMPUTER",
-  "item.fnafur.cpu.description.0.2": "to start §bcustomizing the AI stored on it.",
+  "item.fnafur.cpu": "%sCPU",
+  "item.fnafur.vanni_mask": "V.A.N.N.I.",
 
   "item.fnafur.pipe_wrench": "Pipe Wrench",
   "item.fnafur.wrench": "Wrench",
@@ -376,7 +370,7 @@
   "item.fnafur.zephyr_spawn.description.0.1": "§d§lFloppy Disk §rto give it an AI.",
 
   "entity_category.fnafur.classic": "Classic",
-  "entity_category.fnafur.springlocks": "Springlocks",
+  "entity_category.fnafur.spring": "Springlocks",
 
   "entity.fnafur.skin_screen.confirm": "Save & Close",
   "entity.fnafur.zephyr": "Zephyr",
@@ -432,8 +426,10 @@
   "entity.fnafur.cl_sparky": "§mSparky",
 
 
-  "entity.fnafur.spring_bonnie": "§mSpring Bonnie",
-  "entity.fnafur.spring_freddy": "§mSpring Freddy",
+  "entity.fnafur.sp_bon": "Spring Bonnie",
+  "entity.fnafur.sp_fred": "Spring Freddy",
+  "entity.fnafur.sp_chica": "§mSpring Chica",
+  "entity.fnafur.sp_foxy": "Spring Foxy",
 
   "death.fnafur.back": "Back",
   "death.fnafur.confirm": "Confirm",

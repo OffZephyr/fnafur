@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:block/server_monitor"
+    },
+    "facing=east": {
+      "model": "fnafur:block/server_monitor",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:block/server_monitor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:block/server_monitor",
+      "y": 270
+    }
+  }
+}

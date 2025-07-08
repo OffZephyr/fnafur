@@ -11,35 +11,25 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.RotationAxis;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
-import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GeoPropAddedLayer;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockModel;
 import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
 import net.zephyr.fnafur.util.CustomDataTickets;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
+import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.base.GeoRenderer;
 
 @Environment(EnvType.CLIENT)
 public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRenderer<T> implements BlockEntityRenderer<T> {
     MinecraftClient client;
     BlockRenderManager manager;
+    float delta = 0;
     boolean loadedLayers = false;
     public GeoPropRenderer(BlockEntityRendererFactory.Context context) {
         super(new GeoPropModel<>());
@@ -55,26 +45,33 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
 
     public void render(T entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         entity.item = true;
-        super.render(entity, MinecraftClient.getInstance().getRenderTickCounter().getFixedDeltaTicks(), matrices, vertexConsumers, light, overlay, client.cameraEntity.getClientCameraPosVec(MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true)));
+        super.render(entity, MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true), matrices, vertexConsumers, light, overlay, client.cameraEntity.getClientCameraPosVec(MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true)));
+        entity.item = false;
     }
 
     @Override
     public GeoRenderState fillRenderState(T animatable, Void relatedObject, GeoRenderState renderState, float partialTick) {
         GeoRenderState state = super.fillRenderState(animatable, relatedObject, renderState, partialTick);
 
+        if(animatable.item){
+            double time = (System.currentTimeMillis() - ((IGetClientManagers)MinecraftClient.getInstance()).getStartTime()) / 200.0;
+            double index = Math.sin(time);
+            double alpha = 128 + (64 * index);
+            state.addGeckolibData(DataTickets.RENDER_COLOR, ColorHelper.getArgb((int)alpha, 255, 255, 255));
+        }
+
         state.addGeckolibData(CustomDataTickets.ENTITY_DATA, ((IEntityDataSaver)animatable).getPersistentData().copy());
         state.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.getWorld()));
         state.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.getWorld()));
         state.addGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE, animatable.getReRenderTexture(animatable.getWorld()));
         state.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.getWorld()));
-        state.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.getRenderType());
+        state.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.item ? RenderLayer.getItemEntityTranslucentCull(animatable.getTexture(animatable.getWorld())) : animatable.getRenderType());
 
         return state;
     }
 
     @Override
     public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPosition) {
-
         BlockPos pos = entity.getPos();
         BlockState state = client.world.getBlockState(pos);
         NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();

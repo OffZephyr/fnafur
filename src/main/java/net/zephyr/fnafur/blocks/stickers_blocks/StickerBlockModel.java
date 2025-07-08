@@ -63,7 +63,6 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
     @Override
     public void emitQuads(QuadEmitter emitter, BlockRenderView blockView, BlockPos pos, BlockState state, Random random, Predicate<@Nullable Direction> cullTest) {
 
-        System.out.println("WORKS");
         BlockStateModel.super.emitQuads(emitter, blockView, pos, state, random, cullTest);
         block = state.getBlock();
 
@@ -107,7 +106,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
             if (pos != BlockPos.ORIGIN && !(sideState.getBlock() instanceof MimicFrames) && sideState.isOpaque() && client.world.getBlockState(pos.offset(direction)).isSideSolidFullSquare(client.world, pos.offset(direction), direction.getOpposite())) continue;
             if (pos != BlockPos.ORIGIN && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.world, pos.offset(direction), frame.getMatrixSize())) continue;
 
-            List<BlockModelPart> parts = model.getParts(random);
+            List<BlockModelPart> parts = model.getParts(Random.create());
             if(!parts.isEmpty()){
                 List<BakedQuad> quadList = parts.get(0).getQuads(direction);
 

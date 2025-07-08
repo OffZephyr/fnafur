@@ -17,6 +17,7 @@ import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.IllusionDisc;
 import net.zephyr.fnafur.item.energy.JerryCanItem;
+import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.item.tools.DecalBookItem;
 import net.zephyr.fnafur.item.tools.PaintbrushItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
@@ -31,6 +32,13 @@ public class ItemInit {
             new Item.Settings()
                     .maxCount(0)
                     .rarity(Rarity.EPIC)
+    );
+    public static final Item VANNI_MASK = registerItem(
+            "vanni_mask",
+            VanniMaskItem::new,
+            new Item.Settings()
+                    .maxCount(1)
+                    .rarity(Rarity.COMMON)
     );
     public static final Item PIPE_WRENCH = registerItem(
             "pipe_wrench",

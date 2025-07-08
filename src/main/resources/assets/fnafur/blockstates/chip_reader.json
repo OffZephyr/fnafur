@@ -1,0 +1,124 @@
+{
+  "variants": {
+    "facing=north,cpu=false,anim=false,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader"
+    },
+    "facing=east,cpu=false,anim=false,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader",
+      "y": 90
+    },
+    "facing=south,cpu=false,anim=false,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader",
+      "y": 180
+    },
+    "facing=west,cpu=false,anim=false,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader",
+      "y": 270
+    },
+    "facing=north,cpu=false,anim=false,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader001"
+    },
+    "facing=east,cpu=false,anim=false,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader001",
+      "y": 90
+    },
+    "facing=south,cpu=false,anim=false,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader001",
+      "y": 180
+    },
+    "facing=west,cpu=false,anim=false,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader001",
+      "y": 270
+    },
+    "facing=north,cpu=false,anim=true,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader010"
+    },
+    "facing=east,cpu=false,anim=true,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader010",
+      "y": 90
+    },
+    "facing=south,cpu=false,anim=true,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader010",
+      "y": 180
+    },
+    "facing=west,cpu=false,anim=true,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader010",
+      "y": 270
+    },
+    "facing=north,cpu=false,anim=true,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader011"
+    },
+    "facing=east,cpu=false,anim=true,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader011",
+      "y": 90
+    },
+    "facing=south,cpu=false,anim=true,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader011",
+      "y": 180
+    },
+    "facing=west,cpu=false,anim=true,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader011",
+      "y": 270
+    },
+    "facing=north,cpu=true,anim=false,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader100"
+    },
+    "facing=east,cpu=true,anim=false,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader100",
+      "y": 90
+    },
+    "facing=south,cpu=true,anim=false,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader100",
+      "y": 180
+    },
+    "facing=west,cpu=true,anim=false,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader100",
+      "y": 270
+    },
+    "facing=north,cpu=true,anim=false,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader101"
+    },
+    "facing=east,cpu=true,anim=false,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader101",
+      "y": 90
+    },
+    "facing=south,cpu=true,anim=false,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader101",
+      "y": 180
+    },
+    "facing=west,cpu=true,anim=false,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader101",
+      "y": 270
+    },
+    "facing=north,cpu=true,anim=true,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader110"
+    },
+    "facing=east,cpu=true,anim=true,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader110",
+      "y": 90
+    },
+    "facing=south,cpu=true,anim=true,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader110",
+      "y": 180
+    },
+    "facing=west,cpu=true,anim=true,path=false": {
+      "model": "fnafur:block/chip_reader/chip_reader110",
+      "y": 270
+    },
+    "facing=north,cpu=true,anim=true,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader111"
+    },
+    "facing=east,cpu=true,anim=true,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader111",
+      "y": 90
+    },
+    "facing=south,cpu=true,anim=true,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader111",
+      "y": 180
+    },
+    "facing=west,cpu=true,anim=true,path=true": {
+      "model": "fnafur:block/chip_reader/chip_reader111",
+      "y": 270
+    }
+  }
+}

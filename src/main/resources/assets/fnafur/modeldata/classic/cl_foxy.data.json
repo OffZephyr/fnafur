@@ -11,7 +11,7 @@
                 "emissive": "",
                 "recolorable_emissive": [],
                 
-                "animations": "geckolib/animations/entity/classic/cl_foxy/cl_foxy.animation.json",
+                "animations": "entity/classic/cl_foxy/cl_foxy",
     
                 "default_eyes": "default",
                 "eyes":{
@@ -60,7 +60,7 @@
                 "emissive": "",
                 "recolorable_emissive": [],
                 
-                "animations": "geckolib/animations/entity/classic/cl_foxy/cl_foxy.animation.json",
+                "animations": "entity/classic/cl_foxy/cl_foxy",
     
                 "default_eyes": "colorable",
                 "eyes":{

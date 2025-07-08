@@ -37,7 +37,6 @@ public class HorizontalTilingBlock extends Block {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
 
-
         boolean connectNorth = world.getBlockState(pos.north()).isOf(state.getBlock());
         boolean connectEast = world.getBlockState(pos.east()).isOf(state.getBlock());
         boolean connectSouth = world.getBlockState(pos.south()).isOf(state.getBlock());

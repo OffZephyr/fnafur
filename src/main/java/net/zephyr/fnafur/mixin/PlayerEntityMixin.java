@@ -1,21 +1,36 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.entity.*;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.zephyr.fnafur.util.mixinAccessing.IPlayerCustomModel;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.world.World;
+import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin implements IPlayerCustomModel {
+public class PlayerEntityMixin implements IUniversePlayer {
     boolean crawling = false;
     @Nullable LivingEntity currentEntity;
     float mimicBodyYaw = 0;
+    @Shadow
+    PlayerInventory inventory;
+
+    @Inject (method = "<init>", at = @At("TAIL"))
+    public void init(World world, GameProfile profile, CallbackInfo ci) {
+        //this.inventory = new FnafPlayerInventory(((PlayerEntity)(Object)this), ((PlayerEntity)(Object)this).equipment);
+
+    }
+
     @Inject (method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo ci) {
         PlayerEntity player = ((PlayerEntity) (Object)this);

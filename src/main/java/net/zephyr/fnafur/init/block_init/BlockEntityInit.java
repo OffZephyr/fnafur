@@ -14,12 +14,16 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.blocks.props.wall_props.clocks.GeoClockPropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.cosmo_gift.GalaxyLayerGeoPropEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.cpu_config_panel.CpuConfigPanelBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.server_monitor.ServerMonitorBlockEntity;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 
 public class BlockEntityInit {
     public static BlockEntityType<CpuConfigPanelBlockEntity> CPU_CONFIG_PANEL;
+    public static BlockEntityType<ChipReaderBlockEntity> CHIP_READER;
+    public static BlockEntityType<ServerMonitorBlockEntity> SERVER_MONITOR;
     public static BlockEntityType<CameraBlockEntity> CAMERA;
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
@@ -36,6 +40,14 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "cpu_config_panel"),
                         FabricBlockEntityTypeBuilder.create(CpuConfigPanelBlockEntity::new,
                                 BlockInit.CPU_CONFIG_PANEL).build());
+        CHIP_READER =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "chip_reader"),
+                        FabricBlockEntityTypeBuilder.create(ChipReaderBlockEntity::new,
+                                BlockInit.CHIP_READER).build());
+        SERVER_MONITOR =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "server_monitor"),
+                        FabricBlockEntityTypeBuilder.create(ServerMonitorBlockEntity::new,
+                                BlockInit.SERVER_MONITOR).build());
 
         CAMERA =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "camera"),
@@ -82,6 +94,7 @@ public class BlockEntityInit {
                                 PropInit.PIZZA_OVEN,
                                 PropInit.KITCHEN_PREP_TABLE,
                                 PropInit.PUNCH_IN_CARDS,
+                                PropInit.BULLETIN_BOARD,
                                 PropInit.POTS_AND_PANS_RACK,
                                 PropInit.SKEEBALL_ARCADE,
                                 PropInit.WOODEN_CHAIR,

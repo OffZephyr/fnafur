@@ -11,7 +11,7 @@
                 "emissive": "",
                 "recolorable_emissive": [],
                 
-                "animations": "geckolib/animations/entity/classic/cl_chica/cl_chica.animation.json",
+                "animations": "entity/classic/cl_chica/cl_chica",
     
                 "default_eyes": "default",
                 "eyes":{
@@ -62,7 +62,7 @@
                 "emissive": "",
                 "recolorable_emissive": [],
                 
-                "animations": "geckolib/animations/entity/classic/cl_chica/cl_chica.animation.json",
+                "animations": "entity/classic/cl_chica/cl_chica",
     
                 "default_eyes": "colorable",
                 "eyes":{

@@ -1,7 +1,9 @@
 package net.zephyr.fnafur.client.gui.screens.crafting;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
@@ -45,19 +47,19 @@ public class WorkbenchScreen extends GoopyScreen {
                 .hoverSprite(TEXTURE, 312, 92, 512, 512, 0xFFFFFFFF)
                 .toggleExec(this::ToggleClick);*/
 
-        new GUIToggle(windowX + 6, windowY + 6, 56, 19, "suit")
+        new GUIToggle(windowX + 6, windowY + 6, 56, 19, false, "suit")
                 .offSprite(TEXTURE, 256, 92 + 19, 512, 512, 0xFFFFFFFF)
                 .onSprite(TEXTURE, 312, 92 + 19, 512, 512, 0xFFFFFFFF)
                 .hoverSprite(TEXTURE, 312, 92 + 19, 512, 512, 0xFFFFFFFF)
                 .toggleExec(this::ToggleClick);
 
-        new GUIToggle(windowX + 6, windowY + 6 + 23, 56, 19, "alt")
+        new GUIToggle(windowX + 6, windowY + 6 + 23, 56, 19, false, "alt")
                 .offSprite(TEXTURE, 256, 92 + 19 + 19, 512, 512, 0xFFFFFFFF)
                 .onSprite(TEXTURE, 312, 92 + 19 + 19, 512, 512, 0xFFFFFFFF)
                 .hoverSprite(TEXTURE, 312, 92 + 19 + 19, 512, 512, 0xFFFFFFFF)
                 .toggleExec(this::ToggleClick);
 
-        new GUIToggle(windowX + 6, windowY + 6 + 23 + 23, 56, 19, "eyes")
+        new GUIToggle(windowX + 6, windowY + 6 + 23 + 23, 56, 19, false, "eyes")
                 .offSprite(TEXTURE, 256, 92 + 19 + 19 + 19, 512, 512, 0xFFFFFFFF)
                 .onSprite(TEXTURE, 312, 92 + 19 + 19 + 19, 512, 512, 0xFFFFFFFF)
                 .hoverSprite(TEXTURE, 312, 92 + 19 + 19 + 19, 512, 512, 0xFFFFFFFF)
@@ -100,11 +102,12 @@ public class WorkbenchScreen extends GoopyScreen {
         button.on = tab != goal;
 
         tab = button.on ? goal : 0;
-        FnafUniverseRebuilt.print(button.setting);
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        entity.force_age += delta;
+
         drawBackground(context);
 
         drawRecolorableTexture(context, TEXTURE, windowX, windowY, 256, 256, 0, 0, 512, 512, 0xFFFFFFFF);
@@ -295,7 +298,12 @@ public class WorkbenchScreen extends GoopyScreen {
 
         }
 
-        //drawEntity(context, entity, 2f * 40, windowX + 128, windowY + 251, 200, new Quaternionf().rotationXYZ((float) 0f, (float) Math.PI, (float) Math.PI));
+        int x = windowX + 128;
+        int y = windowY + 251;
+
+        GoopyScreen.drawEntity(context, x - 75, y - 355, x + 75, y, 80, 1, new Quaternionf().rotationXYZ(0, (float) Math.PI, 0), entity);
+
+        //drawEntity(context, entity, 2f * 40, windowX + 128, windowY + 251, windowX + 128 + 50, windowY + 251 + 50, new Quaternionf().rotationXYZ((float) 0f, (float) Math.PI, (float) Math.PI));
 
         super.render(context, mouseX, mouseY, delta);
     }
@@ -615,6 +623,12 @@ public class WorkbenchScreen extends GoopyScreen {
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
+    @Override
+    public void tick() {
+        entity.tick();
+        super.tick();
+    }
+
     public void drawBackground(DrawContext context) {
         float u1 = (0 + 0.0f) /512f;
         float u2 = (0 + 412f) / 512f;
@@ -625,17 +639,7 @@ public class WorkbenchScreen extends GoopyScreen {
         int y1 = 0;
         int x2 = width;
         int y2 = height;
-        //RenderSystem.setShaderTexture(0, TEXTURE);
-        //RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
-        //RenderSystem.enableBlend();
-        //Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
-        //BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-        //bufferBuilder.vertex(matrix4f, (float)x1, (float)y1, (float)50).texture(u1, v1);
-        //bufferBuilder.vertex(matrix4f, (float)x1, (float)y2, (float)50).texture(u1, v2);
-        //bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)50).texture(u2, v2);
-        //bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)50).texture(u2, v1);
-        //BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
-        //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        //RenderSystem.disableBlend();
+
+        context.drawTexturedQuad(TEXTURE, x1, y1, x2, y2, u1, u2, v1, v2);
     }
 }

@@ -6,4 +6,6 @@ import net.zephyr.fnafur.util.jsonReaders.layered_block.LayeredBlockManager;
 public interface IGetClientManagers {
     LayeredBlockManager getLayerManager();
     EntityDataManager getEntityDataManager();
+
+    long getStartTime();
 }
