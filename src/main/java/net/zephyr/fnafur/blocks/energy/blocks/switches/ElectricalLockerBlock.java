@@ -148,7 +148,7 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
 
     @Override
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("mainBlock").get());
+        BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("mainBlock").orElse(0L));
         BlockPos sidePos = mainPos.offset(state.get(FACING).rotateYCounterclockwise());
 
         world.setBlockState(mainPos.down(), Blocks.AIR.getDefaultState());
@@ -184,7 +184,7 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 
         if(world.getBlockEntity(pos) instanceof BlockEntity entity) {
-            BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) entity).getPersistentData().getLong("mainBlock").get());
+            BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) entity).getPersistentData().getLong("mainBlock").orElse(0L));
             if (!state.get(MAIN)) return this.onUse(world.getBlockState(mainPos), world, mainPos, player, hit);
             BlockPos sidePos = mainPos.offset(state.get(FACING).rotateYCounterclockwise());
 
