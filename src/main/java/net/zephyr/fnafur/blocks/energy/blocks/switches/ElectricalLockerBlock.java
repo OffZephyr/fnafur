@@ -254,7 +254,7 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
 
         VoxelShape shape;
         if(world.getBlockEntity(pos) instanceof BlockEntity ent) {
-            BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver)ent).getPersistentData().getLong("mainBlock").get());
+            BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver)ent).getPersistentData().getLong("mainBlock").orElse(0L));
 
             Vec3d offset = Vec3d.of(mainPos.add(pos.multiply(-1)));
 
