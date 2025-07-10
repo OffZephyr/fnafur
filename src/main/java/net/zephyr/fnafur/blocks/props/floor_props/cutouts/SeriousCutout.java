@@ -31,16 +31,14 @@ public class SeriousCutout extends FloorPropBlock<SeriousCutoutColors> {
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(player.getMainHandStack().isEmpty()){
             if(state.get(COLOR_PROPERTY()).getSound() != null){
-                //TODO Playsound
-                //world.playSound(pos.getX(), pos.getY(), pos.getZ(), state.get(COLOR_PROPERTY()).getSound(), SoundCategory.BLOCKS, 1f, 1f, true);
+                world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), state.get(COLOR_PROPERTY()).getSound(), SoundCategory.BLOCKS, 1f, 1f);
                 return ActionResult.SUCCESS;
             }
         }
         if(super.onUse(state, world, pos, player, hit) == ActionResult.SUCCESS){
             BlockState newState = state.cycle(COLOR_PROPERTY());
             if(newState.get(COLOR_PROPERTY()).getPlace() != null){
-                //TODO Playsound
-                //world.playSound(pos.getX(), pos.getY(), pos.getZ(), newState.get(COLOR_PROPERTY()).getPlace(), SoundCategory.BLOCKS, 1f, 1f, true);
+                world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), newState.get(COLOR_PROPERTY()).getPlace(), SoundCategory.BLOCKS, 1f, 1f);
             }
             return ActionResult.SUCCESS;
         }
@@ -51,8 +49,7 @@ public class SeriousCutout extends FloorPropBlock<SeriousCutoutColors> {
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
 
         if(state.get(COLOR_PROPERTY()).getPlace() != null){
-            //TODO Playsound
-            //world.playSound(pos.getX(), pos.getY(), pos.getZ(), state.get(COLOR_PROPERTY()).getPlace(), SoundCategory.BLOCKS, 1f, 1f, true);
+            world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), state.get(COLOR_PROPERTY()).getPlace(), SoundCategory.BLOCKS, 1f, 1f);
         }
 
         super.onPlaced(world, pos, state, placer, itemStack);
