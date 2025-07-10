@@ -22,7 +22,7 @@ public class VanniMaskItemModel<T extends Item & GeoAnimatable> extends GeoModel
 
     @Override
     public Identifier getAnimationResource(T animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/items/ar_mask.animation.json");
     }
 
     @Override

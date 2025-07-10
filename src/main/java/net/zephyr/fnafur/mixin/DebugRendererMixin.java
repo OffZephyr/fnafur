@@ -25,6 +25,8 @@ public class DebugRendererMixin {
     TileDoorPlacingRenderer tileDoorPlacingRenderer = new TileDoorPlacingRenderer();
     @Unique
     SpecialBlockPlacingRenderer specialBlockPlacingRenderer = new SpecialBlockPlacingRenderer();
+    @Unique
+    LinkRenderer linkRenderer = new LinkRenderer();
 
     @Inject(method = "render", at = @At("HEAD"))
     public void render(MatrixStack matrices, Frustum frustum, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ, CallbackInfo ci){
@@ -33,5 +35,7 @@ public class DebugRendererMixin {
         floorPropPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         stickerPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         tileDoorPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
+
+        linkRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
     }
 }

@@ -26,6 +26,7 @@ import net.zephyr.fnafur.util.IHasArmPos;
 import net.zephyr.fnafur.util.mixinAccessing.ILivingEntityMaskRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -61,18 +62,37 @@ public class LivingEntityRendererMixin {
     public <T extends LivingEntity, S extends LivingEntityRenderState> void renderArms(S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci){
 
         if(player != null) {
-            if(player.getMainHandStack().getItem() instanceof BlockItem bi && bi.getBlock() instanceof IHasArmPos hasArmPos) {
-                Vec3d leftArmPos = hasArmPos.getLeftArmPos(player.getMainArm() == Arm.LEFT);
-                Vec3d rightArmPos = hasArmPos.getRightArmPos(player.getMainArm() == Arm.RIGHT);
+            rotateArms(player.getOffHandStack(), true);
+            rotateArms(player.getMainHandStack(), false);
+        }
+    }
 
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).rightArm.yaw = (float) rightArmPos.x * MathHelper.RADIANS_PER_DEGREE;
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).rightArm.pitch = (float) rightArmPos.y * MathHelper.RADIANS_PER_DEGREE;
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).rightArm.roll = (float) rightArmPos.z * MathHelper.RADIANS_PER_DEGREE;
+    @Unique
+    public void rotateArms(ItemStack stack, boolean isOffhand){
+        BipedEntityModel<BipedEntityRenderState> armModel = ((BipedEntityModel<BipedEntityRenderState>) this.model);
+        if(stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof IHasArmPos hasArmPos) {
+            Vec3d leftArmPos = hasArmPos.getLeftArmPos(player.getMainArm() == Arm.LEFT || (isOffhand && player.getMainArm() == Arm.RIGHT));
+            Vec3d rightArmPos = hasArmPos.getRightArmPos(player.getMainArm() == Arm.RIGHT || (isOffhand && player.getMainArm() == Arm.LEFT));
 
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).leftArm.yaw = (float) leftArmPos.x * MathHelper.RADIANS_PER_DEGREE;
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).leftArm.pitch = (float) leftArmPos.y * MathHelper.RADIANS_PER_DEGREE;
-                ((BipedEntityModel<BipedEntityRenderState>) this.model).leftArm.roll = (float) leftArmPos.z * MathHelper.RADIANS_PER_DEGREE;
-            }
+            armModel.rightArm.yaw = (float) rightArmPos.x * MathHelper.RADIANS_PER_DEGREE;
+            armModel.rightArm.pitch = (float) rightArmPos.y * MathHelper.RADIANS_PER_DEGREE;
+            armModel.rightArm.roll = (float) rightArmPos.z * MathHelper.RADIANS_PER_DEGREE;
+
+            armModel.leftArm.yaw = (float) leftArmPos.x * MathHelper.RADIANS_PER_DEGREE;
+            armModel.leftArm.pitch = (float) leftArmPos.y * MathHelper.RADIANS_PER_DEGREE;
+            armModel.leftArm.roll = (float) leftArmPos.z * MathHelper.RADIANS_PER_DEGREE;
+        }
+        else if(stack.getItem() instanceof IHasArmPos hasArmPos) {
+            Vec3d leftArmPos = hasArmPos.getLeftArmPos(player.getMainArm() == Arm.LEFT || (isOffhand && player.getMainArm() == Arm.RIGHT));
+            Vec3d rightArmPos = hasArmPos.getRightArmPos(player.getMainArm() == Arm.RIGHT || (isOffhand && player.getMainArm() == Arm.LEFT));
+
+            armModel.rightArm.yaw = (float) rightArmPos.x * MathHelper.RADIANS_PER_DEGREE;
+            armModel.rightArm.pitch = (float) rightArmPos.y * MathHelper.RADIANS_PER_DEGREE;
+            armModel.rightArm.roll = (float) rightArmPos.z * MathHelper.RADIANS_PER_DEGREE;
+
+            armModel.leftArm.yaw = (float) leftArmPos.x * MathHelper.RADIANS_PER_DEGREE;
+            armModel.leftArm.pitch = (float) leftArmPos.y * MathHelper.RADIANS_PER_DEGREE;
+            armModel.leftArm.roll = (float) leftArmPos.z * MathHelper.RADIANS_PER_DEGREE;
         }
     }
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)

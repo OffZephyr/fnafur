@@ -7,11 +7,17 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
+import net.zephyr.fnafur.item.masks.VanniMaskItem;
+import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -19,6 +25,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin implements IUniversePlayer {
+    @Unique
+    float maskOnDelta = 0;
     boolean crawling = false;
     @Nullable LivingEntity currentEntity;
     float mimicBodyYaw = 0;
@@ -89,6 +97,37 @@ public class PlayerEntityMixin implements IUniversePlayer {
             ci.setReturnValue(getCurrentEntity().getType().getDimensions().scaled(getCurrentEntity().getScaleFactor()));
         }
     }
+
+    @Override
+    public float getMaskDelta() {
+        return maskOnDelta;
+    }
+
+    @Override
+    public void setMaskDelta(float delta) {
+        maskOnDelta = delta;
+    }
+
+    @Override
+    public boolean hasVanniMaskOn() {
+        ItemStack stack = ((PlayerEntity) (Object)this).getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
+        if(stack.getItem() instanceof VanniMaskItem){
+            NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+            return nbt.getBoolean("inVanniMask", false);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isUsingVanniMask() {
+
+        boolean bl = true;
+        if(((PlayerEntity) (Object)this).getWorld().isClient()){
+            bl = getMaskDelta() > 1.42f;
+        }
+        return bl && hasVanniMaskOn();
+    }
+
     @Override
     public LivingEntity getCurrentEntity() {
         return currentEntity;

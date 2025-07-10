@@ -1,17 +1,14 @@
-package net.zephyr.fnafur.networking.entity;
+package net.zephyr.fnafur.networking.entity.player;
 
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
-import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
+import net.zephyr.fnafur.networking.entity.EntityPayloads;
 
 public record UpdateCreativeExtraSlotsC2SPayload(NbtCompound ItemData) implements CustomPayload {
     public static final Id<UpdateCreativeExtraSlotsC2SPayload> ID = new Id<>(EntityPayloads.C2SExtraSlotUpdate);

@@ -113,15 +113,14 @@ public class FloorPropPlacingRenderer {
                         VoxelShape shape = state.getOutlineShape(client.world, pos, ShapeContext.absent());
 
                         matrices.push();
+                        matrices.translate(-cameraX, -cameraY, -cameraZ);
+
                         if(block instanceof WallPropBlock){
-                            matrices.translate(-cameraX, -cameraY, -cameraZ);
                             matrices.translate(-0.5f, -0.5f, -0.5f);
 
                             matrices.translate(x + pos.getX(), y + pos.getY(), z + pos.getZ());
                         }
                         else {
-                            matrices.translate(-cameraX, -cameraY, -cameraZ);
-
                             matrices.translate(0, -1, 0);
                             matrices.translate(x + pos.getX(), y + pos.getY(), z + pos.getZ());
                             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));

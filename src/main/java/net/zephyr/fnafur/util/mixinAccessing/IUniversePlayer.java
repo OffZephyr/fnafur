@@ -8,6 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.event.GameEvent;
 
 public interface IUniversePlayer {
+    float getMaskDelta();
+    void setMaskDelta(float delta);
+    boolean hasVanniMaskOn();
+    boolean isUsingVanniMask();
     LivingEntity getCurrentEntity();
     void setCurrentEntity(LivingEntity entity);
     void resetCurrentEntity();

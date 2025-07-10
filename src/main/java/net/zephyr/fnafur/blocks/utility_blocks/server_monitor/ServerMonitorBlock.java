@@ -7,13 +7,17 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,6 +40,25 @@ public class ServerMonitorBlock extends BlockWithEntity {
     @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
         return null;
+    }
+
+    @Override
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if(world.getBlockEntity(pos) instanceof ServerMonitorBlockEntity ent){
+            BlockState result = ent.onBreak(world, pos, state, player);
+            if(result != null) return result;
+        }
+        return super.onBreak(world, pos, state, player);
+    }
+
+    @Override
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if(world.getBlockEntity(pos) instanceof ServerMonitorBlockEntity ent){
+            ActionResult result = ent.use(state, world, pos, player, hit);
+            if(result != null) return result;
+        }
+
+        return super.onUse(state, world, pos, player, hit);
     }
 
     @Nullable

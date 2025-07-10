@@ -11,6 +11,7 @@
     "DebugRendererMixin",
     "GameRendererMixin",
     "HeadFeatureRendererMixin",
+    "HeldItemRendererMixin",
     "InventoryScreenMixin",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",

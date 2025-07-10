@@ -10,6 +10,15 @@ transitive-accessible class net/minecraft/client/render/RenderPhase$Texture
 transitive-accessible class net/minecraft/client/render/RenderPhase$Target
 # transitive-accessible class net/minecraft/client/render/RenderPhase$ShaderProgram
 
+accessible field net/minecraft/client/model/ModelPart$Quad direction Lorg/joml/Vector3f;
+accessible field net/minecraft/client/model/ModelPart$Quad vertices [Lnet/minecraft/client/model/ModelPart$Vertex;
+accessible field net/minecraft/client/model/ModelPart$Vertex pos Lorg/joml/Vector3f;
+accessible field net/minecraft/client/model/ModelPart$Vertex u F
+accessible field net/minecraft/client/model/ModelPart$Vertex v F
+accessible field net/minecraft/client/model/ModelPart cuboids Ljava/util/List;
+accessible method net/minecraft/client/render/item/HeldItemRenderer renderArmHoldingItem (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IFFLnet/minecraft/util/Arm;)V
+accessible method net/minecraft/client/render/item/HeldItemRenderer swingArm (FFLnet/minecraft/client/util/math/MatrixStack;ILnet/minecraft/util/Arm;)V
+accessible method net/minecraft/client/render/item/HeldItemRenderer renderArm (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/util/Arm;)V
 accessible field net/minecraft/client/gui/screen/ingame/CreativeInventoryScreen$CreativeSlot slot Lnet/minecraft/screen/slot/Slot;
 accessible class net/minecraft/client/gui/screen/ingame/CreativeInventoryScreen$CreativeSlot
 accessible field net/minecraft/entity/LivingEntity equipment Lnet/minecraft/entity/EntityEquipment;

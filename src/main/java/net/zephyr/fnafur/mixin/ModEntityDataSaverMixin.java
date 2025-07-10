@@ -1,9 +1,12 @@
 package net.zephyr.fnafur.mixin;
 
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
+import net.zephyr.fnafur.blocks.linking.LinkSource;
+import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,10 +33,24 @@ public abstract class ModEntityDataSaverMixin implements IEntityDataSaver {
     @Inject(method = "writeData", at = @At("HEAD"))
     protected void injectWriteMethod(WriteView view, CallbackInfo info) {
         view.put("fnafur.persistent", NbtCompound.CODEC, getPersistentData());
+
+        if(((Entity)(Object)this) instanceof LinkSource source){
+            source.writeData(view, ((Entity)(Object)this).getWorld());
+        }
+        if(((Entity)(Object)this) instanceof LinkTarget source){
+            source.writeData(view, ((Entity)(Object)this).getWorld());
+        }
     }
 
     @Inject(method = "readData", at = @At("HEAD"))
     protected void injectReadMethod(ReadView view, CallbackInfo info) {
         persistentData = view.read("fnafur.persistent", NbtCompound.CODEC).orElse(new NbtCompound());
+
+        if(((Entity)(Object)this) instanceof LinkSource source){
+            source.readData(view, ((Entity)(Object)this).getWorld());
+        }
+        if(((Entity)(Object)this) instanceof LinkTarget source){
+            source.readData(view, ((Entity)(Object)this).getWorld());
+        }
     }
 }

@@ -18,4 +18,5 @@ public class CustomDataTickets {
     public static final DataTicket<NbtCompound> ENTITY_DATA = DataTicket.create("entity_data", NbtCompound.class);
     public static final DataTicket<Float> CLOCK_DELTA_MINUTE = DataTicket.create("clock_delta_minute", Float.class);
     public static final DataTicket<Float> CLOCK_DELTA_HOUR = DataTicket.create("clock_delta_hour", Float.class);
+    public static final DataTicket<Boolean> IS_MASK_ON = DataTicket.create("is_mask_on", Boolean.class);
 }

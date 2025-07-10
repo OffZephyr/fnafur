@@ -6,14 +6,14 @@
 				"identifier": "geometry.unknown",
 				"texture_width": 64,
 				"texture_height": 64,
-				"visible_bounds_width": 2,
+				"visible_bounds_width": 5,
 				"visible_bounds_height": 3.5,
 				"visible_bounds_offset": [0, 1.25, 0]
 			},
 			"bones": [
 				{
 					"name": "mask",
-					"pivot": [0, 0, 0],
+					"pivot": [0, 3, -3],
 					"cubes": [
 						{
 							"origin": [-1, 0.9, -7.8],
@@ -553,6 +553,14 @@
 							}
 						}
 					]
+				},
+				{
+					"name": "left",
+					"pivot": [6, 2, 8]
+				},
+				{
+					"name": "right",
+					"pivot": [-6, 2, 7]
 				}
 			]
 		}

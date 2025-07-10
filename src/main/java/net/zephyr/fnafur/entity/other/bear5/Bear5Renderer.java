@@ -32,7 +32,7 @@ public class Bear5Renderer extends EntityRenderer<Bear5Entity, Bear5RenderState>
 
         //if(state.target != null && MinecraftClient.getInstance().player.getUuid() == state.target.getUuid()){
         Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/other/bear_five.png");
-        VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucentEmissive(texture));
+        VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getOutline(texture));
 
         matrices.push();
         matrices.translate(0, 1.5f, 0);

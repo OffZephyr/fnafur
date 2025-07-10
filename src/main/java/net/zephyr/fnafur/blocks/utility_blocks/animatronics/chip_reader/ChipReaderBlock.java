@@ -47,6 +47,12 @@ public class ChipReaderBlock extends BlockWithEntity {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+
+        if(world.getBlockEntity(pos) instanceof ChipReaderBlockEntity ent){
+            ActionResult result = ent.use(state, world, pos, player, hit);
+            if(result != null) return result;
+        }
+
         if(player.isSneaking()){
             ActionResult result = state.get(CPU) || state.get(ANIMATION_CHIP) || state.get(PATHING_CHIP) ? ActionResult.SUCCESS : ActionResult.PASS;
             if(state.get(CPU)){
@@ -55,6 +61,7 @@ public class ChipReaderBlock extends BlockWithEntity {
                     NbtCompound CPU = ((IEntityDataSaver)ent).getPersistentData().getCompoundOrEmpty("cpu");
                     if(!CPU.isEmpty()){
                         ItemNbtUtil.setNbt(stack, CPU);
+                        ((IEntityDataSaver)ent).getPersistentData().remove("cpu");
                     }
                 }
                 dropStack(world, pos, state.get(FACING), stack);
