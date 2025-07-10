@@ -117,8 +117,7 @@ public class DecalBookItem extends Item {
                         list.add(NbtString.of(name));
                         offset_list.add(NbtFloat.of(offset));
 
-                        //context.getWorld().playSound(context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 1, 1, true);
-                        // TODO PLAYSOUND FIX
+                        context.getWorld().playSound(context.getPlayer(), context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 1, 1);
 
                         nbt.put(side, list);
                         nbt.put(side + "_offset", offset_list);

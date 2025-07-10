@@ -126,8 +126,7 @@ public class TileDoorBlock extends BlockWithEntity {
                 ent.setSpeed(newSpeed);
 
                 if(!world.isClient()) {
-                    //TODO Playsound
-                    //world.playSoundAtBlockCenter(pos, SoundEvents.BLOCK_NOTE_BLOCK_HAT.value(), SoundCategory.BLOCKS, 1, MathHelper.lerp(newSpeed / 5f, 0.75f, 1.5f), true);
+                    world.playSound(null, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.BLOCK_NOTE_BLOCK_HAT.value(), SoundCategory.BLOCKS, 1, MathHelper.lerp(newSpeed / 5f, 0.75f, 1.5f));
                 }
 
                 player.sendMessage(Text.translatable("block.fnafur.heavy_door.speed", " " + newSpeed), true);
@@ -163,10 +162,9 @@ public class TileDoorBlock extends BlockWithEntity {
     @Override
     protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
 
-        if(!world.isClient()) {
-            //TODO Playsound
-            //world.playSoundAtBlockCenter(pos, openSound, SoundCategory.MASTER, 1, 1, true);
-        }
+        //if(!world.isClient()) {
+        //    world.playSound(null, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), openSound, SoundCategory.MASTER, 1, 1);
+        //}
 
         if (world.getBlockEntity(pos) instanceof TileDoorBlockEntity ent) {
             BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("main").orElse(0L));

@@ -37,8 +37,7 @@ public record PlayBlockSoundS2CPayload(long pos, String name, String category, f
                     }
                 }
 
-                //TODO playsound
-                //context.player().getWorld().playSoundAtBlockCenter(BlockPos.fromLong(payload.pos()), soundEvent, category, payload.volume(), payload.pitch(), true);
+                context.player().getWorld().playSoundAtBlockCenterClient(BlockPos.fromLong(payload.pos()), soundEvent, category, payload.volume(), payload.pitch(), true);
         });
     }
 
