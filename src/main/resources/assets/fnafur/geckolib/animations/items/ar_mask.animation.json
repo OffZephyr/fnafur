@@ -3,7 +3,7 @@
 	"animations": {
 		"animation.ar_mask.open": {
 			"loop": "hold_on_last_frame",
-			"animation_length": 1.4583,
+			"animation_length": 1.5,
 			"bones": {
 				"mask": {
 					"rotation": {
@@ -205,6 +205,12 @@
 							},
 							"lerp_mode": "catmullrom"
 						},
+						"1.2917": {
+							"post": {
+								"vector": [8.03, 2.3, 1.23]
+							},
+							"lerp_mode": "catmullrom"
+						},
 						"1.4167": {
 							"vector": [9.99, 4.76, 3.03],
 							"easing": "easeOutBack"
@@ -289,6 +295,12 @@
 							},
 							"lerp_mode": "catmullrom"
 						},
+						"1.2917": {
+							"post": {
+								"vector": [-8.03, 2.3, 1.23]
+							},
+							"lerp_mode": "catmullrom"
+						},
 						"1.4167": {
 							"vector": [-9.99, 4.76, 3.03],
 							"easing": "easeOutBack"
@@ -299,10 +311,18 @@
 						}
 					}
 				}
+			},
+			"sound_effects": {
+				"0.0": {
+					"effect": "vanni_mask_equip"
+				},
+				"1.0": {
+					"effect": "ar_reveal"
+				}
 			}
 		},
 		"animation.ar_mask.close": {
-			"animation_length": 1,
+			"animation_length": 1.5,
 			"bones": {
 				"mask": {
 					"rotation": {
@@ -699,6 +719,14 @@
 							"vector": [0, -2, -2]
 						}
 					}
+				}
+			},
+			"sound_effects": {
+				"0.0": {
+					"effect": "ar_leave"
+				},
+				"0.25": {
+					"effect": "vanni_mask_unequip"
 				}
 			}
 		},

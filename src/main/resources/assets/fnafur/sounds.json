@@ -241,38 +241,38 @@
       "fnafur:props/cutouts/matpat6",
       "fnafur:props/cutouts/matpat7"
     ]
-   },
-    "dasen_place": {
-      "subtitle": "sounds.fnafur.dasen_place",
-      "sounds": [
-        "fnafur:props/cutouts/dasen_place"
-      ]
-    },
-    "dasen": {
-      "subtitle": "sounds.fnafur.dasen",
-      "sounds": [
-        "fnafur:props/cutouts/dasen1",
-        "fnafur:props/cutouts/dasen2",
-        "fnafur:props/cutouts/dasen3",
-        "fnafur:props/cutouts/dasen4",
-        "fnafur:props/cutouts/dasen5",
-        "fnafur:props/cutouts/dasen6",
-        "fnafur:props/cutouts/dasen7"
-      ]
-    },
-   "helpules_place": {
-     "subtitle": "sounds.fnafur.helpules_place",
-     "sounds": [
-       "fnafur:props/cutouts/helpules_place"
-     ]
-   },
-   "helpules": {
-     "subtitle": "sounds.fnafur.helpules",
-     "sounds": [
-       "fnafur:props/cutouts/helpules1",
-       "fnafur:props/cutouts/helpules2"
-     ]
-   },
+  },
+  "dasen_place": {
+    "subtitle": "sounds.fnafur.dasen_place",
+    "sounds": [
+      "fnafur:props/cutouts/dasen_place"
+    ]
+  },
+  "dasen": {
+    "subtitle": "sounds.fnafur.dasen",
+    "sounds": [
+      "fnafur:props/cutouts/dasen1",
+      "fnafur:props/cutouts/dasen2",
+      "fnafur:props/cutouts/dasen3",
+      "fnafur:props/cutouts/dasen4",
+      "fnafur:props/cutouts/dasen5",
+      "fnafur:props/cutouts/dasen6",
+      "fnafur:props/cutouts/dasen7"
+    ]
+  },
+  "helpules_place": {
+    "subtitle": "sounds.fnafur.helpules_place",
+    "sounds": [
+      "fnafur:props/cutouts/helpules_place"
+    ]
+  },
+  "helpules": {
+    "subtitle": "sounds.fnafur.helpules",
+    "sounds": [
+      "fnafur:props/cutouts/helpules1",
+      "fnafur:props/cutouts/helpules2"
+    ]
+  },
   "electrical_locker_open": {
     "subtitle": "sounds.fnafur.electrical_locker_open",
     "sounds": [
@@ -285,22 +285,52 @@
       "fnafur:props/electrical_locker/electrical_locker_door_close"
     ]
   },
-    "electrical_locker_switch": {
-      "subtitle": "sounds.fnafur.electrical_locker_switch",
-      "sounds": [
-        "fnafur:props/electrical_locker/electrical_locker_switch_activate"
-      ]
-    },
-    "switch_flip": {
-      "subtitle": "sounds.fnafur.switch_flip",
-      "sounds": [
-        "fnafur:props/switches/switch_flip"
-      ]
-    },
-    "desk_fan": {
-      "subtitle": "sounds.fnafur.desk_fan",
-      "sounds": [
-        "fnafur:props/fnaf1desk/desk_fan"
-      ]
-    }
+  "electrical_locker_switch": {
+    "subtitle": "sounds.fnafur.electrical_locker_switch",
+    "sounds": [
+      "fnafur:props/electrical_locker/electrical_locker_switch_activate"
+    ]
+  },
+  "switch_flip": {
+    "subtitle": "sounds.fnafur.switch_flip",
+    "sounds": [
+      "fnafur:props/switches/switch_flip"
+    ]
+  },
+  "desk_fan": {
+    "subtitle": "sounds.fnafur.desk_fan",
+    "sounds": [
+      "fnafur:props/fnaf1desk/desk_fan"
+    ]
+  },
+  "vanni_mask_equip": {
+    "subtitle": "sounds.fnafur.vanni_mask_equip",
+    "sounds": [
+      "fnafur:player/masks/vanni/vanni_mask_equip"
+    ]
+  },
+  "vanni_mask_unequip": {
+    "subtitle": "sounds.fnafur.vanni_mask_unequip",
+    "sounds": [
+      "fnafur:player/masks/vanni/vanni_mask_unequip"
+    ]
+  },
+  "ar_reveal": {
+    "subtitle": "sounds.fnafur.ar_reveal",
+    "sounds": [
+      "fnafur:player/masks/vanni/ar_reveal1",
+      "fnafur:player/masks/vanni/ar_reveal2",
+      "fnafur:player/masks/vanni/ar_reveal3",
+      "fnafur:player/masks/vanni/ar_reveal4"
+    ]
+  },
+  "ar_leave": {
+    "subtitle": "sounds.fnafur.ar_leave",
+    "sounds": [
+      "fnafur:player/masks/vanni/ar_leave1",
+      "fnafur:player/masks/vanni/ar_leave2",
+      "fnafur:player/masks/vanni/ar_leave3",
+      "fnafur:player/masks/vanni/ar_leave4"
+    ]
   }
+}

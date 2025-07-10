@@ -72,7 +72,7 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
 
                 RawAnimation putOn = RawAnimation.begin().thenPlayAndHold("animation.ar_mask.open");
 
-                boolean bl = geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.open") && geoAnimatableAnimationTest.controller().getAnimationState() == AnimationController.State.PAUSED;
+                boolean bl = geoAnimatableAnimationTest.controller().getCurrentAnimation() != null && geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.open") && geoAnimatableAnimationTest.controller().getAnimationState() == AnimationController.State.PAUSED;
                 if (isOn) {
                     if(!geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.open")){
                         return geoAnimatableAnimationTest.setAndContinue(putOn);

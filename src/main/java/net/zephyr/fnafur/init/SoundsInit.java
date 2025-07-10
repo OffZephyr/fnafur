@@ -44,6 +44,10 @@ public class SoundsInit {
     public static final SoundEvent ELECTRICAL_LOCKER_SWITCH = registerSoundEvent("electrical_locker_switch");
     public static final SoundEvent LIGHT_SWITCH_FLIP = registerSoundEvent("switch_flip");
     public static final SoundEvent DESK_FAN = registerSoundEvent("desk_fan", true);
+    public static final SoundEvent VANNI_MASK_EQUIP = registerSoundEvent("vanni_mask_equip");
+    public static final SoundEvent VANNI_MASK_UNEQUIP = registerSoundEvent("vanni_mask_unequip");
+    public static final SoundEvent AR_REVEAL = registerSoundEvent("ar_reveal");
+    public static final SoundEvent AR_LEAVE = registerSoundEvent("ar_leave");
 
     // CUTOUTS
     public static final SoundEvent DAWKO_PLACE = registerSoundEvent("dawko_place");
