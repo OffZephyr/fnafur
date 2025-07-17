@@ -50,6 +50,9 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.CEILING_TILE_VENT_BLACK)
                 .add(PropInit.FLOOR_MONITORS)
                 .add(PropInit.OFFICE_BUTTONS)
+                .add(PropInit.STANDING_MICROPHONE)
+                .add(PropInit.STANDING_SPEAKER)
+                .add(PropInit.STANDING_PIANO)
 
                 // WALL BLOCKS AND FLOOR BLOCKS
                 .add(BlockInit.WALL_TILE_FULL)

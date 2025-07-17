@@ -34,8 +34,11 @@ import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenStool;
 import net.zephyr.fnafur.blocks.props.floor_props.cutouts.SeriousCutout;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_trash.FloorTrash;
-import net.zephyr.fnafur.blocks.props.floor_props.flying_v_guitar.FlyingVGuitar;
-import net.zephyr.fnafur.blocks.props.floor_props.flying_v_guitar.FlyingVGuitarItem;
+import net.zephyr.fnafur.blocks.props.floor_props.instruments.flying_v_guitar.FlyingVGuitar;
+import net.zephyr.fnafur.blocks.props.floor_props.instruments.flying_v_guitar.FlyingVGuitarItem;
+import net.zephyr.fnafur.blocks.props.floor_props.instruments.standing_microphone.StandingMicrophone;
+import net.zephyr.fnafur.blocks.props.floor_props.instruments.standing_piano.StandingPiano;
+import net.zephyr.fnafur.blocks.props.floor_props.instruments.standing_speaker.StandingSpeaker;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.*;
 import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
@@ -155,6 +158,43 @@ public class PropInit {
                     .blockVision(Blocks::never)
                     .noCollision()
     );
+    public static final Block STANDING_MICROPHONE = registerBlock(
+            "standing_microphone",
+            StandingMicrophone::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block STANDING_SPEAKER = registerBlock(
+            "standing_speaker",
+            StandingSpeaker::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block STANDING_PIANO = registerBlock(
+            "standing_piano",
+            StandingPiano::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+
     public static final Block PARTY_TABLE = registerBlock(
             "party_table",
             TableBlock::new,

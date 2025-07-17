@@ -1,0 +1,6 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "fnafur:item/standing_piano_sheet_music_item"
+	}
+}

@@ -10,7 +10,8 @@ public enum PosterTextures implements ColorEnumInterface, StringIdentifiable {
     BONNIE_PARTY_TIME("bonnie_party_time", 3),
     CHICA_EATING_TIME("chica_eating_time", 4),
     FOXY_PLAY_TIME("foxy_play_time", 5),
-    FREDDY_LETS_PARTY("freddy_lets_party", 6)
+    FREDDY_LETS_PARTY("freddy_lets_party", 6),
+    FREDDY_RIPPING_HEAD("freddy_ripping_head", 7)
     ;
     private final String name;
     private final int index;

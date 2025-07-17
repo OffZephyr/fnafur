@@ -31,6 +31,9 @@ public class ItemGroupsInit {
                         entries.add(PropInit.WOODEN_CLOCK);
                         entries.add(BlockInit.BACKSTAGE_SHELF);
                         entries.add(PropInit.FLYING_V_GUITAR);
+                        entries.add(PropInit.STANDING_MICROPHONE);
+                        entries.add(PropInit.STANDING_SPEAKER);
+                        entries.add(PropInit.STANDING_PIANO);
                         entries.add(PropInit.SPEAKER);
                         entries.add(PropInit.PARTY_TABLE);
                         entries.add(PropInit.PARTY_TABLE_CONFETTI);

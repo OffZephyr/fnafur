@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=north,color=default": {
+      "model": "fnafur:props/instruments/standing_piano/standing_piano",
+      "y": 0
+    },
+    "facing=east,color=default": {
+      "model": "fnafur:props/instruments/standing_piano/standing_piano",
+      "y": 90
+    },
+    "facing=south,color=default": {
+      "model": "fnafur:props/instruments/standing_piano/standing_piano",
+      "y": 180
+    },
+    "facing=west,color=default": {
+      "model": "fnafur:props/instruments/standing_piano/standing_piano",
+      "y": 270
+    },
+    "facing=north,color=sheet_music": {
+      "model": "fnafur:props/instruments/standing_piano/standing_piano_sheet_music",
+      "y": 0
+    },
+    "facing=east,color=sheet_music": {
+      "model": "fnafur:props/instruments/standing_piano/standing_piano_sheet_music",
+      "y": 90
+    },
+    "facing=south,color=sheet_music": {
+      "model": "fnafur:props/instruments/standing_piano/standing_piano_sheet_music",
+      "y": 180
+    },
+    "facing=west,color=sheet_music": {
+      "model": "fnafur:props/instruments/standing_piano/standing_piano_sheet_music",
+      "y": 270
+    }
+  }
+}

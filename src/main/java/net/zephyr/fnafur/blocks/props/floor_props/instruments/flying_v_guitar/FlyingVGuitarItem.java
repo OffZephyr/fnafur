@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.props.floor_props.flying_v_guitar;
+package net.zephyr.fnafur.blocks.props.floor_props.instruments.flying_v_guitar;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;

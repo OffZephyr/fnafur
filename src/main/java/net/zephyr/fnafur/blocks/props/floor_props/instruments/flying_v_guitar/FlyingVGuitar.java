@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.props.floor_props.flying_v_guitar;
+package net.zephyr.fnafur.blocks.props.floor_props.instruments.flying_v_guitar;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -8,7 +8,6 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;

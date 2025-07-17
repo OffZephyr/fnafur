@@ -1,0 +1,27 @@
+{
+    "model": {
+      "type": "minecraft:select",
+      "cases":[
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/instruments/standing_piano/standing_piano"
+          },
+          "when": "default"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/instruments/standing_piano/standing_piano_sheet_music"
+          },
+          "when": "sheet_music"
+        }
+        ],
+        "fallback": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/instruments/standing_piano/standing_piano"
+          },
+          "block_state_property": "color",
+        "property": "minecraft:block_state"
+    }
+  }

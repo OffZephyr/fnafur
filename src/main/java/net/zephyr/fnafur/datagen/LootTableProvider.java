@@ -77,6 +77,9 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.ICE_CREAM_DISPENSER);
         addDrop(PropInit.SERIOUS_CUTOUT);
         addDrop(PropInit.SPEAKER);
+        addDrop(PropInit.STANDING_MICROPHONE);
+        addDrop(PropInit.STANDING_SPEAKER);
+        addDrop(PropInit.STANDING_PIANO);
 
         addDrop(BlockInit.FOG_BLOCK);
 

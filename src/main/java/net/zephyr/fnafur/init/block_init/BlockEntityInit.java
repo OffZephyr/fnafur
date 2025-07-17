@@ -109,6 +109,9 @@ public class BlockEntityInit {
                                 PropInit.SERIOUS_CUTOUT,
                                 PropInit.STANDING_MENU,
                                 PropInit.SPEAKER,
+                                PropInit.STANDING_MICROPHONE,
+                                PropInit.STANDING_SPEAKER,
+                                PropInit.STANDING_PIANO,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

@@ -50,6 +50,13 @@
           "model": "fnafur:props/posters/foxy_party_time_poster"
         },
         "when": "foxy_play_time"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:props/posters/freddy_ripping_head_poster"
+        },
+        "when": "freddy_ripping_head"
       }
     ],
     "fallback": {

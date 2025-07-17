@@ -104,6 +104,21 @@
     "facing=west,color=fnafone_celebrate_small": {
       "model": "fnafur:props/posters/fnafone_celebrate_small_poster",
       "y": 270
+    },
+    "facing=north,color=freddy_ripping_head": {
+      "model": "fnafur:props/posters/freddy_ripping_head_poster"
+    },
+    "facing=east,color=freddy_ripping_head": {
+      "model": "fnafur:props/posters/freddy_ripping_head_poster",
+      "y": 90
+    },
+    "facing=south,color=freddy_ripping_head": {
+      "model": "fnafur:props/posters/freddy_ripping_head_poster",
+      "y": 180
+    },
+    "facing=west,color=freddy_ripping_head": {
+      "model": "fnafur:props/posters/freddy_ripping_head_poster",
+      "y": 270
     }
   }
 }
