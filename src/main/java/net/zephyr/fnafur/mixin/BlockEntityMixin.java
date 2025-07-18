@@ -1,9 +1,7 @@
 package net.zephyr.fnafur.mixin;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.sound.SoundManager;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
@@ -14,7 +12,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockEntity.class)
 public class BlockEntityMixin implements IEntityDataSaver {
@@ -49,7 +46,7 @@ public class BlockEntityMixin implements IEntityDataSaver {
         view.put("fnafur.persistent", NbtCompound.CODEC, getPersistentData());
 
         if(((BlockEntity)(Object)this) instanceof LinkSource source){
-            source.writeData(view, ((BlockEntity)(Object)this).getWorld());
+            source.writeSourceData(view, ((BlockEntity)(Object)this).getWorld());
         }
         if(((BlockEntity)(Object)this) instanceof LinkTarget source){
             source.writeData(view, ((BlockEntity)(Object)this).getWorld());
@@ -61,7 +58,7 @@ public class BlockEntityMixin implements IEntityDataSaver {
         persistentData = view.read("fnafur.persistent", NbtCompound.CODEC).orElse(new NbtCompound());
 
         if(((BlockEntity)(Object)this) instanceof LinkSource source){
-            source.readData(view, ((BlockEntity)(Object)this).getWorld());
+            source.readSourceData(view, ((BlockEntity)(Object)this).getWorld());
         }
         if(((BlockEntity)(Object)this) instanceof LinkTarget source){
             source.readData(view, ((BlockEntity)(Object)this).getWorld());

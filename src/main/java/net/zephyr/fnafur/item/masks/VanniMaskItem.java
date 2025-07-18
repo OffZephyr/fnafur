@@ -14,6 +14,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
+import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.IHasArmPos;
 import net.zephyr.fnafur.util.ItemNbtUtil;
@@ -27,7 +28,11 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animatable.processing.AnimationTest;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.keyframe.event.KeyFrameEvent;
+import software.bernie.geckolib.animation.keyframe.event.data.SoundKeyframeData;
+import software.bernie.geckolib.animation.keyframe.event.handler.AutoPlayingSoundKeyframeHandler;
 import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.util.ClientUtil;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -60,39 +65,67 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>("idle", 0, this::animController));
+        controllers.add(
+                new AnimationController<>("idle", 0, this::animController)
+                        .setSoundKeyframeHandler(new SoundHandler<>()));
     }
 
     private PlayState animController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
 
-        if (geoAnimatableAnimationTest.renderState().hasGeckolibData(CustomDataTickets.IS_MASK_ON)) {
-            ItemDisplayContext context = geoAnimatableAnimationTest.getData(DataTickets.ITEM_RENDER_PERSPECTIVE);
-            boolean isOn = Boolean.TRUE.equals(geoAnimatableAnimationTest.renderState().getGeckolibData(CustomDataTickets.IS_MASK_ON));
-            if (MinecraftClient.getInstance().currentScreen == null && (context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)) {
+        boolean isOn = geoAnimatableAnimationTest.renderState().hasGeckolibData(CustomDataTickets.IS_MASK_ON) && Boolean.TRUE.equals(geoAnimatableAnimationTest.renderState().getGeckolibData(CustomDataTickets.IS_MASK_ON));
+        boolean isInSlot = geoAnimatableAnimationTest.renderState().hasGeckolibData(CustomDataTickets.IS_MASK_ON) && Boolean.TRUE.equals(geoAnimatableAnimationTest.renderState().getGeckolibData(CustomDataTickets.IS_IN_MASK_SLOT));
+        boolean canAnimate = geoAnimatableAnimationTest.renderState().hasGeckolibData(CustomDataTickets.IS_MASK_ON) && Boolean.TRUE.equals(geoAnimatableAnimationTest.renderState().getGeckolibData(CustomDataTickets.CAN_ANIMATE_MASK));
 
+        ItemDisplayContext context = geoAnimatableAnimationTest.getData(DataTickets.ITEM_RENDER_PERSPECTIVE);
+
+        if(!context.isFirstPerson()){
+            return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenLoop("animation.ar_mask.thirdperson"));
+        }
+        else{
+            if(geoAnimatableAnimationTest.controller().getCurrentAnimation() == null || geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.thirdperson")){
+                geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.ar_mask.idle"));
+            }
+            if ((context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)) {
                 RawAnimation putOn = RawAnimation.begin().thenPlayAndHold("animation.ar_mask.open");
 
-                boolean bl = geoAnimatableAnimationTest.controller().getCurrentAnimation() != null && geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.open") && geoAnimatableAnimationTest.controller().getAnimationState() == AnimationController.State.PAUSED;
-                if (isOn) {
-                    if(!geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.open")){
-                        return geoAnimatableAnimationTest.setAndContinue(putOn);
-                    }
-                    return PlayState.CONTINUE;
-                } else {
-                    if (bl) {
-                        return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.ar_mask.close"));
-                    } else if (geoAnimatableAnimationTest.controller().getAnimationState() == AnimationController.State.PAUSED) {
-                        return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.ar_mask.idle"));
+                if(canAnimate) {
+                    if (isOn) {
+                        if (geoAnimatableAnimationTest.controller().getCurrentAnimation() != null && !geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.open")) {
+                            geoAnimatableAnimationTest.setAndContinue(putOn);
+                        }
+                    } else {
+                        if (geoAnimatableAnimationTest.controller().getCurrentAnimation() != null && !geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.close")) {
+                            geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.ar_mask.close"));
+                        }
                     }
                 }
-                return PlayState.CONTINUE;
-            }
-            if(isOn){
-                return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenLoop("animation.ar_mask.thirdperson"));
-            } else {
-                return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenLoop("animation.ar_mask.idle"));
             }
         }
+
+       //if (MinecraftClient.getInstance().currentScreen == null && (context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) && isInSlot) {
+
+       //    RawAnimation putOn = RawAnimation.begin().thenPlayAndHold("animation.ar_mask.open");
+
+       //    boolean bl = geoAnimatableAnimationTest.controller().getCurrentAnimation() != null && geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.open") && geoAnimatableAnimationTest.controller().getAnimationState() == AnimationController.State.PAUSED;
+
+       //    if (isOn) {
+       //        if (!geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.open")) {
+       //            geoAnimatableAnimationTest.setAndContinue(putOn);
+       //        }
+       //    } else {
+       //        if (bl) {
+       //            geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.ar_mask.close"));
+       //        } else if (geoAnimatableAnimationTest.controller().getAnimationState() == AnimationController.State.PAUSED) {
+       //            geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.ar_mask.idle"));
+       //        }
+       //    }
+       //} else {
+       //    if (isOn && !context.isFirstPerson()) {
+       //        geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenLoop("animation.ar_mask.thirdperson"));
+       //    } else {
+       //        geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenLoop("animation.ar_mask.idle"));
+       //    }
+       //}
         return PlayState.CONTINUE;
     }
 
@@ -129,5 +162,24 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
     @Override
     public Vec3d getRightArmPos(boolean isMainStack) {
         return new Vec3d(-20, -50, 0);
+    }
+
+    static class SoundHandler<T extends GeoAnimatable> implements AnimationController.KeyframeEventHandler<T, SoundKeyframeData>{
+
+        @Override
+        public void handle(KeyFrameEvent<T, SoundKeyframeData> event) {
+            if(event.keyframeData().getSound().equals("vanni_mask_equip")){
+                ClientUtil.getClientPlayer().playSound(SoundsInit.VANNI_MASK_EQUIP, 1, 1);
+            }
+            else if(event.keyframeData().getSound().equals("ar_reveal")){
+                ClientUtil.getClientPlayer().playSound(SoundsInit.AR_REVEAL, 1, 1);
+            }
+            else if(event.keyframeData().getSound().equals("vanni_mask_unequip")){
+                ClientUtil.getClientPlayer().playSound(SoundsInit.VANNI_MASK_UNEQUIP, 1, 1);
+            }
+            else if(event.keyframeData().getSound().equals("ar_leave")){
+                ClientUtil.getClientPlayer().playSound(SoundsInit.AR_LEAVE, 1, 1);
+            }
+        }
     }
 }

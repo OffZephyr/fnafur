@@ -99,6 +99,14 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
             }
             if(state.getBlock() instanceof WallPropBlock<?>) {
                 matrices.translate(0, 0.5f, 0);
+                if(nbt.contains("Rotation")) {
+                    matrices.translate(0.5f, 0, 0.5f);
+                    matrices.translate(-0.5f * getFacing(entity).getVector().getX(), 0, -0.5f * getFacing(entity).getVector().getZ());
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
+                    matrices.translate(0.15f * getFacing(entity).getVector().getX(), 0, 0.15f * getFacing(entity).getVector().getZ());
+                    matrices.translate(-0.5f, 0, -0.5f);
+
+                }
             }
             else {
                 float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();

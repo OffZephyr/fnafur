@@ -3,10 +3,7 @@ package net.zephyr.fnafur.entity.animatronic.block;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -21,7 +18,6 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -30,21 +26,15 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
-import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
-import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
-import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
 import net.zephyr.fnafur.networking.sounds.PlayBlockSoundS2CPayload;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animation.RawAnimation;
 
 public class AnimatronicBlock extends FloorPropBlock<AnimationList> {
 
@@ -54,7 +44,16 @@ public class AnimatronicBlock extends FloorPropBlock<AnimationList> {
     }
     @Override
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new AnimatronicBlockEntity(pos, state);
+        return this.createBlockEntity(pos, state, true);
+    }
+
+    @Override
+    protected BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.INVISIBLE;
+    }
+
+    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state, boolean makeLink) {
+        return new AnimatronicBlockEntity(pos, state, makeLink);
     }
 
     @Override
@@ -83,6 +82,17 @@ public class AnimatronicBlock extends FloorPropBlock<AnimationList> {
         }
 
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+    }
+
+    @Override
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+
+        if(world.getBlockEntity(pos) instanceof AnimatronicBlockEntity ent){
+            ActionResult result = ent.tryEndLink(player, world, pos);
+            if(result != null) return result;
+        }
+
+        return super.onUse(state, world, pos, player, hit);
     }
 
     @Override

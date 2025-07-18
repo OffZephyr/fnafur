@@ -20,6 +20,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Unit;
 import net.zephyr.fnafur.client.gui.screens.FnafCreativeInventoryScreen;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
+import net.zephyr.fnafur.util.mixinAccessing.ICreativeScreenSlotAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,7 +36,7 @@ import java.util.List;
  * When drawing a mirror, always use the mirror's framebuffer instead of the normal one.
  */
 @Mixin(net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen.class)
-public class CreativeInventoryScreenMixin {
+public class CreativeInventoryScreenMixin implements ICreativeScreenSlotAccessor {
     @Unique
     ClientPlayerEntity mixin$player;
     @Unique
@@ -99,5 +100,10 @@ public class CreativeInventoryScreenMixin {
             this.scrollPosition = 0.0F;
             callbackInfo.cancel();
         }
+    }
+
+    @Override
+    public Slot createCreativeSlot(Slot slot, int invSlot, int x, int y){
+        return new CreativeInventoryScreen.CreativeSlot(slot, invSlot, x, y);
     }
 }

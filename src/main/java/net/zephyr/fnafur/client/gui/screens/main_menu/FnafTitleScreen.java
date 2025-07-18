@@ -34,7 +34,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -494,7 +496,9 @@ public class FnafTitleScreen extends Screen {
             GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) ((width / 2) - (sprite_width / 2)), 0, 0, sprite_width, sprite_height / 2f, 0, 0, sprite_width, sprite_height, 1, 1, 1, 1);
             GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) ((width / 2) - (star_width / 2)), (int) y, 0, star_width, star_height, sprite_width - star_width, sprite_height - star_height, sprite_width, sprite_height, 1, 1, 1, 1);
 
-            context.drawText(textRenderer, Text.literal(FnafUniverseRebuilt.MOD_VERSION), width / 2 - textRenderer.getWidth(FnafUniverseRebuilt.MOD_VERSION) / 2, height - textRenderer.fontHeight - 1, 0x88FFFFFF, false);
+            Style style = Style.EMPTY.withFont(Identifier.of(FnafUniverseRebuilt.MOD_ID, "metropolis"));
+            Text version_text = Text.literal(FnafUniverseRebuilt.MOD_VERSION).setStyle(style);
+            context.drawText(textRenderer, version_text, width / 2 - textRenderer.getWidth(version_text) / 2, height - textRenderer.fontHeight - 1, 0x88FFFFFF, false);
 
             if (tab == -1) {
 

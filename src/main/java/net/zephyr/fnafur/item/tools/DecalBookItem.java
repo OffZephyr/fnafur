@@ -19,6 +19,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.DecalInit;
@@ -61,11 +63,22 @@ public class DecalBookItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        if(context.getWorld().getBlockState(context.getBlockPos()).isSideSolidFullSquare(context.getWorld(), context.getBlockPos(), context.getSide())){
+        BlockState checkState = context.getWorld().getBlockState(context.getBlockPos());
+        Direction d = context.getSide();
+
+
+        if(checkState.getBlock() instanceof DiagonalMimicFrame f){
+            System.out.println(f.getDiagonalDirection(checkState).getName());
+            if(f.isDiagonal(checkState) && f.getDiagonalDirection(checkState) == DiagonalMimicFrame.NEXT_MAP.get(d.rotateYCounterclockwise())){
+                d = d.rotateYCounterclockwise();
+            }
+        }
+
+        if(checkState.isSideSolidFullSquare(context.getWorld(), context.getBlockPos(), d) || checkState.getBlock() instanceof DiagonalMimicFrame){
 
             DecalInit.Decal decal = getDecal(context.getStack());
 
-            if(decal != null && (!decal.isWallSticker() || (context.getSide() != Direction.UP && context.getSide() != Direction.DOWN))){
+            if(decal != null && (!decal.isWallSticker() || (d != Direction.UP && d != Direction.DOWN))){
                 BlockState blockState = context.getWorld().getBlockState(context.getBlockPos());
 
                 BlockEntity entity = context.getWorld().getBlockEntity(context.getBlockPos());
@@ -91,9 +104,8 @@ public class DecalBookItem extends Item {
                 if(context.getWorld().isClient()) {
                     NbtCompound nbt = ((IEntityDataSaver) entity).getPersistentData();
 
-                    String side = context.getSide().name();
+                    String side = d.name();
 
-                    Direction direction = context.getSide();
                     String name = decal.name();
 
                     NbtList list = nbt.getList(side).orElse(new NbtList());
@@ -102,15 +114,15 @@ public class DecalBookItem extends Item {
                     Vec3d hitPos = context.getHitPos();
                     BlockPos pos = context.getBlockPos();
 
-                    Vec3d stickerPos = stickerPos(pos, hitPos, direction, decal, context.getPlayer(), context.getWorld());
+                    Vec3d stickerPos = stickerPos(pos, hitPos, d, decal, context.getPlayer(), context.getWorld());
 
                     float offset = 0;
 
                     if (decal.getDirection() == DecalInit.Movable.VERTICAL) {
                         offset = (float) stickerPos.getY();
                     } else {
-                        offset = direction.getAxis() == Direction.Axis.Z ? (float) stickerPos.getX() :
-                                direction.getAxis() == Direction.Axis.X ? (float) stickerPos.getZ() : offset;
+                        offset = d.getAxis() == Direction.Axis.Z ? (float) stickerPos.getX() :
+                                d.getAxis() == Direction.Axis.X ? (float) stickerPos.getZ() : offset;
                     }
 
                     if ((decal.isStackable() && list.size() < MAX_STICKER_AMOUNT) || (!decal.isStackable() && list.isEmpty())) {
@@ -135,8 +147,8 @@ public class DecalBookItem extends Item {
 
     public static Vec3d stickerPos(BlockPos pos, Vec3d hitPos, Direction direction, DecalInit.Decal decal, PlayerEntity player, World world){
 
-        boolean snapBelow = world.getBlockState(pos.down()).isSideSolidFullSquare(world, pos.down(), direction);
-        boolean snapAbove = world.getBlockState(pos.up()).isSideSolidFullSquare(world, pos.up(), direction);
+        boolean snapBelow = world.getBlockState(pos.down()).isSideSolidFullSquare(world, pos.down(), direction) || (world.getBlockState(pos).getBlock() instanceof DiagonalMimicFrame && world.getBlockState(pos.down()).getBlock() instanceof DiagonalMimicFrame);
+        boolean snapAbove = world.getBlockState(pos.up()).isSideSolidFullSquare(world, pos.up(), direction) || (world.getBlockState(pos).getBlock() instanceof DiagonalMimicFrame && world.getBlockState(pos.up()).getBlock() instanceof DiagonalMimicFrame);
 
         String name = decal.name();
 

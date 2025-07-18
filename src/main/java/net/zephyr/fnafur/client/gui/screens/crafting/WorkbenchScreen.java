@@ -70,14 +70,14 @@ public class WorkbenchScreen extends GoopyScreen {
                 .hoverSprite(TEXTURE, 312, 92 + 19 + 19 + 19 + 19, 512, 512, 0xFFFFFFFF)
                 .clickExec(this::SaveButton);
 
-        if(!getNbtData().getCompound("GiftData").isEmpty()){
+        if(getNbtData().getCompound("GiftData").isPresent()){
             ((IEntityDataSaver)entity).getPersistentData().put("alt", getNbtData().getCompound("GiftData").get());
         }
 
     }
 
     private void SaveButton() {
-        ClientPlayNetworking.send(new WorkbenchSaveC2SPayload(getBlockPos().up().asLong(), ((IEntityDataSaver)entity).getPersistentData().getCompound("alt").get()));
+        ClientPlayNetworking.send(new WorkbenchSaveC2SPayload(getBlockPos().up().asLong(), ((IEntityDataSaver)entity).getPersistentData().getCompound("alt").orElse(new NbtCompound())));
         close();
     }
 
@@ -473,7 +473,7 @@ public class WorkbenchScreen extends GoopyScreen {
         if(altNbt.isEmpty()) return;
 
         if(!altNbt.isEmpty() && altNbt.contains("recolorable_textures_size")) {
-            int size = altNbt.getInt("recolorable_textures_size").get();
+            int size = altNbt.getInt("recolorable_textures_size", 0);
 
             for (int i = 0; i < size; i++) {
 
@@ -506,7 +506,7 @@ public class WorkbenchScreen extends GoopyScreen {
         if(altNbt.isEmpty()) return;
 
         if(!altNbt.isEmpty() && altNbt.contains("eyes_recolorable_textures_size")) {
-            int size = altNbt.getInt("eyes_recolorable_textures_size").get();
+            int size = altNbt.getInt("eyes_recolorable_textures_size", 0);
 
             for (int i = 0; i < size; i++) {
 

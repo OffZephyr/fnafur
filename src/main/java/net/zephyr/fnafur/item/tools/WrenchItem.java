@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.item.tools;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -15,6 +16,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
+import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.init.ScreensInit;
@@ -42,6 +44,11 @@ public class WrenchItem extends Item {
                 if(t.getSources().get(i) instanceof IEntityDataSaver ent){
                     t.removeSource(ent);
                     ((LinkSource)ent).getTargets().remove(((IEntityDataSaver) t));
+
+                    if(t instanceof EnergyTarget e) {
+                        BlockEntity ent2 = (BlockEntity) t;
+                        e.updateStatus(ent2.getWorld(), ent2.getPos(), ent);
+                    }
                 }
             }
             return ActionResult.SUCCESS;
@@ -49,8 +56,14 @@ public class WrenchItem extends Item {
         else if(context.getPlayer() != null && ((IUniversePlayer)context.getPlayer()).isUsingVanniMask() && context.getWorld().getBlockEntity(context.getBlockPos()) instanceof LinkSource s && !s.getTargets().isEmpty()){
             for (int i = 0; i < s.getTargets().size(); i++){
                 if(s.getTargets().get(i) instanceof IEntityDataSaver ent){
+
                     ((LinkTarget)ent).removeSource((IEntityDataSaver) s);
                     s.getTargets().remove(ent);
+
+                    if(ent instanceof EnergyTarget e) {
+                        BlockEntity ent2 = (BlockEntity) s;
+                        e.updateStatus(ent2.getWorld(), ent2.getPos(), ((IEntityDataSaver) s));
+                    }
                 }
             }
             return ActionResult.SUCCESS;

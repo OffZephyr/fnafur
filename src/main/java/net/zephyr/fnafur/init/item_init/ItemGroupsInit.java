@@ -135,6 +135,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.MIMIC_FRAME);
                         entries.add(BlockInit.MIMIC_FRAME_2x2);
                         entries.add(BlockInit.MIMIC_FRAME_4x4);
+                        entries.add(BlockInit.MIMIC_FRAME_DIAGONAL);
 
                         //entries.add(BlockInit.CAMERA);
                         //entries.add(ItemInit.TABLET);

@@ -13,6 +13,7 @@ import net.minecraft.util.Hand;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.util.hooks.ItemRenderingHook;
+import net.zephyr.fnafur.util.mixinAccessing.IHeldItemAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeldItemRenderer.class)
-public class HeldItemRendererMixin {
+public class HeldItemRendererMixin implements IHeldItemAccessor {
     //PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer)this.entityRenderDispatcher.<AbstractClientPlayerEntity>getRenderer(this.client.player);
     @Shadow
     public void renderItem(
@@ -79,5 +80,10 @@ public class HeldItemRendererMixin {
 //
         //    ci.cancel();
         //}
+    }
+
+    @Override
+    public void doSwingArm(float swingProgress, float equipProgress, MatrixStack matrices, int armX, Arm arm) {
+        swingArm(swingProgress, equipProgress, matrices, armX, arm);
     }
 }

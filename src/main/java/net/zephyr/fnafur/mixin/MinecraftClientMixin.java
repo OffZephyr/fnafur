@@ -2,10 +2,15 @@ package net.zephyr.fnafur.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
+import net.zephyr.fnafur.blocks.linking.LinkSource;
+import net.zephyr.fnafur.blocks.linking.LinkTarget;
+import net.zephyr.fnafur.util.hooks.JoinHook;
 import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
 import net.zephyr.fnafur.util.jsonReaders.entity_skins.EntityDataManager;
 import net.zephyr.fnafur.util.jsonReaders.layered_block.LayeredBlockManager;
@@ -42,6 +47,10 @@ public class MinecraftClientMixin implements IGetClientManagers {
 	@Unique
 	private CharacterModelManager characterModelManager = new CharacterModelManager();
 
+	@Inject(method = "joinWorld", at = @At("HEAD"), cancellable = true)
+	void joinWorld(ClientWorld world, DownloadingTerrainScreen.WorldEntryReason worldEntryReason, CallbackInfo ci){
+		JoinHook.joinHook(world, worldEntryReason);
+	}
 	@Inject(method = "getFramebuffer", at = @At("HEAD"), cancellable = true)
 	public void getFramebuffer(CallbackInfoReturnable<Framebuffer> cir) {
 		//if (CameraRenderer.isDrawing()) {

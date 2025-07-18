@@ -5,7 +5,9 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.entity.player.PlayerEntity;
 import net.zephyr.fnafur.networking.entity.player.UpdateMaskStateC2SPayload;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateCrawlingC2SPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
@@ -23,14 +25,19 @@ public class KeyInputHandler {
 
     public static void registerKeyInputs() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if(MinecraftClient.getInstance().player != null) {
-                ((IUniversePlayer) MinecraftClient.getInstance().player).setCrawling(crawlKey.isPressed());
+            PlayerEntity p = MinecraftClient.getInstance().player;
+            if(p != null) {
+
+                ((IUniversePlayer) p).setCrawling(crawlKey.isPressed());
                 if(crawling != crawlKey.isPressed()) {
                     ClientPlayNetworking.send(new UpdateCrawlingC2SPayload(crawlKey.isPressed()));
                     crawling = crawlKey.isPressed();
                 }
+                boolean bl = ((IUniversePlayer) p).getMaskDelta() == 0 || ((IUniversePlayer) p).getMaskDelta() == 1.5f;
+                ((IUniversePlayer) p).setCanAnimateMask(!bl);
 
-                if(!maskKeyPressed && maskKey.isPressed()){
+                if(!maskKeyPressed && maskKey.isPressed() && bl){
+                    MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
                     ClientPlayNetworking.send(new UpdateMaskStateC2SPayload(!((IUniversePlayer)MinecraftClient.getInstance().player).hasVanniMaskOn()));
                 }
                 maskKeyPressed = maskKey.isPressed();

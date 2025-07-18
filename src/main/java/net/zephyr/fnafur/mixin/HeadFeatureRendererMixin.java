@@ -14,6 +14,8 @@ import net.minecraft.client.render.entity.model.ModelWithHead;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.render.item.ItemRenderState;
 import net.minecraft.client.util.math.MatrixStack;
+import net.zephyr.fnafur.util.hooks.ItemRenderingHook;
+import net.zephyr.fnafur.util.mixinAccessing.IHeadFeatureRendererAccessor;
 import net.zephyr.fnafur.util.mixinAccessing.ILivingEntityMaskRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.function.Function;
 
 @Mixin(HeadFeatureRenderer.class)
-public class HeadFeatureRendererMixin {
+public class HeadFeatureRendererMixin implements IHeadFeatureRendererAccessor {
     @Shadow
     private HeadFeatureRenderer.HeadTransformation headTransformation;
     @Shadow
@@ -35,30 +37,21 @@ public class HeadFeatureRendererMixin {
     }
     @Inject(method = "render", at = @At("HEAD"))
     <S extends LivingEntityRenderState, M extends EntityModel<S> & ModelWithHead> void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, S livingEntityRenderState, float f, float g, CallbackInfo ci){
-        ItemRenderState maskItemRenderState = ((ILivingEntityMaskRenderState)livingEntityRenderState).getState();
+        ItemRenderingHook.renderOnHead(((HeadFeatureRenderer)(Object)this), matrixStack, vertexConsumerProvider, i, livingEntityRenderState, f, g);
+    }
 
-        if (!maskItemRenderState.isEmpty()) {
-            matrixStack.push();
-            matrixStack.scale(this.headTransformation.horizontalScale(), 1.0F, this.headTransformation.horizontalScale());
-            M entityModel = ((FeatureRenderer<S, M>)(Object)this).getContextModel();
-            entityModel.getRootPart().applyTransform(matrixStack);
-            entityModel.getHead().applyTransform(matrixStack);
-            if (livingEntityRenderState.wearingSkullType != null) {
-                matrixStack.translate(0.0F, this.headTransformation.skullYOffset(), 0.0F);
-                matrixStack.scale(1.1875F, -1.1875F, -1.1875F);
-                matrixStack.translate(-0.5, 0.0, -0.5);
-                SkullBlock.SkullType skullType = livingEntityRenderState.wearingSkullType;
-                SkullBlockEntityModel skullBlockEntityModel = (SkullBlockEntityModel)this.headModels.apply(skullType);
-                RenderLayer renderLayer = SkullBlockEntityRenderer.getRenderLayer(skullType, livingEntityRenderState.wearingSkullProfile);
-                SkullBlockEntityRenderer.renderSkull(
-                        null, 180.0F, livingEntityRenderState.headItemAnimationProgress, matrixStack, vertexConsumerProvider, i, skullBlockEntityModel, renderLayer
-                );
-            } else {
-                translate(matrixStack, this.headTransformation);
-                maskItemRenderState.render(matrixStack, vertexConsumerProvider, i, OverlayTexture.DEFAULT_UV);
-            }
+    @Override
+    public HeadFeatureRenderer.HeadTransformation getHeadTransformation() {
+        return headTransformation;
+    }
 
-            matrixStack.pop();
-        }
+    @Override
+    public Function<SkullBlock.SkullType, SkullBlockEntityModel> getHeadModels() {
+        return headModels;
+    }
+
+    @Override
+    public void doTranslate(MatrixStack matrices, HeadFeatureRenderer.HeadTransformation transformation) {
+        translate(matrices, transformation);
     }
 }

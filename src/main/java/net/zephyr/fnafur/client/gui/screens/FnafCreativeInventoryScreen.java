@@ -13,6 +13,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.HotbarStorage;
 import net.minecraft.client.option.HotbarStorageEntry;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.util.math.MathHelper;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.networking.entity.player.UpdateCreativeExtraSlotsC2SPayload;
+import net.zephyr.fnafur.util.mixinAccessing.ICreativeScreenSlotAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -387,7 +389,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
                     }
                 }
 
-                Slot slot = new CreativeInventoryScreen.CreativeSlot(screenHandler.slots.get(ix), ix, n, jx);
+                Slot slot = ((ICreativeScreenSlotAccessor)this).createCreativeSlot(screenHandler.slots.get(ix), ix, n, jx);
                 this.handler.slots.add(slot);
             }
             this.handler.slots.add(deleteItemSlot);
@@ -425,4 +427,10 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     }
 
 
+    @Environment(EnvType.CLIENT)
+    public static class FnafCreativeSlot extends CreativeSlot {
+        public FnafCreativeSlot(Slot slot, int invSlot, int x, int y) {
+            super(slot, invSlot, x, y);
+        }
+    }
 }

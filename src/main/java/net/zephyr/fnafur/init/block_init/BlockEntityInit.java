@@ -7,11 +7,15 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
+import net.zephyr.fnafur.blocks.energy.blocks.generators.GeneratorBlockEntity;
+import net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons.OfficeButtonsBlockEntity;
 import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
 import net.zephyr.fnafur.blocks.fog.FogBlockEntity;
+import net.zephyr.fnafur.blocks.linking.presets.SimpleEnergySwitchPropBlockEntity;
+import net.zephyr.fnafur.blocks.linking.presets.SimpleEnergyTargetPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntity;
+import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorBlockEntity;
 import net.zephyr.fnafur.blocks.props.wall_props.clocks.GeoClockPropBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
@@ -27,6 +31,9 @@ public class BlockEntityInit {
     public static BlockEntityType<CameraBlockEntity> CAMERA;
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
+    public static BlockEntityType<OfficeButtonsBlockEntity> OFFICE_BUTTONS;
+    public static BlockEntityType<SimpleEnergySwitchPropBlockEntity> SIMPLE_PROP_ENERGY_SWITCH;
+    public static BlockEntityType<SimpleEnergyTargetPropBlockEntity> SIMPLE_PROP_ENERGY_TARGET;
     public static BlockEntityType<AnimatronicBlockEntity> ANIMATRONIC_BLOCK;
     public static BlockEntityType<GeoPropBlockEntity> GEO_PROPS;
     public static BlockEntityType<GeoClockPropBlockEntity> GEO_CLOCK_PROP;
@@ -34,6 +41,7 @@ public class BlockEntityInit {
     public static BlockEntityType<StickerBlockEntity> STICKER_BLOCK;
     public static BlockEntityType<TileDoorBlockEntity> TILE_DOOR;
     public static BlockEntityType<BaseEnergyBlockEntity> ENERGY;
+    public static BlockEntityType<GeneratorBlockEntity> GENERATOR;
 
     public static void registerBlockEntities() {
         CPU_CONFIG_PANEL =
@@ -85,10 +93,8 @@ public class BlockEntityInit {
                                 PropInit.MOP_BUCKET,
                                 PropInit.TRASH_BIN,
                                 PropInit.WET_FLOOR_SIGN,
-                                PropInit.OFFICE_BUTTONS,
                                 PropInit.PRESENT_STACK,
                                 PropInit.EXIT_SIGN,
-                                PropInit.LIGHT_SWITCH,
                                 PropInit.WALL_OUTLET,
                                 PropInit.AIR_VENT,
                                 PropInit.PIZZA_OVEN,
@@ -114,6 +120,21 @@ public class BlockEntityInit {
                                 PropInit.STANDING_PIANO,
 
                                 PropInit.BEPH_PLUSHIE
+                        ).build());
+        OFFICE_BUTTONS =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "office_buttons"),
+                        FabricBlockEntityTypeBuilder.create(OfficeButtonsBlockEntity::new,
+                                PropInit.OFFICE_BUTTONS
+                        ).build());
+        SIMPLE_PROP_ENERGY_SWITCH =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "energy_switch_prop"),
+                        FabricBlockEntityTypeBuilder.create(SimpleEnergySwitchPropBlockEntity::new,
+                                PropInit.LIGHT_SWITCH
+                        ).build());
+        SIMPLE_PROP_ENERGY_TARGET =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "energy_target_prop"),
+                        FabricBlockEntityTypeBuilder.create(SimpleEnergyTargetPropBlockEntity::new,
+                                BlockInit.REDSTONE_CONVERTER
                         ).build());
         GEO_PROPS =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo_props"),
@@ -145,17 +166,21 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "sticker_block"),
                         FabricBlockEntityTypeBuilder.create(StickerBlockEntity::new,
                                 BlockInit.STICKER_BLOCK,
+                                BlockInit.MIMIC_FRAME_DIAGONAL,
                                 BlockInit.MIMIC_FRAME,
                                 BlockInit.MIMIC_FRAME_2x2,
                                 BlockInit.MIMIC_FRAME_4x4
                         ).build());
 
+        GENERATOR      =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "generator"),
+                        FabricBlockEntityTypeBuilder.create(GeneratorBlockEntity::new,
+                                BlockInit.FUEL_GENERATOR
+                        ).build());
         //battery.blocks
         ENERGY      =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "energy"),
                         FabricBlockEntityTypeBuilder.create(BaseEnergyBlockEntity::new,
-                                BlockInit.FUEL_GENERATOR,
-                                BlockInit.REDSTONE_CONVERTER,
                                 BlockInit.ELECTRICAL_LOCKER,
                                 BlockInit.CIRCUIT_BREAKER
                         ).build());

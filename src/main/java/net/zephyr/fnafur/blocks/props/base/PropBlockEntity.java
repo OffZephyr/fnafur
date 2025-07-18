@@ -19,6 +19,9 @@ public class PropBlockEntity extends BlockEntity {
         this(BlockEntityInit.PROPS, pos, state);
     }
     public PropBlockEntity(BlockEntityType<? extends BlockEntity> type, BlockPos pos, BlockState state) {
+        this(type, pos, state, false);
+    }
+    public PropBlockEntity(BlockEntityType<? extends BlockEntity> type, BlockPos pos, BlockState state, boolean createLink) {
         super(type, pos, state);
     }
 

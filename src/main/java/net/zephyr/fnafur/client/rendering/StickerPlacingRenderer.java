@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.client.rendering;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -11,8 +12,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
 import net.zephyr.fnafur.init.DecalInit;
 import net.zephyr.fnafur.item.tools.DecalBookItem;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class StickerPlacingRenderer {
         public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
@@ -25,7 +30,8 @@ public class StickerPlacingRenderer {
                 if (decal != null && blockHit.getType() == HitResult.Type.BLOCK) {
                     BlockPos pos = ((BlockHitResult) blockHit).getBlockPos();
                     Direction direction = ((BlockHitResult) blockHit).getSide();
-                    if (client.world.getBlockState(pos).isSideSolidFullSquare(client.world, pos, direction)) {
+                    BlockState checkedState = client.world.getBlockState(pos);
+                    if (checkedState.isSideSolidFullSquare(client.world, pos, direction) || checkedState.getBlock() instanceof DiagonalMimicFrame) {
 
                         if (decal.isWallSticker() && (((BlockHitResult) blockHit).getSide() == Direction.UP || ((BlockHitResult) blockHit).getSide() == Direction.DOWN)) {
                             return;
@@ -57,33 +63,53 @@ public class StickerPlacingRenderer {
 
                         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(identifier));
 
-                        vertexConsumer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, -vHeight)
+                        float y = 0;
+                        Vector3f normal = new Vector3f(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ());
+                        if(checkedState.getBlock() instanceof DiagonalMimicFrame f){
+                            Direction d = ((BlockHitResult) blockHit).getSide();
+                            if(f.isDiagonal(checkedState)){
+                                if(DiagonalMimicFrame.NEXT_MAP.get(d) == f.getDiagonalDirection(checkedState)){
+                                    y = -1;
+                                    normal.rotateY((float) Math.toRadians(45f));
+                                }
+                                if(DiagonalMimicFrame.NEXT_MAP.get(d.rotateYCounterclockwise()) == f.getDiagonalDirection(checkedState)){
+                                    y = -1;
+                                    vWidth = -0.5f;
+                                    vHeight = -0.5f;
+                                    tWidth = -0.5f;
+                                    tHeight = -0.5f;
+
+                                    normal.rotateY((float) Math.toRadians(-45f));
+                                }
+                            }
+                        }
+                        vertexConsumer.vertex(matrices.peek().getPositionMatrix(), -vWidth, y, -vHeight)
                                 .texture(0.5f - tWidth, 0.5f - tHeight)
                                 .color(0xFFFFFFFF)
                                 .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                                 .overlay(OverlayTexture.DEFAULT_UV)
-                                .normal(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ())
+                                .normal(normal.x(), normal.y(), normal.z())
                         ;
-                        vertexConsumer.vertex(matrices.peek().getPositionMatrix(), -vWidth, 0.0f, vHeight)
+                        vertexConsumer.vertex(matrices.peek().getPositionMatrix(), -vWidth, y, vHeight)
                                 .texture(0.5f - tWidth, 0.5f + tHeight)
                                 .color(0xFFFFFFFF)
                                 .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                                 .overlay(OverlayTexture.DEFAULT_UV)
-                                .normal(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ())
+                                .normal(normal.x(), normal.y(), normal.z())
                         ;
                         vertexConsumer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, vHeight)
                                 .texture(0.5f + tWidth, 0.5f + tHeight)
                                 .color(0xFFFFFFFF)
                                 .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                                 .overlay(OverlayTexture.DEFAULT_UV)
-                                .normal(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ())
+                                .normal(normal.x(), normal.y(), normal.z())
                         ;
                         vertexConsumer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, -vHeight)
                                 .texture(0.5f + tWidth, 0.5f - tHeight)
                                 .color(0xFFFFFFFF)
                                 .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                                 .overlay(OverlayTexture.DEFAULT_UV)
-                                .normal(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ())
+                                .normal(normal.x(), normal.y(), normal.z())
                         ;
 
                         matrices.pop();

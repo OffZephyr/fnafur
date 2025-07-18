@@ -16,9 +16,9 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-import net.zephyr.fnafur.blocks.props.tiling.VerticalTileStates;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlock;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorItem;
+import net.zephyr.fnafur.blocks.dynamic.tiling.VerticalTileStates;
+import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorBlock;
+import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorItem;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 
 public class TileDoorPlacingRenderer {

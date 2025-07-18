@@ -7,8 +7,8 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.math.BlockPos;
-import net.zephyr.fnafur.blocks.props.tiling.VerticalTileStates;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlock;
+import net.zephyr.fnafur.blocks.dynamic.tiling.VerticalTileStates;
+import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorBlock;
 
 public record TileDoorUpdateS2CPayload(long pos, boolean open) implements CustomPayload {
     public static final Id<TileDoorUpdateS2CPayload> ID = new Id<>(BlockPayloads.S2CTileDoorOpenUpdate);

@@ -29,6 +29,7 @@ import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
@@ -149,7 +150,7 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
 
     @Override
     protected BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.INVISIBLE;
+        return this instanceof GeoPropBlock ? BlockRenderType.INVISIBLE : BlockRenderType.MODEL;
     }
 
     public static int getPreviewColor() {

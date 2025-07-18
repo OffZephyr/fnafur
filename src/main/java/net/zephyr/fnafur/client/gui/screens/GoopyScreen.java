@@ -199,10 +199,6 @@ public abstract class GoopyScreen extends Screen {
         }
     }
 
-    @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-    }
-
     public static void drawRecolorableTexture(DrawContext context, Identifier texture, int x, int y, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, int color) {
         drawRecolorableTexture(context, texture, x, y, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight, ColorHelper.getRed(color) / 256f, ColorHelper.getGreen(color) / 256f,ColorHelper.getBlue(color) / 256f,ColorHelper.getAlpha(color) / 256f);
     }

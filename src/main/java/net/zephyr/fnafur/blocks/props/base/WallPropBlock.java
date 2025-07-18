@@ -12,16 +12,20 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -129,9 +133,40 @@ public abstract class WallPropBlock<T extends Enum<T> & ColorEnumInterface & Str
 
                         if(lockY(state)) y = 0.5f;
 
-                        ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("xOffset", x);
+                        BlockState hitBlockState = world.getBlockState(blockHitResult.getBlockPos());
+                        Direction d = Direction.UP;
+                        float rotation = 0;
+                        if (blockHitResult.getSide().getAxis() != Direction.Axis.Y) {
+                            if (hitBlockState.getBlock() instanceof DiagonalMimicFrame f) {
+                                if (f.isDiagonal(hitBlockState)) {
+                                    BooleanProperty p = f.getDiagonalDirection(hitBlockState);
+                                    if (p == DiagonalMimicFrame.NEXT_MAP.get(blockHitResult.getSide())) {
+                                        d = blockHitResult.getSide();
+                                        rotation = -45f;
+                                    }
+                                    if (p == DiagonalMimicFrame.NEXT_MAP.get(blockHitResult.getSide().rotateYCounterclockwise())) {
+                                        d = blockHitResult.getSide().rotateYCounterclockwise();
+                                        rotation = 45f;
+                                    }
+                                }
+
+                            }
+                        }
+                        if (hitBlockState.getBlock() instanceof DiagonalMimicFrame && d != Direction.UP) {
+
+                            Vec3d editPos = new Vec3d(x, y, z);
+
+                            editPos = getDiagonalOffset(editPos, d, blockHitResult.getSide(), blockHitResult.getBlockPos());
+
+                            x += editPos.getX();
+                            y += editPos.getY();
+                            z += editPos.getZ();
+                            ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("Rotation", rotation);
+                        }
+
                         ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("yOffset", y);
                         ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("zOffset", z);
+                        ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().putDouble("xOffset", x);
 
                         GoopyNetworkingUtils.saveBlockNbt(pos, ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData());
                     }
@@ -139,6 +174,29 @@ public abstract class WallPropBlock<T extends Enum<T> & ColorEnumInterface & Str
             }
         }
         super.onPlaced(world, pos, state, placer, itemStack);
+    }
+
+    public static Vec3d getDiagonalOffset(Vec3d editPos, Direction d, Direction side, BlockPos pos){
+        Vec3d newVec = new Vec3d(0, 0, 0);
+        if(d.getAxis() == Direction.Axis.Z) {
+            if (d == side){
+                newVec = new Vec3d((-editPos.getX()/2f), 0, (editPos.getX()/2f));
+                newVec = newVec.add(new Vec3d(0.25f, 0, -0.25f));
+            } else {
+                newVec = new Vec3d((editPos.getZ()/2f), 0, (-editPos.getZ()/2f));
+                newVec = newVec.add(new Vec3d(-0.25f, 0, 0.25f));
+            }
+        } else {
+
+            //newVec = newVec.add(new Vec3d(0.5f * Math.abs(side.getVector().getX()), editPos.getY(), 0.5f * Math.abs(side.getVector().getZ())));
+            if (d == side){
+                newVec = new Vec3d((-editPos.getZ()/2f), 0, (-editPos.getZ()/2f));
+            } else {
+                newVec = new Vec3d((-editPos.getX()/2f), 0, (-editPos.getX()/2f));
+            }
+            newVec = newVec.add(new Vec3d(0.25f, 0, 0.25f));
+        }
+        return newVec;
     }
 
     public abstract boolean lockY(BlockState state);

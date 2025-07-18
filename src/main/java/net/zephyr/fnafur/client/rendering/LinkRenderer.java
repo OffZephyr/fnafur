@@ -87,9 +87,9 @@ public class LinkRenderer {
         }
 
         List<IEntityDataSaver> blueTargets = new ArrayList<>();
-        for(IEntityDataSaver ent : LinkSource.allSources){
+        for(IEntityDataSaver ent : LinkSource.allSources) {
 
-            for(IEntityDataSaver target : ((LinkSource)ent).getTargets()){
+            for (IEntityDataSaver target : ((LinkSource) ent).getTargets()) {
 
                 matrices.push();
 
@@ -100,17 +100,15 @@ public class LinkRenderer {
                 VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getOutline(texture));
 
                 Vec3d vec1 = Vec3d.ZERO;
-                if(ent instanceof BlockEntity bent){
+                if (ent instanceof BlockEntity bent) {
                     vec1 = bent.getPos().toCenterPos();
-                }
-                else if(ent instanceof Entity ent2){
+                } else if (ent instanceof Entity ent2) {
                     vec1 = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
                 }
                 Vec3d vec2 = Vec3d.ZERO;
-                if(target instanceof BlockEntity bent){
+                if (target instanceof BlockEntity bent) {
                     vec2 = bent.getPos().toCenterPos();
-                }
-                else if(target instanceof Entity ent2){
+                } else if (target instanceof Entity ent2) {
                     vec2 = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
                 }
 
@@ -118,6 +116,9 @@ public class LinkRenderer {
 
                 matrices.pop();
             }
+        }
+
+        for(IEntityDataSaver ent : LinkSource.allSources){
 
             matrices.push();
 
@@ -134,9 +135,12 @@ public class LinkRenderer {
 
             boolean bl = !(selectPos != BlockPos.ORIGIN && selectPos.equals(checkPos));
 
-            String name = ent instanceof LinkTarget ? "source_target_" : "source_";
+            boolean isTarget = ent instanceof LinkTarget;
+            String name = isTarget ? "source_target_" : "source_";
             String color = ((LinkSource)ent).getTargets().isEmpty() && bl ? "red" :  "blue";
-            Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/" + name + color + ".png");
+            String t = "textures/other/link/" + name + color;
+            if(isTarget) t = isTarget && !((LinkTarget)ent).getSources().isEmpty() ? t + "_link" : t;
+            Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, t + ".png");
 
             VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getOutline(texture));
 
@@ -163,9 +167,11 @@ public class LinkRenderer {
 
             blueTargets.addAll(((LinkSource)ent).getTargets());
         }
-        for(IEntityDataSaver ent : LinkTarget.allTargets){
-            if(ent instanceof LinkSource) continue;
+        for(int i = 0; i < LinkTarget.allTargets.size(); i++){
+            IEntityDataSaver ent = LinkTarget.allTargets.get(i);
 
+            if(ent instanceof Entity ent2 && !(MinecraftClient.getInstance().world.getEntityById(ent2.getId()) instanceof Entity)) continue;
+            if(ent instanceof LinkSource) continue;
             matrices.push();
 
             Vec3d vec = Vec3d.ZERO;

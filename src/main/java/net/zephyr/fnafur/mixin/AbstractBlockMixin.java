@@ -2,13 +2,11 @@ package net.zephyr.fnafur.mixin;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.RedstoneLampBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
-import net.zephyr.fnafur.blocks.props.wall_props.office_buttons.OfficeButtons;
+import net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons.OfficeButtons;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;

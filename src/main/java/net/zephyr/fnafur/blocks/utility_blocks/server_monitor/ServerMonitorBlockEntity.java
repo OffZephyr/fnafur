@@ -1,92 +1,62 @@
 package net.zephyr.fnafur.blocks.utility_blocks.server_monitor;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
-import net.zephyr.fnafur.blocks.linking.LinkTarget;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
+import net.zephyr.fnafur.blocks.linking.links.LinkSourceBlockEntity;
+import net.zephyr.fnafur.blocks.linking.links.LinkSourceTargetBlockEntity;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
-import net.zephyr.fnafur.item.tools.WrenchItem;
-import net.zephyr.fnafur.util.ItemNbtUtil;
-import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerMonitorBlockEntity extends BlockEntity implements LinkTarget {
-    List<IEntityDataSaver> sources = new ArrayList<>();
+public class ServerMonitorBlockEntity extends LinkSourceTargetBlockEntity {
     public ServerMonitorBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityInit.SERVER_MONITOR, pos, state);
-        LinkTarget.allTargets.add((IEntityDataSaver) this);
     }
 
-    public void tick(World world, BlockPos blockPos, BlockState state, ServerMonitorBlockEntity entity) {
+    @Override
+    public void tick(World world, BlockPos blockPos, BlockState state, LinkSourceBlockEntity entity) {
+        super.tick(world, blockPos, state, entity);
+    }
 
+    public List<BlockPos> getChipReaderPoses(){
+        List<BlockPos> poses = new ArrayList<>();
+        for(IEntityDataSaver ent : sources){
+            if(ent instanceof ChipReaderBlockEntity ent2){
+                poses.add(ent2.getPos());
+            }
+        }
+        return poses;
+    }
+    @Nullable
+    public BlockPos getActiveChipReaderPos(){
+        List<BlockPos> poses = getChipReaderPoses();
+        if(poses.isEmpty()) return null;
+
+        int index = ((IEntityDataSaver)this).getPersistentData().getInt("chipReaderIndex", 0);
+        if(index >= poses.size()){
+            index = Math.max(poses.size() - 1, 0);
+            ((IEntityDataSaver)this).getPersistentData().putInt("chipReaderIndex", index);
+        }
+        return getChipReaderPoses().get(index);
     }
 
     @Override
     public void markRemoved() {
 
         super.markRemoved();
+        LinkSource.allSources.remove((IEntityDataSaver) this);
 
-        if(!getSources().isEmpty()){
-            for(int i = 0; i < getSources().size(); i++){
-                if(getSources().get(i) instanceof IEntityDataSaver ent && ent instanceof LinkSource s){
-                    s.getTargets().remove(((IEntityDataSaver) this));
-                    getSources().remove(ent);
-                }
-            }
-        }
-        LinkTarget.allTargets.remove((IEntityDataSaver) this);
+        cleanSources();
     }
-
-    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        return null;
-    }
-    public ActionResult use(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit){
-
-        ItemStack stack = player.getMainHandStack();
-        if(player.getMainHandStack().getItem() instanceof WrenchItem){
-            NbtCompound nbt = ItemNbtUtil.getNbt(stack);
-
-            BlockPos startPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
-
-            if(!nbt.contains("startLink")){
-                return null;
-            }
-            else if(!startPos.equals(pos)){
-                if(world.getBlockEntity(startPos) instanceof BlockEntity source){
-                    if(((LinkSource)source).getTargets().contains((IEntityDataSaver)this)){
-                        ((LinkSource)source).unlink((IEntityDataSaver) this);
-                        System.out.println("REMOVE LINK");
-                    }
-                    else{
-                        ((LinkSource)source).makeLink((IEntityDataSaver) this);
-                        System.out.println("ADD LINK");
-                    }
-                    markDirty();
-                    source.markDirty();
-                }
-            }
-
-            System.out.println("CLEAR");
-            nbt.remove("startLink");
-            ItemNbtUtil.setNbt(stack, nbt);
-            return ActionResult.SUCCESS;
-        }
-
-        return null;
-    }
-
     @Override
-    public List<IEntityDataSaver> getSources() {
-        return sources;
+    public boolean canLink(IEntityDataSaver link) {
+        return link instanceof AnimatronicBlockEntity;
     }
 }

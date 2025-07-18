@@ -17,7 +17,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,18 +42,14 @@ public class ServerMonitorBlock extends BlockWithEntity {
     }
 
     @Override
-    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+
         if(world.getBlockEntity(pos) instanceof ServerMonitorBlockEntity ent){
-            BlockState result = ent.onBreak(world, pos, state, player);
+            ActionResult result = ent.tryEndLink(player, world, pos);
             if(result != null) return result;
         }
-        return super.onBreak(world, pos, state, player);
-    }
-
-    @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(world.getBlockEntity(pos) instanceof ServerMonitorBlockEntity ent){
-            ActionResult result = ent.use(state, world, pos, player, hit);
+            ActionResult result = ent.tryStartLink(player, pos);
             if(result != null) return result;
         }
 

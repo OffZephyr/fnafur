@@ -1,0 +1,1028 @@
+{
+  "variants": {
+  "se=true,sw=true,s=true,e=true,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=true,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=true,e=false,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=true,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=true,s=false,e=false,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=true,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=true,e=false,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=true,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=true,sw=false,s=false,e=false,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=true,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=true,e=false,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=true,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=true,s=false,e=false,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=true,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=true,e=false,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=true,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=true,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=true,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=true,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=true,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=true,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=true,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=true,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=true,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=false,ne=true,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=false,ne=true,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=false,ne=true,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=false,ne=true,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=false,ne=false,nw=true,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=false,ne=false,nw=true,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=false,ne=false,nw=false,n=true": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  },
+  "se=false,sw=false,s=false,e=false,w=false,ne=false,nw=false,n=false": {
+    "model": "fnafur:block/stage_block",
+    "y": 0
+  }
+}
+}

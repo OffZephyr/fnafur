@@ -23,19 +23,20 @@ import net.zephyr.fnafur.blocks.camera.CameraBlock;
 import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
 import net.zephyr.fnafur.blocks.decorations.BackstageShelfBlock;
 import net.zephyr.fnafur.blocks.decorations.WarehouseShelfBlock;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.CircuitBreakerBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.ElectricalLockerBlock;
-import net.zephyr.fnafur.blocks.energy.blocks.switches.RedstoneConverterBlock;
+import net.zephyr.fnafur.blocks.energy.blocks.receivers.RedstoneConverterBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlock;
 import net.zephyr.fnafur.blocks.fog.FogBlockRenderer;
-import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
-import net.zephyr.fnafur.blocks.illusion_block.MimicFrames2x2;
-import net.zephyr.fnafur.blocks.illusion_block.MimicFrames4x4;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlock;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorBlockEntityRenderer;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorDirection;
-import net.zephyr.fnafur.blocks.props.tiling.tile_doors.TileDoorItem;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames2x2;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames4x4;
+import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorBlock;
+import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorBlockEntityRenderer;
+import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorDirection;
+import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorItem;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
@@ -145,6 +146,12 @@ public class BlockInit {
             List.of(
                     Text.translatable("fnafur.symbol.scraper")
             )
+    );
+    public static final Block MIMIC_FRAME_DIAGONAL = registerBlock(
+            "mimic_frame_diagonal",
+            DiagonalMimicFrame::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
     );
 
     public static final Block CAMERA = registerBlock(
@@ -1136,10 +1143,15 @@ public class BlockInit {
 
         BlockRenderLayerMap.putBlock(BlockInit.CAMERA, BlockRenderLayer.CUTOUT);
 
+        BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_DIAGONAL, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.CPU_CONFIG_PANEL, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.CHIP_READER, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.SERVER_MONITOR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.WORKBENCH, BlockRenderLayer.CUTOUT);
+
+        PropInit.PROPS.add(BlockInit.ELECTRICAL_LOCKER.asItem());
+        PropInit.PROPS.add(BlockInit.REDSTONE_CONVERTER.asItem());
+        PropInit.PROPS.add(BlockInit.WORKBENCH.asItem());
 
         BlockRenderLayerMap.putBlock(BlockInit.FUEL_GENERATOR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.ELECTRICAL_LOCKER, BlockRenderLayer.CUTOUT);

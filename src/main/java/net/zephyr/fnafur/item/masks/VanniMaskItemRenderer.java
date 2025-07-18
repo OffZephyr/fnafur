@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
+import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
@@ -45,6 +46,8 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
     public void addRenderData(T animatable, RenderData relatedObject, GeoRenderState renderState) {
         if(relatedObject.entity() instanceof PlayerEntity p){
             renderState.addGeckolibData(CustomDataTickets.IS_MASK_ON, ((IUniversePlayer)p).hasVanniMaskOn());
+            renderState.addGeckolibData(CustomDataTickets.CAN_ANIMATE_MASK, ((IUniversePlayer)p).canAnimateMask());
+            renderState.addGeckolibData(CustomDataTickets.IS_IN_MASK_SLOT, p.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET).equals(relatedObject.itemStack()));
         }
         super.addRenderData(animatable, relatedObject, renderState);
     }
@@ -54,6 +57,8 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
 
         buffer = bufferSource.getBuffer(renderType);
         super.renderRecursively(renderState, poseStack, bone, renderType, bufferSource, buffer, isReRender, packedLight, packedOverlay, renderColor);
+
+        poseStack.push();
         if(!isReRender && (bone.getName().contains("left") || bone.getName().contains("right"))){
             AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
             PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher()
@@ -79,6 +84,7 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
                 poseStack.pop();
             }
         }
+        poseStack.pop();
     }
 
     @Override

@@ -3,8 +3,11 @@ package net.zephyr.fnafur.init.block_init;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
-import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
-import net.zephyr.fnafur.blocks.illusion_block.models.MimicFrameBlockModel;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.models.MimicFrameBlockModel;
+import net.zephyr.fnafur.blocks.props.base.PropBlockModel;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
 
@@ -17,7 +20,13 @@ public class ModelLoading implements ModelLoadingPlugin {
 
 
         pluginContext.modifyBlockModelOnLoad().register((original, context) -> {
-            if(context.state().getBlock() instanceof BlockWithSticker && original != null) {
+            if(PropInit.PROPS.contains(context.state().getBlock().asItem())){
+                return new PropBlockModel(original);
+            }
+            else if(context.state().getBlock() instanceof DiagonalMimicFrame) {
+                return new DiagonalMimicFrameModel(original);
+            }
+            else if(context.state().getBlock() instanceof BlockWithSticker && original != null) {
                 if (context.state().getBlock() instanceof MimicFrames) {
 
                     if(context.state().isOf(BlockInit.MIMIC_FRAME_2x2)) return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME_2x2.getDefaultState());

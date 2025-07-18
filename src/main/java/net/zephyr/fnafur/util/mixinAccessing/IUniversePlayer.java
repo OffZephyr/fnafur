@@ -11,7 +11,10 @@ public interface IUniversePlayer {
     float getMaskDelta();
     void setMaskDelta(float delta);
     boolean hasVanniMaskOn();
+    boolean hasVanniMaskEquipped();
     boolean isUsingVanniMask();
+    boolean canAnimateMask();
+    void setCanAnimateMask(boolean can);
     LivingEntity getCurrentEntity();
     void setCurrentEntity(LivingEntity entity);
     void resetCurrentEntity();

@@ -26,7 +26,7 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
     public WorkbenchBlock(Settings settings) {
         super(settings);
-        setDefaultState(getDefaultState().with(FACING, Direction.EAST));
+        setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 
     @Override
@@ -75,6 +75,6 @@ public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
 
     @Override
     public boolean rotates() {
-        return true;
+        return false;
     }
 }

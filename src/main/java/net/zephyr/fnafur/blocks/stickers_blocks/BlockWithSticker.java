@@ -8,7 +8,6 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.LivingEntity;
@@ -18,7 +17,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -31,7 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.zephyr.fnafur.blocks.illusion_block.MimicFrames;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.ItemNbtUtil;
@@ -117,8 +115,8 @@ public class BlockWithSticker extends BlockWithEntity {
                 NbtCompound nbt = ((IEntityDataSaver)ent).getPersistentData();
                 String side = hit.getSide().name();
 
-                NbtList list = nbt.getList(side).get();
-                NbtList offset_list = nbt.getList(side + "_offset").get();
+                NbtList list = nbt.getList(side).orElse(new NbtList());
+                NbtList offset_list = nbt.getList(side + "_offset").orElse(new NbtList());
 
                 if(!list.isEmpty()) {
                     System.out.println("SCRAPE3");

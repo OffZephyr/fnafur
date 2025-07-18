@@ -27,7 +27,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerEntityMixin implements IUniversePlayer {
     @Unique
     float maskOnDelta = 0;
+    @Unique
     boolean crawling = false;
+    @Unique
+    boolean canAnimateMask = false;
     @Nullable LivingEntity currentEntity;
     float mimicBodyYaw = 0;
     @Shadow
@@ -119,6 +122,12 @@ public class PlayerEntityMixin implements IUniversePlayer {
     }
 
     @Override
+    public boolean hasVanniMaskEquipped() {
+        ItemStack stack = ((PlayerEntity) (Object)this).getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
+        return stack.getItem() instanceof VanniMaskItem;
+    }
+
+    @Override
     public boolean isUsingVanniMask() {
 
         boolean bl = true;
@@ -126,6 +135,16 @@ public class PlayerEntityMixin implements IUniversePlayer {
             bl = getMaskDelta() > 1.42f;
         }
         return bl && hasVanniMaskOn();
+    }
+
+    @Override
+    public boolean canAnimateMask() {
+        return canAnimateMask;
+    }
+
+    @Override
+    public void setCanAnimateMask(boolean can) {
+        canAnimateMask = can;
     }
 
     @Override
