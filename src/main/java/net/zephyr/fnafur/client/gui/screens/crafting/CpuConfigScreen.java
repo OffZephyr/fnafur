@@ -77,7 +77,7 @@ public class CpuConfigScreen extends GoopyScreen {
                 .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
                 .toggleExec(this::ToggleClick);
 
-        new GUIToggle(87, 68, 10, 14, false, "followOnSignt", cpu.getBoolean("followOnSignt", false))
+        new GUIToggle(87, 68, 10, 14, false, "followOnSight", cpu.getBoolean("followOnSight", false))
                 .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
                 .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
                 .toggleExec(this::ToggleClick);
