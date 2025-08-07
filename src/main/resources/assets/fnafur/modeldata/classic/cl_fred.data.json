@@ -52,6 +52,15 @@
                         "emissive": "",
                         "recolorable_emissive": []
                     },
+
+                    "black_colorable": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_full_black.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
     
                     "none": {
                         "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_none.png",
@@ -106,6 +115,15 @@
 
                     "colorable": {
                         "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+
+                    "black_colorable": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_full_black.png",
                         "recolorable_textures": [
                             "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
                         ],
@@ -172,6 +190,15 @@
                         "recolorable_emissive": []
                     },
 
+                    "black_colorable": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_full_black.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+
                     "none": {
                         "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_none.png",
                         "recolorable_textures": [],
@@ -229,6 +256,15 @@
     
                     "colorable": {
                         "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_base.png",
+                        "recolorable_textures": [
+                            "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
+                        ],
+                        "emissive": "",
+                        "recolorable_emissive": []
+                    },
+
+                    "black_colorable": {
+                        "texture": "textures/entity/classic/cl_fred/eyes/cl_fred_eye_full_black.png",
                         "recolorable_textures": [
                             "textures/entity/classic/cl_fred/eyes/cl_fred_eye_recolorable_eye.png"
                         ],
