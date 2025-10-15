@@ -14,18 +14,6 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 public interface EnergyTarget extends LinkTarget {
 
     boolean isReceivingPower();
-    default int getButtonId(IEntityDataSaver source){
-        NbtCompound nbtButtonIndexHolder = ((IEntityDataSaver)this).getPersistentData().getCompound("buttonIndexData").orElse(new NbtCompound());
-        if (!nbtButtonIndexHolder.isEmpty()){
-            if(source instanceof BlockEntity ent){
-                String name = "" + ent.getPos().asLong();
-                if(nbtButtonIndexHolder.contains(name)) {
-                    return nbtButtonIndexHolder.getInt(name, -1);
-                }
-            }
-        }
-        return -1;
-    }
 
     @Override
     default ActionResult tryEndLink(PlayerEntity player, World world, BlockPos pos) {

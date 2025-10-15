@@ -2,6 +2,7 @@ package net.zephyr.fnafur.init;
 
 import net.zephyr.fnafur.client.gui.screens.CameraEditScreen;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
+import net.zephyr.fnafur.client.gui.screens.crafting.SuitMakingScreen;
 import net.zephyr.fnafur.client.gui.screens.editing.DecalBookEditScreen;
 import net.zephyr.fnafur.client.gui.screens.crafting.CpuConfigScreen;
 import net.zephyr.fnafur.client.gui.screens.crafting.WorkbenchScreen;
@@ -25,7 +26,7 @@ public class ScreensInit {
 
         GoopyNetworkingUtils.registerScreen(CAMERA_EDIT, CameraEditScreen::new);
         GoopyNetworkingUtils.registerScreen(CPU_CONFIG, CpuConfigScreen::new);
-        GoopyNetworkingUtils.registerScreen(WORKBENCH, WorkbenchScreen::new);
+        GoopyNetworkingUtils.registerScreen(WORKBENCH, SuitMakingScreen::new);
 
         GoopyNetworkingUtils.registerScreen(DECAL_BOOK_EDIT, DecalBookEditScreen::new);
         GoopyNetworkingUtils.registerScreen(DOOR_EDIT, DoorEditScreen::new);

@@ -8,7 +8,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.zephyr.fnafur.blocks.linking.EnergySource;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
+import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.blocks.linking.links.energy.EnergySourceTargetPropBlockEntity;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.util.ItemNbtUtil;
@@ -49,12 +52,14 @@ public class OfficeButtonsBlockEntity extends EnergySourceTargetPropBlockEntity 
 
     @Override
     public boolean canLink(IEntityDataSaver link) {
-        return link instanceof EnergyTarget;
+        boolean bl1 = link instanceof EnergyTarget;
+        boolean bl2 = link instanceof AnimatronicBlockEntity a && !a.hasSwitch();
+        return bl1 || bl2;
     }
 
     @Override
     public boolean isSendingPower(IEntityDataSaver target) {
-        int id = ((EnergyTarget)target).getButtonId((IEntityDataSaver)this);
+        int id = ((LinkTarget)target).getButtonId((IEntityDataSaver)this);
         if(id > -1){
             BlockState state = getWorld().getBlockState(getPos());
             if(state.getBlock() instanceof OfficeButtons){

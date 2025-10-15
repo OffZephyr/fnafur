@@ -6,6 +6,8 @@ import net.minecraft.util.math.BlockPos;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons.OfficeButtons;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.links.energy.EnergySourceTargetPropBlockEntity;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
+import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
@@ -24,6 +26,8 @@ public class SimpleEnergySwitchPropBlockEntity extends EnergySourceTargetPropBlo
     }
     @Override
     public boolean canLink(IEntityDataSaver link) {
-        return link instanceof EnergyTarget;
+        boolean bl1 = link instanceof EnergyTarget;
+        boolean bl2 = link instanceof AnimatronicBlockEntity a && !a.hasSwitch();
+        return bl1 || bl2;
     }
 }

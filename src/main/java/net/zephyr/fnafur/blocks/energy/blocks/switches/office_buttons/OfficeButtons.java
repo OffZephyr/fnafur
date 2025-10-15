@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.block.OrientationHelper;
 import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
+import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.WallHalfProperty;
@@ -227,7 +228,7 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
 
         if(world.getBlockEntity(pos) instanceof OfficeButtonsBlockEntity ent){
             for(IEntityDataSaver ent2 : ent.getTargets()){
-                if(ent2 instanceof EnergyTarget t){
+                if(ent2 instanceof LinkTarget t){
                     if(t.getButtonId((IEntityDataSaver)ent) == 0){
                         t.updateStatus(world, pos, ((IEntityDataSaver) ent));
                     }
@@ -248,7 +249,7 @@ public class OfficeButtons extends WallPropBlock<OfficeButtonsColors> {
 
         if(world.getBlockEntity(pos) instanceof OfficeButtonsBlockEntity ent){
             for(IEntityDataSaver ent2 : ent.getTargets()){
-                if(ent2 instanceof EnergyTarget t){
+                if(ent2 instanceof LinkTarget t){
                     if(t.getButtonId((IEntityDataSaver)ent) == 1){
                         t.updateStatus(world, pos, ((IEntityDataSaver) ent));
                     }

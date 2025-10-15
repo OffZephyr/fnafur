@@ -8,7 +8,6 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.LogoDrawer;
-import net.minecraft.client.gui.RotatingCubeMapRenderer;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerWarningScreen;
@@ -17,37 +16,35 @@ import net.minecraft.client.gui.screen.option.CreditsAndAttributionScreen;
 import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
 import net.minecraft.client.gui.screen.option.OptionsScreen;
 import net.minecraft.client.gui.screen.world.CreateWorldScreen;
-import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableTextWidget;
 import net.minecraft.client.gui.widget.TextIconButtonWidget;
 import net.minecraft.client.realms.gui.screen.RealmsMainScreen;
 import net.minecraft.client.realms.gui.screen.RealmsNotificationsScreen;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.gen.WorldPresets;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
+import net.zephyr.fnafur.client.gui.screens.main_menu.Singleplayer.FnafSelectWorldScreen;
 import net.zephyr.fnafur.init.SoundsInit;
+import net.zephyr.fnafur.util.EasingMathUtil;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -73,13 +70,24 @@ public class FnafTitleScreen extends Screen {
     float bgFadeTimerGoal = 0;
     float bgFadeStart = 0;
     float bgFadeGoal = 0;
+    float bgDeltaAmount = 0;
     int tab = 0;
     int bgScroll = 0;
+    float bgScrollMoveTimer = 1;
+    float bgScrollMoveTimerGoal = 1;
+    float bgScrollMoveStart = -1500;
+    float bgScrollMoveGoal = -1500;
+    float bgScrollRotStart = -90;
+    float bgScrollRotGoal = -90;
     float staticIndex = 0;
     float renderGlitchTimer = 0;
     float  renderGlitchTimerGoal = 0;
     int renderGlitchIndex = 0;
     int renderIndex = 0;
+
+
+    float scrollShapeRot = 0;
+    Vec2f scrollShapePos = new Vec2f(0, 0);
 
     private record triggerSoundZone(SoundEvent sound, int x, int y, int width, int height){
 
@@ -87,6 +95,7 @@ public class FnafTitleScreen extends Screen {
 
     //context.fill(renderX + (int)(onHeight(1550)), renderY + (int)(onHeight(567)), renderX + (int)(onHeight(1550)) + (int)(onHeight(250)), renderY + (int)(onHeight(567) )+ (int)(onHeight(136)), 0xFFFFFFFF);
 
+    boolean isVertical = false;
     int offsetX = 0, offsetY = 0;
     private static final Identifier[][] RENDERS = new Identifier[][]{
         {
@@ -233,7 +242,7 @@ public class FnafTitleScreen extends Screen {
 
     private int addNormalWidgets(int y, int spacingY) {
         this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.singleplayer"), button -> this.client.setScreen(new SelectWorldScreen(this)))
+                ButtonWidget.builder(Text.translatable("menu.singleplayer"), button -> this.client.setScreen(new FnafSelectWorldScreen(this)))
                         .dimensions(this.width / 2 - 100, y, 200, 20)
                         .build()
         );
@@ -339,75 +348,50 @@ public class FnafTitleScreen extends Screen {
         }
     }
 
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void renderForeground(DrawContext context, int mouseX, int mouseY, float delta){
 
-        /*if (this.backgroundFadeStart == 0L && this.doBackgroundFade) {
-            this.backgroundFadeStart = Util.getMeasuringTimeMs();
-        }
+        int deltaAmount2 = 10;
+        float largeWidth2 = width + onWidth(bgDeltaAmount);
+        float largeHeight2 = height + onHeight(bgDeltaAmount);
 
-        float f = 1.0F;
-        if (this.doBackgroundFade) {
-            float g = (float)(Util.getMeasuringTimeMs() - this.backgroundFadeStart) / 2000.0F;
-            if (g > 1.0F) {
-                this.doBackgroundFade = false;
-                this.backgroundAlpha = 1.0F;
-            } else {
-                g = MathHelper.clamp(g, 0.0F, 1.0F);
-                f = MathHelper.clampedMap(g, 0.5F, 1.0F, 0.0F, 1.0F);
-                this.backgroundAlpha = MathHelper.clampedMap(g, 0.0F, 0.5F, 0.0F, 1.0F);
-            }
+        float xMouseDelta = (float) mouseX / width;
+        float yMouseDelta = (float) mouseY / height;
+        float xDelta2 = deltaAmount2 * xMouseDelta;
+        float yDelta2 = deltaAmount2 * yMouseDelta;
 
-            this.setWidgetAlpha(f);
-        }
+        GoopyScreen.drawRecolorableTexture(context, STARS, (int) ((deltaAmount2 / 2) - xDelta2), (int) ((deltaAmount2 / 2) - yDelta2), 0, largeWidth2, largeHeight2, 0, 0, largeWidth2, largeHeight2, 1, 1, 1, 0.55f);
+        GoopyScreen.drawRecolorableTexture(context, STATIC[(int) staticIndex], 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.15f);
+        GoopyScreen.drawRecolorableTexture(context, PIXELS, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.05f);
 
-        this.renderPanoramaBackground(context, delta);
-        int i = MathHelper.ceil(f * 255.0F) << 24;
-        if ((i & -67108864) != 0) {
-            super.render(context, mouseX, mouseY, delta);
-            this.logoDrawer.draw(context, this.width, f);
-            if (this.splashText != null && !this.client.options.getHideSplashTexts().getValue()) {
-                this.splashText.render(context, this.width, this.textRenderer, i);
-            }
-
-            String string = "Minecraft " + SharedConstants.getGameVersion().getName();
-            if (this.client.isDemo()) {
-                string = string + " Demo";
-            } else {
-                string = string + ("release".equalsIgnoreCase(this.client.getVersionType()) ? "" : "/" + this.client.getVersionType());
-            }
-
-            if (MinecraftClient.getModStatus().isModded()) {
-                string = string + I18n.translate("menu.modded");
-            }
-
-            context.drawTextWithShadow(this.textRenderer, string, 2, this.height - 10, 16777215 | i);
-            if (this.isRealmsNotificationsGuiDisplayed() && f >= 1.0F) {
-                this.realmsNotificationGui.render(context, mouseX, mouseY, delta);
-            }
-        }
-*/
+    }
+    public void renderBackgroundRender(DrawContext context, int mouseX, int mouseY, float delta){
         if (client.getOverlay() == null && bgFadeTimer < bgFadeTimerGoal) {
-            bgFadeTimer = Math.clamp(bgFadeTimer + delta / 20f, 0, bgFadeTimerGoal);
+            if(FnafUniverseRebuilt.MENU_REDUCE_MOVEMENTS) bgFadeTimer = bgFadeTimerGoal;
+            else bgFadeTimer = Math.clamp(bgFadeTimer + delta / 20f, 0, bgFadeTimerGoal);
+        }
+        if (client.getOverlay() == null && bgScrollMoveTimer < bgScrollMoveTimerGoal) {
+            if(FnafUniverseRebuilt.MENU_REDUCE_MOVEMENTS) bgScrollMoveTimer = bgScrollMoveTimerGoal;
+            else bgScrollMoveTimer = Math.clamp(bgScrollMoveTimer + delta / 20f, 0, bgScrollMoveTimerGoal);
         }
 
-        int deltaAmount = 20;
-        float largeWidth = width + onWidth(deltaAmount);
-        float largeHeight = ((width + onWidth(deltaAmount)) / 1920f) * 1080f;
+        bgDeltaAmount = 20;
+        float largeWidth = width + onWidth(bgDeltaAmount);
+        float largeHeight = ((width + onWidth(bgDeltaAmount)) / 1920f) * 1080f;
 
-        boolean bl = largeHeight < height;
-        if (bl) {
-            largeWidth = ((height + onHeight(deltaAmount)) / 1080f) * 1920f;
-            largeHeight = height + onHeight(deltaAmount);
+        isVertical = largeHeight < height;
+        if (isVertical) {
+            largeWidth = ((height + onHeight(bgDeltaAmount)) / 1080f) * 1920f;
+            largeHeight = height + onHeight(bgDeltaAmount);
         }
 
         float xMouseDelta = (float) mouseX / width;
         float yMouseDelta = (float) mouseY / height;
 
-        float xDelta = deltaAmount * xMouseDelta;
-        float yDelta = deltaAmount * yMouseDelta;
+        float xDelta = bgDeltaAmount * xMouseDelta;
+        float yDelta = bgDeltaAmount * yMouseDelta;
 
         GoopyScreen.drawRecolorableTexture(context, BG, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 1);
+
 
         Random random = Random.create();
         if (renderGlitchTimer > renderGlitchTimerGoal - 0.20f && renderGlitchIndex == 0)
@@ -421,28 +405,41 @@ public class FnafTitleScreen extends Screen {
 
         Identifier render = RENDERS[renderIndex][renderGlitchIndex];
 
-        int renderX = !bl ? (int) ((deltaAmount / 2) - xDelta) : (int) ((deltaAmount / 2) - xDelta - (largeWidth / 2f) + (width / 2f));
-        int renderY = bl ? (int) ((deltaAmount / 2) - yDelta) : (int) ((deltaAmount / 2) - yDelta - (largeHeight / 2f) + (height / 2f));
+        int renderX = !isVertical ? (int) ((bgDeltaAmount / 2) - xDelta) : (int) ((bgDeltaAmount / 2) - xDelta - (largeWidth / 2f) + (width / 2f));
+        int renderY = isVertical ? (int) ((bgDeltaAmount / 2) - yDelta) : (int) ((bgDeltaAmount / 2) - yDelta - (largeHeight / 2f) + (height / 2f));
         GoopyScreen.drawRecolorableTexture(context, render, renderX, renderY, 0, largeWidth, largeHeight, 0, 0, largeWidth, largeHeight, 1, 1, 1, MathHelper.lerp(bgFadeTimer / bgFadeTimerGoal, bgFadeStart, bgFadeGoal));
+
 
         offsetX = renderX;
         offsetY = renderY;
 
+        staticIndex = (int) (staticIndex + 0.5f) == STATIC.length ? 0 : staticIndex + 0.5f;
+
+        float bgScrollMoveIndex = bgScrollMoveTimer / bgScrollMoveTimerGoal;
+
+        bgScrollMoveIndex = (float) EasingMathUtil.easeInOutCubic(bgScrollMoveIndex);
+        bgScroll++;
+        float scroll_width = onHeight(1500);
+        float scroll_height = onHeight(1500);
+        float translate = onWidth(MathHelper.lerp(bgScrollMoveIndex, bgScrollMoveStart, bgScrollMoveGoal));
+        context.getMatrices().pushMatrix();
+        //context.getMatrices().translate(-scroll_width / 2.25f, scroll_height / 1.5f);
+        context.getMatrices().translate(translate,  (height / 2f));
+        context.getMatrices().rotate(MathHelper.lerp(bgScrollMoveIndex, bgScrollRotStart, bgScrollRotGoal) * MathHelper.RADIANS_PER_DEGREE);
+        context.getMatrices().translate(-(scroll_width / 2f), -(scroll_height /2f));
+        GoopyScreen.drawRecolorableTexture(context, SCROLLING_TEXTURE, 0, 0, 0, scroll_height, scroll_width, -bgScroll / 2f, 0, scroll_height, scroll_width, 1, 1, 1, 0.75f);
+        context.getMatrices().popMatrix();
+    }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+
+        renderBackgroundRender(context, mouseX, mouseY, delta);
+
         float sprite_width = onHeight(2048);
         float sprite_height = onHeight(2048);
 
-        staticIndex = (int) (staticIndex + 0.5f) == STATIC.length ? 0 : staticIndex + 0.5f;
-
         if (tab == 1) {
-            bgScroll++;
-            float scroll_width = onHeight(1500);
-            float scroll_height = onHeight(1500);
-            context.getMatrices().pushMatrix();
-            context.getMatrices().translate(-scroll_width / 2.25f, scroll_height / 1.5f);
-            context.getMatrices().rotate(-75 * MathHelper.RADIANS_PER_DEGREE);
-            GoopyScreen.drawRecolorableTexture(context, SCROLLING_TEXTURE, 0, 0, 0, scroll_height, scroll_width, -bgScroll / 2f, 0, scroll_height, scroll_width, 1, 1, 1, 0.75f);
-            context.getMatrices().popMatrix();
-
 
             GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) onHeight(32), (int) onHeight(55), 0, sprite_width / 2f, sprite_height / 2f, 0, sprite_height / 2f, sprite_width, sprite_height, 1, 1, 1, 1);
 
@@ -518,21 +515,9 @@ public class FnafTitleScreen extends Screen {
             }
         }
 
-
-        int deltaAmount2 = 10;
-        float largeWidth2 = width + onWidth(deltaAmount);
-        float largeHeight2 = height + onHeight(deltaAmount);
-
-        float xDelta2 = deltaAmount2 * xMouseDelta;
-        float yDelta2 = deltaAmount2 * yMouseDelta;
-
-        GoopyScreen.drawRecolorableTexture(context, STARS, (int) ((deltaAmount2 / 2) - xDelta2), (int) ((deltaAmount2 / 2) - yDelta2), 0, largeWidth2, largeHeight2, 0, 0, largeWidth2, largeHeight2, 1, 1, 1, 0.55f);
-        GoopyScreen.drawRecolorableTexture(context, STATIC[(int) staticIndex], 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.15f);
-        GoopyScreen.drawRecolorableTexture(context, PIXELS, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.05f);
-
-
+        renderForeground(context, mouseX, mouseY, delta);
         // SET TO TRUE TO VISUALIZE EASTER EGG HIT-BOXES
-        if (false) {
+        if (FnafUniverseRebuilt.DEBUG) {
             if(easterEggMap.containsKey(RENDERS[renderIndex][renderGlitchIndex])) {
                 triggerSoundZone zone = easterEggMap.get(RENDERS[renderIndex][renderGlitchIndex]);
 
@@ -540,7 +525,7 @@ public class FnafTitleScreen extends Screen {
                 int y = (int) (offsetY + onWidth(zone.y));
                 int width = (int) onWidth(zone.width);
                 int height = (int) onWidth(zone.height);
-                if (bl) {
+                if (isVertical) {
                     x = (int) (offsetX + onHeight(zone.x));
                     y = (int) (offsetY + onHeight(zone.y));
                     width = (int) onHeight(zone.width);
@@ -553,7 +538,15 @@ public class FnafTitleScreen extends Screen {
 
     }
 
-    void fadeBackground(float time, float opacity){
+    public void moveBackgroundScroll(float time, float pos, float rot){
+        bgScrollMoveTimer = 0;
+        bgScrollMoveTimerGoal = time;
+        bgScrollMoveStart = bgScrollMoveGoal;
+        bgScrollMoveGoal = pos;
+        bgScrollRotStart = bgScrollRotGoal;
+        bgScrollRotGoal = rot;
+    }
+    public void fadeBackground(float time, float opacity){
         bgFadeTimer = 0;
         bgFadeTimerGoal = time;
         bgFadeStart = bgFadeGoal;
@@ -618,6 +611,7 @@ public class FnafTitleScreen extends Screen {
             if(GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(635), (int) onWidth(490), (int) onHeight(137))){
                 tab = 1;
                 fadeBackground(0.75f, 0.65f);
+                moveBackgroundScroll(0.5f, 200, -75f);
 
                 SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.15f, Random.create(), BlockPos.ORIGIN);
                 MinecraftClient.getInstance().getSoundManager().play(instance);
@@ -639,9 +633,13 @@ public class FnafTitleScreen extends Screen {
                 MinecraftClient.getInstance().getSoundManager().play(instance);
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(636), (int) onWidth(500), (int) onHeight(64))) {
+                // SINGLEPLAYER
                 SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.2f, Random.create(), BlockPos.ORIGIN);
                 MinecraftClient.getInstance().getSoundManager().play(instance);
-                this.client.setScreen(new SelectWorldScreen(this));
+                this.client.setScreen(new FnafSelectWorldScreen(this));
+
+                moveBackgroundScroll(0.5f, 1650, -105f);
+                fadeBackground(0.75f, 0.35f);
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(736), (int) onWidth(500), (int) onHeight(64))) {
                 SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.2f, Random.create(), BlockPos.ORIGIN);
@@ -657,6 +655,7 @@ public class FnafTitleScreen extends Screen {
                 SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.1f, Random.create(), BlockPos.ORIGIN);
                 MinecraftClient.getInstance().getSoundManager().play(instance);
 
+                moveBackgroundScroll(0.5f, -1500, -90f);
                 tab = 0;
                 fadeBackground(0.75f, 0.35f);
             }

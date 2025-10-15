@@ -1,0 +1,25 @@
+{
+    "classic": [
+        "cl_fred",
+        "cl_bon",
+        "cl_chica",
+        "cl_foxy",
+        "cl_sparky"
+    ],
+    "toy": [
+    ],
+    "retro": [
+    ],
+    "diner": [
+        "fredbear",
+        "sp_bon"
+    ],
+    "endo": [
+        "cl_endo",
+        "toy_endo",
+        "rt_endo",
+        "sp_endo"
+    ],
+    "extra": [
+    ]
+}

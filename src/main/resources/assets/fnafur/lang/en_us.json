@@ -429,13 +429,20 @@
   "entity_eyes.fnafur.cl_foxy.colorable": "Colorable",
   "entity_eyes.fnafur.cl_foxy.none": "None",
 
-  "entity.fnafur.cl_sparky": "§mSparky",
+  "entity.fnafur.cl_sparky": "Sparky",
 
+  "entity.fnafur.cl_endo": "Endo01",
+  "entity.fnafur.toy_endo": "Toy Endo",
+  "entity.fnafur.rt_endo": "Endo02",
+  "entity.fnafur.sp_endo": "Springlock Endo",
 
+  "entity.fnafur.fredbear": "FredBear",
   "entity.fnafur.sp_bon": "Spring Bonnie",
-  "entity.fnafur.sp_fred": "Spring Freddy",
-  "entity.fnafur.sp_chica": "§mSpring Chica",
-  "entity.fnafur.sp_foxy": "Spring Foxy",
+
+  "entity_alts.fnafur.sp_bon.default": "Bonnie",
+  "entity_alts.fnafur.sp_bon.freddy": "Freddy",
+  "entity_alts.fnafur.sp_bon.chica": "Chica",
+  "entity_alts.fnafur.sp_bon.foxy": "Foxy",
 
   "death.fnafur.back": "Back",
   "death.fnafur.confirm": "Confirm",

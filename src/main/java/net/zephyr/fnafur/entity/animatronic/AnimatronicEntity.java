@@ -1,39 +1,42 @@
 package net.zephyr.fnafur.entity.animatronic;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.server_monitor.ServerMonitorBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.entity.animatronic.data.CharacterData;
+import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.entity_init.CharacterInit;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SGetFromServerPayload;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
-import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SPayload;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerPayload;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
+import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -47,8 +50,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
-public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, LinkTarget {
+public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     int updateDepth = 0;
     public List<IEntityDataSaver> sources = new ArrayList<>();
@@ -57,6 +61,20 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Lin
     public boolean isMenu = false;
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
+    List<String> blinkList = List.of(
+           "performance",
+           "walk_upper",
+           "nightwalk_upper",
+           "backwards_walk_upper",
+           "run_upper",
+           "idle",
+           "playeridle",
+           "stageidle",
+           "hauntedidle",
+           "death"
+    );
+    String currentAnim = "";
+    int blinkDelay;
     public AnimatronicEntity(EntityType<? extends PathAwareEntity> entityType, World world){
         super(entityType, world);
         if(!LinkTarget.allTargets.contains((IEntityDataSaver) this)){
@@ -66,27 +84,47 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Lin
 
     @Override
     public void remove(RemovalReason reason) {
-        cleanSources();
         super.remove(reason);
     }
 
 
     @Override
+    public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
+        return super.interactAt(player, hitPos, hand);
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>("Upper", 3, this::upperAnimController));
         controllers.add(new AnimationController<>("Lower", 3, this::lowerAnimController));
+        controllers.add(new AnimationController<>("Upper", 3, this::upperAnimController));
         controllers.add(new AnimationController<>("Blink", 0, this::blinkAnimController));
     }
 
     private PlayState blinkAnimController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
-        return PlayState.CONTINUE;
+
+
+        if(true){
+            if (blinkDelay == 0) {
+                geoAnimatableAnimationTest.resetCurrentAnimation();
+                Random random = new Random();
+                blinkDelay = random.nextInt(100, 200);
+            }
+
+            RawAnimation anim = RawAnimation.begin().thenPlayAndHold(AnimatronicDataHandler.getAnimationFullName("blink", getAnimPrefix()));
+            geoAnimatableAnimationTest.setAnimation(anim);
+
+            return PlayState.CONTINUE;
+        }
+        blinkDelay = 0;
+        return PlayState.STOP;
     }
 
     private PlayState lowerAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
         animatronicEntityAnimationState.controller().transitionLength(3);
+        animatronicEntityAnimationState.controller().setAnimationSpeed(1);
         if(isMenu) {
             animatronicEntityAnimationState.controller().transitionLength(0);
-            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("loweridle")));
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("loweridle", getAnimPrefix())));
         }
 
         String getupAnim = ((IEntityDataSaver)this).getPersistentData().getString("getupAnim", "");
@@ -94,25 +132,34 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Lin
             animatronicEntityAnimationState.controller().transitionLength(0);
             return PlayState.STOP;
         }
-        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("loweridle")));
+
+        double speed = getMovement().horizontalLength() * 15;
+        if(speed > 0){
+            animatronicEntityAnimationState.controller().setAnimationSpeed(speed);
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("walk_lower", getAnimPrefix())));
+        }
+        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("loweridle", getAnimPrefix())));
     }
 
     private PlayState upperAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
         animatronicEntityAnimationState.controller().transitionLength(3);
+        animatronicEntityAnimationState.controller().setAnimationSpeed(1);
         if(isMenu) {
             animatronicEntityAnimationState.controller().transitionLength(0);
-            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("menuidle")));
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("menuidle", getAnimPrefix())));
         }
 
-        String getupAnim = ((IEntityDataSaver)this).getPersistentData().getString("getupAnim", "");
-        if(!getupAnim.isEmpty()){
-            animatronicEntityAnimationState.controller().transitionLength(0);
-            animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenPlayAndHold(prefixAnim(getupAnim)));
-            if(animatronicEntityAnimationState.controller().getAnimationState() == AnimationController.State.PAUSED) ((IEntityDataSaver)this).getPersistentData().putString("getupAnim", "");
-            return PlayState.CONTINUE;
-        }
+        //TODO ADD POWERED
+        if(true){
+            double speed = getMovement().horizontalLength() * 15;
+            if(speed > 0){
+                animatronicEntityAnimationState.controller().setAnimationSpeed(speed);
+                return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("walk_upper", getAnimPrefix())));
+            }
 
-        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(prefixAnim("deactivated")));
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("stageidle", getAnimPrefix())));
+        }
+        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("deactivated", getAnimPrefix())));
     }
 
     @Override
@@ -122,54 +169,25 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Lin
 
     @Override
     public void tick() {
+        blinkDelay = Math.max(0, blinkDelay - 1);
         if(isMenu){
             age++;
         }
 
         if(!getWorld().isClient()) {
-            ((IEntityDataSaver)this).getPersistentData().putString("getupAnim", "");
-            if(getSources().isEmpty()) {
-                turnToBlock(null);
-                return;
+            ((IEntityDataSaver) this).getPersistentData().putString("getupAnim", "");
+        }
+        else{
+            if (!((IEntityDataSaver) this).getPersistentData().contains("synced")) {
+                ClientPlayNetworking.send(new UpdateEntityNbtC2SGetFromServerPayload(getId()));
             }
-            for (IEntityDataSaver ent : getSources()) {
-                if(ent instanceof ServerMonitorBlockEntity ent2){
-                    BlockPos readerPos = ent2.getActiveChipReaderPos();
-                    if(readerPos == null){
-                        turnToBlock(ent2);
-                        return;
-                    }
-                    if(getWorld().getBlockEntity(readerPos) instanceof ChipReaderBlockEntity ent3){
-                        if((((IEntityDataSaver)ent3).getPersistentData().getCompound("cpu").orElse(new NbtCompound()).isEmpty())){
-                            turnToBlock(ent2);
-                            return;
-                        }
-                    }
-                }
-            }
+
+            //if (((IEntityDataSaver) this).getServerUpdateStatus()) {
+            //    //MinecraftClient.getInstance().player.sendMessage(Text.literal("SYNCING PROP"), false);
+            //    ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver) this).getPersistentData()));
+            //}
         }
         super.tick();
-    }
-
-    void turnToBlock(@Nullable ServerMonitorBlockEntity ent2){
-        getWorld().setBlockState(getBlockPos(), BlockInit.ANIMATRONIC_BLOCK.getDefaultState().with(AnimatronicBlock.POSES, AnimatronicBlock.getPose(getWorld(), getBlockPos(), getHorizontalFacing())));
-
-        if(getWorld().getBlockEntity(getBlockPos()) instanceof AnimatronicBlockEntity anim){
-            NbtCompound thisData = ((IEntityDataSaver)this).getPersistentData();
-            ((IEntityDataSaver)anim).getPersistentData().copyFrom(thisData);
-
-            if(ent2 != null){
-                ((LinkTarget)anim).getSources().add((IEntityDataSaver)ent2);
-                ent2.getTargets().add((IEntityDataSaver) anim);
-                ent2.getTargets().remove((IEntityDataSaver) this);
-                ent2.markDirty();
-
-                GoopyNetworkingUtils.saveBlockNbt(anim.getPos(), ((IEntityDataSaver)anim).getPersistentData(), getWorld());
-                ent2.updateSources(getWorld(), ent2.getPos());
-            }
-
-            remove(RemovalReason.DISCARDED);
-        }
     }
 
     @Override
@@ -198,26 +216,77 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Lin
                 .add(EntityAttributes.FOLLOW_RANGE, 16D);
     }
 
+    @Override
+    protected void initGoals() {
+        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.0, false));
+        this.goalSelector.add(2, new WanderAroundFarGoal(this, 0.8));
+        this.targetSelector.add(1, new AnimTargetGoal(this, PlayerEntity.class, true, true));
+        this.targetSelector.add(2, new AnimTargetGoal(this, VillagerEntity.class, true, true));
+        this.targetSelector.add(3, new RevengeGoal(this));
+    }
+
+    public void setChara(String chara, @Nullable String alt, @Nullable String eyes){
+        AnimatronicDataHandler.Chara chara2 = AnimatronicDataHandler.CHARACTERS.get(chara);
+        String alt2 = alt == null || alt.isEmpty() ? chara2.DEFAULT_ALT : alt;
+        AnimatronicDataHandler.Alt alt3 = chara2.ALTS.get(alt2);
+        String eyes2 = eyes == null || alt.isEmpty() ? alt3.default_eyes() : eyes;
+        ((IEntityDataSaver)this).getPersistentData().putString("chara", chara);
+        ((IEntityDataSaver)this).getPersistentData().putString("suit", alt2);
+        ((IEntityDataSaver)this).getPersistentData().putString("eyes", eyes2);
+    }
+    public String getChara(){
+        return ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
+    }
+    public String getAlt(){
+        return ((IEntityDataSaver)this).getPersistentData().getString("suit").orElse("");
+    }
+    public String getEyes(){
+        return ((IEntityDataSaver)this).getPersistentData().getString("eyes").orElse("");
+    }
 
     public Identifier getTexture(World world){
 
-        if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
-            String texture = nbt.getString("texture").orElse("");
-            if(!texture.isEmpty()){
-                return Identifier.of(FnafUniverseRebuilt.MOD_ID, texture);
+        if(((IEntityDataSaver)this).getPersistentData().contains("chara")) {
+            String chara = ((IEntityDataSaver) this).getPersistentData().getString("chara").orElse("");
+            if (!chara.isEmpty()) {
+                String alt = ((IEntityDataSaver) this).getPersistentData().getString("suit").orElse("");
+                if (!alt.isEmpty()) {
+                    return AnimatronicDataHandler.getAltTexture(chara, alt);
+                }
             }
         }
 
         return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/default/endo_01/endo_01.png");
     }
+    public boolean isEmptyEye(){
+
+        if(((IEntityDataSaver)this).getPersistentData().contains("chara")){
+            String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
+            if(!chara.isEmpty()){
+                String alt = ((IEntityDataSaver)this).getPersistentData().getString("suit").orElse("");
+                if(!alt.isEmpty()) {
+                    String eyes = ((IEntityDataSaver)this).getPersistentData().getString("eyes").orElse("");
+                    if(!eyes.isEmpty()) {
+                        return eyes.equals("none");
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
     public Identifier getEyeTexture(World world){
 
-        if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
-            String texture = nbt.getString("eyes_texture").orElse("");
-            if(!texture.isEmpty()){
-                return Identifier.of(FnafUniverseRebuilt.MOD_ID, texture);
+        if(((IEntityDataSaver)this).getPersistentData().contains("chara")){
+            String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
+            if(!chara.isEmpty()){
+                String alt = ((IEntityDataSaver)this).getPersistentData().getString("suit").orElse("");
+                if(!alt.isEmpty()) {
+                    String eyes = ((IEntityDataSaver)this).getPersistentData().getString("eyes").orElse("");
+                    if(!eyes.isEmpty()) {
+                    return AnimatronicDataHandler.getEyeTexture(chara, alt, eyes);
+                    }
+                }
             }
         }
 
@@ -228,11 +297,13 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Lin
     }
     public Identifier getModel(World world){
 
-        if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
-            String model = nbt.getString("model").orElse("");
-            if(!model.isEmpty()){
-                return Identifier.of(FnafUniverseRebuilt.MOD_ID, model);
+        if(((IEntityDataSaver)this).getPersistentData().contains("chara")){
+            String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
+            if(!chara.isEmpty()){
+                String alt = ((IEntityDataSaver)this).getPersistentData().getString("suit").orElse("");
+                if(!alt.isEmpty()) {
+                    return AnimatronicDataHandler.getModel(chara, alt);
+                }
             }
         }
 
@@ -243,20 +314,40 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Lin
         return getModel(world);
     }
 
-    public String getAnimationsPath(World world){
-        if(((IEntityDataSaver)this).getPersistentData().contains("alt")){
-            NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
-            String animations = nbt.getString("animations").orElse("");
-            if(!animations.isEmpty()){
-                return animations;
+    public String getAnimPrefix(){
+        if(((IEntityDataSaver)this).getPersistentData().contains("chara")) {
+            String chara = ((IEntityDataSaver) this).getPersistentData().getString("chara").orElse("");
+            return chara;
+        }
+        return "";
+    }
+
+    public String getAnimationsName(){
+        if(((IEntityDataSaver)this).getPersistentData().contains("chara")){
+            String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
+            if(!chara.isEmpty()) {
+                String alt = ((IEntityDataSaver) this).getPersistentData().getString("suit").orElse("");
+
+                AnimatronicDataHandler.Chara chara1 = AnimatronicDataHandler.CHARACTERS.get(chara);
+                AnimatronicDataHandler.Alt alt1 = chara1.ALTS.get(alt);
+
+                String animString = alt1.preview_anim();
+                String anim = AnimatronicDataHandler.ALL_ANIMATIONS.get(animString);
+
+                if(isMenu) currentAnim = "menuidle";
+                String animations = AnimatronicDataHandler.getAnimationFilePath(currentAnim, animString);
+                if(!animations.isEmpty()){
+                    return animations;
+                }
             }
         }
         return "";
     }
-    public Identifier getAnimations(World world){
+    public Identifier getAnimations(){
 
-        String animation = getAnimationsPath(world);
+        String animation = getAnimationsName();
         if(!animation.isEmpty()){
+            //System.out.println("guh " + animation);
             return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/" + animation + ".animation.json");
         }
 
@@ -264,12 +355,14 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Lin
     }
 
     public String prefixAnim(String animation){
-        Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, getAnimationsPath(getWorld()));
+        currentAnim = animation;
+        Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, getAnimationsName());
         Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations();
         BakedAnimations bakedAnimations = animations.get(location);
 
         NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
         String name = nbt.getString("chara").orElse("");
+        if(name.isEmpty()) name = "default";
         String anim = "animation." + name + "." + animation;
         if(bakedAnimations != null && bakedAnimations.animations().containsKey(anim)) {
             return anim;
@@ -278,22 +371,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Lin
         return "animation.default." + animation;
     }
 
+
     public RenderLayer getRenderType(Identifier texture){
         return RenderLayer.getEntityTranslucent(texture);
-    }
-
-    @Override
-    public List<IEntityDataSaver> getSources() {
-        return sources;
-    }
-
-    @Override
-    public int getUpdateDepth() {
-        return updateDepth;
-    }
-
-    @Override
-    public void setUpdateDepth(int depth) {
-        updateDepth = depth;
     }
 }

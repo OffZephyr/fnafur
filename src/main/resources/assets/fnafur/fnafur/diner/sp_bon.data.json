@@ -1,0 +1,68 @@
+{
+
+    "sp_bon":{
+        "default_alt": "default",
+        "model": "sp_bon",
+        "endo_mask": "sp_bon",
+
+        "alts":{
+            "default": {
+                "texture": "sp_bon",
+                "emissive_mask": "",
+                "default_eyes": "default",
+                "preview_anim": "default",
+                "preview_scale": 1.065,
+                "colors": 0,
+                "model_override": "",
+                "eye_path_subfolder": ""
+            },
+            "freddy": {
+                "texture": "sp_fred/sp_fred",
+                "emissive_mask": "",
+                "default_eyes": "default",
+                "preview_anim": "default",
+                "preview_scale": 1.065,
+                "colors": 0,
+                "model_override": "sp_fred",
+                "eye_path_subfolder": "sp_fred"
+            },
+            "chica": {
+                "texture": "sp_chica/sp_chica",
+                "emissive_mask": "",
+                "default_eyes": "default",
+                "preview_anim": "default",
+                "preview_scale": 1.065,
+                "colors": 0,
+                "model_override": "sp_chica",
+                "eye_path_subfolder": "sp_chica"
+            },
+            "foxy": {
+                "texture": "sp_foxy/sp_foxy",
+                "emissive_mask": "",
+                "default_eyes": "default",
+                "preview_anim": "default",
+                "preview_scale": 1.065,
+                "colors": 0,
+                "model_override": "sp_foxy",
+                "eye_path_subfolder": "sp_foxy"
+            }
+        },
+        
+        "eyes":{
+           "alts":{
+               "default": {
+                   "texture": "eyes/default",
+                   "default_glow": "none",
+                   "colors": 0
+               }
+           },
+
+           "glow_masks": {
+                "dot": "eyes/glow/none",
+                "iris": "eyes/glow/none",
+                "all": "eyes/glow/none",
+                "none": "eyes/glow/none"
+           }
+        }
+    }
+}

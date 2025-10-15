@@ -26,6 +26,10 @@ public class FnafUniverseRebuilt implements ModInitializer {
 
 	public static final Map<EntityType<? extends AnimatronicEntity>, EntityRendererFactory<?>> RENDER_FACTORIES = new Object2ObjectOpenHashMap<>();
 
+	// TODO ADD MENU CONFIG
+	public static final boolean DISABLE_MAIN_MENU = false;
+	public static final boolean MENU_REDUCE_MOVEMENTS = false;
+	public static final boolean DISABLE_DISCLAIMER = false;
 	public static final boolean DEBUG = false;
 
 	public static final String MOD_ID = "fnafur";

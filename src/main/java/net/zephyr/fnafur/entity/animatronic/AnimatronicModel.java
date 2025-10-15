@@ -31,8 +31,8 @@ public class AnimatronicModel<T extends AnimatronicEntity> extends GeoModel<T> {
     }
     @Override
     public Identifier getAnimationResource(T animatable) {
-        if(animatable != null && animatable.getWorld() != null)
-            return animatable.getAnimations(animatable.getWorld());
+        if(animatable != null)
+            return animatable.getAnimations();
         return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/entity/default.animation.json");
     }
 

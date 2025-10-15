@@ -11,6 +11,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
@@ -20,7 +23,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ColorHelper;
+import net.zephyr.fnafur.client.gui.screens.crafting.SuitMakingScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IDCVertexConsumersAcc;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -259,6 +264,9 @@ public abstract class GoopyScreen extends Screen {
     }
 
     protected static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, LivingEntity entity) {
+        drawEntity(context, x1, y1, x2, y2, size, scale,rotation, entity, false);
+    }
+    protected static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, LivingEntity entity, boolean entity2) {
         context.enableScissor(x1, y1, x2, y2);
         Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI);
         Quaternionf quaternionf2 = rotation;
@@ -276,7 +284,12 @@ public abstract class GoopyScreen extends Screen {
         float o = entity.getScale();
         Vector3f vector3f = new Vector3f(0.0F, entity.getHeight() / 2.0F + scale * o, 0.0F);
         float p = size / o;
-        InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
+        if(entity2){
+            InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
+        }
+        else{
+            InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
+        }
         entity.bodyYaw = j;
         entity.setYaw(k);
         entity.setPitch(l);
@@ -284,6 +297,7 @@ public abstract class GoopyScreen extends Screen {
         entity.headYaw = n;
         context.disableScissor();
     }
+
     public record GUISprite(Identifier texture, int x, int y, int width, int height, int u, int v, int textureWidth, int textureHeight, int color){
     }
     public class GUIButton{

@@ -74,6 +74,14 @@ public interface LinkSource {
             if(!getTargets().contains(link)){
                 getTargets().add(link);
                 ent.addSource((IEntityDataSaver)this);
+
+                if(((IEntityDataSaver)this).getPersistentData().contains("synced")){
+                    ((IEntityDataSaver)this).getPersistentData().remove("synced");
+                }
+                if(link.getPersistentData().contains("synced")){
+                    link.getPersistentData().remove("synced");
+                }
+
                 return ActionResult.SUCCESS;
             }
             return ActionResult.FAIL;

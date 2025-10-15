@@ -40,7 +40,7 @@ import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorItem;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
-import net.zephyr.fnafur.blocks.utility_blocks.server_monitor.ServerMonitorBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.client.JavaModels;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
@@ -1149,7 +1149,7 @@ public class BlockInit {
         BlockRenderLayerMap.putBlock(BlockInit.SERVER_MONITOR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.WORKBENCH, BlockRenderLayer.CUTOUT);
 
-        PropInit.PROPS.add(BlockInit.ELECTRICAL_LOCKER.asItem());
+        PropInit.PROPS.add(BlockInit.FUEL_GENERATOR.asItem());
         PropInit.PROPS.add(BlockInit.REDSTONE_CONVERTER.asItem());
         PropInit.PROPS.add(BlockInit.WORKBENCH.asItem());
 

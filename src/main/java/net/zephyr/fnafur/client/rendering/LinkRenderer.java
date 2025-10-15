@@ -2,16 +2,21 @@ package net.zephyr.fnafur.client.rendering;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
@@ -89,7 +94,9 @@ public class LinkRenderer {
         List<IEntityDataSaver> blueTargets = new ArrayList<>();
         for(IEntityDataSaver ent : LinkSource.allSources) {
 
-            for (IEntityDataSaver target : ((LinkSource) ent).getTargets()) {
+            for (int i = 0; i < ((LinkSource) ent).getTargets().size(); i++) {
+                IEntityDataSaver target = ((LinkSource) ent).getTargets().get(i);
+
 
                 matrices.push();
 
@@ -162,6 +169,20 @@ public class LinkRenderer {
             float scale2 = !bl ? 1.2f : distance2 == 0 ? 0 : Math.clamp(4 - distance2 , 0, 1.2f);
 
             drawIcon(matrices, vec, buffer, Math.max(scale, scale2));
+
+            if(ent.getPersistentData().contains("connectionIndex")){
+                int index = ent.getPersistentData().getInt("connectionIndex", 0);
+
+                Style style = Style.EMPTY.withFont(Identifier.of(FnafUniverseRebuilt.MOD_ID, "metropolis"));
+                Text text = Text.literal("" + index).setStyle(style);
+
+                for(IEntityDataSaver target : ((LinkSource)ent).getTargets()){
+                    if(target instanceof BlockEntity){
+                        int textColor = target.getPersistentData().getInt("usedConnectionIndex", 0) == index ? 0xFF48A7E7 : 0xFFE53E32;
+                        drawText(text, matrices, vec, vertexConsumers, Math.max(scale, scale2), textColor);
+                    }
+                }
+            }
 
             matrices.pop();
 
@@ -271,6 +292,7 @@ public class LinkRenderer {
     }
 
     void drawIcon(MatrixStack matrices, Vec3d vec, VertexConsumer buffer, float scale){
+        matrices.push();
         matrices.translate(vec);
 
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
@@ -284,7 +306,39 @@ public class LinkRenderer {
         if(scale > 0){
             drawQuad(matrices, buffer, normal, scale);
         }
+        matrices.pop();
+    }
+    void drawText(Text text, MatrixStack matrices, Vec3d vec, VertexConsumerProvider vertexConsumers, float scale, int color){
+        matrices.push();
+        matrices.translate(vec);
 
+        Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
+
+        matrices.translate(0, 1, 0);
+        matrices.scale(0.05f * scale, 0.05f * scale, 0.05f * scale);
+        matrices.translate(0, 0.25f, 0);
+        matrices.multiply(new Quaternionf().rotationXYZ(0, (float) -Math.toRadians(camera.getCameraYaw()), (float) Math.PI));
+        matrices.translate(0, -0.25f, 0);
+
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
+        float width = textRenderer.getWidth(text);
+        if(scale > 0){
+            textRenderer.draw(
+                            text,
+                            0.0f - width/2f,
+                            -8,
+                    color,
+                            false,
+                            matrices.peek().getPositionMatrix(),
+                            vertexConsumers,
+                            TextRenderer.TextLayerType.SEE_THROUGH,
+                            0,
+                            LightmapTextureManager.MAX_LIGHT_COORDINATE
+                    );
+        }
+
+        matrices.pop();
     }
 
     public void drawQuad(MatrixStack matrices, VertexConsumer buffer, Vector3f normal, float scale){

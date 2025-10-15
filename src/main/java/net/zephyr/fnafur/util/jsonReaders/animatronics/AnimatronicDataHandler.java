@@ -1,0 +1,126 @@
+package net.zephyr.fnafur.util.jsonReaders.animatronics;
+
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
+import net.minecraft.world.World;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
+import software.bernie.geckolib.cache.GeckoLibResources;
+import software.bernie.geckolib.loading.object.BakedAnimations;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class AnimatronicDataHandler {
+    public static String DEFAULT_ANIMATIONS = "";
+
+    public static final List<String> CATEGORIES = new ArrayList<>();
+    public static final Map<String, List<String>> CHARAS_PER_CATEGORY = new HashMap<>();
+    public static final Map<String, Chara> CHARACTERS = new HashMap<>();
+    public static final Map<String, Map<String, String>> ANIMATIONS_PER_CATEGORY = new HashMap<>();
+    public static final Map<String, String> ALL_ANIMATIONS = new HashMap<>();
+    public static final List<String> ALL_ANIMATION_NAMES = new ArrayList<>();
+    public static final List<String> MISSING_CHARACTERS = new ArrayList<>();
+    public static final List<String> EMPTY_CATEGORIES = new ArrayList<>();
+
+    public static String getPath(String category, String character){
+        return "entity/" + category + "/" + character + "/";
+    }
+    public static Identifier getTexture(Chara chara, String path){
+        String category = chara.CATEGORY;
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/" + getPath(category, chara.NAME) + path + ".png");
+    }
+    public static Identifier getAltTexture(String character, String alt){
+        Chara chara = CHARACTERS.get(character);
+        return getTexture(chara, chara.ALTS.get(alt).texture);
+    }
+    public static Identifier getEyeTexture(String character, String alt, String eye_alt){
+        Chara chara = CHARACTERS.get(character);
+        String id = chara.EYE_ALTS.get(eye_alt).texture;
+        if(!chara.ALTS.get(alt).eye_path_subfolder.isEmpty()){
+            id = chara.ALTS.get(alt).eye_path_subfolder + "/" + id;
+        }
+        return getTexture(chara, id);
+    }
+    public static Identifier getModel(String character, String alt){
+        Chara chara = CHARACTERS.get(character);
+        if(chara != null) {
+            String category = chara.CATEGORY;
+            String model = chara.MODEL;
+            if (!chara.ALTS.get(alt).model_override.isEmpty()) {
+                model = chara.ALTS.get(alt).model_override;
+            }
+            return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/" + getPath(category, character) + model + ".geo.json");
+        }
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/entity/default/endo_01/endo_01.geo.json");
+    }
+    public static float getPreviewScale(String character, String alt){
+        Chara chara = CHARACTERS.get(character);
+        if(chara != null) {
+            if(chara.ALTS.containsKey(alt)){
+                return chara.ALTS.get(alt).preview_scale;
+            }
+        }
+        return 1;
+    }
+
+    public static String getAnimationFilePath(String currentAnim, String name){
+        return prefixAnim(currentAnim, name).getLeft();
+    }
+    public static String getAnimationFullName(String currentAnim, String name){
+        return prefixAnim(currentAnim, name).getRight();
+    }
+    public static Pair<String, String> prefixAnim(String currentAnim, String name){
+        String path = ALL_ANIMATIONS.get("default");
+
+        if(ALL_ANIMATION_NAMES.contains(name)){
+            path = ALL_ANIMATIONS.get(name);
+        }
+
+        Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, path);
+        Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations();
+        BakedAnimations bakedAnimations = animations.get(location);
+        String anim = "animation." + name + "." + currentAnim;
+        if(bakedAnimations == null || !bakedAnimations.animations().containsKey(anim)) {
+            path = ALL_ANIMATIONS.get("default");
+            anim = "animation.default." + currentAnim;
+        }
+        return new Pair<>(path, anim);
+    }
+
+    public static class Chara {
+
+        public final String NAME;
+        public final String CATEGORY;
+        public final String DEFAULT_ALT;
+        public final String MODEL;
+        public final String ENDO_MASK;
+        public final Map<String, Alt> ALTS;
+        public final Map<String, EyesAlt> EYE_ALTS;
+        public final Map<String, String> GLOW_MASKS;
+
+        public List<String> alt_names = new ArrayList<>();
+        public List<String> eye_names = new ArrayList<>();
+        public List<String> glow_mask_names = new ArrayList<>();
+
+        public Chara(String name, String category, String default_alt, String model, String endo_mask, Map<String, Alt> alts, Map<String, EyesAlt> eye_alts, Map<String, String> glow_masks) {
+            this.NAME = name;
+            this.CATEGORY = category;
+            this.DEFAULT_ALT = default_alt;
+            this.MODEL = model;
+            this.ENDO_MASK = endo_mask;
+            this.ALTS = alts;
+            this.EYE_ALTS = eye_alts;
+            this.GLOW_MASKS = glow_masks;
+
+            alt_names.addAll(alts.keySet());
+            eye_names.addAll(eye_alts.keySet());
+            glow_mask_names.addAll(glow_masks.keySet());
+        }
+    }
+    public record Alt(String texture, String emissive_mask, String default_eyes, String preview_anim, float preview_scale, int colors, String model_override, String eye_path_subfolder){}
+    public record EyesAlt(String texture, String default_glow, int colors){}
+}

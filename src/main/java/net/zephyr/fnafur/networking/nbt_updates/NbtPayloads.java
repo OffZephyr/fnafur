@@ -13,6 +13,7 @@ public class NbtPayloads {
     public static final Identifier S2CBlockUpdateServer = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_block_server_update");
     public static final Identifier S2CBlockUpdateClient = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_block_client_update");
     public static final Identifier C2SEntityUpdate = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_entity_update");
+    public static final Identifier C2SEntityUpdateServer = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_entity_server_update");
     public static final Identifier C2SEntitySync = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_entity_sync");
     public static final Identifier S2CEntityUpdatePong = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_entity_update");
     public static final Identifier C2SItemUpdate = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_item_update");
@@ -27,6 +28,7 @@ public class NbtPayloads {
         PayloadTypeRegistry.playC2S().register(UpdateBlockNbtC2SGetFromServerPayload.ID, UpdateBlockNbtC2SGetFromServerPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(UpdateItemNbtC2SPayload.ID, UpdateItemNbtC2SPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(UpdateEntityNbtC2SPayload.ID, UpdateEntityNbtC2SPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(UpdateEntityNbtC2SGetFromServerPayload.ID, UpdateEntityNbtC2SGetFromServerPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(UpdateEntityNbtS2CPongPayload.ID, UpdateEntityNbtS2CPongPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(SyncEntityNbtC2SPayload.ID, SyncEntityNbtC2SPayload.CODEC);
 
@@ -44,6 +46,7 @@ public class NbtPayloads {
         ServerPlayNetworking.registerGlobalReceiver(SyncBlockNbtC2SPayload.ID, SyncBlockNbtC2SPayload::receive);
         ServerPlayNetworking.registerGlobalReceiver(UpdateItemNbtC2SPayload.ID, UpdateItemNbtC2SPayload::receive);
         ServerPlayNetworking.registerGlobalReceiver(UpdateEntityNbtC2SPayload.ID, UpdateEntityNbtC2SPayload::receive);
+        ServerPlayNetworking.registerGlobalReceiver(UpdateEntityNbtC2SGetFromServerPayload.ID, UpdateEntityNbtC2SGetFromServerPayload::receive);
         ServerPlayNetworking.registerGlobalReceiver(SyncEntityNbtC2SPayload.ID, SyncEntityNbtC2SPayload::receive);
         ServerPlayNetworking.registerGlobalReceiver(UpdateCrawlingC2SPayload.ID, UpdateCrawlingC2SPayload::receive);
     }

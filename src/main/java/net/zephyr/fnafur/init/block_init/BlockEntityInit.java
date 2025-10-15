@@ -21,7 +21,7 @@ import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.server_monitor.ServerMonitorBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 
 public class BlockEntityInit {

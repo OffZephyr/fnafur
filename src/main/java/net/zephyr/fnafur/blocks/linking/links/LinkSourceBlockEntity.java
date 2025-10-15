@@ -1,11 +1,15 @@
 package net.zephyr.fnafur.blocks.linking.links;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SGetFromServerPayload;
+import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 import java.util.ArrayList;
@@ -26,6 +30,18 @@ public abstract class LinkSourceBlockEntity extends BlockEntity implements LinkS
     public void tick(World world, BlockPos blockPos, BlockState state, LinkSourceBlockEntity entity) {
         if(getSourceAmountSync() != getTargets().size()){
             updateSources(world, blockPos);
+        }
+
+        if (world.isClient()) {
+            if (!((IEntityDataSaver) entity).getPersistentData().contains("synced")) {
+                ClientPlayNetworking.send(new UpdateBlockNbtC2SGetFromServerPayload(getPos().asLong()));
+                world.setBlockState(blockPos, world.getBlockState(blockPos), Block.NOTIFY_ALL_AND_REDRAW);
+            }
+
+            if (((IEntityDataSaver) this).getServerUpdateStatus()) {
+                //MinecraftClient.getInstance().player.sendMessage(Text.literal("SYNCING PROP"), false);
+                ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver) this).getPersistentData()));
+            }
         }
     }
     @Override

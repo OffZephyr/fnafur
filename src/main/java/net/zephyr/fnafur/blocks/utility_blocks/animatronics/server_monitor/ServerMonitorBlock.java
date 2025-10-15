@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.utility_blocks.server_monitor;
+package net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;

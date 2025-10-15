@@ -22,9 +22,23 @@ public interface LinkTarget {
     default<T extends IEntityDataSaver> void addSource(T source) {
         getSources().add(source);
     }
+    default int getButtonId(IEntityDataSaver source){
+        NbtCompound nbtButtonIndexHolder = ((IEntityDataSaver)this).getPersistentData().getCompound("buttonIndexData").orElse(new NbtCompound());
+        if (!nbtButtonIndexHolder.isEmpty()){
+            if(source instanceof BlockEntity ent){
+                String name = "" + ent.getPos().asLong();
+                if(nbtButtonIndexHolder.contains(name)) {
+                    return nbtButtonIndexHolder.getInt(name, -1);
+                }
+            }
+        }
+        return -1;
+    }
 
     default<T extends IEntityDataSaver> void removeSource(T source) {
-        getSources().remove(source);
+        while(getSources().contains(source)){
+            getSources().remove(source);
+        }
     }
     default<T extends IEntityDataSaver> boolean isTargetOf(T source) {
         return getSources().contains(source);

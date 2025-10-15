@@ -1,0 +1,11 @@
+{
+    "default": {
+        "default": "entity/default"
+    },
+    "classic": {
+        "cl_fred": "entity/classic/cl_fred/cl_fred",
+        "cl_bon": "entity/classic/cl_bon/cl_bon",
+        "cl_chica": "entity/classic/cl_chica/cl_chica",
+        "cl_foxy": "entity/classic/cl_foxy/cl_foxy"
+    }
+}

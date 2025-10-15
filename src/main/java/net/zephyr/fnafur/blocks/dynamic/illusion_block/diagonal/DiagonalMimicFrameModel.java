@@ -324,17 +324,17 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
     }
     @Override
     public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
-        NbtCompound nbt = ((IEntityDataSaver) blockView.getBlockEntity(pos)).getPersistentData();
-        if (nbt.contains("BlockData")) {
-            ItemStack blockStack = nbt.get("BlockData", ItemStack.CODEC).orElse(ItemStack.EMPTY);
-            if (blockStack.getItem() instanceof BlockItem blockItem) {
-                Block block = blockItem.getBlock();
-
-                BlockState textureState = block.getDefaultState();
-                BlockStateModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(textureState);
-                return model.getParts(Random.create()).get(0).getQuads(Direction.UP).get(0).sprite();
-            }
-        }
+        //NbtCompound nbt = ((IEntityDataSaver) blockView.getBlockEntity(pos)).getPersistentData();
+        //if (nbt.contains("BlockData")) {
+        //    ItemStack blockStack = nbt.get("BlockData", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+        //    if (blockStack.getItem() instanceof BlockItem blockItem) {
+        //        Block block = blockItem.getBlock();
+//
+        //        BlockState textureState = block.getDefaultState();
+        //        BlockStateModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(textureState);
+        //        return model.getParts(Random.create()).get(0).getQuads(Direction.UP).get(0).sprite();
+        //    }
+        //}
         return FRAME;
     }
 }

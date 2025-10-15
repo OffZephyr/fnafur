@@ -16,9 +16,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
 import net.zephyr.fnafur.init.DecalInit;
 
@@ -39,7 +41,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
             return;
         }
 
-        this.particlesprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")).getSprite();
+        this.particlesprite = DiagonalMimicFrameModel.FRAME;
 
         World world = MinecraftClient.getInstance().world;
         if (state.getBlock() instanceof MimicFrames block) {
@@ -89,6 +91,16 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                 }
             }
         }
+    }
+
+    @Override
+    public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
+        return DiagonalMimicFrameModel.FRAME;
+    }
+
+    @Override
+    public Sprite particleSprite() {
+        return DiagonalMimicFrameModel.FRAME;
     }
 
     public void emitSide(QuadEmitter emitter, NbtCompound nbt, Direction direction, Block sideBlock, BlockPos pos, boolean reColor, int matrixSize, int x, int y, int z, int colorIndex) {

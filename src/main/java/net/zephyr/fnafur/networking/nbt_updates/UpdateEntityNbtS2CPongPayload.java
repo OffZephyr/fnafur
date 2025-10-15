@@ -22,6 +22,7 @@ public record UpdateEntityNbtS2CPongPayload(int entityID, NbtCompound data) impl
         Entity entity = context.player().getWorld().getEntityById(payload.entityID());
         if(entity != null) {
             ((IEntityDataSaver) entity).getPersistentData().copyFrom(payload.data());
+            ((IEntityDataSaver) entity).getPersistentData().putBoolean("synced", true);
         }
     }
 

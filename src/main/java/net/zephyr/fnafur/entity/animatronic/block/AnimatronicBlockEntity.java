@@ -1,30 +1,25 @@
 package net.zephyr.fnafur.entity.animatronic.block;
 
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
-import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.server_monitor.ServerMonitorBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
-import net.zephyr.fnafur.networking.block.LinkVisualUpdateS2CPayload;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -138,13 +133,19 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity implements LinkTa
                             anim.setYaw(yaw);
                             anim.setAngles(yaw, 0);
                             world.spawnEntity(anim);
+                            for(IEntityDataSaver source : getSources()){
+                                ((LinkTarget)anim).getSources().add(ent);
+                                ((LinkSource)source).getTargets().add((IEntityDataSaver) anim);
+                                ((LinkSource)source).getTargets().remove((IEntityDataSaver) this);
+                                if(source instanceof BlockEntity be)
+                                {
+                                    ((BlockEntity) source).markDirty() ;
+                                    ((LinkSource)source).updateSources(world, be.getPos());
+                                }
+                            }
 
-                            ((LinkTarget)anim).getSources().add(ent);
-                            ent2.getTargets().add((IEntityDataSaver) anim);
-                            ent2.markDirty();
                             ((IEntityDataSaver) anim).getPersistentData().putString("getupAnim", world.getBlockState(pos).get(AnimatronicBlock.POSES).getMain() + "activate");
                             GoopyNetworkingUtils.saveEntityNbt(anim.getId(), ((IEntityDataSaver)anim).getPersistentData(), world);
-                            ent2.updateSources(world, ent2.getPos());
                             world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
                             break;
                         }
@@ -244,5 +245,15 @@ public class AnimatronicBlockEntity extends GeoPropBlockEntity implements LinkTa
     @Override
     public void setUpdateDepth(int depth) {
         updateDepth = depth;
+    }
+
+    public boolean hasSwitch(){
+        for(IEntityDataSaver ent : getSources()){
+            if(ent instanceof BlockEntity entity){
+                BlockState state = getWorld().getBlockState(entity.getPos());
+                if(state.contains(Properties.POWERED)) return true;
+            }
+        }
+        return false;
     }
 }

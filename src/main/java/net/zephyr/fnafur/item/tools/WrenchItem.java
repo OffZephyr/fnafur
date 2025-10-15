@@ -19,6 +19,8 @@ import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
 import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
@@ -55,7 +57,7 @@ public class WrenchItem extends Item {
         }
         else if(context.getPlayer() != null && ((IUniversePlayer)context.getPlayer()).isUsingVanniMask() && context.getWorld().getBlockEntity(context.getBlockPos()) instanceof LinkSource s && !s.getTargets().isEmpty()){
             for (int i = 0; i < s.getTargets().size(); i++){
-                if(s.getTargets().get(i) instanceof IEntityDataSaver ent){
+                if(s.getTargets().get(i) instanceof IEntityDataSaver ent && ent instanceof LinkTarget){
 
                     ((LinkTarget)ent).removeSource((IEntityDataSaver) s);
                     s.getTargets().remove(ent);

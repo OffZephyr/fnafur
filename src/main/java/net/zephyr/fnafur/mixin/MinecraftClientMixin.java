@@ -11,6 +11,7 @@ import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.util.hooks.JoinHook;
+import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataManager;
 import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
 import net.zephyr.fnafur.util.jsonReaders.entity_skins.EntityDataManager;
 import net.zephyr.fnafur.util.jsonReaders.layered_block.LayeredBlockManager;
@@ -46,6 +47,8 @@ public class MinecraftClientMixin implements IGetClientManagers {
 	private EntityDataManager entityDataManager = new EntityDataManager();
 	@Unique
 	private CharacterModelManager characterModelManager = new CharacterModelManager();
+	@Unique
+	private AnimatronicDataManager animatronicDataManager = new AnimatronicDataManager();
 
 	@Inject(method = "joinWorld", at = @At("HEAD"), cancellable = true)
 	void joinWorld(ClientWorld world, DownloadingTerrainScreen.WorldEntryReason worldEntryReason, CallbackInfo ci){
@@ -84,6 +87,7 @@ public class MinecraftClientMixin implements IGetClientManagers {
 		this.resourceManager.registerReloader(this.layerManager);
 		this.resourceManager.registerReloader(this.entityDataManager);
 		this.resourceManager.registerReloader(this.characterModelManager);
+		this.resourceManager.registerReloader(this.animatronicDataManager);
 	}
 
 	@Inject(method = "getCameraEntity", at = @At("HEAD"), cancellable = true)

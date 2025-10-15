@@ -23,6 +23,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
 import net.zephyr.fnafur.init.DecalInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -56,7 +57,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
 
     @Override
     public Sprite particleSprite() {
-        return particlesprite;
+        return DiagonalMimicFrameModel.FRAME;
     }
 
     @Override
@@ -83,8 +84,10 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
     public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
         MinecraftClient client = MinecraftClient.getInstance();
         BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);
-        particlesprite = model.particleSprite();
-        return model.particleSprite();
+        if(model != null && model.particleSprite() != null){
+            particlesprite = model.particleSprite();
+        }
+        return particlesprite;
     }
 
     public void emitQuads(BlockState state, BlockPos pos, NbtCompound nbt, QuadEmitter emitter){
@@ -110,7 +113,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
                 List<BakedQuad> quadList = parts.get(0).getQuads(direction);
 
                 for (BakedQuad quad : quadList) {
-                    if(direction == Direction.UP) particlesprite = quad.sprite();
+                    //if(direction == Direction.UP) particlesprite = quad.sprite();
                     emitter.fromVanilla(quad.vertexData(), 0);
                     emitter.emit();
                 }

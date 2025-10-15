@@ -1,0 +1,43 @@
+{
+
+    "cl_foxy":{
+        "default_alt": "default",
+        "model": "cl_foxy",
+        "endo_mask": "cl_foxy",
+
+        "alts":{
+            "default": {
+                "texture": "cl_foxy",
+                "emissive_mask": "",
+                "default_eyes": "default",
+                "preview_anim": "cl_foxy",
+                "preview_scale": 1,
+                "colors": 0,
+                "model_override": "",
+                "eye_path_subfolder": ""
+            }
+        },
+        
+        "eyes":{
+           "alts":{
+               "default": {
+                   "texture": "eyes/cl_foxy_eye_yellow",
+                   "default_glow": "dot",
+                   "colors": 0
+               },
+               "black": {
+                   "texture": "eyes/cl_foxy_eye_full_black",
+                   "default_glow": "dot",
+                   "colors": 0
+               }
+           },
+
+           "glow_masks": {
+                "dot": "eyes/glow/none",
+                "iris": "eyes/glow/none",
+                "all": "eyes/glow/none",
+                "none": "eyes/glow/none"
+           }
+        }
+    }
+}
