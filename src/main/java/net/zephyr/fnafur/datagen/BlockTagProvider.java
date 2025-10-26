@@ -38,7 +38,6 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.CHIP_READER)
                 .add(BlockInit.SERVER_MONITOR)
                 .add(BlockInit.WORKBENCH)
-                .add(BlockInit.CAMERA)
                 .add(BlockInit.FOG_BLOCK)
                 .add(BlockInit.GARAGE_DOOR)
                 .add(BlockInit.HEAVY_DOOR)

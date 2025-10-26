@@ -94,13 +94,6 @@ public class PlayerEntityMixin implements IUniversePlayer {
         }
     }
 
-    @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
-    public void getBaseDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> ci){
-        if(getCurrentEntity() != null) {
-            ci.setReturnValue(getCurrentEntity().getType().getDimensions().scaled(getCurrentEntity().getScaleFactor()));
-        }
-    }
-
     @Override
     public float getMaskDelta() {
         return maskOnDelta;
@@ -131,7 +124,7 @@ public class PlayerEntityMixin implements IUniversePlayer {
     public boolean isUsingVanniMask() {
 
         boolean bl = true;
-        if(((PlayerEntity) (Object)this).getWorld().isClient()){
+        if(((PlayerEntity) (Object)this).getEntityWorld().isClient()){
             bl = getMaskDelta() > 1.42f;
         }
         return bl && hasVanniMaskOn();

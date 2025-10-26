@@ -29,31 +29,31 @@ public interface SeatBlock {
     }
 
     default SeatEntity sit(PlayerEntity player, BlockPos pos){
-        SeatEntity entity = new SeatEntity(EntityInit.SEAT, player.getWorld());
+        SeatEntity entity = new SeatEntity(EntityInit.SEAT, player.getEntityWorld());
 
-        entity.setHeadYaw(getSittingAngle(player.getWorld(), pos));
-        entity.setYaw(getSittingAngle(player.getWorld(), pos));
-        entity.setBodyYaw(getSittingAngle(player.getWorld(), pos));
+        entity.setHeadYaw(getSittingAngle(player.getEntityWorld(), pos));
+        entity.setYaw(getSittingAngle(player.getEntityWorld(), pos));
+        entity.setBodyYaw(getSittingAngle(player.getEntityWorld(), pos));
         entity.setPitch(0);
 
-        entity.setPosition(getSittingPos(player.getWorld(), getSittingAngle(player.getWorld(), pos), getSittingOffset(player.getWorld(), pos), getSittingHeight(player.getWorld(), pos), pos));
+        entity.setPosition(getSittingPos(player.getEntityWorld(), getSittingAngle(player.getEntityWorld(), pos), getSittingOffset(player.getEntityWorld(), pos), getSittingHeight(player.getEntityWorld(), pos), pos));
         ((IEntityDataSaver)entity).getPersistentData().putLong("chair", pos.asLong());
 
         ((IEntityDataSaver)entity).getPersistentData().putInt("playerID", player.getId());
 
-        player.getWorld().spawnEntity(entity);
+        player.getEntityWorld().spawnEntity(entity);
 
-        if(!player.getWorld().isClient()){
-            for(ServerPlayerEntity p : PlayerLookup.all(player.getWorld().getServer())){
+        if(!player.getEntityWorld().isClient()){
+            for(ServerPlayerEntity p : PlayerLookup.all(player.getEntityWorld().getServer())){
                 ServerPlayNetworking.send(p, new UpdateEntityNbtS2CPongPayload(entity.getId(), ((IEntityDataSaver)entity).getPersistentData()));
             }
         }
 
-        player.setHeadYaw(getSittingAngle(player.getWorld(), pos));
-        player.setYaw(getSittingAngle(player.getWorld(), pos));
-        player.setBodyYaw(getSittingAngle(player.getWorld(), pos));
+        player.setHeadYaw(getSittingAngle(player.getEntityWorld(), pos));
+        player.setYaw(getSittingAngle(player.getEntityWorld(), pos));
+        player.setBodyYaw(getSittingAngle(player.getEntityWorld(), pos));
 
-        ((IEntityDataSaver)player.getWorld().getBlockEntity(pos)).getPersistentData().putBoolean("playerSitting", true);
+        ((IEntityDataSaver)player.getEntityWorld().getBlockEntity(pos)).getPersistentData().putBoolean("playerSitting", true);
 
         return entity;
     }

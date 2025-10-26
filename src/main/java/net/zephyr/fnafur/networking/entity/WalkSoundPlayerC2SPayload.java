@@ -15,7 +15,7 @@ public record WalkSoundPlayerC2SPayload(int EntityID) implements CustomPayload {
             WalkSoundPlayerC2SPayload::new);
 
     public static void receive(WalkSoundPlayerC2SPayload payload, ServerPlayNetworking.Context context) {
-        Entity entity = context.player().getWorld().getEntityById(payload.EntityID);
+        Entity entity = context.player().getEntityWorld().getEntityById(payload.EntityID);
         if(entity instanceof AnimatronicEntity entity1){
             //entity1.playWalkSound(context.player().getWorld());
             //TODO Play walk sound

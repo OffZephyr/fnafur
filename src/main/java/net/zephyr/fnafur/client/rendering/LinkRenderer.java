@@ -8,6 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Style;
+import net.minecraft.text.StyleSpriteSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -173,7 +174,8 @@ public class LinkRenderer {
             if(ent.getPersistentData().contains("connectionIndex")){
                 int index = ent.getPersistentData().getInt("connectionIndex", 0);
 
-                Style style = Style.EMPTY.withFont(Identifier.of(FnafUniverseRebuilt.MOD_ID, "metropolis"));
+                StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "metropolis"));
+                Style style = Style.EMPTY.withFont(spriteFont);
                 Text text = Text.literal("" + index).setStyle(style);
 
                 for(IEntityDataSaver target : ((LinkSource)ent).getTargets()){

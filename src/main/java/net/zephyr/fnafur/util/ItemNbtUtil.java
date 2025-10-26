@@ -13,13 +13,7 @@ public class ItemNbtUtil {
         stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
         return stack;
     }
-    public static NbtCompound getBlockData(ItemStack stack){
-        return stack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt();
-    }
-    public static ItemStack setBlockData(ItemStack stack, NbtCompound nbt){
-        stack.set(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.of(nbt));
-        return stack;
-    }
+
     /*@Environment(EnvType.CLIENT)
     public static void syncNbt(String slotName) {
         EquipmentSlot slot = EquipmentSlot.byName(slotName);

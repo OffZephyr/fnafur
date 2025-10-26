@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.mixin;
 
+import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -8,10 +9,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.zephyr.fnafur.init.item_init.ItemInit;
+import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin{
@@ -21,7 +24,7 @@ public class LivingEntityMixin{
 
         if(player instanceof PlayerEntity p) {
             if ((oldStack.isOf(ItemInit.ILLUSIONDISC) || newStack.isOf(ItemInit.ILLUSIONDISC)) && slot.isArmorSlot()) {
-                if(p.getWorld() instanceof ServerWorld world) {
+                if(p.getEntityWorld() instanceof ServerWorld world) {
                     double width = p.getBoundingBox().getLengthX() / 2f;
                     double height = p.getBoundingBox().getLengthY() / 2f;
                     double amount = (height + 1) * 100f;
@@ -30,6 +33,17 @@ public class LivingEntityMixin{
                 }
                 p.calculateDimensions();
                 p.setPose(EntityPose.STANDING);
+            }
+        }
+    }
+
+
+
+    @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
+    public void getBaseDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> ci){
+        if((LivingEntity)(Object)this instanceof PlayerEntity p) {
+            if (((IUniversePlayer) p).getCurrentEntity() != null) {
+                ci.setReturnValue(((IUniversePlayer) p).getCurrentEntity().getType().getDimensions().scaled(((IUniversePlayer) p).getCurrentEntity().getScaleFactor()));
             }
         }
     }

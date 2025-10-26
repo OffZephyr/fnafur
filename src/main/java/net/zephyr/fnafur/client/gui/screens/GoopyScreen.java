@@ -1,33 +1,21 @@
 package net.zephyr.fnafur.client.gui.screens;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTexture;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.TextureManager;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ColorHelper;
-import net.zephyr.fnafur.client.gui.screens.crafting.SuitMakingScreen;
-import net.zephyr.fnafur.util.mixinAccessing.IDCVertexConsumersAcc;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2fStack;
-import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -97,7 +85,7 @@ public abstract class GoopyScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         this.holding = true;
         for(GUIButton guiButton : BUTTONS){
             int x = windowX + guiButton.x;
@@ -105,23 +93,23 @@ public abstract class GoopyScreen extends Screen {
             int w = guiButton.width;
             int h = guiButton.height;
             if(guiButton instanceof GUIToggle guiToggle){
-                if(isOnButton(mouseX, mouseY, x, y, w, h) && guiButton.toggle_exec != null){
+                if(isOnButton(click.x(), click.y(), x, y, w, h) && guiButton.toggle_exec != null){
                     guiButton.toggle_exec.toggle(guiToggle);
                 }
             }
             else{
-                if(isOnButton(mouseX, mouseY, x, y, w, h) && guiButton.click_exec != null){
+                if(isOnButton(click.x(), click.y(), x, y, w, h) && guiButton.click_exec != null){
                     guiButton.click_exec.execute();
                 }
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(Click click) {
         this.holding = false;
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(click);
     }
 
     public void renderButton(DrawContext context, double mouseX, double mouseY, GUIButton button) {

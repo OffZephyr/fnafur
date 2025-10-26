@@ -52,6 +52,7 @@
            "alts":{
                "default": {
                    "texture": "eyes/default",
+                   "map": "eyes/sp_bon_eyemap",
                    "default_glow": "none",
                    "colors": 0
                }

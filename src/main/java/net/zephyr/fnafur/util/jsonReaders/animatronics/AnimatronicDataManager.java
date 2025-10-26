@@ -107,11 +107,15 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
                     CharaGetter getter = entry.getValue();
                     if (!AnimatronicDataHandler.CHARACTERS.containsKey(name)) {
 
-                        AnimatronicDataHandler.EyesAlt noneEyes = new AnimatronicDataHandler.EyesAlt("", "none", 0);
+                        AnimatronicDataHandler.EyesAlt defaultAlt = getter.eyes.alts().get(getter.alts.get(getter.default_alt).default_eyes());
+                        AnimatronicDataHandler.EyesAlt noneEyes = new AnimatronicDataHandler.EyesAlt(defaultAlt.texture(), defaultAlt.map(), "none", 0);
                         getter.eyes.alts.put("none", noneEyes);
 
                         AnimatronicDataHandler.Chara chara = new AnimatronicDataHandler.Chara(name, category, getter.default_alt, getter.model, getter.endo_mask, getter.alts, getter.eyes.alts, getter.eyes.glow_masks);
 
+                        if(Objects.equals(name, "cl_endo")){
+                            AnimatronicDataHandler.DEFAULT_CHARA = chara;
+                        }
                         AnimatronicDataHandler.CHARACTERS.put(name, chara);
                     }
                 }

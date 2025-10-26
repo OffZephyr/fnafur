@@ -99,18 +99,18 @@ public class WallPropPlacingRenderer {
 
                         if(block instanceof GeoPropBlock){
 
-                            matrices.push();
-                            float offsetRotation = state.get(WallPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
-                            matrices.translate(0.5f, 0, 0.5f);
-                            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-offsetRotation));
-                            matrices.translate(-0.5f, 0, -0.5f);
-                            GeoPropBlockEntity entity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
-
-                            entity.setWorld(MinecraftClient.getInstance().world);
-                            if(MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(entity) instanceof GeoPropRenderer<GeoPropBlockEntity> geo){
-                                geo.render(entity, matrices, vertexConsumers, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
-                            }
-                            matrices.pop();
+//                            matrices.push();
+//                            float offsetRotation = state.get(WallPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
+//                            matrices.translate(0.5f, 0, 0.5f);
+//                            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-offsetRotation));
+//                            matrices.translate(-0.5f, 0, -0.5f);
+//                            GeoPropBlockEntity entity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
+//
+//                            entity.setWorld(MinecraftClient.getInstance().world);
+//                            if(MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(entity) instanceof GeoPropRenderer<GeoPropBlockEntity> geo){
+//                                geo.render(entity, matrices, vertexConsumers, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+//                            }
+//                            matrices.pop();
                         }
                         else {
                             BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);

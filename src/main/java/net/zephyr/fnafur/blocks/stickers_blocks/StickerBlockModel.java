@@ -144,7 +144,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
                     int num = dirPos % decal.getTextures().length;
                     Identifier identifier = decal.getTextures()[num];
 
-                    Sprite sprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier).getSprite();
+                    Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier));
 
                     float Offset = offset_list.getFloat(i).orElse(0f);
                     float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;

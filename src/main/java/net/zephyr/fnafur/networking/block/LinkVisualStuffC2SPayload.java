@@ -20,7 +20,7 @@ public record LinkVisualStuffC2SPayload(long pos, int sync) implements CustomPay
 
     public static void receive(LinkVisualStuffC2SPayload payload, ServerPlayNetworking.Context context) {
 
-        if(context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos())) instanceof LinkSource s){
+        if(context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos())) instanceof LinkSource s){
             s.setSourceAmountSync(payload.sync);
         }
     }

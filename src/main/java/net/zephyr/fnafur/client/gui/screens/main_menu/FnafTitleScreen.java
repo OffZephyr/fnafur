@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.LogoDrawer;
 import net.minecraft.client.gui.screen.*;
@@ -30,6 +31,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Style;
+import net.minecraft.text.StyleSpriteSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -229,13 +231,13 @@ public class FnafTitleScreen extends Screen {
     }
 
     private int addDevelopmentWidgets(int y, int spacingY) {
-        if (SharedConstants.isDevelopment) {
-            this.addDrawableChild(
-                    ButtonWidget.builder(Text.literal("Create Test World"), button -> CreateWorldScreen.showTestWorld(this.client, this))
-                            .dimensions(this.width / 2 - 100, y += spacingY, 200, 20)
-                            .build()
-            );
-        }
+//        if (SharedConstants.isDevelopment) {
+//            this.addDrawableChild(
+//                    ButtonWidget.builder(Text.literal("Create Test World"), button -> CreateWorldScreen.showTestWorld(this.client, this))
+//                            .dimensions(this.width / 2 - 100, y += spacingY, 200, 20)
+//                            .build()
+//            );
+//        }
 
         return y;
     }
@@ -493,7 +495,8 @@ public class FnafTitleScreen extends Screen {
             GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) ((width / 2) - (sprite_width / 2)), 0, 0, sprite_width, sprite_height / 2f, 0, 0, sprite_width, sprite_height, 1, 1, 1, 1);
             GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) ((width / 2) - (star_width / 2)), (int) y, 0, star_width, star_height, sprite_width - star_width, sprite_height - star_height, sprite_width, sprite_height, 1, 1, 1, 1);
 
-            Style style = Style.EMPTY.withFont(Identifier.of(FnafUniverseRebuilt.MOD_ID, "metropolis"));
+            StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "metropolis"));
+            Style style = Style.EMPTY.withFont(spriteFont);
             Text version_text = Text.literal(FnafUniverseRebuilt.MOD_VERSION).setStyle(style);
             context.drawText(textRenderer, version_text, width / 2 - textRenderer.getWidth(version_text) / 2, height - textRenderer.fontHeight - 1, 0x88FFFFFF, false);
 
@@ -571,7 +574,9 @@ public class FnafTitleScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
+        double mouseX = click.x();
+        double mouseY = click.y();
 
         int deltaAmount = 20;
         float largeHeight = ((width + onWidth(deltaAmount)) / 1920f) * 1080f;

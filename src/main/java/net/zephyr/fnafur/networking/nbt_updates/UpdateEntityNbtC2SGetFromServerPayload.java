@@ -20,7 +20,7 @@ public record UpdateEntityNbtC2SGetFromServerPayload(int entityID) implements Cu
             UpdateEntityNbtC2SGetFromServerPayload::new);
 
     public static void receive(UpdateEntityNbtC2SGetFromServerPayload payload, ServerPlayNetworking.Context context) {
-        Entity entity = context.player().getWorld().getEntityById(payload.entityID());
+        Entity entity = context.player().getEntityWorld().getEntityById(payload.entityID());
         if(entity != null) {
 
             for(ServerPlayerEntity p : PlayerLookup.all(context.server())){

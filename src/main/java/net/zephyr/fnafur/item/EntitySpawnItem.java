@@ -49,7 +49,7 @@ public class EntitySpawnItem extends Item {
         ((IEntityDataSaver)entity).getPersistentData().putFloat("spawnRot", yaw);
         context.getWorld().spawnEntity(entity);
         context.getStack().decrementUnlessCreative(1, context.getPlayer());
-        if(entity.getWorld().isClient()){
+        if(entity.getEntityWorld().isClient()){
             GoopyNetworkingUtils.saveEntityData(entity.getId(), ((IEntityDataSaver)entity).getPersistentData().copy());
         }
         return ActionResult.SUCCESS;

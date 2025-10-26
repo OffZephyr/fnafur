@@ -2,6 +2,7 @@ package net.zephyr.fnafur.client.gui.screens.crafting;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.render.state.special.EntityGuiElementRenderState;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
@@ -282,7 +283,7 @@ public class SuitMakingScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         int front_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
 
         if(category.isEmpty()) {
@@ -298,7 +299,7 @@ public class SuitMakingScreen extends GoopyScreen {
                 x += (i/4) * padding;
                 y += i * 48 - ((i/4) * 192);
 
-                if (isOnButton(mouseX, mouseY, x, y, 126, 48)) {
+                if (isOnButton(click.x(), click.y(), x, y, 126, 48)) {
                     if(AnimatronicDataHandler.EMPTY_CATEGORIES.contains(category)) {
                         shakingLocks[i] = 0.75f;
                         continue;
@@ -317,7 +318,7 @@ public class SuitMakingScreen extends GoopyScreen {
             int close_x = preview_x + 148 - 35;
             int save_y = preview_y - 32;
             if(needsSave){
-                if(isOnButton(mouseX, mouseY, save_x, save_y, 32, 32)){
+                if(isOnButton(click.x(), click.y(), save_x, save_y, 32, 32)){
                     needsSave = false;
                     getNbtData().putString("chara", preview.getChara());
                     getNbtData().putString("alt", preview.getAlt());
@@ -328,14 +329,12 @@ public class SuitMakingScreen extends GoopyScreen {
             }
             else{
                 if(preview.getChara().isEmpty()){
-                    if(isOnButton(mouseX, mouseY, export_x, save_y, 32, 32)){
+                    if(isOnButton(click.x(), click.y(), export_x, save_y, 32, 32)){
 
                     }
                 }
-                else{
-                    if(isOnButton(mouseX, mouseY, close_x, save_y, 32, 32)){
-                        close();
-                    }
+                if(isOnButton(click.x(), click.y(), close_x, save_y, 32, 32)){
+                    close();
                 }
             }
         }
@@ -355,7 +354,7 @@ public class SuitMakingScreen extends GoopyScreen {
             int category_x = front_x + offsetX;
             int category_y = (height / 2) - 128 + offsetY;
 
-            if (isOnButton(mouseX, mouseY, category_x + offsetX, category_y + offsetY, 32, 32)) {
+            if (isOnButton(click.x(), click.y(), category_x + offsetX, category_y + offsetY, 32, 32)) {
                 if (this.character.isEmpty()) {
                     this.previous_category = category;
                     this.category = "";
@@ -374,7 +373,7 @@ public class SuitMakingScreen extends GoopyScreen {
                     if (!AnimatronicDataHandler.MISSING_CHARACTERS.contains(chara_name)) {
                         int x = 128 - 96 + category_x + selectedCat % 2 * 111;
                         int y = 55 + category_y + (selectedCat / 2 * 66);
-                        if (isOnButton(mouseX, mouseY, x - 3, y - 3, 86, 61)) {
+                        if (isOnButton(click.x(), click.y(), x - 3, y - 3, 86, 61)) {
                             this.character = chara_name;
                             this.previous_character = character;
                         }
@@ -386,7 +385,7 @@ public class SuitMakingScreen extends GoopyScreen {
                     String alt_name = chara.alt_names.get(selectedAlt);
                     int x = 128 - 96 + category_x + selectedAlt % 2 * 111;
                     int y = 55 + category_y + (selectedAlt / 2 * 66);
-                    if (isOnButton(mouseX, mouseY, x - 3, y - 3, 86, 61)) {
+                    if (isOnButton(click.x(), click.y(), x - 3, y - 3, 86, 61)) {
                         this.alt = alt_name;
                         this.previous_alt = alt;
                     }
@@ -397,7 +396,7 @@ public class SuitMakingScreen extends GoopyScreen {
                     String eye_name = chara.eye_names.get(selectedEye);
                     int x = 128 - 96 + category_x + selectedEye % 2 * 111;
                     int y = 55 + category_y + (selectedEye / 2 * 66);
-                    if (isOnButton(mouseX, mouseY, x - 3, y - 3, 86, 61)) {
+                    if (isOnButton(click.x(), click.y(), x - 3, y - 3, 86, 61)) {
                         this.eyes = eye_name;
                         this.previous_eyes = this.eyes;
                         preview.setChara(this.previous_character, this.previous_alt, this.previous_eyes);
@@ -411,28 +410,28 @@ public class SuitMakingScreen extends GoopyScreen {
             }
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
         int back_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 74, (width / 2f) + 55);
         int preview_x = back_x;
         int preview_y = (height / 2) - 92;
 
-        if(isOnButton(mouseX, mouseY, preview_x, preview_y, 148, 221)){
+        if(isOnButton(click.x(), click.y(), preview_x, preview_y, 148, 221)){
             if(this.category.isEmpty()){
-                preview_rotation_x += (deltaX/50.0);
-                preview_rotation_y += (-deltaY/75.0);
+                preview_rotation_x += (offsetX/50.0);
+                preview_rotation_y += (-offsetY/75.0);
                 preview_rotation_y = MathHelper.clamp(preview_rotation_y, -(Math.PI/7.0), (Math.PI/7.0));
             }
         }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.mouseDragged(click, offsetX, offsetY);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return super.mouseReleased(mouseX, mouseY, button);
+    public boolean mouseReleased(Click click) {
+        return super.mouseReleased(click);
     }
 
     @Override

@@ -23,17 +23,17 @@ public record LinkVisualUpdateS2CPayload(long pos, long[] blocks, long[] ids, in
 
     public static void receive(LinkVisualUpdateS2CPayload payload, ClientPlayNetworking.Context context) {
 
-        if(context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos())) instanceof LinkSource s){
+        if(context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos())) instanceof LinkSource s){
             s.getTargets().clear();
             for(long l : payload.blocks){
                 BlockPos pos = BlockPos.fromLong(l);
-                if(context.player().getWorld().getBlockEntity(pos) instanceof LinkTarget t){
+                if(context.player().getEntityWorld().getBlockEntity(pos) instanceof LinkTarget t){
                     t.getSources().add(((IEntityDataSaver)s));
                     s.getTargets().add(((IEntityDataSaver)t));
                 }
             }
             for(long l : payload.ids){
-                Entity ent = context.player().getWorld().getEntityById((int)l);
+                Entity ent = context.player().getEntityWorld().getEntityById((int)l);
                 if(ent instanceof LinkTarget t){
                     t.getSources().add(((IEntityDataSaver)s));
                     s.getTargets().add(((IEntityDataSaver)t));

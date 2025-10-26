@@ -34,10 +34,10 @@ public class Bear5Command {
     public static int trigger(CommandContext<ServerCommandSource> context, PlayerEntity player) throws CommandSyntaxException {
         player.sendMessage(Text.literal("§9Something §1§lTERRIBLE §r§9is on its way..."), false);
 
-        Bear5Entity entity = EntityInit.BEAR5.create(player.getWorld(), SpawnReason.COMMAND);
-        entity.setPosition(player.getPos().offset(player.getFacing().getOpposite(), 20));
+        Bear5Entity entity = EntityInit.BEAR5.create(player.getEntityWorld(), SpawnReason.COMMAND);
+        entity.setPosition(player.getEntityPos().offset(player.getFacing().getOpposite(), 20));
         ((IEntityDataSaver) entity).getPersistentData().putString("TargetID", player.getUuid().toString());
-        player.getWorld().spawnEntity(entity);
+        player.getEntityWorld().spawnEntity(entity);
         return 0;
     }
 }

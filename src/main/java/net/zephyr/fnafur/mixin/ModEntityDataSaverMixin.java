@@ -33,10 +33,10 @@ public abstract class ModEntityDataSaverMixin implements IEntityDataSaver {
         view.put("fnafur.persistent", NbtCompound.CODEC, getPersistentData());
 
         if(((Entity)(Object)this) instanceof LinkSource source){
-            source.writeSourceData(view, ((Entity)(Object)this).getWorld());
+            source.writeSourceData(view, ((Entity)(Object)this).getEntityWorld());
         }
         if(((Entity)(Object)this) instanceof LinkTarget source){
-            source.writeData(view, ((Entity)(Object)this).getWorld());
+            source.writeData(view, ((Entity)(Object)this).getEntityWorld());
         }
     }
 
@@ -45,10 +45,10 @@ public abstract class ModEntityDataSaverMixin implements IEntityDataSaver {
         persistentData = view.read("fnafur.persistent", NbtCompound.CODEC).orElse(new NbtCompound());
 
         if(((Entity)(Object)this) instanceof LinkSource source){
-            source.readSourceData(view, ((Entity)(Object)this).getWorld());
+            source.readSourceData(view, ((Entity)(Object)this).getEntityWorld());
         }
         if(((Entity)(Object)this) instanceof LinkTarget source){
-            source.readData(view, ((Entity)(Object)this).getWorld());
+            source.readData(view, ((Entity)(Object)this).getEntityWorld());
         }
     }
 }

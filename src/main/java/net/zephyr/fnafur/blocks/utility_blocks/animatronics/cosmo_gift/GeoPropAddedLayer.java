@@ -19,10 +19,10 @@ public class GeoPropAddedLayer<T extends GeoPropBlockEntity, O, R extends GeoRen
         this.layer = layer;
     }
 
-    @Override
-    public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
-        if(((GeoPropModel<T>)getGeoModel()).reRender){
-            getRenderer().reRender(renderState, poseStack, bakedModel, bufferSource, layer, bufferSource.getBuffer(layer), packedLight, packedOverlay, renderColor);
-        }
-    }
+//    @Override
+//    public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
+//        if(((GeoPropModel<T>)getGeoModel()).reRender){
+//            getRenderer().reRender(renderState, poseStack, bakedModel, bufferSource, layer, bufferSource.getBuffer(layer), packedLight, packedOverlay, renderColor);
+//        }
+//    }
 }

@@ -2,14 +2,12 @@ package net.zephyr.fnafur.util;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ColorHelper;
-import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.joml.Matrix3x2fStack;
@@ -26,7 +24,7 @@ public class CameraMapUiDrawer {
         List<Long> cams = new ArrayList<>();
         long[] camsData = data.getLongArray("Cameras").get();
         for (long cam : camsData) {
-            if(MinecraftClient.getInstance().world.getBlockEntity(BlockPos.fromLong(cam)) instanceof CameraBlockEntity) cams.add(cam);
+            if(false) cams.add(cam);
         }
         BlockPos minPos = BlockPos.fromLong(data.getLong("mapMinCorner").get());
         BlockPos maxPos = BlockPos.fromLong(data.getLong("mapMaxCorner").get());

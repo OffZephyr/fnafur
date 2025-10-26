@@ -132,7 +132,7 @@ public class BaseFloorSwitchBlock extends FloorPropBlock implements BlockEntityP
     @Override
     public @Nullable BlockEntityTicker getTicker(World world, BlockState state, BlockEntityType type) {
         return ((world1, pos, state1, blockEntity) -> {
-            if(world1.isClient) return;
+            if(world1.isClient()) return;
 
             tick = Math.max(tick-1, 0);
             if(tick > 0) return;

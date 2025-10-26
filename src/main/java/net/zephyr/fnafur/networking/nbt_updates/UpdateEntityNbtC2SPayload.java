@@ -21,7 +21,7 @@ public record UpdateEntityNbtC2SPayload(int entityID, NbtCompound data) implemen
             UpdateEntityNbtC2SPayload::new);
 
     public static void receive(UpdateEntityNbtC2SPayload payload, ServerPlayNetworking.Context context) {
-        Entity entity = context.player().getWorld().getEntityById(payload.entityID());
+        Entity entity = context.player().getEntityWorld().getEntityById(payload.entityID());
         if(entity != null) {
             ((IEntityDataSaver) entity).getPersistentData().copyFrom(payload.data());
 

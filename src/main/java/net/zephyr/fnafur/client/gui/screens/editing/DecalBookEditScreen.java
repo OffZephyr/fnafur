@@ -2,6 +2,7 @@ package net.zephyr.fnafur.client.gui.screens.editing;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EquipmentSlot;
@@ -180,7 +181,10 @@ public class DecalBookEditScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
+
+        double mouseX = click.x();
+        double mouseY = click.y();
 
         if(page > 0) {
             if (isOnButton(mouseX, mouseY, cornerX, cornerY + 190, 9, 9)) {
@@ -245,7 +249,7 @@ public class DecalBookEditScreen extends GoopyScreen {
             }
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override

@@ -43,6 +43,8 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animatable.processing.AnimationTest;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.keyframe.event.KeyFrameEvent;
+import software.bernie.geckolib.animation.keyframe.event.data.CustomInstructionKeyframeData;
 import software.bernie.geckolib.cache.GeckoLibResources;
 import software.bernie.geckolib.loading.object.BakedAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -97,7 +99,12 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>("Lower", 3, this::lowerAnimController));
         controllers.add(new AnimationController<>("Upper", 3, this::upperAnimController));
-        controllers.add(new AnimationController<>("Blink", 0, this::blinkAnimController));
+        controllers.add(new AnimationController<>("Blink", 0, this::blinkAnimController)
+                .setCustomInstructionKeyframeHandler(this::instructionHandler));
+    }
+
+    private void instructionHandler(KeyFrameEvent<GeoAnimatable, CustomInstructionKeyframeData> handler) {
+        
     }
 
     private PlayState blinkAnimController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
@@ -174,7 +181,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
             age++;
         }
 
-        if(!getWorld().isClient()) {
+        if(!getEntityWorld().isClient()) {
             ((IEntityDataSaver) this).getPersistentData().putString("getupAnim", "");
         }
         else{
@@ -256,7 +263,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
             }
         }
 
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/default/endo_01/endo_01.png");
+        return AnimatronicDataHandler.getDefaultAltTexture();
     }
     public boolean isEmptyEye(){
 
@@ -290,8 +297,26 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
             }
         }
 
-        return getTexture(world);
+        return AnimatronicDataHandler.getDefaultEyeTexture();
     }
+    public Identifier getEyeMapTexture(World world){
+
+        if(((IEntityDataSaver)this).getPersistentData().contains("chara")){
+            String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
+            if(!chara.isEmpty()){
+                String alt = ((IEntityDataSaver)this).getPersistentData().getString("suit").orElse("");
+                if(!alt.isEmpty()) {
+                    String eyes = ((IEntityDataSaver)this).getPersistentData().getString("eyes").orElse("");
+                    if(!eyes.isEmpty()) {
+                        return AnimatronicDataHandler.getEyeMapTexture(chara, alt, eyes);
+                    }
+                }
+            }
+        }
+
+        return AnimatronicDataHandler.getDefaultEyeMapTexture();
+    }
+
     public Identifier getReRenderTexture(World world){
         return getTexture(world);
     }
@@ -307,7 +332,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
             }
         }
 
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/entity/default/endo_01/endo_01.geo.json");
+        return AnimatronicDataHandler.getDefaultModel();
     }
 
     public Identifier getReRenderModel(World world){
@@ -316,10 +341,16 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     public String getAnimPrefix(){
         if(((IEntityDataSaver)this).getPersistentData().contains("chara")) {
-            String chara = ((IEntityDataSaver) this).getPersistentData().getString("chara").orElse("");
-            return chara;
+            String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
+            if(!chara.isEmpty()) {
+                String alt = ((IEntityDataSaver) this).getPersistentData().getString("suit").orElse("");
+            AnimatronicDataHandler.Chara chara1 = AnimatronicDataHandler.CHARACTERS.get(chara);
+            AnimatronicDataHandler.Alt alt1 = chara1.ALTS.get(alt);
+
+            return alt1.preview_anim();
+            }
         }
-        return "";
+        return "default";
     }
 
     public String getAnimationsName(){
@@ -347,11 +378,10 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
         String animation = getAnimationsName();
         if(!animation.isEmpty()){
-            //System.out.println("guh " + animation);
-            return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/" + animation + ".animation.json");
+            return Identifier.of(FnafUniverseRebuilt.MOD_ID, animation);
         }
 
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/entity/default.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"));
     }
 
     public String prefixAnim(String animation){

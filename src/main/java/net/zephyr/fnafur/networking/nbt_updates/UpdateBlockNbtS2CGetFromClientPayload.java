@@ -21,7 +21,7 @@ public record UpdateBlockNbtS2CGetFromClientPayload(long pos) implements CustomP
             UpdateBlockNbtS2CGetFromClientPayload::new);
 
     public static void receive(UpdateBlockNbtS2CGetFromClientPayload payload, ClientPlayNetworking.Context context) {
-        BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
+        BlockEntity entity = context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
         if(entity == null) return;
         NbtCompound data = ((IEntityDataSaver)entity).getPersistentData().copy();
         GoopyNetworkingUtils.saveBlockNbt(BlockPos.fromLong(payload.pos()), data);

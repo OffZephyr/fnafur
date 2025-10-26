@@ -3,9 +3,9 @@
         "default": "entity/default"
     },
     "classic": {
-        "cl_fred": "entity/classic/cl_fred/cl_fred",
-        "cl_bon": "entity/classic/cl_bon/cl_bon",
-        "cl_chica": "entity/classic/cl_chica/cl_chica",
-        "cl_foxy": "entity/classic/cl_foxy/cl_foxy"
+        "cl_fred": "entity/animatronics/classic/cl_fred/cl_fred",
+        "cl_bon": "entity/animatronics/classic/cl_bon/cl_bon",
+        "cl_chica": "entity/animatronics/classic/cl_chica/cl_chica",
+        "cl_foxy": "entity/animatronics/classic/cl_foxy/cl_foxy"
     }
 }

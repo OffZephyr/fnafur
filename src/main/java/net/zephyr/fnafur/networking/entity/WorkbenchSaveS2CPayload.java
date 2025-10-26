@@ -19,7 +19,7 @@ public record WorkbenchSaveS2CPayload(long pos, NbtCompound nbt) implements Cust
             WorkbenchSaveS2CPayload::new);
 
     public static void receive(WorkbenchSaveS2CPayload payload, ClientPlayNetworking.Context context) {
-        if(context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos())) instanceof GalaxyLayerGeoPropEntity ent){
+        if(context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos())) instanceof GalaxyLayerGeoPropEntity ent){
             ((IEntityDataSaver)ent).getPersistentData().copyFrom(payload.nbt());
         }
     }

@@ -3,25 +3,26 @@ package net.zephyr.fnafur.entity.animatronic;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import net.zephyr.fnafur.util.CustomDataTickets;
+import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
+import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataManager;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.processing.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public class AnimatronicModel<T extends AnimatronicEntity> extends GeoModel<T> {
 
     public boolean reRender = false;
-    public boolean eyeTexture = false;
     @Override
     public Identifier getModelResource(GeoRenderState renderState) {
-        if(!renderState.hasGeckolibData(CustomDataTickets.MODEL)) return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/entity/default/endo_01/endo_01.geo.json");
+        if(!renderState.hasGeckolibData(CustomDataTickets.MODEL)) return AnimatronicDataHandler.getDefaultModel();
         return reRender && renderState.hasGeckolibData(CustomDataTickets.RE_RENDER_MODEL) ? renderState.getGeckolibData(CustomDataTickets.RE_RENDER_MODEL) : renderState.getGeckolibData(CustomDataTickets.MODEL);
     }
 
     @Override
     public Identifier getTextureResource(GeoRenderState renderState) {
-        if(!renderState.hasGeckolibData(CustomDataTickets.TEXTURE)) return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/default/endo_01/endo_01.png");
+        if(!renderState.hasGeckolibData(CustomDataTickets.TEXTURE)) return AnimatronicDataHandler.getDefaultAltTexture();
 
         if(renderState.hasGeckolibData(CustomDataTickets.USE_EYE_TEXTURE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.USE_EYE_TEXTURE)) && renderState.hasGeckolibData(CustomDataTickets.EYE_TEXTURE)) {
             return renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE);
@@ -33,19 +34,19 @@ public class AnimatronicModel<T extends AnimatronicEntity> extends GeoModel<T> {
     public Identifier getAnimationResource(T animatable) {
         if(animatable != null)
             return animatable.getAnimations();
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/entity/default.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"));
     }
 
     @Override
     public @Nullable RenderLayer getRenderType(GeoRenderState renderState, Identifier texture) {
-        return RenderLayer.getEntityTranslucent(texture);
+
+        return CustomRenderingPipelines.getAnimatronic(texture, renderState.getGeckolibData(CustomDataTickets.SUIT_MAP_TEXTURE));
     }
 
     @Override
     public Identifier[] getAnimationResourceFallbacks(T animatable) {
-        Identifier[] array = new Identifier[]{
-                Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/entity/default.animation.json")
+        return new Identifier[]{
+                Identifier.of(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"))
         };
-        return array;
     }
 }

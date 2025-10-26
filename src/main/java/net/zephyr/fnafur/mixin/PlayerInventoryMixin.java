@@ -90,7 +90,7 @@ public class PlayerInventoryMixin {
         for (int i = 0; i < this.extra.size(); i++) {
             ItemStack itemStack = this.getStack(FnafInventoryScreen.SLOTS_OFFSET + i);
             if (!itemStack.isEmpty()) {
-                itemStack.inventoryTick(this.player.getWorld(), this.player, null);
+                itemStack.inventoryTick(this.player.getEntityWorld(), this.player, null);
             }
         }
     }

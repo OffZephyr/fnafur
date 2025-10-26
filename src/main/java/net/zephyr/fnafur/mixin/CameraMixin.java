@@ -86,16 +86,16 @@ public class CameraMixin implements IEditCamera {
 
         //Entity entity = MinecraftClient.getInstance().world.getEntityById(((IEntityDataSaver)player).getPersistentData().getInt("JumpscareID"));
 
-        if(MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen screen){
-            Vec3d pos = screen.camPos();
-            float yaw = screen.getYaw();
-            float pitch = screen.getPitch();
-            this.setPos(pos.x, pos.y, pos.z);
-            this.setRotation(yaw, pitch);
-            this.moveBy(this.clipToSpace(0.55f), 0.0f, 0.0f);
-
-            info.cancel();
-        }
+//        if(MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen screen){
+//            Vec3d pos = screen.camPos();
+//            float yaw = screen.getYaw();
+//            float pitch = screen.getPitch();
+//            this.setPos(pos.x, pos.y, pos.z);
+//            this.setRotation(yaw, pitch);
+//            this.moveBy(this.clipToSpace(0.55f), 0.0f, 0.0f);
+//
+//            info.cancel();
+//        }
         //else if(player != null &&
         //        player.isDead() &&
         //        player.getRecentDamageSource() != null &&

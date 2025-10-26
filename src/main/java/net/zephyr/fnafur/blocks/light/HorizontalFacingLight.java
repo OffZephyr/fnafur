@@ -34,7 +34,7 @@ public class HorizontalFacingLight extends HorizontalFacingBlock {
     }
     @Override
     protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
-        if (!world.isClient) {
+        if (!world.isClient()) {
             boolean bl = (Boolean)state.get(LIT);
             if (bl != world.isReceivingRedstonePower(pos)) {
                 if (bl) {

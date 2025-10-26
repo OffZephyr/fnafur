@@ -9,10 +9,12 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.*;
-import net.minecraft.util.shape.VoxelShapes;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
@@ -20,13 +22,16 @@ import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import software.bernie.geckolib.cache.object.GeoQuad;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 @Environment(EnvType.CLIENT)
-public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRenderer<T> implements BlockEntityRenderer<T> {
+public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntityRenderState & GeoRenderState> extends GeoBlockRenderer<T, R> implements BlockEntityRenderer<T, R> {
     MinecraftClient client;
     BlockRenderManager manager;
     float delta = 0;
@@ -43,38 +48,34 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
         manager = client.getBlockRenderManager();
     }
 
-    public void render(T entity, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        entity.item = true;
-        super.render(entity, MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true), matrices, vertexConsumers, light, overlay, client.cameraEntity.getClientCameraPosVec(MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(true)));
-        entity.item = false;
-    }
-
     @Override
-    public GeoRenderState fillRenderState(T animatable, Void relatedObject, GeoRenderState renderState, float partialTick) {
-        GeoRenderState state = super.fillRenderState(animatable, relatedObject, renderState, partialTick);
+    public R fillRenderState(T animatable, Void relatedObject, R renderState, float partialTick) {
+        super.fillRenderState(animatable, relatedObject, renderState, partialTick);
 
         if(animatable.item){
             double time = (System.currentTimeMillis() - ((IGetClientManagers)MinecraftClient.getInstance()).getStartTime()) / 200.0;
             double index = Math.sin(time);
             double alpha = 128 + (64 * index);
-            state.addGeckolibData(DataTickets.RENDER_COLOR, ColorHelper.getArgb((int)alpha, 255, 255, 255));
+            renderState.addGeckolibData(DataTickets.RENDER_COLOR, ColorHelper.getArgb((int)alpha, 255, 255, 255));
         }
 
-        state.addGeckolibData(CustomDataTickets.ENTITY_DATA, ((IEntityDataSaver)animatable).getPersistentData().copy());
-        state.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.getWorld()));
-        state.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.getWorld()));
-        state.addGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE, animatable.getReRenderTexture(animatable.getWorld()));
-        state.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.getWorld()));
-        state.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.item ? RenderLayer.getItemEntityTranslucentCull(animatable.getTexture(animatable.getWorld())) : animatable.getRenderType());
+        renderState.addGeckolibData(CustomDataTickets.ENTITY_DATA, ((IEntityDataSaver)animatable).getPersistentData().copy());
+        renderState.addGeckolibData(CustomDataTickets.FACING, getFacing(animatable));
+        renderState.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.getWorld()));
+        renderState.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.getWorld()));
+        renderState.addGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE, animatable.getReRenderTexture(animatable.getWorld()));
+        renderState.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.getWorld()));
+        renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.item ? RenderLayer.getItemEntityTranslucentCull(animatable.getTexture(animatable.getWorld())) : animatable.getRenderType());
 
-        return state;
+        return renderState;
     }
 
     @Override
-    public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPosition) {
-        BlockPos pos = entity.getPos();
+    public void render(R renderState, MatrixStack matrices, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraRenderState) {
+        BlockPos pos = renderState.pos;
         BlockState state = client.world.getBlockState(pos);
-        NbtCompound nbt = ((IEntityDataSaver)entity).getPersistentData();
+        NbtCompound nbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA);
+        Direction facing = renderState.getGeckolibData(CustomDataTickets.FACING);
 
         if(state.getBlock() instanceof PropBlock<?> block) {
             matrices.push();
@@ -82,7 +83,7 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
             if(!nbt.contains("synced")){
                 ClientPlayNetworking.send(new SyncBlockNbtC2SPayload(pos.asLong()));
 
-                nbt = ((IEntityDataSaver)entity).getPersistentData();
+                nbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA);
             }
 
             float rotation = nbt.getFloat("Rotation").orElse(0f);
@@ -101,9 +102,9 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
                 matrices.translate(0, 0.5f, 0);
                 if(nbt.contains("Rotation")) {
                     matrices.translate(0.5f, 0, 0.5f);
-                    matrices.translate(-0.5f * getFacing(entity).getVector().getX(), 0, -0.5f * getFacing(entity).getVector().getZ());
+                    matrices.translate(-0.5f * facing.getVector().getX(), 0, -0.5f * facing.getVector().getZ());
                     matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
-                    matrices.translate(0.15f * getFacing(entity).getVector().getX(), 0, 0.15f * getFacing(entity).getVector().getZ());
+                    matrices.translate(0.15f * facing.getVector().getX(), 0, 0.15f * facing.getVector().getZ());
                     matrices.translate(-0.5f, 0, -0.5f);
 
                 }
@@ -115,27 +116,38 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity> extends GeoBlockRende
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-rotation));
                 matrices.translate(-0.5f, 0, -0.5f);
             }
-            super.render(entity, tickDelta, matrices, vertexConsumers, light, overlay, cameraPosition);
+            super.render(renderState, matrices, renderTasks, cameraRenderState);
             //this.renderModel(pos, state, matrices, vertexConsumers, entity.getWorld(), false, overlay);
             matrices.pop();
 
-            if(MinecraftClient.getInstance().getEntityRenderDispatcher().shouldRenderHitboxes()) {
+//            if(MinecraftClient.getInstance().getEntityRenderDispatcher().shouldRenderHitboxes()) {
 
-                matrices.push();
-                matrices.translate(-0.5f, 0, -0.5f);
-                if(!block.snapsVertically()) {
-                    matrices.translate(0, -2, 0);
-                    matrices.translate(0, offsetY, 0);
-                }
-                if(state.getBlock() instanceof WallPropBlock<?>) {
-                    matrices.translate(0, 0.5f, 0);
-                }
-                matrices.translate(offsetX, 0, offsetZ);
-                for (Box box : block.getClickHitBoxes(state)) {
-                    VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), VoxelShapes.cuboid(box), 0, 0, 0, 0xFF00FF00);
-                }
-                matrices.pop();
-            }
+//                matrices.push();
+//                matrices.translate(-0.5f, 0, -0.5f);
+//                if(!block.snapsVertically()) {
+//                    matrices.translate(0, -2, 0);
+//                    matrices.translate(0, offsetY, 0);
+                //}
+//                if(state.getBlock() instanceof WallPropBlock<?>) {
+//                    matrices.translate(0, 0.5f, 0);
+                //}
+//                matrices.translate(offsetX, 0, offsetZ);
+//                for (Box box : block.getClickHitBoxes(state)) {
+//                    VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), VoxelShapes.cuboid(box), 0, 0, 0, 0xFF00FF00);
+                //}
+//                matrices.pop();
+//            }
         }
+    }
+    public void renderPreview(R renderState, MatrixStack matrices, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraRenderState) {
+        super.render(renderState, matrices, renderTasks, cameraRenderState);
+    }
+
+    @Override
+    public void createVerticesOfQuad(R renderState, GeoQuad quad, Matrix4f poseState, Vector3f normal, VertexConsumer buffer, int packedOverlay, int packedLight, int renderColor) {
+        if(renderState.hasGeckolibData(DataTickets.RENDER_COLOR)){
+            renderColor = renderState.getGeckolibData(DataTickets.RENDER_COLOR);
+        }
+        super.createVerticesOfQuad(renderState, quad, poseState, normal, buffer, packedOverlay, packedLight, renderColor);
     }
 }

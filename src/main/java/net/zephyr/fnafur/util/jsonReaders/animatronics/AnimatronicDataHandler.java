@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class AnimatronicDataHandler {
     public static String DEFAULT_ANIMATIONS = "";
+    public static Chara DEFAULT_CHARA;
 
     public static final List<String> CATEGORIES = new ArrayList<>();
     public static final Map<String, List<String>> CHARAS_PER_CATEGORY = new HashMap<>();
@@ -27,7 +28,7 @@ public class AnimatronicDataHandler {
     public static final List<String> EMPTY_CATEGORIES = new ArrayList<>();
 
     public static String getPath(String category, String character){
-        return "entity/" + category + "/" + character + "/";
+        return "entity/animatronics/" + category + "/" + character + "/";
     }
     public static Identifier getTexture(Chara chara, String path){
         String category = chara.CATEGORY;
@@ -45,6 +46,14 @@ public class AnimatronicDataHandler {
         }
         return getTexture(chara, id);
     }
+    public static Identifier getEyeMapTexture(String character, String alt, String eye_alt){
+        Chara chara = CHARACTERS.get(character);
+        String id = chara.EYE_ALTS.get(eye_alt).map;
+        if(!chara.ALTS.get(alt).eye_path_subfolder.isEmpty()){
+            id = chara.ALTS.get(alt).eye_path_subfolder + "/" + id;
+        }
+        return getTexture(chara, id);
+    }
     public static Identifier getModel(String character, String alt){
         Chara chara = CHARACTERS.get(character);
         if(chara != null) {
@@ -55,8 +64,41 @@ public class AnimatronicDataHandler {
             }
             return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/" + getPath(category, character) + model + ".geo.json");
         }
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/entity/default/endo_01/endo_01.geo.json");
+        return getDefaultModel();
     }
+
+    public static Identifier getDefaultTexture(String path){
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/" + getPath(DEFAULT_CHARA.CATEGORY, DEFAULT_CHARA.NAME) + path + ".png");
+    }
+    public static Identifier getDefaultAltTexture(){
+        return getDefaultTexture(DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).texture);
+    }
+    public static Identifier getDefaultEyeTexture(){
+        Chara chara = DEFAULT_CHARA;
+        Alt alt = DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT);
+        String id = chara.EYE_ALTS.get(alt.default_eyes).texture;
+        if(!DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).eye_path_subfolder.isEmpty()){
+            id = alt.eye_path_subfolder + "/" + id;
+        }
+        return getDefaultTexture(id);
+    }
+    public static Identifier getDefaultEyeMapTexture(){
+        Alt alt = DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT);
+        String id = DEFAULT_CHARA.EYE_ALTS.get(alt.default_eyes).map;
+        if(!DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).eye_path_subfolder.isEmpty()){
+            id = alt.eye_path_subfolder + "/" + id;
+        }
+        return getDefaultTexture(id);
+    }
+    public static Identifier getDefaultModel() {
+        String category = DEFAULT_CHARA.CATEGORY;
+        String model = DEFAULT_CHARA.MODEL;
+        if (!DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).model_override.isEmpty()) {
+            model = DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).model_override;
+        }
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/" + getPath(category, DEFAULT_CHARA.NAME) + model + ".geo.json");
+    }
+
     public static float getPreviewScale(String character, String alt){
         Chara chara = CHARACTERS.get(character);
         if(chara != null) {
@@ -67,6 +109,9 @@ public class AnimatronicDataHandler {
         return 1;
     }
 
+    public static String getAnimationFilePath(String name){
+        return getAnimationFilePath("loweridle", name);
+    }
     public static String getAnimationFilePath(String currentAnim, String name){
         return prefixAnim(currentAnim, name).getLeft();
     }
@@ -122,5 +167,5 @@ public class AnimatronicDataHandler {
         }
     }
     public record Alt(String texture, String emissive_mask, String default_eyes, String preview_anim, float preview_scale, int colors, String model_override, String eye_path_subfolder){}
-    public record EyesAlt(String texture, String default_glow, int colors){}
+    public record EyesAlt(String texture, String map,String default_glow, int colors){}
 }

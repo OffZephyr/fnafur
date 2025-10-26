@@ -7,6 +7,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.SkullBlockEntityModel;
 import net.minecraft.client.render.block.entity.SkullBlockEntityRenderer;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.HeadFeatureRenderer;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -36,8 +37,8 @@ public class HeadFeatureRendererMixin implements IHeadFeatureRendererAccessor {
 
     }
     @Inject(method = "render", at = @At("HEAD"))
-    <S extends LivingEntityRenderState, M extends EntityModel<S> & ModelWithHead> void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, S livingEntityRenderState, float f, float g, CallbackInfo ci){
-        ItemRenderingHook.renderOnHead(((HeadFeatureRenderer)(Object)this), matrixStack, vertexConsumerProvider, i, livingEntityRenderState, f, g);
+    <S extends LivingEntityRenderState, M extends EntityModel<S> & ModelWithHead> void render(MatrixStack matrixStack, OrderedRenderCommandQueue orderedRenderCommandQueue, int i, S livingEntityRenderState, float f, float g, CallbackInfo ci){
+        ItemRenderingHook.renderOnHead(((HeadFeatureRenderer)(Object)this), matrixStack, orderedRenderCommandQueue, i, livingEntityRenderState, f, g);
     }
 
     @Override

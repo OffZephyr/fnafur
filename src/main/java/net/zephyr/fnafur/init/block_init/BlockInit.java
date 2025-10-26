@@ -19,8 +19,6 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
-import net.zephyr.fnafur.blocks.camera.CameraBlock;
-import net.zephyr.fnafur.blocks.camera.CameraBlockRenderer;
 import net.zephyr.fnafur.blocks.decorations.BackstageShelfBlock;
 import net.zephyr.fnafur.blocks.decorations.WarehouseShelfBlock;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
@@ -154,17 +152,6 @@ public class BlockInit {
                     .nonOpaque()
     );
 
-    public static final Block CAMERA = registerBlock(
-            "camera",
-            CameraBlock::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .noCollision()
-    );
     public static final Block FOG_BLOCK = registerBlock(
             "fog_block",
             FogBlock::new,
@@ -1138,10 +1125,6 @@ public class BlockInit {
     }
 
     public static void registerBlocksOnClient() {
-        EntityModelLayerRegistry.registerModelLayer(JavaModels.CAMERA_HEAD, CameraBlockRenderer::getTexturedModelData);
-        BlockEntityRendererFactories.register(BlockEntityInit.CAMERA, CameraBlockRenderer::new);
-
-        BlockRenderLayerMap.putBlock(BlockInit.CAMERA, BlockRenderLayer.CUTOUT);
 
         BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_DIAGONAL, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.CPU_CONFIG_PANEL, BlockRenderLayer.CUTOUT);

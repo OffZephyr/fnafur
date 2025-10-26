@@ -32,7 +32,7 @@ public class SeatEntity extends Entity {
 
     @Override
     public Vec3d getPassengerRidingPos(Entity passenger) {
-        return this.getPos();
+        return this.getEntityPos();
     }
 
     @Override
@@ -55,10 +55,10 @@ public class SeatEntity extends Entity {
 
         BlockPos pos = BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("chair").orElse(0L));
         int timer = ((IEntityDataSaver) this).getPersistentData().getInt("despawnTimer").orElse(0);
-        if (!hasPassengers() || getWorld().getBlockState(pos).isOf(Blocks.AIR)) {
+        if (!hasPassengers() || getEntityWorld().getBlockState(pos).isOf(Blocks.AIR)) {
             if (timer >= 5) {
 
-                if (getWorld().getBlockEntity(pos) instanceof BlockEntity ent) {
+                if (getEntityWorld().getBlockEntity(pos) instanceof BlockEntity ent) {
                     ((IEntityDataSaver) ent).getPersistentData().putBoolean("playerSitting", false);
                 }
                 remove(RemovalReason.DISCARDED);
@@ -77,7 +77,7 @@ public class SeatEntity extends Entity {
     public void onRemove(RemovalReason reason) {
 
         BlockPos pos = BlockPos.fromLong(((IEntityDataSaver)this).getPersistentData().getLong("chair").orElse(0L));
-        if(getWorld().getBlockEntity(pos) instanceof BlockEntity ent){
+        if(getEntityWorld().getBlockEntity(pos) instanceof BlockEntity ent){
             ((IEntityDataSaver)ent).getPersistentData().putBoolean("playerSitting", false);
         }
         super.onRemove(reason);

@@ -1,8 +1,10 @@
 package net.zephyr.fnafur.util;
 
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 
 public class CustomDataTickets {
@@ -12,7 +14,10 @@ public class CustomDataTickets {
     public static final DataTicket<Identifier> RE_RENDER_MODEL = DataTicket.create("re_render_model", Identifier.class);
     public static final DataTicket<Identifier> ANIMATIONS = DataTicket.create("animations", Identifier.class);
     public static final DataTicket<Boolean> USE_EYE_TEXTURE = DataTicket.create("use_eye_texture", Boolean.class);
+    public static final DataTicket<Boolean> IS_EYE_BONE = DataTicket.create("is_eye_bone", Boolean.class);
     public static final DataTicket<Identifier> EYE_TEXTURE = DataTicket.create("eye_texture", Identifier.class);
+    public static final DataTicket<Identifier> EYE_MAP_TEXTURE = DataTicket.create("eye_map_texture", Identifier.class);
+    public static final DataTicket<Identifier> SUIT_MAP_TEXTURE = DataTicket.create("suit_map_texture", Identifier.class);
     public static final DataTicket<Boolean> EYE_NONE = DataTicket.create("eye_none", Boolean.class);
     public static final DataTicket<RenderLayer> RENDER_LAYER = DataTicket.create("render_layer", RenderLayer.class);
     public static final DataTicket<Identifier> DOOR_WINDOW_TEXTURE = DataTicket.create("door_window_texture", Identifier.class);
@@ -26,4 +31,7 @@ public class CustomDataTickets {
     public static final DataTicket<String> ENTITY_CHARA = DataTicket.create("entity_chara", String.class);
     public static final DataTicket<String> ENTITY_ALT = DataTicket.create("entity_alt", String.class);
     public static final DataTicket<String> ENTITY_EYES = DataTicket.create("entity_eyes", String.class);
+    public static final DataTicket<Boolean> IS_VISIBLE = DataTicket.create("is_visible", Boolean.class);
+    public static final DataTicket<Direction> FACING = DataTicket.create("facing", Direction.class);
+    public static final DataTicket<MatrixStack.Entry> ENTITY_RENDER_MATRIX_ENTRY = DataTicket.create("entity_matrix_entry", MatrixStack.Entry.class);
 }

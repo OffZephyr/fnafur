@@ -22,11 +22,13 @@
            "alts":{
                "default": {
                    "texture": "eyes/cl_chica_eye_pink",
+                   "map": "eyes/cl_chica_eyemap",
                    "default_glow": "dot",
                    "colors": 0
                },
                "black": {
                    "texture": "eyes/cl_chica_eye_full_black",
+                   "map": "eyes/cl_chica_eyemap",
                    "default_glow": "dot",
                    "colors": 0
                }

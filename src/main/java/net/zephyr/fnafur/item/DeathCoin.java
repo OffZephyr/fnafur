@@ -18,17 +18,17 @@ public class DeathCoin extends Item {
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(target.getWorld() instanceof ServerWorld level) {
+        if(target.getEntityWorld() instanceof ServerWorld level) {
             double width = target.getBoundingBox().getLengthX() / 2f;
             double height = target.getBoundingBox().getLengthY() / 2f;
             double amount = (height + 1) * 100f;
 
             level.spawnParticles(ParticlesInit.FOG_PARTICLE, target.getX(), (target.getY() + height), target.getZ(), (int)amount, width, height, width, 0.15);
         }
-        target.getWorld().playSound(target, target.getBlockPos(), SoundEvents.ENTITY_WIND_CHARGE_WIND_BURST.value(), SoundCategory.PLAYERS, 1, 0);
+        target.getEntityWorld().playSound(target, target.getBlockPos(), SoundEvents.ENTITY_WIND_CHARGE_WIND_BURST.value(), SoundCategory.PLAYERS, 1, 0);
 
-        if(target instanceof PlayerEntity ent && ent.getWorld() instanceof ServerWorld serverWorld){
-            ent.damage(serverWorld, ent.getWorld().getDamageSources().generic(), 999999999);
+        if(target instanceof PlayerEntity ent && ent.getEntityWorld() instanceof ServerWorld serverWorld){
+            ent.damage(serverWorld, ent.getEntityWorld().getDamageSources().generic(), 999999999);
         }
         else {
             target.remove(Entity.RemovalReason.DISCARDED);

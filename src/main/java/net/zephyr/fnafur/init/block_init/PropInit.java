@@ -517,7 +517,7 @@ public class PropInit {
     public static final Block SCONCE = registerBlock(
             "sconce",
             Sconce::new,
-            AbstractBlock.Settings.copy(Blocks.CHAIN)
+            AbstractBlock.Settings.copy(Blocks.IRON_CHAIN)
                     .nonOpaque()
                     .luminance(Blocks.createLightLevelFromLitBlockState(10))
                     .allowsSpawning(Blocks::never)
@@ -533,7 +533,7 @@ public class PropInit {
     public static final Block HANGING_LIGHT = registerBlock(
             "hanging_light",
             ChainLight::new,
-            AbstractBlock.Settings.copy(Blocks.CHAIN)
+            AbstractBlock.Settings.copy(Blocks.IRON_CHAIN)
                     .nonOpaque()
                     .luminance(state -> (state.get(Properties.LIT) && !state.get(ChainLight.CHAIN)) ? 12 : 0 )
                     .allowsSpawning(Blocks::never)
@@ -546,7 +546,7 @@ public class PropInit {
     public static final Block SPOT_LIGHT = registerBlock(
             "spot_light",
             HorizontalFacingLight::new,
-            AbstractBlock.Settings.copy(Blocks.CHAIN)
+            AbstractBlock.Settings.copy(Blocks.IRON_CHAIN)
                     .nonOpaque()
                     .luminance(Blocks.createLightLevelFromLitBlockState(12))
                     .allowsSpawning(Blocks::never)
@@ -559,7 +559,7 @@ public class PropInit {
     public static final Block HANGING_LIGHTBULB = registerBlock(
             "hanging_lightbulb",
             ChainLight::new,
-            AbstractBlock.Settings.copy(Blocks.CHAIN)
+            AbstractBlock.Settings.copy(Blocks.IRON_CHAIN)
                     .nonOpaque()
                     .luminance(state -> (state.get(Properties.LIT) && !state.get(ChainLight.CHAIN)) ? 10 : 0 )
                     .allowsSpawning(Blocks::never)

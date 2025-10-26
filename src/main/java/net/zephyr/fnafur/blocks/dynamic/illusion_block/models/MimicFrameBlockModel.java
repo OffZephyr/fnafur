@@ -106,7 +106,8 @@ public class MimicFrameBlockModel extends StickerBlockModel {
     public void emitSide(QuadEmitter emitter, NbtCompound nbt, Direction direction, Block sideBlock, BlockPos pos, boolean reColor, int matrixSize, int x, int y, int z, int colorIndex) {
 
         int frameSize = matrixSize * matrixSize;
-        Sprite frame = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_" + frameSize)).getSprite();
+
+        Sprite frame = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_" + frameSize)));
 
         if (frame == null) return;
 
@@ -201,7 +202,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                                 0;
                 int num = dirPos % decal.getTextures().length;
                 Identifier identifier = decal.getTextures()[num];
-                Sprite sprite = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier).getSprite();
+                Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier));
 
                 float Offset = offset_list.getFloat(i).orElse(0f);
                 float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;

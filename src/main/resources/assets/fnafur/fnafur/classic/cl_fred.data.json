@@ -42,21 +42,25 @@
            "alts":{
                "default": {
                    "texture": "eyes/cl_fred_eye_blue",
+                   "map": "eyes/cl_fred_eyemap",
                    "default_glow": "dot",
                    "colors": 0
                },
                "brown": {
                    "texture": "eyes/cl_fred_eye_brown",
+                   "map": "eyes/cl_fred_eyemap",
                    "default_glow": "dot",
                    "colors": 0
                },
                "black": {
                    "texture": "eyes/cl_fred_eye_full_black",
+                   "map": "eyes/cl_fred_eyemap",
                    "default_glow": "dot",
                    "colors": 0
                },
                "white": {
                    "texture": "eyes/cl_fred_eye_full_white",
+                   "map": "eyes/cl_fred_eyemap",
                    "default_glow": "all",
                    "colors": 0
                }

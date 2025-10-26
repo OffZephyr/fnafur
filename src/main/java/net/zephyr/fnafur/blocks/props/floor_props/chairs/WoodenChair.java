@@ -29,7 +29,7 @@ public class WoodenChair extends FloorPropBlock<DefaultPropColorEnum> implements
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(!isUsed(world, pos) && player.getMainHandStack().isEmpty()){
-            if(player.getPos().distanceTo(hit.getPos()) < 1.25f) {
+            if(player.getEntityPos().distanceTo(hit.getPos()) < 1.25f) {
                 player.startRiding(sit(player, pos));
                 return ActionResult.SUCCESS;
             }

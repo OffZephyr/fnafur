@@ -116,10 +116,10 @@ public class GameRendererMixin implements IPostProcessorLoader {
 
     @Override
     public void clearPostProcessor() {
-        PostEffectProcessor postProcessor = this.client.getShaderLoader().loadPostEffect(this.postProcessorId, DefaultFramebufferSet.MAIN_ONLY);
-        if (postProcessor != null) {
+        //PostEffectProcessor postProcessor = this.client.getShaderLoader().loadPostEffect(this.postProcessorId, DefaultFramebufferSet.MAIN_ONLY);
+        //if (postProcessor != null) {
             //this.postProcessor.close();
-        }
+        //}
     }
     @Override
     public PostEffectProcessor getMonitorPostProcessor(Framebuffer framebuffer) {

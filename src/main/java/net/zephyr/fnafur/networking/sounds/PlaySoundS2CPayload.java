@@ -24,7 +24,7 @@ public record PlaySoundS2CPayload(int entityID, String name, float volume, float
 
     public static void receive(PlaySoundS2CPayload payload, ClientPlayNetworking.Context context) {
         context.client().execute(() -> {
-            Entity entity = context.player().getWorld().getEntityById(payload.entityID());
+            Entity entity = context.player().getEntityWorld().getEntityById(payload.entityID());
             if(entity != null) {
                 SoundEvent soundEvent = SoundsInit.getSound(payload.name());
 

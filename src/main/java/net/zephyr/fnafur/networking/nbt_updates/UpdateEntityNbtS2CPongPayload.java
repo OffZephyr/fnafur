@@ -19,7 +19,7 @@ public record UpdateEntityNbtS2CPongPayload(int entityID, NbtCompound data) impl
             UpdateEntityNbtS2CPongPayload::new);
 
     public static void receive(UpdateEntityNbtS2CPongPayload payload, ClientPlayNetworking.Context context) {
-        Entity entity = context.player().getWorld().getEntityById(payload.entityID());
+        Entity entity = context.player().getEntityWorld().getEntityById(payload.entityID());
         if(entity != null) {
             ((IEntityDataSaver) entity).getPersistentData().copyFrom(payload.data());
             ((IEntityDataSaver) entity).getPersistentData().putBoolean("synced", true);

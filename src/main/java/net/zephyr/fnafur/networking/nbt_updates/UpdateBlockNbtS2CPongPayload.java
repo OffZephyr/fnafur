@@ -24,8 +24,8 @@ public record UpdateBlockNbtS2CPongPayload(long pos, NbtCompound data) implement
             UpdateBlockNbtS2CPongPayload::new);
 
     public static void receive(UpdateBlockNbtS2CPongPayload payload, ClientPlayNetworking.Context context) {
-        BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
-        context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos), context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos())));
+        BlockEntity entity = context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
+        context.player().getEntityWorld().setBlockState(BlockPos.fromLong(payload.pos), context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos())));
         if (entity == null) return;
         ((IEntityDataSaver) entity).setServerUpdateStatus(false);
         NbtCompound newNbt = payload.data().copy();
@@ -33,9 +33,9 @@ public record UpdateBlockNbtS2CPongPayload(long pos, NbtCompound data) implement
         ((IEntityDataSaver) entity).setPersistentData(newNbt);
         entity.markDirty();
 
-        BlockState state = context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos));
-        context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos), state, Block.NOTIFY_ALL_AND_REDRAW);
-        context.player().getWorld().updateListeners(BlockPos.fromLong(payload.pos), state, state, Block.NOTIFY_ALL_AND_REDRAW);
+        BlockState state = context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos));
+        context.player().getEntityWorld().setBlockState(BlockPos.fromLong(payload.pos), state, Block.NOTIFY_ALL_AND_REDRAW);
+        context.player().getEntityWorld().updateListeners(BlockPos.fromLong(payload.pos), state, state, Block.NOTIFY_ALL_AND_REDRAW);
         //context.player().sendMessage(Text.literal("§9" +"SYNC CLIENT"), false);
     }
 

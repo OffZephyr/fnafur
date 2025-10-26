@@ -8,12 +8,15 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.networking.entity.player.UpdateMaskStateC2SPayload;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateCrawlingC2SPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.lwjgl.glfw.GLFW;
 
 public class KeyInputHandler {
+    public static final KeyBinding.Category FNAF_UR =  KeyBinding.Category.create(Identifier.of(FnafUniverseRebuilt.MOD_ID, "base_category"));
     public static final String KEY_CRAWL = "key.fnafur.crawl";
 
     public static final String KEY_MASK = "key.fnafur.mask";
@@ -46,8 +49,8 @@ public class KeyInputHandler {
     }
 
     public static void register() {
-        crawlKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(KEY_CRAWL, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, KeyBinding.MOVEMENT_CATEGORY));
-        maskKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(KEY_MASK, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R, KeyBinding.MISC_CATEGORY));
+        crawlKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(KEY_CRAWL, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, FNAF_UR));
+        maskKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(KEY_MASK, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R, FNAF_UR));
 
         registerKeyInputs();
     }

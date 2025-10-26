@@ -1,21 +1,23 @@
 package net.zephyr.fnafur.particles;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
 
 import java.util.Random;
 
-public class FogParticle extends SpriteBillboardParticle {
+public class FogParticle extends BillboardParticle {
 
-    protected FogParticle(ClientWorld clientWorld, double d, double e, double f,
-                          SpriteProvider spriteSet, double g, double h, double i) {
-        super(clientWorld, d, e, f, g, h, i);
+    protected FogParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Sprite sprite) {
+        super(world, x, y, z, velocityX, velocityY, velocityZ, sprite);
 
         this.velocityMultiplier = 0.6f;
-        this.x = d;
-        this.y = e;
-        this.z = f;
+        this.x = x;
+        this.y = y;
+        this.z = z;
         Random random = new Random();
         float speed = 0.5f;
         this.velocityX = random.nextDouble(-speed, speed);
@@ -23,7 +25,7 @@ public class FogParticle extends SpriteBillboardParticle {
         this.velocityZ = random.nextDouble(-speed, speed);
         this.scale *= random.nextFloat(2f, 5f);
         this.maxAge = 20;
-        this.setSpriteForAge(spriteSet);
+        this.sprite = sprite;
 
         this.red = 1f;
         this.green = 1f;
@@ -41,19 +43,20 @@ public class FogParticle extends SpriteBillboardParticle {
     }
 
     @Override
-    public ParticleTextureSheet getType() {
-        return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+    protected RenderType getRenderType() {
+        return RenderType.PARTICLE_ATLAS_TRANSLUCENT;
     }
 
-
+    @Environment(EnvType.CLIENT)
     public static class Factory implements ParticleFactory<SimpleParticleType> {
-        private final SpriteProvider sprites;
-        public Factory(SpriteProvider spriteSet) {
-            this.sprites = spriteSet;
+        private final SpriteProvider spriteProvider;
+
+        public Factory(SpriteProvider spriteProvider) {
+            this.spriteProvider = spriteProvider;
         }
-        public Particle createParticle(SimpleParticleType particleType, ClientWorld world, double x, double y, double z,
-                                       double dx, double dy, double dz) {
-            return new FogParticle(world, x, y, z, this.sprites, dx, dy, dz);
+
+        public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i, net.minecraft.util.math.random.Random random) {
+            return new FogParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider.getSprite(random));
         }
     }
 }

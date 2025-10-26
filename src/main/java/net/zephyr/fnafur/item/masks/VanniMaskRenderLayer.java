@@ -21,8 +21,14 @@ public class VanniMaskRenderLayer<T extends Item & GeoAnimatable, O, R extends G
     }
 
     @Override
-    public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
-        RenderLayer glowRenderType = RenderLayer.getEntityTranslucentEmissive(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/item/masks/vanni_mask_e.png"));
-        getRenderer().reRender(renderState, poseStack, bakedModel, bufferSource, glowRenderType, bufferSource.getBuffer(glowRenderType), packedLight, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
+    protected Identifier getTextureResource(R renderState) {
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/item/masks/vanni_mask_e.png");
     }
+
+//    @Override
+//    public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
+//
+//        RenderLayer glowRenderType = RenderLayer.getEntityTranslucentEmissive(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/item/masks/vanni_mask_e.png"));
+//        getRenderer().reRender(renderState, poseStack, bakedModel, bufferSource, glowRenderType, bufferSource.getBuffer(glowRenderType), packedLight, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
+//    }
 }

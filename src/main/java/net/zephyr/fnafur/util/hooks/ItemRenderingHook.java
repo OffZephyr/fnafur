@@ -8,6 +8,8 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.SkullBlockEntityModel;
 import net.minecraft.client.render.block.entity.SkullBlockEntityRenderer;
+import net.minecraft.client.render.command.ModelCommandRenderer;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.HeadFeatureRenderer;
@@ -23,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Direction;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.util.mixinAccessing.IHeadFeatureRendererAccessor;
@@ -41,7 +44,7 @@ public class ItemRenderingHook {
             ItemStack item,
             float equipProgress,
             MatrixStack matrices,
-            VertexConsumerProvider vertexConsumers,
+            OrderedRenderCommandQueue orderedRenderCommandQueue,
             int light,
             HeldItemRenderer renderer
     ) {
@@ -72,17 +75,17 @@ public class ItemRenderingHook {
             int l = bl2 ? 1 : -1;
 
             matrices.push();
-            renderArm(matrices, vertexConsumers, light, Arm.LEFT);
+            renderArm(matrices, orderedRenderCommandQueue, light, Arm.LEFT);
             matrices.pop();
             matrices.push();
-            renderArm(matrices, vertexConsumers, light, Arm.RIGHT);
+            renderArm(matrices, orderedRenderCommandQueue, light, Arm.RIGHT);
             matrices.pop();
 
 
             ((IHeldItemAccessor)renderer).doSwingArm(0, 0, matrices, l, arm);
 
             renderer.renderItem(
-                    player, maskStack, bl2 ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND, matrices, vertexConsumers, light
+                    player, maskStack, bl2 ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND, matrices, orderedRenderCommandQueue, light
             );
             matrices.pop();
 
@@ -96,13 +99,13 @@ public class ItemRenderingHook {
         return false;
     }
 
-    public static void renderArm(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, Arm arm){
+    public static void renderArm(MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light, Arm arm){
         boolean bl = arm != Arm.LEFT;
 
         AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
         PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer)MinecraftClient.getInstance().getEntityRenderDispatcher()
                 .<AbstractClientPlayerEntity>getRenderer(abstractClientPlayerEntity);
-        Identifier identifier = abstractClientPlayerEntity.getSkinTextures().texture();
+        Identifier identifier = abstractClientPlayerEntity.getSkin().body().texturePath();
         if (bl) {
             //playerEntityRenderer.renderRightArm(matrices, vertexConsumers, light, identifier, abstractClientPlayerEntity.isPartVisible(PlayerModelPart.RIGHT_SLEEVE));
         } else {
@@ -110,7 +113,7 @@ public class ItemRenderingHook {
         }
     }
 
-    public static <S extends LivingEntityRenderState, M extends EntityModel<S> & ModelWithHead> void renderOnHead(HeadFeatureRenderer<S, M> fRenderer, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, S livingEntityRenderState, float f, float g){
+    public static <S extends LivingEntityRenderState, M extends EntityModel<S> & ModelWithHead> void renderOnHead(HeadFeatureRenderer<S, M> fRenderer, MatrixStack matrixStack, OrderedRenderCommandQueue orderedRenderCommandQueue, int i, S livingEntityRenderState, float f, float g){
         ItemRenderState maskItemRenderState = ((ILivingEntityMaskRenderState)livingEntityRenderState).getState();
 
         if (!maskItemRenderState.isEmpty()) {
@@ -130,13 +133,11 @@ public class ItemRenderingHook {
                 matrixStack.translate(-0.5, 0.0, -0.5);
                 SkullBlock.SkullType skullType = livingEntityRenderState.wearingSkullType;
                 SkullBlockEntityModel skullBlockEntityModel = (SkullBlockEntityModel) ((IHeadFeatureRendererAccessor)fRenderer).getHeadModels().apply(skullType);
-                RenderLayer renderLayer = SkullBlockEntityRenderer.getRenderLayer(skullType, livingEntityRenderState.wearingSkullProfile);
-                SkullBlockEntityRenderer.renderSkull(
-                        null, 180.0F, livingEntityRenderState.headItemAnimationProgress, matrixStack, vertexConsumerProvider, i, skullBlockEntityModel, renderLayer
-                );
+                RenderLayer renderLayer = fRenderer.getRenderLayer(livingEntityRenderState, skullType);
+                SkullBlockEntityRenderer.render((Direction)null, 180.0F, livingEntityRenderState.headItemAnimationProgress, matrixStack, orderedRenderCommandQueue, i, skullBlockEntityModel, renderLayer, livingEntityRenderState.outlineColor, (ModelCommandRenderer.CrumblingOverlayCommand)null);
             } else {
                 ((IHeadFeatureRendererAccessor)fRenderer).doTranslate(matrixStack, ((IHeadFeatureRendererAccessor)fRenderer).getHeadTransformation());
-                maskItemRenderState.render(matrixStack, vertexConsumerProvider, i, OverlayTexture.DEFAULT_UV);
+                maskItemRenderState.render(matrixStack, orderedRenderCommandQueue, i, OverlayTexture.DEFAULT_UV, livingEntityRenderState.outlineColor);
             }
 
             matrixStack.pop();

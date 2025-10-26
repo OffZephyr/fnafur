@@ -91,7 +91,7 @@ public class AnimatronicEntityBackup extends PathAwareEntity implements GeoEntit
 
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-        ActionResult result = this.tryEndLink(player, getWorld(), getBlockPos());
+        ActionResult result = this.tryEndLink(player, getEntityWorld(), getBlockPos());
         if(result != null) return result;
         return super.interactAt(player, hitPos, hand);
     }
@@ -203,7 +203,7 @@ public class AnimatronicEntityBackup extends PathAwareEntity implements GeoEntit
             age++;
         }
 
-        if(!getWorld().isClient()) {
+        if(!getEntityWorld().isClient()) {
             ((IEntityDataSaver) this).getPersistentData().putString("getupAnim", "");
             if(getSources().isEmpty()) {
                 turnToBlock(null, null);
@@ -216,7 +216,7 @@ public class AnimatronicEntityBackup extends PathAwareEntity implements GeoEntit
                         turnToBlock(ent, ent2);
                         return;
                     }
-                    if(getWorld().getBlockEntity(readerPos) instanceof ChipReaderBlockEntity ent3){
+                    if(getEntityWorld().getBlockEntity(readerPos) instanceof ChipReaderBlockEntity ent3){
                         if((((IEntityDataSaver)ent3).getPersistentData().getCompound("cpu").orElse(new NbtCompound()).isEmpty())){
                             turnToBlock(ent, ent2);
                             return;
@@ -243,7 +243,7 @@ public class AnimatronicEntityBackup extends PathAwareEntity implements GeoEntit
             if(ent instanceof ServerMonitorBlockEntity ent2){
                 BlockPos readerPos = ent2.getActiveChipReaderPos();
                 if(readerPos != null){
-                    if(getWorld().getBlockEntity(readerPos) instanceof ChipReaderBlockEntity ent3){
+                    if(getEntityWorld().getBlockEntity(readerPos) instanceof ChipReaderBlockEntity ent3){
                         return ((IEntityDataSaver)ent3).getPersistentData().getCompoundOrEmpty("cpu");
                     }
                 }
@@ -253,9 +253,9 @@ public class AnimatronicEntityBackup extends PathAwareEntity implements GeoEntit
     }
 
     void turnToBlock(@Nullable IEntityDataSaver ent, @Nullable ServerMonitorBlockEntity ent2){
-        getWorld().setBlockState(getBlockPos(), BlockInit.ANIMATRONIC_BLOCK.getDefaultState().with(AnimatronicBlock.POSES, AnimatronicBlock.getPose(getWorld(), getBlockPos(), getHorizontalFacing())));
+        getEntityWorld().setBlockState(getBlockPos(), BlockInit.ANIMATRONIC_BLOCK.getDefaultState().with(AnimatronicBlock.POSES, AnimatronicBlock.getPose(getEntityWorld(), getBlockPos(), getHorizontalFacing())));
 
-        if(getWorld().getBlockEntity(getBlockPos()) instanceof AnimatronicBlockEntity anim){
+        if(getEntityWorld().getBlockEntity(getBlockPos()) instanceof AnimatronicBlockEntity anim){
             NbtCompound thisData = ((IEntityDataSaver)this).getPersistentData();
             ((IEntityDataSaver)anim).getPersistentData().copyFrom(thisData);
 
@@ -268,10 +268,10 @@ public class AnimatronicEntityBackup extends PathAwareEntity implements GeoEntit
                     if(source instanceof BlockEntity be)
                     {
                         ((BlockEntity) source).markDirty() ;
-                        ((LinkSource)source).updateSources(getWorld(), be.getPos());
+                        ((LinkSource)source).updateSources(getEntityWorld(), be.getPos());
                     }
                 }
-                GoopyNetworkingUtils.saveBlockNbt(anim.getPos(), ((IEntityDataSaver)anim).getPersistentData(), getWorld());
+                GoopyNetworkingUtils.saveBlockNbt(anim.getPos(), ((IEntityDataSaver)anim).getPersistentData(), getEntityWorld());
             }
 
             remove(RemovalReason.DISCARDED);
@@ -379,7 +379,7 @@ public class AnimatronicEntityBackup extends PathAwareEntity implements GeoEntit
 
     public String prefixAnim(String animation){
         currentAnim = animation;
-        Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, getAnimationsPath(getWorld()));
+        Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, getAnimationsPath(getEntityWorld()));
         Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations();
         BakedAnimations bakedAnimations = animations.get(location);
 

@@ -23,8 +23,8 @@ public record UpdateBlockNbtC2SPayload(long pos, NbtCompound data) implements Cu
             UpdateBlockNbtC2SPayload::new);
 
     public static void receive(UpdateBlockNbtC2SPayload payload, ServerPlayNetworking.Context context) {
-        BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
-        context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos), context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos())));
+        BlockEntity entity = context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
+        context.player().getEntityWorld().setBlockState(BlockPos.fromLong(payload.pos), context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos())));
         if (entity == null) return;
         ((IEntityDataSaver) entity).setPersistentData(payload.data());
         entity.markDirty();

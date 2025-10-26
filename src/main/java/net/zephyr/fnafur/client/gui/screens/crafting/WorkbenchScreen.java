@@ -2,6 +2,7 @@ package net.zephyr.fnafur.client.gui.screens.crafting;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.SpawnReason;
@@ -309,7 +310,7 @@ public class WorkbenchScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
 
         switch (tab) {
             case 2: {
@@ -321,7 +322,7 @@ public class WorkbenchScreen extends GoopyScreen {
                     int sX = windowX - sWidth + 242;
                     int sY = windowY + 6 + 14 * i;
 
-                    if(isOnButton(mouseX, mouseY, sX - 2, sY - 2, sWidth + 4, 13)){
+                    if(isOnButton(click.x(), click.y(), sX - 2, sY - 2, sWidth + 4, 13)){
                         if (suit_subtab.isEmpty()) {
                             if(s.equals("<<NONE>>")){
 
@@ -366,8 +367,8 @@ public class WorkbenchScreen extends GoopyScreen {
                                         eye_colors[j][2] = 255;
                                     }
 
-                                    updateColors(mouseX, mouseY);
-                                    updateEyeColors(mouseX, mouseY);
+                                    updateColors(click.x(), click.y());
+                                    updateEyeColors(click.x(), click.y());
                                 }
                                 else{
                                     this.chara = "";
@@ -384,7 +385,7 @@ public class WorkbenchScreen extends GoopyScreen {
                 break;
             }
             case 3: {
-                updateColors(mouseX, mouseY);
+                updateColors(click.x(), click.y());
                 for (int i = 0; i < right_list.length; i++) {
 
                     String s = (String) right_list[i];
@@ -393,7 +394,7 @@ public class WorkbenchScreen extends GoopyScreen {
                     int sX = windowX - sWidth + 242;
                     int sY = windowY + 6 + 14 * i;
 
-                    if(isOnButton(mouseX, mouseY, sX - 2, sY - 2, sWidth + 4, 13)) {
+                    if(isOnButton(click.x(), click.y(), sX - 2, sY - 2, sWidth + 4, 13)) {
 
                         this.alt = s;
                         CharacterModelManager.DataEntry.Alt alt = CharacterModelManager.CHARA_ALT_MAP.get(CharacterModelManager.ALL_CHARACTERS.get(this.chara)).get(this.alt);
@@ -423,7 +424,7 @@ public class WorkbenchScreen extends GoopyScreen {
                 break;
             }
             case 4: {
-                updateEyeColors(mouseX, mouseY);
+                updateEyeColors(click.x(), click.y());
                 for (int i = 0; i < right_list.length; i++) {
 
                     String s = (String) right_list[i];
@@ -432,7 +433,7 @@ public class WorkbenchScreen extends GoopyScreen {
                     int sX = windowX - sWidth + 242;
                     int sY = windowY + 6 + 14 * i;
 
-                    if(isOnButton(mouseX, mouseY, sX - 2, sY - 2, sWidth + 4, 13)) {
+                    if(isOnButton(click.x(), click.y(), sX - 2, sY - 2, sWidth + 4, 13)) {
 
                         if(!this.chara.isEmpty() && !this.alt.isEmpty()) {
                             this.eyes = s;
@@ -453,18 +454,18 @@ public class WorkbenchScreen extends GoopyScreen {
                 break;
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
         if(tab == 3){
-            updateColors(mouseX, mouseY);
+            updateColors(click.x(), click.y());
         }
         if(tab == 4){
-            updateEyeColors(mouseX, mouseY);
+            updateEyeColors(click.x(), click.y());
         }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.mouseDragged(click, offsetX, offsetY);
     }
 
     void updateColors(double mouseX, double mouseY){
@@ -614,8 +615,8 @@ public class WorkbenchScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return super.mouseReleased(mouseX, mouseY, button);
+    public boolean mouseReleased(Click click) {
+        return super.mouseReleased(click);
     }
 
     @Override

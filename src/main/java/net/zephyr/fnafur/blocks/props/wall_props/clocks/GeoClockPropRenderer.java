@@ -8,8 +8,10 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.RotationAxis;
+import net.zephyr.fnafur.blocks.common_block_entity.CommonBlockEntityRenderState;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -18,7 +20,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
-public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity> extends GeoPropRenderer<T> {
+public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity, R extends CommonBlockEntityRenderState & GeoRenderState> extends GeoPropRenderer<T, R> {
     MinecraftClient client;
     BlockRenderManager manager;
     public GeoClockPropRenderer(BlockEntityRendererFactory.Context context) {
@@ -28,18 +30,16 @@ public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity> extends Geo
     }
 
     @Override
-    public GeoRenderState fillRenderState(T animatable, Void relatedObject, GeoRenderState renderState, float partialTick) {
-
-        GeoRenderState state = super.fillRenderState(animatable, relatedObject, renderState, partialTick);
+    public R fillRenderState(T animatable, Void relatedObject, R renderState, float partialTick) {
+        R state = super.fillRenderState(animatable, relatedObject, renderState, partialTick);
 
         state.addGeckolibData(CustomDataTickets.CLOCK_DELTA_MINUTE, animatable.deltaMinute);
         state.addGeckolibData(CustomDataTickets.CLOCK_DELTA_HOUR, animatable.deltaHour);
 
         return state;
     }
-
     @Override
-    public void renderRecursively(GeoRenderState renderState, MatrixStack poseStack, GeoBone bone, RenderLayer renderType, VertexConsumerProvider bufferSource, VertexConsumer buffer, boolean isReRender, int packedLight, int packedOverlay, int renderColor) {
+    public void renderBone(R renderState, MatrixStack poseStack, GeoBone bone, VertexConsumer buffer, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
         poseStack.push();
 
         float deltaMinute = renderState.getGeckolibData(CustomDataTickets.CLOCK_DELTA_MINUTE).floatValue();
@@ -65,7 +65,7 @@ public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity> extends Geo
             poseStack.translate(0, -0.5f, 0);
         }
 
-        super.renderRecursively(renderState, poseStack, bone, renderType, bufferSource, buffer, isReRender, packedLight, packedOverlay, renderColor);
+        super.renderBone(renderState, poseStack, bone, buffer, cameraState, packedLight, packedOverlay, renderColor);
         poseStack.pop();
     }
 }

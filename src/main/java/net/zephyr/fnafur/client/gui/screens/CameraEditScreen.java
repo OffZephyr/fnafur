@@ -3,15 +3,15 @@ package net.zephyr.fnafur.client.gui.screens;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 
 import java.util.ArrayList;
@@ -100,9 +100,9 @@ public class CameraEditScreen extends GoopyScreen {
 
     @Override
     public void tick() {
-        if(!(MinecraftClient.getInstance().world.getBlockEntity(getBlockPos()) instanceof CameraBlockEntity)) {
-            MinecraftClient.getInstance().setScreen(null);
-        }
+//        if(!(MinecraftClient.getInstance().world.getBlockEntity(getBlockPos()) instanceof CameraBlockEntity)) {
+//            MinecraftClient.getInstance().setScreen(null);
+//        }
         super.tick();
     }
 
@@ -140,10 +140,14 @@ public class CameraEditScreen extends GoopyScreen {
         GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), nbt);
     }
 
+
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         this.holding = true;
 
+        double mouseX = click.x();
+        double mouseY = click.y();
+        int button = click.button();
 
         if(!this.actionName.isMouseOver(mouseX, mouseY)) {
             this.actionName.setFocused(false);
@@ -160,7 +164,7 @@ public class CameraEditScreen extends GoopyScreen {
                 float pitch = this.isActive ? 1f : 0.85f;
                 MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, pitch);
                 compileData();
-                return super.mouseClicked(mouseX, mouseY, button);
+                return super.mouseClicked(click, doubled);
             }
 
 
@@ -267,11 +271,12 @@ public class CameraEditScreen extends GoopyScreen {
 
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+        double deltaX = click.x() + offsetX;
         if(this.holdingXSlider){
             double comp = this.xSlider + deltaX;
             this.xSlider = comp < sliderSizeMin ? sliderSizeMin : comp > sliderSizeMax ? sliderSizeMax : comp;
@@ -296,11 +301,11 @@ public class CameraEditScreen extends GoopyScreen {
             double comp = this.yRange1 + deltaX;
             this.yRange1 = comp < yRange0 + 5 ? yRange0 + 5 : comp > sliderSizeMax ? sliderSizeMax : comp;
         }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.mouseDragged(click, offsetX, offsetY);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(Click click) {
         this.holding = false;
         if (this.holdingXSlider ||
                 this.holdingYSlider ||
@@ -318,7 +323,7 @@ public class CameraEditScreen extends GoopyScreen {
             compileData();
         }
 
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(click);
     }
 
     @Override
@@ -605,17 +610,17 @@ public class CameraEditScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        this.sneaking = MinecraftClient.getInstance().options.sneakKey.matchesKey(keyCode, scanCode);
-        return super.keyPressed(keyCode, scanCode, modifiers);
+    public boolean keyPressed(KeyInput input) {
+        this.sneaking = MinecraftClient.getInstance().options.sneakKey.matchesKey(input);
+        return super.keyPressed(input);
     }
 
     @Override
-    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if(sneaking && MinecraftClient.getInstance().options.sneakKey.matchesKey(keyCode, scanCode)){
+    public boolean keyReleased(KeyInput input) {
+        if(sneaking && MinecraftClient.getInstance().options.sneakKey.matchesKey(input)){
             this.sneaking = false;
         }
-        return super.keyReleased(keyCode, scanCode, modifiers);
+        return super.keyReleased(input);
     }
 
     @Override

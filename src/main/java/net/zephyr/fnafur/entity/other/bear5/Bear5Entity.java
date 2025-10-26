@@ -75,17 +75,17 @@ public class Bear5Entity extends PathAwareEntity {
 
     @Override
     public void tick() {
-        if(getWorld().isClient()) {
+        if(getEntityWorld().isClient()) {
             if (!SoundUtils.playingSound(this, SoundsInit.BEAR5)) {
                 SoundUtils.playMutableSound(this, SoundsInit.BEAR5, 1, 1);
             }
         }
         if(((IEntityDataSaver)this).getPersistentData().contains("TargetID")) {
-            if(!getWorld().isClient()){
-                GoopyNetworkingUtils.saveEntityNbt(getId(), ((IEntityDataSaver)this).getPersistentData(), getWorld());
+            if(!getEntityWorld().isClient()){
+                GoopyNetworkingUtils.saveEntityNbt(getId(), ((IEntityDataSaver)this).getPersistentData(), getEntityWorld());
             }
             UUID targetID = UUID.fromString(((IEntityDataSaver)this).getPersistentData().getString("TargetID").get());
-            PlayerEntity entity = getWorld().getPlayerByUuid(targetID);
+            PlayerEntity entity = getEntityWorld().getPlayerByUuid(targetID);
             if(entity != null){
                 entity.sendMessage(Text.literal("§9Something §1§lWICKED §9this way comes......"), true);
                 this.target = entity;
@@ -93,12 +93,12 @@ public class Bear5Entity extends PathAwareEntity {
         }
 
         if(this.target != null){
-            Vec3d distance = this.target.getPos().add(getPos().multiply(-1));
+            Vec3d distance = this.target.getEntityPos().add(getEntityPos().multiply(-1));
             Vec3d direction = distance.normalize();
             float dist = this.distanceTo(this.target);
             setVelocity(getVelocity().add(direction.multiply(0.01f + 0.01f * (dist/10f))));
 
-            if(dist < 0.5f && getWorld() instanceof ServerWorld world){
+            if(dist < 0.5f && getEntityWorld() instanceof ServerWorld world){
                 this.target.kill(world);
                 this.remove(RemovalReason.DISCARDED);
             }

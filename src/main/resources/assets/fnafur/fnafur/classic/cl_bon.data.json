@@ -22,11 +22,13 @@
            "alts":{
                "default": {
                    "texture": "eyes/cl_bon_eye_pink",
+                   "map": "eyes/cl_bon_eyemap",
                    "default_glow": "dot",
                    "colors": 0
                },
                "black": {
                    "texture": "eyes/cl_bon_eye_full_black",
+                   "map": "eyes/cl_bon_eyemap",
                    "default_glow": "dot",
                    "colors": 0
                }

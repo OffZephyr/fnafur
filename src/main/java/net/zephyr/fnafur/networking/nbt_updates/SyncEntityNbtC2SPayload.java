@@ -19,7 +19,7 @@ public record SyncEntityNbtC2SPayload(int entityid) implements CustomPayload {
             SyncEntityNbtC2SPayload::new);
 
     public static void receive(SyncEntityNbtC2SPayload payload, ServerPlayNetworking.Context context) {
-        Entity entity = context.player().getWorld().getEntityById(payload.entityid());
+        Entity entity = context.player().getEntityWorld().getEntityById(payload.entityid());
 
         for(ServerPlayerEntity p : PlayerLookup.all(context.server())){
             ServerPlayNetworking.send(p, new UpdateEntityNbtS2CPongPayload(payload.entityid(), ((IEntityDataSaver)entity).getPersistentData()));

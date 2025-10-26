@@ -22,6 +22,7 @@
            "alts":{
                "default": {
                    "texture": "cl_endo",
+                   "map": "eyes/cl_endo_eyemap",
                    "default_glow": "dot",
                    "colors": 0
                }

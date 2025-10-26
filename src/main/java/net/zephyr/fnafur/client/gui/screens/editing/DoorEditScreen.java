@@ -2,6 +2,7 @@ package net.zephyr.fnafur.client.gui.screens.editing;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
@@ -98,7 +99,11 @@ public class DoorEditScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
+        double mouseX = click.x();
+        double mouseY = click.y();
+        int button = click.button();
+
         if(button != 0) return false;
         updateSpeed(mouseX, mouseY);
 
@@ -136,15 +141,16 @@ public class DoorEditScreen extends GoopyScreen {
             }
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if(button != 0) return false;
-        updateSpeed(mouseX, mouseY);
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+        if(click.button() != 0) return false;
+        updateSpeed(click.x(), click.y());
+        return super.mouseDragged(click, offsetX, offsetY);
     }
+
     void updateSpeed(double mouseX, double mouseY){
         if(isOnButton(mouseX, mouseY, cornerX + 46, cornerY + 18, 120, 28)){
             double deltaX = ((mouseX - 3) - (cornerX + 46)) / 120;

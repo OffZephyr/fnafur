@@ -10,20 +10,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
-import net.zephyr.fnafur.init.ScreensInit;
-import net.zephyr.fnafur.init.block_init.BlockInit;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemNbtUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
@@ -69,20 +62,6 @@ public class WrenchItem extends Item {
                 }
             }
             return ActionResult.SUCCESS;
-        }
-        World world = context.getWorld();
-        if (world.getBlockState(context.getBlockPos()).isOf(BlockInit.CAMERA)) {
-
-            if (world.getBlockEntity(context.getBlockPos()) instanceof CameraBlockEntity entity) {
-                NbtCompound data = ((IEntityDataSaver)entity).getPersistentData();
-
-                if (context.getPlayer() instanceof ServerPlayerEntity p) {
-                    GoopyNetworkingUtils.setScreen(p, ScreensInit.CAMERA_EDIT, data, context.getBlockPos());
-                }/* else {
-                ClientHook.openScreen(GoopyScreens.getScreens().get("camera_edit"), context.getBlockPos(), data);
-                }*/
-                return ActionResult.SUCCESS;
-            }
         }
         return super.useOnBlock(context);
     }

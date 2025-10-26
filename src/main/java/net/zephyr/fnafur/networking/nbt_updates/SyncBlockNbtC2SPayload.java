@@ -24,15 +24,15 @@ public record SyncBlockNbtC2SPayload(long pos) implements CustomPayload {
             SyncBlockNbtC2SPayload::new);
 
     public static void receive(SyncBlockNbtC2SPayload payload, ServerPlayNetworking.Context context) {
-       BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
+       BlockEntity entity = context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
 
        if(entity == null || ((IEntityDataSaver)entity).getPersistentData().isEmpty()) return;
 
-        BlockState state = context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos()));
-        context.player().getWorld().updateListeners(BlockPos.fromLong(payload.pos()), state, state, 3);
+        BlockState state = context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos()));
+        context.player().getEntityWorld().updateListeners(BlockPos.fromLong(payload.pos()), state, state, 3);
 
-        context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos()), context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos())));
-        context.player().getWorld().emitGameEvent(GameEvent.BLOCK_CHANGE, BlockPos.fromLong(payload.pos()), GameEvent.Emitter.of(context.player(), context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos()))));
+        context.player().getEntityWorld().setBlockState(BlockPos.fromLong(payload.pos()), context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos())));
+        context.player().getEntityWorld().emitGameEvent(GameEvent.BLOCK_CHANGE, BlockPos.fromLong(payload.pos()), GameEvent.Emitter.of(context.player(), context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos()))));
         if(entity != null) {
             for (ServerPlayerEntity p : PlayerLookup.all(context.server())) {
                 ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(payload.pos(), ((IEntityDataSaver) entity).getPersistentData()));

@@ -4,21 +4,22 @@ accessible method net/minecraft/client/render/GameRenderer setPostProcessor (Lne
 # accessible method net/minecraft/client/render/model/UnbakedModel getTransformation ()Lnet/minecraft/client/render/model/json/ModelTransformation;
 
 # Classes
+transitive-accessible class net/minecraft/client/texture/AtlasManager$Entry
+transitive-extendable class net/minecraft/client/texture/AtlasManager$Entry
 extendable class net/minecraft/client/render/block/BlockModelRenderer$AmbientOcclusionCalculator
 transitive-accessible class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
 transitive-accessible class net/minecraft/client/render/RenderPhase$Texture
 transitive-accessible class net/minecraft/client/render/RenderPhase$Target
 # transitive-accessible class net/minecraft/client/render/RenderPhase$ShaderProgram
 
-accessible field net/minecraft/client/model/ModelPart$Quad direction Lorg/joml/Vector3f;
+accessible field net/minecraft/client/model/ModelPart$Quad direction Lorg/joml/Vector3fc;
 accessible field net/minecraft/client/model/ModelPart$Quad vertices [Lnet/minecraft/client/model/ModelPart$Vertex;
-accessible field net/minecraft/client/model/ModelPart$Vertex pos Lorg/joml/Vector3f;
 accessible field net/minecraft/client/model/ModelPart$Vertex u F
 accessible field net/minecraft/client/model/ModelPart$Vertex v F
 accessible field net/minecraft/client/model/ModelPart cuboids Ljava/util/List;
-accessible method net/minecraft/client/render/item/HeldItemRenderer renderArmHoldingItem (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IFFLnet/minecraft/util/Arm;)V
+accessible method net/minecraft/client/render/item/HeldItemRenderer renderArmHoldingItem (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;IFFLnet/minecraft/util/Arm;)V
 accessible method net/minecraft/client/render/item/HeldItemRenderer swingArm (FFLnet/minecraft/client/util/math/MatrixStack;ILnet/minecraft/util/Arm;)V
-accessible method net/minecraft/client/render/item/HeldItemRenderer renderArm (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/util/Arm;)V
+accessible method net/minecraft/client/render/item/HeldItemRenderer renderArm (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;ILnet/minecraft/util/Arm;)V
 accessible field net/minecraft/client/gui/screen/ingame/CreativeInventoryScreen$CreativeSlot slot Lnet/minecraft/screen/slot/Slot;
 accessible class net/minecraft/client/gui/screen/ingame/CreativeInventoryScreen$CreativeSlot
 accessible field net/minecraft/entity/LivingEntity equipment Lnet/minecraft/entity/EntityEquipment;
@@ -29,7 +30,7 @@ accessible method net/minecraft/screen/ScreenHandler addSlot (Lnet/minecraft/scr
 # transitive-accessible method net/minecraft/client/render/RenderLayer of (Lnet/minecraft/client/render/RenderPhase$ShaderProgram;)Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
 transitive-accessible method net/minecraft/client/render/GameRenderer getFov (Lnet/minecraft/client/render/Camera;FZ)F
 transitive-accessible method net/minecraft/client/render/Camera setRotation (FF)V
-transitive-accessible method net/minecraft/client/render/WorldRenderer drawBlockOutline (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Lnet/minecraft/entity/Entity;DDDLnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)V
+accessible method net/minecraft/client/render/WorldRenderer drawBlockOutline (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;DDDLnet/minecraft/client/render/state/OutlineRenderState;I)V
 # transitive-accessible field net/minecraft/client/render/RenderPhase ENTITY_TRANSLUCENT_PROGRAM Lnet/minecraft/client/render/RenderPhase$ShaderProgram;
 # transitive-accessible field net/minecraft/client/render/RenderPhase TRANSLUCENT_TRANSPARENCY Lnet/minecraft/client/render/RenderPhase$Transparency;
 # transitive-accessible field net/minecraft/client/render/RenderPhase DISABLE_CULLING Lnet/minecraft/client/render/RenderPhase$Cull;
@@ -38,10 +39,12 @@ transitive-accessible method net/minecraft/client/render/WorldRenderer drawBlock
 # transitive-accessible field net/minecraft/client/render/RenderPhase SOLID_PROGRAM Lnet/minecraft/client/render/RenderPhase$ShaderProgram;
 # transitive-accessible field net/minecraft/client/render/RenderPhase MIPMAP_BLOCK_ATLAS_TEXTURE Lnet/minecraft/client/render/RenderPhase$Texture;
 
-transitive-accessible field net/minecraft/client/render/WorldRenderer frustum Lnet/minecraft/client/render/Frustum;
+transitive-accessible field net/minecraft/client/render/WorldRenderer capturedFrustum Lnet/minecraft/client/render/Frustum;
 transitive-accessible field net/minecraft/client/render/Camera pos Lnet/minecraft/util/math/Vec3d;
 
 transitive-accessible field com/mojang/blaze3d/systems/RenderSystem modelViewStack Lorg/joml/Matrix4fStack;
 transitive-mutable field com/mojang/blaze3d/systems/RenderSystem modelViewStack Lorg/joml/Matrix4fStack;
 
+accessible method net/minecraft/client/render/entity/feature/HeadFeatureRenderer getRenderLayer (Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;Lnet/minecraft/block/SkullBlock$SkullType;)Lnet/minecraft/client/render/RenderLayer;
+accessible field net/minecraft/client/render/block/BlockRenderManager spriteHolder Lnet/minecraft/client/texture/SpriteHolder;
 transitive-accessible method net/minecraft/client/gui/screen/ingame/HandledScreen onMouseClick (Lnet/minecraft/screen/slot/Slot;Lnet/minecraft/screen/slot/SlotActionType;)V

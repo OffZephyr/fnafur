@@ -22,7 +22,7 @@ public record StopSoundS2CPayload(int entityID, String name) implements CustomPa
 
     public static void receive(StopSoundS2CPayload payload, ClientPlayNetworking.Context context) {
         context.client().execute(() -> {
-            Entity entity = context.player().getWorld().getEntityById(payload.entityID());
+            Entity entity = context.player().getEntityWorld().getEntityById(payload.entityID());
             SoundEvent soundEvent = SoundsInit.getSound(payload.name());
             if(entity != null && SoundUtils.playingSound(context.player(), soundEvent)) {
                 SoundUtils.stopSound(entity, soundEvent);

@@ -25,7 +25,7 @@ public record UpdateMaskStateS2CPayload(boolean state, int entityID) implements 
             UpdateMaskStateS2CPayload::new);
 
     public static void receive(UpdateMaskStateS2CPayload payload, ClientPlayNetworking.Context context) {
-        if(context.player().getWorld().getEntityById(payload.entityID()) instanceof PlayerEntity p) {
+        if(context.player().getEntityWorld().getEntityById(payload.entityID()) instanceof PlayerEntity p) {
             ItemStack stack = p.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
             if (stack.getItem() instanceof VanniMaskItem) {
                 NbtCompound nbt = ItemNbtUtil.getNbt(stack);

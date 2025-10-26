@@ -22,7 +22,7 @@ public record UpdateBlockNbtC2SGetFromServerPayload(long pos) implements CustomP
             UpdateBlockNbtC2SGetFromServerPayload::new);
 
     public static void receive(UpdateBlockNbtC2SGetFromServerPayload payload, ServerPlayNetworking.Context context) {
-        BlockEntity entity = context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
+        BlockEntity entity = context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos()));
         if (entity == null) return;
         for (ServerPlayerEntity p : PlayerLookup.all(context.server())) {
             //p.sendMessage(Text.literal("UPDATING FROM SERVER"), false);

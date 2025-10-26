@@ -198,6 +198,6 @@ public class ModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ItemInit.CPU, Models.GENERATED);
         itemModelGenerator.register(ItemInit.DEATHCOIN, Models.GENERATED);
         itemModelGenerator.register(ItemInit.ILLUSIONDISC, Models.GENERATED);
-        itemModelGenerator.register(Item.fromBlock(BlockInit.CAMERA), Models.GENERATED);
+        //itemModelGenerator.register(Item.fromBlock(BlockInit.CAMERA), Models.GENERATED);
     }
 }

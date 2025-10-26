@@ -7,8 +7,10 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerModelPart;
@@ -32,47 +34,51 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib.util.RenderUtil;
 
+import java.util.List;
+
 public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends GeoRenderState> extends GeoItemRenderer<T> {
-    Matrix4f leftStack;
-    Matrix4f rightStack;
+    MatrixStack leftStack;
+    MatrixStack rightStack;
     public VanniMaskItemRenderer() {
         super(new VanniMaskItemModel<>());
-        addRenderLayer(new VanniMaskRenderLayer<>(this));
     }
 
     @Override
-    public void addRenderData(T animatable, RenderData relatedObject, GeoRenderState renderState) {
-        if(relatedObject.entity() instanceof PlayerEntity p){
+    public List<GeoRenderLayer<T, RenderData, GeoRenderState>> getRenderLayers() {
+        return List.of(
+                new VanniMaskRenderLayer<>(this)
+        );
+    }
+
+    @Override
+    public void addRenderData(T animatable, RenderData relatedObject, GeoRenderState renderState, float partialTick) {
+        if(relatedObject.itemOwner().getEntity() instanceof PlayerEntity p){
             renderState.addGeckolibData(CustomDataTickets.IS_MASK_ON, ((IUniversePlayer)p).hasVanniMaskOn());
             renderState.addGeckolibData(CustomDataTickets.CAN_ANIMATE_MASK, ((IUniversePlayer)p).canAnimateMask());
             renderState.addGeckolibData(CustomDataTickets.IS_IN_MASK_SLOT, p.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET).equals(relatedObject.itemStack()));
         }
-        super.addRenderData(animatable, relatedObject, renderState);
+        super.addRenderData(animatable, relatedObject, renderState, partialTick);
     }
 
     @Override
-    public void renderRecursively(GeoRenderState renderState, MatrixStack poseStack, GeoBone bone, RenderLayer renderType, VertexConsumerProvider bufferSource, VertexConsumer buffer, boolean isReRender, int packedLight, int packedOverlay, int renderColor) {
+    public void renderBone(GeoRenderState renderState, MatrixStack poseStack, GeoBone bone, VertexConsumer buffer, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
 
-        buffer = bufferSource.getBuffer(renderType);
-        super.renderRecursively(renderState, poseStack, bone, renderType, bufferSource, buffer, isReRender, packedLight, packedOverlay, renderColor);
+        super.renderBone(renderState, poseStack, bone, buffer, cameraState, packedLight, packedOverlay, renderColor);
 
         poseStack.push();
-        if(!isReRender && (bone.getName().contains("left") || bone.getName().contains("right"))){
-            AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
-            PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher()
-                    .<AbstractClientPlayerEntity>getRenderer(abstractClientPlayerEntity);
-            Identifier identifier = abstractClientPlayerEntity.getSkinTextures().texture();
+        if((bone.getName().contains("left") || bone.getName().contains("right"))){
 
-            renderType = getRenderType(renderState, identifier);
-            buffer = bufferSource.getBuffer(renderType);
             if(bone.getName().contains("left") ){
                 poseStack.push();
                 RenderUtil.prepMatrixForBone(poseStack, bone);
                 poseStack.translate(0, 0.125f, 0.5f);
                 poseStack.multiply(new Quaternionf().rotateXYZ(-((float)Math.PI/2), (float)Math.PI, 0));
-                renderArm(poseStack, buffer, packedLight, playerEntityRenderer.getModel(), Arm.LEFT, true);
+                poseStack.push();
+                leftStack = poseStack;
+                poseStack.pop();
                 poseStack.pop();
             }
             else {
@@ -80,7 +86,9 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
                 RenderUtil.prepMatrixForBone(poseStack, bone);
                 poseStack.translate(0, 0.125f, 0.5f);
                 poseStack.multiply(new Quaternionf().rotateXYZ(-((float)Math.PI/2), (float)Math.PI, 0));
-                renderArm(poseStack, buffer, packedLight, playerEntityRenderer.getModel(), Arm.RIGHT, true);
+                poseStack.push();
+                rightStack = poseStack;
+                poseStack.pop();
                 poseStack.pop();
             }
         }
@@ -88,7 +96,19 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
     }
 
     @Override
-    public void postRender(GeoRenderState renderState, MatrixStack poseStack, BakedGeoModel model, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, int packedLight, int packedOverlay, int renderColor) {
+    public void postRender(GeoRenderState renderState, MatrixStack poseStack, BakedGeoModel model, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
+        super.postRender(renderState, poseStack, model, renderTasks, cameraState, packedLight, packedOverlay, renderColor);
+
+        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
+        PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher()
+                .<AbstractClientPlayerEntity>getRenderer(abstractClientPlayerEntity);
+        Identifier identifier = abstractClientPlayerEntity.getSkin().body().texturePath();
+
+        renderTasks.submitCustom(poseStack, getRenderType(renderState, identifier), (entry, buffer) -> {
+
+            renderArm(poseStack, buffer, packedLight, (PlayerEntityModel) playerEntityRenderer.getModel(), Arm.LEFT, true);
+            renderArm(poseStack, buffer, packedLight, (PlayerEntityModel) playerEntityRenderer.getModel(), Arm.RIGHT, true);
+        });
 
     }
 

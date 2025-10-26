@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.impl.itemgroup.FabricItemGroupImpl;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -153,18 +154,18 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         if (isFnafTab) {
             switch (SubTab) {
-                default -> clickDefault(mouseX, mouseY, button);
-                case ANIMATRONICS -> clickAnimatronics(mouseX, mouseY, button);
-                case BLOCKS -> clickBlocks(mouseX, mouseY, button);
-                case DECORATION -> clickProps(mouseX, mouseY, button);
-                case TECHNICAL -> clickTech(mouseX, mouseY, button);
+                default -> clickDefault(click.x(), click.y(), click.button());
+                case ANIMATRONICS -> clickAnimatronics(click.x(), click.y(), click.button());
+                case BLOCKS -> clickBlocks(click.x(), click.y(), click.button());
+                case DECORATION -> clickProps(click.x(), click.y(), click.button());
+                case TECHNICAL -> clickTech(click.x(), click.y(), click.button());
             }
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     public void clickDefault(double mouseX, double mouseY, int button) {

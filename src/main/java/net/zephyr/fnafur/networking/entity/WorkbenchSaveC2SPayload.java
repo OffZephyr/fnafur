@@ -27,12 +27,12 @@ public record WorkbenchSaveC2SPayload(long pos, NbtCompound nbt) implements Cust
             WorkbenchSaveC2SPayload::new);
 
     public static void receive(WorkbenchSaveC2SPayload payload, ServerPlayNetworking.Context context) {
-        context.player().getWorld().setBlockState(BlockPos.fromLong(payload.pos()), PropInit.COSMO_GIFT.getDefaultState());
+        context.player().getEntityWorld().setBlockState(BlockPos.fromLong(payload.pos()), PropInit.COSMO_GIFT.getDefaultState());
 
-        if(context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos())) instanceof GalaxyLayerGeoPropEntity ent){
-            if(context.player().getWorld().getBlockEntity(BlockPos.fromLong(payload.pos()).down()) instanceof PropBlockEntity ent2) {
+        if(context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos())) instanceof GalaxyLayerGeoPropEntity ent){
+            if(context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos()).down()) instanceof PropBlockEntity ent2) {
                 NbtCompound nbt2 = ((IEntityDataSaver) ent2).getPersistentData().copy();
-                BlockState state = context.player().getWorld().getBlockState(BlockPos.fromLong(payload.pos()).down());
+                BlockState state = context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos()).down());
 
                 float rotation = nbt2.getFloat("Rotation").get() + 270;
 

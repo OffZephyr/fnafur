@@ -6,7 +6,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.camera.CameraBlockEntity;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.GeneratorBlockEntity;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons.OfficeButtonsBlockEntity;
 import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
@@ -28,7 +27,6 @@ public class BlockEntityInit {
     public static BlockEntityType<CpuConfigPanelBlockEntity> CPU_CONFIG_PANEL;
     public static BlockEntityType<ChipReaderBlockEntity> CHIP_READER;
     public static BlockEntityType<ServerMonitorBlockEntity> SERVER_MONITOR;
-    public static BlockEntityType<CameraBlockEntity> CAMERA;
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
     public static BlockEntityType<PropBlockEntity> PROPS;
     public static BlockEntityType<OfficeButtonsBlockEntity> OFFICE_BUTTONS;
@@ -56,11 +54,6 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "server_monitor"),
                         FabricBlockEntityTypeBuilder.create(ServerMonitorBlockEntity::new,
                                 BlockInit.SERVER_MONITOR).build());
-
-        CAMERA =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "camera"),
-                        FabricBlockEntityTypeBuilder.create(CameraBlockEntity::new,
-                                BlockInit.CAMERA).build());
         FOG_BLOCK =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "fog_block"),
                         FabricBlockEntityTypeBuilder.create(FogBlockEntity::new,
