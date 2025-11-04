@@ -19,7 +19,7 @@ import net.minecraft.util.math.Vec3i;
 import net.zephyr.fnafur.blocks.dynamic.tiling.VerticalTileStates;
 import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorBlock;
 import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorItem;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 
 public class TileDoorPlacingRenderer {
     public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
@@ -33,7 +33,7 @@ public class TileDoorPlacingRenderer {
         matrices.translate(-cameraX, -cameraY, -cameraZ);
         ItemStack stack = player.getMainHandStack();
         if(stack.getItem() instanceof TileDoorItem item){
-            NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+            NbtCompound nbt = ItemUtil.getNbt(stack);
             if(nbt.contains("pos1")){
                 BlockState state = item.getBlock().getDefaultState();
 

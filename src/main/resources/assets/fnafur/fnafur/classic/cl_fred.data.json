@@ -3,7 +3,7 @@
     "cl_fred":{
         "default_alt": "default",
         "model": "cl_fred",
-        "endo_mask": "cl_fred",
+        "endo_mask": "cl_fred_endomask",
 
         "alts":{
             "default": {
@@ -14,26 +14,29 @@
                 "preview_scale": 1,
                 "colors": 0,
                 "model_override": "",
+                "endo_mask_override": "",
                 "eye_path_subfolder": ""
             },
             "golden": {
                 "texture": "cl_gold_fred",
                 "emissive_mask": "",
                 "default_eyes": "brown",
-                "animations": "cl_fred",
+                "preview_anim": "cl_fred",
                 "preview_scale": 1,
                 "colors": 0,
                 "model_override": "",
+                "endo_mask_override": "",
                 "eye_path_subfolder": ""
             },
             "shadow": {
                 "texture": "cl_shdw_fred",
                 "emissive_mask": "",
                 "default_eyes": "black",
-                "animations": "cl_fred",
+                "preview_anim": "cl_fred",
                 "preview_scale": 1,
                 "colors": 0,
                 "model_override": "",
+                "endo_mask_override": "",
                 "eye_path_subfolder": ""
             }
         },
@@ -42,25 +45,25 @@
            "alts":{
                "default": {
                    "texture": "eyes/cl_fred_eye_blue",
-                   "map": "eyes/cl_fred_eyemap",
+                   "map": "cl_fred_eyemask",
                    "default_glow": "dot",
                    "colors": 0
                },
                "brown": {
                    "texture": "eyes/cl_fred_eye_brown",
-                   "map": "eyes/cl_fred_eyemap",
+                   "map": "cl_fred_eyemask",
                    "default_glow": "dot",
                    "colors": 0
                },
                "black": {
                    "texture": "eyes/cl_fred_eye_full_black",
-                   "map": "eyes/cl_fred_eyemap",
+                   "map": "cl_fred_eyemask",
                    "default_glow": "dot",
                    "colors": 0
                },
                "white": {
                    "texture": "eyes/cl_fred_eye_full_white",
-                   "map": "eyes/cl_fred_eyemap",
+                   "map": "cl_fred_eyemask",
                    "default_glow": "all",
                    "colors": 0
                }

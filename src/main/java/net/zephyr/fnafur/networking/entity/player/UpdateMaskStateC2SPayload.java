@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.networking.entity.EntityPayloads;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 
 public record UpdateMaskStateC2SPayload(boolean state) implements CustomPayload {
     public static final Id<UpdateMaskStateC2SPayload> ID = new Id<>(EntityPayloads.C2SMaskStateUpdate);
@@ -27,9 +27,9 @@ public record UpdateMaskStateC2SPayload(boolean state) implements CustomPayload 
     public static void receive(UpdateMaskStateC2SPayload payload, ServerPlayNetworking.Context context) {
         ItemStack stack = context.player().getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
         if(stack.getItem() instanceof VanniMaskItem){
-            NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+            NbtCompound nbt = ItemUtil.getNbt(stack);
             nbt.putBoolean("inVanniMask", payload.state());
-            ItemNbtUtil.setNbt(stack, nbt);
+            ItemUtil.setNbt(stack, nbt);
         }
 
         for(ServerPlayerEntity p : PlayerLookup.all(context.server())){

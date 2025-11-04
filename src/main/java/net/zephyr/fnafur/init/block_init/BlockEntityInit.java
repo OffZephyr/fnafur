@@ -6,6 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.blocks.curtain.CurtainBlockEntity;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.GeneratorBlockEntity;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons.OfficeButtonsBlockEntity;
 import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
@@ -40,6 +41,7 @@ public class BlockEntityInit {
     public static BlockEntityType<TileDoorBlockEntity> TILE_DOOR;
     public static BlockEntityType<BaseEnergyBlockEntity> ENERGY;
     public static BlockEntityType<GeneratorBlockEntity> GENERATOR;
+    public static BlockEntityType<CurtainBlockEntity> CURTAIN;
 
     public static void registerBlockEntities() {
         CPU_CONFIG_PANEL =
@@ -176,6 +178,11 @@ public class BlockEntityInit {
                         FabricBlockEntityTypeBuilder.create(BaseEnergyBlockEntity::new,
                                 BlockInit.ELECTRICAL_LOCKER,
                                 BlockInit.CIRCUIT_BREAKER
+                        ).build());
+        CURTAIN      =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "curtain"),
+                        FabricBlockEntityTypeBuilder.create(CurtainBlockEntity::new,
+                                BlockInit.CURTAIN_TEST
                         ).build());
 
         FnafUniverseRebuilt.LOGGER.info("Registering Block Entities for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());

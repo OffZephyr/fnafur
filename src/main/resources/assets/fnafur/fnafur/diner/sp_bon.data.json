@@ -3,47 +3,51 @@
     "sp_bon":{
         "default_alt": "default",
         "model": "sp_bon",
-        "endo_mask": "sp_bon",
+        "endo_mask": "sp_bon_endomask",
 
         "alts":{
             "default": {
                 "texture": "sp_bon",
                 "emissive_mask": "",
                 "default_eyes": "default",
-                "preview_anim": "default",
+                "preview_anim": "cl_bon",
                 "preview_scale": 1.065,
                 "colors": 0,
                 "model_override": "",
+                "endo_mask_override": "",
                 "eye_path_subfolder": ""
             },
             "freddy": {
                 "texture": "sp_fred/sp_fred",
                 "emissive_mask": "",
                 "default_eyes": "default",
-                "preview_anim": "default",
+                "preview_anim": "cl_fred",
                 "preview_scale": 1.065,
                 "colors": 0,
                 "model_override": "sp_fred",
+                "endo_mask_override": "sp_fred_endomask",
                 "eye_path_subfolder": "sp_fred"
             },
             "chica": {
                 "texture": "sp_chica/sp_chica",
                 "emissive_mask": "",
                 "default_eyes": "default",
-                "preview_anim": "default",
+                "preview_anim": "cl_chica",
                 "preview_scale": 1.065,
                 "colors": 0,
                 "model_override": "sp_chica",
+                "endo_mask_override": "sp_chica_endomask",
                 "eye_path_subfolder": "sp_chica"
             },
             "foxy": {
                 "texture": "sp_foxy/sp_foxy",
                 "emissive_mask": "",
                 "default_eyes": "default",
-                "preview_anim": "default",
+                "preview_anim": "cl_foxy",
                 "preview_scale": 1.065,
                 "colors": 0,
                 "model_override": "sp_foxy",
+                "endo_mask_override": "sp_foxy_endomask",
                 "eye_path_subfolder": "sp_foxy"
             }
         },
@@ -52,7 +56,7 @@
            "alts":{
                "default": {
                    "texture": "eyes/default",
-                   "map": "eyes/sp_bon_eyemap",
+                   "map": "eyemask",
                    "default_glow": "none",
                    "colors": 0
                }

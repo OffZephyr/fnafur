@@ -26,7 +26,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,7 +68,7 @@ public class ChipReaderBlock extends BlockWithEntity {
                 if(world.getBlockEntity(pos) instanceof ChipReaderBlockEntity ent){
                     NbtCompound CPU = ((IEntityDataSaver)ent).getPersistentData().getCompoundOrEmpty("cpu");
                     if(!CPU.isEmpty()){
-                        ItemNbtUtil.setNbt(stack, CPU);
+                        ItemUtil.setNbt(stack, CPU);
                         ((IEntityDataSaver)ent).getPersistentData().remove("cpu");
                     }
                 }
@@ -88,7 +88,7 @@ public class ChipReaderBlock extends BlockWithEntity {
                 world.setBlockState(pos, state.with(CPU, true));
 
                 if(world.getBlockEntity(pos) instanceof ChipReaderBlockEntity ent){
-                    NbtCompound cpu_data = ItemNbtUtil.getNbt(player.getMainHandStack());
+                    NbtCompound cpu_data = ItemUtil.getNbt(player.getMainHandStack());
                     ((IEntityDataSaver)ent).getPersistentData().put("cpu", NbtCompound.CODEC, cpu_data);
                 }
 

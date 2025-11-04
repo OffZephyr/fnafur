@@ -8,13 +8,10 @@ import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.math.BlockPos;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.networking.entity.EntityPayloads;
-import net.zephyr.fnafur.util.ItemNbtUtil;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
+import net.zephyr.fnafur.util.ItemUtil;
 
 public record UpdateMaskStateS2CPayload(boolean state, int entityID) implements CustomPayload {
     public static final Id<UpdateMaskStateS2CPayload> ID = new Id<>(EntityPayloads.S2CMaskStateUpdate);
@@ -28,9 +25,9 @@ public record UpdateMaskStateS2CPayload(boolean state, int entityID) implements 
         if(context.player().getEntityWorld().getEntityById(payload.entityID()) instanceof PlayerEntity p) {
             ItemStack stack = p.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
             if (stack.getItem() instanceof VanniMaskItem) {
-                NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+                NbtCompound nbt = ItemUtil.getNbt(stack);
                 nbt.putBoolean("inVanniMask", payload.state());
-                ItemNbtUtil.setNbt(stack, nbt);
+                ItemUtil.setNbt(stack, nbt);
             }
         }
     }

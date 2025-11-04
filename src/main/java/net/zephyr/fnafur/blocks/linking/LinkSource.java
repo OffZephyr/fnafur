@@ -18,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.networking.block.LinkVisualUpdateS2CPayload;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 
@@ -197,7 +197,7 @@ public interface LinkSource {
 
         ItemStack stack = player.getMainHandStack();
         if(stack.getItem() instanceof WrenchItem && ((IUniversePlayer)player).isUsingVanniMask()){
-            NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+            NbtCompound nbt = ItemUtil.getNbt(stack);
 
             BlockPos startPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
             if(player.isSneaking()){
@@ -212,7 +212,7 @@ public interface LinkSource {
             else{
                 nbt.put("startLink", BlockPos.CODEC, pos);
             }
-            ItemNbtUtil.setNbt(stack, nbt);
+            ItemUtil.setNbt(stack, nbt);
             return ActionResult.SUCCESS;
         }
 

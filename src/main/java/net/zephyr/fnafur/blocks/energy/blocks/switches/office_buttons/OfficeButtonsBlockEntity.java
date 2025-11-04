@@ -6,15 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
-import net.zephyr.fnafur.blocks.linking.EnergySource;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.blocks.linking.links.energy.EnergySourceTargetPropBlockEntity;
-import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 
@@ -27,7 +25,7 @@ public class OfficeButtonsBlockEntity extends EnergySourceTargetPropBlockEntity 
         if(hitButton != -1){
             ItemStack stack = player.getMainHandStack();
             if(stack.getItem() instanceof WrenchItem && ((IUniversePlayer)player).isUsingVanniMask()){
-                NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+                NbtCompound nbt = ItemUtil.getNbt(stack);
 
                 nbt.putInt("buttonIndex", hitButton);
                 BlockPos startPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
@@ -43,7 +41,7 @@ public class OfficeButtonsBlockEntity extends EnergySourceTargetPropBlockEntity 
                 else{
                     nbt.put("startLink", BlockPos.CODEC, pos);
                 }
-                ItemNbtUtil.setNbt(stack, nbt);
+                ItemUtil.setNbt(stack, nbt);
                 return ActionResult.SUCCESS;
             }
         }

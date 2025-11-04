@@ -34,7 +34,7 @@ import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.networking.block.TileDoorUpdateS2CPayload;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,7 +61,7 @@ public class TileDoorBlock extends BlockWithEntity {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
 
-        NbtCompound nbt = ItemNbtUtil.getNbt(itemStack);
+        NbtCompound nbt = ItemUtil.getNbt(itemStack);
 
         if(nbt.contains("pos2") && placer != null) {
             BlockPos pos1 = BlockPos.fromLong(nbt.getLong("pos1").get());
@@ -104,7 +104,7 @@ public class TileDoorBlock extends BlockWithEntity {
 
             nbt.remove("pos1");
             nbt.remove("pos2");
-            ItemNbtUtil.setNbt(itemStack, nbt.copy());
+            ItemUtil.setNbt(itemStack, nbt.copy());
         }
 
         super.onPlaced(world, pos, state, placer, itemStack);

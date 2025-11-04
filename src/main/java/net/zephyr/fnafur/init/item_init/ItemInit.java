@@ -16,6 +16,7 @@ import net.zephyr.fnafur.init.DecalInit;
 import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.IllusionDisc;
+import net.zephyr.fnafur.item.animatronic.suit.SuitItem;
 import net.zephyr.fnafur.item.energy.JerryCanItem;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.item.tools.DecalBookItem;
@@ -32,6 +33,13 @@ public class ItemInit {
             new Item.Settings()
                     .maxCount(0)
                     .rarity(Rarity.EPIC)
+    );
+    public static final Item ANIMATRONIC_SUIT = registerItem(
+            "suit",
+            SuitItem::new,
+            new Item.Settings()
+                    .maxCount(1)
+                    .rarity(Rarity.COMMON)
     );
     public static final Item VANNI_MASK = registerItem(
             "vanni_mask",

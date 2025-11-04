@@ -1,6 +1,5 @@
 package net.zephyr.fnafur.item.masks;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +16,7 @@ import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.IHasArmPos;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -30,7 +29,6 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.animation.keyframe.event.KeyFrameEvent;
 import software.bernie.geckolib.animation.keyframe.event.data.SoundKeyframeData;
-import software.bernie.geckolib.animation.keyframe.event.handler.AutoPlayingSoundKeyframeHandler;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.util.ClientUtil;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -54,9 +52,9 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
 
         if (entity instanceof PlayerEntity p) {
             if (!p.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET).equals(stack)) {
-                NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+                NbtCompound nbt = ItemUtil.getNbt(stack);
                 nbt.putBoolean("inVanniMask", false);
-                ItemNbtUtil.setNbt(stack, nbt);
+                ItemUtil.setNbt(stack, nbt);
             }
         }
 

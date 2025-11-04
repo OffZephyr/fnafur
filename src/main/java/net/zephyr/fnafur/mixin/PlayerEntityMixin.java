@@ -2,7 +2,6 @@ package net.zephyr.fnafur.mixin;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +11,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +20,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin implements IUniversePlayer {
@@ -108,7 +106,7 @@ public class PlayerEntityMixin implements IUniversePlayer {
     public boolean hasVanniMaskOn() {
         ItemStack stack = ((PlayerEntity) (Object)this).getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
         if(stack.getItem() instanceof VanniMaskItem){
-            NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+            NbtCompound nbt = ItemUtil.getNbt(stack);
             return nbt.getBoolean("inVanniMask", false);
         }
         return false;

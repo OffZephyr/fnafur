@@ -25,7 +25,7 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.util.IHasArmPos;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.RawAnimation;
@@ -60,7 +60,7 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        NbtCompound nbt = ItemNbtUtil.getNbt(itemStack);
+        NbtCompound nbt = ItemUtil.getNbt(itemStack);
 
         if(world.getBlockEntity(pos) instanceof BlockEntity ent){
             ((IEntityDataSaver)ent).getPersistentData().put("contains", nbt);
@@ -83,7 +83,7 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(player.getMainHandStack().isEmpty()){
             if(world.getBlockEntity(pos) instanceof GalaxyLayerGeoPropEntity ent){
-                ItemStack stack = ItemNbtUtil.setNbt(new ItemStack(PropInit.COSMO_GIFT, 1), ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get());
+                ItemStack stack = ItemUtil.setNbt(new ItemStack(PropInit.COSMO_GIFT, 1), ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get());
 
                 NbtCompound nbt = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").orElse(new NbtCompound());
 

@@ -121,6 +121,7 @@ public class ItemGroupsInit {
                         entries.add(ItemInit.DECAL_BOOK);
                         //entries.add(ItemInit.TAPEMEASURE);
 
+                        entries.add(ItemInit.ANIMATRONIC_SUIT);
                         entries.add(BlockInit.ANIMATRONIC_BLOCK);
                         entries.add(ItemInit.CPU);
                         entries.add(PropInit.COSMO_GIFT);
@@ -136,6 +137,7 @@ public class ItemGroupsInit {
                         entries.add(BlockInit.MIMIC_FRAME_2x2);
                         entries.add(BlockInit.MIMIC_FRAME_4x4);
                         entries.add(BlockInit.MIMIC_FRAME_DIAGONAL);
+                        entries.add(BlockInit.CURTAIN_TEST);
 
                         //entries.add(BlockInit.CAMERA);
                         //entries.add(ItemInit.TABLET);

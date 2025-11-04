@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,9 +18,9 @@ public class ScreenHandlerMixin {
     @Inject(method = "getCursorStack", at = @At("HEAD"), cancellable = true)
     void getCursorStack(CallbackInfoReturnable<ItemStack> ci){
         if(cursorStack.getItem() instanceof VanniMaskItem){
-            NbtCompound nbt = ItemNbtUtil.getNbt(cursorStack);
+            NbtCompound nbt = ItemUtil.getNbt(cursorStack);
             nbt.putBoolean("inVanniMask", false);
-            ItemNbtUtil.setNbt(cursorStack, nbt);
+            ItemUtil.setNbt(cursorStack, nbt);
         }
     }
 }

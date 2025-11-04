@@ -19,8 +19,9 @@ import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
+import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
@@ -60,7 +61,7 @@ public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
             if (!world.isClient()) {
                 NbtCompound nbt2 = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().copy();
                 if (stack.isOf(PropInit.COSMO_GIFT.asItem())) {
-                    NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+                    NbtCompound nbt = ItemUtil.getNbt(stack);
 
                     if (nbt.isEmpty()) return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
 
@@ -71,6 +72,16 @@ public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
             }
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+    }
+
+    public static void spawnItem(World world, BlockPos pos, String chara, String alt, String eyes){
+        ItemStack stack = new ItemStack(ItemInit.ANIMATRONIC_SUIT);
+        NbtCompound nbt = new NbtCompound();
+        nbt.putString("chara", chara);
+        nbt.putString("alt", alt);
+        nbt.putString("eyes", eyes);
+        ItemUtil.setNbt(stack, nbt);
+        dropStack(world, pos, Direction.UP, stack);
     }
 
     @Override

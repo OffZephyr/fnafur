@@ -27,6 +27,17 @@ public class EasingMathUtil {
     public static double easeOutCubic(double index){
         return 1 - Math.pow(1 - index, 3);
     }
+    public static double easeInCirc(double index){
+        return 1 - Math.sqrt(1 - Math.pow(index, 2));
+    }
+    public static double easeOutCirc(double index){
+        return Math.sqrt(1 - Math.pow(index - 1, 2));
+    }
+    public static double easeInOutCirc(double index){
+        return index < 0.5
+                ? (1 - Math.sqrt(1 - Math.pow(2 * index, 2))) / 2
+                : (Math.sqrt(1 - Math.pow(-2 * index + 2, 2)) + 1) / 2;
+    }
     public static double easeInOutCubic(double index){
         return index < 0.5 ? 4 * index * index * index : 1 - Math.pow(-2 * index + 2, 3) / 2;
     }

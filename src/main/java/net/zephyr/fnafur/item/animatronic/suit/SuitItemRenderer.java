@@ -1,0 +1,70 @@
+package net.zephyr.fnafur.item.animatronic.suit;
+
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.command.RenderCommandQueue;
+import net.minecraft.client.render.state.CameraRenderState;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.nbt.NbtCompound;
+import net.zephyr.fnafur.util.CustomDataTickets;
+import net.zephyr.fnafur.util.ItemUtil;
+import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
+
+public class SuitItemRenderer extends GeoItemRenderer<SuitItem> {
+
+
+    public SuitItemRenderer() {
+        super(new SuitItemModel());
+    }
+
+    @Override
+    public GeoRenderState fillRenderState(SuitItem animatable, RenderData relatedObject, GeoRenderState renderState, float partialTick) {
+        NbtCompound nbt = ItemUtil.getNbt(relatedObject.itemStack());
+
+        nbt.getString("chara").ifPresent(chara -> {
+            AnimatronicDataHandler.Chara c = AnimatronicDataHandler.CHARACTERS.get(chara);
+            String alt = nbt.getString("alt").orElse(c.DEFAULT_ALT);
+            String eyes = nbt.getString("eyes").orElse(c.ALTS.get(alt).default_eyes());
+
+            renderState.addGeckolibData(CustomDataTickets.RENDER_SCALE, c.ALTS.get(alt).preview_scale());
+            renderState.addGeckolibData(CustomDataTickets.TEXTURE, AnimatronicDataHandler.getAltTexture(chara, alt));
+            renderState.addGeckolibData(CustomDataTickets.MODEL, AnimatronicDataHandler.getModel(chara, alt));
+            renderState.addGeckolibData(CustomDataTickets.SUIT_MAP_TEXTURE, AnimatronicDataHandler.getEndoMask(chara, alt));
+            renderState.addGeckolibData(CustomDataTickets.EYE_TEXTURE, AnimatronicDataHandler.getEyeTexture(chara, alt, eyes));
+        });
+
+        return super.fillRenderState(animatable, relatedObject, renderState, partialTick);
+    }
+
+    @Override
+    public void buildRenderTask(GeoRenderState renderState, MatrixStack poseStack, BakedGeoModel model, RenderCommandQueue renderTasks, CameraRenderState cameraState, @Nullable RenderLayer renderType, int packedLight, int packedOverlay, int renderColor) {
+        if (renderType == null)
+            return;
+
+        if(model.getBone("head").isPresent()) {
+            poseStack.push();
+            GeoBone bone =  model.getBone("head").get();
+            //poseStack.translate(-bone.getPosX(), -bone.getPosY(), -bone.getPosZ());
+            float scale = 1;
+            if(renderState.hasGeckolibData(CustomDataTickets.RENDER_SCALE)) scale = renderState.getGeckolibData(CustomDataTickets.RENDER_SCALE);
+
+            poseStack.scale(scale, scale, scale);
+            poseStack.translate(0, -2.15f * (1f/scale), 0);
+
+            renderTasks.submitCustom(poseStack, renderType, (pose, vertexConsumer) -> {
+                final MatrixStack poseStack2 = new MatrixStack();
+                final boolean skipBoneTasks = getPerBoneTasks(renderState).isEmpty();
+
+                poseStack2.peek().copy(pose);
+
+                renderBone(renderState, poseStack2, bone, vertexConsumer, cameraState, packedLight, packedOverlay, renderColor);
+            });
+            poseStack.pop();
+        }
+    }
+}

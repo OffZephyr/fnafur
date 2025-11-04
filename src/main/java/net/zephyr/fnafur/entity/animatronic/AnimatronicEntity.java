@@ -12,6 +12,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -30,6 +31,7 @@ import net.zephyr.fnafur.entity.animatronic.data.CharacterData;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.entity_init.CharacterInit;
+import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerPayload;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
@@ -401,6 +403,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
         return "animation.default." + animation;
     }
 
+    void setCPU(ItemStack stack){
+
+    }
 
     public RenderLayer getRenderType(Identifier texture){
         return RenderLayer.getEntityTranslucent(texture);

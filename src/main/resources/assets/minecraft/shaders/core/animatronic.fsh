@@ -4,9 +4,10 @@
 #moj_import <minecraft:dynamictransforms.glsl>
 
 uniform sampler2D Sampler0;
+uniform sampler2D Sampler1;
+uniform sampler2D Sampler2;
 uniform sampler2D Sampler3;
 uniform sampler2D Sampler4;
-uniform sampler2D Sampler5;
 
 in float sphericalVertexDistance;
 in float cylindricalVertexDistance;
@@ -24,6 +25,13 @@ out vec4 fragColor;
 
 void main() {
     vec4 color = texture(Sampler0, texCoord0);
+    vec4 color2 = texture(Sampler3, texCoord0);
+    #ifdef NO_EYES
+        color2 = vec4(0);
+    #endif
+    vec4 color3 = texture(Sampler4, texCoord0);
+    if(color3.rgb == vec3(1, 1, 1)) color = color2;
+
 #ifdef ALPHA_CUTOUT
     if (color.a < ALPHA_CUTOUT) {
         discard;

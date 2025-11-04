@@ -32,7 +32,7 @@ import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
 import net.zephyr.fnafur.networking.sounds.PlayBlockSoundS2CPayload;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,7 +64,7 @@ public class AnimatronicBlock extends FloorPropBlock<AnimationList> {
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(stack.isOf(PropInit.COSMO_GIFT.asItem())){
-            NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+            NbtCompound nbt = ItemUtil.getNbt(stack);
 
             if(world.isClient() && world.getBlockEntity(pos) instanceof AnimatronicBlockEntity ent){
                 ((IEntityDataSaver)ent).getPersistentData().put("alt", nbt);

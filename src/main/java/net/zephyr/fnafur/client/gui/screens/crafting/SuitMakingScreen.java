@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.client.gui.screens.crafting;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
@@ -10,6 +11,7 @@ import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Style;
+import net.minecraft.text.StyleSpriteSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -17,6 +19,7 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
+import net.zephyr.fnafur.networking.block.DropItemFromWorkbenchC2SPayload;
 import net.zephyr.fnafur.util.EasingMathUtil;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
@@ -133,6 +136,9 @@ public class SuitMakingScreen extends GoopyScreen {
         int front_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
         context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, front_x, (height / 2) - 128, 0, 0, 256, 256, 512, 512);
 
+        drawAltTitle(context, front_x + 128, (height / 2) - 118, "fnafur.screens.workbench.title", 2);
+        drawAltTitle(context, front_x + 128, (height / 2) - 96, "fnafur.screens.workbench.title2", 1.25f);
+
         for(int i = 0; i < AnimatronicDataHandler.CATEGORIES.size(); i++){
             String category = AnimatronicDataHandler.CATEGORIES.get(i);
             if(Objects.equals(category, "default")) continue;
@@ -180,17 +186,17 @@ public class SuitMakingScreen extends GoopyScreen {
         if(!this.previous_category.isEmpty()) {
 
             if(AnimatronicDataHandler.CHARAS_PER_CATEGORY.get(this.previous_category) != null) {
-                renderList(this.previous_category, context, mouseX, mouseY, 3, 2, deltaTicks, AnimatronicDataHandler.CHARAS_PER_CATEGORY.get(this.previous_category), category_index, "entity." + FnafUniverseRebuilt.MOD_ID + ".", this::getMissingCharacter, this::drawCategoryTitle);
+                renderList(this.previous_category, context, mouseX, mouseY, 3, 2, deltaTicks, AnimatronicDataHandler.CHARAS_PER_CATEGORY.get(this.previous_category), category_index, "entity." + FnafUniverseRebuilt.MOD_ID + ".", this::getMissingCharacter, this::drawCategoryTitle, true);
 
 
                 if (AnimatronicDataHandler.CHARACTERS.get(this.previous_character) != null) {
 
-                    renderList(this.previous_character, context, mouseX, mouseY, -1, 4, deltaTicks, AnimatronicDataHandler.CHARACTERS.get(this.previous_character).alt_names, alt_index, "entity_alts." + FnafUniverseRebuilt.MOD_ID + "." + previous_character + ".", this::getMissingAlt, this::drawAltTitle);
+                    renderList("entity." + FnafUniverseRebuilt.MOD_ID + "." + this.previous_character, context, mouseX, mouseY, -1, 4, deltaTicks, AnimatronicDataHandler.CHARACTERS.get(this.previous_character).alt_names, alt_index, "entity_alts." + FnafUniverseRebuilt.MOD_ID + "." + previous_character + ".", this::getMissingAlt, this::drawSuitTitle, false);
 
                     if (AnimatronicDataHandler.CHARACTERS.get(this.previous_character).alt_names.contains(this.previous_alt)) {
 
 
-                        renderList(this.previous_alt, context, mouseX, mouseY, 1, 1, deltaTicks, AnimatronicDataHandler.CHARACTERS.get(this.previous_character).eye_names, eyes_index, "entity_eyes." + FnafUniverseRebuilt.MOD_ID + "." + previous_character + ".", this::getMissingAlt, this::drawAltTitle);
+                        renderList("entity_alts." + FnafUniverseRebuilt.MOD_ID + "." + previous_character + "." + this.previous_alt, context, mouseX, mouseY, 1, 1, deltaTicks, AnimatronicDataHandler.CHARACTERS.get(this.previous_character).eye_names, eyes_index, "entity_eyes." + FnafUniverseRebuilt.MOD_ID + "." + previous_character + "." + previous_alt + ".", this::getMissingAlt, this::drawEyesTitle, false);
                     }
                 }
             }
@@ -198,7 +204,7 @@ public class SuitMakingScreen extends GoopyScreen {
         //super.render(context, mouseX, mouseY, delta);
     }
 
-    void renderList(String title, DrawContext context, int mouseX, int mouseY, int offsetX, int offsetY, float deltaTicks, List<String> arraylist, float index, String name_prefix, GetMissing missingCheck, DrawTitle drawTitle) {
+    void renderList(String title, DrawContext context, int mouseX, int mouseY, int offsetX, int offsetY, float deltaTicks, List<String> arraylist, float index, String name_prefix, GetMissing missingCheck, DrawTitle drawTitle, boolean show_icons) {
 
         int front_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
 
@@ -212,7 +218,7 @@ public class SuitMakingScreen extends GoopyScreen {
         int back_v2 = isOnButton(mouseX, mouseY, x + 3, y + 3, 32, 32) ? 64 : 96;
         context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 3, y + 3, 320, back_v2, 32, 32, 512, 512);
 
-        drawTitle.draw(context, x, y, title);
+        drawTitle.draw(context, x + 128, y + 18, title, 2);
         //context.drawTexture(RenderPipelines.GUI_TEXTURED, category_name, category_x + 64, category_y, 0, 0, 128, 48, 128, 48);
 
         for (int i = 0; i < arraylist.size(); i++) {
@@ -227,31 +233,104 @@ public class SuitMakingScreen extends GoopyScreen {
             drawOutline(context, list_x - 3, list_y - 3, 86, 61, color);
 
             if (selected) {
-                GoopyScreen.drawEntity(context, list_x + 1, list_y, list_x + 79, list_y + 55, 80, 1, new Quaternionf().rotationXYZ(0, (float) Math.PI, 0), icon_preview);
+                GoopyScreen.drawEntity(context, list_x + 1, list_y + 1, list_x + 79, list_y + 55, 80, 1, new Quaternionf().rotationXYZ(0, (float) Math.PI, 0), icon_preview);
             }
 
             int offset = selected ? -20 : 0;
-            Style style = Style.EMPTY.withStrikethrough(missing);
+            StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
+            Style style = Style.EMPTY.withStrikethrough(missing).withFont(spriteFont);
             Text text = Text.translatable(name_prefix + list_name).setStyle(style);
             int textWidth = textRenderer.getWidth(text);
-            context.getMatrices().pushMatrix();
-            context.getMatrices().translate(list_x + 41, offset + list_y + 27);
-            if (textWidth > 76) {
-                float diff = (1f / textWidth) * 76;
-                context.getMatrices().scale(diff);
+
+            boolean textVisible = !selected;
+            if(show_icons && !missing){
+                float size = 0.5f;
+                int icon_y = (int) (list_y + 55 - (32 * size));
+                boolean isOn = selected && isOnButton(mouseX, mouseY, list_x, icon_y - (int) (32 * size), (int) (32 * size), (int) (64 * size));
+
+                int iconU = 256;
+                int altU = 256 + 32;
+                int eyeU = 256 + 64;
+                int V = isOn ? 128 : 128 + 32;
+
+                if(isOn){
+                    context.fill(list_x + 1, list_y + 1, list_x + 80, list_y + 55, 0x66556699);
+                    textVisible = true;
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, list_x, icon_y - (int) (32 * size), altU * size, V * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, list_x, icon_y, eyeU * size, V * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
+
+                    AnimatronicDataHandler.Chara chara = AnimatronicDataHandler.CHARACTERS.get(list_name);
+                    int altCount = chara.ALTS.size();
+                    int eyeCount = chara.EYE_ALTS.size();
+                    Text alts_text = altCount == 1 ? Text.translatable("fnafur.screens.workbench.alt", altCount).setStyle(style) : Text.translatable("fnafur.screens.workbench.alts", altCount).setStyle(style);
+                    Text eyes_text = Text.translatable("fnafur.screens.workbench.eyes", eyeCount).setStyle(style);
+
+                    context.getMatrices().pushMatrix();
+                    context.getMatrices().translate(list_x + (int) (34 * size), icon_y);
+                    context.drawText(textRenderer, eyes_text,0, 4, 0xFFFFFFFF, false);
+                    context.getMatrices().translate(0, - (int) (32 * size));
+                    context.drawText(textRenderer, alts_text,0, 4, 0xFFFFFFFF, false);
+                    context.getMatrices().popMatrix();
+                }
+                else{
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, list_x, icon_y, iconU * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size), color);
+                }
+
             }
-            context.drawText(textRenderer, text, -(textWidth / 2), -4, color, false);
-            context.getMatrices().popMatrix();
+            if(textVisible){
+                context.getMatrices().pushMatrix();
+                context.getMatrices().translate(list_x + 41, offset + list_y + 27);
+                if (textWidth > 76) {
+                    float diff = (1f / textWidth) * 76;
+                    context.getMatrices().scale(diff);
+                }
+                context.drawText(textRenderer, text, -(textWidth / 2), -4, color, false);
+                context.getMatrices().popMatrix();
+            }
         }
     }
 
-    void drawCategoryTitle(DrawContext context, int x, int y, String extra){
+    void drawCategoryTitle(DrawContext context, int x, int y, String extra, float scale){
         Identifier category_name = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench/" + extra + "_list_select.png");
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, category_name, x + 64, y, 0, 0, 128, 48, 128, 48);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, category_name, x - 64, y - 16, 0, 0, 128, 48, 128, 48);
+
+        float size = 1f;
+        int U = 256;
+        //int y2 = 234 - (int) (32 * size);
+        int y2 = 6 - (int) (16 * size);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
     }
 
-    void drawAltTitle(DrawContext context, int x, int y, String extra){
+    void drawSuitTitle(DrawContext context, int x, int y, String extra, float scale) {
 
+        float size = 1f;
+        int U = 256 + 32;
+        //int y2 = 234 - (int) (32 * size);
+        int y2 = 2 - (int) (16 * size);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
+        drawAltTitle(context, x, y, extra, scale);
+    }
+    void drawEyesTitle(DrawContext context, int x, int y, String extra, float scale) {
+
+        float size = 1f;
+        int U = 256 + 64;
+        //int y2 = 234 - (int) (32 * size);
+        int y2 = 2 - (int) (16 * size);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
+        drawAltTitle(context, x, y, extra, scale);
+    }
+    void drawAltTitle(DrawContext context, int x, int y, String extra, float scale){
+
+        StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
+        Style style = Style.EMPTY.withFont(spriteFont);
+        Text text = Text.translatable(extra).setStyle(style);
+
+        context.getMatrices().pushMatrix();
+        context.getMatrices().translate(x, y);
+        context.getMatrices().translate(-(textRenderer.getWidth(text)/2f)*scale, 0);
+        context.getMatrices().scale(scale);
+        context.drawText(textRenderer, text, 0, 0, 0xFFFFFFFF, false);
+        context.getMatrices().popMatrix();
     }
 
     boolean isSelected(int i){
@@ -328,9 +407,15 @@ public class SuitMakingScreen extends GoopyScreen {
                 }
             }
             else{
-                if(preview.getChara().isEmpty()){
+                if(!preview.getChara().isEmpty()){
                     if(isOnButton(click.x(), click.y(), export_x, save_y, 32, 32)){
+                        getNbtData().remove("chara");
+                        getNbtData().remove("alt");
+                        getNbtData().remove("eyes");
 
+                        GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), getNbtData(), MinecraftClient.getInstance().world);
+                        ClientPlayNetworking.send(new DropItemFromWorkbenchC2SPayload(getBlockPos().asLong(), preview.getChara(), preview.getAlt(), preview.getEyes()));
+                        close();
                     }
                 }
                 if(isOnButton(click.x(), click.y(), close_x, save_y, 32, 32)){
@@ -528,7 +613,7 @@ public class SuitMakingScreen extends GoopyScreen {
 
     @FunctionalInterface
     public interface DrawTitle {
-        void draw(DrawContext context, int x, int y, String extra);
+        void draw(DrawContext context, int x, int y, String extra, float scale);
     }
     @FunctionalInterface
     public interface GetMissing {

@@ -7,7 +7,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 
 public class TileDoorItem extends BlockItem {
     public TileDoorItem(Block block, Settings settings) {
@@ -16,16 +16,16 @@ public class TileDoorItem extends BlockItem {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        NbtCompound nbt = ItemNbtUtil.getNbt(context.getStack());
+        NbtCompound nbt = ItemUtil.getNbt(context.getStack());
 
         if(!nbt.contains("pos1")){
             nbt.putLong("pos1", context.getBlockPos().offset(context.getSide()).asLong());
-            ItemNbtUtil.setNbt(context.getStack(), nbt.copy());
+            ItemUtil.setNbt(context.getStack(), nbt.copy());
             return ActionResult.SUCCESS;
         }
         else{
             nbt.putLong("pos2", context.getBlockPos().offset(context.getSide()).asLong());
-            ItemNbtUtil.setNbt(context.getStack(), nbt.copy());
+            ItemUtil.setNbt(context.getStack(), nbt.copy());
             return super.useOnBlock(context);
         }
     }

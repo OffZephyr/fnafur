@@ -3,7 +3,7 @@
     "cl_bon":{
         "default_alt": "default",
         "model": "cl_bon",
-        "endo_mask": "cl_bon",
+        "endo_mask": "cl_bon_endomask",
 
         "alts":{
             "default": {
@@ -14,6 +14,7 @@
                 "preview_scale": 1,
                 "colors": 0,
                 "model_override": "",
+                "endo_mask_override": "",
                 "eye_path_subfolder": ""
             }
         },
@@ -22,13 +23,13 @@
            "alts":{
                "default": {
                    "texture": "eyes/cl_bon_eye_pink",
-                   "map": "eyes/cl_bon_eyemap",
+                   "map": "cl_bon_eyemask",
                    "default_glow": "dot",
                    "colors": 0
                },
                "black": {
                    "texture": "eyes/cl_bon_eye_full_black",
-                   "map": "eyes/cl_bon_eyemap",
+                   "map": "cl_bon_eyemask",
                    "default_glow": "dot",
                    "colors": 0
                }

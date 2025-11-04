@@ -10,7 +10,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.item.tools.WrenchItem;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ public interface LinkTarget {
 
         ItemStack stack = player.getMainHandStack();
         if(player.getMainHandStack().getItem() instanceof WrenchItem){
-            NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+            NbtCompound nbt = ItemUtil.getNbt(stack);
 
             BlockPos startPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
 
@@ -144,7 +144,7 @@ public interface LinkTarget {
 
             nbt.remove("startLink");
             nbt.remove("buttonIndex");
-            ItemNbtUtil.setNbt(stack, nbt);
+            ItemUtil.setNbt(stack, nbt);
             return ActionResult.SUCCESS;
         }
         return null;

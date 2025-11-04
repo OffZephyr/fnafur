@@ -1,11 +1,8 @@
 package net.zephyr.fnafur.util.jsonReaders.animatronics;
 
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
-import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import software.bernie.geckolib.cache.GeckoLibResources;
 import software.bernie.geckolib.loading.object.BakedAnimations;
 
@@ -66,6 +63,17 @@ public class AnimatronicDataHandler {
         }
         return getDefaultModel();
     }
+    public static Identifier getEndoMask(String character, String alt){
+        Chara chara = CHARACTERS.get(character);
+        if(chara != null) {
+            String mask = chara.ENDO_MASK;
+            if (!chara.ALTS.get(alt).endo_mask_override.isEmpty()) {
+                mask = chara.ALTS.get(alt).endo_mask_override;
+            }
+            return getTexture(chara, mask);
+        }
+        return getDefaultEndoMask();
+    }
 
     public static Identifier getDefaultTexture(String path){
         return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/" + getPath(DEFAULT_CHARA.CATEGORY, DEFAULT_CHARA.NAME) + path + ".png");
@@ -97,6 +105,13 @@ public class AnimatronicDataHandler {
             model = DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).model_override;
         }
         return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/" + getPath(category, DEFAULT_CHARA.NAME) + model + ".geo.json");
+    }
+    public static Identifier getDefaultEndoMask() {
+        String mask = DEFAULT_CHARA.ENDO_MASK;
+        if (!DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).endo_mask_override.isEmpty()) {
+            mask = DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).endo_mask_override;
+        }
+        return getDefaultTexture(mask);
     }
 
     public static float getPreviewScale(String character, String alt){
@@ -166,6 +181,6 @@ public class AnimatronicDataHandler {
             glow_mask_names.addAll(glow_masks.keySet());
         }
     }
-    public record Alt(String texture, String emissive_mask, String default_eyes, String preview_anim, float preview_scale, int colors, String model_override, String eye_path_subfolder){}
+    public record Alt(String texture, String emissive_mask, String default_eyes, String preview_anim, float preview_scale, int colors, String model_override, String endo_mask_override, String eye_path_subfolder){}
     public record EyesAlt(String texture, String map,String default_glow, int colors){}
 }

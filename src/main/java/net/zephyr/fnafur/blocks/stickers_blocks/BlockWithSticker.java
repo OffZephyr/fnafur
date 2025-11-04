@@ -32,7 +32,7 @@ import net.minecraft.world.WorldView;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,7 +85,7 @@ public class BlockWithSticker extends BlockWithEntity {
             itemStack.set(DataComponentTypes.ITEM_NAME, Text.literal(newState.getBlock().getName().getString() + Text.translatable("block.fnafur.has_sticker").getString()));
         }
 
-        ItemNbtUtil.setNbt(itemStack, nbt);
+        ItemUtil.setNbt(itemStack, nbt);
 
 
         return itemStack;
@@ -93,7 +93,7 @@ public class BlockWithSticker extends BlockWithEntity {
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        NbtCompound data = ItemNbtUtil.getNbt(itemStack);
+        NbtCompound data = ItemUtil.getNbt(itemStack);
 
         world.setBlockState(pos, state);
         if (world.isClient()) {

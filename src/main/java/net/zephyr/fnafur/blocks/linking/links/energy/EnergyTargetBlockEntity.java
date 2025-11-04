@@ -48,7 +48,7 @@ public abstract class EnergyTargetBlockEntity<T extends BlockEntityType<?>> exte
                 if(s.isSendingPower((IEntityDataSaver) this)) return true;
             }
         }
-        return getSources().isEmpty();
+        return false;
     }
 
 

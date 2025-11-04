@@ -106,7 +106,7 @@ public class GoopyNetworkingUtils {
     @Environment(EnvType.CLIENT)
     public static void saveItemNbt(String slot, NbtCompound nbt){
         ItemStack stack = MinecraftClient.getInstance().player.getEquippedStack(EquipmentSlot.byName(slot));
-        ItemNbtUtil.setNbt(stack, nbt);
+        ItemUtil.setNbt(stack, nbt);
         ClientPlayNetworking.send(new UpdateItemNbtC2SPayload(slot, nbt));
     }
     @Environment(EnvType.CLIENT)

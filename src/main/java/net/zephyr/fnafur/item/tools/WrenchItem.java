@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.jetbrains.annotations.Nullable;
@@ -69,10 +69,10 @@ public class WrenchItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
         if(entity instanceof PlayerEntity p && (!((IUniversePlayer)p).isUsingVanniMask() || !p.getMainHandStack().equals(stack))){
-            NbtCompound nbt = ItemNbtUtil.getNbt(stack);
+            NbtCompound nbt = ItemUtil.getNbt(stack);
             if(nbt.contains("startLink")){
                 nbt.remove("startLink");
-                ItemNbtUtil.setNbt(stack, nbt);
+                ItemUtil.setNbt(stack, nbt);
             }
         }
 

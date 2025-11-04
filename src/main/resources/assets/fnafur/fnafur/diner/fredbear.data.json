@@ -3,7 +3,7 @@
     "fredbear":{
         "default_alt": "default",
         "model": "fredbear",
-        "endo_mask": "fredbear",
+        "endo_mask": "fredbear_endomask",
 
         "alts":{
             "default": {
@@ -14,6 +14,7 @@
                 "preview_scale": 0.88,
                 "colors": 0,
                 "model_override": "",
+                "endo_mask_override": "",
                 "eye_path_subfolder": ""
             }
         },
@@ -22,7 +23,7 @@
            "alts":{
                "default": {
                    "texture": "fredbear",
-                   "map": "eyes/fredbear_eyemap",
+                   "map": "fredbear_eyemask",
                    "default_glow": "none",
                    "colors": 0
                }

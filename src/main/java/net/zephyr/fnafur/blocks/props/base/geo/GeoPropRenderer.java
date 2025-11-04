@@ -59,7 +59,11 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
             renderState.addGeckolibData(DataTickets.RENDER_COLOR, ColorHelper.getArgb((int)alpha, 255, 255, 255));
         }
 
-        renderState.addGeckolibData(CustomDataTickets.ENTITY_DATA, ((IEntityDataSaver)animatable).getPersistentData().copy());
+        NbtCompound nbt = ((IEntityDataSaver)animatable).getPersistentData().copy();
+        renderState.addGeckolibData(CustomDataTickets.ROTATION, nbt.getFloat("Rotation").orElse(0f));
+        renderState.addGeckolibData(CustomDataTickets.X_OFFSET, nbt.getDouble("xOffset").orElse(0.0));
+        renderState.addGeckolibData(CustomDataTickets.Y_OFFSET, nbt.getDouble("yOffset").orElse(0.0));
+        renderState.addGeckolibData(CustomDataTickets.Z_OFFSET, nbt.getDouble("zOffset").orElse(0.0));
         renderState.addGeckolibData(CustomDataTickets.FACING, getFacing(animatable));
         renderState.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.getWorld()));
         renderState.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.getWorld()));
@@ -74,23 +78,16 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
     public void render(R renderState, MatrixStack matrices, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraRenderState) {
         BlockPos pos = renderState.pos;
         BlockState state = client.world.getBlockState(pos);
-        NbtCompound nbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA);
         Direction facing = renderState.getGeckolibData(CustomDataTickets.FACING);
 
         if(state.getBlock() instanceof PropBlock<?> block) {
             matrices.push();
 
-            if(!nbt.contains("synced")){
-                ClientPlayNetworking.send(new SyncBlockNbtC2SPayload(pos.asLong()));
+            float rotation = renderState.getGeckolibData(CustomDataTickets.ROTATION);
 
-                nbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA);
-            }
-
-            float rotation = nbt.getFloat("Rotation").orElse(0f);
-
-            double offsetX = nbt.getDouble("xOffset").orElse(0.0);
-            double offsetY = nbt.getDouble("yOffset").orElse(0.0);
-            double offsetZ = nbt.getDouble("zOffset").orElse(0.0);
+            double offsetX = renderState.getGeckolibData(CustomDataTickets.X_OFFSET);
+            double offsetY = renderState.getGeckolibData(CustomDataTickets.Y_OFFSET);
+            double offsetZ = renderState.getGeckolibData(CustomDataTickets.Z_OFFSET);
 
             matrices.translate(-0.5f, 0, -0.5f);
             matrices.translate(offsetX, 0, offsetZ);
@@ -100,14 +97,12 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
             }
             if(state.getBlock() instanceof WallPropBlock<?>) {
                 matrices.translate(0, 0.5f, 0);
-                if(nbt.contains("Rotation")) {
-                    matrices.translate(0.5f, 0, 0.5f);
-                    matrices.translate(-0.5f * facing.getVector().getX(), 0, -0.5f * facing.getVector().getZ());
-                    matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
-                    matrices.translate(0.15f * facing.getVector().getX(), 0, 0.15f * facing.getVector().getZ());
-                    matrices.translate(-0.5f, 0, -0.5f);
 
-                }
+                matrices.translate(0.5f, 0, 0.5f);
+                matrices.translate(-0.5f * facing.getVector().getX(), 0, -0.5f * facing.getVector().getZ());
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
+                matrices.translate(0.15f * facing.getVector().getX(), 0, 0.15f * facing.getVector().getZ());
+                matrices.translate(-0.5f, 0, -0.5f);
             }
             else {
                 float offsetRotation = state.get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();

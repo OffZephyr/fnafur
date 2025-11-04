@@ -386,63 +386,83 @@
   "entity.fnafur.none": "None",
 
   "entity.fnafur.cl_fred": "Freddy Fazbear",
-
   "entity_alts.fnafur.cl_fred.default": "FNaF 1",
   "entity_alts.fnafur.cl_fred.golden": "Golden Fur",
   "entity_alts.fnafur.cl_fred.shadow": "Shadow Fur",
   "entity_alts.fnafur.cl_fred.colorable": "Colorable",
-
-  "entity_eyes.fnafur.cl_fred.default": "Blue",
-  "entity_eyes.fnafur.cl_fred.brown": "Brown",
-  "entity_eyes.fnafur.cl_fred.black": "Full Black",
-  "entity_eyes.fnafur.cl_fred.white": "Full White",
-  "entity_eyes.fnafur.cl_fred.colorable": "Colorable",
-  "entity_eyes.fnafur.cl_fred.none": "None",
+  "entity_eyes.fnafur.cl_fred.default.default": "Blue",
+  "entity_eyes.fnafur.cl_fred.default.brown": "Brown",
+  "entity_eyes.fnafur.cl_fred.default.black": "Full Black",
+  "entity_eyes.fnafur.cl_fred.default.white": "Full White",
+  "entity_eyes.fnafur.cl_fred.default.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_fred.default.none": "None",
+  "entity_eyes.fnafur.cl_fred.golden.default": "Blue",
+  "entity_eyes.fnafur.cl_fred.golden.brown": "Brown",
+  "entity_eyes.fnafur.cl_fred.golden.black": "Full Black",
+  "entity_eyes.fnafur.cl_fred.golden.white": "Full White",
+  "entity_eyes.fnafur.cl_fred.golden.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_fred.golden.none": "None",
+  "entity_eyes.fnafur.cl_fred.shadow.default": "Blue",
+  "entity_eyes.fnafur.cl_fred.shadow.brown": "Brown",
+  "entity_eyes.fnafur.cl_fred.shadow.black": "Full Black",
+  "entity_eyes.fnafur.cl_fred.shadow.white": "Full White",
+  "entity_eyes.fnafur.cl_fred.shadow.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_fred.shadow.none": "None",
 
   "entity.fnafur.cl_bon": "Bonnie",
-
   "entity_alts.fnafur.cl_bon.default": "FNaF 1",
   "entity_alts.fnafur.cl_bon.colorable": "Colorable",
-
-  "entity_eyes.fnafur.cl_bon.default": "Pink",
-  "entity_eyes.fnafur.cl_bon.black": "Full Black",
-  "entity_eyes.fnafur.cl_bon.colorable": "Colorable",
-  "entity_eyes.fnafur.cl_bon.none": "None",
+  "entity_eyes.fnafur.cl_bon.default.default": "Pink",
+  "entity_eyes.fnafur.cl_bon.default.black": "Full Black",
+  "entity_eyes.fnafur.cl_bon.default.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_bon.default.none": "None",
 
   "entity.fnafur.cl_chica": "Chica",
-
   "entity_alts.fnafur.cl_chica.default": "FNaF 1",
   "entity_alts.fnafur.cl_chica.colorable": "Colorable",
-
-  "entity_eyes.fnafur.cl_chica.default": "Magenta",
-  "entity_eyes.fnafur.cl_chica.black": "Full Black",
-  "entity_eyes.fnafur.cl_chica.colorable": "Colorable",
-  "entity_eyes.fnafur.cl_chica.none": "None",
+  "entity_eyes.fnafur.cl_chica.default.default": "Magenta",
+  "entity_eyes.fnafur.cl_chica.default.black": "Full Black",
+  "entity_eyes.fnafur.cl_chica.default.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_chica.default.none": "None",
 
   "entity.fnafur.cl_foxy": "Foxy",
-
   "entity_alts.fnafur.cl_foxy.default": "FNaF 1",
   "entity_alts.fnafur.cl_foxy.colorable": "Colorable",
-
-  "entity_eyes.fnafur.cl_foxy.default": "Yellow",
-  "entity_eyes.fnafur.cl_foxy.black": "Full Black",
-  "entity_eyes.fnafur.cl_foxy.colorable": "Colorable",
-  "entity_eyes.fnafur.cl_foxy.none": "None",
+  "entity_eyes.fnafur.cl_foxy.default.default": "Yellow",
+  "entity_eyes.fnafur.cl_foxy.default.black": "Full Black",
+  "entity_eyes.fnafur.cl_foxy.default.colorable": "Colorable",
+  "entity_eyes.fnafur.cl_foxy.default.none": "None",
 
   "entity.fnafur.cl_sparky": "Sparky",
 
   "entity.fnafur.cl_endo": "Endo01",
+  "entity_alts.fnafur.cl_endo.default": "FNaF 1",
+  "entity_eyes.fnafur.cl_endo.default.default": "Blue",
+  "entity_eyes.fnafur.cl_endo.default.none": "None",
+
   "entity.fnafur.toy_endo": "Toy Endo",
   "entity.fnafur.rt_endo": "Endo02",
   "entity.fnafur.sp_endo": "Springlock Endo",
 
   "entity.fnafur.fredbear": "FredBear",
+  "entity_alts.fnafur.fredbear.default": "FredBear",
+  "entity_eyes.fnafur.fredbear.default.default": "Blue",
+  "entity_eyes.fnafur.fredbear.default.none": "None",
+
   "entity.fnafur.sp_bon": "Spring Bonnie",
 
   "entity_alts.fnafur.sp_bon.default": "Bonnie",
+  "entity_eyes.fnafur.sp_bon.default.default": "Green",
+  "entity_eyes.fnafur.sp_bon.default.none": "None",
   "entity_alts.fnafur.sp_bon.freddy": "Freddy",
+  "entity_eyes.fnafur.sp_bon.freddy.default": "Blue",
+  "entity_eyes.fnafur.sp_bon.freddy.none": "None",
   "entity_alts.fnafur.sp_bon.chica": "Chica",
+  "entity_eyes.fnafur.sp_bon.chica.default": "Pink",
+  "entity_eyes.fnafur.sp_bon.chica.none": "None",
   "entity_alts.fnafur.sp_bon.foxy": "Foxy",
+  "entity_eyes.fnafur.sp_bon.foxy.default": "Orange",
+  "entity_eyes.fnafur.sp_bon.foxy.none": "None",
 
   "death.fnafur.back": "Back",
   "death.fnafur.confirm": "Confirm",
@@ -455,6 +475,12 @@
 
   "fnafur.commands.money": "%s currently owns §a§lF$%d§r.",
   "fnafur.commands.money.set": "%s now owns §a§lF$%d§r.",
+
+  "fnafur.screens.workbench.title": "Animatronic Workbench",
+  "fnafur.screens.workbench.title2": "\"Design the face of your future!\"",
+  "fnafur.screens.workbench.alt": "%s Suit Alt",
+  "fnafur.screens.workbench.alts": "%s Suit Alts",
+  "fnafur.screens.workbench.eyes": "%s Eye Alts",
 
   "fnafur.screens.camera_edit.tooltip": "Hold %s to show helpful tips and info.",
   "fnafur.screens.camera_edit.renameAction": "Pick a name for your Action button.",

@@ -20,12 +20,11 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
-import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.DecalInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class DecalBookItem extends Item {
@@ -42,9 +41,9 @@ public class DecalBookItem extends Item {
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if(user.isSneaking()){
-            NbtCompound nbt = ItemNbtUtil.getNbt(user.getMainHandStack());
+            NbtCompound nbt = ItemUtil.getNbt(user.getMainHandStack());
             nbt.putString("activeDecal", "");
-            ItemNbtUtil.setNbt(user.getMainHandStack(), nbt);
+            ItemUtil.setNbt(user.getMainHandStack(), nbt);
             user.sendMessage(Text.translatable("decal_book.clear"), true);
             return ActionResult.SUCCESS;
         }
@@ -53,7 +52,7 @@ public class DecalBookItem extends Item {
     }
 
     public static DecalInit.Decal getDecal(ItemStack stack){
-        String name = ItemNbtUtil.getNbt(stack).getString("activeDecal").orElse("");
+        String name = ItemUtil.getNbt(stack).getString("activeDecal").orElse("");
         if(!name.isEmpty()){
             return DecalInit.getDecal(name);
         }

@@ -30,7 +30,7 @@ import net.minecraft.world.block.WireOrientation;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -81,7 +81,7 @@ public class MimicFrames extends BlockWithSticker {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        byte[] data = ItemNbtUtil.getNbt(ctx.getStack()).getByteArray("cubeMatrix").orElse(new byte[0]);
+        byte[] data = ItemUtil.getNbt(ctx.getStack()).getByteArray("cubeMatrix").orElse(new byte[0]);
         return getDefaultState().with(IS_FULL, isFullCube(data));
     }
 
@@ -120,7 +120,7 @@ public class MimicFrames extends BlockWithSticker {
             if(entity != null) {
                 Vec3d offset = ((BlockHitResult)MinecraftClient.getInstance().crosshairTarget).getSide().getDoubleVector().multiply(0.01f);
                 Vec3i matrixPos = getMatrixPos(MinecraftClient.getInstance().crosshairTarget.getPos().add(offset), pos);
-                byte[] data = ItemNbtUtil.getNbt(itemStack).getByteArray("cubeMatrix").orElse(new byte[0]);
+                byte[] data = ItemUtil.getNbt(itemStack).getByteArray("cubeMatrix").orElse(new byte[0]);
                 boolean[][][] matrix = new boolean[getMatrixSize()][getMatrixSize()][getMatrixSize()];
                 matrix[Math.clamp(matrixPos.getX(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getY(), 0, getMatrixSize()-1)][Math.clamp(matrixPos.getZ(), 0, getMatrixSize()-1)] = true;
 
@@ -168,7 +168,7 @@ public class MimicFrames extends BlockWithSticker {
 
         ItemStack itemStack = context.getStack();
 
-        if(!ItemNbtUtil.getNbt(itemStack).isEmpty()) return false;
+        if(!ItemUtil.getNbt(itemStack).isEmpty()) return false;
 
         BlockEntity entity = context.getWorld().getBlockEntity(context.getBlockPos());
         if(entity == null || !itemStack.isOf(this.asItem())) return false;

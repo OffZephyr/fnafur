@@ -16,12 +16,11 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class SpecialBlockPlacingRenderer {
@@ -46,7 +45,7 @@ public class SpecialBlockPlacingRenderer {
 
                         if(!client.world.canPlace(state, pos, ShapeContext.of(client.player)) || !client.world.getBlockState(pos).isReplaceable()) return;
 
-                        if(ItemNbtUtil.getNbt(client.player.getMainHandStack()).isEmpty()) return;
+                        if(ItemUtil.getNbt(client.player.getMainHandStack()).isEmpty()) return;
                         matrices.push();
                         matrices.translate(-cameraX, -cameraY, -cameraZ);
                         matrices.translate(pos.getX(), pos.getY(), pos.getZ());
@@ -54,7 +53,7 @@ public class SpecialBlockPlacingRenderer {
                         if(model instanceof StickerBlockModel m){
                             BlockEntity entity = block.createBlockEntity(BlockPos.ORIGIN, state);
 
-                            ((IEntityDataSaver)entity).getPersistentData().copyFrom(ItemNbtUtil.getNbt(client.player.getMainHandStack()));
+                            ((IEntityDataSaver)entity).getPersistentData().copyFrom(ItemUtil.getNbt(client.player.getMainHandStack()));
 
                             m.forceEnt = entity;
                             client.getBlockRenderManager().getModelRenderer().render(client.world, m, state, pos, matrices, RenderLayerHelper.movingDelegate(vertexConsumers), false, 0, OverlayTexture.DEFAULT_UV);

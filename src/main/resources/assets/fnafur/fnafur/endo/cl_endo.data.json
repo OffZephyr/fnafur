@@ -3,7 +3,7 @@
     "cl_endo":{
         "default_alt": "default",
         "model": "cl_endo",
-        "endo_mask": "cl_endo",
+        "endo_mask": "cl_endo_endomask",
 
         "alts":{
             "default": {
@@ -14,6 +14,7 @@
                 "preview_scale": 1,
                 "colors": 0,
                 "model_override": "",
+                "endo_mask_override": "",
                 "eye_path_subfolder": ""
             }
         },
@@ -22,7 +23,7 @@
            "alts":{
                "default": {
                    "texture": "cl_endo",
-                   "map": "eyes/cl_endo_eyemap",
+                   "map": "cl_endo_eyemask",
                    "default_glow": "dot",
                    "colors": 0
                }

@@ -1,20 +1,16 @@
 package net.zephyr.fnafur.item;
 
 import com.google.common.collect.Maps;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,7 +30,7 @@ public class EntitySpawnItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        NbtCompound nbt = ItemNbtUtil.getNbt(context.getStack());
+        NbtCompound nbt = ItemUtil.getNbt(context.getStack());
 
         BlockPos pos = context.getBlockPos().up();
         float yaw = context.getPlayerYaw() + 180f;

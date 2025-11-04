@@ -4,7 +4,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.*;
@@ -13,8 +12,7 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.init.DecalInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
-import net.zephyr.fnafur.util.ItemNbtUtil;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
+import net.zephyr.fnafur.util.ItemUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -237,7 +235,7 @@ public class DecalBookEditScreen extends GoopyScreen {
                         int y = cornerY + 24 + ((i / 2) * 52);
 
                         if (isOnButton(mouseX, mouseY, x - 1, y - 1, 50, 50)) {
-                            NbtCompound nbt = ItemNbtUtil.getNbt(MinecraftClient.getInstance().player.getMainHandStack());
+                            NbtCompound nbt = ItemUtil.getNbt(MinecraftClient.getInstance().player.getMainHandStack());
                             nbt.putString("activeDecal", decal.name());
 
                             GoopyNetworkingUtils.saveItemNbt(EquipmentSlot.MAINHAND.getName(), nbt);

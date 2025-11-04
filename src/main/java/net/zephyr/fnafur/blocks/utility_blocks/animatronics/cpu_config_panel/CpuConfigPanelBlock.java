@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +46,7 @@ public class CpuConfigPanelBlock extends BlockWithEntity {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(!state.get(TOP_CPU) && player.getMainHandStack().isOf(ItemInit.CPU)){
-            NbtCompound CPU = ItemNbtUtil.getNbt(player.getMainHandStack());
+            NbtCompound CPU = ItemUtil.getNbt(player.getMainHandStack());
             if(world.getBlockEntity(pos) instanceof CpuConfigPanelBlockEntity ent){
                 ((IEntityDataSaver)ent).getPersistentData().put("cpu", NbtCompound.CODEC, CPU);
             }
@@ -63,7 +63,7 @@ public class CpuConfigPanelBlock extends BlockWithEntity {
                 if(world.getBlockEntity(pos) instanceof CpuConfigPanelBlockEntity ent){
                     NbtCompound CPU = ((IEntityDataSaver)ent).getPersistentData().getCompoundOrEmpty("cpu");
                     if(!CPU.isEmpty()) {
-                        ItemNbtUtil.setNbt(stack, CPU);
+                        ItemUtil.setNbt(stack, CPU);
                     }
                 }
 

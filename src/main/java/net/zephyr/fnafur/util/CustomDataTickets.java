@@ -18,20 +18,26 @@ public class CustomDataTickets {
     public static final DataTicket<Identifier> EYE_TEXTURE = DataTicket.create("eye_texture", Identifier.class);
     public static final DataTicket<Identifier> EYE_MAP_TEXTURE = DataTicket.create("eye_map_texture", Identifier.class);
     public static final DataTicket<Identifier> SUIT_MAP_TEXTURE = DataTicket.create("suit_map_texture", Identifier.class);
+    public static final DataTicket<Float> RENDER_SCALE = DataTicket.create("render_scale", Float.class);
     public static final DataTicket<Boolean> EYE_NONE = DataTicket.create("eye_none", Boolean.class);
     public static final DataTicket<RenderLayer> RENDER_LAYER = DataTicket.create("render_layer", RenderLayer.class);
     public static final DataTicket<Identifier> DOOR_WINDOW_TEXTURE = DataTicket.create("door_window_texture", Identifier.class);
-    public static final DataTicket<NbtCompound> ENTITY_DATA = DataTicket.create("entity_data", NbtCompound.class);
     public static final DataTicket<Float> CLOCK_DELTA_MINUTE = DataTicket.create("clock_delta_minute", Float.class);
     public static final DataTicket<Float> CLOCK_DELTA_HOUR = DataTicket.create("clock_delta_hour", Float.class);
     public static final DataTicket<Boolean> IS_MASK_ON = DataTicket.create("is_mask_on", Boolean.class);
     public static final DataTicket<Boolean> CAN_ANIMATE_MASK = DataTicket.create("can_animate_mask", Boolean.class);
     public static final DataTicket<Boolean> IS_IN_MASK_SLOT = DataTicket.create("in_mask_slot", Boolean.class);
     public static final DataTicket<Boolean> IS_ENTITY_PREVIEW = DataTicket.create("is_entity_preview", Boolean.class);
-    public static final DataTicket<String> ENTITY_CHARA = DataTicket.create("entity_chara", String.class);
-    public static final DataTicket<String> ENTITY_ALT = DataTicket.create("entity_alt", String.class);
-    public static final DataTicket<String> ENTITY_EYES = DataTicket.create("entity_eyes", String.class);
     public static final DataTicket<Boolean> IS_VISIBLE = DataTicket.create("is_visible", Boolean.class);
     public static final DataTicket<Direction> FACING = DataTicket.create("facing", Direction.class);
     public static final DataTicket<MatrixStack.Entry> ENTITY_RENDER_MATRIX_ENTRY = DataTicket.create("entity_matrix_entry", MatrixStack.Entry.class);
+
+
+    public static final DataTicket<Float> ROTATION = DataTicket.create("rotation", Float.class);
+    public static final DataTicket<Double> X_OFFSET = DataTicket.create("x_offset", Double.class);
+    public static final DataTicket<Double> Y_OFFSET = DataTicket.create("y_offset", Double.class);
+    public static final DataTicket<Double> Z_OFFSET = DataTicket.create("z_offset", Double.class);
+
+
+
 }

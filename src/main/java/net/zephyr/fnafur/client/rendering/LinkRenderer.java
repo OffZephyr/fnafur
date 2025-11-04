@@ -16,12 +16,8 @@ import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
-import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
-import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
-import net.zephyr.fnafur.util.ItemNbtUtil;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.joml.Quaternionf;
@@ -49,7 +45,7 @@ public class LinkRenderer {
 
         BlockPos selectPos = BlockPos.ORIGIN;
         if(MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof WrenchItem) {
-            NbtCompound nbt = ItemNbtUtil.getNbt(MinecraftClient.getInstance().player.getMainHandStack());
+            NbtCompound nbt = ItemUtil.getNbt(MinecraftClient.getInstance().player.getMainHandStack());
             if (nbt.contains("startLink")) selectPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
 
             IEntityDataSaver ent = null;

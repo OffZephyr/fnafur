@@ -19,6 +19,9 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.basic_blocks.BallpitBlock;
 import net.zephyr.fnafur.blocks.basic_blocks.Random3Block;
 import net.zephyr.fnafur.blocks.basic_blocks.Random4Block;
+import net.zephyr.fnafur.blocks.curtain.CurtainBlock;
+import net.zephyr.fnafur.blocks.curtain.CurtainBlockEntityRenderer;
+import net.zephyr.fnafur.blocks.curtain.CurtainBlockItem;
 import net.zephyr.fnafur.blocks.decorations.BackstageShelfBlock;
 import net.zephyr.fnafur.blocks.decorations.WarehouseShelfBlock;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
@@ -45,6 +48,7 @@ import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
 import net.zephyr.fnafur.init.SoundsInit;
 
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class BlockInit {
@@ -1092,20 +1096,38 @@ public class BlockInit {
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
     );
+    // CURTAINS
+
+    public static final Block CURTAIN_TEST = registerBlock(
+            "curtain_test",
+            CurtainBlock::new,
+            CurtainBlockItem::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .blockVision(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .solidBlock(Blocks::never)
+    );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
-        return registerBlock(name, factory, settings, List.of());
+        return registerBlock(name, factory, BlockItem::new, settings, List.of());
+    }
+    private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, BiFunction<Block, Item.Settings, Item> itemFactory, AbstractBlock.Settings settings) {
+        return registerBlock(name, factory, itemFactory, settings, List.of());
     }
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, List<Text> description) {
+        return registerBlock(name, factory, BlockItem::new, settings, description);
+    }
+    private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, BiFunction<Block, Item.Settings, Item> itemFactory, AbstractBlock.Settings settings, List<Text> description) {
         final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
         final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
         if(description.isEmpty()){
-            Items.register(block);
+            Items.register(block, itemFactory);
         }
         else{
-            Items.register(block, BlockItem::new, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description)));
+            Items.register(block, itemFactory, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description)));
         }
         return block;
     }
@@ -1119,7 +1141,7 @@ public class BlockInit {
     }
 
     private static Block registerFrame(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, List<Text> description) {
-        Block block = registerBlock(name, factory, settings, description);
+        Block block = registerBlock(name, factory, BlockItem::new, settings, description);
         MimicFrames.IDs.add(Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/" + name));
         return block;
     }
@@ -1157,6 +1179,7 @@ public class BlockInit {
         BlockRenderLayerMap.putBlock(BlockInit.DIRTY_GLASS, BlockRenderLayer.TRANSLUCENT);
         
         BlockEntityRendererFactories.register(BlockEntityInit.FOG_BLOCK, FogBlockRenderer::new);
+        BlockEntityRendererFactories.register(BlockEntityInit.CURTAIN, CurtainBlockEntityRenderer::new);
 
         BlockEntityRendererFactories.register(BlockEntityInit.TILE_DOOR, TileDoorBlockEntityRenderer::new);
 

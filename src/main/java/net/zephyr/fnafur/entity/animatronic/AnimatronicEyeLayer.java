@@ -56,7 +56,8 @@ public class AnimatronicEyeLayer<T extends AnimatronicEntity, O, R extends GeoRe
         boolean hide = renderState.hasGeckolibData(CustomDataTickets.USE_EYE_TEXTURE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.USE_EYE_TEXTURE));
 
         if(hide) return this.renderer.getRenderType(renderState, texture);
-        return CustomRenderingPipelines.getAnimatronic(getTextureResource(renderState), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE));
+        return this.renderer.getRenderType(renderState, texture);
+        //return CustomRenderingPipelines.getAnimatronic(getTextureResource(renderState), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE));
     }
 
     @Override

@@ -41,35 +41,14 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
 
     public AnimatronicRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager, new AnimatronicModel<>());
-
-//        for(String boneName : EYE_BONE_NAME_TEXTURE_LIST){
-//            System.out.println("TEST2 " + getGeoModel().getAnimationProcessor().getRegisteredBones().size());
-//            for(GeoBone bone : getGeoModel().getAnimationProcessor().getRegisteredBones()) {
-//                System.out.println(boneName + " ?= " + bone.getName());
-//                if (bone.getName().contains(boneName)) {
-//                    this.withRenderLayer(new CustomBoneTextureGeoLayer<>(this, bone.getName(), Identifier.of("")) {
-//                        @Override
-//                        protected @Nullable Identifier getTextureResource(R renderState) {
-//                            return renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE);
-//                        }
-//                    });
-//                }
-//            }
-//        }
-
-        withRenderLayer(new AnimatronicEyeLayer<>(this, EYE_BONE_NAME_TEXTURE_LIST));
-        //addRenderLayer(new AnimatronicColoredLayer<>(this));
-        //addRenderLayer(new AnimatronicEyeLayer<>(this));
-        //addRenderLayer(new AnimatronicColoredEyeLayer<>(this));
     }
 
     @Override
     public void render(R renderState, MatrixStack poseStack, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraState) {
 
         float scale = 1;
-        if(Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW))){
-            scale = AnimatronicDataHandler.getPreviewScale(renderState.getGeckolibData(CustomDataTickets.ENTITY_CHARA), renderState.getGeckolibData(CustomDataTickets.ENTITY_ALT));
-
+        if(Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW)) && renderState.hasGeckolibData(CustomDataTickets.RENDER_SCALE)){
+            scale = renderState.getGeckolibData(CustomDataTickets.RENDER_SCALE);
         }
         poseStack.push();
         poseStack.scale(scale, scale, scale);
@@ -100,10 +79,7 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
         }
 
         renderState.addGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW, animatable.isMenu);
-        renderState.addGeckolibData(CustomDataTickets.ENTITY_CHARA, animatable.getChara());
-        renderState.addGeckolibData(CustomDataTickets.ENTITY_ALT, animatable.getAlt());
-        renderState.addGeckolibData(CustomDataTickets.ENTITY_EYES, animatable.getEyes());
-        renderState.addGeckolibData(CustomDataTickets.ENTITY_DATA, ((IEntityDataSaver)animatable).getPersistentData());
+        renderState.addGeckolibData(CustomDataTickets.RENDER_SCALE,AnimatronicDataHandler.getPreviewScale(animatable.getChara(), animatable.getAlt()));
         renderState.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.getEntityWorld()));
         renderState.addGeckolibData(CustomDataTickets.EYE_TEXTURE, animatable.getEyeTexture(animatable.getEntityWorld()));
         renderState.addGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE, animatable.getEyeMapTexture(animatable.getEntityWorld()));
@@ -117,65 +93,64 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
         return renderState;
     }
 
-    @Override
-    public void renderBone(R renderState, MatrixStack poseStack, GeoBone bone, VertexConsumer buffer, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
-        boolean hide = isUsingEyeTexture(renderState);
+//    @Override
+//    public void renderBone(R renderState, MatrixStack poseStack, GeoBone bone, VertexConsumer buffer, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
+//        boolean hide = isUsingEyeTexture(renderState);
+//
+//        if(!isEyeBone(renderState)) {
+//            for (String eyeBoneName : EYE_BONE_NAME_TEXTURE_LIST) {
+//                if (bone.getName().contains(eyeBoneName)) {
+//                    renderState.addGeckolibData(CustomDataTickets.IS_EYE_BONE, true);
+//                    break;
+//                }
+//            }
+//        }
+//        else {
+//            hide = !hide;
+//        }
+//
+//        poseStack.push();
+//        RenderUtil.translateMatrixToBone(poseStack, bone);
+//        RenderUtil.translateToPivotPoint(poseStack, bone);
+//        RenderUtil.rotateMatrixAroundBone(poseStack, bone);
+//        RenderUtil.scaleMatrixForBone(poseStack, bone);
+//
+//        if (bone.isTrackingMatrices()) {
+//            Matrix4f poseState = new Matrix4f(poseStack.peek().getPositionMatrix());
+//            Matrix4f localMatrix = RenderUtil.invertAndMultiplyMatrices(poseState, renderState.getGeckolibData(DataTickets.OBJECT_RENDER_POSE));
+//
+//            bone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, renderState.getGeckolibData(DataTickets.MODEL_RENDER_POSE)));
+//            bone.setLocalSpaceMatrix(RenderUtil.translateMatrix(localMatrix, getPositionOffset(renderState).toVector3f()));
+//            bone.setWorldSpaceMatrix(RenderUtil.translateMatrix(new Matrix4f(localMatrix), new Vector3f((float)renderState.x, (float)renderState.y, (float)renderState.z)));
+//        }
+//
+//        RenderUtil.translateAwayFromPivotPoint(poseStack, bone);
+//
+//        if(!hide && !(isEyeBone(renderState) && renderState.getGeckolibData(CustomDataTickets.EYE_NONE).booleanValue())){
+//            renderCubesOfBone(renderState, bone, poseStack, buffer, cameraState, packedLight, packedOverlay, renderColor);
+//        }
+//
+//        if(isEyeBone(renderState)){
+//            for(GeoBone childBone : bone.getChildBones()){
+//                if(childBone.getParent() == bone){
+//                    renderState.addGeckolibData(CustomDataTickets.IS_EYE_BONE, true);
+//                    renderBone(renderState, poseStack, childBone, buffer, cameraState, packedLight, packedOverlay, renderColor);
+//                }
+//            }
+//        }
+//        else {
+//            renderChildBones(renderState, bone, poseStack, buffer, cameraState, packedLight, packedOverlay, renderColor);
+//        }
+//        poseStack.pop();
+//
+//        renderState.addGeckolibData(CustomDataTickets.IS_EYE_BONE, false);
+//    }
 
-        if(!isEyeBone(renderState)) {
-            for (String eyeBoneName : EYE_BONE_NAME_TEXTURE_LIST) {
-                if (bone.getName().contains(eyeBoneName)) {
-                    renderState.addGeckolibData(CustomDataTickets.IS_EYE_BONE, true);
-                    break;
-                }
-            }
-        }
-        else {
-            if (renderState.getGeckolibData(CustomDataTickets.EYE_NONE).booleanValue()) return;
-            hide = !hide;
-        }
-
-        poseStack.push();
-        RenderUtil.translateMatrixToBone(poseStack, bone);
-        RenderUtil.translateToPivotPoint(poseStack, bone);
-        RenderUtil.rotateMatrixAroundBone(poseStack, bone);
-        RenderUtil.scaleMatrixForBone(poseStack, bone);
-
-        if (bone.isTrackingMatrices()) {
-            Matrix4f poseState = new Matrix4f(poseStack.peek().getPositionMatrix());
-            Matrix4f localMatrix = RenderUtil.invertAndMultiplyMatrices(poseState, renderState.getGeckolibData(DataTickets.OBJECT_RENDER_POSE));
-
-            bone.setModelSpaceMatrix(RenderUtil.invertAndMultiplyMatrices(poseState, renderState.getGeckolibData(DataTickets.MODEL_RENDER_POSE)));
-            bone.setLocalSpaceMatrix(RenderUtil.translateMatrix(localMatrix, getPositionOffset(renderState).toVector3f()));
-            bone.setWorldSpaceMatrix(RenderUtil.translateMatrix(new Matrix4f(localMatrix), new Vector3f((float)renderState.x, (float)renderState.y, (float)renderState.z)));
-        }
-
-        RenderUtil.translateAwayFromPivotPoint(poseStack, bone);
-
-        if(!hide){
-            renderCubesOfBone(renderState, bone, poseStack, buffer, cameraState, packedLight, packedOverlay, renderColor);
-        }
-
-        if(isEyeBone(renderState)){
-            for(GeoBone childBone : bone.getChildBones()){
-                if(childBone.getParent() == bone){
-                    renderState.addGeckolibData(CustomDataTickets.IS_EYE_BONE, true);
-                    renderBone(renderState, poseStack, childBone, buffer, cameraState, packedLight, packedOverlay, renderColor);
-                }
-            }
-        }
-        else {
-            renderChildBones(renderState, bone, poseStack, buffer, cameraState, packedLight, packedOverlay, renderColor);
-        }
-        poseStack.pop();
-
-        renderState.addGeckolibData(CustomDataTickets.IS_EYE_BONE, false);
-    }
-
-    public boolean isUsingEyeTexture(R renderState){
-        return renderState.hasGeckolibData(CustomDataTickets.USE_EYE_TEXTURE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.USE_EYE_TEXTURE));
-    }
-    public boolean isEyeBone(R renderState){
-        return renderState.hasGeckolibData(CustomDataTickets.IS_EYE_BONE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.IS_EYE_BONE));
-    }
+//    public boolean isUsingEyeTexture(R renderState){
+//        return renderState.hasGeckolibData(CustomDataTickets.USE_EYE_TEXTURE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.USE_EYE_TEXTURE));
+//    }
+//    public boolean isEyeBone(R renderState){
+//        return renderState.hasGeckolibData(CustomDataTickets.IS_EYE_BONE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.IS_EYE_BONE));
+//    }
 
 }
