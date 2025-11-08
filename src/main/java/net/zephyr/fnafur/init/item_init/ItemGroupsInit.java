@@ -84,6 +84,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.WATER_DISPENSER);
                         entries.add(PropInit.ICE_CREAM_DISPENSER);
 
+                        entries.add(PropInit.ARCADE_CABINET);
                         entries.add(PropInit.SKEEBALL_ARCADE);
                         entries.add(PropInit.POSTER);
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);

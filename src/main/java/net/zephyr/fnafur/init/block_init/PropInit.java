@@ -27,6 +27,7 @@ import net.zephyr.fnafur.blocks.light.HorizontalFacingLight;
 import net.zephyr.fnafur.blocks.light.Sconce;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
+import net.zephyr.fnafur.blocks.props.floor_props.arcade.ArcadeCabinet;
 import net.zephyr.fnafur.blocks.props.floor_props.arcade.SkeeballArcade;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.RetroStool;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.StarPlasticChair;
@@ -713,6 +714,21 @@ public class PropInit {
                     .blockVision(Blocks::never)
                     .breakInstantly()
                     .noCollision()
+    );
+    public static final Block ARCADE_CABINET = registerBlock(
+            "arcade_cabinet",
+            ArcadeCabinet::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block POTS_AND_PANS_RACK = registerBlock(
             "pots_and_pans_rack",

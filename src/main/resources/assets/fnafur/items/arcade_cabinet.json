@@ -1,0 +1,72 @@
+{
+    "model": {
+      "type": "minecraft:select",
+      "cases":[
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/arcade_cabinet/gray_arcade_cabinet"
+          },
+          "when": "0"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/arcade_cabinet/blue_arcade_cabinet"
+          },
+          "when": "1"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/arcade_cabinet/teal_arcade_cabinet"
+          },
+          "when": "2"
+
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/arcade_cabinet/purple_arcade_cabinet"
+          },
+          "when": "3"
+        },
+        {
+
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/arcade_cabinet/green_arcade_cabinet"
+          },
+          "when": "4"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/arcade_cabinet/red_arcade_cabinet"
+          },
+          "when": "5"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/arcade_cabinet/orange_arcade_cabinet"
+          },
+          "when": "6"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/arcade_cabinet/yellow_arcade_cabinet"
+          },
+          "when": "7"
+        }
+
+               ],
+      "fallback": {
+          "type": "minecraft:model",
+          "model": "fnafur:item/arcade_cabinet/gray_arcade_cabinet"
+        },
+        "block_state_property": "color",
+      "property": "minecraft:block_state"
+    }
+  }

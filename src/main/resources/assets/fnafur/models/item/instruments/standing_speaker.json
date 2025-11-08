@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "fnafur:item/standing_speaker"
+		"layer0": "fnafur:item/standing_speaker_item"
 	}
 }

@@ -113,6 +113,7 @@ public class BlockEntityInit {
                                 PropInit.STANDING_MICROPHONE,
                                 PropInit.STANDING_SPEAKER,
                                 PropInit.STANDING_PIANO,
+                                PropInit.ARCADE_CABINET,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

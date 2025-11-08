@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-      "layer0": "fnafur:item/bulletin_board"
+      "layer0": "fnafur:item/bulletin_board_item"
     }
 }

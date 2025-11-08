@@ -1,0 +1,132 @@
+{
+  "variants": {
+    "facing=north,color=0": {
+      "model": "fnafur:props/arcade_cabinet/gray_arcade_cabinet",
+      "y": 0
+    },
+    "facing=east,color=0": {
+      "model": "fnafur:props/arcade_cabinet/gray_arcade_cabinet",
+      "y": 90
+    },
+    "facing=south,color=0": {
+      "model": "fnafur:props/arcade_cabinet/gray_arcade_cabinet",
+      "y": 180
+    },
+    "facing=west,color=0": {
+      "model": "fnafur:props/arcade_cabinet/gray_arcade_cabinet",
+      "y": 270
+    },
+    "facing=north,color=1": {
+      "model": "fnafur:props/arcade_cabinet/blue_arcade_cabinet",
+      "y": 0
+    },
+    "facing=east,color=1": {
+      "model": "fnafur:props/arcade_cabinet/blue_arcade_cabinet",
+      "y": 90
+    },
+    "facing=south,color=1": {
+      "model": "fnafur:props/arcade_cabinet/blue_arcade_cabinet",
+      "y": 180
+    },
+    "facing=west,color=1": {
+      "model": "fnafur:props/arcade_cabinet/blue_arcade_cabinet",
+      "y": 270
+    },
+    "facing=north,color=2": {
+      "model": "fnafur:props/arcade_cabinet/teal_arcade_cabinet",
+      "y": 0
+    },
+    "facing=east,color=2": {
+      "model": "fnafur:props/arcade_cabinet/teal_arcade_cabinet",
+      "y": 90
+    },
+    "facing=south,color=2": {
+      "model": "fnafur:props/arcade_cabinet/teal_arcade_cabinet",
+      "y": 180
+    },
+    "facing=west,color=2": {
+      "model": "fnafur:props/arcade_cabinet/teal_arcade_cabinet",
+      "y": 270
+    },
+    "facing=north,color=3": {
+      "model": "fnafur:props/arcade_cabinet/purple_arcade_cabinet",
+      "y": 0
+    },
+    "facing=east,color=3": {
+      "model": "fnafur:props/arcade_cabinet/purple_arcade_cabinet",
+      "y": 90
+    },
+    "facing=south,color=3": {
+      "model": "fnafur:props/arcade_cabinet/purple_arcade_cabinet",
+      "y": 180
+    },
+    "facing=west,color=3": {
+      "model": "fnafur:props/arcade_cabinet/purple_arcade_cabinet",
+      "y": 270
+    },
+    "facing=north,color=4": {
+      "model": "fnafur:props/arcade_cabinet/green_arcade_cabinet",
+      "y": 0
+    },
+    "facing=east,color=4": {
+      "model": "fnafur:props/arcade_cabinet/green_arcade_cabinet",
+      "y": 90
+    },
+    "facing=south,color=4": {
+      "model": "fnafur:props/arcade_cabinet/green_arcade_cabinet",
+      "y": 180
+    },
+    "facing=west,color=4": {
+      "model": "fnafur:props/arcade_cabinet/green_arcade_cabinet",
+      "y": 270
+    },
+    "facing=north,color=5": {
+      "model": "fnafur:props/arcade_cabinet/red_arcade_cabinet",
+      "y": 0
+    },
+    "facing=east,color=5": {
+      "model": "fnafur:props/arcade_cabinet/red_arcade_cabinet",
+      "y": 90
+    },
+    "facing=south,color=5": {
+      "model": "fnafur:props/arcade_cabinet/red_arcade_cabinet",
+      "y": 180
+    },
+    "facing=west,color=5": {
+      "model": "fnafur:props/arcade_cabinet/red_arcade_cabinet",
+      "y": 270
+    },
+    "facing=north,color=6": {
+      "model": "fnafur:props/arcade_cabinet/orange_arcade_cabinet",
+      "y": 0
+    },
+    "facing=east,color=6": {
+      "model": "fnafur:props/arcade_cabinet/orange_arcade_cabinet",
+      "y": 90
+    },
+    "facing=south,color=6": {
+      "model": "fnafur:props/arcade_cabinet/orange_arcade_cabinet",
+      "y": 180
+    },
+    "facing=west,color=6": {
+      "model": "fnafur:props/arcade_cabinet/orange_arcade_cabinet",
+      "y": 270
+    },
+    "facing=north,color=7": {
+      "model": "fnafur:props/arcade_cabinet/yellow_arcade_cabinet",
+      "y": 0
+    },
+    "facing=east,color=7": {
+      "model": "fnafur:props/arcade_cabinet/yellow_arcade_cabinet",
+      "y": 90
+    },
+    "facing=south,color=7": {
+      "model": "fnafur:props/arcade_cabinet/yellow_arcade_cabinet",
+      "y": 180
+    },
+    "facing=west,color=7": {
+      "model": "fnafur:props/arcade_cabinet/yellow_arcade_cabinet",
+      "y": 270
+    }
+  }
+}

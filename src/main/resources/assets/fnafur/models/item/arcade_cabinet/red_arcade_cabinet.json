@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "fnafur:item/arcade_cabinet/red_arcade_cabinet_item"
+  }
+}
