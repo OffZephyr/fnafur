@@ -166,8 +166,12 @@ public class CurtainBlockEntityRenderer implements BlockEntityRenderer<CurtainBl
 
                 Vector3f pos1 = data.start[l];
                 Vector3f pos2 = data.end[l];
-                Vector3f prev_pos1 = prevData.start[l];
-                Vector3f prev_pos2 = prevData.end[l];
+                Vector3f prev_pos1 = pos1;
+                Vector3f prev_pos2 = pos2;
+                if(prevData.length == data.length){
+                    prev_pos1 = prevData.start[l];
+                    prev_pos2 = prevData.end[l];
+                }
                 if (pos1 != null && prev_pos1 != null) {
 
                     float x1 = pos1.x();
@@ -188,8 +192,12 @@ public class CurtainBlockEntityRenderer implements BlockEntityRenderer<CurtainBl
 
                     float u = data.u[l];
                     float uWidth = data.uWidth[l];
-                    float prev_u = prevData.u[l];
-                    float prev_uWidth = prevData.uWidth[l];
+                    float prev_u = u;
+                    float prev_uWidth = uWidth;
+                    if(prevData.length == data.length){
+                        prev_u = prevData.u[l];
+                        prev_uWidth = prevData.uWidth[l];
+                    }
 
                     int height = data.height;
 

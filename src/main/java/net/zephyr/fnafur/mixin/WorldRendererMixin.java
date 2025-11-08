@@ -70,7 +70,7 @@ public class WorldRendererMixin<R extends BlockEntityRenderState & GeoRenderStat
         BlockState blockState = world.getBlockState(state.pos());
         BlockPos pos = state.pos();
         if(blockState.getBlock() instanceof PropBlock) {
-            FloorPropBlock.drawingOutline = true;
+            PropBlock.drawingOutline = true;
             matrices.push();
             float rotation = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getFloat("Rotation").orElse(0.0f) + 180;
 
@@ -82,7 +82,7 @@ public class WorldRendererMixin<R extends BlockEntityRenderState & GeoRenderStat
             double posY = pos.getY();
             double posZ = pos.getZ();
 
-            matrices.translate(offsetX + posX, offsetY + posY, offsetZ + posZ);
+            matrices.translate(offsetX + posX - x, offsetY + posY - y, offsetZ + posZ - z);
 
             //matrices.translate(-cameraX,-cameraY,-cameraZ);
             matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-rotation));
@@ -94,7 +94,7 @@ public class WorldRendererMixin<R extends BlockEntityRenderState & GeoRenderStat
             VertexRendering.drawOutline(
                     matrices,
                     vertexConsumer,
-                    state.shape(),
+                    blockState.getBlock().getDefaultState().getOutlineShape(world, pos),
                     0,
                     0,
                     0,
@@ -103,7 +103,7 @@ public class WorldRendererMixin<R extends BlockEntityRenderState & GeoRenderStat
             );
 
             matrices.pop();
-            FloorPropBlock.drawingOutline = false;
+            PropBlock.drawingOutline = false;
             ci.cancel();
         }
     }
