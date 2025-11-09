@@ -12,6 +12,7 @@ public enum ArcadeCabinetColors implements StringIdentifiable, ColorEnumInterfac
     RED("5", 5),
     ORANGE("6", 6),
     YELLOW("7", 7),
+    CHICA("8",8),
 
     ;
     private final String name;

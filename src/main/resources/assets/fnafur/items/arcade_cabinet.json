@@ -59,8 +59,14 @@
             "model": "fnafur:item/arcade_cabinet/yellow_arcade_cabinet"
           },
           "when": "7"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/arcade_cabinet/chicas_party_arcade_cabinet"
+          },
+          "when": "8"
         }
-
                ],
       "fallback": {
           "type": "minecraft:model",

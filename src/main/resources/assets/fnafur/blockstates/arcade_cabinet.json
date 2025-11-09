@@ -127,6 +127,22 @@
     "facing=west,color=7": {
       "model": "fnafur:props/arcade_cabinet/yellow_arcade_cabinet",
       "y": 270
+    },
+    "facing=north,color=8": {
+      "model": "fnafur:props/arcade_cabinet/chicas_party_arcade_cabinet",
+      "y": 0
+    },
+    "facing=east,color=8": {
+      "model": "fnafur:props/arcade_cabinet/chicas_party_arcade_cabinet",
+      "y": 90
+    },
+    "facing=south,color=8": {
+      "model": "fnafur:props/arcade_cabinet/chicas_party_arcade_cabinet",
+      "y": 180
+    },
+    "facing=west,color=8": {
+      "model": "fnafur:props/arcade_cabinet/chicas_party_arcade_cabinet",
+      "y": 270
     }
   }
 }
