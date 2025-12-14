@@ -44,6 +44,20 @@ import net.zephyr.fnafur.blocks.props.floor_props.instruments.standing_speaker.S
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.*;
 import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.bonnie_plush.BonniePlush;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.bonnie_plush.BonniePlushItem;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.chica_plush.ChicaPlush;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.chica_plush.ChicaPlushItem;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.foxy_plush.FoxyPlush;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.foxy_plush.FoxyPlushItem;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.fredbear_plush.FredbearPlush;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.fredbear_plush.FredbearPlushItem;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.fredbear_plush.haunted.HauntedFredbearPlush;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.fredbear_plush.haunted.HauntedFredbearPlushItem;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.freddy_plush.FreddyPlush;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.freddy_plush.FreddyPlushItem;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.golden_freddy_plush.GoldenFreddyPlush;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.golden_freddy_plush.GoldenFreddyPlushItem;
 import net.zephyr.fnafur.blocks.props.floor_props.present_stack.PresentStack;
 import net.zephyr.fnafur.blocks.props.floor_props.restroom.Toilet;
 import net.zephyr.fnafur.blocks.props.floor_props.speaker.Speaker;
@@ -146,7 +160,116 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .noCollision()
+
     );
+
+    public static final Block FREDDY_PLUSH = registerGeoProp(
+            "freddy_plush",
+            FreddyPlush::new,
+            FreddyPlushItem::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/freddy_plush.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/freddy_plush.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.BROWN_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+    public static final Block BONNIE_PLUSH = registerGeoProp(
+            "bonnie_plush",
+            BonniePlush::new,
+            BonniePlushItem::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/bonnie_plush.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/bonnie_plush.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.PURPLE_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+    public static final Block CHICA_PLUSH = registerGeoProp(
+            "chica_plush",
+            ChicaPlush::new,
+            ChicaPlushItem::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/chica_plush.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/chica_plush.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.YELLOW_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+    public static final Block FOXY_PLUSH = registerGeoProp(
+            "foxy_plush",
+            FoxyPlush::new,
+            FoxyPlushItem::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/foxy_plush.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/foxy_plush.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.RED_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+
+    );
+    public static final Block GOLDEN_FREDDY_PLUSH = registerGeoProp(
+            "golden_freddy_plush",
+            GoldenFreddyPlush::new,
+            GoldenFreddyPlushItem::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/golden_freddy_plush.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/freddy_plush.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.YELLOW_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+    public static final Block FREDBEAR_PLUSH = registerGeoProp(
+            "fredbear_plush",
+            FredbearPlush::new,
+            FredbearPlushItem::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/fredbear_plush.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/freddy_plush.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.YELLOW_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+    public static final Block HAUNTED_FREDBEAR_PLUSH = registerGeoProp(
+            "haunted_fredbear_plush",
+            HauntedFredbearPlush::new,
+            HauntedFredbearPlushItem::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/haunted_fredbear_plush.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/freddy_plush.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.YELLOW_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+
     public static final Block BEPH_PLUSHIE = registerBlock(
             "beph_plushie",
             BephPlushieBlock::new,
