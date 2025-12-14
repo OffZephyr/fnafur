@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/food_display_case"
+    },
+    "facing=east": {
+      "model": "fnafur:props/food_display_case",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/food_display_case",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/food_display_case",
+      "y": 270
+    }
+  }
+}

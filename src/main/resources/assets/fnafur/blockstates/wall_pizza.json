@@ -29,6 +29,21 @@
     "facing=west,color=pepperoni": {
       "model": "fnafur:props/wall_pizza/wall_pizza_full_pepperoni",
       "y": 270
+    },
+    "facing=north,color=slice": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_slice"
+    },
+    "facing=east,color=slice": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_slice",
+      "y": 90
+    },
+    "facing=south,color=slice": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_slice",
+      "y": 180
+    },
+    "facing=west,color=slice": {
+      "model": "fnafur:props/wall_pizza/wall_pizza_slice",
+      "y": 270
     }
   }
 }

@@ -1,0 +1,53 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "fnafur:block/props/wall_pizza_slice",
+		"particle": "fnafur:block/props/wall_pizza_slice"
+	},
+	"elements": [
+		{
+			"from": [5.02016, 1.55318, 15.39605],
+			"to": [13.14016, 10.44818, 15.39605],
+			"rotation": {"angle": 45, "axis": "z", "origin": [7, 6, 15.4]},
+			"faces": {
+				"north": {"uv": [0, 0, 4, 4.5], "texture": "#0"},
+				"east": {"uv": [0, 0, 0, 4.5], "texture": "#0"},
+				"south": {"uv": [4, 0, 8, 4.5], "texture": "#0"},
+				"west": {"uv": [0, 0, 0, 4.5], "texture": "#0"},
+				"up": {"uv": [4, 0, 0, 0], "texture": "#0"},
+				"down": {"uv": [4, 0, 0, 0], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3.95384, 1.53332, 14.82285],
+			"to": [5.88584, 10.46532, 15.98505],
+			"rotation": {"angle": 45, "axis": "z", "origin": [7, 6, 15.4]},
+			"faces": {
+				"north": {"uv": [0, 4.5, 1, 9], "texture": "#0"},
+				"east": {"uv": [2, 4.5, 2.625, 9], "texture": "#0"},
+				"south": {"uv": [1, 4.5, 2, 9], "texture": "#0"},
+				"west": {"uv": [3, 4.5, 3.625, 9], "texture": "#0"},
+				"up": {"uv": [5, 5.125, 4, 4.5], "texture": "#0"},
+				"down": {"uv": [6, 4.5, 5, 5.125], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Root",
+			"origin": [13.53137, 13.90429, 0.63705],
+			"color": 0,
+			"children": [
+				{
+					"name": "Base",
+					"origin": [13.53137, 13.90429, 0.63705],
+					"color": 0,
+					"children": [0, 1]
+				}
+			]
+		}
+	]
+}

@@ -59,6 +59,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.plushies.freddy_plush.FreddyPl
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.golden_freddy_plush.GoldenFreddyPlush;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.golden_freddy_plush.GoldenFreddyPlushItem;
 import net.zephyr.fnafur.blocks.props.floor_props.present_stack.PresentStack;
+import net.zephyr.fnafur.blocks.props.floor_props.reception_counter.ReceptionCounter;
 import net.zephyr.fnafur.blocks.props.floor_props.restroom.Toilet;
 import net.zephyr.fnafur.blocks.props.floor_props.speaker.Speaker;
 import net.zephyr.fnafur.blocks.props.floor_props.standing_menu.StandingMenu;
@@ -826,6 +827,32 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
+    public static final Block FOOD_DISPLAY_CASE = registerBlock(
+            "food_display_case",
+            FoodDisplayCase::new,
+            AbstractBlock.Settings.copy(Blocks.GLASS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .offset(AbstractBlock.OffsetType.NONE)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block RECEPTION_COUNTER = registerBlock(
+            "reception_counter",
+            ReceptionCounter::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .offset(AbstractBlock.OffsetType.NONE)
+                    .breakInstantly()
+                    .noCollision()
+    );
     public static final Block SKEEBALL_ARCADE = registerBlock(
             "skeeball_arcade",
             SkeeballArcade::new,
@@ -1053,6 +1080,7 @@ public class PropInit {
         for (Item item : GEO_PROPS_TRANSLUCENT) {
             BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.TRANSLUCENT);
         }
+        BlockRenderLayerMap.putBlock(FOOD_DISPLAY_CASE, BlockRenderLayer.TRANSLUCENT);
 
         FnafUniverseRebuilt.LOGGER.info("Registering Props On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }

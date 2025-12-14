@@ -15,8 +15,15 @@
             "model": "fnafur:item/wall_pizza_pepperoni"
           },
           "when": "pepperoni"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/wall_pizza_slice"
+          },
+          "when": "slice"
         }
-        ],
+      ],
         "fallback": {
             "type": "minecraft:model",
             "model": "fnafur:item/wall_pizza"

@@ -44,6 +44,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.GOLDEN_FREDDY_PLUSH);
                         entries.add(PropInit.FREDBEAR_PLUSH);
                         entries.add(PropInit.HAUNTED_FREDBEAR_PLUSH);
+                        entries.add(PropInit.RECEPTION_COUNTER);
                         entries.add(PropInit.PARTY_TABLE);
                         entries.add(PropInit.PARTY_TABLE_CONFETTI);
                         entries.add(PropInit.PARTY_HAT);
@@ -84,6 +85,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.TRASH_BIN);
                         entries.add(PropInit.WET_FLOOR_SIGN);
 
+                        entries.add(PropInit.FOOD_DISPLAY_CASE);
                         entries.add(PropInit.STANDING_MENU);
                         entries.add(PropInit.PIZZA_OVEN);
                         entries.add(PropInit.FRIDGE);

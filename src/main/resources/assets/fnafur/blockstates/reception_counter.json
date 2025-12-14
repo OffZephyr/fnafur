@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/reception_counter"
+    },
+    "facing=east": {
+      "model": "fnafur:props/reception_counter",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/reception_counter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/reception_counter",
+      "y": 270
+    }
+  }
+}

@@ -29,6 +29,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.HANGING_STARS)
                 .add(PropInit.PARTY_TABLE)
                 .add(PropInit.PARTY_TABLE_CONFETTI)
+                .add(PropInit.RECEPTION_COUNTER)
         ;
 
         valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
@@ -61,6 +62,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.STANDING_MICROPHONE)
                 .add(PropInit.STANDING_SPEAKER)
                 .add(PropInit.STANDING_PIANO)
+                .add(PropInit.FOOD_DISPLAY_CASE)
 
                 // WALL BLOCKS AND FLOOR BLOCKS
                 .add(BlockInit.WALL_TILE_FULL)
