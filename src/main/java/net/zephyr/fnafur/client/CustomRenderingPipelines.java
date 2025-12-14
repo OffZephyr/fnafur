@@ -164,4 +164,11 @@ public class CustomRenderingPipelines {
         textures[2] = eyes_map;
         return ENTITY_ANIMATRONIC_NO_EYES.apply(textures, true);
     }
+    public static  RenderLayer getItemWithArms(Identifier main, Identifier eyes, Identifier eyes_map) {
+        Identifier[] textures = new Identifier[3];
+        textures[0] = main;
+        textures[1] = eyes;
+        textures[2] = eyes_map;
+        return ENTITY_ANIMATRONIC.apply(textures, true);
+    }
 }

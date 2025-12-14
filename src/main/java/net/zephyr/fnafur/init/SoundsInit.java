@@ -23,6 +23,8 @@ public class SoundsInit {
     public static final SoundEvent CLICK_RELEASE = registerSoundEvent("click_release");
     public static final SoundEvent CASUAL_BONGOS = registerSoundEvent("casual_bongos");
     public static final SoundEvent MAIN_MENU = registerSoundEvent("main_menu");
+    public static final SoundEvent CREDITS_MENU_LOOP = registerSoundEvent("credits_loop");
+    public static final SoundEvent THANK_YOU_FOR_YOUR_PATIENCE = registerSoundEvent("thank_you_for_your_patience");
     public static final SoundEvent ZEPHYR_JUMPSCARE = registerSoundEvent("zephyr_jumpscare");
     public static final SoundEvent FNAF1_JUMPSCARE = registerSoundEvent("fnaf1_jumpscare");
     public static final SoundEvent FNAF1_FOOTSTEPS = registerSoundEvent("fnaf1_footsteps");
@@ -35,6 +37,7 @@ public class SoundsInit {
     public static final SoundEvent FREDDY_MUSIC_BOX = registerSoundEvent("freddy_music_box");
     public static final SoundEvent ANIMATRONIC_GROAN = registerSoundEvent("animatronic_groan");
     public static final SoundEvent HONK = registerSoundEvent("honk");
+    public static final SoundEvent HONK_MENU = registerSoundEvent("honk_menu");
     public static final SoundEvent OFFICE_DOOR_ACTIVATE = registerSoundEvent("office_door_activate");
     public static final SoundEvent OFFICE_DOOR_ERROR = registerSoundEvent("office_door_error");
     public static final SoundEvent OFFICE_DOOR_KNOCK = registerSoundEvent("office_door_knock");
@@ -61,6 +64,10 @@ public class SoundsInit {
     public static final SoundEvent HELPULES_PLACE = registerSoundEvent("helpules_place");
     public static final SoundEvent HELPULES = registerSoundEvent("helpules");
 
+    // NAVIGATION
+    public static final SoundEvent CREDITS_SCROLL = registerSoundEvent("credits_scroll");
+    public static final SoundEvent CREDITS_HOVER = registerSoundEvent("credits_hover");
+
     public static SoundEvent getSound(String name){
         return sounds.get(name);
     }
@@ -84,5 +91,6 @@ public class SoundsInit {
 
     public static void registerSounds() {
         FnafUniverseRebuilt.LOGGER.info("Registering Sounds for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
+        VideoInit.registerVideos();
     }
 }

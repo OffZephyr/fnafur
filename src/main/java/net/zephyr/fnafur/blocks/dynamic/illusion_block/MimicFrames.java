@@ -53,7 +53,7 @@ public class MimicFrames extends BlockWithSticker {
 
     public static boolean isFullSolidBlock(BlockState state, BlockView world, BlockPos pos) {
         if(world.getBlockEntity(pos) instanceof BlockEntity ent){
-            byte[] data = ((IEntityDataSaver)ent).getPersistentData().getByteArray("cubeMatrix").get();
+            byte[] data = ((IEntityDataSaver)ent).getPersistentData().getByteArray("cubeMatrix").orElse(new byte[0]);
             return MimicFrames.isFullCube(data) || state.get(IS_FULL);
         }
         return state.get(IS_FULL);

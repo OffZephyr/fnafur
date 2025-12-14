@@ -5,9 +5,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.render.state.special.EntityGuiElementRenderState;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Style;
@@ -23,9 +20,7 @@ import net.zephyr.fnafur.networking.block.DropItemFromWorkbenchC2SPayload;
 import net.zephyr.fnafur.util.EasingMathUtil;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.Objects;
@@ -352,13 +347,6 @@ public class SuitMakingScreen extends GoopyScreen {
 
     boolean getMissingAlt(String alt){
         return false;
-    }
-
-    void drawOutline(DrawContext context, int x, int y, int width, int height, int color){
-        context.fill(x, y, x + width + 1, y + 1, color);
-        context.fill(x, y + height, x + width + 1, y + height + 1, color);
-        context.fill(x, y + 1, x + 1, y + height, color);
-        context.fill(x + width, y + 1, x + width + 1, y + height, color);
     }
 
     @Override

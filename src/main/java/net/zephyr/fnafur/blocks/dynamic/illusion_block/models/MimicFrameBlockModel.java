@@ -95,12 +95,12 @@ public class MimicFrameBlockModel extends StickerBlockModel {
 
     @Override
     public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
-        return DiagonalMimicFrameModel.FRAME;
+        return MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 
     @Override
     public Sprite particleSprite() {
-        return DiagonalMimicFrameModel.FRAME;
+        return MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 
     public void emitSide(QuadEmitter emitter, NbtCompound nbt, Direction direction, Block sideBlock, BlockPos pos, boolean reColor, int matrixSize, int x, int y, int z, int colorIndex) {

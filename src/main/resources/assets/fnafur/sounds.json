@@ -53,6 +53,46 @@
       "fnafur:songs/main_menu"
     ]
   },
+  "thank_you_for_your_patience": {
+    "subtitle": "sounds.fnafur.thank_you_for_your_patience",
+    "sounds": [
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/thank_you_for_your_patience",
+      "fnafur:songs/casual_bongos"
+    ]
+  },
+  "credits_loop": {
+    "subtitle": "sounds.fnafur.credits_loop",
+    "sounds": [
+      "fnafur:songs/credits_loop"
+    ]
+  },
+  "credits_hover": {
+    "subtitle": "sounds.fnafur.credits_hover",
+    "sounds": [
+      "fnafur:navigation/credits_hover1",
+      "fnafur:navigation/credits_hover2",
+      "fnafur:navigation/credits_hover3",
+      "fnafur:navigation/credits_hover4",
+      "fnafur:navigation/credits_hover5"
+    ]
+  },
+  "credits_scroll": {
+    "subtitle": "sounds.fnafur.credits_scroll",
+    "sounds": [
+      "fnafur:navigation/credits_scroll1",
+      "fnafur:navigation/credits_scroll2",
+      "fnafur:navigation/credits_scroll3"
+    ]
+  },
   "zephyr_jumpscare": {
     "subtitle": "sounds.fnafur.zephyr_jumpscare",
     "sounds": [
@@ -129,6 +169,12 @@
   "honk": {
     "subtitle": "sounds.fnafur.honk",
     "sounds": [
+      "fnafur:animatronics/interactions/honk"
+    ]
+  },
+  "honk_menu": {
+    "subtitle": "sounds.fnafur.honk",
+    "sounds": [
       "fnafur:animatronics/interactions/honk",
       "fnafur:animatronics/interactions/honk",
       "fnafur:animatronics/interactions/honk",
@@ -156,7 +202,8 @@
       "fnafur:animatronics/interactions/honk",
       "fnafur:animatronics/interactions/honk",
       "fnafur:animatronics/interactions/honk",
-      "fnafur:animatronics/interactions/honk_rare"
+      "fnafur:animatronics/interactions/honk_rare",
+      "fnafur:animatronics/interactions/honk_weegi"
     ]
   },
   "cosmo_gift_use": {

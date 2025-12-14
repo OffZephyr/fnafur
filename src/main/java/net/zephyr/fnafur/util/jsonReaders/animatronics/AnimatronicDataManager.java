@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EntityType;
-import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.SinglePreparationResourceReloader;
@@ -13,9 +12,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.profiler.Profiler;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
 import net.zephyr.fnafur.util.jsonReaders.entity_skins.DefaultEntityData;
-import net.zephyr.fnafur.util.jsonReaders.entity_skins.EntitySkin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -85,7 +82,6 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
                     for(String string : entry.getValue().keySet()){
                         AnimatronicDataHandler.ALL_ANIMATION_NAMES.add(string);
                         AnimatronicDataHandler.ALL_ANIMATIONS.put(string, entry.getValue().get(string));
-                        System.out.println(AnimatronicDataHandler.ALL_ANIMATIONS.get(string));
                     }
 
                     //for(String string : entry.getValue().keySet()){
@@ -126,7 +122,7 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
 
         if(!AnimatronicDataHandler.CHARACTERS.containsKey(name) && !AnimatronicDataHandler.MISSING_CHARACTERS.contains(name)) {
             AnimatronicDataHandler.MISSING_CHARACTERS.add(name);
-            System.out.println("MISSING " + name.toUpperCase() + " DATA FILE (" + path + ")");
+            FnafUniverseRebuilt.LOGGER.warn("MISSING " + name.toUpperCase() + " DATA FILE (" + path + ")");
         }
     }
 

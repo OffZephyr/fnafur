@@ -12,6 +12,7 @@ import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.block_init.GeoBlockEntityInit;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
+import net.zephyr.fnafur.init.item_init.ItemCategoriesInit;
 import net.zephyr.fnafur.init.item_init.ItemGroupsInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.networking.PayloadDef;
@@ -33,7 +34,7 @@ public class FnafUniverseRebuilt implements ModInitializer {
 	public static final boolean DEBUG = false;
 
 	public static final String MOD_ID = "fnafur";
-	public static final String MOD_VERSION = "Fnaf Universe: ReBuilt v0.10 - DEV BUILD";
+	public static final String MOD_VERSION = "PRIVATE BUILD - DO NOT SHARE";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	@Override
 	public void onInitialize() {
@@ -41,6 +42,7 @@ public class FnafUniverseRebuilt implements ModInitializer {
 		BlockEntityInit.registerBlockEntities();
 		GeoBlockEntityInit.registerBlockEntities();
 		ItemGroupsInit.registerItemGroups();
+		ItemCategoriesInit.registerItemCategories();
 		SoundsInit.registerSounds();
 		ItemInit.registerItems();
 		ParticlesInit.registerParticles();

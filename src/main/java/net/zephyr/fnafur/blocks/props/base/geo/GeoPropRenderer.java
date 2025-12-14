@@ -57,6 +57,7 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
             double index = Math.sin(time);
             double alpha = 128 + (64 * index);
             renderState.addGeckolibData(DataTickets.RENDER_COLOR, ColorHelper.getArgb((int)alpha, 255, 255, 255));
+            //renderState.addGeckolibData(DataTickets.RENDER_COLOR, ColorHelper.getArgb(255, 255, 255, 255));
         }
 
         NbtCompound nbt = ((IEntityDataSaver)animatable).getPersistentData().copy();
@@ -99,9 +100,7 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
                 matrices.translate(0, 0.5f, 0);
 
                 matrices.translate(0.5f, 0, 0.5f);
-                matrices.translate(-0.5f * facing.getVector().getX(), 0, -0.5f * facing.getVector().getZ());
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
-                matrices.translate(0.15f * facing.getVector().getX(), 0, 0.15f * facing.getVector().getZ());
                 matrices.translate(-0.5f, 0, -0.5f);
             }
             else {
@@ -135,7 +134,22 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
         }
     }
     public void renderPreview(R renderState, MatrixStack matrices, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraRenderState) {
+
+        float rotation = renderState.getGeckolibData(CustomDataTickets.ROTATION);
+
+        double offsetX = renderState.getGeckolibData(CustomDataTickets.X_OFFSET);
+        double offsetY = renderState.getGeckolibData(CustomDataTickets.Y_OFFSET);
+        double offsetZ = renderState.getGeckolibData(CustomDataTickets.Z_OFFSET);
+        matrices.push();
+        matrices.translate(-0.5f, 0, -0.5f);
+        matrices.translate(offsetX, 0, offsetZ);
+        matrices.translate(0, offsetY, 0);
+        matrices.translate(0, -1, 0);
+        matrices.translate(0.5f, 0, 0.5f);
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
+        matrices.translate(-0.5f, 0, -0.5f);
         super.render(renderState, matrices, renderTasks, cameraRenderState);
+        matrices.pop();
     }
 
     @Override

@@ -38,6 +38,7 @@ import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
 import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.util.CustomDataTickets;
+import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
 import net.zephyr.fnafur.util.mixinAccessing.IWorldRendererAccessor;
 import software.bernie.geckolib.constant.DataTickets;
@@ -134,6 +135,8 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
                         matrices.push();
                         matrices.translate(-cameraX, -cameraY, -cameraZ);
 
+                        double xDiagOffset = 0;
+                        double zDiagOffset = 0;
                         if (block instanceof WallPropBlock) {
                             Direction d = Direction.UP;
                             if (blockHitResult.getSide().getAxis() != Direction.Axis.Y) {
@@ -152,23 +155,35 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
 
                                 }
                             }
-//
+
                             if (hitBlockState.getBlock() instanceof DiagonalMimicFrame && d != Direction.UP) {
                                 Vec3d editPos = new Vec3d(x, y, z);
 
+                                xDiagOffset = 0.25f;
+                                zDiagOffset = 0.25f;
                                 matrices.translate(0.25f, 0, 0.25f);
                                 if(d.getAxis() == Direction.Axis.Z) {
                                     if (d == ((BlockHitResult) blockHit).getSide()){
+                                        xDiagOffset += (editPos.getX()/2f);
+                                        zDiagOffset += (editPos.getX()/2f);
                                         matrices.translate((editPos.getX()/2f) + pos.getX(), editPos.getY() + pos.getY(), (editPos.getX()/2f) + pos.getZ());
                                     } else {
+                                        xDiagOffset += (editPos.getZ()/2f);
+                                        zDiagOffset += (editPos.getZ()/2f);
                                         matrices.translate((editPos.getZ()/2f) + pos.getX(), editPos.getY() + pos.getY(), (editPos.getZ()/2f) + pos.getZ());
                                     }
                                 } else {
 
+                                    xDiagOffset += 0.5f * Math.abs(blockHitResult.getSide().getVector().getX());
+                                    zDiagOffset += 0.5f * Math.abs(blockHitResult.getSide().getVector().getZ());
                                     matrices.translate(0.5f * Math.abs(blockHitResult.getSide().getVector().getX()), 0, 0.5f * Math.abs(blockHitResult.getSide().getVector().getZ()));
                                     if (d == ((BlockHitResult) blockHit).getSide()){
+                                        xDiagOffset += (-editPos.getZ()/2f);
+                                        zDiagOffset += (editPos.getZ()/2f);
                                         matrices.translate(((-editPos.getZ())/2f) + pos.getX(), editPos.getY() + pos.getY(), ((editPos.getZ())/2f) + pos.getZ());
                                     } else {
+                                        xDiagOffset += (editPos.getZ()/2f);
+                                        zDiagOffset += (-editPos.getZ()/2f);
                                         matrices.translate(((editPos.getX())/2f) + pos.getX(), editPos.getY() + pos.getY(), ((-editPos.getX())/2f) + pos.getZ());
                                     }
                                 }
@@ -176,6 +191,8 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
                                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(wallOffsetRotation));
                                 matrices.translate(0.15f * blockHitResult.getSide().getVector().getX(), 0, 0.15f * blockHitResult.getSide().getVector().getZ());
                                 matrices.translate(-0.5f, -0.5f, -0.5f);
+                                xDiagOffset += -0.5f;
+                                zDiagOffset += -0.5f;
                             }
                             else{
                                 matrices.translate(x + pos.getX(), y + pos.getY(), z + pos.getZ());
@@ -226,6 +243,16 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
 
                                 renderState.addGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW, true);
                                 renderState.addGeckolibData(CustomDataTickets.ENTITY_RENDER_MATRIX_ENTRY, matrices.peek());
+                                renderState.addGeckolibData(CustomDataTickets.X_OFFSET, x + pos.getX() + xDiagOffset);
+                                renderState.addGeckolibData(CustomDataTickets.Y_OFFSET, y + pos.getY());
+                                renderState.addGeckolibData(CustomDataTickets.Z_OFFSET, z + pos.getZ() + zDiagOffset);
+                                if(!(block instanceof WallPropBlock<?>)){
+                                    renderState.addGeckolibData(CustomDataTickets.ROTATION, rotation + offsetRotation);
+                                }
+                                else{
+                                    renderState.addGeckolibData(CustomDataTickets.Y_OFFSET, y + pos.getY() + 0.5f);
+                                    renderState.addGeckolibData(CustomDataTickets.ROTATION, 180 - state.get(WallPropBlock.FACING).getPositiveHorizontalDegrees() + wallOffsetRotation);
+                                }
                                 ((IWorldRendererAccessor)MinecraftClient.getInstance().worldRenderer).addEntityRenderState(renderState, geo);
                                 placementEntity.item = false;
                             }

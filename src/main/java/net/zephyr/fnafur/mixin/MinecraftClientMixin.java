@@ -9,9 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.zephyr.fnafur.util.hooks.JoinHook;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataManager;
-import net.zephyr.fnafur.util.jsonReaders.character_models.CharacterModelManager;
-import net.zephyr.fnafur.util.jsonReaders.entity_skins.EntityDataManager;
-import net.zephyr.fnafur.util.jsonReaders.layered_block.LayeredBlockManager;
+import net.zephyr.fnafur.util.jsonReaders.credits.CreditsDataManager;
 import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,13 +37,10 @@ public class MinecraftClientMixin implements IGetClientManagers {
 	CompletableFuture<Void> reloadResources() {
 		return null;
 	}
-
-	private LayeredBlockManager layerManager = new LayeredBlockManager();
-	private EntityDataManager entityDataManager = new EntityDataManager();
-	@Unique
-	private CharacterModelManager characterModelManager = new CharacterModelManager();
 	@Unique
 	private AnimatronicDataManager animatronicDataManager = new AnimatronicDataManager();
+	@Unique
+	private CreditsDataManager creditsDataManager = new CreditsDataManager();
 
 	@Inject(method = "joinWorld", at = @At("HEAD"), cancellable = true)
 	void joinWorld(ClientWorld world, CallbackInfo ci){
@@ -81,24 +76,13 @@ public class MinecraftClientMixin implements IGetClientManagers {
 
 	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourcePackManager;scanPacks()V"))
 	public void reloaders(CallbackInfo ci) {
-		this.resourceManager.registerReloader(this.layerManager);
-		this.resourceManager.registerReloader(this.entityDataManager);
-		this.resourceManager.registerReloader(this.characterModelManager);
 		this.resourceManager.registerReloader(this.animatronicDataManager);
+		this.resourceManager.registerReloader(this.creditsDataManager);
 	}
 
 	@Inject(method = "getCameraEntity", at = @At("HEAD"), cancellable = true)
 	public void getCameraEntity(CallbackInfoReturnable<Entity> cir) {
 
-	}
-	@Override
-	public LayeredBlockManager getLayerManager() {
-		return this.layerManager;
-	}
-
-	@Override
-	public EntityDataManager getEntityDataManager() {
-		return this.entityDataManager;
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
 
     @Override
     public Sprite particleSprite() {
-        return FRAME;
+        return MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 
     @Override
@@ -63,9 +63,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
     public void emitQuads(QuadEmitter emitter, BlockRenderView blockView, BlockPos pos, BlockState state, Random random, Predicate<@Nullable Direction> cullTest) {
 
 
-        FRAME = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
-
-        Sprite sprite = FRAME;
+        Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
 
         if(blockView.getBlockEntity(pos) instanceof StickerBlockEntity ent) {
             NbtCompound nbt = ((IEntityDataSaver) ent).getPersistentData();
@@ -327,17 +325,6 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
     }
     @Override
     public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
-        //NbtCompound nbt = ((IEntityDataSaver) blockView.getBlockEntity(pos)).getPersistentData();
-        //if (nbt.contains("BlockData")) {
-        //    ItemStack blockStack = nbt.get("BlockData", ItemStack.CODEC).orElse(ItemStack.EMPTY);
-        //    if (blockStack.getItem() instanceof BlockItem blockItem) {
-        //        Block block = blockItem.getBlock();
-//
-        //        BlockState textureState = block.getDefaultState();
-        //        BlockStateModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(textureState);
-        //        return model.getParts(Random.create()).get(0).getQuads(Direction.UP).get(0).sprite();
-        //    }
-        //}
-        return FRAME;
+        return MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 }

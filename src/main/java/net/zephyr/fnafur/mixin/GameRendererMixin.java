@@ -3,12 +3,13 @@ package net.zephyr.fnafur.mixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.PostEffectProcessor;
-import net.minecraft.client.render.DefaultFramebufferSet;
 import net.minecraft.client.render.FrameGraphBuilder;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.resource.ResourceManager;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
+import net.zephyr.fnafur.client.media_player.MediaPlayerUtil;
+import net.zephyr.fnafur.client.media_player.VideoInstance;
 import net.zephyr.fnafur.util.mixinAccessing.IPostProcessorLoader;
 import net.zephyr.fnafur.util.mixinAccessing.IPostProcessorUniform;
 import org.spongepowered.asm.mixin.Mixin;
@@ -52,6 +53,10 @@ public class GameRendererMixin implements IPostProcessorLoader {
     private void illusions$onResized$HEAD(int width, int height, CallbackInfo ci) {
         //CameraRenderer.onResize(width, height);
         //TODO CamRenderer
+    }
+    @Inject(method = "render", at = @At(value = "TAIL"))
+    private void illusions$onResized$HEAD(RenderTickCounter tickCounter, boolean tick, CallbackInfo ci) {
+        //MediaPlayerUtil.renderVideo(((GameRenderer) (Object) this));
     }
 
     public void resizePostProcessor(Framebuffer framebuffer, int width, int height){
@@ -124,6 +129,12 @@ public class GameRendererMixin implements IPostProcessorLoader {
     @Override
     public PostEffectProcessor getMonitorPostProcessor(Framebuffer framebuffer) {
         return this.monitorPostProcessors.get(framebuffer);
+    }
+
+
+    @Inject(method = "close", at = @At("HEAD"))
+    public void close(CallbackInfo ci){
+        VideoInstance.closeAllInstances();
     }
 
     /*void loadMonitorPostProcessor(Identifier id, Framebuffer framebuffer){

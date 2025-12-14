@@ -8,6 +8,8 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.RotationAxis;
@@ -20,13 +22,18 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
-public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity, R extends CommonBlockEntityRenderState & GeoRenderState> extends GeoPropRenderer<T, R> {
+public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity, R extends BlockEntityRenderState & GeoRenderState> extends GeoPropRenderer<T, R> {
     MinecraftClient client;
     BlockRenderManager manager;
     public GeoClockPropRenderer(BlockEntityRendererFactory.Context context) {
         super(context);
         client = MinecraftClient.getInstance();
         manager = client.getBlockRenderManager();
+    }
+
+    @Override
+    public void render(R renderState, MatrixStack matrices, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraRenderState) {
+        super.render(renderState, matrices, renderTasks, cameraRenderState);
     }
 
     @Override

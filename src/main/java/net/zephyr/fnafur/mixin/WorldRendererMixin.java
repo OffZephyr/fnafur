@@ -18,9 +18,12 @@ import net.minecraft.client.render.state.WorldRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
+import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
@@ -70,40 +73,7 @@ public class WorldRendererMixin<R extends BlockEntityRenderState & GeoRenderStat
         BlockState blockState = world.getBlockState(state.pos());
         BlockPos pos = state.pos();
         if(blockState.getBlock() instanceof PropBlock) {
-            PropBlock.drawingOutline = true;
-            matrices.push();
-            float rotation = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getFloat("Rotation").orElse(0.0f) + 180;
-
-            double offsetX = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("xOffset").orElse(0.0);
-            double offsetY = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("yOffset").orElse(0.0);
-            double offsetZ = ((IEntityDataSaver)this.world.getBlockEntity(pos)).getPersistentData().getDouble("zOffset").orElse(0.0);
-
-            double posX = pos.getX();
-            double posY = pos.getY();
-            double posZ = pos.getZ();
-
-            matrices.translate(offsetX + posX - x, offsetY + posY - y, offsetZ + posZ - z);
-
-            //matrices.translate(-cameraX,-cameraY,-cameraZ);
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-rotation));
-            matrices.translate(-0.5f, -1, -0.5f);
-            if(blockState.getBlock() instanceof WallPropBlock<?>) {
-                matrices.translate(0, 0.5f, 0);
-            }
-
-            VertexRendering.drawOutline(
-                    matrices,
-                    vertexConsumer,
-                    blockState.getBlock().getDefaultState().getOutlineShape(world, pos),
-                    0,
-                    0,
-                    0,
-                    i
-
-            );
-
-            matrices.pop();
-            PropBlock.drawingOutline = false;
+            PropBlock.drawBlockOutlineHook(world, blockState, pos, matrices, vertexConsumer, x, y, z, state, i);
             ci.cancel();
         }
     }

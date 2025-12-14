@@ -71,7 +71,7 @@ public class PiratesCoveStage extends BlockWithEntity {
 
     @Override
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        BlockPos pos2 = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("center").get());
+        BlockPos pos2 = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("center").orElse(0L));
         clearStage(world, pos2);
         return super.onBreak(world, pos, state, player);
     }

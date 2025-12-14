@@ -3,6 +3,7 @@ package net.zephyr.fnafur.blocks.geo_doors;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
@@ -11,7 +12,7 @@ import net.zephyr.fnafur.util.CustomDataTickets;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
-public class GeoDoorRenderer<R extends CommonBlockEntityRenderState & GeoRenderState> extends GeoBlockRenderer<GeoDoorEntity, R> {
+public class GeoDoorRenderer<R extends BlockEntityRenderState & GeoRenderState> extends GeoBlockRenderer<GeoDoorEntity, R> {
     public GeoDoorRenderer(BlockEntityRendererFactory.Context context) {
         super(new DoorModel());
         //addRenderLayer(new GeoDoorWindowLayer(this));

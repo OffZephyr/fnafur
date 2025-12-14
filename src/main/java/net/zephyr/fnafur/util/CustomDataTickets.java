@@ -25,6 +25,7 @@ public class CustomDataTickets {
     public static final DataTicket<Float> CLOCK_DELTA_MINUTE = DataTicket.create("clock_delta_minute", Float.class);
     public static final DataTicket<Float> CLOCK_DELTA_HOUR = DataTicket.create("clock_delta_hour", Float.class);
     public static final DataTicket<Boolean> IS_MASK_ON = DataTicket.create("is_mask_on", Boolean.class);
+    public static final DataTicket<Boolean> IS_RENDERING_ARMS = DataTicket.create("is_rendering_arms", Boolean.class);
     public static final DataTicket<Boolean> CAN_ANIMATE_MASK = DataTicket.create("can_animate_mask", Boolean.class);
     public static final DataTicket<Boolean> IS_IN_MASK_SLOT = DataTicket.create("in_mask_slot", Boolean.class);
     public static final DataTicket<Boolean> IS_ENTITY_PREVIEW = DataTicket.create("is_entity_preview", Boolean.class);

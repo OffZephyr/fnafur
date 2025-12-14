@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 public class FnafSelectWorldScreen extends Screen {
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final GeneratorOptions DEBUG_GENERATOR_OPTIONS = new GeneratorOptions((long)"test1".hashCode(), true, false);
-    protected final Screen parent;
+    protected final FnafTitleScreen parent;
     private final ThreePartsLayoutWidget layout;
     @Nullable
     private ButtonWidget deleteButton;
@@ -48,7 +48,7 @@ public class FnafSelectWorldScreen extends Screen {
     @Nullable
     private FnafWorldListWidget levelList;
 
-    public FnafSelectWorldScreen(Screen parent) {
+    public FnafSelectWorldScreen(FnafTitleScreen parent) {
         super(Text.translatable("selectWorld.title"));
         Objects.requireNonNull(MinecraftClient.getInstance().textRenderer);
         this.layout = new ThreePartsLayoutWidget(this, 8 + 9 + 8 + 20 + 4, 60);
@@ -95,7 +95,11 @@ public class FnafSelectWorldScreen extends Screen {
         this.editButton = (ButtonWidget)adder.add(ButtonWidget.builder(Text.translatable("selectWorld.edit"), (button) -> levelList.getSelectedAsOptional().ifPresent(FnafWorldListWidget.WorldEntry::edit)).width(71).build());
         this.deleteButton = (ButtonWidget)adder.add(ButtonWidget.builder(Text.translatable("selectWorld.delete"), (button) -> levelList.getSelectedAsOptional().ifPresent(FnafWorldListWidget.WorldEntry::deleteIfConfirmed)).width(71).build());
         this.recreateButton = (ButtonWidget)adder.add(ButtonWidget.builder(Text.translatable("selectWorld.recreate"), (button) -> levelList.getSelectedAsOptional().ifPresent(FnafWorldListWidget.WorldEntry::recreate)).width(71).build());
-        adder.add(ButtonWidget.builder(ScreenTexts.BACK, (button) -> this.client.setScreen(this.parent)).width(71).build());
+        adder.add(ButtonWidget.builder(ScreenTexts.BACK, (button) -> {
+            parent.moveBackgroundScroll(0.5f, 200, -75f);
+            parent.fadeBackground(0.75f, 0.65f);
+            this.client.setScreen(this.parent);
+        }).width(71).build());
     }
 
     private ButtonWidget createDebugRecreateButton() {
@@ -120,6 +124,21 @@ public class FnafSelectWorldScreen extends Screen {
             }
 
         }).width(72).build();
+    }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+        parent.width = this.width;
+        parent.height = this.height;
+        parent.renderBackgroundRender(context, mouseX, mouseY, deltaTicks);
+        super.render(context, mouseX, mouseY, deltaTicks);
+        parent.renderForeground(context, mouseX, mouseY, deltaTicks);
+    }
+
+    @Override
+    public void tick() {
+        parent.tick();
+        super.tick();
     }
 
     protected void refreshWidgetPositions() {

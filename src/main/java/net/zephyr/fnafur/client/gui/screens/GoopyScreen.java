@@ -195,6 +195,14 @@ public abstract class GoopyScreen extends Screen {
     public static void drawRecolorableTexture(DrawContext context, Identifier texture, int x, int y, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, int color) {
         drawRecolorableTexture(context, texture, x, y, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight, ColorHelper.getRed(color) / 256f, ColorHelper.getGreen(color) / 256f,ColorHelper.getBlue(color) / 256f,ColorHelper.getAlpha(color) / 256f);
     }
+
+    public static void drawOutline(DrawContext context, int x, int y, int width, int height, int color){
+        context.fill(x, y, x + width + 1, y + 1, color);
+        context.fill(x, y + height, x + width + 1, y + height + 1, color);
+        context.fill(x, y + 1, x + 1, y + height, color);
+        context.fill(x + width, y + 1, x + width + 1, y + height, color);
+    }
+
     public static void drawRecolorableTexture(DrawContext context, Identifier texture, int x, int y, int z, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, float red, float green, float blue, float alpha) {
         float u1 = (u + 0.0f) /textureWidth;
         float u2 = (u + regionWidth) / textureWidth;
@@ -251,10 +259,10 @@ public abstract class GoopyScreen extends Screen {
         return 8 * scale;
     }
 
-    protected static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, LivingEntity entity) {
+    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, LivingEntity entity) {
         drawEntity(context, x1, y1, x2, y2, size, scale,rotation, entity, false);
     }
-    protected static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, LivingEntity entity, boolean entity2) {
+    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, LivingEntity entity, boolean entity2) {
         context.enableScissor(x1, y1, x2, y2);
         Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI);
         Quaternionf quaternionf2 = rotation;

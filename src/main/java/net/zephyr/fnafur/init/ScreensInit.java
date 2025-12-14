@@ -5,7 +5,6 @@ import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.client.gui.screens.crafting.SuitMakingScreen;
 import net.zephyr.fnafur.client.gui.screens.editing.DecalBookEditScreen;
 import net.zephyr.fnafur.client.gui.screens.crafting.CpuConfigScreen;
-import net.zephyr.fnafur.client.gui.screens.crafting.WorkbenchScreen;
 import net.zephyr.fnafur.client.gui.screens.editing.DoorEditScreen;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 

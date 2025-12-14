@@ -477,6 +477,62 @@
   "fnafur.commands.money": "%s currently owns §a§lF$%d§r.",
   "fnafur.commands.money.set": "%s now owns §a§lF$%d§r.",
 
+  "credits.main.dev_team": "Dev Team",
+  "credits.main.supporters": "Supporters",
+
+  "credits.sub.owners": "Owners",
+  "credits.sub.graphic_team": "Graphic Team",
+  "credits.sub.technical_team": "Technical Team",
+  "credits.sub.kofi_supporters": "Thank you!",
+
+  "credits.name.zephyr": "ZephyrOff",
+  "credits.name.zephyr": "ZephyrOff",
+  "credits.name.shadowlink": "ShadowLink",
+  "credits.name.dasen": "Dasen",
+  "credits.name.lemonloafe": "LemonLoafe",
+  "credits.name.kay": "_0kay_",
+  "credits.name.starlit": "Starlit Studios",
+  "credits.name.kai_the_raccoon": "Kai The Raccoon",
+  "credits.name.atheant": "AtheAnt",
+
+  "credits.quote.zephyr": "\"The goop is in the bag\"",
+  "credits.quote.shadowlink": "\"The FNaF loving Cyber Demon\"",
+  "credits.quote.dasen": "\"Hey Hi, How ya doin'?\"",
+  "credits.quote.lemonloafe": "\"It's not about why, it's about why not!\"",
+  "credits.quote.kay": "\"(The imperfect perfectionist)\"",
+  "credits.quote.starlit": "\"Bazinga\"",
+  "credits.quote.kai_the_raccoon": "\"Silly Raccoon Things\"",
+  "credits.quote.atheant": "\"Insert Quote Here\"",
+
+  "credits.comment.intro": "%s says:",
+  "credits.comment.zephyr": "\"I originally started as a dedicated fan of the Legacy FNaF Universe mod when I was younger, and somehow managed to make my way to the top of the team behind the remake. My current role is handling most of the technical aspects of the mod (Programming, Rendering, etc...), while also keeping things afloat and managing the team.\nI'm glad to finally see this project go somewhere, as saying the years of development were rough would be an understatement. Even though it wasn't always easy, I'm still glad to be working on this really cool passion project and am still super excited for what's to come!\n\nIf I managed to do this, so can you.\nSo take your brush, don't be afraid to show your talent!\"",
+  "credits.comment.shadowlink": "\"Hey there, you all might recognize me as one of the original team members for the FNaF Universe Mod! One day, nostalgia hit me pretty hard while looking back at the old videos I made on it, and I proposed the idea of bringing the mod back with a new set of developers and basically remaking it from the ground up! That's how FNaF Universe: Rebuilt was born! Hope you all enjoy the fresh new take on an old classic!\"",
+  "credits.comment.dasen": "\"Hey, Hi, How ya doin? I am the lead animator for FNaF Universe: Rebuilt. You probably remember me from the old team. If so, you reached unc status.\n\nI have been animating for 10+ years now. I also have made and or help make most of the models for this project. \nI have also made some sounds that are used in this project that range from UI, Ambient, and general SFX you hear from the animatronics and blocks etc\nMy animation skills have improved by a long shot since early FNaF:U 1.12.2, and my skills will continue to grow as I work more animating for this and future projects!\"",
+  "credits.comment.lemonloafe": "\"Hello there! Before I stumbled my way onto the RetroByte team I started out making small scale resource packs and maps for Minecraft, none of which ever really went anywhere but now here I find myself helping make all sorts of assets from blocks to props and even some GUIs! I'm not sure what else to put here but I hope y'all enjoy what we've crafted!\"",
+  "credits.comment.kay": "\"I've always been into this mod, always wondering how to recreate the style myself until I had a chance to actually help on the mod team and actually bring an influence on the style itself. Ever since I've joined the team, Ive gained more experience with modeling and being a texture artist. and honestly just watching videos on this mod and wanting to download it even though I didn't have a computer at the time. Its still kinda crazy how I'm now on this mod team and actually working with the original owners. Anyways, its been fun so far I hope you all enjoy the things we create for this mod.\"",
+  "credits.comment.starlit": "\"Its insane to think that this is actually a thing I have a chance to be apart of. I've been a huge fan since the og 1.7 mod and I'm extremely thankful for the opportunity to help out and create this insanely unique and amazing mod. As of writing this I only really did one thing that likely will get replaced and remade but hopefully I can update this to add on more content as I do work. I usually do 3D art and some few minor things, pixel art is new to me so its been quite the experience but enough yapping, onto the next goat.\"",
+  "credits.comment.kai_the_raccoon": "\"Hello Im Kai! I am one of the modelers for this mod\"",
+  "credits.comment.atheant": "\"Hi! I'm one of the programmers for FNaF Universe Rebuilt! I was a fan of the original mod ever since it released for 1.12.2, and I was in (small-scale) Youtube roleplays that used the mod. I love video games, and want to one day do video game development as a career! Five Nights at Freddy's is my favorite game franchise, and my favorite animatronic is Balloon Boy (not a joke btw). I know you all hate me now, so I'm going to stop typing.\"",
+
+  "credits.role.owner": "Owner",
+  "credits.role.team_manager": "Team Manager",
+  "credits.role.lead_programmer": "Lead Programmer",
+  "credits.role.graphic_designer": "Graphic Designer",
+  "credits.role.manager": "Manager",
+  "credits.role.lead_animator": "Lead Animator",
+  "credits.role.modeler": "Modeler",
+  "credits.role.sound_designer": "Sound Designer",
+  "credits.role.texture_artist": "Texture Artist",
+  "credits.role.animator": "Animator",
+  "credits.role.designer": "Designer",
+  "credits.role.additional_texture_artist": "Additional Texture Artist",
+  "credits.role.technical_artist": "Technical Artist",
+  "credits.role.additional_modeler": "Additional Modeler",
+  "credits.role.programmer": "Programmer",
+
+  "credits.role.pizza_lover": "Pizza Lover Tier",
+  "credits.role.fazbear_family": "Fazbear Family Tier",
+
   "fnafur.screens.workbench.title": "Animatronic Workbench",
   "fnafur.screens.workbench.title2": "\"Design the face of your future!\"",
   "fnafur.screens.workbench.alt": "%s Suit Alt",
@@ -625,5 +681,9 @@
   "sounds.fnafur.freddy_laugh": "Freddy Laughs",
   "sounds.fnafur.animatronic_groan": "An Animatronic Groans",
 
-  "sounds.fnafur.main_menu": "Main Menu Music Plays"
+  "sounds.fnafur.main_menu": "Main Menu Music Plays",
+  "fnafur.screens.creative_categories.animatronics": "Animatronics",
+  "fnafur.screens.creative_categories.technical": "Technical",
+  "fnafur.screens.creative_categories.props": "Decoration",
+  "fnafur.screens.creative_categories.blocks": "Blocks"
 }

@@ -1,0 +1,86 @@
+{
+  "dev_team": {
+    "owners": {
+      "zephyr": {
+        "link": "https://linktr.ee/offzephyr",
+        "logo": "",
+        "color": [20, 6, 45],
+        "roles": [
+          "owner",
+          "team_manager",
+          "lead_programmer",
+          "graphic_designer"
+        ]
+      },
+      "shadowlink": {
+        "link": "https://www.youtube.com/@shadowlink2000",
+        "logo": "",
+        "color": [255, 0, 55],
+        "roles": [
+          "owner",
+          "manager"
+        ]
+      },
+      "dasen": {
+        "link": "https://x.com/ItsDasen",
+        "logo": "",
+        "color": [136, 60, 199],
+        "roles": [
+          "owner",
+          "lead_animator",
+          "modeler",
+          "sound_designer"
+        ]
+      }
+    },
+    "graphic_team": {
+      "lemonloafe": {
+        "link": "",
+        "logo": "",
+        "color": [16, 204, 154],
+        "roles": [
+          "texture_artist",
+          "modeler",
+          "animator",
+          "designer"
+        ]
+      },
+      "kay": {
+        "link": "https://linktr.ee/KayOnLT",
+        "logo": "",
+        "color": [20, 24, 32],
+        "roles": [
+          "texture_artist",
+          "modeler"
+        ]
+      },
+      "starlit": {
+        "link": "https://starlit-studios.itch.io/",
+        "logo": "",
+        "color": [223, 114, 162],
+        "roles": [
+          "additional_texture_artist",
+          "technical_artist"
+        ]
+      },
+      "kai_the_raccoon": {
+        "link": "https://www.youtube.com/channel/UCb3NCPoc9TGxtfEppS3ZYQQ",
+        "logo": "",
+        "color": [38, 81, 193],
+        "roles": [
+          "additional_modeler"
+        ]
+      }
+    },
+    "technical_team": {
+      "atheant": {
+        "link": "https://bsky.app/profile/atheant.bsky.social",
+        "logo": "",
+        "color": [242, 78, 207],
+        "roles": [
+          "programmer"
+        ]
+      }
+    }
+  }
+}

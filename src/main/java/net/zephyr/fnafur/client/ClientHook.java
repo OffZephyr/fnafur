@@ -1,5 +1,6 @@
 package net.zephyr.fnafur.client;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.WorldRenderer;
@@ -29,7 +30,8 @@ public class ClientHook {
 
         MatrixStack.Entry pos = state.getGeckolibData(CustomDataTickets.ENTITY_RENDER_MATRIX_ENTRY);
         matrices.push();
-        matrices.multiplyPositionMatrix(pos.getPositionMatrix());
+        //matrices.multiplyPositionMatrix(pos.getPositionMatrix());
+        matrices.translate(MinecraftClient.getInstance().gameRenderer.getCamera().pos.multiply(-1));
 
         if(blockEntityRenderer != null){
             if(state.hasGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW) && Boolean.TRUE.equals(state.getGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW))){

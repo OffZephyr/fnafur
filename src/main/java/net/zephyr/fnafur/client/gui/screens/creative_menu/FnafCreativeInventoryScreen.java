@@ -1,6 +1,8 @@
-package net.zephyr.fnafur.client.gui.screens;
+package net.zephyr.fnafur.client.gui.screens.creative_menu;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.textures.GpuTextureView;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -10,11 +12,12 @@ import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.HotbarStorage;
 import net.minecraft.client.option.HotbarStorageEntry;
+import net.minecraft.client.texture.TextureSetup;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
@@ -29,10 +32,16 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Unit;
 import net.minecraft.util.math.MathHelper;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
+import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
+import net.zephyr.fnafur.client.gui.screens.other.FullTexturedQuadGuiElementRenderState;
 import net.zephyr.fnafur.networking.entity.player.UpdateCreativeExtraSlotsC2SPayload;
+import net.zephyr.fnafur.util.EasingMathUtil;
 import net.zephyr.fnafur.util.mixinAccessing.ICreativeScreenSlotAccessor;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3x2f;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,10 +56,28 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     public static FnafSubTab SubTab = FnafSubTab.DEFAULT;
     public static FnafSubTab GoalSubTab = FnafSubTab.DEFAULT;
     public static final Identifier SLOTS = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/creative_inventory_mask_slot.png");
+    public static final Identifier BLOCKS_BACK = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/blocks_back.png");
 
     public FnafCreativeInventoryScreen(ClientPlayerEntity player, FeatureSet enabledFeatures, boolean operatorTabEnabled) {
         super(player, enabledFeatures, operatorTabEnabled);
         SubTab = FnafSubTab.DEFAULT;
+        GoalSubTab = FnafSubTab.DEFAULT;
+
+        new CategoryPicker("back", 0, 0, 14, 16, 0, 125, 0, 109, BLOCKS_BACK, this::BLOCKS_BACK);
+        new CategoryPicker("tiles", 18, 0, 14, 16, 14, 125, 14, 109, BLOCKS_BACK, this::SUBTAB_OPEN);
+        new CategoryPicker("bricks", 36, 0, 14, 16, 28, 125, 28, 109, BLOCKS_BACK, this::SUBTAB_OPEN);
+        new CategoryPicker("carpets", 54, 0, 14, 16, 42, 125, 42, 109, BLOCKS_BACK, this::SUBTAB_OPEN);
+        new CategoryPicker("wood", 0, 18, 14, 16, 56, 125, 56, 109, BLOCKS_BACK, this::SUBTAB_OPEN);
+        new CategoryPicker("glass", 18, 18, 14, 16, 70, 125, 70, 109, BLOCKS_BACK, this::SUBTAB_OPEN);
+        new CategoryPicker("building", 36, 18, 14, 16, 84, 125, 84, 109, BLOCKS_BACK, this::SUBTAB_OPEN);
+        new CategoryPicker("other", 54, 18, 14, 16, 98, 125, 98, 109, BLOCKS_BACK, this::SUBTAB_OPEN);
+    }
+
+    private void SUBTAB_OPEN(String s) {
+        System.out.println(s);
+    }
+
+    private void BLOCKS_BACK(String name) {
         GoalSubTab = FnafSubTab.DEFAULT;
     }
 
@@ -66,7 +93,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        //floorX += delta/100f;
+        floorX += delta/100f;
 
         isFnafTab = Objects.equals(getSelectedItemGroup().getDisplayName().getString(), FnafUniverseRebuilt.MOD_ID);
         if (isFnafTab) {
@@ -89,7 +116,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             }
 
             garageDoorIndex = garageDoorIndex > 0 ? garageDoorIndex - (delta / 20f) : 0;
-            double garageHeightIndex = Math.sin(garageDoorIndex * Math.PI);
+            double garageHeightIndex = EasingMathUtil.easeInOutQuad(1 - MathHelper.abs(((garageDoorIndex)*2) - 1));
             int garageHeight = (int) MathHelper.lerp(garageHeightIndex, 0, this.backgroundHeight - 26);
 
             context.drawTexture(RenderPipelines.GUI_TEXTURED, getSelectedItemGroup().getTexture(), this.x + 7, this.y + 20, 32, 136 + (this.backgroundHeight - 27 - garageHeight), this.backgroundWidth - 14, garageHeight, 256, 256);
@@ -121,16 +148,45 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         int x2 = this.x + 101;
         int y2 = this.y + 78;
 
-        int v1 = GoopyScreen.isOnButton(mouseX, mouseY, x1, y1, 84, 48) ? 48 : 0;
-        int v2 = GoopyScreen.isOnButton(mouseX, mouseY, x2, y1, 84, 48) ? 48 : 0;
-        int v3 = GoopyScreen.isOnButton(mouseX, mouseY, x1, y2, 84, 48) ? 48 : 0;
-        int v4 = GoopyScreen.isOnButton(mouseX, mouseY, x2, y2, 84, 48) ? 48 : 0;
+        boolean b1 = GoopyScreen.isOnButton(mouseX, mouseY, x1, y1, 84, 48);
+        boolean b2 = GoopyScreen.isOnButton(mouseX, mouseY, x2, y1, 84, 48);
+        boolean b3 = GoopyScreen.isOnButton(mouseX, mouseY, x1, y2, 84, 48);
+        boolean b4 = GoopyScreen.isOnButton(mouseX, mouseY, x2, y2, 84, 48);
+        int v1 = b1 ? 96 : 48;
+        int v2 = b2 ? 96 : 48;
+        int v3 = b3 ? 96 : 48;
+        int v4 = b4 ? 96 : 48;
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon1, x1, y1, 0, v1, 84, 48, 128, 128);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon2, x2, y1, 0, v2, 84, 48, 128, 128);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon3, x1, y2, 0, v3, 84, 48, 128, 128);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon4, x2, y2, 0, v4, 84, 48, 128, 128);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon1, x1, y1, 0, 0, 84, 48, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon2, x2, y1, 0, 0, 84, 48, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon3, x1, y2, 0, 0, 84, 48, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon4, x2, y2, 0, 0, 84, 48, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon1, x1, y1, 0, v1, 84, 48, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon2, x2, y1, 0, v2, 84, 48, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon3, x1, y2, 0, v3, 84, 48, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon4, x2, y2, 0, v4, 84, 48, 256, 256);
 
+        if(b1 || b2 || b3 || b4){
+            Text text = b1 ? Text.translatable("fnafur.screens.creative_categories.animatronics") : b2 ? Text.translatable("fnafur.screens.creative_categories.blocks") : b3 ? Text.translatable("fnafur.screens.creative_categories.props") : Text.translatable("fnafur.screens.creative_categories.technical");
+            context.drawTooltip(textRenderer, text, mouseX, mouseY);
+        }
+    }
+
+    @Override
+    public boolean shouldCloseOnEsc() {
+        if(garageDoorIndex != 0){
+            return false;
+        }
+        if(isFnafTab && SubTab != FnafSubTab.DEFAULT){
+            GoalSubTab = FnafSubTab.DEFAULT;
+            return false;
+        }
+        return super.shouldCloseOnEsc();
+    }
+
+    @Override
+    public boolean keyPressed(KeyInput input) {
+        return super.keyPressed(input);
     }
 
     public void renderAnimatronicsBackground(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -138,14 +194,17 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     }
 
     public void renderBlocksBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        Identifier floorTexture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/storage_floor.png");
-        drawFloor(context, delta, mouseX, mouseY, floorTexture, this.x + 1, this.x + this.backgroundWidth - 1, this.y + ((this.backgroundHeight) / 4 * 3), this.y + this.backgroundHeight - 1);
-
+        //Identifier floorTexture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/storage_floor.png");
+        //drawFloor(RenderPipelines.GUI_TEXTURED, context, delta, mouseX, mouseY, floorTexture, this.x + 1, this.x + this.backgroundWidth - 1, this.y + ((this.backgroundHeight) / 4 * 3), this.y + this.backgroundHeight - 1);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, BLOCKS_BACK, this.x + 7, this.y + 20, 0, 0, this.backgroundWidth - 8, this.backgroundHeight - 21, 256, 256);
+        for(CategoryPicker picker : CategoryPicker.ALL){
+            picker.draw(context, this.x + 7 + 29, this.y + 20 + 14, mouseX, mouseY);
+        }
     }
 
     public void renderPropsBackground(DrawContext context, int mouseX, int mouseY, float delta) {
         Identifier floorTexture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/storage_floor.png");
-        drawFloor(context, delta, mouseX, mouseY, floorTexture, this.x + 1, this.x + this.backgroundWidth - 1, this.y + ((this.backgroundHeight) / 4 * 3), this.y + this.backgroundHeight - 1);
+        drawFloor(RenderPipelines.GUI_TEXTURED, context, delta, mouseX, mouseY, floorTexture, this.x + 1, this.x + this.backgroundWidth - 1, this.y + ((this.backgroundHeight) / 4 * 3), this.y + this.backgroundHeight - 1);
 
     }
 
@@ -156,6 +215,9 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     @Override
     public boolean mouseClicked(Click click, boolean doubled) {
         if (isFnafTab) {
+            if(garageDoorIndex != 0){
+                return false;
+            }
             switch (SubTab) {
                 default -> clickDefault(click.x(), click.y(), click.button());
                 case ANIMATRONICS -> clickAnimatronics(click.x(), click.y(), click.button());
@@ -163,6 +225,11 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
                 case DECORATION -> clickProps(click.x(), click.y(), click.button());
                 case TECHNICAL -> clickTech(click.x(), click.y(), click.button());
             }
+        }
+        else{
+            garageDoorIndex = 0;
+            SubTab = FnafSubTab.DEFAULT;
+            GoalSubTab = FnafSubTab.DEFAULT;
         }
 
         return super.mouseClicked(click, doubled);
@@ -188,7 +255,9 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     }
 
     public void clickBlocks(double mouseX, double mouseY, int button) {
-
+        if(CategoryPicker.HOVERED != null){
+            CategoryPicker.HOVERED.onClick();
+        }
     }
 
     public void clickProps(double mouseX, double mouseY, int button) {
@@ -231,7 +300,14 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         }
     }
 
-    protected void drawFloor(DrawContext context, float delta, int mouseX, int mouseY, Identifier texture, int x, int maxX, int y, int maxY) {
+    protected void drawFloor(RenderPipeline pipeline, DrawContext context, float delta, int mouseX, int mouseY, Identifier texture, int x, int maxX, int y, int maxY) {
+        GpuTextureView gpuTextureView = this.client.getTextureManager().getTexture(texture).getGlTextureView();
+        drawFloor(pipeline, context, delta, mouseX, mouseY, gpuTextureView, x, maxX, y, maxY);
+    }
+    private void renderRoom(RenderPipeline pipeline, DrawContext context, float delta, int mouseX, int mouseY, GpuTextureView texture, int x, int maxX, int y, int maxY) {
+
+    }
+    private void drawFloor(RenderPipeline pipeline, DrawContext context, float delta, int mouseX, int mouseY, GpuTextureView texture, int x, int maxX, int y, int maxY) {
 
         float v1 = 0;
         float v2 = 1;
@@ -251,6 +327,14 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             float bottomU = MathHelper.lerp(u, 0 + multiplier, 1 - multiplier);
             float bottomU2 = MathHelper.lerp(u2, 0 + multiplier, 1 - multiplier);
 
+
+            context.state
+                    .addSimpleElement(
+                            new FullTexturedQuadGuiElementRenderState(
+                                    pipeline, TextureSetup.withoutGlTexture(texture), new Matrix3x2f(context.getMatrices()), (int)thisX, y1, (int)thisX, y2, (int)nextX, y2, (int)nextX, y1, u + floorX, bottomU + floorX, bottomU2 + floorX, u2 + floorX, v1, v2, v2, v1, 0xFFFFFFFF, context.scissorStack.peekLast()
+                            )
+                    );
+
             //buffer.vertex(matrix4f, (float)thisX, (float)y1, (float)0).texture(u + floorX, v1);
             //buffer.vertex(matrix4f, (float)thisX, (float)y2, (float)0).texture(bottomU + floorX, v2);
             //buffer.vertex(matrix4f, (float)nextX, (float)y2, (float)0).texture(bottomU2 + floorX, v2);
@@ -262,7 +346,8 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     }
 
     @Override
-    public void close() { ;
+    public void close() {
+
         //FreddyEntity.remove(Entity.RemovalReason.DISCARDED);
 
         super.close();
@@ -433,5 +518,58 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         public FnafCreativeSlot(Slot slot, int invSlot, int x, int y) {
             super(slot, invSlot, x, y);
         }
+    }
+
+    public static class CategoryPicker{
+        public String name;
+        public int posX;
+        public int posY;
+        public int width;
+        public int height;
+        public int u;
+        public int v;
+        public int u_active;
+        public int v_active;
+        public Identifier texture;
+        public ButtonAction action;
+        boolean isHovered = false;
+        public static List<CategoryPicker> ALL = new ArrayList<>();
+        public static CategoryPicker HOVERED = null;
+
+        public CategoryPicker(String name, int posX, int posY, int width, int height, int u, int v, int u_active, int v_active, Identifier texture, ButtonAction action){
+            this.name = name;
+            this.posX = posX;
+            this.posY = posY;
+            this.width = width;
+            this.height = height;
+            this.u = u;
+            this.v = v;
+            this.u_active = u_active;
+            this.v_active = v_active;
+            this.texture = texture;
+            this.action = action;
+            ALL.add(this);
+        }
+
+        public void draw(DrawContext context, int offsetX, int offsetY, int mouseX, int mouseY){
+            isHovered = GoopyScreen.isOnButton(mouseX, mouseY, posX + offsetX, posY + offsetY, width, height);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, offsetX + posX, offsetY + posY, isHovered ? u_active : u, isHovered ? v_active : v, width, height, 256, 256);
+
+            if(isHovered){
+                HOVERED = this;
+            }
+            if(HOVERED == this && !isHovered){
+                HOVERED = null;
+            }
+        }
+
+        public void onClick() {
+            action.execute(name);
+        }
+    }
+
+    @FunctionalInterface
+    public interface ButtonAction {
+        void execute(String name);
     }
 }

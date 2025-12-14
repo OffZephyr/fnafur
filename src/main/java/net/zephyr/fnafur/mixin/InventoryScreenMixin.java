@@ -1,12 +1,8 @@
 package net.zephyr.fnafur.mixin;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.resource.featuretoggle.FeatureSet;
-import net.zephyr.fnafur.client.gui.screens.FnafCreativeInventoryScreen;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

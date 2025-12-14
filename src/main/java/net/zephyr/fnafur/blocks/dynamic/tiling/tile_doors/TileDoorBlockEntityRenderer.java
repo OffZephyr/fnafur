@@ -2,9 +2,7 @@ package net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -19,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.LightType;
+import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.common_block_entity.CommonBlockEntityRenderState;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -115,18 +115,21 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
                     matrices.push();
                     matrices.translate(updatePos.getX() - state.pos.getX(),updatePos.getY() - state.pos.getY(),updatePos.getZ() - state.pos.getZ());
 
-                    queue.submitBlock(
-                            matrices,
-                            blockState,
-                            state.lightmapCoordinates,
-                            OverlayTexture.DEFAULT_UV,
-                            0xFFFFFFFF
-                    );
+                    //dfmatrices.translate(MinecraftClient.getInstance().gameRenderer.getCamera().pos.multiply(-1));
+                    queue.submitCustom(matrices, RenderLayers.getMovingBlockLayer(posState), (stack, layer) ->{
+                        BlockModelRenderer.render(stack, layer, model, 1, 1, 1,  getLightLevel(MinecraftClient.getInstance().world, state.pos), OverlayTexture.DEFAULT_UV);
+                    });
                     matrices.pop();
 
                 }
             }
             matrices.pop();
         }
+    }
+
+    private int getLightLevel(World world, BlockPos pos){
+        int bLight = world.getLightLevel(LightType.BLOCK, pos);
+        int sLight = world.getLightLevel(LightType.SKY, pos);
+        return LightmapTextureManager.pack(bLight, sLight);
     }
 }
