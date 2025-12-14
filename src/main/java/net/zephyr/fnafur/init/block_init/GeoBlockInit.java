@@ -16,6 +16,7 @@ import net.zephyr.fnafur.blocks.geo_doors.GeoDoor;
 import net.zephyr.fnafur.blocks.geo_doors.GeoDoorRenderer;
 import net.zephyr.fnafur.blocks.geo_doors.doors.Geo1x2Door;
 import net.zephyr.fnafur.blocks.geo_doors.doors.Geo2x3Door;
+import net.zephyr.fnafur.blocks.props.floor_props.plushies.freddy_plush.FreddyPlush;
 import net.zephyr.fnafur.blocks.props.other.pirates_cove.curtain.PiratesCoveCurtain;
 import net.zephyr.fnafur.blocks.props.other.pirates_cove.curtain.PiratesCoveCurtainRenderer;
 import net.zephyr.fnafur.blocks.props.other.pirates_cove.stage.PiratesCoveStage;
@@ -27,6 +28,7 @@ import java.util.function.Function;
 
 public class GeoBlockInit {
     public static List<GeoDoor> DOORS = new ArrayList<>();
+
     public static final Block PIRATES_COVE_STAGE = registerBlock(
             "pirates_cove_stage",
             PiratesCoveStage::new,
@@ -221,6 +223,8 @@ public class GeoBlockInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
     );
+
+
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
         final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
