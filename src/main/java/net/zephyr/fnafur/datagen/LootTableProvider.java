@@ -90,6 +90,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.ARCADE_CABINET);
         addDrop(PropInit.FOOD_DISPLAY_CASE);
         addDrop(PropInit.RECEPTION_COUNTER);
+        addDrop(PropInit.CONDIMENT_COUNTER);
 
         addDrop(BlockInit.FOG_BLOCK);
 

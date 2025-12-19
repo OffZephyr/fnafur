@@ -116,6 +116,7 @@ public class BlockEntityInit {
                                 PropInit.ARCADE_CABINET,
                                 PropInit.FOOD_DISPLAY_CASE,
                                 PropInit.RECEPTION_COUNTER,
+                                PropInit.CONDIMENT_COUNTER,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

@@ -33,6 +33,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.chairs.RetroStool;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.StarPlasticChair;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenStool;
+import net.zephyr.fnafur.blocks.props.floor_props.condiment_counter.CondimentCounter;
 import net.zephyr.fnafur.blocks.props.floor_props.cutouts.SeriousCutout;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_trash.FloorTrash;
@@ -818,6 +819,19 @@ public class PropInit {
             "kitchen_prep_table",
             KitchenPrepTable::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .offset(AbstractBlock.OffsetType.NONE)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block CONDIMENT_COUNTER = registerBlock(
+            "condiment_counter",
+            CondimentCounter::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)
