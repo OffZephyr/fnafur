@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/tool_wall_mount"
+    },
+    "facing=east": {
+      "model": "fnafur:props/tool_wall_mount",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/tool_wall_mount",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/tool_wall_mount",
+      "y": 270
+    }
+  }
+}

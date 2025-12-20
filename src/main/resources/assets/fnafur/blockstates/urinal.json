@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/restroom/urinal",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "fnafur:props/restroom/urinal",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/restroom/urinal",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/restroom/urinal",
+      "y": 270
+    }
+  }
+}

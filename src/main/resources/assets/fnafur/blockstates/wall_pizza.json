@@ -44,6 +44,21 @@
     "facing=west,color=slice": {
       "model": "fnafur:props/wall_pizza/wall_pizza_slice",
       "y": 270
+    },
+    "facing=north,color=cut": {
+      "model": "fnafur:props/wall_pizza/cut_wall_pizza"
+    },
+    "facing=east,color=cut": {
+      "model": "fnafur:props/wall_pizza/cut_wall_pizza",
+      "y": 90
+    },
+    "facing=south,color=cut": {
+      "model": "fnafur:props/wall_pizza/cut_wall_pizza",
+      "y": 180
+    },
+    "facing=west,color=cut": {
+      "model": "fnafur:props/wall_pizza/cut_wall_pizza",
+      "y": 270
     }
   }
 }

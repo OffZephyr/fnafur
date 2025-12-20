@@ -78,6 +78,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.RESTROOM_SIGN);
                         entries.add(PropInit.TOILET_PAPER_ROLL);
                         entries.add(PropInit.TOILET);
+                        entries.add(PropInit.URINAL);
                         entries.add(PropInit.BATHROOM_SINK);
                         entries.add(PropInit.FLOOR_TRASH);
                         entries.add(PropInit.BROOM);
@@ -103,6 +104,7 @@ public class ItemGroupsInit {
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 
+                        entries.add(PropInit.TOOL_WALL_MOUNT);
                         entries.add(BlockInit.WAREHOUSE_SHELF);
                         entries.add(GeoBlockInit.SMALL_GRAY_DOOR);
                         entries.add(GeoBlockInit.TWO_FIVE_RED_DOOR);

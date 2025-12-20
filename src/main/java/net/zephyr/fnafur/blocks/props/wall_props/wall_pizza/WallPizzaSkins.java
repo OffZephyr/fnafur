@@ -6,7 +6,8 @@ import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 public enum WallPizzaSkins implements ColorEnumInterface, StringIdentifiable {
     DEFAULT("default", 0),
     PEPPERONI("pepperoni", 1),
-    SLICE("slice",2);
+    SLICE("slice",2),
+    CUT("cut", 3);
 
     private final String name;
     private final int index;

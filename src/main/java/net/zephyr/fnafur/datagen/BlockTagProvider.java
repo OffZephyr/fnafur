@@ -1,10 +1,12 @@
 package net.zephyr.fnafur.datagen;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.zephyr.fnafur.init.block_init.BlockInit;
+import net.zephyr.fnafur.init.block_init.GeoBlockInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,7 +20,6 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         valueLookupBuilder(BlockTags.PLANKS)
                 .add(PropInit.WOODEN_SHELF)
-                .add(PropInit.AC_UNIT)
                 .add(PropInit.RETRO_TABLE)
                 .add(PropInit.RETRO_STOOL)
                 .add(PropInit.RESTROOM_SIGN)
@@ -30,9 +31,28 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.PARTY_TABLE)
                 .add(PropInit.PARTY_TABLE_CONFETTI)
                 .add(PropInit.RECEPTION_COUNTER)
+                .add(PropInit.UTENSILS_BOX)
+                .add(PropInit.CONDIMENT_COUNTER)
+                .add(PropInit.WOODEN_STOOL)
+                .add(PropInit.WOODEN_CHAIR)
+                .add(PropInit.WOODEN_CLOCK)
+                .add(PropInit.STAR_PLASTIC_CHAIR)
+                .add(PropInit.BROOM)
+                .add(PropInit.KITCHEN_PREP_TABLE)
+                .add(PropInit.SCONCE)
+                .add(PropInit.BULLETIN_BOARD)
+                .add(PropInit.TOOL_WALL_MOUNT)
+                .add(PropInit.STANDING_MENU)
+                .add(PropInit.WET_FLOOR_SIGN)
         ;
+        valueLookupBuilder(BlockTags.BAMBOO_BLOCKS)
+                .add(PropInit.PUNCH_IN_CARDS)
+                .add(PropInit.SERIOUS_CUTOUT)
+
+       ;
 
         valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
+                .add(PropInit.AC_UNIT)
                 .add(BlockInit.ANIMATRONIC_BLOCK)
                 .add(BlockInit.CPU_CONFIG_PANEL)
                 .add(BlockInit.MIMIC_FRAME_DIAGONAL)
@@ -45,14 +65,6 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(BlockInit.WARNING_HEAVY_DOOR)
                 .add(PropInit.FNAF_1_DESK)
                 .add(PropInit.FLYING_V_GUITAR)
-                .add(PropInit.FREDDY_PLUSH)
-                .add(PropInit.BONNIE_PLUSH)
-                .add(PropInit.CHICA_PLUSH)
-                .add(PropInit.FOXY_PLUSH)
-                .add(PropInit.GOLDEN_FREDDY_PLUSH)
-                .add(PropInit.FREDBEAR_PLUSH)
-                .add(PropInit.HAUNTED_FREDBEAR_PLUSH)
-                .add(PropInit.STAR_PLASTIC_CHAIR)
                 .add(PropInit.CEILING_TILE_VENT)
                 .add(PropInit.CEILING_TILE_VENT_BLACK)
                 .add(PropInit.FLOOR_MONITORS)
@@ -61,10 +73,43 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.ARCADE_CABINET)
                 .add(PropInit.STANDING_MICROPHONE)
                 .add(PropInit.STANDING_SPEAKER)
+                .add(PropInit.SPEAKER)
                 .add(PropInit.STANDING_PIANO)
                 .add(PropInit.FOOD_DISPLAY_CASE)
-                .add(PropInit.CONDIMENT_COUNTER)
-                .add(PropInit.UTENSILS_BOX)
+                .add(PropInit.TOILET)
+                .add(PropInit.URINAL)
+                .add(PropInit.BATHROOM_SINK)
+                .add(PropInit.TOILET_PAPER_ROLL)
+                .add(PropInit.WATER_DISPENSER)
+                .add(PropInit.ICE_CREAM_DISPENSER)
+                .add(PropInit.WALL_OUTLET)
+                .add(PropInit.LIGHT_SWITCH)
+                .add(PropInit.TRASH_BIN)
+                .add(PropInit.MOP_BUCKET)
+                .add(PropInit.EXIT_SIGN)
+                .add(PropInit.PIZZA_OVEN)
+                .add(PropInit.POTS_AND_PANS_RACK)
+                .add(PropInit.SPOT_LIGHT)
+                .add(PropInit.HANGING_LIGHT)
+                .add(PropInit.HANGING_LIGHTBULB)
+                .add(PropInit.AIR_VENT)
+                .add(PropInit.FRIDGE)
+                .add(PropInit.DOUBLE_DOOR_FRIDGE)
+                .add(GeoBlockInit.PIRATES_COVE_STAGE)
+
+                ;
+
+        valueLookupBuilder(BlockTags.WOOL)
+                .add(PropInit.FREDDY_PLUSH)
+                .add(PropInit.BONNIE_PLUSH)
+                .add(PropInit.CHICA_PLUSH)
+                .add(PropInit.FOXY_PLUSH)
+                .add(PropInit.GOLDEN_FREDDY_PLUSH)
+                .add(PropInit.FREDBEAR_PLUSH)
+                .add(PropInit.HAUNTED_FREDBEAR_PLUSH)
+                .add(PropInit.PRESENT_STACK)
+                .add(GeoBlockInit.PIRATES_COVE_CURTAIN)
+
 
                 // WALL BLOCKS AND FLOOR BLOCKS
                 .add(BlockInit.WALL_TILE_FULL)

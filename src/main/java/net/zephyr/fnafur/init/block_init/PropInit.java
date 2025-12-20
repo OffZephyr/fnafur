@@ -89,9 +89,11 @@ import net.zephyr.fnafur.blocks.props.wall_props.poster.Poster;
 import net.zephyr.fnafur.blocks.props.wall_props.punch_in_cards.PunchInCards;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom.BathroomSink;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom.ToiletPaperRoll;
+import net.zephyr.fnafur.blocks.props.wall_props.restroom.Urinal;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSign;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.StageSun;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
+import net.zephyr.fnafur.blocks.props.wall_props.tool_wall_mount.ToolWallMount;
 import net.zephyr.fnafur.blocks.props.wall_props.wall_pizza.WallPizza;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.CosmoGift;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropRenderer;
@@ -946,6 +948,19 @@ public class PropInit {
                     .noCollision()
                     .offset(AbstractBlock.OffsetType.NONE)
     );
+    public static final Block TOOL_WALL_MOUNT = registerBlock(
+            "tool_wall_mount",
+            ToolWallMount::new,
+            AbstractBlock.Settings.copy(Blocks.BAMBOO)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+                    .offset(AbstractBlock.OffsetType.NONE)
+    );
     public static final Block PARTY_HAT = registerBlock(
             "party_hats",
             PartyHats::new,
@@ -981,6 +996,19 @@ public class PropInit {
     public static final Block TOILET = registerBlock(
             "toilet",
             Toilet::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+
+    );
+    public static final Block URINAL = registerBlock(
+            "urinal",
+            Urinal::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
