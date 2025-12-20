@@ -64,6 +64,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.STANDING_PIANO)
                 .add(PropInit.FOOD_DISPLAY_CASE)
                 .add(PropInit.CONDIMENT_COUNTER)
+                .add(PropInit.UTENSILS_BOX)
 
                 // WALL BLOCKS AND FLOOR BLOCKS
                 .add(BlockInit.WALL_TILE_FULL)

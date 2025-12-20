@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.props.floor_props.reception_counter;
+package net.zephyr.fnafur.blocks.props.floor_props.utensils_box;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -10,8 +10,8 @@ import net.minecraft.world.BlockView;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 
-public class ReceptionCounter extends FloorPropBlock<DefaultPropColorEnum> {
-    public ReceptionCounter(Settings settings) {
+public class UtensilsBox extends FloorPropBlock<DefaultPropColorEnum> {
+    public UtensilsBox(Settings settings) {
         super(settings);
     }
 
@@ -23,7 +23,7 @@ public class ReceptionCounter extends FloorPropBlock<DefaultPropColorEnum> {
     @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.7f, 0f, -1.0f, 2.0f, 0.87f, 1.1f)));
+        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0f, 0f, 0f, 1.0f, 1.5f, 1.0f)));
         return drawingOutline ? shape : VoxelShapes.fullCube();
     }
 

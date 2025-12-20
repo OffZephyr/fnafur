@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/utensils_box",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "fnafur:props/utensils_box",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/utensils_box",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/utensils_box",
+      "y": 270
+    }
+  }
+}

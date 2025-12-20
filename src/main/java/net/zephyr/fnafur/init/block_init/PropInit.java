@@ -69,6 +69,7 @@ import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.RetroTableBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.fnaf1desk.Fnaf1Desk;
 import net.zephyr.fnafur.blocks.props.floor_props.trash_bin.TrashBin;
+import net.zephyr.fnafur.blocks.props.floor_props.utensils_box.UtensilsBox;
 import net.zephyr.fnafur.blocks.props.floor_props.water_dispenser.WaterDispenser;
 import net.zephyr.fnafur.blocks.props.floor_props.wet_floor_sign.WetFloorSign;
 import net.zephyr.fnafur.blocks.props.floor_props.wooden_shelf.WoodenShelf;
@@ -841,6 +842,19 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
+    public static final Block UTENSILS_BOX = registerBlock(
+            "utensils_box",
+            UtensilsBox::new,
+            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .offset(AbstractBlock.OffsetType.NONE)
+                    .breakInstantly()
+                    .noCollision()
+    );
     public static final Block FOOD_DISPLAY_CASE = registerBlock(
             "food_display_case",
             FoodDisplayCase::new,
@@ -1095,6 +1109,7 @@ public class PropInit {
             BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.TRANSLUCENT);
         }
         BlockRenderLayerMap.putBlock(FOOD_DISPLAY_CASE, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(CONDIMENT_COUNTER, BlockRenderLayer.TRANSLUCENT);
 
         FnafUniverseRebuilt.LOGGER.info("Registering Props On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }

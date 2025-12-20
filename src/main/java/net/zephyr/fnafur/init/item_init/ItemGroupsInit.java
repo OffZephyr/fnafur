@@ -87,6 +87,7 @@ public class ItemGroupsInit {
 
                         entries.add(PropInit.FOOD_DISPLAY_CASE);
                         entries.add(PropInit.CONDIMENT_COUNTER);
+                        entries.add(PropInit.UTENSILS_BOX);
                         entries.add(PropInit.STANDING_MENU);
                         entries.add(PropInit.PIZZA_OVEN);
                         entries.add(PropInit.FRIDGE);
