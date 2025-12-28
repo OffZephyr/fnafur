@@ -43,6 +43,9 @@ import net.zephyr.fnafur.blocks.props.floor_props.instruments.standing_microphon
 import net.zephyr.fnafur.blocks.props.floor_props.instruments.standing_piano.StandingPiano;
 import net.zephyr.fnafur.blocks.props.floor_props.instruments.standing_speaker.StandingSpeaker;
 import net.zephyr.fnafur.blocks.props.floor_props.kitchen.*;
+import net.zephyr.fnafur.blocks.props.floor_props.kitchen.food_display_case.FoodDisplayCase;
+import net.zephyr.fnafur.blocks.props.floor_props.lockers.Locker;
+import net.zephyr.fnafur.blocks.props.floor_props.lockers.LockerItem;
 import net.zephyr.fnafur.blocks.props.floor_props.party_hats.PartyHats;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.BephPlushieBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.plushies.bonnie_plush.BonniePlush;
@@ -167,7 +170,21 @@ public class PropInit {
                     .noCollision()
 
     );
-
+    public static final Block LOCKER = registerGeoProp(
+            "locker",
+            Locker::new,
+            LockerItem::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/lockers/locker_gray.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/locker.geo.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
     public static final Block FREDDY_PLUSH = registerGeoProp(
             "freddy_plush",
             FreddyPlush::new,
@@ -868,7 +885,10 @@ public class PropInit {
                     .blockVision(Blocks::never)
                     .offset(AbstractBlock.OffsetType.NONE)
                     .breakInstantly()
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block RECEPTION_COUNTER = registerBlock(
             "reception_counter",

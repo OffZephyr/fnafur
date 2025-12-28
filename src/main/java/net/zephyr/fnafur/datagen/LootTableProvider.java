@@ -76,6 +76,7 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.DOUBLE_DOOR_FRIDGE);
         addDrop(PropInit.FRIDGE);
         addDrop(PropInit.WOODEN_CLOCK);
+        addDrop(PropInit.LOCKER);
         addDrop(PropInit.TOILET_PAPER_ROLL);
         addDrop(PropInit.TOILET);
         addDrop(PropInit.URINAL);

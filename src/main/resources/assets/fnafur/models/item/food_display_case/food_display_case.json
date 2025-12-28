@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+      "layer0": "fnafur:item/food_display_case/food_display_case_item"
+    }
+}

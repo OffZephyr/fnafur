@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.props.floor_props.kitchen;
+package net.zephyr.fnafur.blocks.props.floor_props.kitchen.food_display_case;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -10,14 +10,14 @@ import net.minecraft.world.BlockView;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 
-public class FoodDisplayCase extends FloorPropBlock<DefaultPropColorEnum> {
+public class FoodDisplayCase extends FloorPropBlock<FoodDisplayCaseColors> {
     public FoodDisplayCase(Settings settings) {
         super(settings);
     }
 
     @Override
-    public Class<DefaultPropColorEnum> COLOR_ENUM() {
-        return null;
+    public Class<FoodDisplayCaseColors> COLOR_ENUM() {
+        return FoodDisplayCaseColors.class;
     }
 
     @Override

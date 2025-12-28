@@ -26,6 +26,7 @@ public class ItemGroupsInit {
                     .icon(() -> new ItemStack(PropInit.PRESENT_STACK))
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
+                        entries.add(PropInit.LOCKER);
                         entries.add(BlockInit.GARAGE_DOOR);
                         entries.add(BlockInit.HEAVY_DOOR);
                         entries.add(BlockInit.WARNING_HEAVY_DOOR);

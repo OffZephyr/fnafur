@@ -152,7 +152,8 @@ public class BlockEntityInit {
                                 PropInit.FOXY_PLUSH,
                                 PropInit.GOLDEN_FREDDY_PLUSH,
                                 PropInit.FREDBEAR_PLUSH,
-                                PropInit.HAUNTED_FREDBEAR_PLUSH
+                                PropInit.HAUNTED_FREDBEAR_PLUSH,
+                                PropInit.LOCKER
                         ).build());
         GEO_CLOCK_PROP =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "clock_geo_props"),

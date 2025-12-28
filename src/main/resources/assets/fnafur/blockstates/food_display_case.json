@@ -1,19 +1,35 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "fnafur:props/food_display_case"
+    "facing=north,color=default": {
+      "model": "fnafur:props/food_display_case/food_display_case"
     },
-    "facing=east": {
-      "model": "fnafur:props/food_display_case",
+    "facing=east,color=default": {
+      "model": "fnafur:props/food_display_case/food_display_case",
       "y": 90
     },
-    "facing=south": {
-      "model": "fnafur:props/food_display_case",
+    "facing=south,color=default": {
+      "model": "fnafur:props/food_display_case/food_display_case",
       "y": 180
     },
-    "facing=west": {
-      "model": "fnafur:props/food_display_case",
+    "facing=west,color=default": {
+      "model": "fnafur:props/food_display_case/food_display_case",
       "y": 270
+    },
+    "facing=north,color=metal": {
+        "model": "fnafur:props/food_display_case/food_display_case_metal"
+    },
+    "facing=east,color=metal": {
+        "model": "fnafur:props/food_display_case/food_display_case_metal",
+        "y": 90
+    },
+    "facing=south,color=metal": {
+        "model": "fnafur:props/food_display_case/food_display_case_metal",
+        "y": 180
+    },
+    "facing=west,color=metal": {
+        "model": "fnafur:props/food_display_case/food_display_case_metal",
+        "y": 270
+      }
     }
   }
-}
+

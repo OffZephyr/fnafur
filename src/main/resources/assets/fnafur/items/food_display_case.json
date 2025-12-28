@@ -1,6 +1,27 @@
 {
-    "model": {
+  "model": {
+    "type": "minecraft:select",
+    "cases":[
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:item/food_display_case/food_display_case"
+        },
+        "when": "default"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:item/food_display_case/food_display_case_metal"
+        },
+        "when": "metal"
+      }
+    ],
+    "fallback": {
       "type": "minecraft:model",
-      "model": "fnafur:item/food_display_case"
+      "model": "fnafur:item/food_display_case/food_display_case"
+    },
+    "block_state_property": "color",
+    "property": "minecraft:block_state"
   }
 }

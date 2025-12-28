@@ -96,6 +96,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.FRIDGE)
                 .add(PropInit.DOUBLE_DOOR_FRIDGE)
                 .add(GeoBlockInit.PIRATES_COVE_STAGE)
+                .add(PropInit.LOCKER)
 
                 ;
 
