@@ -139,7 +139,6 @@ public class ItemGroupsInit {
                         //entries.add(ItemInit.TAPEMEASURE);
 
                         entries.add(ItemInit.ANIMATRONIC_SUIT);
-                        entries.add(BlockInit.ANIMATRONIC_BLOCK);
                         entries.add(ItemInit.CPU);
                         entries.add(PropInit.COSMO_GIFT);
                         entries.add(ItemInit.DEATHCOIN);

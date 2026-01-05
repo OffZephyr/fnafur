@@ -115,7 +115,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
 
                 for (BakedQuad quad : quadList) {
                     //if(direction == Direction.UP) particlesprite = quad.sprite();
-                    emitter.fromVanilla(quad.vertexData(), 0);
+                    emitter.fromBakedQuad(quad);
                     emitter.emit();
                 }
             }

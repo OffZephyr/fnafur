@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -46,7 +47,7 @@ public class FogBlockRenderer implements BlockEntityRenderer<FogBlockEntity, Fog
 
         if(blockState.getBlock() instanceof FogBlock) {
             if(state.visible) {
-                queue.submitBlockStateModel(matrices, RenderLayer.getSolid(), this.manager.getModel(blockState), 1, 1, 1, state.lightmapCoordinates, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
+                queue.submitBlockStateModel(matrices, RenderLayers.solid(), this.manager.getModel(blockState), 1, 1, 1, state.lightmapCoordinates, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
             }
         }
     }

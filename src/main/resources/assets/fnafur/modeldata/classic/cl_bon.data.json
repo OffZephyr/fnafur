@@ -5,7 +5,7 @@
         "alts":{
 
             "default": {
-                "model": "geckolib/models/entity/classic/cl_bon/cl_bon.geo.json",
+                "model": "entity/classic/cl_bon/cl_bon",
                 "texture": "textures/entity/classic/cl_bon/cl_bon.png",
                 "recolorable_textures": [],
                 "emissive": "",
@@ -50,7 +50,7 @@
             },
             
             "colorable": {
-                "model": "geckolib/models/entity/classic/cl_bon/cl_bon.geo.json",
+                "model": "entity/classic/cl_bon/cl_bon",
                 "texture": "textures/entity/classic/cl_bon/colorable_skin/colorable_cl_bon.png",
                 "recolorable_textures": [
                     "textures/entity/classic/cl_bon/colorable_skin/colorable_cl_bon_color0.png",

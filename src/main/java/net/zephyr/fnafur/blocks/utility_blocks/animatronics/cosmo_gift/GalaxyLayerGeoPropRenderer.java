@@ -12,7 +12,6 @@ import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.blocks.common_block_entity.CommonBlockEntityRenderState;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropModel;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
-import net.zephyr.fnafur.util.mixinAccessing.IUniverseRenderLayers;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 @Environment(EnvType.CLIENT)

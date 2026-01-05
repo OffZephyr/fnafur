@@ -9,7 +9,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 public class ChicaPlushItemModel extends GeoModel<ChicaPlushItem> {
     @Override
     public Identifier getModelResource(GeoRenderState renderState) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/chica_plush.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/chica_plush");
     }
 
     @Override
@@ -19,6 +19,6 @@ public class ChicaPlushItemModel extends GeoModel<ChicaPlushItem> {
 
     @Override
     public Identifier getAnimationResource(ChicaPlushItem animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk");
     }
 }

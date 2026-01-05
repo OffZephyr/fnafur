@@ -5,7 +5,7 @@
         "alts":{
 
             "default": {
-                "model": "geckolib/models/entity/spring/sp_bon/sp_bon.geo.json",
+                "model": "entity/spring/sp_bon/sp_bon",
                 "texture": "textures/entity/spring/sp_bon/sp_bon.png",
                 "recolorable_textures": [],
                 "emissive": "",

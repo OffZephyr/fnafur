@@ -61,7 +61,7 @@ public class StickerPlacingRenderer {
                         float vWidth = 0.5f;
                         float vHeight = 0.5f;
 
-                        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(identifier));
+                        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayers.entityCutout(identifier));
 
                         float y = 0;
                         Vector3f normal = new Vector3f(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ());

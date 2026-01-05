@@ -6,10 +6,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.VertexRendering;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BlockItem;
@@ -60,7 +57,7 @@ public class SpecialBlockPlacingRenderer {
                             m.forceEnt = null;
 
 
-                            VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayer.LINES), shape, 0, 0, 0, 0x88FFFFFF);
+                            VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayers.LINES), shape, 0, 0, 0, 0x88FFFFFF, MinecraftClient.getInstance().getWindow().getMinimumLineWidth());
                         }
 
                         matrices.pop();

@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -111,7 +112,7 @@ public class DoubleDoorFridge extends FloorPropBlock<DefaultPropColorEnum> imple
 
     @Override
     public RenderLayer getRenderType(BlockState state, BlockPos pos) {
-        return RenderLayer.getEntityCutout(getTexture(state, pos));
+        return RenderLayers.entityCutout(getTexture(state, pos));
     }
 
     @Override

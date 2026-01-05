@@ -9,7 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.blocks.linking.links.energy.EnergySourceTargetPropBlockEntity;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.util.ItemUtil;
@@ -51,8 +50,7 @@ public class OfficeButtonsBlockEntity extends EnergySourceTargetPropBlockEntity 
     @Override
     public boolean canLink(IEntityDataSaver link) {
         boolean bl1 = link instanceof EnergyTarget;
-        boolean bl2 = link instanceof AnimatronicBlockEntity a && !a.hasSwitch();
-        return bl1 || bl2;
+        return bl1;
     }
 
     @Override

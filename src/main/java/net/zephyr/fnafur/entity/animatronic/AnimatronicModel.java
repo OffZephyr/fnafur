@@ -36,13 +36,8 @@ public class AnimatronicModel<T extends AnimatronicEntity> extends GeoModel<T> {
         return Identifier.of(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"));
     }
 
-    @Override
-    public @Nullable RenderLayer getRenderType(GeoRenderState renderState, Identifier texture) {
 
-        if(renderState.hasGeckolibData(CustomDataTickets.EYE_NONE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.EYE_NONE))) return CustomRenderingPipelines.getAnimatronicNoEyes(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE));
-        return CustomRenderingPipelines.getAnimatronic(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE));
-        //return super.getRenderType(renderState, texture);
-    }
+
 
     @Override
     public Identifier[] getAnimationResourceFallbacks(T animatable) {

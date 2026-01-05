@@ -1,13 +1,7 @@
 package net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift;
 
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
-import net.zephyr.fnafur.blocks.props.base.geo.GeoPropModel;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 import software.bernie.geckolib.renderer.base.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;

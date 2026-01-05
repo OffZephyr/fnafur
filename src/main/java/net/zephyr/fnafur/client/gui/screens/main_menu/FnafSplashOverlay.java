@@ -150,7 +150,7 @@ public class FnafSplashOverlay extends SplashOverlay {
 
             this.reloadCompleteTime = Util.getMeasuringTimeMs();
             if (this.client.currentScreen != null) {
-                this.client.currentScreen.init(this.client, context.getScaledWindowWidth(), context.getScaledWindowHeight());
+                this.client.currentScreen.init(context.getScaledWindowWidth(), context.getScaledWindowHeight());
             }
         }
     }

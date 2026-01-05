@@ -22,7 +22,6 @@ import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipRead
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 
 public class BlockEntityInit {
     public static BlockEntityType<CpuConfigPanelBlockEntity> CPU_CONFIG_PANEL;
@@ -33,7 +32,6 @@ public class BlockEntityInit {
     public static BlockEntityType<OfficeButtonsBlockEntity> OFFICE_BUTTONS;
     public static BlockEntityType<SimpleEnergySwitchPropBlockEntity> SIMPLE_PROP_ENERGY_SWITCH;
     public static BlockEntityType<SimpleEnergyTargetPropBlockEntity> SIMPLE_PROP_ENERGY_TARGET;
-    public static BlockEntityType<AnimatronicBlockEntity> ANIMATRONIC_BLOCK;
     public static BlockEntityType<GeoPropBlockEntity> GEO_PROPS;
     public static BlockEntityType<GeoClockPropBlockEntity> GEO_CLOCK_PROP;
     public static BlockEntityType<GalaxyLayerGeoPropEntity> GALAXY_GEO_PROPS;
@@ -159,11 +157,6 @@ public class BlockEntityInit {
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "clock_geo_props"),
                         FabricBlockEntityTypeBuilder.create(GeoClockPropBlockEntity::new,
                                 PropInit.WOODEN_CLOCK
-                        ).build());
-        ANIMATRONIC_BLOCK =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "animatronic_block"),
-                        FabricBlockEntityTypeBuilder.create(AnimatronicBlockEntity::new,
-                                BlockInit.ANIMATRONIC_BLOCK
                         ).build());
 
         GALAXY_GEO_PROPS =

@@ -8,7 +8,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 public class FlyingVGuitarItemModel extends GeoModel<FlyingVGuitarItem> {
     @Override
     public Identifier getModelResource(GeoRenderState renderState) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/flying_v_guitar.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/flying_v_guitar");
     }
 
     @Override
@@ -18,6 +18,6 @@ public class FlyingVGuitarItemModel extends GeoModel<FlyingVGuitarItem> {
 
     @Override
     public Identifier getAnimationResource(FlyingVGuitarItem animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk");
     }
 }

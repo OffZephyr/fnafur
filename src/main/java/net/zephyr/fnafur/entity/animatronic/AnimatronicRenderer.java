@@ -1,31 +1,20 @@
 package net.zephyr.fnafur.entity.animatronic;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.command.RenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.layer.CustomBoneTextureGeoLayer;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
-import software.bernie.geckolib.util.RenderUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<T, R> {
@@ -58,11 +47,6 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
     }
 
     @Override
-    public void buildRenderTask(R renderState, MatrixStack poseStack, BakedGeoModel model, RenderCommandQueue renderTasks, CameraRenderState cameraState, @Nullable RenderLayer renderType, int packedLight, int packedOverlay, int renderColor) {
-        super.buildRenderTask(renderState, poseStack, model, renderTasks, cameraState, renderType, packedLight, packedOverlay, renderColor);
-    }
-
-    @Override
     public void addRenderData(T animatable, Void relatedObject, R renderState, float partialTick) {
         super.addRenderData(animatable, relatedObject, renderState, partialTick);
     }
@@ -91,6 +75,13 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
         renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.getRenderType(animatable.getTexture(animatable.getEntityWorld())));
 
         return renderState;
+    }
+
+    @Override
+    public @Nullable RenderLayer getRenderType(R renderState, Identifier texture) {
+        if(renderState.hasGeckolibData(CustomDataTickets.EYE_NONE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.EYE_NONE))) return CustomRenderingPipelines.getAnimatronicNoEyes(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE));
+        return CustomRenderingPipelines.getAnimatronic(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE));
+        //return super.getRenderType(renderState, texture);
     }
 
 //    @Override

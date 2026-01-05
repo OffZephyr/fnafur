@@ -129,12 +129,12 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                 emitter.emit();
 
                 if(freeUp) {
-                    emitter.pos(0, vertices[0].getX(), 1, vertices[0].getY());
-                    emitter.pos(1, vertices[2].getX(), 1, vertices[0].getY());
+                    emitter.pos(0, vertices[0].x(), 1, vertices[0].y());
+                    emitter.pos(1, vertices[2].x(), 1, vertices[0].y());
                     if (direction.getAxis() == Direction.Axis.Z)
-                        emitter.pos(1, vertices[0].getX(), 1, vertices[2].getY());
-                    emitter.pos(2, vertices[2].getX(), 1, vertices[2].getY());
-                    emitter.pos(3, vertices[2].getX(), 1, vertices[2].getY());
+                        emitter.pos(1, vertices[0].x(), 1, vertices[2].y());
+                    emitter.pos(2, vertices[2].x(), 1, vertices[2].y());
+                    emitter.pos(3, vertices[2].x(), 1, vertices[2].y());
 
 
                     for (int i = 0; i < 3; i++) {
@@ -145,12 +145,12 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                 }
 
                 if(freeDown) {
-                    emitter.pos(0, vertices[0].getX(), 0, vertices[0].getY());
-                    emitter.pos(3, vertices[0].getX(), 0, vertices[2].getY());
+                    emitter.pos(0, vertices[0].x(), 0, vertices[0].y());
+                    emitter.pos(3, vertices[0].x(), 0, vertices[2].y());
                     if (direction.getAxis() == Direction.Axis.X)
-                        emitter.pos(3, vertices[2].getX(), 0, vertices[0].getY());
-                    emitter.pos(2, vertices[2].getX(), 0, vertices[2].getY());
-                    emitter.pos(1, vertices[2].getX(), 0, vertices[2].getY());
+                        emitter.pos(3, vertices[2].x(), 0, vertices[0].y());
+                    emitter.pos(2, vertices[2].x(), 0, vertices[2].y());
+                    emitter.pos(1, vertices[2].x(), 0, vertices[2].y());
 
                     for (int i = 0; i < 4; i++) {
                         emitter.uv(i, emitter.x(i) * 16, 16 - (emitter.z(i) * 16));

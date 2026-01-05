@@ -1,6 +1,5 @@
 package net.zephyr.fnafur.datagen;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.registry.RegistryWrapper;
@@ -53,7 +52,6 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
         valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(PropInit.AC_UNIT)
-                .add(BlockInit.ANIMATRONIC_BLOCK)
                 .add(BlockInit.CPU_CONFIG_PANEL)
                 .add(BlockInit.MIMIC_FRAME_DIAGONAL)
                 .add(BlockInit.CHIP_READER)

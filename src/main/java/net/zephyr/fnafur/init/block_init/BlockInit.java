@@ -1,7 +1,6 @@
 package net.zephyr.fnafur.init.block_init;
 
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.block.*;
 import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -43,8 +42,6 @@ import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipRead
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench.WorkbenchBlock;
-import net.zephyr.fnafur.client.JavaModels;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
 import net.zephyr.fnafur.init.SoundsInit;
 
 import java.util.List;
@@ -55,18 +52,6 @@ public class BlockInit {
 
 
     /* CUSTOM MODELS */
-    public static final Block ANIMATRONIC_BLOCK = registerBlock(
-            "animatronic_block",
-            AnimatronicBlock::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never),
-            List.of(
-                    Text.translatable("fnafur.symbol.wrench")
-            )
-    );
 
     public static final Block CPU_CONFIG_PANEL = registerBlock(
             "cpu_config_panel",

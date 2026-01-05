@@ -20,6 +20,6 @@ public class DoorModel extends GeoModel<GeoDoorEntity> {
 
     @Override
     public Identifier getAnimationResource(GeoDoorEntity animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/door/geo_door.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/door/geo_door");
     }
 }

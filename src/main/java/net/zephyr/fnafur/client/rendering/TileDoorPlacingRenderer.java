@@ -2,10 +2,7 @@ package net.zephyr.fnafur.client.rendering;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.BlockModelRenderer;
 import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.util.math.MatrixStack;
@@ -71,7 +68,7 @@ public class TileDoorPlacingRenderer {
                             matrices.push();
                             matrices.translate(pos.getX(), pos.getY(), pos.getZ());
 
-                            BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(BlockRenderLayers.getMovingBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
 
                             matrices.pop();
                         }

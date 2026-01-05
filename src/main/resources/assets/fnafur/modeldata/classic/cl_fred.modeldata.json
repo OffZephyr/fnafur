@@ -1,6 +1,6 @@
 {
   "default": {
-    "model": "geckolib/models/entity/classic/cl_fred/cl_fred.geo.json",
+    "model": "entity/classic/cl_fred/cl_fred",
     "layers": [
       {
         "name": "endo",

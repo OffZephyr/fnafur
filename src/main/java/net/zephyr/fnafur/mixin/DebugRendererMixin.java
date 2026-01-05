@@ -29,7 +29,10 @@ public class DebugRendererMixin {
     LinkRenderer linkRenderer = new LinkRenderer();
 
     @Inject(method = "render", at = @At("HEAD"))
-    public void render(MatrixStack matrices, Frustum frustum, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ, boolean lateDebug, CallbackInfo ci){
+    public void render(Frustum frustum, double cameraX, double cameraY, double cameraZ, float tickProgress, CallbackInfo ci){
+        MatrixStack matrices = new MatrixStack();
+        matrices.push();
+        VertexConsumerProvider.Immediate vertexConsumers = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
         mapRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         specialBlockPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         floorPropPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
@@ -37,5 +40,6 @@ public class DebugRendererMixin {
         tileDoorPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
 
         linkRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
+        matrices.pop();
     }
 }

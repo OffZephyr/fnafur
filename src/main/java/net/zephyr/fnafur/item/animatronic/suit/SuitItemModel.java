@@ -26,13 +26,6 @@ public class SuitItemModel extends GeoModel<SuitItem> {
         return AnimatronicDataHandler.getDefaultAltTexture();
     }
 
-    @Override
-    public @Nullable RenderLayer getRenderType(GeoRenderState renderState, Identifier texture) {
-        if(renderState.hasGeckolibData(CustomDataTickets.SUIT_MAP_TEXTURE)){
-            return CustomRenderingPipelines.getAnimatronicSuit(texture, renderState.getGeckolibData(CustomDataTickets.SUIT_MAP_TEXTURE));
-        }
-        return CustomRenderingPipelines.getAnimatronicSuit(texture, AnimatronicDataHandler.getDefaultEndoMask());
-    }
 
     @Override
     public Identifier getAnimationResource(SuitItem animatable) {

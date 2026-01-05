@@ -2,7 +2,6 @@ package net.zephyr.fnafur.blocks.props.base.geo;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
@@ -14,17 +13,18 @@ import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
-import net.zephyr.fnafur.networking.nbt_updates.SyncBlockNbtC2SPayload;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import software.bernie.geckolib.cache.object.GeoQuad;
+import software.bernie.geckolib.cache.model.GeoQuad;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -65,12 +65,12 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
         renderState.addGeckolibData(CustomDataTickets.X_OFFSET, nbt.getDouble("xOffset").orElse(0.0));
         renderState.addGeckolibData(CustomDataTickets.Y_OFFSET, nbt.getDouble("yOffset").orElse(0.0));
         renderState.addGeckolibData(CustomDataTickets.Z_OFFSET, nbt.getDouble("zOffset").orElse(0.0));
-        renderState.addGeckolibData(CustomDataTickets.FACING, getFacing(animatable));
+        renderState.addGeckolibData(CustomDataTickets.FACING, getBlockStateDirection(animatable));
         renderState.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.getWorld()));
         renderState.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.getWorld()));
         renderState.addGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE, animatable.getReRenderTexture(animatable.getWorld()));
         renderState.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.getWorld()));
-        renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.item ? RenderLayer.getItemEntityTranslucentCull(animatable.getTexture(animatable.getWorld())) : animatable.getRenderType());
+        renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.item ? RenderLayers.itemEntityTranslucentCull(animatable.getTexture(animatable.getWorld())) : animatable.getRenderType());
 
         return renderState;
     }
@@ -133,6 +133,13 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
 //            }
         }
     }
+
+
+    @Override
+    public @Nullable RenderLayer getRenderType(R renderState, Identifier texture) {
+        return renderState.getGeckolibData(CustomDataTickets.RENDER_LAYER) == null ? super.getRenderType(renderState, texture) : renderState.getGeckolibData(CustomDataTickets.RENDER_LAYER);
+    }
+
     public void renderPreview(R renderState, MatrixStack matrices, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraRenderState) {
 
         float rotation = renderState.getGeckolibData(CustomDataTickets.ROTATION);
@@ -150,13 +157,5 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
         matrices.translate(-0.5f, 0, -0.5f);
         super.render(renderState, matrices, renderTasks, cameraRenderState);
         matrices.pop();
-    }
-
-    @Override
-    public void createVerticesOfQuad(R renderState, GeoQuad quad, Matrix4f poseState, Vector3f normal, VertexConsumer buffer, int packedOverlay, int packedLight, int renderColor) {
-        if(renderState.hasGeckolibData(DataTickets.RENDER_COLOR)){
-            renderColor = renderState.getGeckolibData(DataTickets.RENDER_COLOR);
-        }
-        super.createVerticesOfQuad(renderState, quad, poseState, normal, buffer, packedOverlay, packedLight, renderColor);
     }
 }

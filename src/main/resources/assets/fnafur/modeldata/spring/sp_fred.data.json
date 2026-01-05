@@ -5,7 +5,7 @@
         "alts":{
 
             "default": {
-                "model": "geckolib/models/entity/spring/sp_fred/sp_fred.geo.json",
+                "model": "entity/spring/sp_fred/sp_fred",
                 "texture": "textures/entity/spring/sp_fred/sp_fred.png",
                 "recolorable_textures": [],
                 "emissive": "",

@@ -3,14 +3,12 @@ package net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
 import net.zephyr.fnafur.blocks.linking.links.LinkSourceBlockEntity;
 import net.zephyr.fnafur.blocks.linking.links.LinkSourceTargetBlockEntity;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +60,7 @@ public class ServerMonitorBlockEntity extends LinkSourceTargetBlockEntity {
     }
     @Override
     public boolean canLink(IEntityDataSaver link) {
-        return (link instanceof AnimatronicBlockEntity && getTargets().isEmpty());
+        return false;
     }
 
     @Override

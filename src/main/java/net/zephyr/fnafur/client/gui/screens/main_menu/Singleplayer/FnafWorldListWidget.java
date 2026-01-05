@@ -380,14 +380,16 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
             }
 
             Text text2 = Text.literal(string);
-            this.nameWidget = (new TextWidget(text2, this.client.textRenderer)).setTextColor(-8355712);
+            //.setTextColor(-8355712)
+            this.nameWidget = (new TextWidget(text2, this.client.textRenderer));
             this.nameWidget.setMaxWidth(i);
             if (this.client.textRenderer.getWidth(string) > i) {
                 this.nameWidget.setTooltip(Tooltip.of(text2));
             }
 
             Text text3 = summary.getDetails();
-            this.detailsWidget = (new TextWidget(text3, this.client.textRenderer)).setTextColor(-8355712);
+            //.setTextColor(-8355712)
+            this.detailsWidget = (new TextWidget(text3, this.client.textRenderer));
             this.detailsWidget.setMaxWidth(i);
             if (this.client.textRenderer.getWidth(text3) > i) {
                 this.detailsWidget.setTooltip(Tooltip.of(text3));

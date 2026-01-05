@@ -27,9 +27,4 @@ public class GeoPropModel<T extends GeoPropBlockEntity> extends GeoModel<T> {
             return animatable.getAnimations(animatable.getWorld());
         return null;
     }
-
-    @Override
-    public @Nullable RenderLayer getRenderType(GeoRenderState renderState, Identifier texture) {
-        return renderState.getGeckolibData(CustomDataTickets.RENDER_LAYER) == null ? super.getRenderType(renderState, texture) : renderState.getGeckolibData(CustomDataTickets.RENDER_LAYER);
-    }
 }

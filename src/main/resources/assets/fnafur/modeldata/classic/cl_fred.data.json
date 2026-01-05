@@ -2,7 +2,7 @@
 
     "cl_fred":{
         "default_alt": "default",
-        "model": "geckolib/models/entity/classic/cl_fred/cl_fred.geo.json",
+        "model": "entity/classic/cl_fred/cl_fred",
         "alts":{
 
             "default": {

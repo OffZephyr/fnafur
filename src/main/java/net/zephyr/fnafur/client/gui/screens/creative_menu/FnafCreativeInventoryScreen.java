@@ -16,6 +16,7 @@ import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.HotbarStorage;
 import net.minecraft.client.option.HotbarStorageEntry;
+import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.TextureSetup;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemGroup;
@@ -128,9 +129,8 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     }
 
     @Override
-    protected void drawSlot(DrawContext context, Slot slot) {
-
-        super.drawSlot(context, slot);
+    protected void drawSlot(DrawContext context, Slot slot, int mouseX, int mouseY) {
+        super.drawSlot(context, slot, mouseX, mouseY);
     }
 
     public void renderDefaultBackground(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -271,7 +271,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     protected void drawFnafBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         for (ItemGroup itemGroup : ItemGroups.getGroupsToDisplay()) {
             if (itemGroup != getSelectedItemGroup() || Objects.equals(itemGroup.getDisplayName().getString(), FnafUniverseRebuilt.MOD_ID)) {
-                this.renderTabIcon(context, itemGroup);
+                this.renderTabIcon(context, mouseX, mouseY, itemGroup);
             }
         }
 
@@ -288,7 +288,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         context.drawTexture(RenderPipelines.GUI_TEXTURED, getSelectedItemGroup().getTexture(), this.x + 8, this.y + 6, 0.0F, this.backgroundHeight + (SubTab.index * 5), 28, 5, 256, 256);
 
         if (!isFnafTab) {
-            this.renderTabIcon(context, getSelectedItemGroup());
+            this.renderTabIcon(context, mouseX, mouseY, getSelectedItemGroup());
         }
     }
 
@@ -301,13 +301,13 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     }
 
     protected void drawFloor(RenderPipeline pipeline, DrawContext context, float delta, int mouseX, int mouseY, Identifier texture, int x, int maxX, int y, int maxY) {
-        GpuTextureView gpuTextureView = this.client.getTextureManager().getTexture(texture).getGlTextureView();
+        AbstractTexture gpuTextureView = this.client.getTextureManager().getTexture(texture);
         drawFloor(pipeline, context, delta, mouseX, mouseY, gpuTextureView, x, maxX, y, maxY);
     }
     private void renderRoom(RenderPipeline pipeline, DrawContext context, float delta, int mouseX, int mouseY, GpuTextureView texture, int x, int maxX, int y, int maxY) {
 
     }
-    private void drawFloor(RenderPipeline pipeline, DrawContext context, float delta, int mouseX, int mouseY, GpuTextureView texture, int x, int maxX, int y, int maxY) {
+    private void drawFloor(RenderPipeline pipeline, DrawContext context, float delta, int mouseX, int mouseY, AbstractTexture texture, int x, int maxX, int y, int maxY) {
 
         float v1 = 0;
         float v2 = 1;
@@ -331,7 +331,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             context.state
                     .addSimpleElement(
                             new FullTexturedQuadGuiElementRenderState(
-                                    pipeline, TextureSetup.withoutGlTexture(texture), new Matrix3x2f(context.getMatrices()), (int)thisX, y1, (int)thisX, y2, (int)nextX, y2, (int)nextX, y1, u + floorX, bottomU + floorX, bottomU2 + floorX, u2 + floorX, v1, v2, v2, v1, 0xFFFFFFFF, context.scissorStack.peekLast()
+                                    pipeline,  TextureSetup.of(texture.getGlTextureView(), texture.getSampler()), new Matrix3x2f(context.getMatrices()), (int)thisX, y1, (int)thisX, y2, (int)nextX, y2, (int)nextX, y1, u + floorX, bottomU + floorX, bottomU2 + floorX, u2 + floorX, v1, v2, v2, v1, 0xFFFFFFFF, context.scissorStack.peekLast()
                             )
                     );
 
@@ -354,11 +354,11 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     }
 
     @Override
-    protected void renderTabIcon(DrawContext context, ItemGroup group) {
+    protected void renderTabIcon(DrawContext context, int mouseX, int mouseY, ItemGroup group) {
         final FabricItemGroupImpl fabricItemGroup = (FabricItemGroupImpl) group;
 
         if (!Objects.equals(group.getDisplayName().getString(), FnafUniverseRebuilt.MOD_ID) || fabricItemGroup.fabric_getPage() != getCurrentPage()) {
-            super.renderTabIcon(context, group);
+            super.renderTabIcon(context, mouseX, mouseY, group);
             return;
         }
 

@@ -5,7 +5,7 @@
         "alts":{
 
             "default": {
-                "model": "geckolib/models/entity/spring/sp_foxy/sp_foxy.geo.json",
+                "model": "entity/spring/sp_foxy/sp_foxy",
                 "texture": "textures/entity/spring/sp_foxy/sp_foxy.png",
                 "recolorable_textures": [],
                 "emissive": "",

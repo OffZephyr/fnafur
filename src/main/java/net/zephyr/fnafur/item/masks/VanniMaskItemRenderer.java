@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.command.RenderCommandQueue;
@@ -22,8 +23,8 @@ import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.cache.model.BakedGeoModel;
+import software.bernie.geckolib.cache.model.GeoBone;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
@@ -45,34 +46,34 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
         );
     }
 
-    @Override
-    public void buildRenderTask(GeoRenderState renderState, MatrixStack poseStack, BakedGeoModel model, RenderCommandQueue renderTasks, CameraRenderState cameraState, @Nullable RenderLayer renderType, int packedLight, int packedOverlay, int renderColor) {
-        renderState.addGeckolibData(CustomDataTickets.IS_RENDERING_ARMS, false);
-        super.buildRenderTask(renderState, poseStack, model, renderTasks, cameraState, renderType, packedLight, packedOverlay, renderColor);
-        if (renderType == null)
-            return;
-
-        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
-        Identifier identifier = abstractClientPlayerEntity.getSkin().body().texturePath();
-
-        renderTasks.submitCustom(poseStack, getRenderType(renderState, identifier), (pose, vertexConsumer) -> {
-            renderState.addGeckolibData(CustomDataTickets.IS_RENDERING_ARMS, true);
-            final MatrixStack poseStack2 = new MatrixStack();
-            final boolean skipBoneTasks = getPerBoneTasks(renderState).isEmpty();
-
-            poseStack2.peek().copy(pose);
-
-            for (GeoBone bone : model.topLevelBones()) {
-                bone.setHidden(true);
-                bone.setChildrenHidden(true);
-                renderBone(renderState, poseStack2, bone, vertexConsumer, cameraState, packedLight, packedOverlay, renderColor);
-                bone.setHidden(false);
-                bone.setChildrenHidden(false);
-            }
-            renderState.addGeckolibData(CustomDataTickets.IS_RENDERING_ARMS, false);
-        });
-        renderState.addGeckolibData(CustomDataTickets.IS_RENDERING_ARMS, false);
-    }
+//    @Override
+//    public void buildRenderTask(GeoRenderState renderState, MatrixStack poseStack, BakedGeoModel model, RenderCommandQueue renderTasks, CameraRenderState cameraState, @Nullable RenderLayer renderType, int packedLight, int packedOverlay, int renderColor) {
+//        renderState.addGeckolibData(CustomDataTickets.IS_RENDERING_ARMS, false);
+//        super.buildRenderTask(renderState, poseStack, model, renderTasks, cameraState, renderType, packedLight, packedOverlay, renderColor);
+//        if (renderType == null)
+//            return;
+//
+//        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
+//        Identifier identifier = abstractClientPlayerEntity.getSkin().body().texturePath();
+//
+//        renderTasks.submitCustom(poseStack, getRenderType(renderState, identifier), (pose, vertexConsumer) -> {
+//            renderState.addGeckolibData(CustomDataTickets.IS_RENDERING_ARMS, true);
+//            final MatrixStack poseStack2 = new MatrixStack();
+//            final boolean skipBoneTasks = getPerBoneTasks(renderState).isEmpty();
+//
+//            poseStack2.peek().copy(pose);
+//
+//            for (GeoBone bone : model.topLevelBones()) {
+//                bone.setHidden(true);
+//                bone.setChildrenHidden(true);
+//                renderBone(renderState, poseStack2, bone, vertexConsumer, cameraState, packedLight, packedOverlay, renderColor);
+//                bone.setHidden(false);
+//                bone.setChildrenHidden(false);
+//            }
+//            renderState.addGeckolibData(CustomDataTickets.IS_RENDERING_ARMS, false);
+//        });
+//        renderState.addGeckolibData(CustomDataTickets.IS_RENDERING_ARMS, false);
+//    }
 
     @Override
     public void addRenderData(T animatable, RenderData relatedObject, GeoRenderState renderState, float partialTick) {
@@ -84,58 +85,58 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
         super.addRenderData(animatable, relatedObject, renderState, partialTick);
     }
 
-    @Override
-    public void renderBone(GeoRenderState renderState, MatrixStack poseStack, GeoBone bone, VertexConsumer buffer, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
-
-        super.renderBone(renderState, poseStack, bone, buffer, cameraState, packedLight, packedOverlay, renderColor);
-
-        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
-        PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher()
-                .<AbstractClientPlayerEntity>getRenderer(abstractClientPlayerEntity);
-
-        if((bone.getName().contains("left") || bone.getName().contains("right"))){
-            if(renderState.hasGeckolibData(CustomDataTickets.IS_RENDERING_ARMS) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.IS_RENDERING_ARMS))) {
-                bone.setHidden(false);
-                bone.setChildrenHidden(false);
-            }
-            else{
-                return;
-            }
-            if(bone.getName().contains("left") ){
-                poseStack.push();
-                RenderUtil.prepMatrixForBone(poseStack, bone);
-                poseStack.translate(0, 0.125f, 0.5f);
-                poseStack.multiply(new Quaternionf().rotateXYZ(-((float)Math.PI/2), (float)Math.PI, 0));
-                poseStack.push();
-                renderArm(poseStack, buffer, packedLight, (PlayerEntityModel) playerEntityRenderer.getModel(), Arm.LEFT, true);
-                poseStack.pop();
-                poseStack.pop();
-            }
-            else {
-                poseStack.push();
-                RenderUtil.prepMatrixForBone(poseStack, bone);
-                poseStack.translate(0, 0.125f, 0.5f);
-                poseStack.multiply(new Quaternionf().rotateXYZ(-((float)Math.PI/2), (float)Math.PI, 0));
-                poseStack.push();
-                renderArm(poseStack, buffer, packedLight, (PlayerEntityModel) playerEntityRenderer.getModel(), Arm.RIGHT, true);
-                poseStack.pop();
-                poseStack.pop();
-            }
-        }
-    }
-
-    @Override
-    public void postRender(GeoRenderState renderState, MatrixStack poseStack, BakedGeoModel model, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
-        super.postRender(renderState, poseStack, model, renderTasks, cameraState, packedLight, packedOverlay, renderColor);
-
+//    @Override
+//    public void renderBone(GeoRenderState renderState, MatrixStack poseStack, GeoBone bone, VertexConsumer buffer, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
+//
+//        super.renderBone(renderState, poseStack, bone, buffer, cameraState, packedLight, packedOverlay, renderColor);
+//
 //        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
 //        PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher()
 //                .<AbstractClientPlayerEntity>getRenderer(abstractClientPlayerEntity);
-//        Identifier identifier = abstractClientPlayerEntity.getSkin().body().texturePath();
-
-
-
-    }
+//
+//        if((bone.getName().contains("left") || bone.getName().contains("right"))){
+//            if(renderState.hasGeckolibData(CustomDataTickets.IS_RENDERING_ARMS) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.IS_RENDERING_ARMS))) {
+//                bone.setHidden(false);
+//                bone.setChildrenHidden(false);
+//            }
+//            else{
+//                return;
+//            }
+//            if(bone.getName().contains("left") ){
+//                poseStack.push();
+//                RenderUtil.prepMatrixForBone(poseStack, bone);
+//                poseStack.translate(0, 0.125f, 0.5f);
+//                poseStack.multiply(new Quaternionf().rotateXYZ(-((float)Math.PI/2), (float)Math.PI, 0));
+//                poseStack.push();
+//                renderArm(poseStack, buffer, packedLight, (PlayerEntityModel) playerEntityRenderer.getModel(), Arm.LEFT, true);
+//                poseStack.pop();
+//                poseStack.pop();
+//            }
+//            else {
+//                poseStack.push();
+//                RenderUtil.prepMatrixForBone(poseStack, bone);
+//                poseStack.translate(0, 0.125f, 0.5f);
+//                poseStack.multiply(new Quaternionf().rotateXYZ(-((float)Math.PI/2), (float)Math.PI, 0));
+//                poseStack.push();
+//                renderArm(poseStack, buffer, packedLight, (PlayerEntityModel) playerEntityRenderer.getModel(), Arm.RIGHT, true);
+//                poseStack.pop();
+//                poseStack.pop();
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void postRender(GeoRenderState renderState, MatrixStack poseStack, BakedGeoModel model, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
+//        super.postRender(renderState, poseStack, model, renderTasks, cameraState, packedLight, packedOverlay, renderColor);
+//
+////        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
+////        PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher()
+////                .<AbstractClientPlayerEntity>getRenderer(abstractClientPlayerEntity);
+////        Identifier identifier = abstractClientPlayerEntity.getSkin().body().texturePath();
+//
+//
+//
+//    }
 
     void renderArm(MatrixStack matrices, VertexConsumer buffer, int light, PlayerEntityModel playerEntityModel, Arm arm, boolean sleeveVisible){
 
@@ -177,6 +178,6 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
         playerEntityModel.rightSleeve.visible = sleeveVisible;
         playerEntityModel.leftArm.roll = -0.1F;
         playerEntityModel.rightArm.roll = 0.1F;
-        queue.submitModelPart(part, matrices, RenderLayer.getEntityTranslucent(skinTexture), light, OverlayTexture.DEFAULT_UV, null);
+        queue.submitModelPart(part, matrices, RenderLayers.entityTranslucent(skinTexture), light, OverlayTexture.DEFAULT_UV, null);
     }
 }

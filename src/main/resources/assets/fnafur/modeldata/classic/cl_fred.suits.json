@@ -5,7 +5,7 @@
         "alts":{
 
             "default": {
-                "model": "geckolib/models/entity/classic/cl_fred/cl_fred.geo.json",
+                "model": "entity/classic/cl_fred/cl_fred",
                 "texture": "textures/entity/classic/cl_fred/cl_fred.png",
                 "recolorable_textures": [],
                 "emissive": "",
@@ -65,7 +65,7 @@
             },
 
             "golden": {
-                "model": "geckolib/models/entity/classic/cl_fred/cl_fred.geo.json",
+                "model": "entity/classic/cl_fred/cl_fred",
                 "texture": "textures/entity/classic/cl_fred/cl_gold_fred.png",
                 "recolorable_textures": [],
                 "emissive": "",
@@ -124,7 +124,7 @@
             },
 
             "shadow": {
-                "model": "geckolib/models/entity/classic/cl_fred/cl_fred.geo.json",
+                "model": "entity/classic/cl_fred/cl_fred",
                 "texture": "textures/entity/classic/cl_fred/cl_shdw_fred.png",
                 "recolorable_textures": [],
                 "emissive": "",
@@ -184,7 +184,7 @@
             
 
             "colorable": {
-                "model": "geckolib/models/entity/classic/cl_fred/cl_fred.geo.json",
+                "model": "entity/classic/cl_fred/cl_fred",
                 "texture": "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred.png",
                 "recolorable_textures": [
                     "textures/entity/classic/cl_fred/colorable_skin/colorable_cl_fred_color0.png",

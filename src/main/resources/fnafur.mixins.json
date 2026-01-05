@@ -24,7 +24,6 @@
     "PlayerInventoryMixin",
     "PlayerScreenHandlerMixin",
     "PostEffectProcessorMixin",
-    "RenderLayerMixin",
     "RenderPipelinesMixin",
     "ScreenHandlerMixin",
     "SplashOverlayMixin",

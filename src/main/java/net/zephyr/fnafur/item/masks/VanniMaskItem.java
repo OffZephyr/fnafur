@@ -23,12 +23,12 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animatable.processing.AnimationController;
-import software.bernie.geckolib.animatable.processing.AnimationTest;
-import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.state.AnimationTest;
+import software.bernie.geckolib.animation.object.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.animation.keyframe.event.KeyFrameEvent;
-import software.bernie.geckolib.animation.keyframe.event.data.SoundKeyframeData;
+import software.bernie.geckolib.animation.state.KeyFrameEvent;
+import software.bernie.geckolib.cache.animation.keyframeevent.SoundKeyframeData;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.util.ClientUtil;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -80,7 +80,7 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
             return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenLoop("animation.ar_mask.thirdperson"));
         }
         else{
-            if(geoAnimatableAnimationTest.controller().getCurrentAnimation() == null || geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.thirdperson")){
+            if(geoAnimatableAnimationTest.controller().getCurrentAnimationPoint() == null || geoAnimatableAnimationTest.controller().getCurrentAnimationPoint().animation().name().equals("animation.ar_mask.thirdperson")){
                 geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.ar_mask.idle"));
             }
             if ((context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)) {
@@ -88,11 +88,11 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
 
                 if(canAnimate) {
                     if (isOn) {
-                        if (geoAnimatableAnimationTest.controller().getCurrentAnimation() != null && !geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.open")) {
+                        if (geoAnimatableAnimationTest.controller().getCurrentAnimationPoint() != null && !geoAnimatableAnimationTest.controller().getCurrentAnimationPoint().animation().name().equals("animation.ar_mask.open")) {
                             geoAnimatableAnimationTest.setAndContinue(putOn);
                         }
                     } else {
-                        if (geoAnimatableAnimationTest.controller().getCurrentAnimation() != null && !geoAnimatableAnimationTest.controller().getCurrentAnimation().animation().name().equals("animation.ar_mask.close")) {
+                        if (geoAnimatableAnimationTest.controller().getCurrentAnimationPoint() != null && !geoAnimatableAnimationTest.controller().getCurrentAnimationPoint().animation().name().equals("animation.ar_mask.close")) {
                             geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold("animation.ar_mask.close"));
                         }
                     }

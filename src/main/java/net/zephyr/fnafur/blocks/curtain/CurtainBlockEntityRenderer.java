@@ -3,6 +3,7 @@ package net.zephyr.fnafur.blocks.curtain;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -76,7 +77,7 @@ public class CurtainBlockEntityRenderer implements BlockEntityRenderer<CurtainBl
         //matrices.translate(0, 1.5f, 0);
         //matrices.multiply(MinecraftClient.getInstance().gameRenderer.getCamera().getRotation());
 
-        queue.submitCustom(matrices, RenderLayer.getEntityCutoutNoCull(TEXTURE), (entry, vertexConsumer) -> {
+        queue.submitCustom(matrices, RenderLayers.entityCutoutNoCull(TEXTURE), (entry, vertexConsumer) -> {
             renderCurtain(entry, vertexConsumer, state.isLast, state.lightmapCoordinates, state.front, state.prev_front);
             renderCurtain(entry, vertexConsumer, state.isLast, state.lightmapCoordinates, state.back, state.prev_back);
         });

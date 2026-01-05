@@ -5,7 +5,7 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderPhase;
+import net.minecraft.client.render.RenderSetup;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -88,54 +88,45 @@ public class CustomRenderingPipelines {
     private static final BiFunction<Identifier[], Boolean, RenderLayer> ENTITY_ANIMATRONIC_SUIT = Util.memoize(
             ((textures, affectsOutline) -> {
 
-                RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
-                        .texture(RenderPhase.Textures.create()
-                                .add(textures[0], false)
-                                .add(textures[1], false)
-                                .add(textures[1], false)
-                                .add(textures[1], false)
-                                .build())
-                        .lightmap(RenderLayer.ENABLE_LIGHTMAP)
-                        .overlay(RenderLayer.ENABLE_OVERLAY_COLOR)
-                        .target(RenderPhase.ITEM_ENTITY_TARGET)
-                        .build(affectsOutline);
-                return RenderLayer.of("animatronic_translucent", 1536, true, true, ANIMATRONIC_SUIT_TRANSLUCENT, multiPhaseParameters);
+                RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_SUIT_TRANSLUCENT)
+                        .texture("Sampler0", textures[0])
+                        .texture("Sampler3", textures[1])
+                        .useLightmap()
+                        .useOverlay()
+                        .crumbling()
+                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
+                        .build();
+                return RenderLayer.of("animatronic_translucent_suit", renderSetup);
             })
     );
     public static final BiFunction<Identifier[], Boolean, RenderLayer> ENTITY_ANIMATRONIC = Util.memoize(
             ((textures, affectsOutline) -> {
 
-                RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
-                        .texture(RenderPhase.Textures.create()
-                                .add(textures[0], false)
-                                .add(textures[1], false)
-                                .add(textures[1], false)
-                                .add(textures[1], false)
-                                .add(textures[2], false)
-                                .build())
-                        .lightmap(RenderLayer.ENABLE_LIGHTMAP)
-                        .overlay(RenderLayer.ENABLE_OVERLAY_COLOR)
-                        .target(RenderPhase.ITEM_ENTITY_TARGET)
-                        .build(affectsOutline);
-                return RenderLayer.of("animatronic_translucent", 1536, true, true, ANIMATRONIC_TRANSLUCENT, multiPhaseParameters);
+                RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_TRANSLUCENT)
+                        .texture("Sampler0", textures[0])
+                        .texture("Sampler3", textures[1])
+                        .texture("Sampler4", textures[2])
+                        .useLightmap()
+                        .useOverlay()
+                        .crumbling()
+                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
+                        .build();
+                return RenderLayer.of("animatronic_translucent", renderSetup);
             })
     );
     public static final BiFunction<Identifier[], Boolean, RenderLayer> ENTITY_ANIMATRONIC_NO_EYES = Util.memoize(
             ((textures, affectsOutline) -> {
 
-                RenderLayer.MultiPhaseParameters multiPhaseParameters = RenderLayer.MultiPhaseParameters.builder()
-                        .texture(RenderPhase.Textures.create()
-                                .add(textures[0], false)
-                                .add(textures[1], false)
-                                .add(textures[1], false)
-                                .add(textures[1], false)
-                                .add(textures[2], false)
-                                .build())
-                        .lightmap(RenderLayer.ENABLE_LIGHTMAP)
-                        .overlay(RenderLayer.ENABLE_OVERLAY_COLOR)
-                        .target(RenderPhase.ITEM_ENTITY_TARGET)
-                        .build(affectsOutline);
-                return RenderLayer.of("animatronic_translucent", 1536, true, true, ANIMATRONIC_NO_EYES_TRANSLUCENT, multiPhaseParameters);
+                RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_NO_EYES_TRANSLUCENT)
+                        .texture("Sampler0", textures[0])
+                        .texture("Sampler3", textures[1])
+                        .texture("Sampler4", textures[2])
+                        .useLightmap()
+                        .useOverlay()
+                        .crumbling()
+                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
+                        .build();
+                return RenderLayer.of("animatronic_no_eyes_translucent", renderSetup);
             })
     );
 

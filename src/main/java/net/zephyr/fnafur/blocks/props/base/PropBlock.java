@@ -10,6 +10,7 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.state.OutlineRenderState;
@@ -168,7 +169,7 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     }
 
     @Environment(EnvType.CLIENT)
-    public static void drawBlockOutlineHook(World world, BlockState blockState, BlockPos pos, MatrixStack matrices, VertexConsumer vertexConsumer, double x, double y, double z, OutlineRenderState state, int i){
+    public static void drawBlockOutlineHook(World world, BlockState blockState, BlockPos pos, MatrixStack matrices, VertexConsumer vertexConsumer, double x, double y, double z, OutlineRenderState state, int color, float lineWidth) {
 
         PropBlock.drawingOutline = true;
         matrices.push();
@@ -230,7 +231,8 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
                 0,
                 0,
                 0,
-                i
+                color,
+                lineWidth
 
         );
 

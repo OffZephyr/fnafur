@@ -1,10 +1,7 @@
 package net.zephyr.fnafur.entity.other.bear5;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.Frustum;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -43,7 +40,7 @@ public class Bear5Renderer extends EntityRenderer<Bear5Entity, Bear5RenderState>
         //matrices.translate(new Vec3d(renderState.x, renderState.y, renderState.z));
         //matrices.translate(cameraState.entityPos.multiply(1));
         //matrices.translate(-1, 0, -1);
-        queue.submitCustom(matrices, RenderLayer.getOutline(texture), (entry, buffer) -> {
+        queue.submitCustom(matrices, RenderLayers.outlineNoCull(texture), (entry, buffer) -> {
 
             matrices.translate(0, 1.5f, 0);
             matrices.multiply(MinecraftClient.getInstance().gameRenderer.getCamera().getRotation());

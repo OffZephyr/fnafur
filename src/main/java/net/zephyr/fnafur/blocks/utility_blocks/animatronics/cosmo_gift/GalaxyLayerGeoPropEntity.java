@@ -11,8 +11,9 @@ import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animatable.processing.AnimationController;
-import software.bernie.geckolib.animatable.processing.AnimationTest;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.object.PlayState;
+import software.bernie.geckolib.animation.state.AnimationTest;
 import software.bernie.geckolib.animation.*;
 
 public class GalaxyLayerGeoPropEntity extends GeoPropBlockEntity implements GeoBlockEntity {
@@ -43,7 +44,7 @@ public class GalaxyLayerGeoPropEntity extends GeoPropBlockEntity implements GeoB
 
     @Override
     public Identifier getReRenderModel(World world) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/giftbox_overlay.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/giftbox_overlay");
     }
 
     @Override

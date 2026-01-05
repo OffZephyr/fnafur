@@ -69,11 +69,11 @@ public class WorldRendererMixin<R extends BlockEntityRenderState & GeoRenderStat
 //    }
 
     @Inject(method = "drawBlockOutline", at = @At("HEAD"), cancellable = true)
-    public void drawBlockOutline(MatrixStack matrices, VertexConsumer vertexConsumer, double x, double y, double z, OutlineRenderState state, int i, CallbackInfo ci){
+    public void drawBlockOutline(MatrixStack matrices, VertexConsumer vertexConsumer, double x, double y, double z, OutlineRenderState state, int color, float lineWidth, CallbackInfo ci){
         BlockState blockState = world.getBlockState(state.pos());
         BlockPos pos = state.pos();
         if(blockState.getBlock() instanceof PropBlock) {
-            PropBlock.drawBlockOutlineHook(world, blockState, pos, matrices, vertexConsumer, x, y, z, state, i);
+            PropBlock.drawBlockOutlineHook(world, blockState, pos, matrices, vertexConsumer, x, y, z, state, color, lineWidth);
             ci.cancel();
         }
     }

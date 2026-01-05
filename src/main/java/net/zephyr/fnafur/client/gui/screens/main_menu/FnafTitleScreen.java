@@ -239,7 +239,7 @@ public class FnafTitleScreen extends Screen {
         }
 
         if (this.isRealmsNotificationsGuiDisplayed()) {
-            this.realmsNotificationGui.init(this.client, this.width, this.height);
+            this.realmsNotificationGui.init(this.width, this.height);
         }
         renderIndex = Random.create().nextBetween(0, RENDERS.length - 1);
         if(music == null) {
@@ -619,8 +619,11 @@ public class FnafTitleScreen extends Screen {
     public void updateTransition(){
         float index = MathHelper.lerp(transitionFadeTimer / transitionFadeTimerGoal, transitionFadeStart, transitionFadeGoal);
 
-        MinecraftClient.getInstance().getSoundManager().setVolume(music, index);
+        MinecraftClient.getInstance().getSoundManager().soundSystem.sources.get(music).run(
+                source -> source.setVolume(index)
+        );
         if(index <= 0){
+
             MinecraftClient.getInstance().getSoundManager().stop(music);
             music = null;
             MinecraftClient.getInstance().setScreen(transitionScreen);

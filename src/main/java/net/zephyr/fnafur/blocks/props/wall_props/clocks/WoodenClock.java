@@ -75,8 +75,8 @@ public class WoodenClock extends WallPropBlock<WoodenClockColorEnum> implements 
 
     @Override
     public Identifier getModel(BlockState state, BlockPos pos) {
-        Identifier noSeconds = Identifier.of(FnafUniverseRebuilt.MOD_ID,"geckolib/models/block/props/wall_clock.geo.json");
-        Identifier seconds = Identifier.of(FnafUniverseRebuilt.MOD_ID,"geckolib/models/block/props/wall_clock_seconds.geo.json");
+        Identifier noSeconds = Identifier.of(FnafUniverseRebuilt.MOD_ID,"block/props/wall_clock");
+        Identifier seconds = Identifier.of(FnafUniverseRebuilt.MOD_ID,"block/props/wall_clock_seconds");
 
         this.model = state.get(COLOR_PROPERTY()) == WoodenClockColorEnum.SECONDS ? seconds : noSeconds;
 

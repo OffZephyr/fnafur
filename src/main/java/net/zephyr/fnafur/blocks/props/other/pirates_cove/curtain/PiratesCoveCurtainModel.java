@@ -8,7 +8,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 public class PiratesCoveCurtainModel extends GeoModel<PiratesCoveCurtainBlockEntity> {
     @Override
     public Identifier getModelResource(GeoRenderState renderState) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/pirate_cove_curtains.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/pirate_cove_curtains");
     }
 
     @Override
@@ -18,6 +18,6 @@ public class PiratesCoveCurtainModel extends GeoModel<PiratesCoveCurtainBlockEnt
 
     @Override
     public Identifier getAnimationResource(PiratesCoveCurtainBlockEntity animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/pirate_cove.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/pirate_cove");
     }
 }

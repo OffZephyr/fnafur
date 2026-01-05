@@ -9,7 +9,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 public class LockerItemModel extends GeoModel<LockerItem> {
     @Override
     public Identifier getModelResource(GeoRenderState renderState) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/locker.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/locker");
     }
 
     @Override
@@ -19,6 +19,6 @@ public class LockerItemModel extends GeoModel<LockerItem> {
 
     @Override
     public Identifier getAnimationResource(LockerItem animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk");
     }
 }

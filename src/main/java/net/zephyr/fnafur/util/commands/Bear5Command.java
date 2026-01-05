@@ -11,6 +11,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.command.SummonCommand;
 import net.minecraft.text.Text;
 import net.zephyr.fnafur.entity.other.bear5.Bear5Entity;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
@@ -21,7 +22,7 @@ import java.util.Collection;
 
 public class Bear5Command {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("bear5").requires(source -> source.hasPermissionLevel(4)).executes(context -> trigger(context, context.getSource().getPlayer()))
+        dispatcher.register(CommandManager.literal("bear5").requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK)).executes(context -> trigger(context, context.getSource().getPlayer()))
                 .then(CommandManager.argument("players", EntityArgumentType.players()).executes(context -> trigger(context, EntityArgumentType.getPlayers(context, "players")))));
     }
     public static int trigger(CommandContext<ServerCommandSource> context, Collection<? extends PlayerEntity> players) throws CommandSyntaxException {

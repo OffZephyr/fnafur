@@ -1,21 +1,17 @@
 package net.zephyr.fnafur.client.rendering;
 
-import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.block.entity.BlockEntityRenderManager;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.render.model.BlockModelPart;
 import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.BlockItem;
@@ -25,23 +21,16 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
-import net.zephyr.fnafur.blocks.common_block_entity.CommonBlockEntityRenderState;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
-import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
 import net.zephyr.fnafur.blocks.props.base.*;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.CosmoGift;
-import net.zephyr.fnafur.entity.animatronic.block.AnimationList;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.util.CustomDataTickets;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
 import net.zephyr.fnafur.util.mixinAccessing.IWorldRendererAccessor;
-import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 import java.util.List;
@@ -71,8 +60,6 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
                         BlockState hitBlockState = client.world.getBlockState(blockHitResult.getBlockPos());
                         Block hitBlock = hitBlockState.getBlock();
 
-                        if (block instanceof CosmoGift && player.getEntityWorld().getBlockState(pos).isOf(BlockInit.ANIMATRONIC_BLOCK))
-                            return;
                         float rotation = -MinecraftClient.getInstance().gameRenderer.getCamera().getYaw();
                         float offsetRotation = !block.rotates() ? 0 : block.getDefaultState().get(FloorPropBlock.FACING).getOpposite().getPositiveHorizontalDegrees();
                         float wallOffsetRotation = 0;
@@ -206,7 +193,7 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
                             matrices.translate(-0.5f, 0, -0.5f);
                         }
 
-                        if (block instanceof GeoPropBlock || block instanceof AnimatronicBlock) {
+                        if (block instanceof GeoPropBlock) {
 
                             matrices.push();
 
@@ -220,21 +207,12 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
                             }
                             if (!(placementEntity instanceof GeoPropBlockEntity) || !placementEntity.getCachedState().equals(block.getDefaultState())) {
 
-                                if (block instanceof AnimatronicBlock b) {
-                                    placementEntity = (GeoPropBlockEntity) b.createBlockEntity(pos, block.getDefaultState(), false);
-                                } else {
-                                    placementEntity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
-                                }
+                                placementEntity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
                                 placementEntity.setWorld(MinecraftClient.getInstance().world);
 
                                 renderer = MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(placementEntity);
                             }
                             if (renderer instanceof GeoPropRenderer<GeoPropBlockEntity,R> geo) {
-
-                                if (block instanceof AnimatronicBlock) {
-                                    AnimationList pose = AnimatronicBlock.getPose(client.world, pos, player.getHorizontalFacing().getOpposite());
-                                    ((AnimatronicBlockEntity) placementEntity).previewState = state.with(AnimatronicBlock.POSES, pose);
-                                }
 
                                 placementEntity.item = true;
                                 R renderState = geo.fillRenderState(placementEntity, null, geo.createRenderState(), MinecraftClient.getInstance().getRenderTickCounter().getFixedDeltaTicks());
@@ -263,7 +241,7 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
                             if (model instanceof PropBlockModel pModel) {
                                 model = pModel.ORIGINAL_MODEL;
                             }
-                            renderBakedModel(matrices.peek(), vertexConsumers.getBuffer(RenderLayer.getTranslucentMovingBlock()), model, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            renderBakedModel(matrices.peek(), vertexConsumers.getBuffer(RenderLayers.translucentMovingBlock()), model, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
 
                         }
 

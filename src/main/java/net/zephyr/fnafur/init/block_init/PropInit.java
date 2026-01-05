@@ -100,7 +100,6 @@ import net.zephyr.fnafur.blocks.props.wall_props.tool_wall_mount.ToolWallMount;
 import net.zephyr.fnafur.blocks.props.wall_props.wall_pizza.WallPizza;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.CosmoGift;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropRenderer;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntityRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,8 +115,8 @@ public class PropInit {
             "fnaf1desk",
             Fnaf1Desk::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fnaf1desk.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/fnaf1desk.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -131,8 +130,8 @@ public class PropInit {
             FlyingVGuitar::new,
             FlyingVGuitarItem::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/flying_v_guitar.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/flying_v_guitar.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/flying_v_guitar"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -145,8 +144,8 @@ public class PropInit {
             "star_plastic_chair",
             StarPlasticChair::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fnaf1chair.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/fnaf1chair.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1chair"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -159,8 +158,8 @@ public class PropInit {
             "cosmo_gift",
             CosmoGift::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/gift_boxes/cosmo_gift.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/giftbox.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/cosmo_gift.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/giftbox"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/cosmo_gift"),
             AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -175,8 +174,8 @@ public class PropInit {
             Locker::new,
             LockerItem::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/lockers/locker_gray.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/locker.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/locker"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -190,8 +189,8 @@ public class PropInit {
             FreddyPlush::new,
             FreddyPlushItem::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/freddy_plush.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/freddy_plush.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/freddy_plush"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.BROWN_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -205,8 +204,8 @@ public class PropInit {
             BonniePlush::new,
             BonniePlushItem::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/bonnie_plush.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/bonnie_plush.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/bonnie_plush"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.PURPLE_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -220,8 +219,8 @@ public class PropInit {
             ChicaPlush::new,
             ChicaPlushItem::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/chica_plush.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/chica_plush.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/chica_plush"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.YELLOW_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -235,8 +234,8 @@ public class PropInit {
             FoxyPlush::new,
             FoxyPlushItem::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/foxy_plush.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/foxy_plush.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/foxy_plush"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.RED_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -251,8 +250,8 @@ public class PropInit {
             GoldenFreddyPlush::new,
             GoldenFreddyPlushItem::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/golden_freddy_plush.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/freddy_plush.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/freddy_plush"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.YELLOW_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -266,8 +265,8 @@ public class PropInit {
             FredbearPlush::new,
             FredbearPlushItem::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/fredbear_plush.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/freddy_plush.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/freddy_plush"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.YELLOW_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -281,8 +280,8 @@ public class PropInit {
             HauntedFredbearPlush::new,
             HauntedFredbearPlushItem::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/haunted_fredbear_plush.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/freddy_plush.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/freddy_plush"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.YELLOW_WOOL)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -791,8 +790,8 @@ public class PropInit {
             "double_door_fridge",
             DoubleDoorFridge::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/double_fridge.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/double_door_fridge.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/double_door_fridge.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/double_door_fridge"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/double_door_fridge"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -806,8 +805,8 @@ public class PropInit {
             "fridge",
             Fridge::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fridge.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/fridge.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fridge.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fridge"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fridge"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -821,8 +820,8 @@ public class PropInit {
             "wooden_clock",
             WoodenClock::new,
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/wooden_clock.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/wall_clock.geo.json"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/wall_clock.animation.json"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/wall_clock"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/wall_clock"),
             AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
@@ -1143,7 +1142,6 @@ public class PropInit {
         BlockColors colors = MinecraftClient.getInstance().getBlockColors();
 
         BlockEntityRendererFactories.register(BlockEntityInit.GEO_PROPS, GeoPropRenderer::new);
-        BlockEntityRendererFactories.register(BlockEntityInit.ANIMATRONIC_BLOCK, AnimatronicBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GEO_CLOCK_PROP, GeoClockPropRenderer::new);
         BlockEntityRendererFactories.register(BlockEntityInit.GALAXY_GEO_PROPS, GalaxyLayerGeoPropRenderer::new);
 

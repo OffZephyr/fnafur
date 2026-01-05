@@ -9,7 +9,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 public class FoxyPlushItemModel extends GeoModel<FoxyPlushItem> {
     @Override
     public Identifier getModelResource(GeoRenderState renderState) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/block/props/foxy_plush.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/foxy_plush");
     }
 
     @Override
@@ -19,6 +19,6 @@ public class FoxyPlushItemModel extends GeoModel<FoxyPlushItem> {
 
     @Override
     public Identifier getAnimationResource(FoxyPlushItem animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/block/props/fnaf1desk.animation.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk");
     }
 }

@@ -25,14 +25,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class HeldItemRendererMixin implements IHeldItemAccessor {
     //PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer)this.entityRenderDispatcher.<AbstractClientPlayerEntity>getRenderer(this.client.player);
 
-    @Shadow
-    private void swingArm(float swingProgress, float equipProgress, MatrixStack matrices, int armX, Arm arm) {
-
-    }
 
     @Shadow protected abstract void renderArm(MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light, Arm arm);
 
     @Shadow public abstract void renderItem(LivingEntity entity, ItemStack stack, ItemDisplayContext renderMode, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light);
+
+    @Shadow
+    public abstract void swingArm(float swingProgress, MatrixStack matrixStack, int i, Arm arm);
 
     @Inject(method = "renderFirstPersonItem", at = @At("HEAD"), cancellable = true)
     private void renderFirstPersonItem(
@@ -70,6 +69,6 @@ public abstract class HeldItemRendererMixin implements IHeldItemAccessor {
 
     @Override
     public void doSwingArm(float swingProgress, float equipProgress, MatrixStack matrices, int armX, Arm arm) {
-        swingArm(swingProgress, equipProgress, matrices, armX, arm);
+        swingArm(swingProgress, matrices, armX, arm);
     }
 }

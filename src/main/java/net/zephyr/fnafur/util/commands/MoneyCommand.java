@@ -19,7 +19,7 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class MoneyCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("money").requires(source -> source.hasPermissionLevel(4))
+        dispatcher.register(CommandManager.literal("money").requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
                 .then(CommandManager.literal("set")
                         .then(CommandManager.argument("amount", IntegerArgumentType.integer(0)).executes(context -> MoneyCommand.set(context, IntegerArgumentType.getInteger(context, "amount"), context.getSource().getPlayer()))
                                 .then(CommandManager.argument("player", EntityArgumentType.player()).executes(context -> MoneyCommand.set(context, IntegerArgumentType.getInteger(context, "amount"), EntityArgumentType.getPlayer(context, "player"))))))

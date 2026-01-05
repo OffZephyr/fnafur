@@ -59,7 +59,7 @@ public class AnimatronicDataHandler {
             if (!chara.ALTS.get(alt).model_override.isEmpty()) {
                 model = chara.ALTS.get(alt).model_override;
             }
-            return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/" + getPath(category, character) + model + ".geo.json");
+            return Identifier.of(FnafUniverseRebuilt.MOD_ID, "" + getPath(category, character) + model + "");
         }
         return getDefaultModel();
     }
@@ -104,7 +104,7 @@ public class AnimatronicDataHandler {
         if (!DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).model_override.isEmpty()) {
             model = DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).model_override;
         }
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/" + getPath(category, DEFAULT_CHARA.NAME) + model + ".geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "" + getPath(category, DEFAULT_CHARA.NAME) + model + "");
     }
     public static Identifier getDefaultEndoMask() {
         String mask = DEFAULT_CHARA.ENDO_MASK;
@@ -141,7 +141,7 @@ public class AnimatronicDataHandler {
         }
 
         Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, path);
-        Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations();
+        Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations().cache();
         BakedAnimations bakedAnimations = animations.get(location);
         String anim = "animation." + name + "." + currentAnim;
         if(bakedAnimations == null || !bakedAnimations.animations().containsKey(anim)) {

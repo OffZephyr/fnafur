@@ -1,9 +1,8 @@
 package net.zephyr.fnafur.entity.animatronic;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -17,23 +16,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlockEntity;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlock;
-import net.zephyr.fnafur.entity.animatronic.block.AnimatronicBlockEntity;
 import net.zephyr.fnafur.entity.animatronic.data.CharacterData;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
-import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.entity_init.CharacterInit;
-import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerPayload;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
@@ -41,13 +31,13 @@ import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animatable.processing.AnimationController;
-import software.bernie.geckolib.animatable.processing.AnimationTest;
-import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.state.AnimationTest;
+import software.bernie.geckolib.animation.object.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.animation.keyframe.event.KeyFrameEvent;
-import software.bernie.geckolib.animation.keyframe.event.data.CustomInstructionKeyframeData;
+import software.bernie.geckolib.animation.state.KeyFrameEvent;
 import software.bernie.geckolib.cache.GeckoLibResources;
+import software.bernie.geckolib.cache.animation.keyframeevent.CustomInstructionKeyframeData;
 import software.bernie.geckolib.loading.object.BakedAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -114,13 +104,13 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
         if(true){
             if (blinkDelay == 0) {
-                geoAnimatableAnimationTest.resetCurrentAnimation();
                 Random random = new Random();
                 blinkDelay = random.nextInt(100, 200);
-            }
 
-            RawAnimation anim = RawAnimation.begin().thenPlayAndHold(AnimatronicDataHandler.getAnimationFullName("blink", getAnimPrefix()));
-            geoAnimatableAnimationTest.setAnimation(anim);
+                //.thenWait(blinkDelay)
+                RawAnimation anim = RawAnimation.begin().thenPlay(AnimatronicDataHandler.getAnimationFullName("blink", getAnimPrefix()));
+                geoAnimatableAnimationTest.setAnimation(anim);
+            }
 
             return PlayState.CONTINUE;
         }
@@ -129,16 +119,16 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     }
 
     private PlayState lowerAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
-        animatronicEntityAnimationState.controller().transitionLength(3);
+        animatronicEntityAnimationState.controller().setTransitionTicks(3);
         animatronicEntityAnimationState.controller().setAnimationSpeed(1);
         if(isMenu) {
-            animatronicEntityAnimationState.controller().transitionLength(0);
+            animatronicEntityAnimationState.controller().setTransitionTicks(0);
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("loweridle", getAnimPrefix())));
         }
 
         String getupAnim = ((IEntityDataSaver)this).getPersistentData().getString("getupAnim", "");
         if(!getupAnim.isEmpty()){
-            animatronicEntityAnimationState.controller().transitionLength(0);
+            animatronicEntityAnimationState.controller().setTransitionTicks(0);
             return PlayState.STOP;
         }
 
@@ -151,10 +141,10 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     }
 
     private PlayState upperAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
-        animatronicEntityAnimationState.controller().transitionLength(3);
+        animatronicEntityAnimationState.controller().setTransitionTicks(3);
         animatronicEntityAnimationState.controller().setAnimationSpeed(1);
         if(isMenu) {
-            animatronicEntityAnimationState.controller().transitionLength(0);
+            animatronicEntityAnimationState.controller().setTransitionTicks(0);
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("menuidle", getAnimPrefix())));
         }
 
@@ -198,15 +188,15 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
         }
         super.tick();
     }
-
-    @Override
-    public double getTick(Object entity) {
-        if(isMenu){
-            return MinecraftClient.getInstance().world.getTime();
-        }
-
-        return age;
-    }
+//
+//    @Override
+//    public double getTick(Object entity) {
+//        if(isMenu){
+//            return MinecraftClient.getInstance().world.getTime();
+//        }
+//
+//        return age;
+//    }
 
     public CharacterData getCharacter(){
         if(character == null) return CharacterInit.ENDO_01;
@@ -389,7 +379,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     public String prefixAnim(String animation){
         currentAnim = animation;
         Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, getAnimationsName());
-        Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations();
+        Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations().cache();
         BakedAnimations bakedAnimations = animations.get(location);
 
         NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
@@ -408,6 +398,6 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
     }
 
     public RenderLayer getRenderType(Identifier texture){
-        return RenderLayer.getEntityTranslucent(texture);
+        return RenderLayers.entityTranslucent(texture);
     }
 }

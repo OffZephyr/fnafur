@@ -65,7 +65,6 @@ public abstract class GoopyScreen extends Screen {
         if(o instanceof BlockPos pos) this.blockPos = pos;
         else if(o instanceof Integer num) this.entityID = num;
         else if(o instanceof String slot) this.itemSlot = slot;
-        this.client = MinecraftClient.getInstance();
     }
 
     @Override
@@ -281,10 +280,10 @@ public abstract class GoopyScreen extends Screen {
         Vector3f vector3f = new Vector3f(0.0F, entity.getHeight() / 2.0F + scale * o, 0.0F);
         float p = size / o;
         if(entity2){
-            InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
+            //InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
         }
         else{
-            InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
+            //InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
         }
         entity.bodyYaw = j;
         entity.setYaw(k);

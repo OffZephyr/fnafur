@@ -12,7 +12,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 public class VanniMaskItemModel<T extends Item & GeoAnimatable> extends GeoModel<T> {
     @Override
     public Identifier getModelResource(GeoRenderState renderState) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/models/items/vanni_mask.geo.json");
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "items/vanni_mask");
     }
 
     @Override
@@ -22,11 +22,6 @@ public class VanniMaskItemModel<T extends Item & GeoAnimatable> extends GeoModel
 
     @Override
     public Identifier getAnimationResource(T animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "geckolib/animations/items/ar_mask.animation.json");
-    }
-
-    @Override
-    public @Nullable RenderLayer getRenderType(GeoRenderState renderState, Identifier texture) {
-        return RenderLayer.getEntityTranslucent(texture);
+        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "items/ar_mask");
     }
 }

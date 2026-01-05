@@ -1,6 +1,6 @@
 {
   "cl_fred": {
-    "model": "geckolib/models/entity/classic/cl_fred/accessories/bowtie.geo.json",
+    "model": "entity/classic/cl_fred/accessories/bowtie",
     "layers": [
       {
         "name": "color",

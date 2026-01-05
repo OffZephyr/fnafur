@@ -621,7 +621,7 @@
   "fnafur.computer.behavior.custom_path": "CUSTOM PATH [WIP]",
   "fnafur.computer.behavior.controllable": "CONTROLLABLE [WIP]",
 
-  "fnafur.computer.behavior.option.animation": "Animation",
+  "fnafur.computer.behavior.option": "Animation",
   "fnafur.computer.behavior.option.spawn_pos": "Use the entity's Spawn Position ?",
   "fnafur.computer.behavior.option.spawn_rot": "Use the entity's Spawn Rotation ?",
   "fnafur.computer.behavior.option.rotate_head": "Set a custom Head Rotation ?",

@@ -116,7 +116,7 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
                     matrices.translate(updatePos.getX() - state.pos.getX(),updatePos.getY() - state.pos.getY(),updatePos.getZ() - state.pos.getZ());
 
                     //dfmatrices.translate(MinecraftClient.getInstance().gameRenderer.getCamera().pos.multiply(-1));
-                    queue.submitCustom(matrices, RenderLayers.getMovingBlockLayer(posState), (stack, layer) ->{
+                    queue.submitCustom(matrices, BlockRenderLayers.getMovingBlockLayer(posState), (stack, layer) ->{
                         BlockModelRenderer.render(stack, layer, model, 1, 1, 1,  getLightLevel(MinecraftClient.getInstance().world, state.pos), OverlayTexture.DEFAULT_UV);
                     });
                     matrices.pop();

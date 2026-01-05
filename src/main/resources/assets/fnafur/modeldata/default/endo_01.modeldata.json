@@ -1,6 +1,6 @@
 {
   "default": {
-    "model": "geckolib/models/entity/default/endo_01/endo_01.geo.json",
+    "model": "entity/default/endo_01/endo_01",
     "layers": [
       {
         "name": "endo",

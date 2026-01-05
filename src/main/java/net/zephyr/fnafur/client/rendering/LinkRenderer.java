@@ -70,7 +70,7 @@ public class LinkRenderer {
 
                 Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/link_" + frameCount + ".png");
 
-                VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getOutline(texture));
+                VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayers.outlineNoCull(texture));
 
                 Vec3d vec1;
                 if (ent instanceof BlockEntity bent) {
@@ -101,7 +101,7 @@ public class LinkRenderer {
 
                 Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/link_" + frameCount + ".png");
 
-                VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getOutline(texture));
+                VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayers.outlineNoCull(texture));
 
                 Vec3d vec1 = Vec3d.ZERO;
                 if (ent instanceof BlockEntity bent) {
@@ -146,7 +146,7 @@ public class LinkRenderer {
             if(isTarget) t = isTarget && !((LinkTarget)ent).getSources().isEmpty() ? t + "_link" : t;
             Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, t + ".png");
 
-            VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getOutline(texture));
+            VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayers.outlineNoCull(texture));
 
             float offset = (float) Math.cos(moveLerp / 20f);
             matrices.translate(0, (offset / 10) - 0.25f, 0);
@@ -216,7 +216,7 @@ public class LinkRenderer {
             String color = blueTargets.contains(ent) ? "blue" :  "red";
             Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/" + name + color + ".png");
 
-            VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getOutline(texture));
+            VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayers.outlineNoCull(texture));
 
 
             float offset = (float) Math.sin(moveLerp / 20f);

@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
 import org.joml.Quaternionf;
@@ -17,36 +18,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
-public class CameraMixin implements IEditCamera {
+public abstract class CameraMixin implements IEditCamera {
 
     boolean forceThirdPerson = false;
-    @Shadow boolean ready;
-    @Shadow BlockView area;
-    @Shadow Entity focusedEntity;
-    @Shadow boolean thirdPerson;
-    @Shadow float cameraY;
-    @Shadow float lastCameraY;
-    @Shadow float pitch;
-    @Shadow float yaw;
-    float roll = 0;
-    @Shadow float lastTickProgress;
-
-    @Shadow
-    void setRotation(float yaw, float pitch) {
-
-    }
-    @Shadow
-    void setPos(double x, double y, double z) {
-
-    }
-    @Shadow
-    void moveBy(float f, float g, float h) {
-
-    }
-    @Shadow
-    float clipToSpace(float f) {
-        return 0;
-    }
     @Shadow
     private final Vector3f horizontalPlane = new Vector3f(0.0f, 0.0f, 1.0f);
     @Shadow
@@ -64,6 +38,32 @@ public class CameraMixin implements IEditCamera {
     private static final Vector3f DIAGONAL = new Vector3f(-1.0f, 0.0f, 0.0f);
 
 
+    @Shadow
+    private boolean ready;
+
+    @Shadow
+    private World area;
+
+    @Shadow
+    private Entity focusedEntity;
+
+    @Shadow
+    private boolean thirdPerson;
+
+    @Shadow
+    private float lastTickProgress;
+
+    @Shadow
+    private float pitch;
+
+    @Shadow
+    private float yaw;
+
+    @Shadow
+    protected abstract void setPos(double x, double y, double z);
+
+    private float roll;
+
     // TODO Illusion Disc
     @Inject(method = "updateEyeHeight", at = @At("HEAD"), cancellable = true)
     public void updateEyeHeight(CallbackInfo ci) {
@@ -75,12 +75,12 @@ public class CameraMixin implements IEditCamera {
     }
 
     @Inject(method = "update", at = @At("HEAD"), cancellable = true)
-    public void update(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo info) {
+    public void update(World area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickProgress, CallbackInfo ci) {
         this.ready = true;
         this.area = area;
         this.focusedEntity = focusedEntity;
         this.thirdPerson = thirdPerson || this.forceThirdPerson;
-        this.lastTickProgress = tickDelta;
+        this.lastTickProgress = tickProgress;
 
         PlayerEntity player = MinecraftClient.getInstance().player;
 
