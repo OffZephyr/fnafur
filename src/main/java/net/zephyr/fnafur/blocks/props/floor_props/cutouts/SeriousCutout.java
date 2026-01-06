@@ -5,6 +5,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -28,6 +29,14 @@ public class SeriousCutout extends FloorPropBlock<SeriousCutoutColors> {
     }
 
     @Override
+    protected void onStateReplaced(BlockState state, ServerWorld world, BlockPos pos, boolean moved) {
+        if(state.get(COLOR_PROPERTY()).getPlace() != null){
+            world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), state.get(COLOR_PROPERTY()).getPlace(), SoundCategory.BLOCKS, 1f, 1f);
+        }
+        super.onStateReplaced(state, world, pos, moved);
+    }
+
+    @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(player.getMainHandStack().isEmpty()){
             if(state.get(COLOR_PROPERTY()).getSound() != null){
@@ -35,14 +44,7 @@ public class SeriousCutout extends FloorPropBlock<SeriousCutoutColors> {
                 return ActionResult.SUCCESS;
             }
         }
-        if(super.onUse(state, world, pos, player, hit) == ActionResult.SUCCESS){
-            BlockState newState = state.cycle(COLOR_PROPERTY());
-            if(newState.get(COLOR_PROPERTY()).getPlace() != null){
-                world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), newState.get(COLOR_PROPERTY()).getPlace(), SoundCategory.BLOCKS, 1f, 1f);
-            }
-            return ActionResult.SUCCESS;
-        }
-        return ActionResult.PASS;
+        return super.onUse(state, world, pos, player, hit);
     }
 
     @Override

@@ -13,6 +13,7 @@ extendable class net/minecraft/client/render/block/BlockModelRenderer$AmbientOcc
 # transitive-accessible class net/minecraft/client/render/RenderPhase$ShaderProgram
 transitive-accessible field net/minecraft/client/sound/SoundManager soundSystem Lnet/minecraft/client/sound/SoundSystem;
 accessible field net/minecraft/client/sound/SoundSystem sources Ljava/util/Map;
+accessible class net/minecraft/entity/FallingBlockEntity
 
 accessible field net/minecraft/client/model/ModelPart$Quad direction Lorg/joml/Vector3fc;
 accessible field net/minecraft/client/model/ModelPart$Quad vertices [Lnet/minecraft/client/model/ModelPart$Vertex;

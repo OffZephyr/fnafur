@@ -26,6 +26,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
+import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -40,6 +41,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
+import net.zephyr.fnafur.client.gui.screens.editing.PaintbrushAltPickerScreen;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateBlockNbtC2SPayload;
@@ -75,7 +77,10 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         ItemStack stack = player.getMainHandStack();
         if(stack != null && canChangeState(stack.getItem()) && state.contains(COLOR_PROPERTY())) {
-            world.setBlockState(pos, state.cycle(COLOR_PROPERTY()));
+            //world.setBlockState(pos, state.cycle(COLOR_PROPERTY()));
+            if(world.isClient()){
+                MinecraftClient.getInstance().setScreen(new PaintbrushAltPickerScreen<>(Text.literal("guh"), pos, COLOR_PROPERTY(), state.get(COLOR_PROPERTY())));
+            }
             return ActionResult.SUCCESS;
         }
         return super.onUse(state, world, pos, player, hit);

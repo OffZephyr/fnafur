@@ -108,7 +108,7 @@ public class SuitMakingScreen extends GoopyScreen {
         int preview_x = back_x;
         int preview_y = (height / 2) - 92;
 
-        GoopyScreen.drawEntity(context, preview_x, preview_y, preview_x + 148, preview_y + 221, 80, 0, new Quaternionf().rotationXYZ((float) (preview_rotation_y), (float) (preview_rotation_x), 0), preview, true);
+        GoopyScreen.drawEntity(context, preview_x, preview_y, preview_x + 148, preview_y + 221, 80, 0, new Quaternionf().rotationXYZ((float) (preview_rotation_y), (float) (preview_rotation_x), 0), preview);
 
         int save_x = preview_x + 8;
         int export_x = preview_x + 40;

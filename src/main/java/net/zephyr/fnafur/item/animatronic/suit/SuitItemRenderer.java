@@ -1,6 +1,8 @@
 package net.zephyr.fnafur.item.animatronic.suit;
 
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.command.RenderCommandQueue;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
@@ -8,8 +10,11 @@ import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.cache.model.BakedGeoModel;
+import software.bernie.geckolib.cache.model.GeoBone;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.base.RenderPassInfo;
 
 public class SuitItemRenderer extends GeoItemRenderer<SuitItem> {
 
@@ -44,30 +49,40 @@ public class SuitItemRenderer extends GeoItemRenderer<SuitItem> {
         }
         return CustomRenderingPipelines.getAnimatronicSuit(texture, AnimatronicDataHandler.getDefaultEndoMask());
     }
-//    @Override
-//    public void buildRenderTask(GeoRenderState renderState, MatrixStack poseStack, BakedGeoModel model, RenderCommandQueue renderTasks, CameraRenderState cameraState, @Nullable RenderLayer renderType, int packedLight, int packedOverlay, int renderColor) {
-//        if (renderType == null)
-//            return;
-//
-//        if(model.getBone("head").isPresent()) {
-//            poseStack.push();
-//            GeoBone bone =  model.getBone("head").get();
-//            //poseStack.translate(-bone.getPosX(), -bone.getPosY(), -bone.getPosZ());
-//            float scale = 1;
-//            if(renderState.hasGeckolibData(CustomDataTickets.RENDER_SCALE)) scale = renderState.getGeckolibData(CustomDataTickets.RENDER_SCALE);
-//
-//            poseStack.scale(scale, scale, scale);
-//            poseStack.translate(0, -2.15f * (1f/scale), 0);
-//
-//            renderTasks.submitCustom(poseStack, renderType, (pose, vertexConsumer) -> {
-//                final MatrixStack poseStack2 = new MatrixStack();
-//                final boolean skipBoneTasks = getPerBoneTasks(renderState).isEmpty();
-//
-//                poseStack2.peek().copy(pose);
-//
-//                renderBone(renderState, poseStack2, bone, vertexConsumer, cameraState, packedLight, packedOverlay, renderColor);
-//            });
-//            poseStack.pop();
-//        }
-//    }
+
+    @Override
+    public void submitRenderTasks(RenderPassInfo<GeoRenderState> renderPassInfo, RenderCommandQueue renderTasks, @org.jspecify.annotations.Nullable RenderLayer renderType) {
+        if (renderType == null)
+            return;
+
+        final int packedLight = renderPassInfo.packedLight();
+        final int packedOverlay = renderPassInfo.packedOverlay();
+        final int renderColor = renderPassInfo.renderColor();
+
+        if(renderPassInfo.model().getBone("head").isPresent()) {
+            GeoRenderState renderState = renderPassInfo.renderState();
+            MatrixStack poseStack = renderPassInfo.poseStack();
+            BakedGeoModel model = renderPassInfo.model();
+
+            poseStack.push();
+            GeoBone bone = model.getBone("head").get();
+            //poseStack.translate(-bone.getPosX(), -bone.getPosY(), -bone.getPosZ());
+            float scale = 1;
+            if (renderState.hasGeckolibData(CustomDataTickets.RENDER_SCALE)){
+                scale = renderState.getGeckolibData(CustomDataTickets.RENDER_SCALE);
+            }
+
+            poseStack.scale(scale, scale, scale);
+            poseStack.translate(0, -2.15f * (1f / scale), 0);
+            renderTasks.submitCustom(renderPassInfo.poseStack(), renderType, (pose, vertexConsumer) -> {
+                final MatrixStack poseStack2 = renderPassInfo.poseStack();
+
+                poseStack2.push();
+                poseStack2.peek().copy(pose);
+                bone.positionAndRender(renderPassInfo, vertexConsumer, packedLight, packedOverlay, renderColor);
+                poseStack2.pop();
+            });
+            poseStack.pop();
+        }
+    }
 }

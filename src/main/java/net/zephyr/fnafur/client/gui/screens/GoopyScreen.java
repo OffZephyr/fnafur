@@ -7,8 +7,14 @@ import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.render.entity.EntityRenderManager;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.state.EntityRenderState;
+import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.TextureManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
@@ -258,38 +264,72 @@ public abstract class GoopyScreen extends Screen {
         return 8 * scale;
     }
 
-    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, LivingEntity entity) {
-        drawEntity(context, x1, y1, x2, y2, size, scale,rotation, entity, false);
+    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity) {
+        drawEntity(context, x1, y1, x2, y2, size, scale,rotation, entity, 0, false);
     }
-    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, LivingEntity entity, boolean entity2) {
+    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset) {
+        drawEntity(context, x1, y1, x2, y2, size, scale,rotation, entity, entityYOffset, false);
+    }
+    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset, boolean entity2) {
         context.enableScissor(x1, y1, x2, y2);
         Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI);
         Quaternionf quaternionf2 = rotation;
         quaternionf.mul(quaternionf2);
-        float j = entity.bodyYaw;
+
         float k = entity.getYaw();
         float l = entity.getPitch();
-        float m = entity.lastHeadYaw;
-        float n = entity.headYaw;
-        entity.bodyYaw = 0;
         entity.setYaw(0);
         entity.setPitch(0);
-        entity.headYaw = entity.getYaw();
-        entity.lastHeadYaw = entity.getYaw();
-        float o = entity.getScale();
-        Vector3f vector3f = new Vector3f(0.0F, entity.getHeight() / 2.0F + scale * o, 0.0F);
+
+        float j = 0;
+        float m = 0;
+        float n = 0;
+        float o = 1;
+        if(entity instanceof LivingEntity ent) {
+            j = ent.bodyYaw;
+            m = ent.lastHeadYaw;
+            n = ent.headYaw;
+            ent.bodyYaw = 0;
+            ent.headYaw = entity.getYaw();
+            ent.lastHeadYaw = entity.getYaw();
+            o = ent.getScale();
+        }
+
+        Vector3f vector3f = new Vector3f(0.0F, entityYOffset + (entity.getHeight() / 2.0F + scale * o), 0.0F);
         float p = size / o;
-        if(entity2){
+
+        float f = (float)(x1 + x2) / 2.0F;
+        float g = (float)(y1 + y2) / 2.0F;
+
+
+        EntityRenderManager entityRenderManager = MinecraftClient.getInstance().getEntityRenderDispatcher();
+        EntityRenderer<? super Entity, ?> entityRenderer = entityRenderManager.getRenderer(entity);
+        EntityRenderState entityRenderState = entityRenderer.getAndUpdateRenderState(entity, 1.0F);
+        entityRenderState.light = 15728880;
+        entityRenderState.shadowPieces.clear();
+        entityRenderState.outlineColor = 0;
+
+            if (entityRenderState instanceof LivingEntityRenderState livingEntityRenderState) {
+                livingEntityRenderState.bodyYaw = 0;
+                livingEntityRenderState.relativeHeadYaw = 0;
+                livingEntityRenderState.pitch = entity.getPitch();
+
+                livingEntityRenderState.width /= livingEntityRenderState.baseScale;
+                livingEntityRenderState.height /= livingEntityRenderState.baseScale;
+                livingEntityRenderState.baseScale = 1.0F;
+            }
+
+            context.addEntity(entityRenderState, (float)p, vector3f, quaternionf, quaternionf2, x1, y1, x2, y2);
+            //InventoryScreen.drawEntity(context, x1, y1, x2, y2, size, scale, f, g, entity);
             //InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
-        }
-        else{
-            //InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
-        }
-        entity.bodyYaw = j;
+
         entity.setYaw(k);
         entity.setPitch(l);
-        entity.lastHeadYaw = m;
-        entity.headYaw = n;
+        if(entity instanceof LivingEntity ent) {
+            ent.bodyYaw = j;
+            ent.lastHeadYaw = m;
+            ent.headYaw = n;
+        }
         context.disableScissor();
     }
 
