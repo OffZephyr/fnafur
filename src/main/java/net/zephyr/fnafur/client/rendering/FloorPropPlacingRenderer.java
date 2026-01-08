@@ -205,9 +205,9 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
                                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-offsetRotation2));
                                 matrices.translate(-0.5f, 0, -0.5f);
                             }
-                            if (!(placementEntity instanceof GeoPropBlockEntity) || !placementEntity.getCachedState().equals(block.getDefaultState())) {
+                            if (!(placementEntity instanceof GeoPropBlockEntity) || !placementEntity.getCachedState().equals(state)) {
 
-                                placementEntity = (GeoPropBlockEntity) block.createBlockEntity(pos, block.getDefaultState());
+                                placementEntity = (GeoPropBlockEntity) block.createBlockEntity(pos, state);
                                 placementEntity.setWorld(MinecraftClient.getInstance().world);
 
                                 renderer = MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(placementEntity);

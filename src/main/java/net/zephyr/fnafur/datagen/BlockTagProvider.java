@@ -99,13 +99,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 ;
 
         valueLookupBuilder(BlockTags.WOOL)
-                .add(PropInit.FREDDY_PLUSH)
-                .add(PropInit.BONNIE_PLUSH)
-                .add(PropInit.CHICA_PLUSH)
-                .add(PropInit.FOXY_PLUSH)
-                .add(PropInit.GOLDEN_FREDDY_PLUSH)
-                .add(PropInit.FREDBEAR_PLUSH)
-                .add(PropInit.HAUNTED_FREDBEAR_PLUSH)
+                .add(PropInit.PLUSHIE)
                 .add(PropInit.PRESENT_STACK)
                 .add(GeoBlockInit.PIRATES_COVE_CURTAIN)
 

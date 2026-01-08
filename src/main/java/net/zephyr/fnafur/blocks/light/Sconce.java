@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.RedstoneTorchBlock;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,8 +15,10 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -23,6 +26,8 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.block.WireOrientation;
+import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
+import net.zephyr.fnafur.client.gui.screens.editing.PaintbrushAltPickerScreen;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +40,9 @@ public class Sconce extends HorizontalFacingLight {
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if(stack.isOf(ItemInit.PAINTBRUSH)){
-            world.setBlockState(pos, state.cycle(COLOR));
+            if(world.isClient()){
+                MinecraftClient.getInstance().setScreen(new PaintbrushAltPickerScreen<>(Text.literal("guh"), pos, COLOR, state.get(COLOR)));
+            }
             return ActionResult.SUCCESS;
         }
 

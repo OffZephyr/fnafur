@@ -140,7 +140,7 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     }
 
     @Override
-    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
         ItemStack itemStack = super.getPickStack(world, pos, state, includeData);
 
         BlockStateComponent component = BlockStateComponent.DEFAULT;

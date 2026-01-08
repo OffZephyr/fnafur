@@ -2,7 +2,6 @@ package net.zephyr.fnafur.blocks.props.floor_props.lockers;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
-import net.zephyr.fnafur.blocks.props.floor_props.plushies.bonnie_plush.BonniePlushItemRenderer;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;

@@ -38,8 +38,9 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
     private PlayState animController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
         String openAnim = front ? "animation.geo_door.open_back" : "animation.geo_door.open";
         String closeAnim = front ? "animation.geo_door.close_back" : "animation.geo_door.close";
-        if(open) return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold(openAnim));
-        else return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlayAndHold(closeAnim));
+        if(open) geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenLoop(openAnim));
+        else geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenLoop(closeAnim));
+        return PlayState.CONTINUE;
     }
 
     @Override

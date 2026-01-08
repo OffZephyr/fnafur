@@ -8,6 +8,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
+import net.zephyr.fnafur.blocks.light.Sconce;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
@@ -26,6 +27,12 @@ public record UpdatePropAltC2SPayload(long pos, int alt) implements CustomPayloa
             PropBlock<T> block = (PropBlock<T>) state.getBlock();
             if(state.contains(block.COLOR_PROPERTY())){
                 context.player().getEntityWorld().setBlockState(BlockPos.fromLong(payload.pos()), state.with(block.COLOR_PROPERTY(), block.COLOR_PROPERTY().getValues().get(payload.alt())));
+                context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos())).onStateReplaced(context.player().getEntityWorld(), BlockPos.fromLong(payload.pos()), false);
+            }
+        }
+        if(state.getBlock() instanceof Sconce) {
+            if(state.contains(Sconce.COLOR)){
+                context.player().getEntityWorld().setBlockState(BlockPos.fromLong(payload.pos()), state.with(Sconce.COLOR, Sconce.COLOR.getValues().get(payload.alt())));
                 context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos())).onStateReplaced(context.player().getEntityWorld(), BlockPos.fromLong(payload.pos()), false);
             }
         }

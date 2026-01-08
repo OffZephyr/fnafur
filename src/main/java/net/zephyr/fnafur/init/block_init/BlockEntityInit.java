@@ -144,13 +144,7 @@ public class BlockEntityInit {
                                 PropInit.STAR_PLASTIC_CHAIR,
                                 PropInit.DOUBLE_DOOR_FRIDGE,
                                 PropInit.FRIDGE,
-                                PropInit.FREDDY_PLUSH,
-                                PropInit.BONNIE_PLUSH,
-                                PropInit.CHICA_PLUSH,
-                                PropInit.FOXY_PLUSH,
-                                PropInit.GOLDEN_FREDDY_PLUSH,
-                                PropInit.FREDBEAR_PLUSH,
-                                PropInit.HAUNTED_FREDBEAR_PLUSH,
+                                PropInit.PLUSHIE,
                                 PropInit.LOCKER
                         ).build());
         GEO_CLOCK_PROP =

@@ -1,24 +1,69 @@
 {
-  "model": {
-    
-    "type": "minecraft:select",
-    "cases":[
-      {
-        "model": {
+    "model": {
+      "type": "minecraft:select",
+      "cases":[
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/plushies/freddy_plush_sprite"
+          },
+          "when": "freddy"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/plushies/bonnie_plush_sprite"
+          },
+          "when": "bonnie"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/plushies/chica_plush_sprite"
+          },
+          "when": "chica"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/plushies/foxy_plush_sprite"
+          },
+          "when": "foxy"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/plushies/golden_freddy_plush_sprite"
+          },
+          "when": "golden_freddy"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/plushies/haunted_fredbear_plush_sprite"
+          },
+          "when": "haunted_fredbear"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/plushies/fredbear_plush_sprite"
+          },
+          "when": "fredbear"
+        },
+        {
+          "model": {
+            "type": "minecraft:model",
+            "model": "fnafur:item/plushies/spring_bonnie_plush_sprite"
+          },
+          "when": "spring_bonnie"
+        }
+      ],
+      "fallback": {
           "type": "minecraft:model",
           "model": "fnafur:item/plushies/freddy_plush_sprite"
         },
-        "when": "gui"
-      }
-    ],
-    "fallback": {
-      "type": "minecraft:special",
-      "base": "fnafur:item/plushies/freddy_plush",
-      "model": {
-        "type": "geckolib:geckolib"
-      }
-      },
-      "block_state_property": "color",
-    "property": "minecraft:display_context"
-}
-}
+        "block_state_property": "color",
+      "property": "minecraft:block_state"
+    }
+  }
