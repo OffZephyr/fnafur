@@ -1,200 +1,96 @@
 package net.zephyr.fnafur.client.gui.screens.crafting;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
-import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
-import net.zephyr.fnafur.util.GoopyNetworkingUtils;
+import net.zephyr.fnafur.client.ClientHook;
+import net.zephyr.fnafur.client.gui.screens.InWorldScreen;
+import net.zephyr.fnafur.init.block_init.BlockInit;
+import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
+import org.joml.Vector3f;
 
-public class CpuConfigScreen extends GoopyScreen {
-    int stalk = 0;
-    int sight = 12;
-    int speed = 2;
-    int voice = 0;
-    public static final Identifier TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/cpu_config_screen.png");
-    public CpuConfigScreen(Text text, NbtCompound nbtCompound, Object o) {
+public class CpuConfigScreen extends InWorldScreen {
 
-        super(text, nbtCompound, o);
-
-        Boolean bl = MinecraftClient.getInstance().world.getBlockState(getBlockPos()).get(CpuConfigPanelBlock.TOP_CPU);
-
-        if(!bl){
-            nbtCompound = new NbtCompound();
-        }
-
-        windowSizeX = 256;
-        windowSizeY = 256;
-
-        NbtCompound cpu = nbtCompound.getCompoundOrEmpty("cpu");
-
-        new GUIToggle(10, 29, 10, 14, false, "canCrawl", cpu.getBoolean("canCrawl", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(10, 42, 10, 14, false, "canHear", cpu.getBoolean("canHear", bl))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(10, 55, 10, 14, false, "canSee", cpu.getBoolean("canSee", bl))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(10, 68, 10, 14, false, "wandersAround", cpu.getBoolean("wandersAround", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(10, 81, 10, 14, false, "isAggressive", cpu.getBoolean("isAggressive", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(10, 94, 10, 14, false, "killsOnScare", cpu.getBoolean("killsOnScare", bl))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(87, 29, 10, 14, false, "shreddyOnKill", cpu.getBoolean("shreddyOnKill", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(87, 42, 10, 14, false, "checkHiding", cpu.getBoolean("checkHiding", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(87, 55, 10, 14, false, "alertOthers", cpu.getBoolean("alertOthers", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(87, 68, 10, 14, false, "followOnSight", cpu.getBoolean("followOnSight", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(87, 81, 10, 14, false, "disableLights", cpu.getBoolean("disableLights", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(87, 94, 10, 14, false, "ignoreMask", cpu.getBoolean("canSwim", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-
-        new GUIToggle(10, 202, 10, 14, false, "freezeOnSight", cpu.getBoolean("freezeOnSight", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(10, 215, 10, 14, false, "freezeOnCam", cpu.getBoolean("freezeOnCam", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(10, 228, 10, 14, false, "avoidLight", cpu.getBoolean("avoidLight", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(87, 202, 10, 14, false, "stunnedByLight", cpu.getBoolean("stunnedByLight", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(87, 215, 10, 14, false, "resetByLight", cpu.getBoolean("resetByLight", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
-
-        new GUIToggle(87, 228, 10, 14, false, "resetByDoor", cpu.getBoolean("resetByDoor", false))
-                .offSprite(TEXTURE, 256, 85, 512, 512, 0xFFFFFFFF)
-                .onSprite(TEXTURE, 256, 99, 512, 512, 0xFFFFFFFF)
-                .toggleExec(this::ToggleClick);
+    public CpuConfigScreen(Text title, NbtCompound nbt, long l) {
+        super(title, nbt, l);
     }
-    private void ToggleClick(GUIToggle button) {
-        button.on = !button.on;
-        FnafUniverseRebuilt.print(button.setting + ": " + button.on);
+
+    public CpuConfigScreen(Text text, NbtCompound nbtCompound, Object o) {
+        super(text, nbtCompound, o);
     }
 
     @Override
-    public void renderToggle(DrawContext context, double mouseX, double mouseY, GUIToggle button) {
+    public Vec3d getCameraPos() {
+        BlockState blockState = MinecraftClient.getInstance().world.getBlockState(getBlockPos());
+        if(blockState.isOf(BlockInit.CPU_CONFIG_PANEL)){
+            Vec3d offset = blockState.get(CpuConfigPanelBlock.FACING).getDoubleVector().multiply(0.3f);
+            Vec3d offset2 = blockState.get(CpuConfigPanelBlock.FACING).rotateYClockwise().getDoubleVector().multiply(-0.175f);
+            return getBlockPos().toCenterPos().add(0, -0.04f, 0).add(offset.add(offset2));
+        }
+        return getBlockPos().toCenterPos().add(new Vec3d(0, 0, 0));
+    }
 
-        printTape(context, Text.literal(button.setting), button.x, windowY + button.y + 3, 0.75f, button.leftText);
+    @Override
+    public Vector3f getCameraAngle() {
+        BlockState blockState = MinecraftClient.getInstance().world.getBlockState(getBlockPos());
+        if(blockState.isOf(BlockInit.CPU_CONFIG_PANEL)){
+            return new Vector3f(blockState.get(CpuConfigPanelBlock.FACING).getPositiveHorizontalDegrees() + 180, 0, 0);
+        }
+        return new Vector3f(0, 0, 0);
+    }
 
-        super.renderToggle(context, mouseX, mouseY, button);
+    @Override
+    public boolean shouldPause() {
+        return false;
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        drawRecolorableTexture(context, TEXTURE, windowX, windowY, 256, 256, 0, 0, 512, 512, 0xFFFFFFFF);
-
-        printTape(context, Text.literal("Behavior"), 2, windowY + 17, 0.85f, false);
-        printTape(context, Text.literal("Stats"), 2, windowY + 126, 0.85f, false);
-        printTape(context, Text.literal("Weaknesses"), 2, windowY + 190, 0.85f, false);
-
-        renderDial(context, Text.literal("walkSpeed"), windowX + 8, windowY + 142, speed % 2 == 0);
-        renderDial(context, Text.literal("voiceID"), windowX + 8, windowY + 156, voice % 2 == 0);
-
-        renderDial(context, Text.literal("stalkLength"), windowX + 85, windowY + 142, stalk % 2 == 0);
-        renderDial(context, Text.literal("sightRange"), windowX + 85, windowY + 156, sight % 2 == 0);
-        super.render(context, mouseX, mouseY, delta);
-
-    }
-
-    public void renderDial(DrawContext context, Text label, int x, int y, boolean isInverted) {
-        int v = isInverted ? 98 : 85;
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 270, v, 11, 13, 512, 512);
-
-        printTape(context, label, x - windowX + 14, y + 3, 0.75f, false);
-    }
-
-    void printTape(DrawContext context, Text text, int x, int y, float textScale, boolean left){
-
-        int width = (int)((textRenderer.getWidth(text) + 2) * textScale);
-
-        int i = left ? windowX + x - width - 6 : windowX + x + 12;
-
-        drawRecolorableTexture(context, TEXTURE, i, y, 2, 9, 256, 113, 512, 512, 0xFFFFFFFF);
-        drawRecolorableTexture(context, TEXTURE, i + 2, y, width, 9, 256 + 4, 113, 512, 512, 0xFFFFFFFF);
-        drawRecolorableTexture(context, TEXTURE, i + width + 2, y, 2, 9, 256 + 2, 113, 512, 512, 0xFFFFFFFF);
-        //context.drawText(textRenderer, button.setting, x + 3, y+ 1, 0xFF112233, false);
-        drawResizableText(context, textRenderer, text, textScale, i + 3, y + 2, 0xFF112233, 0x00000000, false, false);
-    }
-    NbtCompound fillCPU(){
-        NbtCompound nbt = new NbtCompound();
-
-        for(GUIButton button : BUTTONS) {
-            if (button instanceof GUIToggle toggle) {
-                nbt.putBoolean(toggle.setting, toggle.on);
-            }
+        if(ClientHook.tickTransitionToScreen == 1){
+            Text test = Text.literal("TEST");
+            drawResizableText(context, textRenderer, test, 3, width/2f, height/2f - 4, 0xFFFFFFFF, 0x00000000, false, true);
         }
-        nbt.putInt("walkSpeed", speed);
-        nbt.putInt("voiceID", voice);
-        nbt.putInt("stalkLength", stalk);
-        nbt.putInt("sightRange", sight);
-
-        return nbt;
+        super.render(context, mouseX, mouseY, delta);
     }
 
     @Override
-    public void close() {
-        NbtCompound nbt = new NbtCompound();
-        nbt.put("cpu", NbtCompound.CODEC, fillCPU());
-        putNbtData(nbt);
-        GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), getNbtData(), MinecraftClient.getInstance().world);
+    protected void renderDarkening(DrawContext context) {
+        //super.renderDarkening(context);
+    }
 
-        super.close();
+    @Override
+    public void mouseMoved(double mouseX, double mouseY) {
+        super.mouseMoved(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean mouseClicked(Click click, boolean doubled) {
+        return super.mouseClicked(click, doubled);
+    }
+
+    @Override
+    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+        return super.mouseDragged(click, offsetX, offsetY);
+    }
+
+    @Override
+    public boolean mouseReleased(Click click) {
+        return super.mouseReleased(click);
+    }
+
+    @Override
+    public boolean keyPressed(KeyInput input) {
+        return super.keyPressed(input);
+    }
+
+    @Override
+    public boolean keyReleased(KeyInput input) {
+        return super.keyReleased(input);
     }
 }

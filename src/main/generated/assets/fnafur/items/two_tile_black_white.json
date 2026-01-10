@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "fnafur:item/camera"
+    "model": "fnafur:block/two_tile_black_white"
   }
 }

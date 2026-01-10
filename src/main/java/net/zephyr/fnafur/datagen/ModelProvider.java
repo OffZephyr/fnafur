@@ -2,11 +2,14 @@ package net.zephyr.fnafur.datagen;
 
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Models;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.data.*;
+import net.minecraft.client.render.model.json.ModelVariant;
+import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.init.block_init.BlockInit;
+import net.zephyr.fnafur.init.block_init.Palettes.PaletteManager;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 
 public class ModelProvider extends FabricModelProvider {
@@ -191,6 +194,24 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CHEESE_BLOCK);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CHEESE_BLOCK_WHITE);
 
+        for(BlockInit.PaletteBlock paletteBlock : BlockInit.PALETTES) {
+            blockStateModelGenerator.registerSimpleCubeAll(paletteBlock.block());
+
+//            Identifier texture = PaletteManager.getRecoloredIdentifier(paletteBlock.name(), paletteBlock.paletteEnum());
+//
+//            blockStateModelGenerator.blockStateCollector.accept(
+//                    BlockStateModelGenerator.createSingletonBlockState(
+//                            paletteBlock.block(),
+//                            BlockStateModelGenerator.createWeightedVariant(
+//                                    Models.CUBE_ALL.upload(
+//                                            texture,
+//                                            TextureMap.all(texture),
+//                                            blockStateModelGenerator.modelCollector
+//                                    )
+//                            )
+//                    )
+//            );
+        }
     }
 
     @Override

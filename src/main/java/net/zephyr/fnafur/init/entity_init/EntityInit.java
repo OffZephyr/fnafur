@@ -45,7 +45,6 @@ public class EntityInit {
     }
 
     public static void registerEntities(){
-        CharacterInit.registerCharacters();
 
         FabricDefaultAttributeRegistry.register(EntityInit.ANIMATRONIC, AnimatronicEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(EntityInit.BEAR5, Bear5Entity.setAttributes());

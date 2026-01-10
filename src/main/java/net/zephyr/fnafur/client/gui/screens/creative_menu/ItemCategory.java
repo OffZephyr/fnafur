@@ -14,6 +14,7 @@ import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -61,6 +62,18 @@ public class ItemCategory {
     }
 
     public record Entry(ItemStack icon, Collection<ItemStack> items) {
+
+        public static Entry create(ItemConvertible icon, ItemConvertible[]... items) {
+            List<ItemConvertible> list = new ArrayList<>();
+
+            for(ItemConvertible[] itemCollection : items) {
+                list.addAll(Arrays.asList(itemCollection));
+            }
+
+            ItemConvertible[] array = new ItemConvertible[list.size()];
+            array = list.toArray(array);
+            return create(new ItemStack(icon), array);
+        }
 
         public static Entry create(ItemConvertible icon, ItemConvertible... items) {
             return create(new ItemStack(icon), items);

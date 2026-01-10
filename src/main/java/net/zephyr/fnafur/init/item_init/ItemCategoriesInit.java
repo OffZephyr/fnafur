@@ -1,9 +1,14 @@
 package net.zephyr.fnafur.init.item_init;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemConvertible;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.creative_menu.ItemCategoriesManager;
 import net.zephyr.fnafur.client.gui.screens.creative_menu.ItemCategory;
 import net.zephyr.fnafur.init.block_init.BlockInit;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class ItemCategoriesInit {
 
@@ -11,16 +16,19 @@ public class ItemCategoriesInit {
             .setID("tiles")
             .addItems(
                     ItemCategory.Entry.create(BlockInit.BLACK_WHITE_TILES,
-                            BlockInit.BLACK_WHITE_TILES,
-                            BlockInit.RED_BLUE_TILES,
-                            BlockInit.RED_BLACK_TILES,
-                            BlockInit.BLACK_BLUE_TILES,
-                            BlockInit.DARK_BLUE_TILES,
-                            BlockInit.BLACK_TILES,
-                            BlockInit.RED_TILES,
-                            BlockInit.WHITE_TILES,
-                            BlockInit.GROUT_TILE,
-                            BlockInit.DARK_GROUT_TILES
+                            new Block[]{
+                                    BlockInit.BLACK_WHITE_TILES,
+                                    BlockInit.RED_BLUE_TILES,
+                                    BlockInit.RED_BLACK_TILES,
+                                    BlockInit.BLACK_BLUE_TILES,
+                                    BlockInit.DARK_BLUE_TILES,
+                                    BlockInit.BLACK_TILES,
+                                    BlockInit.RED_TILES,
+                                    BlockInit.WHITE_TILES,
+                                    BlockInit.GROUT_TILE,
+                                    BlockInit.DARK_GROUT_TILES
+                            },
+                            BlockInit.TWO_BY_TWO_TILES
                     ),
                     ItemCategory.Entry.create(BlockInit.BLACK_TILE,
                             BlockInit.BLACK_TILE,

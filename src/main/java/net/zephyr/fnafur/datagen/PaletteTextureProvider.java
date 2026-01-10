@@ -1,0 +1,147 @@
+package net.zephyr.fnafur.datagen;
+
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.client.texture.NativeImage;
+import net.minecraft.data.DataOutput;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.DataWriter;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.ColorHelper;
+import net.zephyr.fnafur.init.block_init.BlockInit;
+import net.zephyr.fnafur.init.block_init.Palettes.PaletteManager;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
+
+public class PaletteTextureProvider implements DataProvider {
+
+    private final DataOutput.PathResolver texturePathResolver;
+    private final FabricDataOutput output;
+
+    public PaletteTextureProvider(FabricDataOutput output) {
+        this.texturePathResolver = output.getResolver(DataOutput.OutputType.RESOURCE_PACK, "textures/block");
+        this.output = output;
+    }
+
+    @Override
+    public CompletableFuture<?> run(DataWriter writer) {
+        List<CompletableFuture<?>> futures = new ArrayList<>();
+
+        return CompletableFuture.runAsync(() -> {
+            try {
+                generate(writer, futures);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+    private NativeImage loadImage(Path path) throws IOException {
+        try (InputStream in = Files.newInputStream(path)) {
+            return NativeImage.read(in);
+        }
+    }
+
+    private NativeImage generateRecoloredImage(BlockInit.PaletteBlock palette) throws IOException {
+        Path baseTexture = output.getModContainer()
+                .findPath("assets/fnafur/" + palette.templateTexture().getPath())
+                .orElseThrow();
+
+        Path paletteTexture = output.getModContainer()
+                .findPath("assets/fnafur/" + palette.paletteEnum().getPalette().getPath())
+                .orElseThrow();
+
+        NativeImage base = loadImage(baseTexture);
+        NativeImage paletteImg = loadImage(paletteTexture);
+
+        Map<Integer, Integer> paletteMap = PaletteManager.buildPaletteMap(paletteImg);
+        NativeImage recolored = PaletteManager.applyPalette(base, paletteMap);
+
+        base.close();
+        paletteImg.close();
+
+        return recolored;
+    }
+
+
+    @Override
+    public String getName() {
+        return "Palette Textures";
+    }
+
+//    private void generateAll() throws IOException {
+//        for (BlockInit.PaletteBlock palette : BlockInit.PALETTES) {
+//            generateRecoloredTexture(palette);
+//        }
+//    }
+
+    private static HashCode writeNativeImageAndHash(NativeImage image, Path outPath) throws IOException {
+        // Ensure parent directories exist
+        Files.createDirectories(outPath.getParent());
+        // Write the PNG directly
+        image.writeTo(outPath);
+
+        // Compute hash from the written file
+        return Hashing.sha256().hashBytes(Files.readAllBytes(outPath));
+    }
+
+    public void generate(DataWriter writer, List<CompletableFuture<?>> futures) throws IOException {
+        for (BlockInit.PaletteBlock palette : BlockInit.PALETTES) {
+            NativeImage recolored = generateRecoloredImage(palette);
+
+            Path outPath = output.resolvePath(DataOutput.OutputType.RESOURCE_PACK)
+                    .resolve("fnafur/textures/block/" + palette.name() + "_" + palette.paletteEnum().getName() + ".png");
+
+            HashCode pngHash = writeNativeImageAndHash(recolored, outPath);
+
+            writer.write(outPath, Files.readAllBytes(outPath), pngHash);
+
+            recolored.close();
+        }
+
+    }
+
+//    private void generateRecoloredTexture(BlockInit.PaletteBlock palette) throws IOException {
+//        Path baseTexture = output.getModContainer()
+//                .findPath("assets/fnafur/" + palette.templateTexture().getPath())
+//                .orElseThrow();
+//
+//        Path paletteTexture = output.getModContainer()
+//                .findPath("assets/fnafur/" + palette.paletteEnum().getPalette().getPath())
+//                .orElseThrow();
+//
+//        NativeImage base = loadImage(baseTexture);
+//        NativeImage paletteImg = loadImage(paletteTexture);
+//
+//        Map<Integer, Integer> paletteMap = PaletteManager.buildPaletteMap(paletteImg);
+//        NativeImage recolored = PaletteManager.applyPalette(base, paletteMap);
+//
+//        Path out = output.resolvePath(DataOutput.OutputType.RESOURCE_PACK)
+//                .resolve("fnafur/textures/block/two_tile_" + palette.paletteEnum().getName() + ".png");
+//
+//        Files.createDirectories(out.getParent());
+//        try (OutputStream stream = Files.newOutputStream(out)) {
+//            recolored.writeTo(out);
+//        }
+//        if (!Files.exists(out)) {
+//            throw new IllegalStateException("Texture was not written: " + out);
+//        }
+//        else {
+//            System.out.println("Generated palette texture: " + out);
+//        }
+//        base.close();
+//        paletteImg.close();
+//        recolored.close();
+//    }
+}

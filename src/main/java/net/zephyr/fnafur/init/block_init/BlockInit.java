@@ -43,13 +43,21 @@ import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.Cpu
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.init.SoundsInit;
+import net.zephyr.fnafur.init.block_init.Palettes.PaletteEnum;
+import net.zephyr.fnafur.init.block_init.Palettes.TilesPalettes;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class BlockInit {
 
+    public record PaletteBlock(Block block, String name, PaletteEnum paletteEnum, Identifier templateTexture) {
+    }
+    public static List<PaletteBlock> PALETTES = new ArrayList<>();
 
     /* CUSTOM MODELS */
 
@@ -764,6 +772,14 @@ public class BlockInit {
 
    /*Floor Blocks & Floor Tiles*/
 
+    public static final Block[] TWO_BY_TWO_TILES = registerBlockPalette(
+            "two_tile",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/two_tile_template.png"),
+            TilesPalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+
     public static final Block BLACK_WHITE_TILES = registerBlock(
             "black_white_tiles",
             Block::new,
@@ -1093,6 +1109,24 @@ public class BlockInit {
                     .suffocates(Blocks::never)
                     .solidBlock(Blocks::never)
     );
+
+
+
+    private static<T extends Enum<T> & PaletteEnum> Block[] registerBlockPalette(String name, Identifier template, T[] palettes, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+        Block[] array = new Block[palettes.length];
+        for(int i = 0; i < palettes.length; i++) {
+            T palette = palettes[i];
+            Block block = registerBlock(
+                    name + "_" + palette.name().toLowerCase(Locale.ROOT),
+                    factory,
+                    settings
+            );
+            array[i] = block;
+            PALETTES.add(new PaletteBlock(block, name, palette, template));
+        }
+        return array;
+
+    }
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
         return registerBlock(name, factory, BlockItem::new, settings, List.of());

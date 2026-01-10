@@ -7,6 +7,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
+import net.zephyr.fnafur.init.block_init.Palettes.PaletteManager;
+import net.zephyr.fnafur.init.block_init.Palettes.PaletteTextureReloader;
 import net.zephyr.fnafur.util.hooks.JoinHook;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataManager;
 import net.zephyr.fnafur.util.jsonReaders.credits.CreditsDataManager;
@@ -37,6 +39,8 @@ public class MinecraftClientMixin implements IGetClientManagers {
 	CompletableFuture<Void> reloadResources() {
 		return null;
 	}
+	@Unique
+	private PaletteTextureReloader paletteManager = new PaletteTextureReloader();
 	@Unique
 	private AnimatronicDataManager animatronicDataManager = new AnimatronicDataManager();
 	@Unique
@@ -74,8 +78,9 @@ public class MinecraftClientMixin implements IGetClientManagers {
 		// TODO Jumpscare Screen
     }
 
-	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourcePackManager;scanPacks()V"))
+	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourcePackManager;scanPacks()V", shift = At.Shift.BEFORE))
 	public void reloaders(CallbackInfo ci) {
+		this.resourceManager.registerReloader(this.paletteManager);
 		this.resourceManager.registerReloader(this.animatronicDataManager);
 		this.resourceManager.registerReloader(this.creditsDataManager);
 	}

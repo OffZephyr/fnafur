@@ -20,9 +20,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
-import net.zephyr.fnafur.entity.animatronic.data.CharacterData;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
-import net.zephyr.fnafur.init.entity_init.CharacterInit;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerPayload;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -50,7 +48,6 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     int updateDepth = 0;
     public List<IEntityDataSaver> sources = new ArrayList<>();
-    private CharacterData character;
     public double force_age = 0;
     public boolean isMenu = false;
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -197,11 +194,6 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 //
 //        return age;
 //    }
-
-    public CharacterData getCharacter(){
-        if(character == null) return CharacterInit.ENDO_01;
-        return character;
-    }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
 

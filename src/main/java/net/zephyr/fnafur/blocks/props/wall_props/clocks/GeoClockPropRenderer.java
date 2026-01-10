@@ -10,11 +10,14 @@ import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import software.bernie.geckolib.cache.model.GeoBone;
+import software.bernie.geckolib.renderer.base.BoneSnapshots;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.base.RenderPassInfo;
 
 import java.util.Objects;
 
@@ -30,27 +33,35 @@ public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity, R extends B
 
     @Override
     public void render(R renderState, MatrixStack matrices, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraRenderState) {
-        GeoBone seconds = getGeoModel().getBakedModel(getGeoModel().getModelResource(renderState)).getBone("second").orElse(null);
-        GeoBone minutes = getGeoModel().getBakedModel(getGeoModel().getModelResource(renderState)).getBone("minute").orElse(null);
-        GeoBone hours = getGeoModel().getBakedModel(getGeoModel().getModelResource(renderState)).getBone("hour").orElse(null);
+        super.render(renderState, matrices, renderTasks, cameraRenderState);
+    }
 
-        float deltaMinute = renderState.getGeckolibData(CustomDataTickets.CLOCK_DELTA_MINUTE).floatValue();
-        float deltaHour = renderState.getGeckolibData(CustomDataTickets.CLOCK_DELTA_HOUR).floatValue();
+    @Override
+    public void adjustModelBonesForRender(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
+
+        GeoBone seconds = renderPassInfo.model().getBone("second").orElse(null);
+        GeoBone minutes = renderPassInfo.model().getBone("minute").orElse(null);
+        GeoBone hours = renderPassInfo.model().getBone("hour").orElse(null);
+
+        float deltaMinute = renderPassInfo.renderState().getGeckolibData(CustomDataTickets.CLOCK_DELTA_MINUTE).floatValue();
+        float deltaHour = renderPassInfo.renderState().getGeckolibData(CustomDataTickets.CLOCK_DELTA_HOUR).floatValue();
 
         float rot = 0;
-        if(seconds != null && seconds.frameSnapshot != null){
+
+        if(seconds != null) {
             rot = deltaMinute * 60;
-            seconds.frameSnapshot.setRotation(0, 0, 360 * rot);
+            snapshots.get(seconds).setRotation(0, 0, 180 * rot * MathHelper.RADIANS_PER_DEGREE);
         }
-        if(minutes != null && minutes.frameSnapshot != null){
+        if(minutes != null){
             rot = deltaMinute;
-            minutes.frameSnapshot.setRotation(0, 0, 360 * rot);
+            snapshots.get(minutes).setRotation(0, 0, 180 * rot * MathHelper.RADIANS_PER_DEGREE);
         }
-        if(hours != null && hours.frameSnapshot != null){
+        if(hours != null){
             rot = (deltaHour + (((1 / 12f) * (deltaMinute))));
-            hours.frameSnapshot.setRotation(0, 0, 360 * rot);
+            snapshots.get(hours).setRotation(0, 0, 180 * rot * MathHelper.RADIANS_PER_DEGREE);
         }
-        super.render(renderState, matrices, renderTasks, cameraRenderState);
+
+        super.adjustModelBonesForRender(renderPassInfo, snapshots);
     }
 
     @Override

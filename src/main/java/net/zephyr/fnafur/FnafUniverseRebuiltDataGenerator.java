@@ -3,6 +3,7 @@ package net.zephyr.fnafur;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.zephyr.fnafur.datagen.*;
+import net.zephyr.fnafur.datagen.PaletteTextureProvider;
 
 public class FnafUniverseRebuiltDataGenerator implements DataGeneratorEntrypoint {
 	@Override
@@ -10,6 +11,7 @@ public class FnafUniverseRebuiltDataGenerator implements DataGeneratorEntrypoint
 
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
+		pack.addProvider(PaletteTextureProvider::new);
 		pack.addProvider(BlockTagProvider::new);
 		pack.addProvider(ItemTagProvider::new);
 		pack.addProvider(LootTableProvider::new);

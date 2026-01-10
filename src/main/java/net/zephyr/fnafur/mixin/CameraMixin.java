@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.client.ClientHook;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
 import org.joml.Quaternionf;
@@ -83,6 +84,10 @@ public abstract class CameraMixin implements IEditCamera {
         this.lastTickProgress = tickProgress;
 
         PlayerEntity player = MinecraftClient.getInstance().player;
+
+        if(ClientHook.updateCamera(((Camera)(Object)this), area, focusedEntity, thirdPerson, inverseView, tickProgress)){
+            ci.cancel();
+        }
 
         //Entity entity = MinecraftClient.getInstance().world.getEntityById(((IEntityDataSaver)player).getPersistentData().getInt("JumpscareID"));
 

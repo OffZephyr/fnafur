@@ -1,4 +1,4 @@
-// 1.21.7	-999999999-01-01T00:00:00	Fnaf Universe Rebuilt/Model Definitions
+// 1.21.11	-999999999-01-01T00:00:00	Fnaf Universe Rebuilt/Model Definitions
 315243e415fada7107f64fbd91fda915a5fd578a assets/fnafur/blockstates/big_window.json
 44a6fdc7ce3b94fddca41607f0d0b7384ee18581 assets/fnafur/blockstates/big_window_dark.json
 1bb858c73fa8b4fa7f8ce95e8ca13fe481fab34a assets/fnafur/blockstates/big_window_white.json
@@ -136,6 +136,8 @@ cb8b19bba87d8e78296d85ce9093ab99880b5ab1 assets/fnafur/blockstates/tiled_glass_c
 557fe712a6d36f44b86891b0d49cee430b385279 assets/fnafur/blockstates/tiled_glass_slit.json
 e6b88048f8d4f0a861d782516fae18e8898236cd assets/fnafur/blockstates/tiled_glass_slit_colored.json
 acc1809b0c48c561a43c339deafd789b48a3b560 assets/fnafur/blockstates/turquoise_small_tiles.json
+adaf8ec3348a78bd3b68973e14f17872ced94a59 assets/fnafur/blockstates/two_tile_black_blue.json
+6d5f5eb726115e5b57a6f7ac6cd5915dcfe349bc assets/fnafur/blockstates/two_tile_black_white.json
 310f11b200ef7791c25e99c5a7bf48f091aec1cb assets/fnafur/blockstates/varied_tan_thin_bricks.json
 8425e4b5412c79a75786967d079936021c41d458 assets/fnafur/blockstates/wall_tile_full.json
 985cf7aaaa558c5f75e89f6c022de9fa102f88d4 assets/fnafur/blockstates/white_16_clean_tiles.json
@@ -191,7 +193,6 @@ f629962c28eb23b26792df4d83ef4c6062ee77f0 assets/fnafur/items/bright_pink_bricks.
 ce25a66f99e3bfc22395161140e77a0331a9bd19 assets/fnafur/items/bright_white_tiles.json
 e68b3c284c0cc8cfce23cde691345aceb4694c91 assets/fnafur/items/bright_yellow_tiles.json
 5032a58ed4298271a5e9adaa0a4e6e5632abb147 assets/fnafur/items/brown_thin_bricks.json
-3de2f28ec959fffcb9a743c49c9b4a3867f0510f assets/fnafur/items/camera.json
 fa0bfd56a999b06e56caddb96fabe0de9a222dba assets/fnafur/items/carpet_confetti.json
 723839f248909e26f2f4ce2067c99c983a594dc8 assets/fnafur/items/carpet_confetti_fredbears.json
 40458c99cd188ab213d38172d87dda3aacef67df assets/fnafur/items/carpet_space.json
@@ -289,6 +290,8 @@ bd3eb065e8f0dce54275c43f5f4a4c4af6a59412 assets/fnafur/items/tiled_glass_colored
 a47c26e8719f8b16cce677cc078b8cabd1bc36f9 assets/fnafur/items/tiled_glass_slit.json
 dc55611d183d0d382be9eed92851e1b61dad7f31 assets/fnafur/items/tiled_glass_slit_colored.json
 7aeab6abdbacfbe5fbb15fa1ae4b9e6bf7dd112a assets/fnafur/items/turquoise_small_tiles.json
+8e8afd053177187aa3ec92a6bc4d44671e400a7a assets/fnafur/items/two_tile_black_blue.json
+012127fca289981f811358aadc109e76f3708195 assets/fnafur/items/two_tile_black_white.json
 c79106584f076788cb1552aa6d706a30894a4afb assets/fnafur/items/varied_tan_thin_bricks.json
 19763088bd2ae57f7ce51c12cc4387c0e43c66bb assets/fnafur/items/wall_tile_full.json
 c18c00f2f9a495ac1e6e164e5d8181057fd275d4 assets/fnafur/items/white_16_clean_tiles.json
@@ -438,6 +441,8 @@ d275fa2502c8a211dac89f12deaef605e9584625 assets/fnafur/models/block/tan_16_space
 7ced6aa9cbc71a4ef1a8fc5c89cd07be05b1344c assets/fnafur/models/block/tiled_glass_slit.json
 a2ca5e471777e53105e820ab0f862fdef771dfc3 assets/fnafur/models/block/tiled_glass_slit_colored.json
 ea7e39dd5a0f8c33032607cda8b1e65efd24f998 assets/fnafur/models/block/turquoise_small_tiles.json
+d7fb312ae50097ce3a5b2a5722b40f49ea691657 assets/fnafur/models/block/two_tile_black_blue.json
+289e627f4eea126e170aaec27a6b530088348d87 assets/fnafur/models/block/two_tile_black_white.json
 965a11254b115dc4ca7aea9a6a2fb5a5c1794a69 assets/fnafur/models/block/varied_tan_thin_bricks.json
 43eda30088bd3d3d0515263d0bf19c90c639768d assets/fnafur/models/block/wall_tile_full.json
 aa5d14737ff616eb50da6d7574d762cf1949e204 assets/fnafur/models/block/white_16_clean_tiles.json
@@ -450,7 +455,6 @@ f434cb5f64b250f002ad1db538e89c9ad5af792b assets/fnafur/models/block/white_tiles.
 37b9ffdf24acea47e0b9b23c0b42227c5df135c5 assets/fnafur/models/block/wooden_lower_wall.json
 db5dadd112d9f5d8a5b63b983a40504f0e6f45ee assets/fnafur/models/block/wooden_lower_wall_trimmed.json
 9c01b437f63749d188ccadeae50d2e760de7c940 assets/fnafur/models/block/yellow_thin_bricks.json
-b0dd34957cb5d881a0e19bf01999148cb4169130 assets/fnafur/models/item/camera.json
 bc7e4c0849fd9f5e1e7d17e2b3b5537798f1f6b7 assets/fnafur/models/item/cpu.json
 5f9b447148d105a3fe26c04bab6be4723e64ea86 assets/fnafur/models/item/deathcoin.json
 cff578212ed9249e635cf2c69dc6ce6714246861 assets/fnafur/models/item/illusion_disc.json

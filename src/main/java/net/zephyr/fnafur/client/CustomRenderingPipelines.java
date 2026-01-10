@@ -5,8 +5,10 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.RenderSetup;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 

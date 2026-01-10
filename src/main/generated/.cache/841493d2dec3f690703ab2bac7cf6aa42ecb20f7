@@ -1,7 +1,7 @@
-// 1.21.7	-999999999-01-01T00:00:00	Fnaf Universe Rebuilt/Block Loot Tables
+// 1.21.11	-999999999-01-01T00:00:00	Fnaf Universe Rebuilt/Block Loot Tables
 044ad0d1bfacb790fda65c15b75b23477ee93b52 data/fnafur/loot_table/blocks/ac_unit.json
 6127aa4efca7febd2f9c3e22650ddbf708d25c44 data/fnafur/loot_table/blocks/air_vent.json
-844671e0be2b2453079778c3b45ec54f0c7f71a4 data/fnafur/loot_table/blocks/animatronic_block.json
+425d2c95e3ed9c38fc2f5491c590cd6df6a1933c data/fnafur/loot_table/blocks/arcade_cabinet.json
 956db38f0f5780104d9c52598ec6ee839c060572 data/fnafur/loot_table/blocks/bathroom_sink.json
 90191d1d29587c4f2be911dcfd11db1da8ddae48 data/fnafur/loot_table/blocks/big_window.json
 6ba41d74ea15a01b21d780cbfea2eadf8f90850e data/fnafur/loot_table/blocks/big_window_dark.json
@@ -49,7 +49,6 @@ ce1cf7baa83a1845860c5c7dfbd9853cd74cae1e data/fnafur/loot_table/blocks/bright_wh
 e94a2022b5c8de9a72af257d329ad1605e76bb51 data/fnafur/loot_table/blocks/broom.json
 5161671e7d5f2f1d2b1912601f1f8cee3566003b data/fnafur/loot_table/blocks/brown_thin_bricks.json
 27639ba000de922035f92a8383587b75def326c8 data/fnafur/loot_table/blocks/bulletin_board.json
-cce63d791c35642a994e8d32d2f12faccfa0e192 data/fnafur/loot_table/blocks/camera.json
 5690387a5361fa45848a6076b0b2968b4d9cc0a0 data/fnafur/loot_table/blocks/carpet_confetti.json
 0e6d0981727e9f037ca78792515d5f087b489dd0 data/fnafur/loot_table/blocks/carpet_confetti_fredbears.json
 7ee82af8708b65fe4ff85b87d6a0afaf89625855 data/fnafur/loot_table/blocks/carpet_space.json
@@ -69,9 +68,11 @@ cb6b68d21b561bb228cd2ce5e2b0755bbc26e701 data/fnafur/loot_table/blocks/ceiling_t
 d146ee639b2b5ba0ec3fc4b5b8657edf8a35c132 data/fnafur/loot_table/blocks/ceiling_tiles_stained.json
 88174a3c879bda00e50047e0764741032ff65c15 data/fnafur/loot_table/blocks/cheese_block.json
 5ac614f716eb5c83f957fe5faa16e6d602e215cc data/fnafur/loot_table/blocks/cheese_block_white.json
+40170a415d97e1aec927b45e838d252cda450e9a data/fnafur/loot_table/blocks/chip_reader.json
 6db98fbc40d0472cca50ced0b8314d2553b3ad40 data/fnafur/loot_table/blocks/concrete_floor.json
 ab33d26561114a3854b97a4ce8bee44db5c6504a data/fnafur/loot_table/blocks/concrete_floor_dark.json
 d334b196a7bf2dd5e5336aa13696381ed941ea5a data/fnafur/loot_table/blocks/concrete_floor_tile.json
+60d6cb011d375cf21616f525c7c826e98e78f441 data/fnafur/loot_table/blocks/condiment_counter.json
 cab20efdde5800701e8ed3343e6decd80c652775 data/fnafur/loot_table/blocks/cpu_config_panel.json
 64ff9d2ca40bb86fe94e6eafad4b40f5a7b11625 data/fnafur/loot_table/blocks/cyan_thin_bricks.json
 275c6120c6aec73d3df194ad9e33ad2ee321ba39 data/fnafur/loot_table/blocks/dark_blue_tiles.json
@@ -91,6 +92,8 @@ e3dbce0da0348d9a146211038c819e20ed37755c data/fnafur/loot_table/blocks/dark_stag
 a8747f7360f1bf2e2dfb781847082d3afd7a551d data/fnafur/loot_table/blocks/flying_v_guitar.json
 f4f7769c76cffa21de5b36a04ea7c680ff5964c6 data/fnafur/loot_table/blocks/fnaf1desk.json
 2ac021c4acfecdce1c1bd9b6621479ce91b998a5 data/fnafur/loot_table/blocks/fog_block.json
+2d0017f7a07f81c8371e00b436ba3060729ad9d7 data/fnafur/loot_table/blocks/food_display_case.json
+97e365ec6311e750d1803baf79dd5a9b5b0ec41c data/fnafur/loot_table/blocks/freddy_plush.json
 fb1f67e8c722f4dd16c48019b66496abe0e74611 data/fnafur/loot_table/blocks/fridge.json
 91e7a36b7e2adee508e0e6cdd857144cd89a59b2 data/fnafur/loot_table/blocks/garage_door.json
 e649885a31d33b48dc8a69c6b7e3a110b5416dab data/fnafur/loot_table/blocks/gray_bricks_white_cement.json
@@ -119,7 +122,9 @@ d482470cc783f03b414127bb8b32dea66024b97b data/fnafur/loot_table/blocks/large_lig
 be98940a4f15eab45d8e87d102935b8aa6170cf2 data/fnafur/loot_table/blocks/light_stage_planks.json
 3c5c3e2b8f62023e47bd5043f6886b6f511f2b2c data/fnafur/loot_table/blocks/light_switch.json
 3324354bab9bf1defcd5918488c649568e66efa2 data/fnafur/loot_table/blocks/light_tan_bricks.json
+ee917266e90078923989b590732d242bef01958d data/fnafur/loot_table/blocks/locker.json
 97466a14615d2a7fb0fc68c3acc055f4ca646451 data/fnafur/loot_table/blocks/magenta_thin_bricks.json
+551452c9d9f1a0fbdec367d135f0519f1a8a89e2 data/fnafur/loot_table/blocks/mimic_frame_diagonal.json
 f8d0aca4fa3a25e3450cf0c87696acd73dbfbbb2 data/fnafur/loot_table/blocks/mop_bucket.json
 454798e31e7eb890ecb7266ae0e0a998bb72dce1 data/fnafur/loot_table/blocks/mosaic_bricks.json
 60fbf1b83f344a732ff6235af87a28d8bfca30b6 data/fnafur/loot_table/blocks/off_white_tiles.json
@@ -139,6 +144,7 @@ a15bd83d6b462757f56b642cd9a6053e8e8922c6 data/fnafur/loot_table/blocks/pots_and_
 10ad87ebdfcf3772080f515c703588958e642f43 data/fnafur/loot_table/blocks/punch_in_cards.json
 3608566707bd2fc2783c710cdc16050fe1dea4cd data/fnafur/loot_table/blocks/purple_small_tiles.json
 30deb049f893f6e522aad2aeb2295055e3f89847 data/fnafur/loot_table/blocks/purple_thin_bricks.json
+763ef16f802928cdc8e7c9e282b96bf6135af59c data/fnafur/loot_table/blocks/reception_counter.json
 634b43d170717a51cf0e559f1f764f16728533fe data/fnafur/loot_table/blocks/red_black_tiles.json
 d624e3f723f10a715096206c19c7c4bf7fbe796f data/fnafur/loot_table/blocks/red_blue_tiles.json
 c60dad6917c854b054f49edb700cb8e4361b9b29 data/fnafur/loot_table/blocks/red_brick_wall.json
@@ -169,6 +175,9 @@ e3cf091619bb7b300a9ba0ca48e559c37293c1de data/fnafur/loot_table/blocks/stage_pla
 75e3ac4305b3175e5bb9cb96c188a1df6927b51e data/fnafur/loot_table/blocks/stage_planks_thin.json
 7c1bc91e2117b95f496abad63d2ca53d0f3c80f2 data/fnafur/loot_table/blocks/stage_sun.json
 212889d4f1553d00cd09e30378b3775e6e0eadcb data/fnafur/loot_table/blocks/standing_menu.json
+fc1b4a372d60dc143bc2d339cbcd022fa5197fde data/fnafur/loot_table/blocks/standing_microphone.json
+860c8bfd701fdb7477cb816ba1efa3cde058ede3 data/fnafur/loot_table/blocks/standing_piano.json
+b45bf205d063c78f973933dc23ac95ebd43e65c6 data/fnafur/loot_table/blocks/standing_speaker.json
 9a300c8b89814eb502b0129f2ed950b3d7f1318b data/fnafur/loot_table/blocks/star_plastic_chair.json
 258022621e37487c920623900394265b2331d0ba data/fnafur/loot_table/blocks/tan_16_clean_tiles.json
 2319b607ba16c99e4d0dc515f9fc23ab48dc3caf data/fnafur/loot_table/blocks/tan_16_spaced_tiles.json
@@ -183,8 +192,11 @@ f7ff9db9c80ff1260e0e995fd32a505b356798c6 data/fnafur/loot_table/blocks/tiled_gla
 bb3bdd63d2b57dab34e0e5c010e70e2156921ebd data/fnafur/loot_table/blocks/tiled_glass_slit_colored.json
 2d47e80aed09d92424b3c93e1f4cc48942aa2d69 data/fnafur/loot_table/blocks/toilet.json
 3e5c9a85dc68419c834df82c79fbf5dbe4165975 data/fnafur/loot_table/blocks/toilet_paper_roll.json
+08cf7b1307f3391642e839bdb3748d8d2d8940fd data/fnafur/loot_table/blocks/tool_wall_mount.json
 b0e702945d79ec146c08764e6c158062da56da65 data/fnafur/loot_table/blocks/trash_bin.json
 864300065229ecd3f9a05b67123250431021a3c6 data/fnafur/loot_table/blocks/turquoise_small_tiles.json
+6af4f3b3b7f726842bfe0fc189c7084ff4de5d9f data/fnafur/loot_table/blocks/urinal.json
+03191bb43d32623dbe168792d44986892901a3a8 data/fnafur/loot_table/blocks/utensils_box.json
 5bdd94a9cad6ec1f993a8b5a3dd4c76502d72175 data/fnafur/loot_table/blocks/varied_tan_thin_bricks.json
 07f8b82e7dc8e6a0f18423a3ebed43cf85c46225 data/fnafur/loot_table/blocks/wall_clouds.json
 168211349d7e9899bf5553c5fa4b64f941e7a0ec data/fnafur/loot_table/blocks/wall_outlet.json
