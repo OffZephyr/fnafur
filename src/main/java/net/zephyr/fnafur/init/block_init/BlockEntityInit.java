@@ -118,6 +118,10 @@ public class BlockEntityInit {
                                 PropInit.RECEPTION_COUNTER,
                                 PropInit.CONDIMENT_COUNTER,
                                 PropInit.UTENSILS_BOX,
+                                PropInit.WALL_MENU,
+                                PropInit.ATM,
+                                PropInit.WOODEN_CRATE,
+                                PropInit.FNAF1_RULES,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());
@@ -144,8 +148,7 @@ public class BlockEntityInit {
                                 PropInit.STAR_PLASTIC_CHAIR,
                                 PropInit.DOUBLE_DOOR_FRIDGE,
                                 PropInit.FRIDGE,
-                                PropInit.PLUSHIE,
-                                PropInit.LOCKER
+                                PropInit.PLUSHIE
                         ).build());
         GEO_CLOCK_PROP =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "clock_geo_props"),

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fnafur:props/fnaf1_rules"
+    },
+    "facing=east": {
+      "model": "fnafur:props/fnaf1_rules",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "fnafur:props/fnaf1_rules",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fnafur:props/fnaf1_rules",
+      "y": 270
+    }
+  }
+}

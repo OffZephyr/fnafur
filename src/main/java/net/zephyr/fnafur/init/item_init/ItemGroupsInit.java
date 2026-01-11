@@ -24,7 +24,6 @@ public class ItemGroupsInit {
                     .icon(() -> new ItemStack(PropInit.PRESENT_STACK))
                     .entries((displayContext, entries) -> {
                         entries.add(PropInit.FNAF_1_DESK);
-                        entries.add(PropInit.LOCKER);
                         entries.add(BlockInit.GARAGE_DOOR);
                         entries.add(BlockInit.HEAVY_DOOR);
                         entries.add(BlockInit.WARNING_HEAVY_DOOR);
@@ -83,6 +82,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.CONDIMENT_COUNTER);
                         entries.add(PropInit.UTENSILS_BOX);
                         entries.add(PropInit.STANDING_MENU);
+                        entries.add(PropInit.WALL_MENU);
                         entries.add(PropInit.PIZZA_OVEN);
                         entries.add(PropInit.FRIDGE);
                         entries.add(PropInit.DOUBLE_DOOR_FRIDGE);
@@ -91,12 +91,15 @@ public class ItemGroupsInit {
                         entries.add(PropInit.WATER_DISPENSER);
                         entries.add(PropInit.ICE_CREAM_DISPENSER);
 
+                        entries.add(PropInit.ATM);
                         entries.add(PropInit.ARCADE_CABINET);
                         entries.add(PropInit.SKEEBALL_ARCADE);
                         entries.add(PropInit.POSTER);
+                        entries.add(PropInit.FNAF1_RULES);
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 
+                        entries.add(PropInit.WOODEN_CRATE);
                         entries.add(PropInit.TOOL_WALL_MOUNT);
                         entries.add(BlockInit.WAREHOUSE_SHELF);
                         entries.add(GeoBlockInit.SMALL_GRAY_DOOR);

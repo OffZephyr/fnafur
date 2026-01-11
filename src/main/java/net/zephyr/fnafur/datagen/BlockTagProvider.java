@@ -22,7 +22,6 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.RETRO_TABLE)
                 .add(PropInit.RETRO_STOOL)
                 .add(PropInit.RESTROOM_SIGN)
-                .add(PropInit.POSTER)
                 .add(PropInit.WALL_CLOUDS)
                 .add(PropInit.STAGE_SUN)
                 .add(PropInit.WALL_PIZZA)
@@ -34,6 +33,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.CONDIMENT_COUNTER)
                 .add(PropInit.WOODEN_STOOL)
                 .add(PropInit.WOODEN_CHAIR)
+                .add(PropInit.WOODEN_CRATE)
                 .add(PropInit.WOODEN_CLOCK)
                 .add(PropInit.STAR_PLASTIC_CHAIR)
                 .add(PropInit.BROOM)
@@ -41,12 +41,15 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.SCONCE)
                 .add(PropInit.BULLETIN_BOARD)
                 .add(PropInit.TOOL_WALL_MOUNT)
-                .add(PropInit.STANDING_MENU)
                 .add(PropInit.WET_FLOOR_SIGN)
         ;
         valueLookupBuilder(BlockTags.BAMBOO_BLOCKS)
                 .add(PropInit.PUNCH_IN_CARDS)
                 .add(PropInit.SERIOUS_CUTOUT)
+                .add(PropInit.STANDING_MENU)
+                .add(PropInit.WALL_MENU)
+                .add(PropInit.POSTER)
+                .add(PropInit.FNAF1_RULES)
 
        ;
 
@@ -69,6 +72,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.OFFICE_BUTTONS)
                 .add(PropInit.SKEEBALL_ARCADE)
                 .add(PropInit.ARCADE_CABINET)
+                .add(PropInit.ATM)
                 .add(PropInit.STANDING_MICROPHONE)
                 .add(PropInit.STANDING_SPEAKER)
                 .add(PropInit.SPEAKER)
@@ -94,7 +98,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.FRIDGE)
                 .add(PropInit.DOUBLE_DOOR_FRIDGE)
                 .add(GeoBlockInit.PIRATES_COVE_STAGE)
-                .add(PropInit.LOCKER)
+
 
                 ;
 
