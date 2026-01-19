@@ -89,14 +89,19 @@ public class ClientHook {
         while(entity_yaw < 0){
             entity_yaw += 360f;
         }
-        entity_yaw = ((entity_yaw + 180f)%360f) + 180 - 360;
+        //System.out.println("PRE: " + entity_yaw);
+        //entity_yaw = ((entity_yaw + 360f)%360f);
+        float start = entity_yaw%360f;
+        float end = lastScreenAngle.x%360f;
+        end = start > 180 && end < 180 ? end + 360 : end;
         float entity_pitch = focusedEntity.getPitch(tickProgress);
 
         double x = MathHelper.lerp(index, entity_x, lastScreenPos.x);
         double y = MathHelper.lerp(index, entity_y, lastScreenPos.y);
         double z = MathHelper.lerp(index, entity_z, lastScreenPos.z);
 
-        float yaw = MathHelper.lerp(index, entity_yaw, lastScreenAngle.x%360f);
+
+        float yaw = MathHelper.lerp(index, start, end);
         float pitch = MathHelper.lerp(index, entity_pitch, lastScreenAngle.y);
         float roll = MathHelper.lerp(index, 0, lastScreenAngle.z);
 

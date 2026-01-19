@@ -1,12 +1,15 @@
 package net.zephyr.fnafur.item.tools;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.*;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -21,6 +24,7 @@ import net.zephyr.fnafur.decals.DecalManager;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemUtil;
+import org.jspecify.annotations.Nullable;
 
 public class DecalBookItem extends Item {
     public static final int MAX_STICKER_AMOUNT = 5;
@@ -84,7 +88,17 @@ public class DecalBookItem extends Item {
         NbtCompound nbt = ItemUtil.getNbt(stack);
         nbt.putBoolean("isHolding", false);
         ItemUtil.setNbt(stack, nbt);
+
         return super.onStoppedUsing(stack, world, user, remainingUseTicks);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
+        NbtCompound nbt = ItemUtil.getNbt(stack);
+        nbt.putBoolean("isHolding", false);
+        ItemUtil.setNbt(stack, nbt);
+
+        super.inventoryTick(stack, world, entity, slot);
     }
 
     public static BlockPos getStartBlockPos(BlockPos pos, Direction direction, DecalInit.Movable movementMode){

@@ -20,6 +20,7 @@ public class AnimatronicDataHandler {
     public static final Map<String, Chara> CHARACTERS = new HashMap<>();
     public static final Map<String, Map<String, String>> ANIMATIONS_PER_CATEGORY = new HashMap<>();
     public static final Map<String, String> ALL_ANIMATIONS = new HashMap<>();
+    public static final Map<String, List<String>> ANIMATION_NAMES_PER_CATEGORY = new HashMap<>();
     public static final List<String> ALL_ANIMATION_NAMES = new ArrayList<>();
     public static final List<String> MISSING_CHARACTERS = new ArrayList<>();
     public static final List<String> EMPTY_CATEGORIES = new ArrayList<>();

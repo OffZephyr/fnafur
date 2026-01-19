@@ -1,6 +1,6 @@
 #version 330
 
-#define MAX_DECALS 32
+#define MAX_DECALS 512
 
 struct Decal {
     vec3 DecalPos;        float _pad0;

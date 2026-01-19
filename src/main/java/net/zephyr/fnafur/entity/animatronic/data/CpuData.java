@@ -1238,6 +1238,66 @@ public class CpuData {
             return attribute;
         }
     }
+    public static class AmbientSoundsVolume implements CpuDataRangeArgument {
+
+        private int value = 0;
+
+        @Override
+        public int getMin() {
+            return 0;
+        }
+
+        @Override
+        public int getMax() {
+            return 10;
+        }
+
+        public static int getDefaultValue() {
+            return 8;
+        }
+
+        public int getValue(){
+            return value;
+        }
+
+        public void setValue(int val){
+            value = val;
+        }
+
+        @Override
+        public String getKey() {
+            return "ambient_sounds_volume";
+        }
+
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public CpuDataArgument cycleLeft() {
+            value = Math.max(getMin(), value - 1);
+            return this;
+        }
+
+        @Override
+        public CpuDataArgument cycleRight() {
+
+            value = Math.min(getMax(), value + 1);
+            return this;
+        }
+
+        @Override
+        public CpuDataArgument getFromName(String name) {
+            return this;
+        }
+
+        public static AmbientSoundsVolume getDefault() {
+            AmbientSoundsVolume attribute = new AmbientSoundsVolume();
+            attribute.setValue(AmbientSoundsVolume.getDefaultValue());
+            return attribute;
+        }
+    }
     public static class AIMovementLevel implements CpuDataRangeArgument {
 
         private int value = 0;
@@ -1299,6 +1359,8 @@ public class CpuData {
         }
     }
 
+    public String Animation = "default";
+    public String AmbientSound = "";
     OnReset ON_RESET = OnReset.getDefault();
     MovementMode MOVEMENT_MODE = MovementMode.getDefault();
     BehaviorWhenSeen BEHAVIOR_WHEN_SEEN = BehaviorWhenSeen.getDefault();
@@ -1323,6 +1385,7 @@ public class CpuData {
     MovementSpeed MOVEMENT_SPEED = MovementSpeed.getDefault();
     SightRange SIGHT_RANGE = SightRange.getDefault();
     ServoSoundsVolume SERVO_SOUND_VOLUME = ServoSoundsVolume.getDefault();
+    AmbientSoundsVolume AMBIENT_SOUND_VOLUME = AmbientSoundsVolume.getDefault();
     AIMovementLevel AI_MOVEMENT_LEVEL = AIMovementLevel.getDefault();
 
     List<? extends CpuDataArgument> DefaultList = List.of(
@@ -1356,11 +1419,10 @@ public class CpuData {
             // STATS
             MOVEMENT_SPEED,
             SIGHT_RANGE,
+            AMBIENT_SOUND_VOLUME,
             SERVO_SOUND_VOLUME,
             AI_MOVEMENT_LEVEL
     );
-
-    public String Animation = "cl_fred";
 
     public List<String> KeyList = new ArrayList<>();
 
@@ -1388,14 +1450,17 @@ public class CpuData {
         NbtCompound nbt = new NbtCompound();
         for(CpuDataArgument argument : DefaultList){
             CpuDataArgument arg = DATA_LIST.get(argument.getKey());
-            if(arg instanceof CpuDataRangeArgument range){
-                nbt.putInt(range.getKey(), range.getValue());
-            }
-            else{
-                nbt.putString(arg.getKey(), arg.getName());
+            if(arg != null){
+                if(arg instanceof CpuDataRangeArgument range){
+                    nbt.putInt(range.getKey(), range.getValue());
+                }
+                else{
+                    nbt.putString(arg.getKey(), arg.getName());
+                }
             }
         }
         nbt.putString("animation", Animation);
+        nbt.putString("ambient_sound", AmbientSound);
         return nbt;
     }
 
@@ -1415,6 +1480,7 @@ public class CpuData {
             }
         }
         data.Animation = nbt.getString("animation", data.Animation);
+        data.AmbientSound = nbt.getString("ambient_sound", data.AmbientSound);
         return data;
     }
 

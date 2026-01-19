@@ -36,7 +36,7 @@ import java.util.*;
 public class DecalManager {
 
     public static final int MAX_DISTANCE = 128;
-    public static final int MAX_DECALS = 32;
+    public static final int MAX_DECALS = 512;
     static final int STRIDE = 112;
     static int uboSize = 16 + MAX_DECALS * STRIDE;
 
@@ -169,8 +169,15 @@ public class DecalManager {
 
     static List<DecalInstance> getDecalList(){
 
-        List<DecalInstance> list = new ArrayList<>(WORLD_DECALS);
+        List<DecalInstance> list = new ArrayList<>();
 
+        for(DecalInstance instance : WORLD_DECALS){
+            Vec3d vec1 = instance.getStartPos().add(MinecraftClient.getInstance().gameRenderer.getCamera().pos.multiply(-1));
+            Vec3d vec2 = instance.getEndPos().add(MinecraftClient.getInstance().gameRenderer.getCamera().pos.multiply(-1));
+            if(vec1.length() < MAX_DISTANCE && vec2.length() < MAX_DISTANCE){
+                list.add(instance);
+            }
+        }
 //        WORLD_DECALS_MAP.forEach((pos, directions) -> {
 //            directions.forEach((direction, instances) -> {
 //                instances.forEach((decalInstance -> {

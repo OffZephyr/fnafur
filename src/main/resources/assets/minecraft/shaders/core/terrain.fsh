@@ -5,8 +5,6 @@
 #moj_import <minecraft:decals.glsl>
 #moj_import <minecraft:chunksection.glsl>
 
-#define MAX_DECALS 32
-
 uniform sampler2D Sampler0;
 
 in float sphericalVertexDistance;

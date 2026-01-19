@@ -410,16 +410,22 @@
   "item.fnafur.zephyr_spawn.description.0.0": "§b§lClick §ron this entity with a",
   "item.fnafur.zephyr_spawn.description.0.1": "§d§lFloppy Disk §rto give it an AI.",
 
-  "cpu_config.argument.title_visual":  "VISUAL",
+  "cpu_config.argument.title_classic":  "CLASSIC",
+
+  "cpu_config.argument.title_visual":  "COSMETIC SELECTION",
   "cpu_config.argument.title_base":  "BEHAVIOR",
   "cpu_config.argument.title_interactions":  "INTERACTION SETTINGS",
   "cpu_config.argument.title_aggressivity":  "AGGRESSIVITY",
   "cpu_config.argument.title_stats":  "STATISTICS | ATTRIBUTES",
 
   "cpu_config.argument.animation":  "Animations",
+  "cpu_config.argument.ambient_sound":  "Ambient Sound",
 
   "cpu_config.argument.singing_role":  "Singing ROLE",
 
+  "cpu_config.value.default":  "Use Default",
+
+  "cpu_config.value.back":  "Back",
   "cpu_config.value.none":  "None",
   "cpu_config.value.walk":  "Walk",
   "cpu_config.value.run":  "Run",
@@ -533,6 +539,7 @@
   "cpu_config.argument.vision_mode":  "Vision MODE",
   "cpu_config.argument.movement_speed":  "Movement SPEED",
   "cpu_config.argument.sight_range":  "Sight RANGE",
+  "cpu_config.argument.ambient_sounds_volume":  "Ambient sounds VOLUME",
   "cpu_config.argument.servo_sounds_volume":  "Servo sounds VOLUME",
   "cpu_config.argument.ai_movement_level":  "AI Movement LEVEL",
 
@@ -656,7 +663,6 @@
   "credits.sub.technical_team": "Technical Team",
   "credits.sub.kofi_supporters": "Thank you!",
 
-  "credits.name.zephyr": "ZephyrOff",
   "credits.name.zephyr": "ZephyrOff",
   "credits.name.shadowlink": "ShadowLink",
   "credits.name.dasen": "Dasen",

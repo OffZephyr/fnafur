@@ -88,6 +88,14 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
                     //    System.out.println(entry.getKey() + ": " + string + ": " + entry.getValue().get(string));
                     //}
                 }
+
+                AnimatronicDataHandler.ANIMATIONS_PER_CATEGORY.forEach((category, animations) ->{
+                    List<String> animations_list = new ArrayList<>();
+                    animations.forEach((animation, animation_path) -> {
+                        animations_list.add(animation);
+                    });
+                    AnimatronicDataHandler.ANIMATION_NAMES_PER_CATEGORY.put(category, animations_list);
+                });
             } catch (RuntimeException | IOException runtimeException) {
                 FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
             }
@@ -131,6 +139,7 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
         AnimatronicDataHandler.CHARAS_PER_CATEGORY.clear();
         AnimatronicDataHandler.CHARACTERS.clear();
         AnimatronicDataHandler.ANIMATIONS_PER_CATEGORY.clear();
+        AnimatronicDataHandler.ANIMATION_NAMES_PER_CATEGORY.clear();
         AnimatronicDataHandler.ALL_ANIMATIONS.clear();
         AnimatronicDataHandler.ALL_ANIMATION_NAMES.clear();
         AnimatronicDataHandler.MISSING_CHARACTERS.clear();

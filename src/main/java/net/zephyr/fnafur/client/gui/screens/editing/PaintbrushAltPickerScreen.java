@@ -79,7 +79,7 @@ public class PaintbrushAltPickerScreen<T extends Enum<T> & ColorEnumInterface & 
 
             context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, hovered || i == selectedAltIndex ? 80 : 0, 160, buttonWidth, buttonWidth, 80, 80, 256, 256);
 
-            renderBlock(context, x + 3, y + 3, x + buttonWidth - 3, y + buttonWidth - 3, 20, i);
+            renderBlock(context, x + 3, y + 3, x + buttonWidth - 3, y + buttonWidth - 3, 20, i, true);
         }
 
         int index = hoveredAltIndex < 0 ? selectedAltIndex : hoveredAltIndex;
@@ -87,7 +87,7 @@ public class PaintbrushAltPickerScreen<T extends Enum<T> & ColorEnumInterface & 
         if(selectedState.contains(altEnumProperty)){
             selectedState = selectedState.with(altEnumProperty, alts.get(Math.clamp(index, 0, alts.size()-1)));
         }
-        renderBlock(context, (this.width / 2) + 68, (this.height / 2) - 36, (this.width / 2) + 68 + 124, (this.height / 2) - 40 + 124, 50, index);
+        renderBlock(context, (this.width / 2) + 68, (this.height / 2) - 36, (this.width / 2) + 68 + 124, (this.height / 2) - 40 + 124, 50, index, false);
 
         StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
         Style style = Style.EMPTY.withFont(spriteFont);
@@ -119,13 +119,14 @@ public class PaintbrushAltPickerScreen<T extends Enum<T> & ColorEnumInterface & 
         super.render(context, mouseX, mouseY, delta);
     }
 
-    public void renderBlock(DrawContext context, int x1, int y1, int x2, int y2, int scale, int index) {
+    public void renderBlock(DrawContext context, int x1, int y1, int x2, int y2, int scale, int index, boolean offset) {
         BlockState selectedState = MinecraftClient.getInstance().world.getBlockState(getBlockPos()).getBlock().getDefaultState();
         if(selectedState.contains(altEnumProperty)){
             selectedState = selectedState.with(altEnumProperty, alts.get(Math.clamp(index, 0, alts.size()-1)));
         }
 
-        Quaternionf quaternionf = new Quaternionf().rotateX(-0.25f).rotateY(MathHelper.sin(rotationIndex / 20f - (index / 10f)) / 2.5f);
+        float offsetRot = offset ? (index / 10f) : 0;
+        Quaternionf quaternionf = new Quaternionf().rotateX(-0.25f).rotateY(MathHelper.sin(rotationIndex / 20f - offsetRot) / 2.5f);
 
         if(selectedState.getBlock() instanceof PropBlock<?> block && block instanceof GeoPropBlock) {
 

@@ -27,6 +27,7 @@ import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.networking.entity.player.UpdateCreativeExtraSlotsC2SPayload;
 import net.zephyr.fnafur.networking.entity.player.UpdateMainHandItemC2SPayload;
 import net.zephyr.fnafur.util.ItemUtil;
+import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
 import org.joml.Vector3f;
 
@@ -38,10 +39,13 @@ public class CpuConfigScreen extends InWorldScreen {
     int scrollAmount = 0;
     int selectedIndex = 0;
 
+    int subWindow = 0;
+    int animationScrollAmount = 0;
+
     float age = 0;
 
     List<String> SettingList = new ArrayList<>();
-    Map<String, String> SettingMap = new HashMap<>();
+    List<String> AnimationList = new ArrayList<>();
 
     public CpuConfigScreen(Text title, NbtCompound nbt, long l) {
         super(title, nbt, l);
@@ -54,10 +58,18 @@ public class CpuConfigScreen extends InWorldScreen {
         updateList();
     }
 
+    List<String> getList(){
+        if(subWindow == 1){
+            return AnimationList;
+        }
+        return SettingList;
+    }
+
     void updateList(){
         SettingList.clear();
         SettingList.add("title_visual");
         SettingList.add("animation");
+        SettingList.add("ambient_sound");
         for(String string : data.KeyList){
             if(Objects.equals(string, CpuData.MovementSpeed.getDefault().getKey())){
                 SettingList.add("title_stats");
@@ -73,11 +85,28 @@ public class CpuConfigScreen extends InWorldScreen {
             }
             SettingList.add(string);
         }
+
+        AnimationList.clear();
+        AnimationList.add("back");
+        AnimationList.add("default");
+        AnimatronicDataHandler.ANIMATION_NAMES_PER_CATEGORY.forEach((category, names) -> {
+            if(!category.toLowerCase().contains("default")){
+                AnimationList.add("title_" + category);
+
+                AnimationList.addAll(names);
+            }
+        });
     }
 
     String getArgumentValue(String argument){
+        if(subWindow == 1){
+            return argument;
+        }
         if(Objects.equals(argument, "animation")){
             return data.Animation;
+        }
+        if(Objects.equals(argument, "ambient_sound")){
+            return data.AmbientSound;
         }
         else if(data.DATA_LIST.get(argument) instanceof CpuData.CpuDataRangeArgument range){
             return range.getValue() + " / " + range.getMax();
@@ -85,7 +114,7 @@ public class CpuConfigScreen extends InWorldScreen {
         else if(data.DATA_LIST.containsKey(argument)){
             return data.DATA_LIST.get(argument).getName();
         }
-        return "";
+        return argument;
     }
 
     public CpuConfigScreen(Text text, NbtCompound nbtCompound, Object o) {
@@ -140,7 +169,7 @@ public class CpuConfigScreen extends InWorldScreen {
 
                 drawResizableText(context, textRenderer, MenuInitials, 5, width/2f, height/2f - 20, 0xFF33FF66, 0x00000000, false, true);
                 if(age > 0.45f){
-                    drawResizableText(context, textRenderer, MenuName, 0.8f, width/2f - 2, height/2f + 20, 0xFF00FF00, 0x00000000, false, true);
+                    drawResizableText(context, textRenderer, MenuName, 0.9f, width/2f - 2, height/2f + 20, 0xFF00FF00, 0x00000000, false, true);
                 }
 
                 return;
@@ -163,7 +192,7 @@ public class CpuConfigScreen extends InWorldScreen {
             Text Controls3 = Text.literal("- Controls -").getWithStyle(style).getFirst();
 
             drawResizableText(context, textRenderer, MenuInitials, 2.7f, width/4f - 2, height/28f + 2, 0xFF33FF66, 0x00000000, false, false);
-            drawResizableText(context, textRenderer, MenuName, 0.45f, width/4f - 2, height/28f + 22, 0xFF00FF00, 0x00000000, false, false);
+            drawResizableText(context, textRenderer, MenuName, 0.475f, width/4f - 4, height/28f + 23, 0xFF00FF00, 0x00000000, false, false);
 
             float controlWidth1 = textRenderer.getWidth(Controls) * 0.75f;
             float controlWidth2 = textRenderer.getWidth(Controls2) * 0.75f;
@@ -175,13 +204,14 @@ public class CpuConfigScreen extends InWorldScreen {
             context.fill(width/4 - 4, height/28 + 31, -12 + width - (width/4), height/28 + 32, 0xFF33FF66);
 
             int list = age < 2.25f ? 0 : age < 2.321f ? 5 : age < 2.67 ? 9 : 12;
-            for(int i = 0; i < Math.min(SettingList.size(), list); i++){
+            for(int i = 0; i < Math.min(getList().size(), list); i++){
                 int offset = scrollAmount;
-                if(i + offset >= SettingList.size()) continue;
-                String name = SettingList.get(i + offset);
+                if(i + offset >= getList().size()) continue;
+                String name = getList().get(i + offset);
                 String value = getArgumentValue(name);
                 int selected = selectedIndex - offset;
                 boolean title = name.contains("title_");
+                boolean isList = subWindow != 0;
                 int color = title ? 0xFF33FF66 : i == selected ? 0xFF00FF00 : 0xFF006622;
 
                 Text nameText = Text.translatable("cpu_config.argument." + name).getWithStyle(style).getFirst();
@@ -192,6 +222,20 @@ public class CpuConfigScreen extends InWorldScreen {
                 }
                 if(name.equals("animation")){
                     valueText = Text.translatable("entity.fnafur."+ value).getWithStyle(style).getFirst();
+                    if(Objects.equals(value, "default")){
+                        valueText = Text.translatable("cpu_config.value." + value).getWithStyle(style).getFirst();
+                    }
+                }
+                else if(name.equals("ambient_sound")){
+                    String ambientValue = "sound.fnafur."+ value;
+                    if(value.isEmpty()) ambientValue = "cpu_config.value.none";
+                    valueText = Text.translatable(ambientValue).getWithStyle(style).getFirst();
+                }
+                if(isList && !name.equals("back")) {
+                    valueText = Text.translatable("entity.fnafur." + value).getWithStyle(style).getFirst();
+                    if(Objects.equals(value, "default")){
+                        valueText = Text.translatable("cpu_config.value." + value).getWithStyle(style).getFirst();
+                    }
                 }
 
                 if(selected == i){
@@ -199,9 +243,13 @@ public class CpuConfigScreen extends InWorldScreen {
                     valueText = valueText.getWithStyle(optionStyle).getFirst();
                 }
 
-                Text text = Text.literal("").append(nameText).append(Text.literal(": < ").getWithStyle(style).getFirst()).append(valueText).append(Text.literal(" >").getWithStyle(style).getFirst());
+                Text selectionText = Text.literal("").append(Text.literal("< ").getWithStyle(style).getFirst()).append(valueText).append(Text.literal(" >").getWithStyle(style).getFirst());
+                Text text = Text.literal("").append(nameText).append(Text.literal(": ").getWithStyle(style).getFirst()).append(selectionText);
                 if(title){
                     text = nameText;
+                }
+                else if(isList){
+                    text = selectionText;
                 }
 
                 float scale = title ? 1.75f : 1f;
@@ -231,10 +279,10 @@ public class CpuConfigScreen extends InWorldScreen {
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
 
-        for(int i = 0; i < Math.min(SettingList.size(), 12); i++){
+        for(int i = 0; i < Math.min(getList().size(), 12); i++){
             int offset = scrollAmount;
-            if(i + offset >= SettingList.size()) continue;
-            String name = SettingList.get(i + offset);
+            if(i + offset >= getList().size()) continue;
+            String name = getList().get(i + offset);
 
             float x = width/4f;
             float y = 3 + height/6f + i * 18;
@@ -242,11 +290,13 @@ public class CpuConfigScreen extends InWorldScreen {
                 if(name.contains("title_")) continue;
                 else{
                     selectedIndex = i + offset;
+                    return;
                 }
 
             }
 
         }
+        selectedIndex = -1;
         super.mouseMoved(mouseX, mouseY);
     }
 
@@ -256,12 +306,35 @@ public class CpuConfigScreen extends InWorldScreen {
             age = 2;
             return super.mouseClicked(click, doubled);
         }
-        if (click.button() == 0) {
-            String index = SettingList.get(selectedIndex);
-            data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleRight());
-        } else if (click.button() == 1) {
-            String index = SettingList.get(selectedIndex);
-            data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleLeft());
+        if(selectedIndex == -1) return super.mouseClicked(click, doubled);
+        String index = getList().get(selectedIndex);
+        if(subWindow == 1){
+            subWindow = 0;
+            selectedIndex = 1;
+            scrollAmount = 0;
+            if(!index.equals("back")){
+                data.Animation = index;
+            }
+            mouseMoved(click.x(), click.y());
+        }
+        else if(index.equals("animation")){
+            subWindow = 1;
+            selectedIndex = 0;
+            scrollAmount = 0;
+            mouseMoved(click.x(), click.y());
+        }
+        else if(index.equals("ambient_sound")){
+            subWindow = 0;
+            selectedIndex = 0;
+            scrollAmount = 0;
+            mouseMoved(click.x(), click.y());
+        }
+        else {
+            if (click.button() == 0) {
+                data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleRight());
+            } else if (click.button() == 1) {
+                data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleLeft());
+            }
         }
         return super.mouseClicked(click, doubled);
     }
@@ -279,7 +352,7 @@ public class CpuConfigScreen extends InWorldScreen {
         } else if (verticalAmount > 0) {
             scrollAmount--;
         }
-        scrollAmount = Math.clamp(scrollAmount, 0, SettingList.size() - 12);
+        scrollAmount = getList().size() < 12 ? 0 : Math.clamp(scrollAmount, 0, getList().size() - 12);
         mouseMoved(mouseX, mouseY);
 
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
@@ -308,43 +381,67 @@ public class CpuConfigScreen extends InWorldScreen {
             return super.keyPressed(input);
         }
 
-        if(input.isDown()){
+        if(input.isDown() || selectedIndex == -1){
             selectedIndex++;
 
-            selectedIndex = selectedIndex > SettingList.size() - 1 ? 0 : selectedIndex;
+            selectedIndex = selectedIndex > getList().size() - 1 ? 0 : selectedIndex;
 
-            if(SettingList.get(selectedIndex).contains("title_")){
-                selectedIndex++;
-            }
 
             if(selectedIndex < scrollAmount) scrollAmount = selectedIndex;
+            if(getList().get(selectedIndex).contains("title_")){
+                selectedIndex++;
+            }
             if(selectedIndex > scrollAmount + 11) scrollAmount = selectedIndex - 11;
-
         } else if (input.isUp()) {
+            if(selectedIndex == -1) selectedIndex = 0;
             selectedIndex--;
 
-            if(SettingList.get(selectedIndex).contains("title_")){
+            if(getList().get(selectedIndex).contains("title_")){
                 selectedIndex--;
             }
 
-            selectedIndex = selectedIndex < 0 ? SettingList.size() - 1 : selectedIndex;
+            selectedIndex = selectedIndex < 0 ? getList().size() - 1 : selectedIndex;
 
             if(selectedIndex < scrollAmount) scrollAmount = selectedIndex;
             if(selectedIndex > scrollAmount + 11) scrollAmount = selectedIndex - 11;
-
         } else if (input.isRight() || input.isEnterOrSpace()) {
-            String index = SettingList.get(selectedIndex);
-            data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleRight());
+
+            String index = getList().get(selectedIndex);
+            if(subWindow == 1){
+                subWindow = 0;
+                selectedIndex = 1;
+                scrollAmount = 0;
+                if(!index.equals("back")){
+                    data.Animation = index;
+                }
+                mouseMoved(0, 0);
+            }
+            else if(index.equals("animation")){
+                subWindow = 1;
+                selectedIndex = 0;
+                scrollAmount = 0;
+                mouseMoved(0, 0);
+            }
+            else if(index.equals("ambient_sound")){
+                subWindow = 0;
+                selectedIndex = 0;
+                scrollAmount = 0;
+                mouseMoved(0, 0);
+            }
+            else{
+                data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleRight());
+            }
         } else if (input.isLeft()) {
-            String index = SettingList.get(selectedIndex);
+            String index = getList().get(selectedIndex);
             data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleLeft());
         }
 
-        selectedIndex = Math.clamp(selectedIndex, 0, SettingList.size() - 1);
+        selectedIndex = Math.clamp(selectedIndex, 0, getList().size() - 1);
+        scrollAmount = getList().size() < 12 ? 0 : Math.clamp(scrollAmount, 0, getList().size() - 12);
 
-
-        scrollAmount = Math.clamp(scrollAmount, 0, SettingList.size() - 12);
-
+        if(getList().get(selectedIndex).contains("title_")){
+            selectedIndex++;
+        }
 
         updateList();
         return super.keyPressed(input);
