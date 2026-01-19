@@ -100,7 +100,7 @@ vec4 applyDecalBlend(vec4 baseColor, vec4 decalColor, int blendMode)
 {
     if (blendMode == 0)
     {
-        return decalColor.a == 1 ? decalColor : baseColor + decalColor * decalColor.a;
+        return mix(baseColor, decalColor, decalColor.a);
     }
     else if (blendMode == 1)
     {
@@ -179,7 +179,10 @@ vec4 applyDecals(vec4 baseColor){
             vec3 r = normalize(decal.DecalRight);
             vec3 u = normalize(cross(f, r));
 
-            vec3 toFrag = vWorldPos - finalPos1;
+            const float DECAL_EPSILON = 0.001; // world units (~1mm)
+            vec3 biasedWorldPos = vWorldPos + N * DECAL_EPSILON;
+
+            vec3 toFrag = biasedWorldPos - finalPos1;
 
             // Distance along decal forward axis
             float forwardDist = dot(toFrag, f);
@@ -203,8 +206,8 @@ vec4 applyDecals(vec4 baseColor){
             float vSize = maxV - minV;
 
             // World-space projected coordinates
-            float uWorld = dot(vWorldPos - finalPos1, r);
-            float vWorld = dot(vWorldPos - finalPos1, u);
+            float uWorld = dot(biasedWorldPos - finalPos1, r);
+            float vWorld = dot(biasedWorldPos - finalPos1, u);
 
             // Repeat scale (world units per tile)
             float tileScale = 1.0; // adjust to taste
@@ -235,9 +238,7 @@ vec4 applyDecals(vec4 baseColor){
 
 void main() {
     vec4 color = (UseRgss == 1 ? sampleRGSS(Sampler0, texCoord0, 1.0f / TextureSize) : sampleNearest(Sampler0, texCoord0, 1.0f / TextureSize));
-    gl_FragDepth = gl_FragCoord.z - 0.001;
     color = applyDecals(color);
-    //gl_FragDepth = gl_FragCoord.z + 0.001;
     color = color * vertexColor;
     color = mix(FogColor * vec4(1, 1, 1, color.a), color, ChunkVisibility);
 #ifdef ALPHA_CUTOUT
