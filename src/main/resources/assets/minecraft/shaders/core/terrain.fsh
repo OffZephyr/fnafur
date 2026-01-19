@@ -93,7 +93,7 @@ vec4 sampleRGSS(sampler2D source, vec2 uv, vec2 pixelSize) {
 
 bool normalsWithin45Degrees(vec3 a, vec3 b)
 {
-    return dot(normalize(a), normalize(b)) >= 0.70710678;
+    return dot(normalize(a), normalize(b)) >= 0.64278761;
 }
 
 vec4 applyDecalBlend(vec4 baseColor, vec4 decalColor, int blendMode)
