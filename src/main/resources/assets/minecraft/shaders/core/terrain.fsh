@@ -201,16 +201,29 @@ vec4 applyDecals(vec4 baseColor){
             // Repeat scale (world units per tile)
             float tileScale = 1.0; // adjust to taste
 
-            vec2 uv;
-            uv.x = fract(uWorld / tileScale);
-            uv.y = fract(vWorld / tileScale);
+            float uRaw = dot(vWorldPos - finalPos1, r) / tileScale;
+            float vRaw = dot(vWorldPos - finalPos1, u) / tileScale;
 
-            // Prevent nearest sampling edge snap
-            uv = clamp(uv, 0.001, 0.999);
+            // Raw derivatives (BEFORE fract)
+            vec2 duRaw = vec2(dFdx(uRaw), dFdx(vRaw));
+            vec2 dvRaw = vec2(dFdy(uRaw), dFdy(vRaw));
 
-            // Remap into atlas UVs
-            uv = mix(decal.DecalUV.xy, decal.DecalUV.zw, uv);
+            // Local tile UV
+            vec2 uvLocal = fract(vec2(uRaw, vRaw));
 
+            // Atlas inset
+            vec2 texel = 1.0 / TextureSize;
+            vec2 uvMin = decal.DecalUV.xy + texel * 0.5;
+            vec2 uvMax = decal.DecalUV.zw - texel * 0.5;
+
+            // Final atlas UV
+            vec2 uv = mix(uvMin, uvMax, uvLocal);
+
+            // Scale derivatives into atlas space
+            vec2 du = duRaw * (uvMax - uvMin);
+            vec2 dv = dvRaw * (uvMax - uvMin);
+
+            // Sample
             vec4 decalSample = (UseRgss == 1 ? sampleRGSS(Sampler0, uv, 1.0f / TextureSize) : sampleNearest(Sampler0, uv, 1.0f / TextureSize));
 
             result = applyDecalBlend(result, decalSample, decal.DecalBlendMode);
