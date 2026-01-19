@@ -140,7 +140,7 @@ vec4 applyDecals(vec4 baseColor){
     vec3 viewDir = getViewDir(vWorldPos);
 
 
-    const float DECAL_EPSILON = 0.001;
+    const float DECAL_EPSILON = 0.01;
     vec3 biasedWorldPos = vWorldPos - N * DECAL_EPSILON;
 
     for (int i = 0; i < DecalCount; i++) {
