@@ -36,8 +36,11 @@ import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenChair;
 import net.zephyr.fnafur.blocks.props.floor_props.chairs.WoodenStool;
 import net.zephyr.fnafur.blocks.props.floor_props.condiment_counter.CondimentCounter;
 import net.zephyr.fnafur.blocks.props.floor_props.cutouts.SeriousCutout;
+import net.zephyr.fnafur.blocks.props.floor_props.filing_cabinet.FilingCabinet;
+import net.zephyr.fnafur.blocks.props.floor_props.floor_mat.FloorMat;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_monitors.FloorMonitors;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_trash.FloorTrash;
+import net.zephyr.fnafur.blocks.props.floor_props.fnaf1desk.Fnaf1Desk;
 import net.zephyr.fnafur.blocks.props.floor_props.instruments.flying_v_guitar.FlyingVGuitar;
 import net.zephyr.fnafur.blocks.props.floor_props.instruments.flying_v_guitar.FlyingVGuitarItem;
 import net.zephyr.fnafur.blocks.props.floor_props.instruments.standing_microphone.StandingMicrophone;
@@ -56,7 +59,6 @@ import net.zephyr.fnafur.blocks.props.floor_props.standing_menu.StandingMenu;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.Broom;
 import net.zephyr.fnafur.blocks.props.floor_props.supplies.MopBucket;
 import net.zephyr.fnafur.blocks.props.floor_props.tables.RetroTableBlock;
-import net.zephyr.fnafur.blocks.props.floor_props.tables.fnaf1desk.Fnaf1Desk;
 import net.zephyr.fnafur.blocks.props.floor_props.trash_bin.TrashBin;
 import net.zephyr.fnafur.blocks.props.floor_props.utensils_box.UtensilsBox;
 import net.zephyr.fnafur.blocks.props.floor_props.water_dispenser.WaterDispenser;
@@ -73,6 +75,7 @@ import net.zephyr.fnafur.blocks.props.wall_props.bulletin_board.BulletinBoard;
 import net.zephyr.fnafur.blocks.props.wall_props.clocks.GeoClockPropRenderer;
 import net.zephyr.fnafur.blocks.props.wall_props.clocks.WoodenClock;
 import net.zephyr.fnafur.blocks.props.wall_props.electricity.wall_outlet.WallOutlet;
+import net.zephyr.fnafur.blocks.props.wall_props.exit_arrow.ExitArrow;
 import net.zephyr.fnafur.blocks.props.wall_props.exit_sign_wall.ExitSign;
 import net.zephyr.fnafur.blocks.props.wall_props.fnaf1_rules.FNaF1Rules;
 import net.zephyr.fnafur.blocks.props.wall_props.kitchen.PotsAndPansRack;
@@ -107,6 +110,21 @@ public class PropInit {
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
             AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision()
+    );
+
+    public static final Block FILING_CABINET = registerGeoProp(
+            "filing_cabinet",
+            FilingCabinet::new,
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/filing_cabinet.png"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/filing_cabinet"),
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)
@@ -171,7 +189,10 @@ public class PropInit {
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
-                    .noCollision()
+                    .noCollision(),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
 
     public static final Block BEPH_PLUSHIE = registerBlock(
@@ -647,6 +668,22 @@ public class PropInit {
                     .breakInstantly()
                     .noCollision()
     );
+    public static final Block EXIT_ARROW = registerBlock(
+            "exit_arrow",
+            ExitArrow::new,
+            AbstractBlock.Settings.copy(Blocks.BAMBOO)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+                    .offset(AbstractBlock.OffsetType.NONE),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
+    );
     public static final Block WALL_OUTLET = registerBlock(
             "wall_outlet",
             WallOutlet::new,
@@ -675,6 +712,18 @@ public class PropInit {
             "air_vent",
             AirVent::new,
             AbstractBlock.Settings.copy(Blocks.IRON_BARS)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+    );
+    public static final Block FLOOR_MAT = registerBlock(
+            "floor_mat",
+            FloorMat::new,
+            AbstractBlock.Settings.copy(Blocks.BLUE_CARPET)
                     .nonOpaque()
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)

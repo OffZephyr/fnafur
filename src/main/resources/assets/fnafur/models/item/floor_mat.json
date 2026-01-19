@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-      "layer0": "fnafur:item/locker_yellow"
+      "layer0": "fnafur:item/floor_mat_item"
     }
 }

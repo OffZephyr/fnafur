@@ -1,0 +1,27 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases":[
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:item/exit_arrow/left_exit_arrow"
+        },
+        "when": "left"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:item/exit_arrow/right_exit_arrow"
+        },
+        "when": "right"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "fnafur:item/exit_arrow/left_exit_arrow"
+    },
+    "block_state_property": "color",
+    "property": "minecraft:block_state"
+  }
+}

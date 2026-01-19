@@ -50,6 +50,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.WALL_MENU)
                 .add(PropInit.POSTER)
                 .add(PropInit.FNAF1_RULES)
+                .add(PropInit.EXIT_ARROW)
 
        ;
 
@@ -98,6 +99,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.FRIDGE)
                 .add(PropInit.DOUBLE_DOOR_FRIDGE)
                 .add(GeoBlockInit.PIRATES_COVE_STAGE)
+                .add(PropInit.FILING_CABINET)
 
 
                 ;
@@ -106,6 +108,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.PLUSHIE)
                 .add(PropInit.PRESENT_STACK)
                 .add(GeoBlockInit.PIRATES_COVE_CURTAIN)
+                .add(PropInit.FLOOR_MAT)
 
 
                 // WALL BLOCKS AND FLOOR BLOCKS

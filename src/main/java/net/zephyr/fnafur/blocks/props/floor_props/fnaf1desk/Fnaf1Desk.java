@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.blocks.props.floor_props.tables.fnaf1desk;
+package net.zephyr.fnafur.blocks.props.floor_props.fnaf1desk;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;

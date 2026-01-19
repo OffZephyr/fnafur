@@ -1,0 +1,45 @@
+{
+	"format_version": "1.21.11",
+	"credit": "PHOBIA MADE THIS BOI!!",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "Missing_Paper1",
+		"particle": "Missing_Paper2"
+	},
+	"elements": [
+		{
+			"from": [3, 3, 16],
+			"to": [13, 14, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5.28806, 15.80866]},
+			"faces": {
+				"north": {"uv": [0, 0, 5, 5.5], "texture": "#0"},
+				"east": {"uv": [0, 0, 0, 5.5], "texture": "#0"},
+				"south": {"uv": [5, 0, 10, 5.5], "texture": "#0"},
+				"west": {"uv": [0, 0, 0, 5.5], "texture": "#0"},
+				"up": {"uv": [5, 0, 0, 0], "texture": "#0"},
+				"down": {"uv": [5, 0, 0, 0], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 1.24739, 16.86104],
+			"to": [13, 3.24739, 16.86104],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 5.28806, 15.80866]},
+			"faces": {
+				"north": {"uv": [0, 5.5, 5, 6.5], "texture": "#0"},
+				"east": {"uv": [0, 0, 0, 1], "texture": "#0"},
+				"south": {"uv": [5, 5.5, 10, 6.5], "texture": "#0"},
+				"west": {"uv": [0, 0, 0, 1], "texture": "#0"},
+				"up": {"uv": [5, 0, 0, 0], "texture": "#0"},
+				"down": {"uv": [5, 0, 0, 0], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"origin": [7, 3, 14],
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

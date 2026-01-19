@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-      "layer0": "fnafur:item/locker_gray_item"
+      "layer0": "fnafur:item/filing_cabinet_item"
     }
 }

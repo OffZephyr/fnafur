@@ -91,6 +91,9 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
         addDrop(PropInit.WOODEN_CRATE);
         addDrop(PropInit.FNAF1_RULES);
         addDrop(PropInit.WALL_MENU);
+        addDrop(PropInit.FILING_CABINET);
+        addDrop(PropInit.EXIT_ARROW);
+        addDrop(PropInit.FLOOR_MAT);
 
         addDrop(BlockInit.FOG_BLOCK);
 

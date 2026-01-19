@@ -1,0 +1,35 @@
+{
+  "variants": {
+    "facing=north,color=left": {
+      "model": "fnafur:props/exit_arrow/left_exit_arrow"
+    },
+    "facing=east,color=left": {
+      "model": "fnafur:props/exit_arrow/left_exit_arrow",
+      "y": 90
+    },
+    "facing=south,color=left": {
+      "model": "fnafur:props/exit_arrow/left_exit_arrow",
+      "y": 180
+    },
+    "facing=west,color=left": {
+      "model": "fnafur:props/exit_arrow/left_exit_arrow",
+      "y": 270
+    },
+    "facing=north,color=right": {
+        "model": "fnafur:props/exit_arrow/right_exit_arrow"
+    },
+    "facing=east,color=right": {
+        "model": "fnafur:props/exit_arrow/right_exit_arrow",
+        "y": 90
+    },
+    "facing=south,color=right": {
+        "model": "fnafur:props/exit_arrow/right_exit_arrow",
+        "y": 180
+    },
+    "facing=west,color=right": {
+        "model": "fnafur:props/exit_arrow/right_exit_arrow",
+        "y": 270
+      }
+    }
+  }
+

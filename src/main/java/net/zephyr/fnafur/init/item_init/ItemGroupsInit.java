@@ -53,6 +53,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.HANGING_STARS);
                         entries.add(PropInit.PRESENT_STACK);
                         entries.add(PropInit.EXIT_SIGN);
+                        entries.add(PropInit.EXIT_ARROW);
                         entries.add(PropInit.LIGHT_SWITCH);
                         entries.add(PropInit.WALL_OUTLET);
                         entries.add(PropInit.PUNCH_IN_CARDS);
@@ -77,6 +78,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.MOP_BUCKET);
                         entries.add(PropInit.TRASH_BIN);
                         entries.add(PropInit.WET_FLOOR_SIGN);
+                        entries.add(PropInit.FLOOR_MAT);
 
                         entries.add(PropInit.FOOD_DISPLAY_CASE);
                         entries.add(PropInit.CONDIMENT_COUNTER);
@@ -99,6 +101,7 @@ public class ItemGroupsInit {
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 
+                        entries.add(PropInit.FILING_CABINET);
                         entries.add(PropInit.WOODEN_CRATE);
                         entries.add(PropInit.TOOL_WALL_MOUNT);
                         entries.add(BlockInit.WAREHOUSE_SHELF);
