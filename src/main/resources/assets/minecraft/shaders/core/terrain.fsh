@@ -140,6 +140,9 @@ vec4 applyDecals(vec4 baseColor){
     vec3 viewDir = getViewDir(vWorldPos);
 
 
+    const float DECAL_EPSILON = 0.1;
+    vec3 biasedWorldPos = vWorldPos - N * DECAL_EPSILON;
+
     for (int i = 0; i < DecalCount; i++) {
         Decal decal = decals[i];
 
@@ -168,19 +171,16 @@ vec4 applyDecals(vec4 baseColor){
         vec3 finalPos2 = vec3(x2 + 1, y2 + 1, z2 + 1);
 
         if(
-            vWorldPos.x >= x1 &&
-            vWorldPos.y >= y1 &&
-            vWorldPos.z >= z1 &&
-            vWorldPos.x <= x2 + 1 &&
-            vWorldPos.y <= y2 + 1 &&
-            vWorldPos.z <= z2 + 1
+            biasedWorldPos.x >= x1 &&
+            biasedWorldPos.y >= y1 &&
+            biasedWorldPos.z >= z1 &&
+            biasedWorldPos.x <= x2 + 1 &&
+            biasedWorldPos.y <= y2 + 1 &&
+            biasedWorldPos.z <= z2 + 1
         ){
             vec3 f = normalize(decal.DecalForward);
             vec3 r = normalize(decal.DecalRight);
             vec3 u = normalize(cross(f, r));
-
-            const float DECAL_EPSILON = 0.1; // world units (~1mm)
-            vec3 biasedWorldPos = vWorldPos + N * DECAL_EPSILON;
 
             vec3 toFrag = biasedWorldPos - finalPos1;
 
