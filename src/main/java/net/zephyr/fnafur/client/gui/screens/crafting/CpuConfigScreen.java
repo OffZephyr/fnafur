@@ -1,28 +1,102 @@
 package net.zephyr.fnafur.client.gui.screens.crafting;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.input.KeyInput;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Style;
+import net.minecraft.text.StyleSpriteSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.client.ClientHook;
+import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.client.gui.screens.InWorldScreen;
+import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.init.block_init.BlockInit;
+import net.zephyr.fnafur.init.item_init.ItemInit;
+import net.zephyr.fnafur.item.CPUItem;
+import net.zephyr.fnafur.networking.entity.player.UpdateCreativeExtraSlotsC2SPayload;
+import net.zephyr.fnafur.networking.entity.player.UpdateMainHandItemC2SPayload;
+import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
 import org.joml.Vector3f;
 
+import java.util.*;
+
 public class CpuConfigScreen extends InWorldScreen {
+
+    CpuData data = new CpuData();
+    int scrollAmount = 0;
+    int selectedIndex = 0;
+
+    float age = 0;
+
+    List<String> SettingList = new ArrayList<>();
+    Map<String, String> SettingMap = new HashMap<>();
 
     public CpuConfigScreen(Text title, NbtCompound nbt, long l) {
         super(title, nbt, l);
+        ItemStack stack = MinecraftClient.getInstance().player.getMainHandStack();
+        if(stack.isOf(ItemInit.CPU)){
+            data = CPUItem.getCpuData(stack);
+        }
+        selectedIndex++;
+
+        updateList();
+    }
+
+    void updateList(){
+        SettingList.clear();
+        SettingList.add("title_visual");
+        SettingList.add("animation");
+        for(String string : data.KeyList){
+            if(Objects.equals(string, CpuData.MovementSpeed.getDefault().getKey())){
+                SettingList.add("title_stats");
+            }
+            else if(Objects.equals(string, CpuData.SingingRole.getDefault().getKey())){
+                SettingList.add("title_base");
+            }
+            else if(Objects.equals(string, CpuData.ReactionToLight.getDefault().getKey())){
+                SettingList.add("title_interactions");
+            }
+            else if(Objects.equals(string, CpuData.AggressionMode.getDefault().getKey())){
+                SettingList.add("title_aggressivity");
+            }
+            SettingList.add(string);
+        }
+    }
+
+    String getArgumentValue(String argument){
+        if(Objects.equals(argument, "animation")){
+            return data.Animation;
+        }
+        else if(data.DATA_LIST.get(argument) instanceof CpuData.CpuDataRangeArgument range){
+            return range.getValue() + " / " + range.getMax();
+        }
+        else if(data.DATA_LIST.containsKey(argument)){
+            return data.DATA_LIST.get(argument).getName();
+        }
+        return "";
     }
 
     public CpuConfigScreen(Text text, NbtCompound nbtCompound, Object o) {
         super(text, nbtCompound, o);
+        ItemStack stack = MinecraftClient.getInstance().player.getMainHandStack();
+        if(stack.isOf(ItemInit.CPU)){
+            data = CPUItem.getCpuData(stack);
+        }
+        selectedIndex++;
+
+        updateList();
     }
 
     @Override
@@ -52,25 +126,143 @@ public class CpuConfigScreen extends InWorldScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+
         if(ClientHook.tickTransitionToScreen == 1){
-            Text test = Text.literal("TEST");
-            drawResizableText(context, textRenderer, test, 3, width/2f, height/2f - 4, 0xFFFFFFFF, 0x00000000, false, true);
+            age += delta/20f;
+            StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "lemon_terminal"));
+            Style style = Style.EMPTY.withFont(spriteFont);
+
+            Text MenuInitials = Text.literal("A.B.C.U.").getWithStyle(style).getFirst();
+            Text MenuName = Text.literal("Animatronic Behavior Configuration Unit").getWithStyle(style).getFirst();
+            if(age < 2){
+
+                if(age > 1.75f) return;
+
+                drawResizableText(context, textRenderer, MenuInitials, 5, width/2f, height/2f - 20, 0xFF33FF66, 0x00000000, false, true);
+                if(age > 0.45f){
+                    drawResizableText(context, textRenderer, MenuName, 0.8f, width/2f - 2, height/2f + 20, 0xFF00FF00, 0x00000000, false, true);
+                }
+
+                return;
+            }
+
+            Text Controls = Text.literal("")
+                    .append(Text.literal("[").getWithStyle(style).getFirst())
+                    .append(Text.literal("↑↓"))
+                    .append(Text.literal("]/[").getWithStyle(style).getFirst())
+                    .append(Text.literal("🖱"))
+                    .append(Text.literal("] - Navigate").getWithStyle(style).getFirst());
+
+            Text Controls2 = Text.literal("")
+                    .append(Text.literal("[").getWithStyle(style).getFirst())
+                    .append(Text.literal("←→"))
+                    .append(Text.literal("]/[").getWithStyle(style).getFirst())
+                    .append(Text.literal("🖱"))
+                    .append(Text.literal("]/[Enter] - Cycle Options").getWithStyle(style).getFirst());
+
+            Text Controls3 = Text.literal("- Controls -").getWithStyle(style).getFirst();
+
+            drawResizableText(context, textRenderer, MenuInitials, 2.7f, width/4f - 2, height/28f + 2, 0xFF33FF66, 0x00000000, false, false);
+            drawResizableText(context, textRenderer, MenuName, 0.45f, width/4f - 2, height/28f + 22, 0xFF00FF00, 0x00000000, false, false);
+
+            float controlWidth1 = textRenderer.getWidth(Controls) * 0.75f;
+            float controlWidth2 = textRenderer.getWidth(Controls2) * 0.75f;
+            float controlWidth3 = textRenderer.getWidth(Controls3) * 0.9f;
+            drawResizableText(context, textRenderer, Controls3, 0.9f, -12 + width - (width/4f) - controlWidth3, height/28f + 0, 0xFF33FF66, 0x00000000, false, false);
+            drawResizableText(context, textRenderer, Controls, 0.75f, -12 + width - (width/4f) - controlWidth1, height/28f + 11, 0xFF00FF00, 0x00000000, false, false);
+            drawResizableText(context, textRenderer, Controls2, 0.75f, -12 + width - (width/4f) - controlWidth2, height/28f + 20, 0xFF00FF00, 0x00000000, false, false);
+
+            context.fill(width/4 - 4, height/28 + 31, -12 + width - (width/4), height/28 + 32, 0xFF33FF66);
+
+            int list = age < 2.25f ? 0 : age < 2.321f ? 5 : age < 2.67 ? 9 : 12;
+            for(int i = 0; i < Math.min(SettingList.size(), list); i++){
+                int offset = scrollAmount;
+                if(i + offset >= SettingList.size()) continue;
+                String name = SettingList.get(i + offset);
+                String value = getArgumentValue(name);
+                int selected = selectedIndex - offset;
+                boolean title = name.contains("title_");
+                int color = title ? 0xFF33FF66 : i == selected ? 0xFF00FF00 : 0xFF006622;
+
+                Text nameText = Text.translatable("cpu_config.argument." + name).getWithStyle(style).getFirst();
+                Text valueText = Text.translatable("cpu_config.value." + value).getWithStyle(style).getFirst();
+
+                if(data.DATA_LIST.get(name) instanceof CpuData.CpuDataRangeArgument){
+                    valueText = Text.literal(value);
+                }
+                if(name.equals("animation")){
+                    valueText = Text.translatable("entity.fnafur."+ value).getWithStyle(style).getFirst();
+                }
+
+                if(selected == i){
+                    Style optionStyle = style.withUnderline(true);
+                    valueText = valueText.getWithStyle(optionStyle).getFirst();
+                }
+
+                Text text = Text.literal("").append(nameText).append(Text.literal(": < ").getWithStyle(style).getFirst()).append(valueText).append(Text.literal(" >").getWithStyle(style).getFirst());
+                if(title){
+                    text = nameText;
+                }
+
+                float scale = title ? 1.75f : 1f;
+                float lowScale = title ? 1.1f : 0.5f;
+                float scaleIndex = selected == i ? scale : lowScale;
+                scale = i == selected ? scale : MathHelper.lerp(scaleIndex, lowScale, scale)/1.25f;
+                scale = Math.max(scale, 0);
+                float x = width/4f;
+                float y = 3 + height/6f + i * 18;
+                context.fill(-4 + (int)x, (int) y - 3, -12 + width - (width/4), (int) y + 11, 0xAA000101);
+                drawResizableText(context, textRenderer, text, scale, x, y, color, 0x00000000, false, false);
+
+            }
+
         }
         super.render(context, mouseX, mouseY, delta);
     }
 
     @Override
     protected void renderDarkening(DrawContext context) {
+        float index = Math.clamp(ClientHook.tickTransitionToScreen, 0, 1);
+        int color = ColorHelper.getArgb((int) (MathHelper.lerp(index, 0, 0.6f) * 255f), 0, 0, 0);
+        context.fill(0, 0, width, height, color);
         //super.renderDarkening(context);
     }
 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
+
+        for(int i = 0; i < Math.min(SettingList.size(), 12); i++){
+            int offset = scrollAmount;
+            if(i + offset >= SettingList.size()) continue;
+            String name = SettingList.get(i + offset);
+
+            float x = width/4f;
+            float y = 3 + height/6f + i * 18;
+            if(isOnButton(mouseX, mouseY,-4 + (int)x, (int) y - 5, (-12 + width - (width/4)) - (-4 + (int)x), 18)){
+                if(name.contains("title_")) continue;
+                else{
+                    selectedIndex = i + offset;
+                }
+
+            }
+
+        }
         super.mouseMoved(mouseX, mouseY);
     }
 
     @Override
     public boolean mouseClicked(Click click, boolean doubled) {
+        if(age < 2) {
+            age = 2;
+            return super.mouseClicked(click, doubled);
+        }
+        if (click.button() == 0) {
+            String index = SettingList.get(selectedIndex);
+            data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleRight());
+        } else if (click.button() == 1) {
+            String index = SettingList.get(selectedIndex);
+            data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleLeft());
+        }
         return super.mouseClicked(click, doubled);
     }
 
@@ -80,12 +272,81 @@ public class CpuConfigScreen extends InWorldScreen {
     }
 
     @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+
+        if(verticalAmount < 0){
+            scrollAmount++;
+        } else if (verticalAmount > 0) {
+            scrollAmount--;
+        }
+        scrollAmount = Math.clamp(scrollAmount, 0, SettingList.size() - 12);
+        mouseMoved(mouseX, mouseY);
+
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        NbtCompound nbt = new NbtCompound();
+        ItemStack stack = ItemInit.CPU.getDefaultStack();
+        stack = CPUItem.putCpuData(stack, data);
+        nbt.put("stack", ItemStack.CODEC, stack);
+        MinecraftClient.getInstance().player.setStackInHand(MinecraftClient.getInstance().player.preferredHand, stack);
+        ClientPlayNetworking.send(new UpdateMainHandItemC2SPayload(nbt));
+    }
+
+    @Override
     public boolean mouseReleased(Click click) {
         return super.mouseReleased(click);
     }
 
     @Override
     public boolean keyPressed(KeyInput input) {
+        if(age < 2) {
+            age = 2;
+            return super.keyPressed(input);
+        }
+
+        if(input.isDown()){
+            selectedIndex++;
+
+            selectedIndex = selectedIndex > SettingList.size() - 1 ? 0 : selectedIndex;
+
+            if(SettingList.get(selectedIndex).contains("title_")){
+                selectedIndex++;
+            }
+
+            if(selectedIndex < scrollAmount) scrollAmount = selectedIndex;
+            if(selectedIndex > scrollAmount + 11) scrollAmount = selectedIndex - 11;
+
+        } else if (input.isUp()) {
+            selectedIndex--;
+
+            if(SettingList.get(selectedIndex).contains("title_")){
+                selectedIndex--;
+            }
+
+            selectedIndex = selectedIndex < 0 ? SettingList.size() - 1 : selectedIndex;
+
+            if(selectedIndex < scrollAmount) scrollAmount = selectedIndex;
+            if(selectedIndex > scrollAmount + 11) scrollAmount = selectedIndex - 11;
+
+        } else if (input.isRight() || input.isEnterOrSpace()) {
+            String index = SettingList.get(selectedIndex);
+            data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleRight());
+        } else if (input.isLeft()) {
+            String index = SettingList.get(selectedIndex);
+            data.DATA_LIST.put(index, data.DATA_LIST.get(index).cycleLeft());
+        }
+
+        selectedIndex = Math.clamp(selectedIndex, 0, SettingList.size() - 1);
+
+
+        scrollAmount = Math.clamp(scrollAmount, 0, SettingList.size() - 12);
+
+
+        updateList();
         return super.keyPressed(input);
     }
 

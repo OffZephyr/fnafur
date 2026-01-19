@@ -10,7 +10,7 @@ import net.minecraft.text.*;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
-import net.zephyr.fnafur.init.DecalInit;
+import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemUtil;
 

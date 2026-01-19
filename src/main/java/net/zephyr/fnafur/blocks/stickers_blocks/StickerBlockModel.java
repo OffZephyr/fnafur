@@ -24,8 +24,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
-import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
-import net.zephyr.fnafur.init.DecalInit;
+import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 

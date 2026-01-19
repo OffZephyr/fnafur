@@ -12,6 +12,7 @@ public class FnafUniverseRebuiltDataGenerator implements DataGeneratorEntrypoint
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
 		pack.addProvider(PaletteTextureProvider::new);
+		pack.addProvider(DecalPaletteTextureProvider::new);
 		pack.addProvider(BlockTagProvider::new);
 		pack.addProvider(ItemTagProvider::new);
 		pack.addProvider(LootTableProvider::new);

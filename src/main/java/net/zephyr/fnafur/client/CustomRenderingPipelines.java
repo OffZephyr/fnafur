@@ -2,8 +2,10 @@ package net.zephyr.fnafur.client;
 
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.platform.PolygonMode;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gl.UniformType;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.RenderSetup;
@@ -11,6 +13,7 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.zephyr.fnafur.decals.DecalManager;
 
 import java.util.function.BiFunction;
 
@@ -31,6 +34,37 @@ public class CustomRenderingPipelines {
             RenderPipeline.builder(RENDERTYPE_COSMO_SPACE_SNIPPET)
                     .withLocation("pipeline/cosmo_space")
                     .withShaderDefine("PORTAL_LAYERS", 16)
+                    .build()
+    );
+
+    public static final RenderPipeline.Snippet COOL_TERRAIN_SNIPPET = RenderPipeline.builder(RenderPipelines.FOG_AND_SAMPLERS_SNIPPET)
+            .withUniform("Projection", UniformType.UNIFORM_BUFFER)
+            .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
+            .withUniform("DecalInfo", UniformType.UNIFORM_BUFFER)
+            .withShaderDefine("MAX_DECAL_DISTANCE", DecalManager.MAX_DISTANCE)
+            .withVertexShader("core/terrain")
+            .withFragmentShader("core/terrain")
+            .buildSnippet();
+
+    public static final RenderPipeline COOL_SOLID_TERRAIN = RenderPipelines.register(RenderPipeline.builder(COOL_TERRAIN_SNIPPET).withLocation("pipeline/solid_terrain").build());
+    public static final RenderPipeline COOL_WIREFRAME = RenderPipelines.register(
+            RenderPipeline.builder(COOL_TERRAIN_SNIPPET).withLocation("pipeline/wireframe").withPolygonMode(PolygonMode.WIREFRAME).build()
+    );
+    public static final RenderPipeline COOL_CUTOUT_TERRAIN = RenderPipelines.register(
+            RenderPipeline.builder(COOL_TERRAIN_SNIPPET).withLocation("pipeline/cutout_terrain").withShaderDefine("ALPHA_CUTOUT", 0.5F).build()
+    );
+    public static final RenderPipeline COOL_TRANSLUCENT = RenderPipelines.register(
+            RenderPipeline.builder(COOL_TERRAIN_SNIPPET)
+                    .withLocation("pipeline/translucent_terrain")
+                    .withBlend(BlendFunction.TRANSLUCENT)
+                    .withShaderDefine("ALPHA_CUTOUT", 0.01F)
+                    .build()
+    );
+    public static final RenderPipeline COOL_TRIPWIRE_TERRAIN = RenderPipelines.register(
+            RenderPipeline.builder(COOL_TERRAIN_SNIPPET)
+                    .withLocation("pipeline/tripwire_terrain")
+                    .withShaderDefine("ALPHA_CUTOUT", 0.1F)
+                    .withBlend(BlendFunction.TRANSLUCENT)
                     .build()
     );
 

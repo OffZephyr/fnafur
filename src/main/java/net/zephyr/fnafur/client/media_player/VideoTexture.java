@@ -67,6 +67,7 @@ public class VideoTexture {
     }
 
     void setupCache() {
+        if(true) return;
         decoderThread.submit(() -> {
             try {
                 VideoAudioToSoundEvent.createSoundEventFromVideo(Identifier.of(this.namespace, this.name), this.name);
@@ -95,10 +96,11 @@ public class VideoTexture {
             } finally {
 
                 isDoneCashing = true;
-                try {
-                    grab.stop();
-                } catch (Exception ignored) {
-                }
+
+                try { grab.stop(); } catch (Exception ignored) {}
+                try { grab.release(); } catch (Exception ignored) {}
+                try { grab.close(); } catch (Exception ignored) {}
+
                 decoderThread.shutdown();
             }
         });

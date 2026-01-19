@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.client.gui.screens.crafting;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
@@ -11,21 +12,32 @@ import net.minecraft.text.Style;
 import net.minecraft.text.StyleSpriteSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
+import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench.WorkbenchBlock;
+import net.zephyr.fnafur.client.ClientHook;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
+import net.zephyr.fnafur.client.gui.screens.InWorldScreen;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
+import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.networking.block.DropItemFromWorkbenchC2SPayload;
 import net.zephyr.fnafur.util.EasingMathUtil;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
+import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.Objects;
 
-public class SuitMakingScreen extends GoopyScreen {
+public class SuitMakingScreen extends InWorldScreen {
     public static final Identifier TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench/workbench.png");
 
     AnimatronicEntity preview;
@@ -80,6 +92,54 @@ public class SuitMakingScreen extends GoopyScreen {
     }
 
     @Override
+    protected void renderDarkening(DrawContext context) {
+        float index = Math.clamp(ClientHook.tickTransitionToScreen, 0, 1);
+        int color = ColorHelper.getArgb((int) (MathHelper.lerp(index, 0, 0.4f) * 255f), 0, 0, 0);
+        context.fill(0, 0, width, height, color);
+    }
+
+    @Override
+    public Vec3d getCameraPos() {
+        BlockState blockState = MinecraftClient.getInstance().world.getBlockState(getBlockPos());
+        if(blockState.isOf(BlockInit.WORKBENCH)){
+            if(MinecraftClient.getInstance().world.getBlockEntity(getBlockPos()) instanceof PropBlockEntity entity) {
+                double offsetX = ((IEntityDataSaver) entity).getPersistentData().getDouble("xOffset").orElse(0.0);
+                double offsetY = ((IEntityDataSaver) entity).getPersistentData().getDouble("yOffset").orElse(0.0);
+                double offsetZ = ((IEntityDataSaver) entity).getPersistentData().getDouble("zOffset").orElse(0.0);
+
+
+                float yaw = ((IEntityDataSaver) entity).getPersistentData().getFloat("Rotation").orElse(0f);
+                Vec3d propOffset = new Vec3d(offsetX, offsetY, offsetZ);
+
+                //Vec3d offset = blockState.get(WorkbenchBlock.FACING).getDoubleVector().multiply(0.3f);
+                //Vec3d offset2 = blockState.get(WorkbenchBlock.FACING).rotateYClockwise().getDoubleVector().multiply(-0.175f);
+                Vec3d finalOffset = new Vec3d(0, 0.4f, -0.1f).rotateY(-yaw * MathHelper.RADIANS_PER_DEGREE).add(propOffset);
+                //finalOffset = finalOffset.rotateY(yaw * MathHelper.RADIANS_PER_DEGREE);
+                finalOffset = finalOffset;
+                return new Vec3d(getBlockPos()).add(finalOffset);
+            }
+        }
+        return getBlockPos().toCenterPos().add(new Vec3d(0, 0, 0));
+    }
+
+    @Override
+    public Vector3f getCameraAngle() {
+        BlockState blockState = MinecraftClient.getInstance().world.getBlockState(getBlockPos());
+        if(blockState.isOf(BlockInit.WORKBENCH)){
+            if(MinecraftClient.getInstance().world.getBlockEntity(getBlockPos()) instanceof PropBlockEntity entity) {
+                float yaw = ((IEntityDataSaver) entity).getPersistentData().getFloat("Rotation").orElse(0f);
+                while(yaw < 0){
+                    yaw += 360;
+                }
+
+                yaw %= 360;
+                return new Vector3f(blockState.get(WorkbenchBlock.FACING).getPositiveHorizontalDegrees() + 180 + yaw, 90, 0);
+            }
+        }
+        return new Vector3f(0, 0, 0);
+    }
+
+    @Override
     public void tick() {
         super.tick();
         icon_preview.tick();
@@ -88,6 +148,8 @@ public class SuitMakingScreen extends GoopyScreen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        if(ClientHook.tickTransitionToScreen != 1) return;
+        float startAnimationIndex = Math.clamp(age /1f, 0, 1);
         preview.force_age += delta;
         icon_preview.force_age += delta;
         super.render(context, mouseX, mouseY, delta);
@@ -96,8 +158,11 @@ public class SuitMakingScreen extends GoopyScreen {
 
         age += deltaTicks;
 
+
+        context.getMatrices().translate((float) 0, (float) MathHelper.lerp(EasingMathUtil.easeInOutBack(startAnimationIndex), height, 0));
+
         // BACK
-        show_preview = this.category.isEmpty();
+        show_preview = this.category.isEmpty() && age > 1f;
         back_offset_index += (show_preview ? 1 : -1) * (deltaTicks*2);
         back_offset_index = (float) Math.clamp(back_offset_index, 0, 1);
 
@@ -108,7 +173,9 @@ public class SuitMakingScreen extends GoopyScreen {
         int preview_x = back_x;
         int preview_y = (height / 2) - 92;
 
-        GoopyScreen.drawEntity(context, preview_x, preview_y, preview_x + 148, preview_y + 221, 80, 0, new Quaternionf().rotationXYZ((float) (preview_rotation_y), (float) (preview_rotation_x), 0), preview);
+        if(back_offset_index > 0.15f) {
+            GoopyScreen.drawEntity(context, preview_x, preview_y, preview_x + 148, preview_y + 221, 80, 0, new Quaternionf().rotationXYZ((float) (preview_rotation_y), (float) (preview_rotation_x), 0), preview);
+        }
 
         int save_x = preview_x + 8;
         int export_x = preview_x + 40;
@@ -165,6 +232,7 @@ public class SuitMakingScreen extends GoopyScreen {
                 int color2 = isHovering ? 0xFFFFFFFF : 0xFFFFFFFF;
                 context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, lockX, y + 8, 256, v, 32, 32, 512, 512, color2);
             }
+
         }
 
 

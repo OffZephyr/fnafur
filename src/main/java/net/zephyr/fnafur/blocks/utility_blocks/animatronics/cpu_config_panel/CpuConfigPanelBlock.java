@@ -5,6 +5,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -28,13 +29,9 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
 public class CpuConfigPanelBlock extends BlockWithEntity {
-    public static final BooleanProperty TOP_CPU = BooleanProperty.of("top");
-    public static final BooleanProperty BOTTOM_CPU = BooleanProperty.of("bottom");
-    public static final BooleanProperty PATHING_CHIP = BooleanProperty.of("path");
     public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
     public CpuConfigPanelBlock(Settings settings) {
         super(settings);
-        setDefaultState(getDefaultState().with(TOP_CPU, false).with(BOTTOM_CPU, false).with(PATHING_CHIP, false));
     }
 
     @Nullable
@@ -45,39 +42,14 @@ public class CpuConfigPanelBlock extends BlockWithEntity {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if(!state.get(TOP_CPU) && player.getMainHandStack().isOf(ItemInit.CPU)){
-            NbtCompound CPU = ItemUtil.getNbt(player.getMainHandStack());
+        if(player.getMainHandStack().isOf(ItemInit.CPU)){
+
             if(world.getBlockEntity(pos) instanceof CpuConfigPanelBlockEntity ent){
-                ((IEntityDataSaver)ent).getPersistentData().put("cpu", NbtCompound.CODEC, CPU);
-            }
-
-            world.setBlockState(pos, state.with(TOP_CPU, true));
-            player.getMainHandStack().split(1);
-            return ActionResult.SUCCESS;
-        } else {
-            if(player.isSneaking()) {
-                world.setBlockState(pos, state.with(TOP_CPU, false));
-                ItemStack stack = new ItemStack(ItemInit.CPU, 1);
-
-
-                if(world.getBlockEntity(pos) instanceof CpuConfigPanelBlockEntity ent){
-                    NbtCompound CPU = ((IEntityDataSaver)ent).getPersistentData().getCompoundOrEmpty("cpu");
-                    if(!CPU.isEmpty()) {
-                        ItemUtil.setNbt(stack, CPU);
-                    }
-                }
-
-                dropStack(world, pos, state.get(FACING), stack);
+                GoopyNetworkingUtils.setScreen(player, "cpu_config", ((IEntityDataSaver)ent).getPersistentData(), pos);
                 return ActionResult.SUCCESS;
             }
-            else{
-                if(world.getBlockEntity(pos) instanceof CpuConfigPanelBlockEntity ent){
-                    GoopyNetworkingUtils.setScreen(player, "cpu_config", ((IEntityDataSaver)ent).getPersistentData(), pos);
-                    return ActionResult.SUCCESS;
-                }
-            }
-            return ActionResult.PASS;
         }
+            return ActionResult.PASS;
     }
 
     @Override
@@ -93,7 +65,7 @@ public class CpuConfigPanelBlock extends BlockWithEntity {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(FACING).add(TOP_CPU).add(BOTTOM_CPU).add(PATHING_CHIP));
+        super.appendProperties(builder.add(FACING));
     }
 
     @Override

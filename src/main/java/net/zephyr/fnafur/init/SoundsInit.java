@@ -91,6 +91,6 @@ public class SoundsInit {
 
     public static void registerSounds() {
         FnafUniverseRebuilt.LOGGER.info("Registering Sounds for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
-        VideoInit.registerVideos();
+        //VideoInit.registerVideos();
     }
 }

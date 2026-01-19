@@ -2,7 +2,9 @@ package net.zephyr.fnafur.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
+import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.util.ItemUtil;
 
 public class CPUItem extends Item {
@@ -19,13 +21,17 @@ public class CPUItem extends Item {
 
     }
 
+    public static CpuData getCpuData(ItemStack stack){
 
-    public static CPU getCPU(ItemStack stack){
-        CPU cpu = new CPU();
-        return cpu;
+        NbtCompound nbt = ItemUtil.getNbt(stack).getCompound("cpu_data").orElse(new CpuData().toNbt());
+        return CpuData.fromNbt(nbt);
     }
 
-    public static class CPU {
+    public static ItemStack putCpuData(ItemStack stack, CpuData data){
 
+        NbtCompound nbt = new NbtCompound();
+        nbt.put("cpu_data", data.toNbt());
+
+        return ItemUtil.setNbt(stack, nbt);
     }
 }

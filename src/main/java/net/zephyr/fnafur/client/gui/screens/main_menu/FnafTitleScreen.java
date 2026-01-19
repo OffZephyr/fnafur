@@ -44,9 +44,7 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.client.gui.screens.main_menu.Singleplayer.CreditsScreen;
 import net.zephyr.fnafur.client.gui.screens.main_menu.Singleplayer.FnafSelectWorldScreen;
-import net.zephyr.fnafur.client.media_player.VideoInstance;
 import net.zephyr.fnafur.init.SoundsInit;
-import net.zephyr.fnafur.init.VideoInit;
 import net.zephyr.fnafur.util.EasingMathUtil;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -141,10 +139,6 @@ public class FnafTitleScreen extends Screen {
     private boolean doBackgroundFade;
     private long backgroundFadeStart;
     private final LogoDrawer logoDrawer;
-
-    private VideoInstance video_test;
-    private VideoInstance video_test1;
-    private VideoInstance video_test2;
     //private MediaPlayerInstance media_test;
 
     public FnafTitleScreen() {

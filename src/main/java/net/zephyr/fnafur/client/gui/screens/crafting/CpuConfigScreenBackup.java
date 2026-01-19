@@ -21,7 +21,8 @@ public class CpuConfigScreenBackup extends GoopyScreen {
 
         super(text, nbtCompound, o);
 
-        Boolean bl = MinecraftClient.getInstance().world.getBlockState(getBlockPos()).get(CpuConfigPanelBlock.TOP_CPU);
+//        Boolean bl = MinecraftClient.getInstance().world.getBlockState(getBlockPos()).get(CpuConfigPanelBlock.TOP_CPU);
+        Boolean bl = false;
 
         if(!bl){
             nbtCompound = new NbtCompound();

@@ -22,7 +22,7 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
-import net.zephyr.fnafur.init.DecalInit;
+import net.zephyr.fnafur.init.decal_init.DecalInit;
 
 import java.util.List;
 

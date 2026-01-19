@@ -8,18 +8,15 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.impl.itemgroup.FabricItemGroupImpl;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.HotbarStorage;
 import net.minecraft.client.option.HotbarStorageEntry;
-import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.texture.*;
 import net.minecraft.client.util.InputUtil;
@@ -58,7 +55,9 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Environment(EnvType.CLIENT)
 public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
@@ -74,12 +73,27 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     public static final Identifier SLOTS = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/creative_inventory_mask_slot.png");
     public static final Identifier BLOCKS_BACK = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/blocks_back.png");
     public static final Identifier ITEM_SELECTION_WITH_ALTS_BACK = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/slots.png");
+    public static final Identifier ITEM_SELECTION_WITH_ALTS_BACK_BLUE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/creative_inventory/slots_blue.png");
     public CategoryPicker activeCategory = null;
     private int selectedItemCategory = -1;
     private int selectedItemCategoryOffset = 0;
     private int lastPreviewStackIndex = 0;
     private float backgroundOffset = 0;
     private boolean isPreviewTypeTiling = false;
+
+    static Map<String, List<String>> CODE_MAP = Map.of(
+            "bear5", List.of("BEAR5", "BEARFIVE", "FIVEBEAR", "5BEAR", "BEQR5", "BEQRFIVE", "FIVEBEQR", "5BEQR")
+    );
+
+    static Map<String, FnafSubTab> CODE_FOR_TAB = Map.of(
+            "bear5", FnafSubTab.BEAR5
+    );
+
+    static Map<String, CategoryPicker> CODE_FOR_CATEGORY = Map.of(
+            "bear5", new CategoryPicker("bear5", 54, 18, 14, 16, 98, 125, 98, 109, BLOCKS_BACK, ItemCategoriesInit.BEAR_FIVE)
+    );
+
+    String currentCode = "";
 
     public FnafCreativeInventoryScreen(ClientPlayerEntity player, FeatureSet enabledFeatures, boolean operatorTabEnabled) {
         super(player, enabledFeatures, operatorTabEnabled);
@@ -212,6 +226,51 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
     @Override
     public boolean keyPressed(KeyInput input) {
+
+        if(!input.isEscape() && isFnafTab && SubTab == FnafSubTab.DEFAULT){
+
+            String in = InputUtil.fromKeyCode(input).getLocalizedText().getString();
+            String combined = currentCode + in;
+            AtomicBoolean playSound = new AtomicBoolean(true);
+            AtomicBoolean doPlaySound = new AtomicBoolean(false);
+
+            List<String> codes = new ArrayList<>();
+            CODE_MAP.forEach((index, list) ->{
+                list.forEach((code) -> {
+                    if(code.contains(currentCode)){
+
+                        if(code.contains(combined)) {
+                            currentCode = combined;
+                            codes.add(code);
+                            if (code.equals(currentCode)) {
+                                GoalSubTab = CODE_FOR_TAB.get(index);
+                                activeCategory = CODE_FOR_CATEGORY.get(index);
+                                currentCode = in;
+                            }
+                        }
+                    }
+
+                    if((currentCode.length() <= 1 && code.charAt(0) == in.charAt(0)) || (!currentCode.isEmpty() && code.charAt(0) == currentCode.charAt(0))){
+                        doPlaySound.set(true);
+                    }
+                });
+
+                if(codes.isEmpty()){
+                    currentCode = in;
+                }
+
+                if(playSound.get() && doPlaySound.get()){
+                    MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, Math.min(1, 0.5f + (currentCode.length() / 10f)));
+                    playSound.set(false);
+                    doPlaySound.set(false);
+                }
+            });
+            System.out.println(currentCode);
+            if(currentCode.length() <= 1){
+                return super.keyPressed(input);
+            }
+            return false;
+        }
         return super.keyPressed(input);
     }
 
@@ -237,11 +296,11 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     public void renderTechBackground(DrawContext context, int mouseX, int mouseY, float delta) {
 
     }
-    public void renderItemSelectionBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void renderItemSelectionBackground(DrawContext context, Identifier back_texture, int text_color, int mouseX, int mouseY, float delta) {
         backgroundOffset += delta*20f;
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, ITEM_SELECTION_WITH_ALTS_BACK, this.x + 7, this.y + 20, 0, 0, this.backgroundWidth - 8, this.backgroundHeight - 21, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 7, this.y + 20, 0, 0, this.backgroundWidth - 8, this.backgroundHeight - 21, 256, 256);
         int leaveV = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 9, this.y + 22, 9, 9) ? 9 : 0;
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, ITEM_SELECTION_WITH_ALTS_BACK, this.x + 9, this.y + 22, this.backgroundWidth-14, leaveV, 9, 9, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 9, this.y + 22, this.backgroundWidth-14, leaveV, 9, 9, 256, 256);
 
         for(int i = 0; i < 9; i++) {
             ItemStack stack = this.handler.slots.get(45 + i).getStack();
@@ -259,17 +318,17 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         }
 
         if(activeCategory != null) {
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, ITEM_SELECTION_WITH_ALTS_BACK, this.x + 81, this.y + 36, this.backgroundWidth, 27, 7, 16, 256, 256);
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, ITEM_SELECTION_WITH_ALTS_BACK, this.x + 180, this.y + 36, this.backgroundWidth, 43, 7, 16, 256, 256);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 81, this.y + 36, this.backgroundWidth, 27, 7, 16, 256, 256);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 180, this.y + 36, this.backgroundWidth, 43, 7, 16, 256, 256);
             if(activeCategory.itemCategory != null) {
 
                 if(selectedItemCategory != -1) {
                     int leftArrowU = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 81, this.y + 36, 7, 16) ? this.backgroundWidth - 7 : this.backgroundWidth - 14;
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, ITEM_SELECTION_WITH_ALTS_BACK, this.x + 81, this.y + 36, leftArrowU, 27, 7, 16, 256, 256);
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 81, this.y + 36, leftArrowU, 27, 7, 16, 256, 256);
                     int rightArrowU = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 180, this.y + 36, 7, 16) ? this.backgroundWidth - 7 : this.backgroundWidth - 14;
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, ITEM_SELECTION_WITH_ALTS_BACK, this.x + 180, this.y + 36, rightArrowU, 43, 7, 16, 256, 256);
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 180, this.y + 36, rightArrowU, 43, 7, 16, 256, 256);
 
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, ITEM_SELECTION_WITH_ALTS_BACK, this.x + 89, this.y + 34, 0, 108, 100, 19, 256, 256);
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 89, this.y + 34, 0, 108, 100, 19, 256, 256);
 
                     ItemCategory.Entry entry = (ItemCategory.Entry) activeCategory.itemCategory.ITEM_ENTRIES.toArray()[selectedItemCategory];
 
@@ -378,14 +437,14 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         }
         int cubeTypeV = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 90, this.y + 54, 9, 9) ? 9 : 0;
         int cubeTypeU = isPreviewTypeTiling ? 0 : 9;
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, ITEM_SELECTION_WITH_ALTS_BACK, this.x + 90, this.y + 54, this.backgroundWidth-5 + cubeTypeU, cubeTypeV, 9, 9, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 90, this.y + 54, this.backgroundWidth-5 + cubeTypeU, cubeTypeV, 9, 9, 256, 256);
 
         Text text = Text.translatable("fnafur.creative.subtab." + activeCategory.name);
-        context.drawText(textRenderer, text, this.x + 20, this.y + 24, 0xFF74705F, false);
+        context.drawText(textRenderer, text, this.x + 20, this.y + 24, text_color, false);
 
         Text text2 = Text.translatable("fnafur.creative.selection");
         int moveWidth = textRenderer.getWidth(text2)/2;
-        context.drawText(textRenderer, text2, this.x + 135 - moveWidth, this.y + 24, 0xFF74705F, false);
+        context.drawText(textRenderer, text2, this.x + 135 - moveWidth, this.y + 24, text_color, false);
 
     }
 
@@ -400,7 +459,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
                 case BLOCKS -> clickBlocks(click.x(), click.y(), click.button());
                 case DECORATION -> clickProps(click.x(), click.y(), click.button());
                 case TECHNICAL -> clickTech(click.x(), click.y(), click.button());
-                case ITEM_WITH_ALTS_SELECTION -> clickItemWithAlts(click.x(), click.y(), click.button());
+                case ITEM_WITH_ALTS_SELECTION, BEAR5 -> clickItemWithAlts(click.x(), click.y(), click.button());
                 default -> clickDefault(click.x(), click.y(), click.button());
             }
         }
@@ -626,6 +685,8 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
     }
 
+
+
     protected void drawFnafBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         for (ItemGroup itemGroup : ItemGroups.getGroupsToDisplay()) {
             if (itemGroup != getSelectedItemGroup() || Objects.equals(itemGroup.getDisplayName().getString(), FnafUniverseRebuilt.MOD_ID)) {
@@ -638,7 +699,8 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             case BLOCKS -> renderBlocksBackground(context, mouseX, mouseY, delta);
             case DECORATION -> renderPropsBackground(context, mouseX, mouseY, delta);
             case TECHNICAL -> renderTechBackground(context, mouseX, mouseY, delta);
-            case ITEM_WITH_ALTS_SELECTION -> renderItemSelectionBackground(context, mouseX, mouseY, delta);
+            case ITEM_WITH_ALTS_SELECTION -> renderItemSelectionBackground(context, ITEM_SELECTION_WITH_ALTS_BACK, 0xFF74705F, mouseX, mouseY, delta);
+            case BEAR5 -> renderItemSelectionBackground(context, ITEM_SELECTION_WITH_ALTS_BACK_BLUE, 0xFF000055, mouseX, mouseY, delta);
             default -> renderDefaultBackground(context, mouseX, mouseY, delta);
         }
 
@@ -755,7 +817,8 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         BLOCKS(2),
         DECORATION(3),
         TECHNICAL(4),
-        ITEM_WITH_ALTS_SELECTION(2),
+        ITEM_WITH_ALTS_SELECTION(5),
+        BEAR5(6),
         ;
         public final int index;
 
@@ -916,6 +979,9 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             this.itemCategory = category;
             ALL.add(this);
         }
+        public CategoryPicker(String name, int posX, int posY, int width, int height, int u, int v, int u_active, int v_active, Identifier texture, ItemCategory category){
+            this(name, posX, posY, width, height, u, v, u_active, v_active, texture, category, CategoryPicker::SUBTAB_OPEN);
+        }
 
         public void draw(DrawContext context, int offsetX, int offsetY, int mouseX, int mouseY){
             isHovered = GoopyScreen.isOnButton(mouseX, mouseY, posX + offsetX, posY + offsetY, width, height);
@@ -931,6 +997,12 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
         public void onClick() {
             action.execute(name);
+        }
+
+        private static void SUBTAB_OPEN(String s) {
+            System.out.println(s);
+            PreviousSubTab = SubTab;
+            GoalSubTab = FnafSubTab.ITEM_WITH_ALTS_SELECTION;
         }
     }
 

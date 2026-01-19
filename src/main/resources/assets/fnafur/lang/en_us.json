@@ -410,6 +410,132 @@
   "item.fnafur.zephyr_spawn.description.0.0": "§b§lClick §ron this entity with a",
   "item.fnafur.zephyr_spawn.description.0.1": "§d§lFloppy Disk §rto give it an AI.",
 
+  "cpu_config.argument.title_visual":  "VISUAL",
+  "cpu_config.argument.title_base":  "BEHAVIOR",
+  "cpu_config.argument.title_interactions":  "INTERACTION SETTINGS",
+  "cpu_config.argument.title_aggressivity":  "AGGRESSIVITY",
+  "cpu_config.argument.title_stats":  "STATISTICS | ATTRIBUTES",
+
+  "cpu_config.argument.animation":  "Animations",
+
+  "cpu_config.argument.singing_role":  "Singing ROLE",
+
+  "cpu_config.value.none":  "None",
+  "cpu_config.value.walk":  "Walk",
+  "cpu_config.value.run":  "Run",
+  "cpu_config.value.teleport":  "Teleport",
+
+  "cpu_config.value.freeze_on_sight":  "Freeze When Seen",
+  "cpu_config.value.reset_on_sight":  "Reset When Seen",
+  "cpu_config.value.freeze_on_camera":  "Freeze On Camera",
+  "cpu_config.value.reset_on_camera":  "Reset On Camera",
+
+  "cpu_config.value.crawl":  "Crawl",
+  "cpu_config.value.reach_in":  "Reach In",
+
+  "cpu_config.value.flicker":  "Flicker Lights",
+  "cpu_config.value.turn_off":  "Turn Off Lights",
+
+  "cpu_config.value.dots":  "Dots",
+  "cpu_config.value.black_eyed_dots":  "Dots with Black Eyes",
+  "cpu_config.value.irises":  "Irises",
+  "cpu_config.value.black_eyed_irises":  "Irises with Black Eyes",
+  "cpu_config.value.full_eyes":  "Full Eyes",
+  "cpu_config.value.full_eyes_dots":  "Dots and Full Eyes",
+
+  "cpu_config.value.chasing":  "While in Chase",
+  "cpu_config.value.flickering":  "Constant Flickering",
+  "cpu_config.value.always":  "Always",
+  "cpu_config.value.never":  "Never",
+
+  "cpu_config.value.stunned":  "Stunned",
+  "cpu_config.value.reset":  "Reset to Spawn",
+
+  "cpu_config.value.leave":  "Leave",
+  "cpu_config.value.wait":  "Wait",
+  "cpu_config.value.bang_and_leave":  "Bang Door and Leave",
+  "cpu_config.value.bang_and_reset":  "Bang Door and Reset",
+
+  "cpu_config.value.fooled":  "Fooled by Mask",
+  "cpu_config.value.not_fooled":  "NOT Fooled by Mask",
+
+  "cpu_config.value.on_movement":  "When Moving",
+  "cpu_config.value.on_seen":  "When Seen on Camera",
+  "cpu_config.value.break_after_time_spotted":  "Break Camera",
+
+  "cpu_config.value.check":  "Check Hiding Spots",
+  "cpu_config.value.ignore":  "Ignore Hiding Spots",
+
+  "cpu_config.value.passive":  "Passive",
+  "cpu_config.value.stalk":  "Stalk",
+  "cpu_config.value.chase_walk":  "Walk after Target",
+  "cpu_config.value.chase_run":  "Run after Target",
+
+  "cpu_config.value.taunt":  "Taunt Target",
+  "cpu_config.value.sound_alone":  "Make Spotted Noise",
+  "cpu_config.value.nothing":  "Nothing",
+
+  "cpu_config.value.seek":  "Seek Target",
+  "cpu_config.value.never_lose_target":  "Never Lose Target",
+  "cpu_config.value.rage":  "Get Annoyed",
+
+  "cpu_config.value.make_noise":  "Make Noise",
+  "cpu_config.value.jumpscare":  "Jumpscare",
+  "cpu_config.value.kill":  "Kill",
+  "cpu_config.value.jumpscare_and_kill":  "Jumpscare and Kill",
+
+  "cpu_config.value.shreddy":  "Shreddy Fazchair",
+  "cpu_config.value.blow_up":  "Blow Up",
+
+  "cpu_config.value.normal":  "Normal",
+  "cpu_config.value.blind":  "Blind",
+  "cpu_config.value.deaf":  "Deaf",
+  "cpu_config.value.blind_and_deaf":  "Blind And Deaf",
+
+  "cpu_config.value.white":  "White",
+  "cpu_config.value.red":  "Red",
+  "cpu_config.value.orange":  "Orange",
+  "cpu_config.value.yellow":  "Yellow",
+  "cpu_config.value.green":  "Green",
+  "cpu_config.value.blue":  "Blue",
+  "cpu_config.value.purple":  "Purple",
+  "cpu_config.value.pink":  "Pink",
+
+  "cpu_config.value.lead":  "Lead Singer",
+  "cpu_config.value.backup1":  "Backup Singer 1",
+  "cpu_config.value.backup2":  "Backup Singer 2",
+  "cpu_config.value.additional":  "Additional Singer",
+  "cpu_config.value.extra1":  "Extra 1",
+  "cpu_config.value.extra2":  "Extra 2",
+  "cpu_config.value.extra3":  "Extra 3",
+  "cpu_config.value.extra4":  "Extra 4",
+  "cpu_config.value.extra5":  "Extra 5",
+
+  "cpu_config.argument.on_reset":  "On RESET",
+  "cpu_config.argument.movement_mode":  "Movement MODE",
+  "cpu_config.argument.behavior_when_seen":  "When STARED At",
+  "cpu_config.argument.vent_behavior":  "VENT Behavior",
+  "cpu_config.argument.light_behavior":  "LIGHT Behavior",
+  "cpu_config.argument.glowing_eyes_mode":  "Glow Eyes MODE",
+  "cpu_config.argument.glowing_eyes_color":  "Glow Eyes COLOR",
+  "cpu_config.argument.glowing_eyes_trigger":  "Glow Eyes TRIGGER",
+  "cpu_config.argument.reaction_to_door":  "DOOR Reaction",
+  "cpu_config.argument.reaction_to_light":  "LIGHT Reaction",
+  "cpu_config.argument.reaction_to_shock":  "SHOCK Reaction",
+  "cpu_config.argument.reaction_to_mask":  "MASK Reaction",
+  "cpu_config.argument.camera_jamming":  "Camera JAMMING",
+  "cpu_config.argument.hiding_spots":  "HIDING Spots",
+  "cpu_config.argument.aggression_mode":  "Aggression MODE",
+  "cpu_config.argument.on_spot_target":  "On Target SPOTTED",
+  "cpu_config.argument.on_lose_target":  "On Target LOST",
+  "cpu_config.argument.on_contact":  "On Physical CONTACT",
+  "cpu_config.argument.kill_style":  "KILL Style",
+  "cpu_config.argument.vision_mode":  "Vision MODE",
+  "cpu_config.argument.movement_speed":  "Movement SPEED",
+  "cpu_config.argument.sight_range":  "Sight RANGE",
+  "cpu_config.argument.servo_sounds_volume":  "Servo sounds VOLUME",
+  "cpu_config.argument.ai_movement_level":  "AI Movement LEVEL",
+
   "entity_category.fnafur.classic": "Classic",
   "entity_category.fnafur.spring": "Springlocks",
 
@@ -517,6 +643,7 @@
   "fnafur.creative.subtab.glass": "GLASS",
   "fnafur.creative.subtab.building": "BUILDING",
   "fnafur.creative.subtab.other": "OTHER",
+  "fnafur.creative.subtab.bear5": "BEAR5",
 
   "fnafur.commands.money": "%s currently owns §a§lF$%d§r.",
   "fnafur.commands.money.set": "%s now owns §a§lF$%d§r.",

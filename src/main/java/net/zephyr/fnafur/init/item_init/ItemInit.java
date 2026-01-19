@@ -12,7 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.init.DecalInit;
+import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.item.CPUItem;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.IllusionDisc;
@@ -21,6 +21,7 @@ import net.zephyr.fnafur.item.energy.JerryCanItem;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.item.tools.DecalBookItem;
 import net.zephyr.fnafur.item.tools.PaintbrushItem;
+import net.zephyr.fnafur.item.tools.ScraperItem;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 
 import java.util.List;
@@ -73,7 +74,7 @@ public class ItemInit {
     );
     public static final Item SCRAPER = registerItem(
             "scraper",
-            Item::new,
+            ScraperItem::new,
             new Item.Settings()
                     .maxCount(1)
                     .rarity(Rarity.COMMON)

@@ -15,7 +15,9 @@ public class ItemCategoriesInit {
     public static final ItemCategory TILES = ItemCategory.create(ItemCategory.builder()
             .setID("tiles")
             .addItems(
-                    ItemCategory.Entry.create(BlockInit.BLACK_WHITE_TILES,
+                    ItemCategory.Entry.create(BlockInit.TWO_BY_TWO_TILES[0],
+                            BlockInit.TWO_BY_TWO_TILES,
+                            BlockInit.TWO_BY_TWO_TILES_DIRTY,
                             new Block[]{
                                     BlockInit.BLACK_WHITE_TILES,
                                     BlockInit.RED_BLUE_TILES,
@@ -27,33 +29,48 @@ public class ItemCategoriesInit {
                                     BlockInit.WHITE_TILES,
                                     BlockInit.GROUT_TILE,
                                     BlockInit.DARK_GROUT_TILES
-                            },
-                            BlockInit.TWO_BY_TWO_TILES
+                            }
                     ),
-                    ItemCategory.Entry.create(BlockInit.BLACK_TILE,
-                            BlockInit.BLACK_TILE,
-                            BlockInit.WHITE_TILE,
-                            BlockInit.BLACK_CORNER_BROWN_TILE,
-                            BlockInit.BLACK_GREEN_DIAGONAL_TILE,
-                            BlockInit.CONCRETE_FLOOR_TILE
+                    ItemCategory.Entry.create(BlockInit.ONE_BY_ONE_TILE_FIRST[0],
+                            BlockInit.ONE_BY_ONE_TILE_FIRST,
+                            BlockInit.ONE_BY_ONE_TILE_FIRST_DIRTY1,
+                            BlockInit.ONE_BY_ONE_TILE_FIRST_DIRTY2,
+                            BlockInit.ONE_BY_ONE_TILE_SECOND,
+                            BlockInit.ONE_BY_ONE_TILE_SECOND_DIRTY1,
+                            BlockInit.ONE_BY_ONE_TILE_SECOND_DIRTY2,
+                            new Block[]{
+                                    BlockInit.BLACK_TILE,
+                                    BlockInit.WHITE_TILE,
+                                    BlockInit.BLACK_CORNER_BROWN_TILE,
+                                    BlockInit.BLACK_GREEN_DIAGONAL_TILE,
+                                    BlockInit.CONCRETE_FLOOR_TILE
+                            }
                     ),
-                    ItemCategory.Entry.create(BlockInit.BLACK_WHITE_16_TILES,
-                            BlockInit.BLACK_WHITE_16_TILES,
-                            BlockInit.BLACK_WHITE_16_TILES_TRIM,
-                            BlockInit.BLACK_BLUE_WALL_TILES,
-                            BlockInit.BLACK_BLUE_WALL_TILES_TOP,
-                            BlockInit.BLACK_RED_WALL_TILES,
-                            BlockInit.BLACK_RED_WALL_TILES_TOP
+                    ItemCategory.Entry.create(BlockInit.FOUR_BY_FOUR_TILES[0],
+                            BlockInit.FOUR_BY_FOUR_TILES,
+                            BlockInit.FOUR_BY_FOUR_TILES_DIRTY,
+                            new Block[]{
+                                    BlockInit.BLACK_WHITE_16_TILES,
+                                    BlockInit.BLACK_WHITE_16_TILES_TRIM,
+                                    BlockInit.BLACK_BLUE_WALL_TILES,
+                                    BlockInit.BLACK_BLUE_WALL_TILES_TOP,
+                                    BlockInit.BLACK_RED_WALL_TILES,
+                                    BlockInit.BLACK_RED_WALL_TILES_TOP
+                            }
                     ),
-                    ItemCategory.Entry.create(BlockInit.TAN_16_CLEAN_TILES,
-                            BlockInit.TAN_16_CLEAN_TILES,
-                            BlockInit.TAN_16_SPACED_TILES,
-                            BlockInit.TAN_RAINBOW_16_TILES,
-                            BlockInit.TAN_16_TILES,
-                            BlockInit.BLUE_TILES,
-                            BlockInit.GREEN_TILES_BLACK_LINING,
-                            BlockInit.EXTRUDED_BLACK_TILES,
-                            BlockInit.KITCHEN_FLOOR
+                    ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES[0],
+                            BlockInit.EIGHT_BY_EIGHT_TILES,
+                            BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY,
+                            new Block[]{
+                                    BlockInit.TAN_16_CLEAN_TILES,
+                                    BlockInit.TAN_16_SPACED_TILES,
+                                    BlockInit.TAN_RAINBOW_16_TILES,
+                                    BlockInit.TAN_16_TILES,
+                                    BlockInit.BLUE_TILES,
+                                    BlockInit.GREEN_TILES_BLACK_LINING,
+                                    BlockInit.EXTRUDED_BLACK_TILES,
+                                    BlockInit.KITCHEN_FLOOR
+                            }
                     ),
                     ItemCategory.Entry.create(BlockInit.BRIGHT_YELLOW_TILES,
                             BlockInit.BRIGHT_PURPLE_TILES,
@@ -246,9 +263,12 @@ public class ItemCategoriesInit {
                             BlockInit.GRAY_CONCRETE_WALL,
                             BlockInit.GRAY_CONCRETE_WALL_SPLIT
                     ),
-                    ItemCategory.Entry.create(BlockInit.GRAY_WALL,
-                            BlockInit.GRAY_WALL,
-                            BlockInit.DARK_GRAY_WALL
+                    ItemCategory.Entry.create(BlockInit.TRIANGLES_WALLPAPER[0],
+                            BlockInit.TRIANGLES_WALLPAPER,
+                            new Block[]{
+                                    BlockInit.GRAY_WALL,
+                                    BlockInit.DARK_GRAY_WALL
+                            }
                     ),
                     ItemCategory.Entry.create(BlockInit.WHITE_DINER_WALL,
                             BlockInit.WHITE_DINER_WALL,
@@ -295,6 +315,17 @@ public class ItemCategoriesInit {
                             BlockInit.MIMIC_FRAME_2x2,
                             BlockInit.MIMIC_FRAME_4x4,
                             BlockInit.MIMIC_FRAME_DIAGONAL
+                    )
+            )
+            .build()
+    );
+
+    public static final ItemCategory BEAR_FIVE = ItemCategory.create(ItemCategory.builder()
+            .setID("bear_five")
+            .addItems(
+                    ItemCategory.Entry.create(BlockInit.FIVE_TILES,
+                            BlockInit.FIVE_TILES,
+                            BlockInit.FIVE_WALL
                     )
             )
             .build()

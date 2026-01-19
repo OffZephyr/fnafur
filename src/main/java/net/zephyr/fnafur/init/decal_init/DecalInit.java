@@ -1,14 +1,20 @@
-package net.zephyr.fnafur.init;
+package net.zephyr.fnafur.init.decal_init;
 
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
+import net.zephyr.fnafur.init.decal_init.Palettes.WallTilesPalettes;
+import net.zephyr.fnafur.init.block_init.Palettes.PaletteEnum;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DecalInit {
+
+
+    public record PaletteDecal(Decal decal, String name, PaletteEnum paletteEnum, Identifier templateTexture) {
+    }
+    public static List<PaletteDecal> PALETTES = new ArrayList<>();
+
+
     /** <h2 id="format">HOW TO ADD A CATEGORY</h2>
      * Just call the {@link #registerCategory(String, Decal...)} method. You'll register the decals directly inside of that method.
      * Don't forget to add the name of the category to the LANG file, otherwise it'll bleed out of the page in the book.
@@ -28,177 +34,226 @@ public class DecalInit {
     static {
         registerCategory(
                 "wall_tiles",
-                registerDecal(
-                        "b_w_r_wall_tiles",
+                registerDecalPalette(
+                        "b_w_two_wall_tiles",
+                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/decals/tiles/wall_tile_template.png"),
+                        WallTilesPalettes.values(),
                         5.5f,
                         16,
                         Movable.VERTICAL,
                         true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
+                        true
                 ),
-                registerDecal(
-                        "b_w_hr2_wall_tiles",
-                        6f,
+                registerDecalPalette(
+                        "b_w_two_wall_tiles_dirty",
+                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/decals/tiles/wall_tile_template_dirty.png"),
+                        WallTilesPalettes.values(),
+                        5.5f,
                         16,
                         Movable.VERTICAL,
                         true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_hotred2_wall_tiles")
+                        true
                 ),
-                registerDecal(
-                        "b_w_hr_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_hotred_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_o_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_orange_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_y_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_yellow_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_l_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_lime_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_lbl_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_light_blue_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_bl_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_blue_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_p_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_purple_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_m_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_magenta_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_pi_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_pink_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_g_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_gray_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_b_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_b_dirty_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black_dirty_wall_tiles")
-                ),
-                registerDecal(
-                        "b_w_b2_wall_tiles",
-                        5.25f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black2_wall_tiles")
-                ),
-                registerDecal(
-                        "b_p_b_wall_tiles",
-                        5f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/purple_black_wall_tile")
-                ),
-                registerDecal(
-                        "c_w_wall_tiles",
-                        9,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/colored_white_wall_tiles")
-                ),
-                registerDecal(
-                        "c_w_long_wall_tiles",
-                        9,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/colored_white_long_wall_tiles")
-                ),
-                registerDecal(
-                        "b_r_wall_diamond_tiles",
-                        7.5f,
-                        16,
-                        Movable.VERTICAL,
-                        true,
-                        true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_red_diamond_tiles")
-                )
+                new Decal[]{
+                        registerDecal(
+                                "b_w_r_wall_tiles",
+                                5.5f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_r_wall_tiles2",
+                                5.5f,
+                                16,
+                                Movable.HORIZONTAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_r_wall_tiles3",
+                                5.5f,
+                                16,
+                                Movable.FREE,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_r_wall_tiles4",
+                                5.5f,
+                                16,
+                                Movable.NONE,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_hr2_wall_tiles",
+                                6f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_hotred2_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_hr_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_hotred_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_o_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_orange_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_y_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_yellow_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_l_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_lime_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_lbl_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_light_blue_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_bl_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_blue_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_p_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_purple_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_m_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_magenta_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_pi_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_pink_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_g_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_gray_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_b_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_b_dirty_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black_dirty_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_w_b2_wall_tiles",
+                                5.25f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black2_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_p_b_wall_tiles",
+                                5f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/purple_black_wall_tile")
+                        ),
+                        registerDecal(
+                                "c_w_wall_tiles",
+                                9,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/colored_white_wall_tiles")
+                        ),
+                        registerDecal(
+                                "c_w_long_wall_tiles",
+                                9,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/colored_white_long_wall_tiles")
+                        ),
+                        registerDecal(
+                                "b_r_wall_diamond_tiles",
+                                7.5f,
+                                16,
+                                Movable.VERTICAL,
+                                true,
+                                true,
+                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_red_diamond_tiles")
+                        )
+                }
         );
         registerCategory(
                 "large_wall_tiles",
@@ -531,6 +586,26 @@ public class DecalInit {
                 )
         );
     }
+    private static<T extends Enum<T> & PaletteEnum> Decal[] registerDecalPalette(String stickerName, Identifier template, T[] palettes, float size, int pixelDensity, Movable direction, boolean isWallSticker, boolean isStackable) {
+        Decal[] array = new Decal[palettes.length];
+        for(int i = 0; i < palettes.length; i++) {
+            T palette = palettes[i];
+            Decal decal = registerDecal(
+                    stickerName + "_" + palette.name().toLowerCase(Locale.ROOT),
+                    size,
+                    pixelDensity,
+                    direction,
+                    isWallSticker,
+                    isStackable,
+                    Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/decals/" + stickerName + "_" + palette.name().toLowerCase(Locale.ROOT))
+
+            );
+            array[i] = decal;
+            PALETTES.add(new DecalInit.PaletteDecal(decal, stickerName, palette, template));
+        }
+        return array;
+
+    }
     private static Decal registerDecal(String stickerName, float size, int pixelDensity, Movable direction, boolean isWallSticker, boolean isStackable, Identifier... textures) {
 
         float offset = 1 - ((pixelDensity - size)/2f / pixelDensity);
@@ -544,6 +619,17 @@ public class DecalInit {
         CATEGORIES.put(name, List.of(decals));
         CATEGORIES_LIST.add(name);
         return List.of(decals);
+    }
+    private static List<Decal> registerCategory(String name, Decal[]... decals) {
+        List<Decal> list = new ArrayList<>();
+
+        for(Decal[] decal_array : decals){
+            list.addAll(List.of(decal_array));
+        }
+
+        CATEGORIES.put(name, list);
+        CATEGORIES_LIST.add(name);
+        return list;
     }
 
     public static Decal getDecal(String name){
@@ -575,6 +661,7 @@ public class DecalInit {
     public enum Movable {
         NONE,
         VERTICAL,
-        HORIZONTAL;
+        HORIZONTAL,
+        FREE;
     }
 }

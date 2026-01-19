@@ -5,22 +5,18 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.model.Baker;
 import net.minecraft.client.render.model.BlockModelPart;
 import net.minecraft.client.render.model.BlockStateModel;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.texture.SpriteHolder;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -31,12 +27,11 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
-import net.zephyr.fnafur.init.DecalInit;
+import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 
 public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateModel implements BlockStateModel {

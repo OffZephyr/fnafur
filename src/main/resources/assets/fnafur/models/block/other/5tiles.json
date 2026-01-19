@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "fnafur:block/other/uhh/please_turn_back/okay_fine/5tiles"
+  }
+}

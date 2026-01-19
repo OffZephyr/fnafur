@@ -24,7 +24,6 @@
     "PlayerInventoryMixin",
     "PlayerScreenHandlerMixin",
     "PostEffectProcessorMixin",
-    "RenderPipelinesMixin",
     "ScreenHandlerMixin",
     "SplashOverlayMixin",
     "TitleScreenMixin",
@@ -34,6 +33,8 @@
     "defaultRequire": 1
   },
   "client": [
-    "GuiRendererMixin"
+    "GuiRendererMixin",
+    "RenderPipelinesMixin",
+    "SectionRenderStateMixin"
   ]
 }
