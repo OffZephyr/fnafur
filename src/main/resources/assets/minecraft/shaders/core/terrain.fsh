@@ -100,7 +100,7 @@ vec4 applyDecalBlend(vec4 baseColor, vec4 decalColor, int blendMode)
 {
     if (blendMode == 0)
     {
-        return mix(baseColor, decalColor, decalColor.a < 1 ? min(baseColor.a, decalColor.a) : decalColor.a);
+        return decalColor.a == 1 ? decalColor : baseColor + decalColor * decalColor.a;
     }
     else if (blendMode == 1)
     {
@@ -123,6 +123,13 @@ vec4 applyDecalBlend(vec4 baseColor, vec4 decalColor, int blendMode)
 
     return baseColor;
 }
+vec3 getCameraWorldPos() {
+    return vec3(CameraBlockPos) + CameraOffset;
+}
+
+vec3 getViewDir(vec3 worldPos) {
+    return normalize(getCameraWorldPos() - worldPos);
+}
 
 vec4 applyDecals(vec4 baseColor){
 
@@ -130,6 +137,7 @@ vec4 applyDecals(vec4 baseColor){
     vec4 result = baseColor;
 
     vec3 N = normalize(vNormal);
+    vec3 viewDir = getViewDir(vWorldPos);
 
 
     for (int i = 0; i < DecalCount; i++) {
@@ -201,32 +209,24 @@ vec4 applyDecals(vec4 baseColor){
             // Repeat scale (world units per tile)
             float tileScale = 1.0; // adjust to taste
 
-            float uRaw = dot(vWorldPos - finalPos1, r) / tileScale;
-            float vRaw = dot(vWorldPos - finalPos1, u) / tileScale;
+            vec2 uv;
+            uv.x = fract(uWorld / tileScale);
+            uv.y = fract(vWorld / tileScale);
 
-            // Raw derivatives (BEFORE fract)
-            vec2 duRaw = vec2(dFdx(uRaw), dFdx(vRaw));
-            vec2 dvRaw = vec2(dFdy(uRaw), dFdy(vRaw));
+            // Prevent nearest sampling edge snap
+            uv = clamp(uv, 0.001, 0.999);
 
-            // Local tile UV
-            vec2 uvLocal = fract(vec2(uRaw, vRaw));
+            // Remap into atlas UVs
+            uv = mix(decal.DecalUV.xy, decal.DecalUV.zw, uv);
 
-            // Atlas inset
-            vec2 texel = 1.0 / TextureSize;
-            vec2 uvMin = decal.DecalUV.xy + texel * 0.5;
-            vec2 uvMax = decal.DecalUV.zw - texel * 0.5;
-
-            // Final atlas UV
-            vec2 uv = mix(uvMin, uvMax, uvLocal);
-
-            // Scale derivatives into atlas space
-            vec2 du = duRaw * (uvMax - uvMin);
-            vec2 dv = dvRaw * (uvMax - uvMin);
-
-            // Sample
             vec4 decalSample = (UseRgss == 1 ? sampleRGSS(Sampler0, uv, 1.0f / TextureSize) : sampleNearest(Sampler0, uv, 1.0f / TextureSize));
 
             result = applyDecalBlend(result, decalSample, decal.DecalBlendMode);
+
+//            float ndotv = dot(N, viewDir);
+//            if (ndotv > 0.0) {
+//                float depthBias = 1e-4 * ndotv;
+//            }
         }
     }
 
@@ -235,7 +235,9 @@ vec4 applyDecals(vec4 baseColor){
 
 void main() {
     vec4 color = (UseRgss == 1 ? sampleRGSS(Sampler0, texCoord0, 1.0f / TextureSize) : sampleNearest(Sampler0, texCoord0, 1.0f / TextureSize));
+    gl_FragDepth = gl_FragCoord.z - 0.001;
     color = applyDecals(color);
+    //gl_FragDepth = gl_FragCoord.z + 0.001;
     color = color * vertexColor;
     color = mix(FogColor * vec4(1, 1, 1, color.a), color, ChunkVisibility);
 #ifdef ALPHA_CUTOUT
