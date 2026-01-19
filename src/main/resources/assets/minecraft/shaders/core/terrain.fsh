@@ -91,9 +91,10 @@ vec4 sampleRGSS(sampler2D source, vec2 uv, vec2 pixelSize) {
     return mix(nearestColor, rgssColor, blendFactor);
 }
 
-bool normalsWithin45Degrees(vec3 a, vec3 b)
+bool normalsWithinDegrees(vec3 a, vec3 b, float degrees)
 {
-    return dot(normalize(a), normalize(b)) >= 0.64278761;
+    float cosThreshold = cos(radians(degrees));
+    return dot(normalize(a), normalize(b)) >= cosThreshold;
 }
 
 vec4 applyDecalBlend(vec4 baseColor, vec4 decalColor, int blendMode)
@@ -140,7 +141,7 @@ vec4 applyDecals(vec4 baseColor){
     vec3 viewDir = getViewDir(vWorldPos);
 
 
-    const float DECAL_EPSILON = 0.01;
+    const float DECAL_EPSILON = 0.001;
     vec3 biasedWorldPos = vWorldPos - N * DECAL_EPSILON;
 
     for (int i = 0; i < DecalCount; i++) {
@@ -194,7 +195,7 @@ vec4 applyDecals(vec4 baseColor){
 //            continue;
 
             // Reject steep angles (optional but recommended)
-            if (!normalsWithin45Degrees(N, f))
+            if (!normalsWithinDegrees(N, f, 50.0))
             continue;
 
             float minU = decal.DecalUV.x;
