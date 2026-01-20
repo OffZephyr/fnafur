@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "fnafur:block/eight_tile_dirty_white_white_dull_brown"
+  }
+}

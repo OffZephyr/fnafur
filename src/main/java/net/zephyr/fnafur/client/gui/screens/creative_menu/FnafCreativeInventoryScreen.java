@@ -44,6 +44,7 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.client.gui.screens.other.FullTexturedQuadGuiElementRenderState;
+import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.item_init.ItemCategoriesInit;
 import net.zephyr.fnafur.networking.entity.player.UpdateCreativeExtraSlotsC2SPayload;
 import net.zephyr.fnafur.util.EasingMathUtil;
@@ -78,8 +79,10 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     private int selectedItemCategory = -1;
     private int selectedItemCategoryOffset = 0;
     private int lastPreviewStackIndex = 0;
+    private int itemCategoryScroll = 0;
     private float backgroundOffset = 0;
     private boolean isPreviewTypeTiling = false;
+    int hovered_slot = -1;
 
     static Map<String, List<String>> CODE_MAP = Map.of(
             "bear5", List.of("BEAR5", "BEARFIVE", "FIVEBEAR", "5BEAR", "BEQR5", "BEQRFIVE", "FIVEBEQR", "5BEQR")
@@ -123,6 +126,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
     @Override
     protected void init() {
+        BlockInit.randomize = false;
         super.init();
     }
 
@@ -214,12 +218,16 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
 
     @Override
     public boolean shouldCloseOnEsc() {
-        if(garageDoorIndex != 0){
-            return false;
-        }
-        if(isFnafTab && SubTab != FnafSubTab.DEFAULT){
-            GoalSubTab = FnafSubTab.DEFAULT;
-            return false;
+        if(isFnafTab){
+            if(garageDoorIndex == 0 && SubTab != FnafSubTab.DEFAULT){
+                GoalSubTab = FnafSubTab.DEFAULT;
+                return false;
+            }
+            if(garageDoorIndex != 0){
+                SubTab = GoalSubTab;
+                garageDoorIndex = 0;
+                return false;
+            }
         }
         return super.shouldCloseOnEsc();
     }
@@ -227,49 +235,74 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     @Override
     public boolean keyPressed(KeyInput input) {
 
-        if(!input.isEscape() && isFnafTab && SubTab == FnafSubTab.DEFAULT){
+        if(isFnafTab){
+            if(!input.isEscape() && SubTab == FnafSubTab.ITEM_WITH_ALTS_SELECTION){
+                ItemCategory.Entry entry = (ItemCategory.Entry) activeCategory.itemCategory.ITEM_ENTRIES.toArray()[selectedItemCategory];
 
-            String in = InputUtil.fromKeyCode(input).getLocalizedText().getString();
-            String combined = currentCode + in;
-            AtomicBoolean playSound = new AtomicBoolean(true);
-            AtomicBoolean doPlaySound = new AtomicBoolean(false);
+                for (int x = 0; x < 9; x++) {
+                    if (entry.items().isEmpty()) continue;
+                    if (lastPreviewStackIndex > entry.items().size() - 1) continue;
+                    ItemStack stack = (ItemStack) entry.items().toArray()[lastPreviewStackIndex];
+                    if(hovered_slot - selectedItemCategoryOffset == x) {
+                        int slotOffset = input.asNumber() - 1;
+                        if(slotOffset < 0 || slotOffset > 8)  continue;
+                        int slotID = 45 + slotOffset;
 
-            List<String> codes = new ArrayList<>();
-            CODE_MAP.forEach((index, list) ->{
-                list.forEach((code) -> {
-                    if(code.contains(currentCode)){
+                        Slot slot = this.handler.getSlot(slotID);
+                        if (slot == null) {
+                            continue;
+                        }
+                        this.handler.setStackInSlot(slotID, this.handler.nextRevision(), stack.copyWithCount(stack.getMaxCount()));
 
-                        if(code.contains(combined)) {
-                            currentCode = combined;
-                            codes.add(code);
-                            if (code.equals(currentCode)) {
-                                GoalSubTab = CODE_FOR_TAB.get(index);
-                                activeCategory = CODE_FOR_CATEGORY.get(index);
-                                currentCode = in;
+                        this.client.player.playerScreenHandler.sendContentUpdates();
+                        return false;
+                    }
+                }
+            }
+            if(!input.isEscape() && SubTab == FnafSubTab.DEFAULT){
+
+                String in = InputUtil.fromKeyCode(input).getLocalizedText().getString();
+                String combined = currentCode + in;
+                AtomicBoolean playSound = new AtomicBoolean(true);
+                AtomicBoolean doPlaySound = new AtomicBoolean(false);
+
+                List<String> codes = new ArrayList<>();
+                CODE_MAP.forEach((index, list) ->{
+                    list.forEach((code) -> {
+                        if(code.contains(currentCode)){
+
+                            if(code.contains(combined)) {
+                                currentCode = combined;
+                                codes.add(code);
+                                if (code.equals(currentCode)) {
+                                    GoalSubTab = CODE_FOR_TAB.get(index);
+                                    activeCategory = CODE_FOR_CATEGORY.get(index);
+                                    currentCode = in;
+                                }
                             }
                         }
+
+                        if((currentCode.length() <= 1 && code.charAt(0) == in.charAt(0)) || (!currentCode.isEmpty() && code.charAt(0) == currentCode.charAt(0))){
+                            doPlaySound.set(true);
+                        }
+                    });
+
+                    if(codes.isEmpty()){
+                        currentCode = in;
                     }
 
-                    if((currentCode.length() <= 1 && code.charAt(0) == in.charAt(0)) || (!currentCode.isEmpty() && code.charAt(0) == currentCode.charAt(0))){
-                        doPlaySound.set(true);
+                    if(playSound.get() && doPlaySound.get()){
+                        MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, Math.min(1, 0.5f + (currentCode.length() / 10f)));
+                        playSound.set(false);
+                        doPlaySound.set(false);
                     }
                 });
-
-                if(codes.isEmpty()){
-                    currentCode = in;
+                System.out.println(currentCode);
+                if(currentCode.length() <= 1){
+                    return super.keyPressed(input);
                 }
-
-                if(playSound.get() && doPlaySound.get()){
-                    MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, Math.min(1, 0.5f + (currentCode.length() / 10f)));
-                    playSound.set(false);
-                    doPlaySound.set(false);
-                }
-            });
-            System.out.println(currentCode);
-            if(currentCode.length() <= 1){
-                return super.keyPressed(input);
+                return false;
             }
-            return false;
         }
         return super.keyPressed(input);
     }
@@ -318,26 +351,32 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         }
 
         if(activeCategory != null) {
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 81, this.y + 36, this.backgroundWidth, 27, 7, 16, 256, 256);
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 180, this.y + 36, this.backgroundWidth, 43, 7, 16, 256, 256);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 9, this.y + 90, this.backgroundWidth, 27, 7, 16, 256, 256);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 180, this.y + 90, this.backgroundWidth, 43, 7, 16, 256, 256);
             if(activeCategory.itemCategory != null) {
 
                 if(selectedItemCategory != -1) {
-                    int leftArrowU = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 81, this.y + 36, 7, 16) ? this.backgroundWidth - 7 : this.backgroundWidth - 14;
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 81, this.y + 36, leftArrowU, 27, 7, 16, 256, 256);
-                    int rightArrowU = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 180, this.y + 36, 7, 16) ? this.backgroundWidth - 7 : this.backgroundWidth - 14;
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 180, this.y + 36, rightArrowU, 43, 7, 16, 256, 256);
-
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 89, this.y + 34, 0, 108, 100, 19, 256, 256);
 
                     ItemCategory.Entry entry = (ItemCategory.Entry) activeCategory.itemCategory.ITEM_ENTRIES.toArray()[selectedItemCategory];
 
-                    int slotY = this.y + 36;
+                    if(selectedItemCategoryOffset > 0){
+                        int leftArrowU = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 9, this.y + 90, 7, 16) ? this.backgroundWidth - 7 : this.backgroundWidth - 14;
+                        context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 9, this.y + 90, leftArrowU, 27, 7, 16, 256, 256);
+                    }
+
+                    if(selectedItemCategoryOffset < entry.items().size() - 9){
+                        int rightArrowU = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 180, this.y + 90, 7, 16) ? this.backgroundWidth - 7 : this.backgroundWidth - 14;
+                        context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 180, this.y + 90, rightArrowU, 43, 7, 16, 256, 256);
+                    }
+
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 17, this.y + 88, 0, 108, 162, 19, 256, 256);
+
+                    int slotY = this.y + 90;
 
                     int x1 = this.x + 90;
-                    int y1 = this.y + 54;
+                    int y1 = this.y + 34;
                     int x2 = this.x + 178;
-                    int y2 = this.y + 106;
+                    int y2 = this.y + 86;
                     ItemStack previewStack = (ItemStack) entry.items().toArray()[lastPreviewStackIndex];
                     if (previewStack.getItem() instanceof BlockItem item) {
                         BlockState previewState = item.getBlock().getDefaultState();
@@ -375,7 +414,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
                                 float itemsize = 2.5f;
                                 context.getMatrices().pushMatrix();
                                 context.getMatrices().scale(itemsize);
-                                context.getMatrices().translate((this.x + 114)/itemsize, (this.y + 60)/itemsize);
+                                context.getMatrices().translate((this.x + 114)/itemsize, (this.y + 40)/itemsize);
                                 context.drawItem(previewStack, 0, 0);
                                 context.getMatrices().popMatrix();
                             } else {
@@ -393,20 +432,25 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
                         float scale = 3f;
                         context.getMatrices().pushMatrix();
                         context.getMatrices().scale(scale);
-                        context.getMatrices().translate((this.x + 110)/scale, (this.y + 54)/scale);
+                        context.getMatrices().translate((this.x + 110)/scale, (this.y + 36)/scale);
                         context.drawItem(previewStack, 0, 0);
                         context.getMatrices().popMatrix();
                     }
 
-                    for (int x = 0; x < 5; x++){
-                        int slotX = this.x + 90 + (x * 18);
+                    hovered_slot = -1;
+                    for (int x = 0; x < 9; x++){
+
+                        int slotX = this.x + 18 + (x * 18);
 
                         if(entry.items().isEmpty()) continue;
                         int index = (x + selectedItemCategoryOffset)%entry.items().size();
+                        if (x + selectedItemCategoryOffset > entry.items().size() - 1) continue;
+
                         ItemStack stack = (ItemStack) entry.items().toArray()[index];
                         context.drawItem(stack, slotX, slotY);
 
                         if (GoopyScreen.isOnButton(mouseX, mouseY, slotX, slotY, 16, 16)) {
+                            hovered_slot = index;
                             lastPreviewStackIndex = index;
                             context.fill(slotX, slotY, slotX + 16, slotY + 16, 0x80FFFFFF);
                             context.drawTooltip(this.textRenderer, stack.getName(), mouseX, mouseY);
@@ -414,14 +458,29 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
                     }
                 }
 
-                for (int y = 0; y < 4; y++) {
+                if((activeCategory.itemCategory.ITEM_ENTRIES.size()/3f) - 4 > 0) {
+
+                    int minScrollY = this.y + 34;
+                    int maxScrollY = this.y + 83;
+
+                    float scrollIndex = itemCategoryScroll / Math.max((activeCategory.itemCategory.ITEM_ENTRIES.size() / 3f) - 3, 1f);
+
+                    int scrollY = MathHelper.floor(MathHelper.lerp(scrollIndex, minScrollY, maxScrollY));
+
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 72, scrollY, this.backgroundWidth - 14, 59, 5, 3, 256, 256);
+
+                }
+
+                for (int y = 0; y < 3; y++) {
                     for (int x = 0; x < 3; x++) {
                         int slotX = this.x + 18 + (x * 18);
-                        int slotY = this.y + 36 + (y * 18);
+                        int slotY = this.y + 34 + (y * 18);
 
-                        int index = (y * 3) + x;
+                        int offsetY = y + itemCategoryScroll;
 
-                        if(index >= activeCategory.itemCategory.ITEM_ENTRIES.size()) continue;
+                        int index = (offsetY * 3) + x ;
+
+                        if(index < 0 || index >= activeCategory.itemCategory.ITEM_ENTRIES.size()) continue;
                         ItemCategory.Entry entry = (ItemCategory.Entry) activeCategory.itemCategory.ITEM_ENTRIES.toArray()[index];
                         ItemStack stack = entry.icon();
                         context.drawItem(stack, slotX, slotY);
@@ -435,9 +494,9 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
                 }
             }
         }
-        int cubeTypeV = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 90, this.y + 54, 9, 9) ? 9 : 0;
+        int cubeTypeV = GoopyScreen.isOnButton(mouseX, mouseY, this.x + 90, this.y + 34, 9, 9) ? 9 : 0;
         int cubeTypeU = isPreviewTypeTiling ? 0 : 9;
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 90, this.y + 54, this.backgroundWidth-5 + cubeTypeU, cubeTypeV, 9, 9, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, back_texture, this.x + 90, this.y + 34, this.backgroundWidth-5 + cubeTypeU, cubeTypeV, 9, 9, 256, 256);
 
         Text text = Text.translatable("fnafur.creative.subtab." + activeCategory.name);
         context.drawText(textRenderer, text, this.x + 20, this.y + 24, text_color, false);
@@ -519,26 +578,26 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         if(GoopyScreen.isOnButton(mouseX, mouseY, this.x + 9, this.y + 22, 9, 9)){
             selectedItemCategory = -1;
             selectedItemCategoryOffset = 0;
+            lastPreviewStackIndex = 0;
             GoalSubTab = PreviousSubTab;
             MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
             return;
         }
-        if(GoopyScreen.isOnButton(mouseX, mouseY, this.x + 90, this.y + 54, 9, 9)){
+        if(GoopyScreen.isOnButton(mouseX, mouseY, this.x + 90, this.y + 34, 9, 9)){
             isPreviewTypeTiling = !isPreviewTypeTiling;
             MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
             return;
         }
         if(activeCategory != null) {
             if(selectedItemCategory != -1) {
-                if(GoopyScreen.isOnButton(mouseX, mouseY, this.x + 81, this.y + 36, 7, 16)) {
+                if(selectedItemCategoryOffset != 0 && GoopyScreen.isOnButton(mouseX, mouseY, this.x + 9, this.y + 90, 7, 16)) {
                     selectedItemCategoryOffset--;
-                    if(selectedItemCategoryOffset < 0){
-                        selectedItemCategoryOffset += activeCategory.itemCategory.ITEM_ENTRIES.size();
-                    }
                     MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
                     return;
                 }
-                if(GoopyScreen.isOnButton(mouseX, mouseY, this.x + 180, this.y + 36, 7, 16)){
+                ItemCategory.Entry entry = (ItemCategory.Entry) activeCategory.itemCategory.ITEM_ENTRIES.toArray()[selectedItemCategory];
+
+                if(selectedItemCategoryOffset < entry.items().size() - 9 && GoopyScreen.isOnButton(mouseX, mouseY, this.x + 180, this.y + 90, 7, 16)){
                     selectedItemCategoryOffset++;
                     MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
                     return;
@@ -604,12 +663,13 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
             }
             if(activeCategory.itemCategory != null) {
 
-                for (int y = 0; y < 4; y++) {
+                for (int y = 0; y < 3; y++) {
                     for (int x = 0; x < 3; x++) {
                         int slotX = this.x + 18 + (x * 18);
-                        int slotY = this.y + 36 + (y * 18);
+                        int slotY = this.y + 34 + (y * 18);
 
-                        int index = (y * 3) + x;
+                        int offsetY = y + itemCategoryScroll;
+                        int index = (offsetY * 3) + x;
                         if(index >= activeCategory.itemCategory.ITEM_ENTRIES.size()) continue;
                         if(GoopyScreen.isOnButton(mouseX, mouseY, slotX, slotY, 16, 16)) {
                             if(selectedItemCategory == index) {
@@ -627,13 +687,14 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
                 }
                 if(selectedItemCategory > -1) {
                     ItemCategory.Entry entry = (ItemCategory.Entry) activeCategory.itemCategory.ITEM_ENTRIES.toArray()[selectedItemCategory];
-                    for (int x = 0; x < 5; x++) {
-                        int slotX = this.x + 90 + (x * 18);
+                    for (int x = 0; x < 9; x++) {
+                        int slotX = this.x + 18 + (x * 18);
 
                         if (entry.items().isEmpty()) continue;
                         int index = (x + selectedItemCategoryOffset) % entry.items().size();
+                        if (x + selectedItemCategoryOffset > entry.items().size() - 1) continue;
                         ItemStack stack = (ItemStack) entry.items().toArray()[index];
-                        if (GoopyScreen.isOnButton(mouseX, mouseY, slotX, this.y + 36, 16, 16)) {
+                        if (GoopyScreen.isOnButton(mouseX, mouseY, slotX, this.y + 90, 16, 16)) {
 
                             boolean isEmpty = this.handler.getCursorStack().isEmpty();
                             if (!isEmpty) {
@@ -769,6 +830,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     @Override
     public void close() {
 
+        BlockInit.randomize = true;
         //FreddyEntity.remove(Entity.RemovalReason.DISCARDED);
 
         super.close();
@@ -910,6 +972,22 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         this.handler.scrollItems(0.0F);
 
         return slots;
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        if(isFnafTab){
+            if(SubTab == FnafSubTab.ITEM_WITH_ALTS_SELECTION){
+                itemCategoryScroll = verticalAmount > 0 ? itemCategoryScroll - 1 : itemCategoryScroll + 1;
+            }
+            else{
+                itemCategoryScroll = 0;
+            }
+
+            itemCategoryScroll = Math.clamp(itemCategoryScroll, 0, Math.max((activeCategory.itemCategory.ITEM_ENTRIES.size()/3) - 3, 0));
+        }
+
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
     @Override

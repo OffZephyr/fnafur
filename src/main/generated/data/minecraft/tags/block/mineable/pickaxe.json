@@ -18,6 +18,7 @@
     "fnafur:office_buttons",
     "fnafur:skeeball_arcade",
     "fnafur:arcade_cabinet",
+    "fnafur:atm",
     "fnafur:standing_microphone",
     "fnafur:standing_speaker",
     "fnafur:speaker",
@@ -43,6 +44,6 @@
     "fnafur:fridge",
     "fnafur:double_door_fridge",
     "fnafur:pirates_cove_stage",
-    "fnafur:locker"
+    "fnafur:filing_cabinet"
   ]
 }

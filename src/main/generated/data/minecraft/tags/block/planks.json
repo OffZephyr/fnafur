@@ -4,7 +4,6 @@
     "fnafur:retro_table",
     "fnafur:retro_stool",
     "fnafur:restroom_sign",
-    "fnafur:poster",
     "fnafur:wall_clouds",
     "fnafur:stage_sun",
     "fnafur:wall_pizza",
@@ -16,6 +15,7 @@
     "fnafur:condiment_counter",
     "fnafur:wooden_stool",
     "fnafur:wooden_chair",
+    "fnafur:wooden_crate",
     "fnafur:wooden_clock",
     "fnafur:star_plastic_chair",
     "fnafur:broom",
@@ -23,7 +23,6 @@
     "fnafur:sconce",
     "fnafur:bulletin_board",
     "fnafur:tool_wall_mount",
-    "fnafur:standing_menu",
     "fnafur:wet_floor_sign"
   ]
 }

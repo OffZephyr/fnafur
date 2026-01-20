@@ -17,7 +17,6 @@ public class ItemCategoriesInit {
             .addItems(
                     ItemCategory.Entry.create(BlockInit.TWO_BY_TWO_TILES[0],
                             BlockInit.TWO_BY_TWO_TILES,
-                            BlockInit.TWO_BY_TWO_TILES_DIRTY,
                             new Block[]{
                                     BlockInit.BLACK_WHITE_TILES,
                                     BlockInit.RED_BLUE_TILES,
@@ -31,24 +30,23 @@ public class ItemCategoriesInit {
                                     BlockInit.DARK_GROUT_TILES
                             }
                     ),
-                    ItemCategory.Entry.create(BlockInit.ONE_BY_ONE_TILE_FIRST[0],
-                            BlockInit.ONE_BY_ONE_TILE_FIRST,
-                            BlockInit.ONE_BY_ONE_TILE_FIRST_DIRTY1,
-                            BlockInit.ONE_BY_ONE_TILE_FIRST_DIRTY2,
-                            BlockInit.ONE_BY_ONE_TILE_SECOND,
-                            BlockInit.ONE_BY_ONE_TILE_SECOND_DIRTY1,
-                            BlockInit.ONE_BY_ONE_TILE_SECOND_DIRTY2,
-                            new Block[]{
-                                    BlockInit.BLACK_TILE,
-                                    BlockInit.WHITE_TILE,
-                                    BlockInit.BLACK_CORNER_BROWN_TILE,
-                                    BlockInit.BLACK_GREEN_DIAGONAL_TILE,
-                                    BlockInit.CONCRETE_FLOOR_TILE
-                            }
+                    ItemCategory.Entry.create(BlockInit.TWO_BY_TWO_TILES_WHITE[3],
+                            BlockInit.TWO_BY_TWO_TILES_WHITE
+                    ),
+                    ItemCategory.Entry.create(BlockInit.TWO_BY_TWO_TILES_BLACK[3],
+                            BlockInit.TWO_BY_TWO_TILES_BLACK
+                    ),
+                    ItemCategory.Entry.create(BlockInit.TWO_BY_TWO_TILES_DIRTY[0],
+                            BlockInit.TWO_BY_TWO_TILES_DIRTY
+                    ),
+                    ItemCategory.Entry.create(BlockInit.TWO_BY_TWO_TILES_DIRTY_WHITE[3],
+                            BlockInit.TWO_BY_TWO_TILES_DIRTY_WHITE
+                    ),
+                    ItemCategory.Entry.create(BlockInit.TWO_BY_TWO_TILES_DIRTY_BLACK[3],
+                            BlockInit.TWO_BY_TWO_TILES_DIRTY_BLACK
                     ),
                     ItemCategory.Entry.create(BlockInit.FOUR_BY_FOUR_TILES[0],
                             BlockInit.FOUR_BY_FOUR_TILES,
-                            BlockInit.FOUR_BY_FOUR_TILES_DIRTY,
                             new Block[]{
                                     BlockInit.BLACK_WHITE_16_TILES,
                                     BlockInit.BLACK_WHITE_16_TILES_TRIM,
@@ -58,9 +56,59 @@ public class ItemCategoriesInit {
                                     BlockInit.BLACK_RED_WALL_TILES_TOP
                             }
                     ),
+                    ItemCategory.Entry.create(BlockInit.FOUR_BY_FOUR_TILES_WHITE[3],
+                            BlockInit.FOUR_BY_FOUR_TILES_WHITE
+                    ),
+                    ItemCategory.Entry.create(BlockInit.FOUR_BY_FOUR_TILES_BLACK[3],
+                            BlockInit.FOUR_BY_FOUR_TILES_BLACK
+                    ),
+                    ItemCategory.Entry.create(BlockInit.FOUR_BY_FOUR_TILES_DIRTY[0],
+                            BlockInit.FOUR_BY_FOUR_TILES_DIRTY
+                    ),
+                    ItemCategory.Entry.create(BlockInit.FOUR_BY_FOUR_TILES_DIRTY_WHITE[3],
+                            BlockInit.FOUR_BY_FOUR_TILES_DIRTY_WHITE
+                    ),
+                    ItemCategory.Entry.create(BlockInit.FOUR_BY_FOUR_TILES_DIRTY_BLACK[3],
+                            BlockInit.FOUR_BY_FOUR_TILES_DIRTY_BLACK
+                    ),
                     ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES[0],
-                            BlockInit.EIGHT_BY_EIGHT_TILES,
-                            BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY,
+                            BlockInit.EIGHT_BY_EIGHT_TILES
+                    ),
+                    ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES_WHITE[3],
+                            BlockInit.EIGHT_BY_EIGHT_TILES_WHITE
+                    ),
+                    ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES_BLACK[3],
+                            BlockInit.EIGHT_BY_EIGHT_TILES_BLACK
+                    ),
+                    ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY[0],
+                            BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY
+                    ),
+                    ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY_WHITE[3],
+                            BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY_WHITE
+                    ),
+                    ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY_BLACK[3],
+                            BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY_BLACK
+                    ),
+                    ItemCategory.Entry.create(BlockInit.ONE_BY_ONE_TILE_FIRST[0],
+                            BlockInit.ONE_BY_ONE_TILE_FIRST,
+                            new Block[]{
+                                    BlockInit.BLACK_TILE,
+                                    BlockInit.WHITE_TILE,
+                                    BlockInit.BLACK_CORNER_BROWN_TILE,
+                                    BlockInit.BLACK_GREEN_DIAGONAL_TILE,
+                                    BlockInit.CONCRETE_FLOOR_TILE
+                            }
+                    ),
+                    ItemCategory.Entry.create(BlockInit.ONE_BY_ONE_TILE_FIRST_DIRTY1[0],
+                            BlockInit.ONE_BY_ONE_TILE_FIRST_DIRTY1
+                    ),
+                    ItemCategory.Entry.create(BlockInit.ONE_BY_ONE_TILE_SECOND[0],
+                            BlockInit.ONE_BY_ONE_TILE_SECOND
+                    ),
+                    ItemCategory.Entry.create(BlockInit.ONE_BY_ONE_TILE_SECOND_DIRTY1[0],
+                            BlockInit.ONE_BY_ONE_TILE_SECOND_DIRTY1
+                    ),
+                    ItemCategory.Entry.create(BlockInit.TAN_16_CLEAN_TILES,
                             new Block[]{
                                     BlockInit.TAN_16_CLEAN_TILES,
                                     BlockInit.TAN_16_SPACED_TILES,

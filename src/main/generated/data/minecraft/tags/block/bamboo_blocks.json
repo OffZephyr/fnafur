@@ -1,6 +1,11 @@
 {
   "values": [
     "fnafur:punch_in_cards",
-    "fnafur:serious_cutout"
+    "fnafur:serious_cutout",
+    "fnafur:standing_menu",
+    "fnafur:wall_menu",
+    "fnafur:poster",
+    "fnafur:fnaf1_rules",
+    "fnafur:exit_arrow"
   ]
 }
