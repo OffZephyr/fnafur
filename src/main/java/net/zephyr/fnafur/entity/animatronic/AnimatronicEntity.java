@@ -6,9 +6,12 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.pathing.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
@@ -43,6 +46,7 @@ import net.minecraft.world.event.listener.EntityGameEventHandler;
 import net.minecraft.world.event.listener.Vibration;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
+import net.zephyr.fnafur.entity.animatronic.data.AnimatronicPathNodeMaker;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimMeleeAttackGoal;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
@@ -107,6 +111,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     int blinkDelay;
     public AnimatronicEntity(EntityType<? extends PathAwareEntity> entityType, World world){
         super(entityType, world);
+        this.navigation = new AnimatronicNavigation(this, world);
         this.vibrationCallback = new AnimatronicEntity.VibrationCallback();
         this.vibrationListenerData = new Vibrations.ListenerData();
         this.gameEventHandler = new EntityGameEventHandler<>(new Vibrations.VibrationListener(this));
@@ -417,6 +422,18 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         this.targetSelector.add(3, new RevengeGoal(this));
     }
 
+    public AnimatronicPose getAnimatronicPose() {
+        if (((IEntityDataSaver)this).getPersistentData().contains("pose")) {
+            return AnimatronicPose.values()[((IEntityDataSaver)this).getPersistentData().getInt("pose", 0)];
+        } else {
+            return AnimatronicPose.NONE;
+        }
+    }
+
+    public void setAnimatronicPose(AnimatronicPose animatronicPose) {
+        ((IEntityDataSaver)this).getPersistentData().putInt("pose", animatronicPose.ordinal());
+    }
+
     public void setChara(String chara, @Nullable String alt, @Nullable String eyes){
         AnimatronicDataHandler.Chara chara2 = AnimatronicDataHandler.CHARACTERS.get(chara);
         String alt2 = alt == null || alt.isEmpty() ? chara2.DEFAULT_ALT : alt;
@@ -619,7 +636,10 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return vibrationCallback;
     }
 
-
+    @Override
+    public EntityDimensions getBaseDimensions(EntityPose pose) {
+        return EntityDimensions.changing(0.5F, 0.1F);
+    }
     class VibrationCallback implements Vibrations.Callback {
         private static final int RANGE = 16;
         private final PositionSource positionSource = new EntityPositionSource(AnimatronicEntity.this, AnimatronicEntity.this.getStandingEyeHeight());
@@ -703,7 +723,6 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         }
     }
-
 
     public interface VibrationTicker {
         static void tick(World world, Vibrations.ListenerData listenerData, Vibrations.Callback callback) {
@@ -792,5 +811,23 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
             return true;
         }
+    }
+
+    public class AnimatronicNavigation extends MobNavigation {
+
+        public AnimatronicNavigation(MobEntity mobEntity, World world) {
+            super(mobEntity, world);
+        }
+
+        @Override
+        protected PathNodeNavigator createPathNodeNavigator(int range) {
+            this.nodeMaker = new AnimatronicPathNodeMaker();
+            return new PathNodeNavigator(this.nodeMaker, range);
+        }
+    }
+
+    public enum AnimatronicPose {
+        NONE,
+        CRAWLING
     }
 }
