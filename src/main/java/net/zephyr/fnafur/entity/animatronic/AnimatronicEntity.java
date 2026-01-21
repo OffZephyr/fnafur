@@ -133,7 +133,14 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-        return super.interactAt(player, hitPos, hand);
+        if (this.getAnimatronicPose() == AnimatronicPose.CRAWLING) {
+            this.setAnimatronicPose(AnimatronicPose.NONE);
+            return ActionResult.SUCCESS;
+        } else {
+            this.setAnimatronicPose(AnimatronicPose.CRAWLING);
+            return ActionResult.SUCCESS;
+        }
+
     }
 
     @Override
@@ -271,8 +278,18 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             VibrationTicker.tick(this.getEntityWorld(), this.vibrationListenerData, this.vibrationCallback);
         }
 
+//        this.tickAnimatronicMovement();
         super.tick();
     }
+
+    //TODO skilld :)
+//    public void tickAnimatronicMovement() {
+//        if (this.aiMovementLevel() <= 0) {
+//            this.getNavigation().stop();
+//        } else {
+//
+//        }
+//    }
 
     void startMovingToHeardPosition(){
 
@@ -338,6 +355,19 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     public void setCanRun(boolean run){
         canRunCheck = run;
+    }
+
+    public int aiMovementLevel(){
+
+        CpuData data = getData();
+
+        int level = 0;
+
+        if (data.DATA_LIST.get(CpuData.AIMovementLevel.getDefault().getKey()) instanceof CpuData.CpuDataRangeArgument range) {
+            level = range.getValue();
+        }
+
+        return level;
     }
 
     public boolean isAggressive(){
@@ -431,6 +461,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public void setAnimatronicPose(AnimatronicPose animatronicPose) {
+        this.calculateDimensions();
         ((IEntityDataSaver)this).getPersistentData().putInt("pose", animatronicPose.ordinal());
     }
 
@@ -622,7 +653,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     protected void readCustomData(ReadView view) {
-        this.vibrationListenerData = (Vibrations.ListenerData)view.read("listener", Vibrations.ListenerData.CODEC).orElseGet(Vibrations.ListenerData::new);
+        this.vibrationListenerData = view.read("listener", ListenerData.CODEC).orElseGet(ListenerData::new);
         super.readCustomData(view);
     }
 
@@ -638,7 +669,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     public EntityDimensions getBaseDimensions(EntityPose pose) {
-        return EntityDimensions.changing(0.5F, 0.1F);
+        return this.getAnimatronicPose() != AnimatronicPose.NONE ?
+                this.getAnimatronicPose().getPoseDimensions() : super.getBaseDimensions(pose);
     }
     class VibrationCallback implements Vibrations.Callback {
         private static final int RANGE = 16;
@@ -827,7 +859,17 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public enum AnimatronicPose {
-        NONE,
-        CRAWLING
+        NONE(EntityDimensions.fixed(0, 0)),
+        CRAWLING(EntityDimensions.fixed(0.8F, 0.8F));
+
+        public final EntityDimensions poseDimensions;
+
+        AnimatronicPose(EntityDimensions poseDimensions) {
+            this.poseDimensions = poseDimensions;
+        }
+
+        public EntityDimensions getPoseDimensions() {
+            return poseDimensions;
+        }
     }
 }
