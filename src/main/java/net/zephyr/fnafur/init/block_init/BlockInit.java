@@ -814,6 +814,13 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block[] TWO_BY_TWO_TILES_UNICOLOR = registerBlockPalette(
+            "two_tile_unicolor",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/unicolor_two_tile_template.png"),
+            UnicolorOnePalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
     public static final Block[] TWO_BY_TWO_TILES_DIRTY = registerBlockPalette(
             "two_tile_dirty",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/two_tile_template_dirty.png"),
@@ -835,38 +842,45 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block[] TWO_BY_TWO_TILES_DIRTY_UNICOLOR = registerBlockPalette(
+            "two_tile_dirty_unicolor",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/unicolor_two_tile_template_dirty.png"),
+            UnicolorOnePalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
     public static final Block[] ONE_BY_ONE_TILE_FIRST = registerBlockPalette(
             "one_tile_one",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_one.png"),
-            BigTileOnePalettes.values(),
+            UnicolorOnePalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
     public static final Block[] ONE_BY_ONE_TILE_SECOND = registerBlockPalette(
             "one_tile_two",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_two.png"),
-            BigTileTwoPalettes.values(),
+            UnicolorTwoPalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
     public static final Block[] ONE_BY_ONE_TILE_FIRST_DIRTY2 = registerBlockPalette(
             "one_tile_one_dirty2",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_dirty2.png"),
-            BigTileOnePalettes.values(),
+            UnicolorOnePalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
     public static final Block[] ONE_BY_ONE_TILE_SECOND_DIRTY2 = registerBlockPalette(
             "one_tile_two_dirty2",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_two_dirty2.png"),
-            BigTileTwoPalettes.values(),
+            UnicolorTwoPalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
     public static final Block[] ONE_BY_ONE_TILE_FIRST_DIRTY1 = registerBlockPaletteRandom(
             "one_tile_one_dirty1",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_dirty1.png"),
-            BigTileOnePalettes.values(),
+            UnicolorOnePalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE),
             ONE_BY_ONE_TILE_FIRST_DIRTY2
@@ -874,7 +888,7 @@ public class BlockInit {
     public static final Block[] ONE_BY_ONE_TILE_SECOND_DIRTY1 = registerBlockPaletteRandom(
             "one_tile_two_dirty1",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_two_dirty1.png"),
-            BigTileTwoPalettes.values(),
+            UnicolorTwoPalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE),
             ONE_BY_ONE_TILE_SECOND_DIRTY2
@@ -900,6 +914,13 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block[] FOUR_BY_FOUR_TILES_UNICOLOR = registerBlockPalette(
+            "four_tile_unicolor",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/unicolor_four_tile_template.png"),
+            UnicolorOnePalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
     public static final Block[] FOUR_BY_FOUR_TILES_DIRTY = registerBlockPalette(
             "four_tile_dirty",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/four_tile_template_dirty.png"),
@@ -918,6 +939,13 @@ public class BlockInit {
             "four_tile_dirty_black",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/four_tile_template_dirty.png"),
             TilesPalettesBlack.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block[] FOUR_BY_FOUR_TILES_DIRTY_UNICOLOR = registerBlockPalette(
+            "four_tile_dirty_unicolor",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/unicolor_four_tile_template_dirty.png"),
+            UnicolorOnePalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
@@ -942,6 +970,13 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
+    public static final Block[] EIGHT_BY_EIGHT_TILES_UNICOLOR = registerBlockPalette(
+            "eight_tile_unicolor",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/unicolor_eight_tile_template.png"),
+            UnicolorOnePalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
     public static final Block[] EIGHT_BY_EIGHT_TILES_DIRTY = registerBlockPalette(
             "eight_tile_dirty",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/eight_tile_template_dirty.png"),
@@ -960,6 +995,13 @@ public class BlockInit {
             "eight_tile_dirty_black",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/eight_tile_template_dirty.png"),
             TilesPalettesBlack.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block[] EIGHT_BY_EIGHT_TILES_DIRTY_UNICOLOR = registerBlockPalette(
+            "eight_tile_dirty_unicolor",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/unicolor_eight_tile_template_dirty.png"),
+            UnicolorOnePalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );

@@ -1,6 +1,14 @@
 package net.zephyr.fnafur.item.animatronic.suit;
 
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
+import net.zephyr.fnafur.util.ItemUtil;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -46,5 +54,20 @@ public class SuitItem extends Item implements GeoItem {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+
+    @Override
+    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+        if(entity instanceof AnimatronicEntity ent){
+            NbtCompound nbt = ItemUtil.getNbt(stack);
+            if(nbt.contains("chara")){
+                String chara = nbt.getString("chara", "");
+                String alt = nbt.getString("alt", "");
+                String eyes = nbt.getString("eyes", "");
+                ent.setChara(chara, alt, eyes);
+            }
+        }
+        return super.useOnEntity(stack, user, entity, hand);
     }
 }

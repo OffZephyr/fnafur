@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "fnafur:block/four_tile_dirty_unicolor_black_violet"
+  }
+}

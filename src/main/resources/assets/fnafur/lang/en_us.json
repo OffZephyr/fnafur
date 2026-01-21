@@ -538,6 +538,7 @@
   "cpu_config.argument.kill_style":  "KILL Style",
   "cpu_config.argument.vision_mode":  "Vision MODE",
   "cpu_config.argument.movement_speed":  "Movement SPEED",
+  "cpu_config.argument.run_speed":  "Running SPEED",
   "cpu_config.argument.sight_range":  "Sight RANGE",
   "cpu_config.argument.ambient_sounds_volume":  "Ambient sounds VOLUME",
   "cpu_config.argument.servo_sounds_volume":  "Servo sounds VOLUME",

@@ -1,26 +1,55 @@
 package net.zephyr.fnafur.entity.animatronic;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.mob.WardenEntity;
+import net.minecraft.entity.passive.AllayBrain;
+import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.VibrationParticleEffect;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.GameEventTags;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.event.EntityPositionSource;
+import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.event.PositionSource;
+import net.minecraft.world.event.Vibrations;
+import net.minecraft.world.event.listener.EntityGameEventHandler;
+import net.minecraft.world.event.listener.Vibration;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
+import net.zephyr.fnafur.entity.animatronic.data.CpuData;
+import net.zephyr.fnafur.entity.animatronic.goals.AnimMeleeAttackGoal;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
+import net.zephyr.fnafur.init.item_init.ItemInit;
+import net.zephyr.fnafur.item.animatronic.CPUItem;
+import net.zephyr.fnafur.networking.entity.SetEntityRunC2SPayload;
+import net.zephyr.fnafur.networking.entity.SetEntityRunS2CPayload;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerPayload;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -39,37 +68,55 @@ import software.bernie.geckolib.cache.animation.keyframeevent.CustomInstructionK
 import software.bernie.geckolib.loading.object.BakedAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.function.BiConsumer;
 
-public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
+public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vibrations {
 
+
+    private final EntityGameEventHandler<VibrationListener> gameEventHandler;
+    private Vibrations.ListenerData vibrationListenerData;
+    private final Vibrations.Callback vibrationCallback;
     int updateDepth = 0;
     public List<IEntityDataSaver> sources = new ArrayList<>();
     public double force_age = 0;
     public boolean isMenu = false;
+    boolean canRunCheck;
+
+    public BlockPos lastSeenPosition = null;
+    public BlockPos lastHeardPosition = null;
+    public int timeSinceLastHeard = 0;
+
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     List<String> blinkList = List.of(
            "performance",
            "walk_upper",
-           "nightwalk_upper",
+           "walk_upper_night",
            "backwards_walk_upper",
            "run_upper",
            "idle",
-           "playeridle",
-           "stageidle",
-           "hauntedidle",
+           "player_idle",
+           "crawl_idle",
+           "stage_idle",
+           "haunted_idle",
+           "drag_idle",
            "death"
     );
     String currentAnim = "";
     int blinkDelay;
     public AnimatronicEntity(EntityType<? extends PathAwareEntity> entityType, World world){
         super(entityType, world);
-        if(!LinkTarget.allTargets.contains((IEntityDataSaver) this)){
-            LinkTarget.allTargets.add((IEntityDataSaver) this);
+        this.vibrationCallback = new AnimatronicEntity.VibrationCallback();
+        this.vibrationListenerData = new Vibrations.ListenerData();
+        this.gameEventHandler = new EntityGameEventHandler<>(new Vibrations.VibrationListener(this));
+    }
+
+
+    @Override
+    public void updateEventHandler(BiConsumer<EntityGameEventHandler<?>, ServerWorld> callback) {
+        if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
+            callback.accept(this.gameEventHandler, serverWorld);
         }
     }
 
@@ -98,64 +145,75 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     private PlayState blinkAnimController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
 
-
-        if(true){
-            if (blinkDelay == 0) {
-                Random random = new Random();
-                blinkDelay = random.nextInt(100, 200);
-
-                //.thenWait(blinkDelay)
-                RawAnimation anim = RawAnimation.begin().thenPlay(AnimatronicDataHandler.getAnimationFullName("blink", getAnimPrefix()));
-                geoAnimatableAnimationTest.setAnimation(anim);
+        if(blinkList.contains(currentAnim)){
+            if(blinkDelay <= 0){
+                Random random1 = Random.create();
+                blinkDelay = random1.nextBetween(100, 250);
+                geoAnimatableAnimationTest.controller().reset();
             }
-
-            return PlayState.CONTINUE;
+            RawAnimation anim = RawAnimation.begin().thenPlayAndHold(getAnimationName("blink"));
+            return geoAnimatableAnimationTest.setAndContinue(anim);
         }
         blinkDelay = 0;
         return PlayState.STOP;
     }
 
     private PlayState lowerAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
-        animatronicEntityAnimationState.controller().setTransitionTicks(3);
-        animatronicEntityAnimationState.controller().setAnimationSpeed(1);
+
         if(isMenu) {
             animatronicEntityAnimationState.controller().setTransitionTicks(0);
-            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("loweridle", getAnimPrefix())));
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName("loweridle")));
         }
+        animatronicEntityAnimationState.controller().setTransitionTicks(3);
+        animatronicEntityAnimationState.controller().setAnimationSpeed(1);
 
         String getupAnim = ((IEntityDataSaver)this).getPersistentData().getString("getupAnim", "");
         if(!getupAnim.isEmpty()){
-            animatronicEntityAnimationState.controller().setTransitionTicks(0);
             return PlayState.STOP;
         }
 
-        double speed = getMovement().horizontalLength() * 15;
+        double speed = getMovement().horizontalLength() * 20;
         if(speed > 0){
+
+            String walk = isRunning() ? "run_lower" : "walk_lower";
+            walk = "walk_lower";
             animatronicEntityAnimationState.controller().setAnimationSpeed(speed);
-            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("walk_lower", getAnimPrefix())));
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName(walk)));
         }
-        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("loweridle", getAnimPrefix())));
+        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName("loweridle")));
     }
 
     private PlayState upperAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
-        animatronicEntityAnimationState.controller().setTransitionTicks(3);
-        animatronicEntityAnimationState.controller().setAnimationSpeed(1);
         if(isMenu) {
             animatronicEntityAnimationState.controller().setTransitionTicks(0);
-            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("menuidle", getAnimPrefix())));
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationFullName("menu_preview")));
         }
+        animatronicEntityAnimationState.controller().setTransitionTicks(3);
+        animatronicEntityAnimationState.controller().setAnimationSpeed(1);
 
         //TODO ADD POWERED
         if(true){
-            double speed = getMovement().horizontalLength() * 15;
+            double speed = getMovement().horizontalLength() * 20;
             if(speed > 0){
                 animatronicEntityAnimationState.controller().setAnimationSpeed(speed);
-                return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("walk_upper", getAnimPrefix())));
+                String walk = isAggressive() ? "walk_upper_night" : "walk_upper";
+                walk = isRunning() ? "run_upper" : walk;
+                return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationFullName(walk)));
             }
 
-            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("stageidle", getAnimPrefix())));
+            String idle = isAggressive() ? "haunted_idle" : "idle";
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationFullName(idle)));
         }
-        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(AnimatronicDataHandler.getAnimationFullName("deactivated", getAnimPrefix())));
+        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationFullName("deactivated")));
+    }
+
+    String getAnimationFullName(String currentAnim){
+        this.currentAnim = currentAnim;
+        return AnimatronicDataHandler.getAnimationFullName(this.currentAnim, getAnimPrefix());
+    }
+
+    String getAnimationName(String currentAnim){
+        return AnimatronicDataHandler.getAnimationFullName(currentAnim, getAnimPrefix());
     }
 
     @Override
@@ -183,8 +241,151 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
             //    ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver) this).getPersistentData()));
             //}
         }
+
+        if(!getEntityWorld().isClient()) {
+            if (getTarget() == null && canSee()) {
+                if (lastHeardPosition != null) {
+                    if (timeSinceLastHeard > 0 || getNavigation().isFollowingPath()) {
+                        if (timeSinceLastHeard > 0) {
+                            timeSinceLastHeard -= 1;
+                            getNavigation().stop();
+                            if (timeSinceLastHeard == 0) {
+                                startMovingToHeardPosition();
+                            }
+                        }
+                        getLookControl().lookAt(lastHeardPosition.getX(), lastHeardPosition.up().getY(), lastHeardPosition.getZ(), 30.0F, 30.0F);
+
+                    } else {
+                        lastHeardPosition = null;
+                    }
+                }
+            }
+        }
+
+        if(!getEntityWorld().isClient()){
+            VibrationTicker.tick(this.getEntityWorld(), this.vibrationListenerData, this.vibrationCallback);
+        }
+
         super.tick();
     }
+
+    void startMovingToHeardPosition(){
+
+        int speed = runningSpeed();
+        int maxSpeed = CpuData.MovementSpeed.getDefaultValue() + CpuData.RunSpeed.getDefaultValue();
+
+        float finalspeed = MathHelper.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
+
+        getNavigation().startMovingAlong(getNavigation().findPathTo(lastHeardPosition, AnimatronicEntity.this.canSee() ? 2 : 1), finalspeed);
+    }
+
+    public boolean isRunning(){
+        if(!getEntityWorld().isClient()) {
+            CpuData data = getData();
+
+            boolean runBase = false;
+            boolean runChase = false;
+
+            if (data.DATA_LIST.containsKey(CpuData.AggressionMode.getDefault().getKey())) {
+                runChase = data.DATA_LIST.get(CpuData.AggressionMode.getDefault().getKey()) == CpuData.AggressionMode.CHASE_RUN;
+            }
+            if (data.DATA_LIST.containsKey(CpuData.MovementMode.getDefault().getKey())) {
+                runBase = data.DATA_LIST.get(CpuData.MovementMode.getDefault().getKey()) == CpuData.MovementMode.RUN;
+            }
+            runChase = runChase && getTarget() != null;
+
+            boolean run = runChase || runBase;
+            canRunCheck = run;
+            return run;
+        }
+        else{
+            ClientPlayNetworking.send(new SetEntityRunC2SPayload(getId(), false));
+            return canRunCheck;
+        }
+    }
+
+    public int runningSpeed(){
+
+        CpuData data = getData();
+
+        int walk = walkingSpeed();
+        int run = 0;
+
+        if (data.DATA_LIST.get(CpuData.RunSpeed.getDefault().getKey()) instanceof CpuData.CpuDataRangeArgument range) {
+            run = range.getValue();
+        }
+
+        return isRunning() ? walk + run : walk;
+    }
+
+    public int walkingSpeed(){
+
+        CpuData data = getData();
+
+        int walk = 0;
+
+        if (data.DATA_LIST.get(CpuData.MovementSpeed.getDefault().getKey()) instanceof CpuData.CpuDataRangeArgument range) {
+            walk = range.getValue();
+        }
+
+        return walk;
+    }
+
+    public void setCanRun(boolean run){
+        canRunCheck = run;
+    }
+
+    public boolean isAggressive(){
+        CpuData data = getData();
+
+        boolean aggressive = false;
+
+        if(data.DATA_LIST.containsKey(CpuData.AggressionMode.getDefault().getKey())){
+            aggressive = data.DATA_LIST.get(CpuData.AggressionMode.getDefault().getKey()) == CpuData.AggressionMode.CHASE_WALK || data.DATA_LIST.get(CpuData.AggressionMode.getDefault().getKey()) == CpuData.AggressionMode.CHASE_RUN;
+        }
+
+        return aggressive;
+    }
+
+    public boolean canSee(){
+        CpuData data = getData();
+
+        boolean canSee = false;
+
+        if(data.DATA_LIST.containsKey(CpuData.AggressionMode.getDefault().getKey())){
+            canSee = data.DATA_LIST.get(CpuData.VisionMode.getDefault().getKey()) != CpuData.VisionMode.BLIND && data.DATA_LIST.get(CpuData.VisionMode.getDefault().getKey()) != CpuData.VisionMode.BLIND_AND_DEAF;
+        }
+
+        return canSee;
+    }
+
+    public boolean canHear(){
+        CpuData data = getData();
+
+        boolean canHear = false;
+
+        if(data.DATA_LIST.containsKey(CpuData.AggressionMode.getDefault().getKey())){
+            canHear = data.DATA_LIST.get(CpuData.VisionMode.getDefault().getKey()) != CpuData.VisionMode.DEAF && data.DATA_LIST.get(CpuData.VisionMode.getDefault().getKey()) != CpuData.VisionMode.BLIND_AND_DEAF;
+        }
+
+        return canHear;
+    }
+
+    public CpuData getData(){
+        return CpuData.fromNbt(((IEntityDataSaver)this).getPersistentData().getCompound("data").orElse(new NbtCompound()));
+    }
+
+    public void setData(PlayerEntity entity, ItemStack stack){
+        if(stack.isOf(ItemInit.CPU)){
+            setData(CPUItem.getCpuData(stack));
+            entity.sendMessage(Text.literal("UPDATED_DATA"), true);
+        }
+    }
+
+    public void setData(CpuData data){
+        ((IEntityDataSaver)this).getPersistentData().put("data", data.toNbt());
+    }
+
 //
 //    @Override
 //    public double getTick(Object entity) {
@@ -209,7 +410,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.0, false));
+        this.goalSelector.add(1, new AnimMeleeAttackGoal(this, false));
         this.goalSelector.add(2, new WanderAroundFarGoal(this, 0.8));
         this.targetSelector.add(1, new AnimTargetGoal(this, PlayerEntity.class, true, true));
         this.targetSelector.add(2, new AnimTargetGoal(this, VillagerEntity.class, true, true));
@@ -328,10 +529,12 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
             String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
             if(!chara.isEmpty()) {
                 String alt = ((IEntityDataSaver) this).getPersistentData().getString("suit").orElse("");
-            AnimatronicDataHandler.Chara chara1 = AnimatronicDataHandler.CHARACTERS.get(chara);
-            AnimatronicDataHandler.Alt alt1 = chara1.ALTS.get(alt);
+                AnimatronicDataHandler.Chara chara1 = AnimatronicDataHandler.CHARACTERS.get(chara);
+                if (chara1 != null) {
+                    AnimatronicDataHandler.Alt alt1 = chara1.ALTS.get(alt);
 
-            return alt1.preview_anim();
+                    return Objects.equals(getData().Animation, "default") ? alt1.preview_anim() : getData().Animation;
+                }
             }
         }
         return "default";
@@ -346,10 +549,11 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
                 AnimatronicDataHandler.Chara chara1 = AnimatronicDataHandler.CHARACTERS.get(chara);
                 AnimatronicDataHandler.Alt alt1 = chara1.ALTS.get(alt);
 
-                String animString = alt1.preview_anim();
+                String animString = Objects.equals(getData().Animation, "default") ? alt1.preview_anim() : getData().Animation;
+
                 String anim = AnimatronicDataHandler.ALL_ANIMATIONS.get(animString);
 
-                if(isMenu) currentAnim = "menuidle";
+                if(isMenu || currentAnim.isEmpty()) currentAnim = "menu_preview";
                 String animations = AnimatronicDataHandler.getAnimationFilePath(currentAnim, animString);
                 if(!animations.isEmpty()){
                     return animations;
@@ -391,5 +595,202 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity {
 
     public RenderLayer getRenderType(Identifier texture){
         return RenderLayers.entityTranslucent(texture);
+    }
+
+    @Override
+    protected void writeCustomData(WriteView view) {
+        view.put("listener", Vibrations.ListenerData.CODEC, this.vibrationListenerData);
+        super.writeCustomData(view);
+    }
+
+    @Override
+    protected void readCustomData(ReadView view) {
+        this.vibrationListenerData = (Vibrations.ListenerData)view.read("listener", Vibrations.ListenerData.CODEC).orElseGet(Vibrations.ListenerData::new);
+        super.readCustomData(view);
+    }
+
+    @Override
+    public ListenerData getVibrationListenerData() {
+        return vibrationListenerData;
+    }
+
+    @Override
+    public Callback getVibrationCallback() {
+        return vibrationCallback;
+    }
+
+
+    class VibrationCallback implements Vibrations.Callback {
+        private static final int RANGE = 16;
+        private final PositionSource positionSource = new EntityPositionSource(AnimatronicEntity.this, AnimatronicEntity.this.getStandingEyeHeight());
+
+        @Override
+        public int getRange() {
+            return 64;
+        }
+
+        @Override
+        public PositionSource getPositionSource() {
+            return this.positionSource;
+        }
+
+        @Override
+        public boolean accepts(ServerWorld world, BlockPos pos, RegistryEntry<GameEvent> event, GameEvent.Emitter emitter) {
+
+            if(AnimatronicEntity.this.getTarget() != null && AnimatronicEntity.this.canSee()) return false;
+            if(!AnimatronicEntity.this.isAggressive()) return false;
+            if(!AnimatronicEntity.this.canHear()) return false;
+
+            if (emitter.sourceEntity() instanceof PlayerEntity p) {
+
+                //if(p.isSpectator() || p.isCreative()) return false;
+
+                if (event.matches(GameEvent.STEP)) {
+                    if (AnimatronicEntity.this.canSee() && !p.isSprinting()) {
+                        return false;
+                    }
+                }
+            }
+
+            if (AnimatronicEntity.this.isAiDisabled()) {
+                return false;
+            } else {
+                return pos.isWithinDistance(AnimatronicEntity.this.getBlockPos(), getRange());
+            }
+
+        }
+
+        @Override
+        public void accept(ServerWorld world, BlockPos pos, RegistryEntry<GameEvent> event, @org.jspecify.annotations.Nullable Entity sourceEntity, @org.jspecify.annotations.Nullable Entity entity, float distance) {
+
+            List<RegistryEntry.Reference<GameEvent>> references = List.of(
+                    GameEvent.STEP,
+                    GameEvent.PROJECTILE_LAND,
+                    GameEvent.HIT_GROUND,
+                    GameEvent.ITEM_INTERACT_FINISH,
+                    GameEvent.PROJECTILE_SHOOT,
+                    GameEvent.INSTRUMENT_PLAY,
+                    GameEvent.ENTITY_ACTION,
+                    GameEvent.ENTITY_INTERACT,
+                    GameEvent.CONTAINER_CLOSE,
+                    GameEvent.BLOCK_CLOSE,
+                    GameEvent.CONTAINER_OPEN,
+                    GameEvent.BLOCK_OPEN,
+                    GameEvent.BLOCK_DESTROY,
+                    GameEvent.BLOCK_PLACE,
+                    GameEvent.ENTITY_PLACE,
+                    GameEvent.NOTE_BLOCK_PLAY
+            );
+
+            if (sourceEntity instanceof PlayerEntity p) {
+                boolean alreadyHeard = lastHeardPosition != null;
+                lastHeardPosition = pos;
+                timeSinceLastHeard = 30;
+                if(alreadyHeard){
+                    startMovingToHeardPosition();
+                    timeSinceLastHeard = 0;
+                }
+            }
+        }
+
+        @Override
+        public TagKey<GameEvent> getTag() {
+            return GameEventTags.VIBRATIONS;
+        }
+
+        @Override
+        public void onListen() {
+
+        }
+    }
+
+
+    public interface VibrationTicker {
+        static void tick(World world, Vibrations.ListenerData listenerData, Vibrations.Callback callback) {
+            if (world instanceof ServerWorld serverWorld) {
+                if (listenerData.getVibration() == null) {
+                    tryListen(serverWorld, listenerData, callback);
+                }
+
+                if (listenerData.getVibration() != null) {
+                    boolean bl = listenerData.getDelay() > 0;
+                    //spawnVibrationParticle(serverWorld, listenerData, callback);
+                    listenerData.tickDelay();
+                    if (listenerData.getDelay() <= 0) {
+                        bl = accept(serverWorld, listenerData, callback, listenerData.getVibration());
+                    }
+
+                    if (bl) {
+                        callback.onListen();
+                    }
+                }
+            }
+        }
+
+        private static void tryListen(ServerWorld world, Vibrations.ListenerData listenerData, Vibrations.Callback callback) {
+            listenerData.getSelector().getVibrationToTick(world.getTime()).ifPresent(vibration -> {
+                listenerData.setVibration(vibration);
+                Vec3d vec3d = vibration.pos();
+                listenerData.setDelay(callback.getDelay(vibration.distance()));
+                //world.spawnParticles(new VibrationParticleEffect(callback.getPositionSource(), listenerData.getDelay()), vec3d.x, vec3d.y, vec3d.z, 1, 0.0, 0.0, 0.0, 0.0);
+                callback.onListen();
+                listenerData.getSelector().clear();
+            });
+        }
+
+        private static void spawnVibrationParticle(ServerWorld world, Vibrations.ListenerData listenerData, Vibrations.Callback callback) {
+            if (listenerData.shouldSpawnParticle()) {
+                if (listenerData.getVibration() == null) {
+                    listenerData.setSpawnParticle(false);
+                } else {
+                    Vec3d vec3d = listenerData.getVibration().pos();
+                    PositionSource positionSource = callback.getPositionSource();
+                    Vec3d vec3d2 = (Vec3d)positionSource.getPos(world).orElse(vec3d);
+                    int i = listenerData.getDelay();
+                    int j = callback.getDelay(listenerData.getVibration().distance());
+                    double d = 1.0 - (double)i / j;
+                    double e = MathHelper.lerp(d, vec3d.x, vec3d2.x);
+                    double f = MathHelper.lerp(d, vec3d.y, vec3d2.y);
+                    double g = MathHelper.lerp(d, vec3d.z, vec3d2.z);
+                    boolean bl = false;
+                    if (bl) {
+                        listenerData.setSpawnParticle(false);
+                    }
+                }
+            }
+        }
+
+        private static boolean accept(ServerWorld world, Vibrations.ListenerData listenerData, Vibrations.Callback callback, Vibration vibration) {
+            BlockPos blockPos = BlockPos.ofFloored(vibration.pos());
+            BlockPos blockPos2 = (BlockPos)callback.getPositionSource().getPos(world).map(BlockPos::ofFloored).orElse(blockPos);
+            if (callback.requiresTickingChunksAround() && !areChunksTickingAround(world, blockPos2)) {
+                return false;
+            } else {
+                callback.accept(
+                        world,
+                        blockPos,
+                        vibration.gameEvent(),
+                        (Entity)vibration.getEntity(world).orElse(null),
+                        (Entity)vibration.getOwner(world).orElse(null),
+                        Vibrations.VibrationListener.getTravelDelay(blockPos, blockPos2)
+                );
+                listenerData.setVibration(null);
+                return true;
+            }
+        }
+
+        private static boolean areChunksTickingAround(World world, BlockPos pos) {
+            ChunkPos chunkPos = new ChunkPos(pos);
+
+            for (int i = chunkPos.x - 1; i <= chunkPos.x + 1; i++) {
+                for (int j = chunkPos.z - 1; j <= chunkPos.z + 1; j++) {
+                    if (!world.shouldTickBlocksInChunk(ChunkPos.toLong(i, j)) || world.getChunkManager().getWorldChunk(i, j) == null) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 }

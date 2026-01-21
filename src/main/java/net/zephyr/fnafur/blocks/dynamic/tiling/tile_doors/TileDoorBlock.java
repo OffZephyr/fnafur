@@ -258,7 +258,7 @@ public class TileDoorBlock extends BlockWithEntity {
 
     @Override
     protected boolean canPathfindThrough(BlockState state, NavigationType type) {
-        return !state.get(OPEN);
+        return state.get(OPEN);
     }
 
     public TileDoorBlock setDirection(TileDoorDirection direction) {

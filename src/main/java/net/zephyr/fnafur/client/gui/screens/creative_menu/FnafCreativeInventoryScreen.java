@@ -220,6 +220,15 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     public boolean shouldCloseOnEsc() {
         if(isFnafTab){
             if(garageDoorIndex == 0 && SubTab != FnafSubTab.DEFAULT){
+                selectedItemCategory = -1;
+                itemCategoryScroll = 0;
+                selectedItemCategoryOffset = 0;
+                lastPreviewStackIndex = 0;
+                if(PreviousSubTab != null){
+                    GoalSubTab = PreviousSubTab;
+                    PreviousSubTab = FnafSubTab.DEFAULT;
+                    return false;
+                }
                 GoalSubTab = FnafSubTab.DEFAULT;
                 return false;
             }
@@ -236,7 +245,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
     public boolean keyPressed(KeyInput input) {
 
         if(isFnafTab){
-            if(!input.isEscape() && SubTab == FnafSubTab.ITEM_WITH_ALTS_SELECTION){
+            if(!input.isEscape() && SubTab == FnafSubTab.ITEM_WITH_ALTS_SELECTION && selectedItemCategory != -1){
                 ItemCategory.Entry entry = (ItemCategory.Entry) activeCategory.itemCategory.ITEM_ENTRIES.toArray()[selectedItemCategory];
 
                 for (int x = 0; x < 9; x++) {
@@ -577,6 +586,7 @@ public class FnafCreativeInventoryScreen extends CreativeInventoryScreen {
         boolean shiftKey = InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT);
         if(GoopyScreen.isOnButton(mouseX, mouseY, this.x + 9, this.y + 22, 9, 9)){
             selectedItemCategory = -1;
+            itemCategoryScroll = 0;
             selectedItemCategoryOffset = 0;
             lastPreviewStackIndex = 0;
             GoalSubTab = PreviousSubTab;

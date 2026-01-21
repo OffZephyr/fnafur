@@ -1,0 +1,30 @@
+package net.zephyr.fnafur.networking.entity;
+
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.packet.CustomPayload;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
+
+public record SetEntityRunC2SPayload(int EntityID, boolean run) implements CustomPayload {
+    public static final Id<SetEntityRunC2SPayload> ID = new Id<>(EntityPayloads.C2SSetEntityRun);
+    public static final PacketCodec<RegistryByteBuf, SetEntityRunC2SPayload> CODEC = PacketCodec.tuple(
+            PacketCodecs.INTEGER, SetEntityRunC2SPayload::EntityID,
+            PacketCodecs.BOOLEAN, SetEntityRunC2SPayload::run,
+            SetEntityRunC2SPayload::new);
+
+    public static void receive(SetEntityRunC2SPayload payload, ServerPlayNetworking.Context context) {
+        Entity entity = context.player().getEntityWorld().getEntityById(payload.EntityID);
+        if(entity instanceof AnimatronicEntity entity1){
+            ServerPlayNetworking.send(context.player(), new SetEntityRunS2CPayload(entity1.getId(), entity1.isRunning()));
+        }
+    }
+
+    @Override
+    public Id<? extends CustomPayload> getId() {
+        return ID;
+    }
+}

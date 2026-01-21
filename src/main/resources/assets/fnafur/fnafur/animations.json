@@ -7,5 +7,8 @@
         "cl_bon": "entity/animatronics/classic/cl_bon/cl_bon",
         "cl_chica": "entity/animatronics/classic/cl_chica/cl_chica",
         "cl_foxy": "entity/animatronics/classic/cl_foxy/cl_foxy"
+    },
+    "diner": {
+        "fredbear": "entity/animatronics/diner/fredbear/fredbear"
     }
 }

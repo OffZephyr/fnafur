@@ -18,17 +18,13 @@ import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.client.ClientHook;
-import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.client.gui.screens.InWorldScreen;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import net.zephyr.fnafur.item.CPUItem;
-import net.zephyr.fnafur.networking.entity.player.UpdateCreativeExtraSlotsC2SPayload;
+import net.zephyr.fnafur.item.animatronic.CPUItem;
 import net.zephyr.fnafur.networking.entity.player.UpdateMainHandItemC2SPayload;
-import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
-import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
 import org.joml.Vector3f;
 
 import java.util.*;

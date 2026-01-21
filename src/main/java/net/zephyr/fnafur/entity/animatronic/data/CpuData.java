@@ -1069,11 +1069,11 @@ public class CpuData {
 
         @Override
         public int getMax() {
-            return 10;
+            return 15;
         }
 
         public static int getDefaultValue() {
-            return 4;
+            return 12;
         }
 
         public int getValue(){
@@ -1115,6 +1115,66 @@ public class CpuData {
         public static MovementSpeed getDefault() {
             MovementSpeed attribute = new MovementSpeed();
             attribute.setValue(MovementSpeed.getDefaultValue());
+            return attribute;
+        }
+    }
+    public static class RunSpeed implements CpuDataRangeArgument {
+
+        private int value = 0;
+
+        @Override
+        public int getMin() {
+            return 0;
+        }
+
+        @Override
+        public int getMax() {
+            return 10;
+        }
+
+        public static int getDefaultValue() {
+            return 3;
+        }
+
+        public int getValue(){
+            return value;
+        }
+
+        public void setValue(int val){
+            value = val;
+        }
+
+        @Override
+        public String getKey() {
+            return "run_speed";
+        }
+
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public CpuDataArgument cycleLeft() {
+            value = Math.max(getMin(), value - 1);
+            return this;
+        }
+
+        @Override
+        public CpuDataArgument cycleRight() {
+
+            value = Math.min(getMax(), value + 1);
+            return this;
+        }
+
+        @Override
+        public CpuDataArgument getFromName(String name) {
+            return this;
+        }
+
+        public static RunSpeed getDefault() {
+            RunSpeed attribute = new RunSpeed();
+            attribute.setValue(RunSpeed.getDefaultValue());
             return attribute;
         }
     }
@@ -1383,6 +1443,7 @@ public class CpuData {
     SingingRole SINGING_ROLE = SingingRole.getDefault();
     CameraJamming CAMERA_JAMMING = CameraJamming.getDefault();
     MovementSpeed MOVEMENT_SPEED = MovementSpeed.getDefault();
+    RunSpeed RUN_SPEED = RunSpeed.getDefault();
     SightRange SIGHT_RANGE = SightRange.getDefault();
     ServoSoundsVolume SERVO_SOUND_VOLUME = ServoSoundsVolume.getDefault();
     AmbientSoundsVolume AMBIENT_SOUND_VOLUME = AmbientSoundsVolume.getDefault();
@@ -1418,6 +1479,7 @@ public class CpuData {
 
             // STATS
             MOVEMENT_SPEED,
+            RUN_SPEED,
             SIGHT_RANGE,
             AMBIENT_SOUND_VOLUME,
             SERVO_SOUND_VOLUME,

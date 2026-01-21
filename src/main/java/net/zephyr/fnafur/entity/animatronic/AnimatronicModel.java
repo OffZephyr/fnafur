@@ -36,9 +36,6 @@ public class AnimatronicModel<T extends AnimatronicEntity> extends GeoModel<T> {
         return Identifier.of(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"));
     }
 
-
-
-
     @Override
     public Identifier[] getAnimationResourceFallbacks(T animatable) {
         return new Identifier[]{

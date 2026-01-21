@@ -89,6 +89,24 @@ public class ItemCategoriesInit {
                     ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY_BLACK[3],
                             BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY_BLACK
                     ),
+                    ItemCategory.Entry.create(BlockInit.TWO_BY_TWO_TILES_UNICOLOR[7],
+                            BlockInit.TWO_BY_TWO_TILES_UNICOLOR
+                    ),
+                    ItemCategory.Entry.create(BlockInit.FOUR_BY_FOUR_TILES_UNICOLOR[7],
+                            BlockInit.FOUR_BY_FOUR_TILES_UNICOLOR
+                    ),
+                    ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES_UNICOLOR[7],
+                            BlockInit.EIGHT_BY_EIGHT_TILES_UNICOLOR
+                    ),
+                    ItemCategory.Entry.create(BlockInit.TWO_BY_TWO_TILES_DIRTY_UNICOLOR[7],
+                            BlockInit.TWO_BY_TWO_TILES_DIRTY_UNICOLOR
+                    ),
+                    ItemCategory.Entry.create(BlockInit.FOUR_BY_FOUR_TILES_DIRTY_UNICOLOR[7],
+                            BlockInit.FOUR_BY_FOUR_TILES_DIRTY_UNICOLOR
+                    ),
+                    ItemCategory.Entry.create(BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY_UNICOLOR[7],
+                            BlockInit.EIGHT_BY_EIGHT_TILES_DIRTY_UNICOLOR
+                    ),
                     ItemCategory.Entry.create(BlockInit.ONE_BY_ONE_TILE_FIRST[0],
                             BlockInit.ONE_BY_ONE_TILE_FIRST,
                             new Block[]{

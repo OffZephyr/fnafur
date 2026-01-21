@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
-import net.zephyr.fnafur.item.CPUItem;
+import net.zephyr.fnafur.item.animatronic.CPUItem;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.IllusionDisc;
 import net.zephyr.fnafur.item.animatronic.suit.SuitItem;
