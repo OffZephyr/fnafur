@@ -445,6 +445,7 @@
   "cpu_config.value.dots":  "Dots",
   "cpu_config.value.black_eyed_dots":  "Dots with Black Eyes",
   "cpu_config.value.irises":  "Irises",
+  "cpu_config.value.irises_dots":  "Dots and Irises",
   "cpu_config.value.black_eyed_irises":  "Irises with Black Eyes",
   "cpu_config.value.full_eyes":  "Full Eyes",
   "cpu_config.value.full_eyes_dots":  "Dots and Full Eyes",

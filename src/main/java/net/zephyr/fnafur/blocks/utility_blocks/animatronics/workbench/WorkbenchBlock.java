@@ -2,6 +2,7 @@ package net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -72,6 +73,11 @@ public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
             }
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+    }
+
+    @Override
+    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
+        return false;
     }
 
     public static void spawnItem(World world, BlockPos pos, String chara, String alt, String eyes){

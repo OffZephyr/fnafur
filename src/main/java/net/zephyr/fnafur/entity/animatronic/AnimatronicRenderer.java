@@ -71,8 +71,10 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
         renderState.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.getEntityWorld()));
         renderState.addGeckolibData(CustomDataTickets.EYE_TEXTURE, animatable.getEyeTexture(animatable.getEntityWorld()));
         renderState.addGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE, animatable.getEyeMapTexture(animatable.getEntityWorld()));
+        renderState.addGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE, animatable.getEyesGlowColor().getIdentifier());
         renderState.addGeckolibData(CustomDataTickets.SUIT_MAP_TEXTURE, animatable.getEyeTexture(animatable.getEntityWorld()));
         renderState.addGeckolibData(CustomDataTickets.EYE_NONE, animatable.isEmptyEye());
+        renderState.addGeckolibData(CustomDataTickets.EYES_GLOW, animatable.shouldEyesGlow());
         renderState.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.getEntityWorld()));
         renderState.addGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE, animatable.getReRenderTexture(animatable.getEntityWorld()));
         renderState.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.getEntityWorld()));
@@ -116,8 +118,22 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
 
     @Override
     public @Nullable RenderLayer getRenderType(R renderState, Identifier texture) {
-        if(renderState.hasGeckolibData(CustomDataTickets.EYE_NONE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.EYE_NONE))) return CustomRenderingPipelines.getAnimatronicNoEyes(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE));
-        return CustomRenderingPipelines.getAnimatronic(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE));
+        if(renderState.hasGeckolibData(CustomDataTickets.EYE_NONE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.EYE_NONE))) return CustomRenderingPipelines.getAnimatronicNoEyes(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE));
+
+        if(renderState.hasGeckolibData(CustomDataTickets.EYES_GLOW) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.EYES_GLOW))) {
+
+            if(renderState.hasGeckolibData(CustomDataTickets.EYES_GLOW_MODE)){
+                return switch (renderState.getGeckolibData(CustomDataTickets.EYES_GLOW_MODE)){
+                    case IRISES -> CustomRenderingPipelines.getAnimatronicGlowingEyesDots(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE));
+                    case IRISES_DOTS -> CustomRenderingPipelines.getAnimatronicGlowingEyesDots(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE));
+                    case FULL_EYES -> CustomRenderingPipelines.getAnimatronicGlowingEyesDots(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE));
+                    case FULL_EYES_DOTS -> CustomRenderingPipelines.getAnimatronicGlowingEyesDots(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE));
+                    default -> CustomRenderingPipelines.getAnimatronicGlowingEyesDots(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE));
+                };
+            }
+        }
+
+        return CustomRenderingPipelines.getAnimatronic(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE));
         //return super.getRenderType(renderState, texture);
     }
 

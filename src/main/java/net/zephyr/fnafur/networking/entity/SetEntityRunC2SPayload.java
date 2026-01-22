@@ -9,11 +9,10 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 
-public record SetEntityRunC2SPayload(int EntityID, boolean run) implements CustomPayload {
+public record SetEntityRunC2SPayload(int EntityID) implements CustomPayload {
     public static final Id<SetEntityRunC2SPayload> ID = new Id<>(EntityPayloads.C2SSetEntityRun);
     public static final PacketCodec<RegistryByteBuf, SetEntityRunC2SPayload> CODEC = PacketCodec.tuple(
             PacketCodecs.INTEGER, SetEntityRunC2SPayload::EntityID,
-            PacketCodecs.BOOLEAN, SetEntityRunC2SPayload::run,
             SetEntityRunC2SPayload::new);
 
     public static void receive(SetEntityRunC2SPayload payload, ServerPlayNetworking.Context context) {

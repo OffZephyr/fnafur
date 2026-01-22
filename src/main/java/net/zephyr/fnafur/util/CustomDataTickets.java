@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
+import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 
 public class CustomDataTickets {
@@ -18,9 +19,13 @@ public class CustomDataTickets {
     public static final DataTicket<Boolean> IS_EYE_BONE = DataTicket.create("is_eye_bone", Boolean.class);
     public static final DataTicket<Identifier> EYE_TEXTURE = DataTicket.create("eye_texture", Identifier.class);
     public static final DataTicket<Identifier> EYE_MAP_TEXTURE = DataTicket.create("eye_map_texture", Identifier.class);
+    public static final DataTicket<Identifier> EYE_GLOW_MAP_TEXTURE = DataTicket.create("eye_glow_map_texture", Identifier.class);
+    public static final DataTicket<Identifier> EYE_GLOW_COLOR_TEXTURE = DataTicket.create("eye_glow_color_texture", Identifier.class);
     public static final DataTicket<Identifier> SUIT_MAP_TEXTURE = DataTicket.create("suit_map_texture", Identifier.class);
     public static final DataTicket<Float> RENDER_SCALE = DataTicket.create("render_scale", Float.class);
     public static final DataTicket<Boolean> EYE_NONE = DataTicket.create("eye_none", Boolean.class);
+    public static final DataTicket<Boolean> EYES_GLOW = DataTicket.create("eyes_glow", Boolean.class);
+    public static final DataTicket<CpuData.GlowingEyesMode> EYES_GLOW_MODE = DataTicket.create("eyes_glow_mode", CpuData.GlowingEyesMode.class);
     public static final DataTicket<RenderLayer> RENDER_LAYER = DataTicket.create("render_layer", RenderLayer.class);
     public static final DataTicket<Identifier> DOOR_WINDOW_TEXTURE = DataTicket.create("door_window_texture", Identifier.class);
     public static final DataTicket<Float> CLOCK_DELTA_MINUTE = DataTicket.create("clock_delta_minute", Float.class);

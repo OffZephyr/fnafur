@@ -68,7 +68,18 @@ public class AnimTargetGoal<T extends LivingEntity> extends TrackTargetGoal {
             return false;
         } else {
             this.findClosestTarget();
-            return this.targetEntity != null;
+            if(this.targetEntity != null){
+                Vec3d difference = this.targetEntity.getEntityPos().add(mob.getEntityPos().multiply(-1));
+                float angle = mob.getHeadYaw() - difference.getYawAndPitch().y;
+                while(angle < 0) angle += 360;
+                angle %= 360;
+                if(difference.length() > a.sightRange()) return false;
+                if(angle <= a.sightConeAngle() || angle >= 360 - a.sightConeAngle()){
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
     }
 

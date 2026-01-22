@@ -1,6 +1,8 @@
 package net.zephyr.fnafur.entity.animatronic.data;
 
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
+import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 import java.util.*;
 
@@ -801,9 +803,8 @@ public class CpuData {
     }
     public enum GlowingEyesMode implements CpuDataArgument {
         DOTS("dots"),
-        BLACK_EYED_DOTS("black_eyed_dots"),
         IRISES("irises"),
-        BLACK_EYED_IRISES("black_eyed_irises"),
+        IRISES_DOTS("irises_dots"),
         FULL_EYES("full_eyes"),
         FULL_EYES_DOTS("full_eyes_dots")
         ;
@@ -853,7 +854,7 @@ public class CpuData {
     public enum GlowingEyesColor implements CpuDataArgument {
 
         RED("red"),
-        ORANGE("orange"),
+        c("orange"),
         YELLOW("yellow"),
         GREEN("green"),
         BLUE("blue"),
@@ -862,9 +863,11 @@ public class CpuData {
         WHITE("white"),
         ;
         final String NAME;
+        final Identifier IDENTIFIER;
 
         GlowingEyesColor(String name){
             NAME = name;
+            IDENTIFIER = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/animatronics/eye_colors/" + name + ".png");
         }
 
         @Override
@@ -875,6 +878,10 @@ public class CpuData {
         @Override
         public String getName() {
             return NAME;
+        }
+
+        public Identifier getIdentifier() {
+            return IDENTIFIER;
         }
 
         @Override

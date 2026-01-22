@@ -8,6 +8,7 @@ uniform sampler2D Sampler1;
 uniform sampler2D Sampler2;
 uniform sampler2D Sampler3;
 uniform sampler2D Sampler4;
+uniform sampler2D SamplerEyeColor;
 
 in float sphericalVertexDistance;
 in float cylindricalVertexDistance;
@@ -28,6 +29,9 @@ void main() {
     vec4 color2 = texture(Sampler3, texCoord0);
     #ifdef NO_EYES
         color2 = vec4(0);
+    #endif
+    #ifdef GLOWING_EYES
+        color2 = texture(SamplerEyeColor, texCoord0);
     #endif
     vec4 color3 = texture(Sampler4, texCoord0);
     if(color3.rgb == vec3(1, 1, 1)) color = color2;

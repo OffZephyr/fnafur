@@ -9,6 +9,7 @@
     "CreativeInventoryScreenMixin",
     "DeathScreenMixin",
     "DebugRendererMixin",
+    "EntityMixin",
     "GameOptionsMixin",
     "GameRendererMixin",
     "HeadFeatureRendererMixin",

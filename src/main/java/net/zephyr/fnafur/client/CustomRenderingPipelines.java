@@ -7,10 +7,8 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gl.UniformType;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.RenderSetup;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.zephyr.fnafur.decals.DecalManager;
@@ -84,19 +82,100 @@ public class CustomRenderingPipelines {
                     .withSampler("Sampler1")
                     .withSampler("Sampler3")
                     .withSampler("Sampler4")
+                    .withSampler("Sampler5")
+                    .withSampler("SamplerEyeColor")
                     .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
     );
     public static final RenderPipeline ANIMATRONIC_NO_EYES_TRANSLUCENT = RenderPipelines.register(
             RenderPipeline.builder(ANIMATRONIC_SNIPPET)
-                    .withLocation("pipeline/animatronic_translucent")
+                    .withLocation("pipeline/animatronic_no_eyes_translucent")
                     .withShaderDefine("ALPHA_CUTOUT", 0.1F)
                     .withShaderDefine("PER_FACE_LIGHTING")
                     .withShaderDefine("NO_EYES")
                     .withSampler("Sampler1")
                     .withSampler("Sampler3")
                     .withSampler("Sampler4")
+                    .withSampler("Sampler5")
+                    .withSampler("SamplerEyeColor")
+                    .withBlend(BlendFunction.TRANSLUCENT)
+                    .withCull(false)
+                    .build()
+    );
+    public static final RenderPipeline ANIMATRONIC_GLOWING_EYES_DOTS_TRANSLUCENT = RenderPipelines.register(
+            RenderPipeline.builder(ANIMATRONIC_SNIPPET)
+                    .withLocation("pipeline/animatronic_glowing_eyes_translucent")
+                    .withShaderDefine("ALPHA_CUTOUT", 0.1F)
+                    .withShaderDefine("PER_FACE_LIGHTING")
+                    .withShaderDefine("DOTS")
+                    .withSampler("Sampler1")
+                    .withSampler("Sampler3")
+                    .withSampler("Sampler4")
+                    .withSampler("Sampler5")
+                    .withSampler("SamplerEyeColor")
+                    .withBlend(BlendFunction.TRANSLUCENT)
+                    .withCull(false)
+                    .build()
+    );
+    public static final RenderPipeline ANIMATRONIC_GLOWING_EYES_IRISES_TRANSLUCENT = RenderPipelines.register(
+            RenderPipeline.builder(ANIMATRONIC_SNIPPET)
+                    .withLocation("pipeline/animatronic_glowing_eyes_translucent")
+                    .withShaderDefine("ALPHA_CUTOUT", 0.1F)
+                    .withShaderDefine("PER_FACE_LIGHTING")
+                    .withShaderDefine("GLOWING_IRISES")
+                    .withSampler("Sampler1")
+                    .withSampler("Sampler3")
+                    .withSampler("Sampler4")
+                    .withSampler("Sampler5")
+                    .withSampler("SamplerEyeColor")
+                    .withBlend(BlendFunction.TRANSLUCENT)
+                    .withCull(false)
+                    .build()
+    );
+    public static final RenderPipeline ANIMATRONIC_GLOWING_EYES_IRISES_DOTS_TRANSLUCENT = RenderPipelines.register(
+            RenderPipeline.builder(ANIMATRONIC_SNIPPET)
+                    .withLocation("pipeline/animatronic_glowing_eyes_translucent")
+                    .withShaderDefine("ALPHA_CUTOUT", 0.1F)
+                    .withShaderDefine("PER_FACE_LIGHTING")
+                    .withShaderDefine("GLOWING_IRISES")
+                    .withShaderDefine("DOTS")
+                    .withSampler("Sampler1")
+                    .withSampler("Sampler3")
+                    .withSampler("Sampler4")
+                    .withSampler("Sampler5")
+                    .withSampler("SamplerEyeColor")
+                    .withBlend(BlendFunction.TRANSLUCENT)
+                    .withCull(false)
+                    .build()
+    );
+    public static final RenderPipeline ANIMATRONIC_GLOWING_EYES_FULL_EYES_TRANSLUCENT = RenderPipelines.register(
+            RenderPipeline.builder(ANIMATRONIC_SNIPPET)
+                    .withLocation("pipeline/animatronic_glowing_eyes_translucent")
+                    .withShaderDefine("ALPHA_CUTOUT", 0.1F)
+                    .withShaderDefine("PER_FACE_LIGHTING")
+                    .withShaderDefine("GLOWING_EYES")
+                    .withSampler("Sampler1")
+                    .withSampler("Sampler3")
+                    .withSampler("Sampler4")
+                    .withSampler("Sampler5")
+                    .withSampler("SamplerEyeColor")
+                    .withBlend(BlendFunction.TRANSLUCENT)
+                    .withCull(false)
+                    .build()
+    );
+    public static final RenderPipeline ANIMATRONIC_GLOWING_EYES_FULL_EYES_DOTS_TRANSLUCENT = RenderPipelines.register(
+            RenderPipeline.builder(ANIMATRONIC_SNIPPET)
+                    .withLocation("pipeline/animatronic_glowing_eyes_translucent")
+                    .withShaderDefine("ALPHA_CUTOUT", 0.1F)
+                    .withShaderDefine("PER_FACE_LIGHTING")
+                    .withShaderDefine("GLOWING_EYES")
+                    .withShaderDefine("DOTS")
+                    .withSampler("Sampler1")
+                    .withSampler("Sampler3")
+                    .withSampler("Sampler4")
+                    .withSampler("Sampler5")
+                    .withSampler("SamplerEyeColor")
                     .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
@@ -121,12 +200,12 @@ public class CustomRenderingPipelines {
                     .build()
     );
 
-    private static final BiFunction<Identifier[], Boolean, RenderLayer> ENTITY_ANIMATRONIC_SUIT = Util.memoize(
-            ((textures, affectsOutline) -> {
+    private static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_SUIT = Util.memoize(
+            ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_SUIT_TRANSLUCENT)
-                        .texture("Sampler0", textures[0])
-                        .texture("Sampler3", textures[1])
+                        .texture("Sampler0", texture.main)
+                        .texture("Sampler3", texture.eyes)
                         .useLightmap()
                         .useOverlay()
                         .crumbling()
@@ -135,13 +214,14 @@ public class CustomRenderingPipelines {
                 return RenderLayer.of("animatronic_translucent_suit", renderSetup);
             })
     );
-    public static final BiFunction<Identifier[], Boolean, RenderLayer> ENTITY_ANIMATRONIC = Util.memoize(
-            ((textures, affectsOutline) -> {
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC = Util.memoize(
+            ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_TRANSLUCENT)
-                        .texture("Sampler0", textures[0])
-                        .texture("Sampler3", textures[1])
-                        .texture("Sampler4", textures[2])
+                        .texture("Sampler0", texture.main)
+                        .texture("Sampler3", texture.eyes)
+                        .texture("Sampler4", texture.eyes_map)
+                        .texture("SamplerEyeColor", texture.glow_color)
                         .useLightmap()
                         .useOverlay()
                         .crumbling()
@@ -150,19 +230,36 @@ public class CustomRenderingPipelines {
                 return RenderLayer.of("animatronic_translucent", renderSetup);
             })
     );
-    public static final BiFunction<Identifier[], Boolean, RenderLayer> ENTITY_ANIMATRONIC_NO_EYES = Util.memoize(
-            ((textures, affectsOutline) -> {
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_NO_EYES = Util.memoize(
+            ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_NO_EYES_TRANSLUCENT)
-                        .texture("Sampler0", textures[0])
-                        .texture("Sampler3", textures[1])
-                        .texture("Sampler4", textures[2])
+                        .texture("Sampler0", texture.main)
+                        .texture("Sampler3", texture.eyes)
+                        .texture("Sampler4", texture.eyes_map)
+                        .texture("SamplerEyeColor", texture.glow_color)
                         .useLightmap()
                         .useOverlay()
                         .crumbling()
                         .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
                         .build();
                 return RenderLayer.of("animatronic_no_eyes_translucent", renderSetup);
+            })
+    );
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_GLOWING_EYES = Util.memoize(
+            ((texture, affectsOutline) -> {
+
+                RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_GLOWING_EYES_DOTS_TRANSLUCENT)
+                        .texture("Sampler0", texture.main)
+                        .texture("Sampler3", texture.eyes)
+                        .texture("Sampler4", texture.eyes_map)
+                        .texture("SamplerEyeColor", texture.glow_color)
+                        .useLightmap()
+                        .useOverlay()
+                        .crumbling()
+                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
+                        .build();
+                return RenderLayer.of("animatronic_glowing_eyes_translucent", renderSetup);
             })
     );
 
@@ -172,30 +269,45 @@ public class CustomRenderingPipelines {
 
 
     public static RenderLayer getAnimatronicSuit(Identifier main, Identifier map) {
-        Identifier[] textures = new Identifier[2];
-        textures[0] = main;
-        textures[1] = map;
-        return ENTITY_ANIMATRONIC_SUIT.apply(textures, true);
+        AnimatronicTexture texture = new AnimatronicTexture(main, map, map, map);
+        return ENTITY_ANIMATRONIC_SUIT.apply(texture, true);
     }
-    public static  RenderLayer getAnimatronic(Identifier main, Identifier eyes, Identifier eyes_map) {
-        Identifier[] textures = new Identifier[3];
-        textures[0] = main;
-        textures[1] = eyes;
-        textures[2] = eyes_map;
-        return ENTITY_ANIMATRONIC.apply(textures, true);
+    public static  RenderLayer getAnimatronic(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+        AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
+        return ENTITY_ANIMATRONIC.apply(texture, true);
     }
-    public static  RenderLayer getAnimatronicNoEyes(Identifier main, Identifier eyes, Identifier eyes_map) {
-        Identifier[] textures = new Identifier[3];
-        textures[0] = main;
-        textures[1] = eyes;
-        textures[2] = eyes_map;
-        return ENTITY_ANIMATRONIC_NO_EYES.apply(textures, true);
+
+    public static  RenderLayer getAnimatronicGlowingEyesDots(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+        AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
+        return ENTITY_ANIMATRONIC_GLOWING_EYES.apply(texture, true);
     }
-    public static  RenderLayer getItemWithArms(Identifier main, Identifier eyes, Identifier eyes_map) {
-        Identifier[] textures = new Identifier[3];
-        textures[0] = main;
-        textures[1] = eyes;
-        textures[2] = eyes_map;
-        return ENTITY_ANIMATRONIC.apply(textures, true);
+    public static  RenderLayer getAnimatronicGlowingEyesIrises(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+        AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
+        return ENTITY_ANIMATRONIC_GLOWING_EYES.apply(texture, true);
+    }
+    public static  RenderLayer getAnimatronicGlowingEyesIrisesDots(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+        AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
+        return ENTITY_ANIMATRONIC_GLOWING_EYES.apply(texture, true);
+    }
+    public static  RenderLayer getAnimatronicGlowingEyesFullEyes(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+        AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
+        return ENTITY_ANIMATRONIC_GLOWING_EYES.apply(texture, true);
+    }
+    public static  RenderLayer getAnimatronicGlowingEyesFullEyesDots(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+        AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
+        return ENTITY_ANIMATRONIC_GLOWING_EYES.apply(texture, true);
+    }
+
+    public static  RenderLayer getAnimatronicNoEyes(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+        AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
+        return ENTITY_ANIMATRONIC_NO_EYES.apply(texture, true);
+    }
+    public static  RenderLayer getItemWithArms(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+        AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
+        return ENTITY_ANIMATRONIC.apply(texture, true);
+    }
+
+    record AnimatronicTexture(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color){
+
     }
 }
