@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.block.*;
+import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.ai.pathing.*;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.fluid.FluidState;
@@ -15,6 +16,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.chunk.ChunkCache;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import org.jspecify.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -22,8 +24,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class AnimatronicPathNodeMaker extends PathNodeMaker {
-    public static final double Y_OFFSET = 0.5;
-    private static final double MIN_STEP_HEIGHT = 1.125;
     private final Long2ObjectMap<PathNodeType> nodeTypes = new Long2ObjectOpenHashMap();
     private final Object2BooleanMap<Box> collidedBoxes = new Object2BooleanOpenHashMap();
     private final PathNode[] successors;
@@ -32,7 +32,7 @@ public class AnimatronicPathNodeMaker extends PathNodeMaker {
         this.successors = new PathNode[Direction.Type.HORIZONTAL.getFacingCount()];
     }
 
-    public void init(ChunkCache cachedWorld, MobEntity entity) {
+    public void init(ChunkCache cachedWorld, AnimatronicEntity entity) {
         super.init(cachedWorld, entity);
         entity.onStartPathfinding();
     }
@@ -86,12 +86,13 @@ public class AnimatronicPathNodeMaker extends PathNodeMaker {
         }
 
         BlockPos blockPos = this.entity.getBlockPos();
-//        if (!this.canPathThrough(mutable.set(blockPos.getX(), i, blockPos.getZ()))) {
-//            Box box = this.entity.getBoundingBox();
-//            if (this.canPathThrough(mutable.set(box.minX, (double)i, box.minZ)) || this.canPathThrough(mutable.set(box.minX, (double)i, box.maxZ)) || this.canPathThrough(mutable.set(box.maxX, (double)i, box.minZ)) || this.canPathThrough(mutable.set(box.maxX, (double)i, box.maxZ))) {
-//                return this.getStart(mutable);
-//            }
-//        }
+        if (!this.canPathThrough(mutable.set(blockPos.getX(), i, blockPos.getZ()))) {
+            EntityDimensions dimensions = AnimatronicEntity.AnimatronicPose.CRAWLING.getPoseDimensions();
+            Box box = new Box(-dimensions.width() / 2.0F, 0.0, -dimensions.width() / 2.0F, dimensions.width() / 2.0F, dimensions.height(), dimensions.width() / 2.0F);
+            if (this.canPathThrough(mutable.set(box.minX, i, box.minZ)) || this.canPathThrough(mutable.set(box.minX, i, box.maxZ)) || this.canPathThrough(mutable.set(box.maxX, i, box.minZ)) || this.canPathThrough(mutable.set(box.maxX, i, box.maxZ))) {
+                return this.getStart(mutable);
+            }
+        }
 
         return this.getStart(new BlockPos(blockPos.getX(), i, blockPos.getZ()));
     }
@@ -184,17 +185,18 @@ public class AnimatronicPathNodeMaker extends PathNodeMaker {
     }
 
     private boolean isBlocked(PathNode node) {
-//        Box box = this.entity.getBoundingBox();
-//        Vec3d vec3d = new Vec3d((double)node.x - this.entity.getX() + box.getLengthX() / 2.0, (double)node.y - this.entity.getY() + box.getLengthY() / 2.0, (double)node.z - this.entity.getZ() + box.getLengthZ() / 2.0);
-//        int i = MathHelper.ceil(vec3d.length() / box.getAverageSideLength());
-//        vec3d = vec3d.multiply(1.0F / (float)i);
-//
-//        for(int j = 1; j <= i; ++j) {
-//            box = box.offset(vec3d);
-//            if (this.checkBoxCollision(box)) {
-//                return false;
-//            }
-//        }
+        EntityDimensions dimensions = AnimatronicEntity.AnimatronicPose.CRAWLING.getPoseDimensions();
+        Box box = new Box(-dimensions.width() / 2.0F, 0.0, -dimensions.width() / 2.0F, dimensions.width() / 2.0F, dimensions.height(), dimensions.width() / 2.0F);
+        Vec3d vec3d = new Vec3d((double)node.x - this.entity.getX() + box.getLengthX() / 2.0, (double)node.y - this.entity.getY() + box.getLengthY() / 2.0, (double)node.z - this.entity.getZ() + box.getLengthZ() / 2.0);
+        int i = MathHelper.ceil(vec3d.length() / box.getAverageSideLength());
+        vec3d = vec3d.multiply(1.0F / (float)i);
+
+        for(int j = 1; j <= i; ++j) {
+            box = box.offset(vec3d);
+            if (this.checkBoxCollision(box)) {
+                return false;
+            }
+        }
 
         return true;
     }

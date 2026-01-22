@@ -1,6 +1,8 @@
 package net.zephyr.fnafur.entity.animatronic;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.entity.Entity;
@@ -290,6 +292,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         }
 
 //        this.tickAnimatronicMovement();
+        this.tickCrawling();
         super.tick();
     }
 
@@ -301,6 +304,25 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 //
 //        }
 //    }
+
+    public void tickCrawling() {
+        World world = this.getEntityWorld();
+        if (world == null) return;
+
+        if ((this.isCrawlSpaceAvailable(world) && !this.getNavigation().isIdle()) || world.getBlockState(this.getBlockPos().up()).isSolid()) {
+            this.setAnimatronicPose(AnimatronicPose.CRAWLING);
+            FnafUniverseRebuilt.LOGGER.info("true");
+        } else {
+            this.setAnimatronicPose(AnimatronicPose.NONE);
+        }
+    }
+
+    // Checks to see if there's a 1 block tall gap for an animatronic to crawl through
+    public boolean isCrawlSpaceAvailable(World world) {
+        BlockPos blockPos = this.getBlockPos().offset(this.getHorizontalFacing());
+        return world.getBlockState(blockPos.add(0, 1, 0)).isSolid()
+                && !Block.sideCoversSmallSquare(world, blockPos, this.getHorizontalFacing());
+    }
 
     void startMovingToHeardPosition(){
 
@@ -682,8 +704,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     public EntityDimensions getBaseDimensions(EntityPose pose) {
-        return this.getAnimatronicPose() != AnimatronicPose.NONE ?
-                this.getAnimatronicPose().getPoseDimensions() : super.getBaseDimensions(pose);
+        return this.getAnimatronicPose().getPoseDimensions();
     }
 
     class VibrationCallback implements Vibrations.Callback {
@@ -873,13 +894,14 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public enum AnimatronicPose {
+        // BASE 0.8f width, 2.25f height
         NONE("idle",               "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
         PLAYER("player_idle",      "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
         STAGE("stage_idle",        "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", false, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
         DRAG("drag_idle",          "loweridle", "drag_move",  "walk_lower", "drag_move", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
         AGGRESSIVE("haunted_idle", "loweridle", "walk_upper_night", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
-        CRAWLING("crawl_idle",     "",          "crawl",      "",           "crawl",     "",           true, EntityDimensions.fixed(0.8f, 0.8f).withEyeHeight(0.6f))
-        ;
+        CRAWLING("crawl_idle",     "",          "crawl",      "",           "crawl",     "",           true, EntityDimensions.fixed(0.8f, 0.8f).withEyeHeight(0.6f)),
+        CROUCHING("idle",               "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 1.8f).withEyeHeight(1.5f));
 
         private final String upperIdle;
         private final String lowerIdle;
