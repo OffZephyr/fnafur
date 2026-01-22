@@ -201,7 +201,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         String anim = getAnimatronicPose().getLowerIdle();
 
         double speed = getMovement().horizontalLength() * 20;
-        if(speed > 0){
+        if(animatronicEntityAnimationState.isMoving() && speed > 0){
 
             anim = isRunning() ? getAnimatronicPose().getLowerRun() : getAnimatronicPose().getLowerWalk();
 
@@ -222,7 +222,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         String anim = getAnimatronicPose().getUpperIdle();
 
         double speed = getMovement().horizontalLength() * 20;
-        if(speed > 0){
+        if(animatronicEntityAnimationState.isMoving() && speed > 0){
 
             anim = isRunning() ? getAnimatronicPose().getUpperRun() : getAnimatronicPose().getUpperWalk();
 
@@ -312,6 +312,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                         lastHeardPosition = null;
                     }
                 }
+            } else if (getTarget() != null) {
+                lastHeardPosition = null;
             }
         }
 
@@ -465,6 +467,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                 shouldGlow = data.DATA_LIST.get(CpuData.GlowingEyesTrigger.getDefault().getKey()) != CpuData.GlowingEyesTrigger.NEVER;
                 if(data.DATA_LIST.get(CpuData.GlowingEyesTrigger.getDefault().getKey()) == CpuData.GlowingEyesTrigger.CHASING){
                     shouldGlow = getTarget() != null || (lastHeardPosition != null && timeSinceLastHeard > 0);
+                }
+                if(data.DATA_LIST.get(CpuData.GlowingEyesTrigger.getDefault().getKey()) == CpuData.GlowingEyesTrigger.FLICKER){
+                    shouldGlow = RandomUtils.nextInt(0, 20) < 12;
                 }
             }
 

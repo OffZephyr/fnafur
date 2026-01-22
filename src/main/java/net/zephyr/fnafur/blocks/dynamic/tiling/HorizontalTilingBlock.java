@@ -3,6 +3,7 @@ package net.zephyr.fnafur.blocks.dynamic.tiling;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
@@ -43,6 +44,11 @@ public class HorizontalTilingBlock extends Block {
         boolean connectWest = world.getBlockState(pos.west()).isOf(state.getBlock());
 
         world.setBlockState(pos, getDefaultState().with(TYPE, HorizontalTileStates.get(connectNorth, connectEast, connectSouth, connectWest)));
+    }
+
+    @Override
+    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
+        return false;
     }
 
     @Override
