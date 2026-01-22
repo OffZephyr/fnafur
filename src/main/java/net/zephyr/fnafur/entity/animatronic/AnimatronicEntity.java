@@ -1,33 +1,25 @@
 package net.zephyr.fnafur.entity.animatronic;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.mob.WardenEntity;
-import net.minecraft.entity.passive.AllayBrain;
-import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.VibrationParticleEffect;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.GameEventTags;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
@@ -45,15 +37,14 @@ import net.minecraft.world.event.Vibrations;
 import net.minecraft.world.event.listener.EntityGameEventHandler;
 import net.minecraft.world.event.listener.Vibration;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.entity.animatronic.data.AnimatronicPathNodeMaker;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimMeleeAttackGoal;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
+import net.zephyr.fnafur.entity.animatronic.goals.AnimWanderAroundFarGoal;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.animatronic.CPUItem;
 import net.zephyr.fnafur.networking.entity.SetEntityRunC2SPayload;
-import net.zephyr.fnafur.networking.entity.SetEntityRunS2CPayload;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerPayload;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -133,6 +124,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
+        if(!player.getMainHandStack().isEmpty()) return ActionResult.PASS;
         if (this.getAnimatronicPose() == AnimatronicPose.CRAWLING) {
             this.setAnimatronicPose(AnimatronicPose.NONE);
             return ActionResult.SUCCESS;
@@ -157,7 +149,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     private PlayState blinkAnimController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
 
-        if(blinkList.contains(currentAnim)){
+        if(!isMenu && getAnimatronicPose().canBlink()){
             if(blinkDelay <= 0){
                 Random random1 = Random.create();
                 blinkDelay = random1.nextBetween(100, 250);
@@ -176,23 +168,23 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             animatronicEntityAnimationState.controller().setTransitionTicks(0);
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName("loweridle")));
         }
+
         animatronicEntityAnimationState.controller().setTransitionTicks(3);
         animatronicEntityAnimationState.controller().setAnimationSpeed(1);
 
-        String getupAnim = ((IEntityDataSaver)this).getPersistentData().getString("getupAnim", "");
-        if(!getupAnim.isEmpty()){
-            return PlayState.STOP;
-        }
+        String anim = getAnimatronicPose().lowerIdle;
 
         double speed = getMovement().horizontalLength() * 20;
         if(speed > 0){
 
-            String walk = isRunning() ? "run_lower" : "walk_lower";
-            walk = "walk_lower";
+            anim = isRunning() ? getAnimatronicPose().getLowerRun() : getAnimatronicPose().getLowerWalk();
+
             animatronicEntityAnimationState.controller().setAnimationSpeed(speed);
-            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName(walk)));
         }
-        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName("loweridle")));
+
+        if(anim.isEmpty()) return PlayState.STOP;
+
+        return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName(anim)));
     }
 
     private PlayState upperAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
@@ -205,16 +197,20 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         //TODO ADD POWERED
         if(true){
+
+            String anim = getAnimatronicPose().getUpperIdle();
+
             double speed = getMovement().horizontalLength() * 20;
             if(speed > 0){
+
+                anim = isRunning() ? getAnimatronicPose().getUpperRun() : getAnimatronicPose().getUpperWalk();
+
                 animatronicEntityAnimationState.controller().setAnimationSpeed(speed);
-                String walk = isAggressive() ? "walk_upper_night" : "walk_upper";
-                walk = isRunning() ? "run_upper" : walk;
-                return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationFullName(walk)));
             }
 
-            String idle = isAggressive() ? "haunted_idle" : "idle";
-            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationFullName(idle)));
+            if(anim.isEmpty()) return PlayState.STOP;
+
+            return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName(anim)));
         }
         return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationFullName("deactivated")));
     }
@@ -231,6 +227,21 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    @Override
+    public boolean cannotDespawn() {
+        return true;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    public float getStepHeight() {
+        return 1.1f;
     }
 
     @Override
@@ -436,6 +447,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return MobEntity.createMobAttributes()
                 .add(EntityAttributes.MAX_HEALTH, 50f)
                 .add(EntityAttributes.ATTACK_DAMAGE, 9999f)
+                .add(EntityAttributes.JUMP_STRENGTH, 0)
                 .add(EntityAttributes.ATTACK_SPEED, 1f)
                 .add(EntityAttributes.ATTACK_KNOCKBACK, 0f)
                 .add(EntityAttributes.MOVEMENT_SPEED, 0.2f)
@@ -443,10 +455,11 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                 .add(EntityAttributes.FOLLOW_RANGE, 16D);
     }
 
+
     @Override
     protected void initGoals() {
         this.goalSelector.add(1, new AnimMeleeAttackGoal(this, false));
-        this.goalSelector.add(2, new WanderAroundFarGoal(this, 0.8));
+        this.goalSelector.add(2, new AnimWanderAroundFarGoal(this));
         this.targetSelector.add(1, new AnimTargetGoal(this, PlayerEntity.class, true, true));
         this.targetSelector.add(2, new AnimTargetGoal(this, VillagerEntity.class, true, true));
         this.targetSelector.add(3, new RevengeGoal(this));
@@ -461,8 +474,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public void setAnimatronicPose(AnimatronicPose animatronicPose) {
-        this.calculateDimensions();
         ((IEntityDataSaver)this).getPersistentData().putInt("pose", animatronicPose.ordinal());
+        this.calculateDimensions();
     }
 
     public void setChara(String chara, @Nullable String alt, @Nullable String eyes){
@@ -672,6 +685,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return this.getAnimatronicPose() != AnimatronicPose.NONE ?
                 this.getAnimatronicPose().getPoseDimensions() : super.getBaseDimensions(pose);
     }
+
     class VibrationCallback implements Vibrations.Callback {
         private static final int RANGE = 16;
         private final PositionSource positionSource = new EntityPositionSource(AnimatronicEntity.this, AnimatronicEntity.this.getStandingEyeHeight());
@@ -859,13 +873,60 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public enum AnimatronicPose {
-        NONE(EntityDimensions.fixed(0, 0)),
-        CRAWLING(EntityDimensions.fixed(0.8F, 0.8F));
+        NONE("idle",               "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
+        PLAYER("player_idle",      "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
+        STAGE("stage_idle",        "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", false, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
+        DRAG("drag_idle",          "loweridle", "drag_move",  "walk_lower", "drag_move", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
+        AGGRESSIVE("haunted_idle", "loweridle", "walk_upper_night", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
+        CRAWLING("crawl_idle",     "",          "crawl",      "",           "crawl",     "",           true, EntityDimensions.fixed(0.8f, 0.8f).withEyeHeight(0.6f))
+        ;
 
-        public final EntityDimensions poseDimensions;
+        private final String upperIdle;
+        private final String lowerIdle;
+        private final String upperWalk;
+        private final String lowerWalk;
+        private final String upperRun;
+        private final String lowerRun;
+        private final boolean canBlink;
+        private final EntityDimensions poseDimensions;
 
-        AnimatronicPose(EntityDimensions poseDimensions) {
+        AnimatronicPose(String upperIdle, String lowerIdle, String upperWalk, String lowerWalk, String upperRun, String lowerRun, boolean canBlink, EntityDimensions poseDimensions) {
+            this.upperIdle = upperIdle;
+            this.lowerIdle = lowerIdle;
+            this.upperWalk = upperWalk;
+            this.lowerWalk = lowerWalk;
+            this.upperRun = upperRun;
+            this.lowerRun = lowerRun;
+            this.canBlink = canBlink;
             this.poseDimensions = poseDimensions;
+        }
+
+        public String getUpperIdle(){
+            return upperIdle;
+        }
+
+        public String getUpperWalk(){
+            return upperWalk;
+        }
+
+        public String getUpperRun(){
+            return upperRun;
+        }
+
+        public String getLowerIdle(){
+            return lowerIdle;
+        }
+
+        public String getLowerWalk(){
+            return lowerWalk;
+        }
+
+        public String getLowerRun(){
+            return lowerRun;
+        }
+
+        public boolean canBlink(){
+            return canBlink;
         }
 
         public EntityDimensions getPoseDimensions() {

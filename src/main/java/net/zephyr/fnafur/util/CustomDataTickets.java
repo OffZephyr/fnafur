@@ -5,6 +5,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 
 public class CustomDataTickets {
@@ -38,6 +39,8 @@ public class CustomDataTickets {
     public static final DataTicket<Double> X_OFFSET = DataTicket.create("x_offset", Double.class);
     public static final DataTicket<Double> Y_OFFSET = DataTicket.create("y_offset", Double.class);
     public static final DataTicket<Double> Z_OFFSET = DataTicket.create("z_offset", Double.class);
+
+    public static final DataTicket<AnimatronicEntity.AnimatronicPose> ANIMATRONIC_POSE = DataTicket.create("animatronic_pose", AnimatronicEntity.AnimatronicPose.class);
 
 
 

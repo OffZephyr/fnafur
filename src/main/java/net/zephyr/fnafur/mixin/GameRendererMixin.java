@@ -134,7 +134,7 @@ public class GameRendererMixin implements IPostProcessorLoader {
 
     @Inject(method = "close", at = @At("HEAD"))
     public void close(CallbackInfo ci){
-        VideoInstance.closeAllInstances();
+        //VideoInstance.closeAllInstances();
     }
 
     /*void loadMonitorPostProcessor(Identifier id, Framebuffer framebuffer){

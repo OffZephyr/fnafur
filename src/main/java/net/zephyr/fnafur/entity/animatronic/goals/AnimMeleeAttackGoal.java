@@ -105,11 +105,9 @@ public class AnimMeleeAttackGoal extends Goal {
             if(this.mob.canSee()) {
                 if(this.mob.lastSeenPosition != null && !this.mob.getVisibilityCache().canSee(livingEntity)){
 
-                    System.out.println("BLOCK");
                     this.mob.getLookControl().lookAt(this.mob.lastSeenPosition.getX(), this.mob.getEyeY(), this.mob.lastSeenPosition.getZ(), 30.0F, 30.0F);
                 }
                 else{
-                    System.out.println("TARGET");
                     this.mob.getLookControl().lookAt(livingEntity, 30.0F, 30.0F);
                 }
             }

@@ -2,21 +2,12 @@ package net.zephyr.fnafur;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
-import net.fabricmc.fabric.api.client.rendering.v1.AtlasSourceRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.texture.atlas.SingleAtlasSource;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.util.Identifier;
-import net.zephyr.fnafur.client.media_player.FFmpegSilencer;
 import net.zephyr.fnafur.init.*;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.block_init.ModelLoading;
-import net.zephyr.fnafur.init.block_init.Palettes.PaletteManager;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
-import org.bytedeco.ffmpeg.global.avutil;
-import org.bytedeco.javacv.FFmpegLogCallback;
 
 public class FnafUniverseRebuiltClient implements ClientModInitializer {
 
@@ -24,8 +15,8 @@ public class FnafUniverseRebuiltClient implements ClientModInitializer {
 	public void onInitializeClient() {
 
 
-        avutil.setLogCallback(new FFmpegSilencer());
-        avutil.av_log_set_level(avutil.AV_LOG_ERROR);
+//        avutil.setLogCallback(new FFmpegSilencer());
+//        avutil.av_log_set_level(avutil.AV_LOG_ERROR);
 		ModelLoadingPlugin.register(new ModelLoading());
 		ItemInit.clientRegisterItem();
 		ScreensInit.init();

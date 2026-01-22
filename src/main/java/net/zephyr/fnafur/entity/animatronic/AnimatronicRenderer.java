@@ -78,30 +78,38 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
         renderState.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.getEntityWorld()));
         renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.getRenderType(animatable.getTexture(animatable.getEntityWorld())));
 
+        renderState.addGeckolibData(CustomDataTickets.ANIMATRONIC_POSE, animatable.getAnimatronicPose());
+
         return renderState;
     }
 
     @Override
     public void adjustModelBonesForRender(RenderPassInfo<R> renderPassInfo, BoneSnapshots snapshots) {
-        GeoBone head_main = renderPassInfo.model().getBone("head_main").orElse(null);
-        GeoBone torso_main = renderPassInfo.model().getBone("torso_main").orElse(null);
-        GeoBone eyeleft_main = renderPassInfo.model().getBone("eyeleft_main").orElse(null);
-        GeoBone eyeright_main = renderPassInfo.model().getBone("eyeright_main").orElse(null);
+        if(renderPassInfo.renderState().hasGeckolibData(CustomDataTickets.EYE_NONE)) {
+            AnimatronicEntity.AnimatronicPose pose = renderPassInfo.renderState().getGeckolibData(CustomDataTickets.ANIMATRONIC_POSE);
 
-        float pitch = -renderPassInfo.renderState().pitch * MathHelper.RADIANS_PER_DEGREE;
-        float yaw = -renderPassInfo.renderState().relativeHeadYaw * MathHelper.RADIANS_PER_DEGREE;
+            GeoBone head_main = renderPassInfo.model().getBone("head_main").orElse(null);
+            GeoBone torso_main = renderPassInfo.model().getBone("torso_main").orElse(null);
+            GeoBone eyeleft_main = renderPassInfo.model().getBone("eyeleft_main").orElse(null);
+            GeoBone eyeright_main = renderPassInfo.model().getBone("eyeright_main").orElse(null);
 
-        if(head_main != null){
-            snapshots.get(head_main).setRotation(pitch, yaw/2f, 0);
-        }
-        if(torso_main != null){
-            snapshots.get(torso_main).setRotation(pitch/4f, yaw/2f, 0);
-        }
-        if(eyeleft_main != null){
-            snapshots.get(eyeleft_main).setRotation(pitch/2f, yaw/4f, 0);
-        }
-        if(eyeright_main != null){
-            snapshots.get(eyeright_main).setRotation(pitch/2f, yaw/4f, 0);
+            float pitch = -renderPassInfo.renderState().pitch * MathHelper.RADIANS_PER_DEGREE;
+            float yaw = -renderPassInfo.renderState().relativeHeadYaw * MathHelper.RADIANS_PER_DEGREE;
+
+            if (head_main != null) {
+                snapshots.get(head_main).setRotation(pitch, yaw / 2f, 0);
+            }
+            if (torso_main != null) {
+                float halfYaw = pose == AnimatronicEntity.AnimatronicPose.CRAWLING ? 0 : yaw / 2f;
+                float halfPitch = pose == AnimatronicEntity.AnimatronicPose.CRAWLING ? 0 : pitch / 4f;
+                snapshots.get(torso_main).setRotation(halfPitch, halfYaw, 0);
+            }
+            if (eyeleft_main != null) {
+                snapshots.get(eyeleft_main).setRotation(pitch / 2f, yaw / 4f, 0);
+            }
+            if (eyeright_main != null) {
+                snapshots.get(eyeright_main).setRotation(pitch / 2f, yaw / 4f, 0);
+            }
         }
         super.adjustModelBonesForRender(renderPassInfo, snapshots);
     }

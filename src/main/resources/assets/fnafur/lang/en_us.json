@@ -604,7 +604,10 @@
   "entity_eyes.fnafur.cl_foxy.default.colorable": "Colorable",
   "entity_eyes.fnafur.cl_foxy.default.none": "None",
 
-  "entity.fnafur.cl_sparky": "Sparky",
+  "entity.fnafur.cl_spar": "Sparky",
+  "entity_alts.fnafur.cl_spar.default": "FNaF 1-Like",
+  "entity_eyes.fnafur.cl_spar.default.default": "Brown",
+  "entity_eyes.fnafur.cl_spar.default.none": "None",
 
   "entity.fnafur.cl_endo": "Endo01",
   "entity_alts.fnafur.cl_endo.default": "FNaF 1",

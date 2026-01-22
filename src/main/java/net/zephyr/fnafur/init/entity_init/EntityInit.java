@@ -22,7 +22,8 @@ import net.zephyr.fnafur.entity.other.bear5.Bear5Renderer;
 public class EntityInit {
     public static final EntityType<AnimatronicEntity> ANIMATRONIC = register(
             "animatronic",
-            EntityType.Builder.create(AnimatronicEntity::new, SpawnGroup.MISC).dimensions(0.8f, 2.25f).eyeHeight(1.8f)
+            EntityType.Builder.create(AnimatronicEntity::new, SpawnGroup.MISC)
+                    .dimensions(0.8f, 2.25f).eyeHeight(1.8f)
     );
     public static final EntityType<Bear5Entity> BEAR5 = register(
             "bear5",
