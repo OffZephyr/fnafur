@@ -59,6 +59,7 @@ import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerP
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityPathfindingHeightOverride;
+import org.apache.commons.lang3.RandomUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -291,21 +292,34 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             VibrationTicker.tick(this.getEntityWorld(), this.vibrationListenerData, this.vibrationCallback);
         }
 
-//        this.tickAnimatronicMovement();
+        this.tickAnimatronicMovement();
         this.tickUpdatePose();
         super.tick();
     }
 
     //TODO skilld :)
-//    public void tickAnimatronicMovement() {
-//        if (this.aiMovementLevel() <= 0) {
-//            this.getNavigation().stop();
-//        } else {
-//
-//        }
-//    }
+    public void tickAnimatronicMovement() {
+        int movementTimer = ((IEntityDataSaver) this).getPersistentData().getInt("movement_timer", 1);
 
+        if (this.isAggressive()) return;
 
+        if (this.aiMovementLevel() <= 0) {
+            this.getNavigation().stop();
+            ((IEntityDataSaver) this).getPersistentData().putInt("movement_timer", 99);
+        } else {
+            int movementChance = 5;
+            movementChance *= this.aiMovementLevel();
+            ((IEntityDataSaver) this).getPersistentData().putInt("movement_timer", movementTimer - 1);
+            if (movementTimer <= 0) {
+                if (random.nextInt(movementChance) == 0) {
+                    // Put pathfinding stuff here
+                    ((IEntityDataSaver) this).getPersistentData().putInt("movement_timer", 99);
+                }
+            } else {
+                this.getNavigation().stop();
+            }
+        }
+    }
 
     public void tickUpdatePose() {
         World world = this.getEntityWorld();
@@ -319,12 +333,11 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         if (canCrawl() && (this.isCrawlSpaceAvailable(world) && !this.getNavigation().isIdle()) || wouldSuffocate && wouldntSuffocateCrawling) {
             this.setAnimatronicPose(AnimatronicPose.CRAWLING);
-            FnafUniverseRebuilt.LOGGER.info("true");
         } else {
-            if(isAggressive()){
+            if (isAggressive()) {
                 this.setAnimatronicPose(AnimatronicPose.AGGRESSIVE);
             }
-            else{
+            else {
                 this.setAnimatronicPose(AnimatronicPose.NONE);
             }
         }
@@ -1016,13 +1029,13 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     public enum AnimatronicPose {
         // BASE 0.8f width, 2.25f height
-        NONE("idle",               "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
-        PLAYER("player_idle",      "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
-        STAGE("stage_idle",        "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", false, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
-        DRAG("drag_idle",          "loweridle", "drag_move",  "walk_lower", "drag_move", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
-        AGGRESSIVE("haunted_idle", "loweridle", "walk_upper_night", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
-        CRAWLING("crawl_idle",     "",          "crawl",      "",           "crawl",     "",           true, EntityDimensions.fixed(0.8f, 0.8f).withEyeHeight(0.6f)),
-        CROUCHING("idle",               "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 1.8f).withEyeHeight(1.5f));
+        NONE("idle",               "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.changing(0.8f, 2.25f).withEyeHeight(1.8f)),
+        PLAYER("player_idle",      "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.changing(0.8f, 2.25f).withEyeHeight(1.8f)),
+        STAGE("stage_idle",        "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", false, EntityDimensions.changing(0.8f, 2.25f).withEyeHeight(1.8f)),
+        DRAG("drag_idle",          "loweridle", "drag_move",  "walk_lower", "drag_move", "walk_lower", true, EntityDimensions.changing(0.8f, 2.25f).withEyeHeight(1.8f)),
+        AGGRESSIVE("haunted_idle", "loweridle", "walk_upper_night", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.changing(0.8f, 2.25f).withEyeHeight(1.8f)),
+        CRAWLING("crawl_idle",     "",          "crawl",      "",           "crawl",     "",           true, EntityDimensions.changing(0.8f, 0.8f).withEyeHeight(0.6f)),
+        CROUCHING("idle",               "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.changing(0.8f, 1.8f).withEyeHeight(1.5f));
 
         private final String upperIdle;
         private final String lowerIdle;

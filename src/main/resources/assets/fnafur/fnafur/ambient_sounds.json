@@ -1,0 +1,9 @@
+{
+    "default": {
+        "default": "entity/default"
+    },
+    "classic": {
+        "freddy_laugh": "fnafur:freddy_laugh",
+        "animatronic_groan": "fnafur:animatronic_groan"
+    }
+}

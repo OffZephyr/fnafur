@@ -11,15 +11,23 @@ import java.util.*;
 
 public class AnimatronicDataHandler {
     public static String DEFAULT_ANIMATIONS = "";
+    public static String DEFAULT_SOUNDS = "";
     public static Chara DEFAULT_CHARA;
 
     public static final List<String> CATEGORIES = new ArrayList<>();
     public static final Map<String, List<String>> CHARAS_PER_CATEGORY = new HashMap<>();
     public static final Map<String, Chara> CHARACTERS = new HashMap<>();
+
     public static final Map<String, Map<String, String>> ANIMATIONS_PER_CATEGORY = new HashMap<>();
     public static final Map<String, String> ALL_ANIMATIONS = new HashMap<>();
     public static final Map<String, List<String>> ANIMATION_NAMES_PER_CATEGORY = new HashMap<>();
     public static final List<String> ALL_ANIMATION_NAMES = new ArrayList<>();
+
+    public static final Map<String, Map<String, String>> SOUNDS_PER_CATEGORY = new HashMap<>();
+    public static final Map<String, String> ALL_SOUNDS = new HashMap<>();
+    public static final Map<String, List<String>> SOUND_NAMES_PER_CATEGORY = new HashMap<>();
+    public static final List<String> ALL_SOUND_NAMES = new ArrayList<>();
+
     public static final List<String> MISSING_CHARACTERS = new ArrayList<>();
     public static final List<String> EMPTY_CATEGORIES = new ArrayList<>();
 
