@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.entity.Entity;
@@ -49,12 +50,10 @@ import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimMeleeAttackGoal;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimWanderAroundFarGoal;
+import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.animatronic.CPUItem;
-import net.zephyr.fnafur.networking.entity.SetEntityGlowS2CPayload;
-import net.zephyr.fnafur.networking.entity.SetEntityRunC2SPayload;
-import net.zephyr.fnafur.networking.entity.SetEntityGlowC2SPayload;
-import net.zephyr.fnafur.networking.entity.SetEntityRunS2CPayload;
+import net.zephyr.fnafur.networking.entity.*;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerPayload;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -71,6 +70,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.animation.state.KeyFrameEvent;
 import software.bernie.geckolib.cache.GeckoLibResources;
 import software.bernie.geckolib.cache.animation.keyframeevent.CustomInstructionKeyframeData;
+import software.bernie.geckolib.cache.animation.keyframeevent.SoundKeyframeData;
 import software.bernie.geckolib.loading.object.BakedAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -114,11 +114,13 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     int blinkDelay;
     public AnimatronicEntity(EntityType<? extends PathAwareEntity> entityType, World world){
         super(entityType, world);
+
         this.navigation = new AnimatronicNavigation(this, world);
         this.vibrationCallback = new AnimatronicEntity.VibrationCallback();
         this.vibrationListenerData = new Vibrations.ListenerData();
         this.gameEventHandler = new EntityGameEventHandler<>(new Vibrations.VibrationListener(this));
     }
+
 
 
     @Override
@@ -149,10 +151,24 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>("Lower", 3, this::lowerAnimController));
-        controllers.add(new AnimationController<>("Upper", 3, this::upperAnimController));
+        controllers.add(new AnimationController<>("Lower", 3, this::lowerAnimController)
+                .setSoundKeyframeHandler(this::lowerSoundKeyframes));
+        controllers.add(new AnimationController<>("Upper", 3, this::upperAnimController)
+                .setSoundKeyframeHandler(this::upperSoundKeyframes));
         controllers.add(new AnimationController<>("Blink", 0, this::blinkAnimController)
                 .setCustomInstructionKeyframeHandler(this::instructionHandler));
+    }
+
+    private void lowerSoundKeyframes(KeyFrameEvent<AnimatronicEntity, SoundKeyframeData> animatronicEntitySoundKeyframeDataKeyFrameEvent) {
+        String sound = animatronicEntitySoundKeyframeDataKeyFrameEvent.keyframeData().getSound();
+
+        if(sound.equals("step")){
+            ClientPlayNetworking.send(new WalkSoundPlayerC2SPayload(getId()));
+            return;
+        }
+    }
+    private void upperSoundKeyframes(KeyFrameEvent<AnimatronicEntity, SoundKeyframeData> animatronicEntitySoundKeyframeDataKeyFrameEvent) {
+        //System.out.println(animatronicEntitySoundKeyframeDataKeyFrameEvent.keyframeData().getSound());
     }
 
     private void instructionHandler(KeyFrameEvent<GeoAnimatable, CustomInstructionKeyframeData> handler) {
@@ -215,6 +231,17 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         if(anim.isEmpty()) return PlayState.STOP;
 
         return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName(anim)));
+    }
+
+    public void playWalkSound(World world){
+        if(!world.isClient()) {
+            this.playSound(SoundsInit.FNAF1_FOOTSTEPS, 1.0f, 1.0f);
+        }
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        //super.playStepSound(pos, state);
     }
 
     String getAnimationFullName(String currentAnim){
@@ -424,20 +451,19 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             if (data.DATA_LIST.containsKey(CpuData.GlowingEyesTrigger.getDefault().getKey())) {
                 shouldGlow = data.DATA_LIST.get(CpuData.GlowingEyesTrigger.getDefault().getKey()) != CpuData.GlowingEyesTrigger.NEVER;
                 if(data.DATA_LIST.get(CpuData.GlowingEyesTrigger.getDefault().getKey()) == CpuData.GlowingEyesTrigger.CHASING){
-                    shouldGlow = getTarget() != null;
+                    shouldGlow = getTarget() != null || (lastHeardPosition != null && timeSinceLastHeard > 0);
                 }
             }
 
             boolean glow = shouldGlow;
             if(canGlowCheck != glow){
                 canGlowCheck = glow;
-                for(ServerPlayerEntity p : PlayerLookup.world((ServerWorld) getEntityWorld())){
-                    ServerPlayNetworking.send(p, new SetEntityGlowS2CPayload(getId(), canGlowCheck));
-                }
             }
             return glow;
         }
         else{
+
+            ClientPlayNetworking.send(new SetEntityGlowC2SPayload(getId()));
             return canGlowCheck;
         }
     }
@@ -561,6 +587,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     public void setData(PlayerEntity entity, ItemStack stack){
         if(stack.isOf(ItemInit.CPU)){
             setData(CPUItem.getCpuData(stack));
+            canGlowCheck = !canGlowCheck;
+            canRunCheck = !canRunCheck;
             entity.sendMessage(Text.literal("UPDATED_DATA"), true);
         }
     }

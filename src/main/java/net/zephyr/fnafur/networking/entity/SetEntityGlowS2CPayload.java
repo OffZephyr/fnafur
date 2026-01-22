@@ -9,7 +9,7 @@ import net.minecraft.network.packet.CustomPayload;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 
 public record SetEntityGlowS2CPayload(int EntityID, boolean glow) implements CustomPayload {
-    public static final Id<SetEntityGlowS2CPayload> ID = new Id<>(EntityPayloads.S2CSetEntityRun);
+    public static final Id<SetEntityGlowS2CPayload> ID = new Id<>(EntityPayloads.S2CSetEntityGlow);
     public static final PacketCodec<RegistryByteBuf, SetEntityGlowS2CPayload> CODEC = PacketCodec.tuple(
             PacketCodecs.INTEGER, SetEntityGlowS2CPayload::EntityID,
             PacketCodecs.BOOLEAN, SetEntityGlowS2CPayload::glow,

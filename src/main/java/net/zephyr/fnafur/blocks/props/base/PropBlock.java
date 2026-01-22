@@ -122,7 +122,7 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
 
     @Override
     protected boolean canPathfindThrough(BlockState state, NavigationType type) {
-        return true;
+        return false;
     }
 
 
