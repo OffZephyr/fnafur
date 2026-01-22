@@ -34,6 +34,7 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
         for (String string : resourceManager.getAllNamespaces()) {
             getCategories(resourceManager, profiler, string);
             getAnimations(resourceManager, profiler, string);
+            getAmbientSounds(resourceManager, profiler, string);
             for(String category : AnimatronicDataHandler.CATEGORIES){
                 for(String name : AnimatronicDataHandler.CHARAS_PER_CATEGORY.get(category)){
                     getCharacters(category, name, resourceManager, profiler, string);
@@ -95,6 +96,40 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
                         animations_list.add(animation);
                     });
                     AnimatronicDataHandler.ANIMATION_NAMES_PER_CATEGORY.put(category, animations_list);
+                });
+            } catch (RuntimeException | IOException runtimeException) {
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+            }
+        }
+    }
+    void getAmbientSounds(ResourceManager resourceManager, Profiler profiler, String namespace) {
+        String path = FnafUniverseRebuilt.MOD_ID + "/ambient_sounds.json";
+        List<Resource> list = resourceManager.getAllResources(Identifier.of(namespace, path));
+        for (Resource resource : list) {
+            try (BufferedReader reader = resource.getReader()) {
+                Map<String, Map<String, String>> layerEntries = JsonHelper.deserialize(GSON, reader, STRING_MAP_TYPE);
+                for (Map.Entry<String, Map<String, String>> entry : layerEntries.entrySet()) {
+                    if(Objects.equals(entry.getKey(), "default")){
+                        AnimatronicDataHandler.DEFAULT_SOUNDS = entry.getValue().get("default");
+                    }
+                    AnimatronicDataHandler.SOUNDS_PER_CATEGORY.put(entry.getKey(), entry.getValue());
+
+                    for(String string : entry.getValue().keySet()){
+                        AnimatronicDataHandler.ALL_SOUND_NAMES.add(string);
+                        AnimatronicDataHandler.ALL_SOUNDS.put(string, entry.getValue().get(string));
+                    }
+
+                    //for(String string : entry.getValue().keySet()){
+                    //    System.out.println(entry.getKey() + ": " + string + ": " + entry.getValue().get(string));
+                    //}
+                }
+
+                AnimatronicDataHandler.SOUNDS_PER_CATEGORY.forEach((category, sounds) ->{
+                    List<String> sounds_list = new ArrayList<>();
+                    sounds.forEach((sound, sound_path) -> {
+                        sounds_list.add(sound);
+                    });
+                    AnimatronicDataHandler.SOUND_NAMES_PER_CATEGORY.put(category, sounds_list);
                 });
             } catch (RuntimeException | IOException runtimeException) {
                 FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
