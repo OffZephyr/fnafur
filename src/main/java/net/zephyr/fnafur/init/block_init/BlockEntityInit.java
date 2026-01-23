@@ -1,7 +1,14 @@
 package net.zephyr.fnafur.init.block_init;
 
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.render.BlockRenderLayer;
+import net.minecraft.entity.ai.pathing.PathNodeType;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -193,6 +200,13 @@ public class BlockEntityInit {
                         FabricBlockEntityTypeBuilder.create(CurtainBlockEntity::new,
                                 BlockInit.CURTAIN_TEST
                         ).build());
+
+
+        for (Block block : PropInit.AVOIDED_PROPS) {
+            LandPathNodeTypesRegistry.register(block, PathNodeType.COCOA, PathNodeType.COCOA);
+            LandPathNodeTypesRegistry.register(block, PathNodeType.DANGER_FIRE, PathNodeType.DANGER_FIRE);
+            LandPathNodeTypesRegistry.register(block, PathNodeType.DANGER_OTHER, PathNodeType.DANGER_OTHER);
+        }
 
         FnafUniverseRebuilt.LOGGER.info("Registering Block Entities for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }

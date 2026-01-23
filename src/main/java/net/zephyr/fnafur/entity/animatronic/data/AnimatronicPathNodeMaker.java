@@ -16,7 +16,11 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.chunk.ChunkCache;
+import net.zephyr.fnafur.blocks.dynamic.tiling.HorizontalTilingBlock;
+import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
+import net.zephyr.fnafur.blocks.props.base.PropBlock;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
+import net.zephyr.fnafur.init.block_init.PropInit;
 import org.jspecify.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -332,7 +336,7 @@ public class AnimatronicPathNodeMaker extends PathNodeMaker {
 
     private boolean checkBoxCollision(Box box) {
         return this.collidedBoxes.computeIfAbsent(box, (box2) -> {
-            return !this.context.getWorld().isSpaceEmpty(this.entity, box);
+            return !this.context.getWorld().isSpaceEmpty(this.entity, box.expand(0.25f, 0.0, 0.25f));
         });
     }
 
@@ -349,6 +353,28 @@ public class AnimatronicPathNodeMaker extends PathNodeMaker {
         } else if (set.contains(PathNodeType.UNPASSABLE_RAIL)) {
             return PathNodeType.UNPASSABLE_RAIL;
         } else {
+
+            if(PropInit.AVOIDED_PROPS.contains(mob.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock())){
+                return PathNodeType.UNPASSABLE_RAIL;
+            }
+            else if(PropInit.SOFT_AVOIDED_PROPS.contains(mob.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock())){
+                return PathNodeType.COCOA;
+            }
+            else {
+
+                int range = 1;
+                BlockPos.Mutable m = new BlockPos.Mutable();
+                for (int dx = -range; dx <= range; dx++) {
+                    for (int dz = -range; dz <= range; dz++) {
+                        BlockPos pos = new BlockPos(x + dx, y, z + dz);
+
+                        if (PropInit.AVOIDED_PROPS.contains(mob.getEntityWorld().getBlockState(pos).getBlock())) {
+                            return PathNodeType.COCOA;
+                        }
+                    }
+                }
+            }
+
             PathNodeType pathNodeType = PathNodeType.BLOCKED;
             Iterator var8 = set.iterator();
 
@@ -482,6 +508,8 @@ public class AnimatronicPathNodeMaker extends PathNodeMaker {
         return fallback;
     }
 
+
+
     protected static PathNodeType getCommonNodeType(BlockView world, BlockPos pos) {
         BlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
@@ -493,7 +521,7 @@ public class AnimatronicPathNodeMaker extends PathNodeMaker {
             } else if (!blockState.isOf(Blocks.CACTUS) && !blockState.isOf(Blocks.SWEET_BERRY_BUSH)) {
                 if (blockState.isOf(Blocks.HONEY_BLOCK)) {
                     return PathNodeType.STICKY_HONEY;
-                } else if (blockState.isOf(Blocks.COCOA)) {
+                } else if (blockState.isOf(Blocks.COCOA) || blockState.getBlock() instanceof HorizontalTilingBlock || blockState.getBlock() instanceof FloorPropBlock<?>) {
                     return PathNodeType.COCOA;
                 } else if (!blockState.isOf(Blocks.WITHER_ROSE) && !blockState.isOf(Blocks.POINTED_DRIPSTONE)) {
                     FluidState fluidState = blockState.getFluidState();

@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.FuzzyTargeting;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -38,6 +39,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import net.minecraft.world.event.EntityPositionSource;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.event.PositionSource;
@@ -51,6 +53,7 @@ import net.zephyr.fnafur.entity.animatronic.goals.AnimMeleeAttackGoal;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimWanderAroundFarGoal;
 import net.zephyr.fnafur.init.SoundsInit;
+import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.animatronic.CPUItem;
 import net.zephyr.fnafur.networking.entity.*;
@@ -116,10 +119,15 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     public AnimatronicEntity(EntityType<? extends PathAwareEntity> entityType, World world){
         super(entityType, world);
 
+
         this.navigation = new AnimatronicNavigation(this, world);
         this.vibrationCallback = new AnimatronicEntity.VibrationCallback();
         this.vibrationListenerData = new Vibrations.ListenerData();
         this.gameEventHandler = new EntityGameEventHandler<>(new Vibrations.VibrationListener(this));
+
+        this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, 16);
+        this.setPathfindingPenalty(PathNodeType.STICKY_HONEY, 24);
+        this.setPathfindingPenalty(PathNodeType.COCOA, 8);
     }
 
 
@@ -193,6 +201,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     private PlayState lowerAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
 
+        animatronicEntityAnimationState.controller().setAnimationSpeed(1);
+        animatronicEntityAnimationState.controller().setTransitionTicks(3);
         if(isMenu) {
             animatronicEntityAnimationState.controller().setTransitionTicks(0);
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName("loweridle")));
@@ -214,6 +224,10 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     private PlayState upperAnimController(AnimationTest<AnimatronicEntity> animatronicEntityAnimationState) {
+
+        animatronicEntityAnimationState.controller().setAnimationSpeed(1);
+        animatronicEntityAnimationState.controller().setTransitionTicks(3);
+
         if(isMenu) {
             animatronicEntityAnimationState.controller().setTransitionTicks(0);
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationFullName("menu_preview")));
@@ -271,7 +285,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     public float getStepHeight() {
-        return 1.1f;
+        return 0.9f;
     }
 
     @Override
@@ -400,7 +414,14 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
             float finalspeed = MathHelper.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
 
-            getNavigation().startMovingAlong(getNavigation().findPathTo(lastHeardPosition, 0), finalspeed);
+            EntityNavigation nav = this.getNavigation();
+
+            nav.stop(); // force recomputation
+
+            Path path = nav.findPathTo(lastHeardPosition, 0);
+            if (path != null) {
+                nav.startMovingAlong(path, finalspeed);
+            }
         }
     }
 
@@ -871,6 +892,34 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     @Override
     public float getPathfindingHeightOverride() {
         return isMenu ? this.getDimensions(EntityPose.STANDING).height() : AnimatronicPose.CRAWLING.poseDimensions.height();
+    }
+
+    @Override
+    public float getPathfindingFavor(BlockPos pos, WorldView world) {
+        float favor =  super.getPathfindingFavor(pos, world);
+
+        int radius = 2;
+
+        BlockPos.Mutable checkPos = new BlockPos.Mutable();
+
+        for (int dx = -radius; dx <= radius; dx++) {
+            for (int dz = -radius; dz <= radius; dz++) {
+                checkPos.set(pos.getX() + dx, pos.getY(), pos.getZ() + dz);
+
+                if (PropInit.AVOIDED_PROPS.contains(world.getBlockState(checkPos).getBlock())) {
+                    double dist = Math.sqrt(dx * dx + dz * dz);
+
+                    favor -= (float) (radius - dist) * 6.0F;
+                }
+            }
+        }
+        System.out.println("pos: " + pos.toShortString() + " " + favor);
+        return favor;
+    }
+
+    @Override
+    public float getPathfindingWidthOverride() {
+        return getAnimatronicPose().getPoseDimensions().width();
     }
 
     class VibrationCallback implements Vibrations.Callback {

@@ -100,10 +100,10 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
             float yaw = -renderPassInfo.renderState().relativeHeadYaw * MathHelper.RADIANS_PER_DEGREE;
 
             if (head_main != null) {
-                snapshots.get(head_main).setRotation(pitch, yaw / 2f, 0);
+                snapshots.get(head_main).setRotation(pitch / 2f, yaw / 4f, 0);
             }
             if (torso_main != null) {
-                float halfYaw = pose == AnimatronicEntity.AnimatronicPose.CRAWLING ? 0 : yaw / 2f;
+                float halfYaw = pose == AnimatronicEntity.AnimatronicPose.CRAWLING ? 0 : yaw / 4f;
                 float halfPitch = pose == AnimatronicEntity.AnimatronicPose.CRAWLING ? 0 : pitch / 4f;
                 snapshots.get(torso_main).setRotation(halfPitch, halfYaw, 0);
             }

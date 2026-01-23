@@ -1,6 +1,7 @@
 package net.zephyr.fnafur.init.block_init;
 
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -10,6 +11,7 @@ import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
+import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -100,6 +102,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class PropInit {
+    public static List<Block> SOFT_AVOIDED_PROPS = new ArrayList<>();
+    public static List<Block> AVOIDED_PROPS = new ArrayList<>();
+
     public static List<Item> PROPS = new ArrayList<>();
     public static List<Item> GEO_PROPS = new ArrayList<>();
     public static List<Item> GEO_PROPS_TRANSLUCENT = new ArrayList<>();
@@ -1148,14 +1153,21 @@ public class PropInit {
         BlockEntityRendererFactories.register(BlockEntityInit.GALAXY_GEO_PROPS, GalaxyLayerGeoPropRenderer::new);
 
         for (Item item : PROPS) {
+            SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
             BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.CUTOUT);
         }
         for (Item item : GEO_PROPS) {
+            SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
             BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.CUTOUT);
         }
         for (Item item : GEO_PROPS_TRANSLUCENT) {
+            SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
             BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.TRANSLUCENT);
         }
+
+        AVOIDED_PROPS.add(PARTY_TABLE);
+        AVOIDED_PROPS.add(PARTY_TABLE_CONFETTI);
+
         BlockRenderLayerMap.putBlock(FOOD_DISPLAY_CASE, BlockRenderLayer.TRANSLUCENT);
         BlockRenderLayerMap.putBlock(CONDIMENT_COUNTER, BlockRenderLayer.TRANSLUCENT);
 

@@ -2,6 +2,7 @@ package net.zephyr.fnafur.blocks.dynamic.tiling;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -27,5 +28,10 @@ public class TableBlock extends HorizontalTilingBlock{
             shape = VoxelShapes.union(shape, VoxelShapes.cuboid(0.85f, 0, 0.85f, 1, 0.4375f, 1));
 
         return shape;
+    }
+
+    @Override
+    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
+        return true;
     }
 }

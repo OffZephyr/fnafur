@@ -110,6 +110,7 @@ public class AnimMeleeAttackGoal extends Goal {
                 else{
                     this.mob.getLookControl().lookAt(livingEntity, 30.0F, 30.0F);
                 }
+                this.mob.getLookControl().lookAt(livingEntity, 30.0F, 30.0F);
             }
             this.updateCountdownTicks = Math.max(this.updateCountdownTicks - 1, 0);
             if ((this.pauseWhenMobIdle || this.mob.getVisibilityCache().canSee(livingEntity))

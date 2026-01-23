@@ -20,8 +20,18 @@ public class EntityMixin implements IEntityPathfindingHeightOverride {
         cir.setReturnValue(getPathfindingHeightOverride());
     }
 
+    @Inject(method = "getWidth", at = @At("HEAD"), cancellable = true)
+    void getWidth(CallbackInfoReturnable<Float> cir){
+        cir.setReturnValue(getPathfindingWidthOverride());
+    }
+
     @Override
     public float getPathfindingHeightOverride() {
         return this.dimensions.height();
+    }
+
+    @Override
+    public float getPathfindingWidthOverride() {
+        return this.dimensions.width();
     }
 }
