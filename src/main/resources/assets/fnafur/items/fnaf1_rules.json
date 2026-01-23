@@ -1,6 +1,28 @@
 {
-    "model": {
+  "model": {
+
+    "type": "minecraft:select",
+    "cases":[
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "fnafur:item/fnaf1_rules"
+        },
+        "when": "torn"
+      },
+      {
+      "model": {
+        "type": "minecraft:model",
+        "model": "fnafur:item/fnaf1_rules_clean"
+      },
+      "when": "clean"
+      }
+    ],
+    "fallback": {
       "type": "minecraft:model",
       "model": "fnafur:item/fnaf1_rules"
+    },
+    "block_state_property": "color",
+    "property": "minecraft:block_state"
   }
 }

@@ -3,14 +3,14 @@
 	"credit": "PHOBIA MADE THIS BOI!!",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "Missing_Paper1",
-		"particle": "Missing_Paper2"
+		"0": "fnafur:block/props/wall_papers/missing_papers_1",
+		"particle": "fnafur:block/props/wall_papers/missing_papers_1"
 	},
 	"elements": [
 		{
-			"from": [3, 3, 16],
-			"to": [13, 14, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5.28806, 15.80866]},
+			"from": [3, 3, 15.75],
+			"to": [13, 14, 15.75],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5.28806, 15.55866]},
 			"faces": {
 				"north": {"uv": [0, 0, 5, 5.5], "texture": "#0"},
 				"east": {"uv": [0, 0, 0, 5.5], "texture": "#0"},
@@ -21,9 +21,9 @@
 			}
 		},
 		{
-			"from": [3, 1.24739, 16.86104],
-			"to": [13, 3.24739, 16.86104],
-			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 5.28806, 15.80866]},
+			"from": [3, 1.24739, 16.61104],
+			"to": [13, 3.24739, 16.61104],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 5.28806, 15.55866]},
 			"faces": {
 				"north": {"uv": [0, 5.5, 5, 6.5], "texture": "#0"},
 				"east": {"uv": [0, 0, 0, 1], "texture": "#0"},

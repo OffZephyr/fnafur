@@ -98,6 +98,7 @@ public class ItemGroupsInit {
                         entries.add(PropInit.SKEEBALL_ARCADE);
                         entries.add(PropInit.POSTER);
                         entries.add(PropInit.FNAF1_RULES);
+                        entries.add(PropInit.WALL_PAPERS);
                         entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
                         entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
 

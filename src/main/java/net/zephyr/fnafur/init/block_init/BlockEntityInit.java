@@ -124,6 +124,7 @@ public class BlockEntityInit {
                                 PropInit.FNAF1_RULES,
                                 PropInit.FLOOR_MAT,
                                 PropInit.EXIT_ARROW,
+                                PropInit.WALL_PAPERS,
 
                                 PropInit.BEPH_PLUSHIE
                         ).build());

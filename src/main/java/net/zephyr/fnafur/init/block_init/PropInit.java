@@ -89,6 +89,7 @@ import net.zephyr.fnafur.blocks.props.wall_props.stage.StageSun;
 import net.zephyr.fnafur.blocks.props.wall_props.stage.WallClouds;
 import net.zephyr.fnafur.blocks.props.wall_props.tool_wall_mount.ToolWallMount;
 import net.zephyr.fnafur.blocks.props.wall_props.wall_menu.WallMenu;
+import net.zephyr.fnafur.blocks.props.wall_props.wall_papers.WallPapers;
 import net.zephyr.fnafur.blocks.props.wall_props.wall_pizza.WallPizza;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.CosmoGift;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropRenderer;
@@ -449,6 +450,22 @@ public class PropInit {
                     Text.translatable("fnafur.symbol.paintbrush")
             )
     );
+    public static final Block WALL_PAPERS = registerBlock(
+            "wall_papers",
+            WallPapers::new,
+            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
+                    .nonOpaque()
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .breakInstantly()
+                    .noCollision()
+                    .sounds(BlockSoundGroup.COBWEB),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
+    );
     public static final Block FNAF1_RULES = registerBlock(
             "fnaf1_rules",
             FNaF1Rules::new,
@@ -460,7 +477,10 @@ public class PropInit {
                     .blockVision(Blocks::never)
                     .breakInstantly()
                     .noCollision()
-                    .sounds(BlockSoundGroup.COBWEB)
+                    .sounds(BlockSoundGroup.COBWEB),
+            List.of(
+                    Text.translatable("fnafur.symbol.paintbrush")
+            )
     );
     public static final Block BROOM = registerBlock(
             "broom",

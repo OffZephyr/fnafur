@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,color=torn": {
       "model": "fnafur:props/fnaf1_rules"
     },
-    "facing=east": {
+    "facing=east,color=torn": {
       "model": "fnafur:props/fnaf1_rules",
       "y": 90
     },
-    "facing=south": {
+    "facing=south,color=torn": {
       "model": "fnafur:props/fnaf1_rules",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,color=torn": {
       "model": "fnafur:props/fnaf1_rules",
+      "y": 270
+    },
+    "facing=north,color=clean": {
+      "model": "fnafur:props/fnaf1_rules_clean"
+    },
+    "facing=east,color=clean": {
+      "model": "fnafur:props/fnaf1_rules_clean",
+      "y": 90
+    },
+    "facing=south,color=clean": {
+      "model": "fnafur:props/fnaf1_rules_clean",
+      "y": 180
+    },
+    "facing=west,color=clean": {
+      "model": "fnafur:props/fnaf1_rules_clean",
       "y": 270
     }
   }

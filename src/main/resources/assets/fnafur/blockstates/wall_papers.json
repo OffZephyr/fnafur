@@ -1,0 +1,139 @@
+{
+  "variants": {
+    "facing=north,color=missing_1_female": {
+      "model": "fnafur:props/wall_papers/missing_papers_1_female"
+    },
+    "facing=east,color=missing_1_female": {
+      "model": "fnafur:props/wall_papers/missing_papers_1_female",
+      "y": 90
+    },
+    "facing=south,color=missing_1_female": {
+      "model": "fnafur:props/wall_papers/missing_papers_1_female",
+      "y": 180
+    },
+    "facing=west,color=missing_1_female": {
+      "model": "fnafur:props/wall_papers/missing_papers_1_female",
+      "y": 270
+    },
+    "facing=north,color=missing_1_male": {
+      "model": "fnafur:props/wall_papers/missing_papers_1_male"
+    },
+    "facing=east,color=missing_1_male": {
+      "model": "fnafur:props/wall_papers/missing_papers_1_male",
+      "y": 90
+    },
+    "facing=south,color=missing_1_male": {
+      "model": "fnafur:props/wall_papers/missing_papers_1_male",
+      "y": 180
+    },
+    "facing=west,color=missing_1_male": {
+      "model": "fnafur:props/wall_papers/missing_papers_1_male",
+      "y": 270
+    },
+    "facing=north,color=missing_2": {
+      "model": "fnafur:props/wall_papers/missing_papers_2"
+    },
+    "facing=east,color=missing_2": {
+      "model": "fnafur:props/wall_papers/missing_papers_2",
+      "y": 90
+    },
+    "facing=south,color=missing_2": {
+      "model": "fnafur:props/wall_papers/missing_papers_2",
+      "y": 180
+    },
+    "facing=west,color=missing_2": {
+      "model": "fnafur:props/wall_papers/missing_papers_2",
+      "y": 270
+    },
+    "facing=north,color=missing_3": {
+      "model": "fnafur:props/wall_papers/missing_papers_3"
+    },
+    "facing=east,color=missing_3": {
+      "model": "fnafur:props/wall_papers/missing_papers_3",
+      "y": 90
+    },
+    "facing=south,color=missing_3": {
+      "model": "fnafur:props/wall_papers/missing_papers_3",
+      "y": 180
+    },
+    "facing=west,color=missing_3": {
+      "model": "fnafur:props/wall_papers/missing_papers_3",
+      "y": 270
+    },
+    "facing=north,color=missing_4": {
+      "model": "fnafur:props/wall_papers/missing_papers_4"
+    },
+    "facing=east,color=missing_4": {
+      "model": "fnafur:props/wall_papers/missing_papers_4",
+      "y": 90
+    },
+    "facing=south,color=missing_4": {
+      "model": "fnafur:props/wall_papers/missing_papers_4",
+      "y": 180
+    },
+    "facing=west,color=missing_4": {
+      "model": "fnafur:props/wall_papers/missing_papers_4",
+      "y": 270
+    },
+    "facing=north,color=wallpapers_1": {
+      "model": "fnafur:props/wall_papers/wall_papers_1"
+    },
+    "facing=east,color=wallpapers_1": {
+      "model": "fnafur:props/wall_papers/wall_papers_1",
+      "y": 90
+    },
+    "facing=south,color=wallpapers_1": {
+      "model": "fnafur:props/wall_papers/wall_papers_1",
+      "y": 180
+    },
+    "facing=west,color=wallpapers_1": {
+      "model": "fnafur:props/wall_papers/wall_papers_1",
+      "y": 270
+    },
+    "facing=north,color=wallpapers_2": {
+      "model": "fnafur:props/wall_papers/wall_papers_2"
+    },
+    "facing=east,color=wallpapers_2": {
+      "model": "fnafur:props/wall_papers/wall_papers_2",
+      "y": 90
+    },
+    "facing=south,color=wallpapers_2": {
+      "model": "fnafur:props/wall_papers/wall_papers_2",
+      "y": 180
+    },
+    "facing=west,color=wallpapers_2": {
+      "model": "fnafur:props/wall_papers/wall_papers_2",
+      "y": 270
+    },
+    "facing=north,color=wallpapers_3": {
+      "model": "fnafur:props/wall_papers/wall_papers_3"
+    },
+    "facing=east,color=wallpapers_3": {
+      "model": "fnafur:props/wall_papers/wall_papers_3",
+      "y": 90
+    },
+    "facing=south,color=wallpapers_3": {
+      "model": "fnafur:props/wall_papers/wall_papers_3",
+      "y": 180
+    },
+    "facing=west,color=wallpapers_3": {
+      "model": "fnafur:props/wall_papers/wall_papers_3",
+      "y": 270
+    },
+    "facing=north,color=wallpapers_4": {
+      "model": "fnafur:props/wall_papers/wall_papers_4"
+    },
+    "facing=east,color=wallpapers_4": {
+      "model": "fnafur:props/wall_papers/wall_papers_4",
+      "y": 90
+    },
+    "facing=south,color=wallpapers_4": {
+      "model": "fnafur:props/wall_papers/wall_papers_4",
+      "y": 180
+    },
+    "facing=west,color=wallpapers_4": {
+      "model": "fnafur:props/wall_papers/wall_papers_4",
+      "y": 270
+    }
+  }
+}

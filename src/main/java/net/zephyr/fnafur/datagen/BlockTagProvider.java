@@ -51,6 +51,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(PropInit.POSTER)
                 .add(PropInit.FNAF1_RULES)
                 .add(PropInit.EXIT_ARROW)
+                .add(PropInit.WALL_PAPERS)
 
        ;
 

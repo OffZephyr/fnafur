@@ -3,8 +3,8 @@
 	"credit": "PHOBIA MADE THIS BOI!!",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "Documents/BB/Fnaf Universe/Official/Textures/Props/Wall_Papers1",
-		"particle": "Documents/BB/Fnaf Universe/Official/Textures/Props/Wall_Papers1"
+      "0": "fnafur:block/props/wall_papers/wall_papers_1",
+      "particle": "fnafur:block/props/wall_papers/wall_papers_1"
 	},
 	"elements": [
 		{
