@@ -3,14 +3,13 @@ package net.zephyr.fnafur.entity.animatronic.goals;
 import net.minecraft.entity.ai.FuzzyTargeting;
 import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
-import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
-import org.jspecify.annotations.Nullable;
+import net.zephyr.fnafur.init.SoundsInit;
 
 import java.util.EnumSet;
 
@@ -95,6 +94,7 @@ public class AnimWanderAroundFarGoal extends Goal {
     @Override
     public void stop() {
         this.mob.getNavigation().stop();
+        this.mob.playSound(this.mob.getAnimatronicAmbientSound(), this.mob.ambientSoundVolume(), 1.0F);
         super.stop();
     }
 

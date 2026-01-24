@@ -42,6 +42,7 @@ public class CpuConfigScreen extends InWorldScreen {
 
     List<String> SettingList = new ArrayList<>();
     List<String> AnimationList = new ArrayList<>();
+    List<String> AmbientSoundList = new ArrayList<>();
 
     public CpuConfigScreen(Text title, NbtCompound nbt, long l) {
         super(title, nbt, l);
@@ -55,9 +56,10 @@ public class CpuConfigScreen extends InWorldScreen {
     }
 
     List<String> getList(){
-        if(subWindow == 1){
-            return AnimationList;
-        }
+        if(subWindow == 1) return AnimationList;
+
+        if (subWindow == 2) return AmbientSoundList;
+
         return SettingList;
     }
 
@@ -92,6 +94,17 @@ public class CpuConfigScreen extends InWorldScreen {
                 AnimationList.addAll(names);
             }
         });
+
+        AmbientSoundList.clear();
+        AmbientSoundList.add("back");
+        AmbientSoundList.add("default");
+        AnimatronicDataHandler.SOUND_NAMES_PER_CATEGORY.forEach((category, names) -> {
+            if(!category.toLowerCase().contains("default")){
+                AmbientSoundList.add("title_" + category);
+
+                AmbientSoundList.addAll(names);
+            }
+        });
     }
 
     String getArgumentValue(String argument){
@@ -105,6 +118,9 @@ public class CpuConfigScreen extends InWorldScreen {
             return data.AmbientSound;
         }
         else if(data.DATA_LIST.get(argument) instanceof CpuData.CpuDataRangeArgument range){
+            return range.getValue() + " / " + range.getMax();
+        }
+        else if(data.DATA_LIST.get(argument) instanceof CpuData.CpuDataFloatRangeArgument range){
             return range.getValue() + " / " + range.getMax();
         }
         else if(data.DATA_LIST.containsKey(argument)){
@@ -213,7 +229,8 @@ public class CpuConfigScreen extends InWorldScreen {
                 Text nameText = Text.translatable("cpu_config.argument." + name).getWithStyle(style).getFirst();
                 Text valueText = Text.translatable("cpu_config.value." + value).getWithStyle(style).getFirst();
 
-                if(data.DATA_LIST.get(name) instanceof CpuData.CpuDataRangeArgument){
+                if(data.DATA_LIST.get(name) instanceof CpuData.CpuDataRangeArgument ||
+                        data.DATA_LIST.get(name) instanceof CpuData.CpuDataFloatRangeArgument){
                     valueText = Text.literal(value);
                 }
                 if(name.equals("animation")){
@@ -223,8 +240,8 @@ public class CpuConfigScreen extends InWorldScreen {
                     }
                 }
                 else if(name.equals("ambient_sound")){
-                    String ambientValue = "sound.fnafur."+ value;
-                    if(value.isEmpty()) ambientValue = "cpu_config.value.none";
+                    String ambientValue = "sound.fnafur." + value;
+                    if(value.isEmpty() || value.equals("default")) ambientValue = "cpu_config.value.none";
                     valueText = Text.translatable(ambientValue).getWithStyle(style).getFirst();
                 }
                 if(isList && !name.equals("back")) {
@@ -313,6 +330,18 @@ public class CpuConfigScreen extends InWorldScreen {
             }
             mouseMoved(click.x(), click.y());
         }
+        else if(subWindow == 2){
+            subWindow = 0;
+            selectedIndex = 2;
+            scrollAmount = 0;
+            if (index.equals("default")) {
+                data.AmbientSound = "";
+            }
+            if(!index.equals("back")){
+                data.AmbientSound = index;
+            }
+            mouseMoved(click.x(), click.y());
+        }
         else if(index.equals("animation")){
             subWindow = 1;
             selectedIndex = 0;
@@ -320,7 +349,7 @@ public class CpuConfigScreen extends InWorldScreen {
             mouseMoved(click.x(), click.y());
         }
         else if(index.equals("ambient_sound")){
-            subWindow = 0;
+            subWindow = 2;
             selectedIndex = 0;
             scrollAmount = 0;
             mouseMoved(click.x(), click.y());
@@ -412,6 +441,15 @@ public class CpuConfigScreen extends InWorldScreen {
                 }
                 mouseMoved(0, 0);
             }
+            else if(subWindow == 2){
+                subWindow = 0;
+                selectedIndex = 1;
+                scrollAmount = 0;
+                if(!index.equals("back")){
+                    data.AmbientSound = index;
+                }
+                mouseMoved(0, 0);
+            }
             else if(index.equals("animation")){
                 subWindow = 1;
                 selectedIndex = 0;
@@ -419,7 +457,7 @@ public class CpuConfigScreen extends InWorldScreen {
                 mouseMoved(0, 0);
             }
             else if(index.equals("ambient_sound")){
-                subWindow = 0;
+                subWindow = 2;
                 selectedIndex = 0;
                 scrollAmount = 0;
                 mouseMoved(0, 0);

@@ -600,6 +600,7 @@ public class PropInit {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .breakInstantly()
+                    .noCollision()
     );
     public static final Block WOODEN_STOOL = registerBlock(
             "wooden_stool",

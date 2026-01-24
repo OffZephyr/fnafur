@@ -4,22 +4,29 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 public class CpuData {
 
-    public interface CpuDataArgument{
+    public interface CpuDataArgument {
         String getKey();
         String getName();
         CpuDataArgument cycleLeft();
         CpuDataArgument cycleRight();
         CpuDataArgument getFromName(String name);
     }
-    public interface CpuDataRangeArgument extends CpuDataArgument{
+    public interface CpuDataRangeArgument extends CpuDataArgument {
         int getMin();
         int getMax();
         int getValue();
         void setValue(int val);
+    }
+    public interface CpuDataFloatRangeArgument extends CpuDataArgument {
+        float getMin();
+        float getMax();
+        float getValue();
+        void setValue(float val);
     }
 
     public enum OnReset implements CpuDataArgument {
@@ -1305,29 +1312,28 @@ public class CpuData {
             return attribute;
         }
     }
-    public static class AmbientSoundsVolume implements CpuDataRangeArgument {
-
-        private int value = 0;
-
-        @Override
-        public int getMin() {
-            return 0;
-        }
+    public static class AmbientSoundsVolume implements CpuDataFloatRangeArgument {
+        private float value = 0;
 
         @Override
-        public int getMax() {
-            return 10;
+        public float getMin() {
+            return 0.0F;
         }
 
-        public static int getDefaultValue() {
-            return 8;
+        @Override
+        public float getMax() {
+            return 1.0F;
         }
 
-        public int getValue(){
+        public static float getDefaultValue() {
+            return 1.0F;
+        }
+
+        public float getValue(){
             return value;
         }
 
-        public void setValue(int val){
+        public void setValue(float val){
             value = val;
         }
 
@@ -1335,7 +1341,6 @@ public class CpuData {
         public String getKey() {
             return "ambient_sounds_volume";
         }
-
         @Override
         public String getName() {
             return "";
@@ -1343,14 +1348,15 @@ public class CpuData {
 
         @Override
         public CpuDataArgument cycleLeft() {
-            value = Math.max(getMin(), value - 1);
+            value = Math.max(getMin(), value - 0.1F);
+            value = Math.round(value * 100.0F) / 100.0F;
             return this;
         }
 
         @Override
         public CpuDataArgument cycleRight() {
-
-            value = Math.min(getMax(), value + 1);
+            value = Math.min(getMax(), value + 0.1F);
+            value = Math.round(value * 100.0F) / 100.0F;
             return this;
         }
 
@@ -1523,6 +1529,9 @@ public class CpuData {
                 if(arg instanceof CpuDataRangeArgument range){
                     nbt.putInt(range.getKey(), range.getValue());
                 }
+                else if(arg instanceof CpuDataFloatRangeArgument range){
+                    nbt.putFloat(range.getKey(), range.getValue());
+                }
                 else{
                     nbt.putString(arg.getKey(), arg.getName());
                 }
@@ -1540,6 +1549,11 @@ public class CpuData {
         for(CpuDataArgument argument : data.DefaultList){
             if(argument instanceof CpuDataRangeArgument range){
                 int value = nbt.getInt(range.getKey(), range.getValue());
+                range.setValue(value);
+                data.DATA_LIST.put(range.getKey(), range);
+            }
+            else if(argument instanceof CpuDataFloatRangeArgument range){
+                float value = nbt.getFloat(range.getKey(), range.getValue());
                 range.setValue(value);
                 data.DATA_LIST.put(range.getKey(), range);
             }
