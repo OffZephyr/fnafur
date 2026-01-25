@@ -7,10 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.FuzzyTargeting;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.*;
@@ -101,6 +98,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     public BlockPos lastHeardPosition = null;
     public int timeSinceLastHeard = 0;
 
+    //public final AnimatronicPart reachInHitbox;
+
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     List<String> blinkList = List.of(
@@ -131,6 +130,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, 16);
         this.setPathfindingPenalty(PathNodeType.STICKY_HONEY, 24);
         this.setPathfindingPenalty(PathNodeType.COCOA, 8);
+
+        //this.reachInHitbox = new AnimatronicPart(this, "reach_in_hitbox", 1.0F, 1.0F);
     }
 
 
@@ -150,15 +151,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-        if(!player.getMainHandStack().isEmpty()) return ActionResult.PASS;
-        if (this.getAnimatronicPose() == AnimatronicPose.CRAWLING) {
-            this.setAnimatronicPose(AnimatronicPose.NONE);
-            return ActionResult.SUCCESS;
-        } else {
-            this.setAnimatronicPose(AnimatronicPose.CRAWLING);
-            return ActionResult.SUCCESS;
-        }
-
+        //if(!player.getMainHandStack().isEmpty()) return ActionResult.PASS;
+        return super.interactAt(player, hitPos, hand);
     }
 
     @Override
@@ -377,9 +371,18 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         boolean wouldSuffocate = !this.getEntityWorld().isBlockSpaceEmpty(this, box);
         boolean wouldntSuffocateCrawling = this.getEntityWorld().isBlockSpaceEmpty(this, box2);
 
-        if (canCrawl() && (this.isCrawlSpaceAvailable(world) && !this.getNavigation().isIdle()) || wouldSuffocate && wouldntSuffocateCrawling) {
+        if (this.canCrawl() && (this.isCrawlSpaceAvailable(world) && !this.getNavigation().isIdle()) || wouldSuffocate && wouldntSuffocateCrawling) {
             this.setAnimatronicPose(AnimatronicPose.CRAWLING);
         } else {
+
+            Vec3d pos = this.getEntityPos();
+            BlockPos blockPos = new BlockPos((int)Math.floor(pos.getX()), (int)Math.floor(pos.getY()), (int)Math.floor(pos.getZ())).offset(this.getHorizontalFacing());
+            if (this.isCrawlSpaceAvailable(world) && this.canReachIn() && this.getEntityWorld() instanceof ServerWorld serverWorld) {
+                for (PlayerEntity player : this.getEntityWorld().getEntitiesByClass(PlayerEntity.class, new Box(blockPos.toCenterPos(), blockPos.offset(this.getHorizontalFacing()).toCenterPos()), (entity) -> (entity instanceof PlayerEntity))) {
+                    player.kill(serverWorld);
+                }
+            }
+
             if (isAggressive()) {
                 this.setAnimatronicPose(AnimatronicPose.AGGRESSIVE);
             } else {
@@ -608,6 +611,18 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         }
 
         return crawl;
+    }
+
+    public boolean canReachIn(){
+        CpuData data = getData();
+
+        boolean reachIn = false;
+
+        if(data.DATA_LIST.containsKey(CpuData.VentBehavior.getDefault().getKey())){
+            reachIn = data.DATA_LIST.get(CpuData.VentBehavior.getDefault().getKey()) == CpuData.VentBehavior.REACH_IN;
+        }
+
+        return reachIn;
     }
 
     public boolean canSee(){
@@ -1137,6 +1152,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     public enum AnimatronicPose {
         // BASE 0.8f width, 2.25f height
         NONE("idle",               "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
+        REACHING("idle",               "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
         PLAYER("player_idle",      "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
         STAGE("stage_idle",        "loweridle", "walk_upper", "walk_lower", "run_upper", "walk_lower", false, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
         DRAG("drag_idle",          "loweridle", "drag_move",  "walk_lower", "drag_move", "walk_lower", true, EntityDimensions.fixed(0.8f, 2.25f).withEyeHeight(1.8f)),
