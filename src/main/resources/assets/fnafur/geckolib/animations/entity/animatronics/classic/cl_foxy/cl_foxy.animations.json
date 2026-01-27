@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.cl_foxy.player_idle": {
+		"player_idle": {
 			"loop": true,
 			"animation_length": 7.5,
 			"bones": {
@@ -193,7 +193,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.stage_idle": {
+		"stage_idle": {
 			"loop": true,
 			"animation_length": 10,
 			"bones": {
@@ -836,7 +836,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.walk_upper": {
+		"walk_upper": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -1118,7 +1118,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.walk_upper_night": {
+		"walk_upper_night": {
 			"loop": true,
 			"animation_length": 1.0049,
 			"bones": {
@@ -1422,7 +1422,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.walk_lower": {
+		"walk_lower": {
 			"loop": true,
 			"animation_length": 1.0049,
 			"bones": {
@@ -1852,7 +1852,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.run_upper": {
+		"run_upper": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -2144,7 +2144,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.run_lower": {
+		"run_lower": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -2464,7 +2464,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.drag_move": {
+		"drag_move": {
 			"loop": true,
 			"animation_length": 0.9999,
 			"bones": {
@@ -2986,7 +2986,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.drag_idle": {
+		"drag_idle": {
 			"loop": true,
 			"animation_length": 0.9999,
 			"bones": {
@@ -3243,7 +3243,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.place_player": {
+		"place_player": {
 			"loop": true,
 			"animation_length": 2.9851,
 			"bones": {
@@ -3840,7 +3840,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.haunted_idle": {
+		"haunted_idle": {
 			"loop": true,
 			"animation_length": 0.25,
 			"bones": {
@@ -3946,7 +3946,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.idle": {
+		"idle": {
 			"loop": true,
 			"animation_length": 3.5417,
 			"bones": {
@@ -4042,7 +4042,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.loweridle": {
+		"loweridle": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -4082,7 +4082,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.crawl_idle": {
+		"crawl_idle": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -4330,7 +4330,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.crawl": {
+		"crawl": {
 			"loop": true,
 			"animation_length": 1.0146,
 			"bones": {
@@ -4935,7 +4935,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.head": {
+		"head": {
 			"loop": true,
 			"bones": {
 				"head": {
@@ -4958,7 +4958,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.floorsit": {
+		"floorsit": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -5136,7 +5136,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.sit": {
+		"sit": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -5176,7 +5176,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.situpper": {
+		"situpper": {
 			"loop": true,
 			"bones": {
 				"torso": {
@@ -5319,7 +5319,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.floorlay": {
+		"floorlay": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -5500,7 +5500,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.preview": {
+		"preview": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -5673,7 +5673,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.menu_preview": {
+		"menu_preview": {
 			"loop": true,
 			"animation_length": 6.2917,
 			"bones": {
@@ -6121,7 +6121,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.performance": {
+		"performance": {
 			"loop": true,
 			"animation_length": 12,
 			"bones": {
@@ -6927,7 +6927,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.death": {
+		"death": {
 			"animation_length": 3,
 			"bones": {
 				"root": {
@@ -7360,7 +7360,7 @@
 				}
 			}
 		},
-		"animation.cl_foxy.blink": {
+		"blink": {
 			"animation_length": 0.5,
 			"bones": {
 				"lefteyelid_top": {

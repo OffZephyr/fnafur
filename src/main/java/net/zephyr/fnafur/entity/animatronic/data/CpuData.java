@@ -11,32 +11,45 @@ public class CpuData {
 
     public interface CpuDataArgument {
         String getKey();
+
         String getName();
+
         CpuDataArgument cycleLeft();
+
         CpuDataArgument cycleRight();
+
         CpuDataArgument getFromName(String name);
     }
+
     public interface CpuDataRangeArgument extends CpuDataArgument {
         int getMin();
+
         int getMax();
+
         int getValue();
+
+        float getFloat01Value();
+
         void setValue(int val);
     }
+
     public interface CpuDataFloatRangeArgument extends CpuDataArgument {
         float getMin();
+
         float getMax();
+
         float getValue();
+
         void setValue(float val);
     }
 
     public enum OnReset implements CpuDataArgument {
         WALK("walk"),
         RUN("run"),
-        TELEPORT("teleport")
-        ;
+        TELEPORT("teleport");
         final String NAME;
 
-        OnReset(String name){
+        OnReset(String name) {
             NAME = name;
         }
 
@@ -66,8 +79,8 @@ public class CpuData {
 
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -78,15 +91,15 @@ public class CpuData {
             return WALK;
         }
     }
+
     public enum MovementMode implements CpuDataArgument {
         NONE("none"),
         WALK("walk"),
         RUN("run"),
-        TELEPORT("teleport")
-        ;
+        TELEPORT("teleport");
         final String NAME;
 
-        MovementMode(String name){
+        MovementMode(String name) {
             NAME = name;
         }
 
@@ -116,8 +129,8 @@ public class CpuData {
 
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -128,16 +141,16 @@ public class CpuData {
             return WALK;
         }
     }
+
     public enum BehaviorWhenSeen implements CpuDataArgument {
         NONE("none"),
         FREEZE_ON_SIGHT("freeze_on_sight"),
         RESET_ON_SIGHT("reset_on_sight"),
         FREEZE_ON_CAMERA("freeze_on_camera"),
-        RESET_ON_CAMERA("reset_on_camera")
-        ;
+        RESET_ON_CAMERA("reset_on_camera");
         final String NAME;
 
-        BehaviorWhenSeen(String name){
+        BehaviorWhenSeen(String name) {
             NAME = name;
         }
 
@@ -164,10 +177,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -178,14 +192,14 @@ public class CpuData {
             return FREEZE_ON_CAMERA;
         }
     }
+
     public enum VentBehavior implements CpuDataArgument {
         NONE("none"),
         CRAWL("crawl"),
-        REACH_IN("reach_in")
-        ;
+        REACH_IN("reach_in");
         final String NAME;
 
-        VentBehavior(String name){
+        VentBehavior(String name) {
             NAME = name;
         }
 
@@ -212,10 +226,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -226,14 +241,14 @@ public class CpuData {
             return REACH_IN;
         }
     }
+
     public enum LightBehavior implements CpuDataArgument {
         NONE("none"),
         FLICKER("flicker"),
-        TURN_OFF("turn_off")
-        ;
+        TURN_OFF("turn_off");
         final String NAME;
 
-        LightBehavior(String name){
+        LightBehavior(String name) {
             NAME = name;
         }
 
@@ -260,10 +275,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -274,14 +290,14 @@ public class CpuData {
             return NONE;
         }
     }
+
     public enum ReactionToLight implements CpuDataArgument {
         NONE("none"),
         STUNNED("stunned"),
-        RESET("reset")
-        ;
+        RESET("reset");
         final String NAME;
 
-        ReactionToLight(String name){
+        ReactionToLight(String name) {
             NAME = name;
         }
 
@@ -308,10 +324,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -322,14 +339,14 @@ public class CpuData {
             return NONE;
         }
     }
+
     public enum ReactionToShock implements CpuDataArgument {
         NONE("none"),
         STUNNED("stunned"),
-        RESET("reset")
-        ;
+        RESET("reset");
         final String NAME;
 
-        ReactionToShock(String name){
+        ReactionToShock(String name) {
             NAME = name;
         }
 
@@ -356,10 +373,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -370,16 +388,16 @@ public class CpuData {
             return STUNNED;
         }
     }
+
     public enum ReactionToDoor implements CpuDataArgument {
         LEAVE("leave"),
         WAIT("wait"),
         RESET("reset"),
         BANG_AND_LEAVE("bang_and_leave"),
-        BANG_AND_RESET("bang_and_reset")
-        ;
+        BANG_AND_RESET("bang_and_reset");
         final String NAME;
 
-        ReactionToDoor(String name){
+        ReactionToDoor(String name) {
             NAME = name;
         }
 
@@ -406,10 +424,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -420,6 +439,7 @@ public class CpuData {
             return BANG_AND_LEAVE;
         }
     }
+
     public enum ReactionToMask implements CpuDataArgument {
         FOOLED("fooled"),
         RESET("reset"),
@@ -427,7 +447,7 @@ public class CpuData {
         ;
         final String NAME;
 
-        ReactionToMask(String name){
+        ReactionToMask(String name) {
             NAME = name;
         }
 
@@ -454,10 +474,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -468,15 +489,15 @@ public class CpuData {
             return FOOLED;
         }
     }
+
     public enum VisionMode implements CpuDataArgument {
         NORMAL("normal"),
         BLIND("blind"),
         DEAF("deaf"),
-        BLIND_AND_DEAF("blind_and_deaf")
-        ;
+        BLIND_AND_DEAF("blind_and_deaf");
         final String NAME;
 
-        VisionMode(String name){
+        VisionMode(String name) {
             NAME = name;
         }
 
@@ -503,10 +524,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -517,15 +539,15 @@ public class CpuData {
             return NORMAL;
         }
     }
+
     public enum AggressionMode implements CpuDataArgument {
         PASSIVE("passive"),
         STALK("stalk"),
         CHASE_WALK("chase_walk"),
-        CHASE_RUN("chase_run")
-        ;
+        CHASE_RUN("chase_run");
         final String NAME;
 
-        AggressionMode(String name){
+        AggressionMode(String name) {
             NAME = name;
         }
 
@@ -552,10 +574,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -566,14 +589,14 @@ public class CpuData {
             return CHASE_WALK;
         }
     }
+
     public enum OnSpotTarget implements CpuDataArgument {
         NOTHING("nothing"),
         TAUNT("taunt"),
-        SOUND_ALONE("sound_alone")
-        ;
+        SOUND_ALONE("sound_alone");
         final String NAME;
 
-        OnSpotTarget(String name){
+        OnSpotTarget(String name) {
             NAME = name;
         }
 
@@ -600,10 +623,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -614,15 +638,15 @@ public class CpuData {
             return TAUNT;
         }
     }
+
     public enum OnLoseTarget implements CpuDataArgument {
         NOTHING("nothing"),
         RAGE("rage"),
         SEEK("seek"),
-        NEVER_LOSE_TARGET("never_lose_target")
-        ;
+        NEVER_LOSE_TARGET("never_lose_target");
         final String NAME;
 
-        OnLoseTarget(String name){
+        OnLoseTarget(String name) {
             NAME = name;
         }
 
@@ -649,10 +673,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -663,13 +688,13 @@ public class CpuData {
             return SEEK;
         }
     }
+
     public enum HidingSpots implements CpuDataArgument {
         IGNORE("ignore"),
-        CHECK("check")
-        ;
+        CHECK("check");
         final String NAME;
 
-        HidingSpots(String name){
+        HidingSpots(String name) {
             NAME = name;
         }
 
@@ -696,10 +721,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -710,16 +736,16 @@ public class CpuData {
             return CHECK;
         }
     }
+
     public enum OnContactWithTarget implements CpuDataArgument {
         PASSIVE("passive"),
         MAKE_NOISE("make_noise"),
         JUMPSCARE("jumpscare"),
         KILL("kill"),
-        JUMPSCARE_AND_KILL("jumpscare_and_kill")
-        ;
+        JUMPSCARE_AND_KILL("jumpscare_and_kill");
         final String NAME;
 
-        OnContactWithTarget(String name){
+        OnContactWithTarget(String name) {
             NAME = name;
         }
 
@@ -746,10 +772,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -760,14 +787,14 @@ public class CpuData {
             return JUMPSCARE_AND_KILL;
         }
     }
+
     public enum KillStyle implements CpuDataArgument {
         NONE("none"),
         SHREDDY("shreddy"),
-        BLOW_UP("blow_up")
-        ;
+        BLOW_UP("blow_up");
         final String NAME;
 
-        KillStyle(String name){
+        KillStyle(String name) {
             NAME = name;
         }
 
@@ -794,10 +821,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -808,16 +836,16 @@ public class CpuData {
             return NONE;
         }
     }
+
     public enum GlowingEyesMode implements CpuDataArgument {
         DOTS("dots"),
         IRISES("irises"),
         IRISES_DOTS("irises_dots"),
         FULL_EYES("full_eyes"),
-        FULL_EYES_DOTS("full_eyes_dots")
-        ;
+        FULL_EYES_DOTS("full_eyes_dots");
         final String NAME;
 
-        GlowingEyesMode(String name){
+        GlowingEyesMode(String name) {
             NAME = name;
         }
 
@@ -844,10 +872,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -858,6 +887,7 @@ public class CpuData {
             return DOTS;
         }
     }
+
     public enum GlowingEyesColor implements CpuDataArgument {
 
         RED("red"),
@@ -872,7 +902,7 @@ public class CpuData {
         final String NAME;
         final Identifier IDENTIFIER;
 
-        GlowingEyesColor(String name){
+        GlowingEyesColor(String name) {
             NAME = name;
             IDENTIFIER = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/animatronics/eye_colors/" + name + ".png");
         }
@@ -904,10 +934,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -918,15 +949,15 @@ public class CpuData {
             return WHITE;
         }
     }
+
     public enum GlowingEyesTrigger implements CpuDataArgument {
         NEVER("never"),
         CHASING("chasing"),
         FLICKER("flickering"),
-        ALWAYS("always")
-        ;
+        ALWAYS("always");
         final String NAME;
 
-        GlowingEyesTrigger(String name){
+        GlowingEyesTrigger(String name) {
             NAME = name;
         }
 
@@ -953,10 +984,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -967,6 +999,7 @@ public class CpuData {
             return CHASING;
         }
     }
+
     public enum SingingRole implements CpuDataArgument {
         NONE("none"),
         LEAD("lead"),
@@ -977,11 +1010,10 @@ public class CpuData {
         EXTRA2("extra2"),
         EXTRA3("extra3"),
         EXTRA4("extra4"),
-        EXTRA5("extra5")
-        ;
+        EXTRA5("extra5");
         final String NAME;
 
-        SingingRole(String name){
+        SingingRole(String name) {
             NAME = name;
         }
 
@@ -1008,10 +1040,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -1022,15 +1055,15 @@ public class CpuData {
             return LEAD;
         }
     }
+
     public enum CameraJamming implements CpuDataArgument {
         NONE("none"),
         ON_MOVEMENT("on_movement"),
         ON_SEEN("on_seen"),
-        BREAK_AFTER_TIME_SPOTTED("break_after_time_spotted")
-        ;
+        BREAK_AFTER_TIME_SPOTTED("break_after_time_spotted");
         final String NAME;
 
-        CameraJamming(String name){
+        CameraJamming(String name) {
             NAME = name;
         }
 
@@ -1057,10 +1090,11 @@ public class CpuData {
             id = id >= values().length ? 0 : id;
             return values()[id];
         }
+
         @Override
         public CpuDataArgument getFromName(String name) {
-            for(CpuDataArgument arg : values()){
-                if(Objects.equals(arg.getName(), name)){
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
                     return arg;
                 }
             }
@@ -1090,11 +1124,15 @@ public class CpuData {
             return 12;
         }
 
-        public int getValue(){
+        public int getValue() {
             return value;
         }
 
-        public void setValue(int val){
+        public float getFloat01Value() {
+            return (float) (value - getMin()) / ((float) (getMax() - getMin()));
+        }
+
+        public void setValue(int val) {
             value = val;
         }
 
@@ -1132,6 +1170,7 @@ public class CpuData {
             return attribute;
         }
     }
+
     public static class RunSpeed implements CpuDataRangeArgument {
 
         private int value = 0;
@@ -1150,11 +1189,15 @@ public class CpuData {
             return 3;
         }
 
-        public int getValue(){
+        public int getValue() {
             return value;
         }
 
-        public void setValue(int val){
+        public float getFloat01Value() {
+            return (float) (value - getMin()) / ((float) (getMax() - getMin()));
+        }
+
+        public void setValue(int val) {
             value = val;
         }
 
@@ -1192,6 +1235,7 @@ public class CpuData {
             return attribute;
         }
     }
+
     public static class SightRange implements CpuDataRangeArgument {
 
         private int value = 0;
@@ -1210,11 +1254,15 @@ public class CpuData {
             return 20;
         }
 
-        public int getValue(){
+        public int getValue() {
             return value;
         }
 
-        public void setValue(int val){
+        public float getFloat01Value() {
+            return (float) (value - getMin()) / ((float) (getMax() - getMin()));
+        }
+
+        public void setValue(int val) {
             value = val;
         }
 
@@ -1252,6 +1300,7 @@ public class CpuData {
             return attribute;
         }
     }
+
     public static class ServoSoundsVolume implements CpuDataRangeArgument {
 
         private int value = 0;
@@ -1270,11 +1319,15 @@ public class CpuData {
             return 5;
         }
 
-        public int getValue(){
+        public int getValue() {
             return value;
         }
 
-        public void setValue(int val){
+        public float getFloat01Value() {
+            return (float) (value - getMin()) / ((float) (getMax() - getMin()));
+        }
+
+        public void setValue(int val) {
             value = val;
         }
 
@@ -1312,28 +1365,34 @@ public class CpuData {
             return attribute;
         }
     }
-    public static class AmbientSoundsVolume implements CpuDataFloatRangeArgument {
-        private float value = 0;
+
+    public static class AmbientSoundsVolume implements CpuDataRangeArgument {
+
+        private int value = 0;
 
         @Override
-        public float getMin() {
-            return 0.0F;
+        public int getMin() {
+            return 0;
         }
 
         @Override
-        public float getMax() {
-            return 1.0F;
+        public int getMax() {
+            return 10;
         }
 
-        public static float getDefaultValue() {
-            return 1.0F;
+        public static int getDefaultValue() {
+            return 5;
         }
 
-        public float getValue(){
+        public int getValue() {
             return value;
         }
 
-        public void setValue(float val){
+        public float getFloat01Value() {
+            return (float) (value - getMin()) / ((float) (getMax() - getMin()));
+        }
+
+        public void setValue(int val) {
             value = val;
         }
 
@@ -1341,6 +1400,7 @@ public class CpuData {
         public String getKey() {
             return "ambient_sounds_volume";
         }
+
         @Override
         public String getName() {
             return "";
@@ -1348,15 +1408,14 @@ public class CpuData {
 
         @Override
         public CpuDataArgument cycleLeft() {
-            value = Math.max(getMin(), value - 0.1F);
-            value = Math.round(value * 100.0F) / 100.0F;
+            value = Math.max(getMin(), value - 1);
             return this;
         }
 
         @Override
         public CpuDataArgument cycleRight() {
-            value = Math.min(getMax(), value + 0.1F);
-            value = Math.round(value * 100.0F) / 100.0F;
+
+            value = Math.min(getMax(), value + 1);
             return this;
         }
 
@@ -1371,6 +1430,66 @@ public class CpuData {
             return attribute;
         }
     }
+
+    //    public static class AmbientSoundsVolume implements CpuDataFloatRangeArgument {
+//        private float value = 0;
+//
+//        @Override
+//        public float getMin() {
+//            return 0.0F;
+//        }
+//
+//        @Override
+//        public float getMax() {
+//            return 1.0F;
+//        }
+//
+//        public static float getDefaultValue() {
+//            return 1.0F;
+//        }
+//
+//        public float getValue(){
+//            return value;
+//        }
+//
+//        public void setValue(float val){
+//            value = val;
+//        }
+//
+//        @Override
+//        public String getKey() {
+//            return "ambient_sounds_volume";
+//        }
+//        @Override
+//        public String getName() {
+//            return "";
+//        }
+//
+//        @Override
+//        public CpuDataArgument cycleLeft() {
+//            value = Math.max(getMin(), value - 0.1F);
+//            value = Math.round(value * 100.0F) / 100.0F;
+//            return this;
+//        }
+//
+//        @Override
+//        public CpuDataArgument cycleRight() {
+//            value = Math.min(getMax(), value + 0.1F);
+//            value = Math.round(value * 100.0F) / 100.0F;
+//            return this;
+//        }
+//
+//        @Override
+//        public CpuDataArgument getFromName(String name) {
+//            return this;
+//        }
+//
+//        public static AmbientSoundsVolume getDefault() {
+//            AmbientSoundsVolume attribute = new AmbientSoundsVolume();
+//            attribute.setValue(AmbientSoundsVolume.getDefaultValue());
+//            return attribute;
+//        }
+//    }
     public static class AIMovementLevel implements CpuDataRangeArgument {
 
         private int value = 0;
@@ -1389,11 +1508,15 @@ public class CpuData {
             return 12;
         }
 
-        public int getValue(){
+        public int getValue() {
             return value;
         }
 
-        public void setValue(int val){
+        public float getFloat01Value() {
+            return (float) (value - getMin()) / ((float) (getMax() - getMin()));
+        }
+
+        public void setValue(int val) {
             value = val;
         }
 
@@ -1503,36 +1626,34 @@ public class CpuData {
 
     public Map<String, CpuDataArgument> DATA_LIST = new HashMap<>();
 
-    public CpuData(){
-        for(CpuDataArgument arg : DefaultList){
+    public CpuData() {
+        for (CpuDataArgument arg : DefaultList) {
             KeyList.add(arg.getKey());
             DATA_LIST.put(arg.getKey(), arg);
         }
     }
 
-    public CpuData with(CpuDataArgument argument){
+    public CpuData with(CpuDataArgument argument) {
         DATA_LIST.put(argument.getKey(), argument);
         return this;
     }
 
-    public CpuData with(CpuDataRangeArgument argument, int value){
+    public CpuData with(CpuDataRangeArgument argument, int value) {
         argument.setValue(value);
         DATA_LIST.put(argument.getKey(), argument);
         return this;
     }
 
-    public NbtCompound toNbt(){
+    public NbtCompound toNbt() {
         NbtCompound nbt = new NbtCompound();
-        for(CpuDataArgument argument : DefaultList){
+        for (CpuDataArgument argument : DefaultList) {
             CpuDataArgument arg = DATA_LIST.get(argument.getKey());
-            if(arg != null){
-                if(arg instanceof CpuDataRangeArgument range){
+            if (arg != null) {
+                if (arg instanceof CpuDataRangeArgument range) {
                     nbt.putInt(range.getKey(), range.getValue());
-                }
-                else if(arg instanceof CpuDataFloatRangeArgument range){
+                } else if (arg instanceof CpuDataFloatRangeArgument range) {
                     nbt.putFloat(range.getKey(), range.getValue());
-                }
-                else{
+                } else {
                     nbt.putString(arg.getKey(), arg.getName());
                 }
             }
@@ -1542,22 +1663,20 @@ public class CpuData {
         return nbt;
     }
 
-    public static CpuData fromNbt(NbtCompound nbt){
+    public static CpuData fromNbt(NbtCompound nbt) {
 
         CpuData data = new CpuData();
 
-        for(CpuDataArgument argument : data.DefaultList){
-            if(argument instanceof CpuDataRangeArgument range){
+        for (CpuDataArgument argument : data.DefaultList) {
+            if (argument instanceof CpuDataRangeArgument range) {
                 int value = nbt.getInt(range.getKey(), range.getValue());
                 range.setValue(value);
                 data.DATA_LIST.put(range.getKey(), range);
-            }
-            else if(argument instanceof CpuDataFloatRangeArgument range){
+            } else if (argument instanceof CpuDataFloatRangeArgument range) {
                 float value = nbt.getFloat(range.getKey(), range.getValue());
                 range.setValue(value);
                 data.DATA_LIST.put(range.getKey(), range);
-            }
-            else{
+            } else {
                 String name = nbt.getString(argument.getKey(), argument.getName());
                 data.DATA_LIST.put(argument.getKey(), argument.getFromName(name));
             }

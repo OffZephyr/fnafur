@@ -1,15 +1,15 @@
 package net.zephyr.fnafur.entity.animatronic.goals;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.ai.FuzzyTargeting;
 import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
-import net.zephyr.fnafur.init.SoundsInit;
+import net.zephyr.fnafur.entity.animatronic.voice.EntityVoiceSoundInstance;
 
 import java.util.EnumSet;
 
@@ -94,7 +94,9 @@ public class AnimWanderAroundFarGoal extends Goal {
     @Override
     public void stop() {
         this.mob.getNavigation().stop();
-        this.mob.playSound(this.mob.getAnimatronicAmbientSound(), this.mob.ambientSoundVolume(), 1.0F);
+        String name = this.mob.getAnimatronicAmbientSoundName();
+        this.mob.playVoiceSound(name, this.mob.getAnimatronicAmbientSound(name), this.mob.ambientSoundVolume());
+
         super.stop();
     }
 

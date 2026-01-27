@@ -80,19 +80,10 @@ public class PaletteTextureProvider implements DataProvider {
         return "Palette Textures";
     }
 
-//    private void generateAll() throws IOException {
-//        for (BlockInit.PaletteBlock palette : BlockInit.PALETTES) {
-//            generateRecoloredTexture(palette);
-//        }
-//    }
-
     private static HashCode writeNativeImageAndHash(NativeImage image, Path outPath) throws IOException {
-        // Ensure parent directories exist
         Files.createDirectories(outPath.getParent());
-        // Write the PNG directly
         image.writeTo(outPath);
 
-        // Compute hash from the written file
         return Hashing.sha256().hashBytes(Files.readAllBytes(outPath));
     }
 
@@ -111,37 +102,4 @@ public class PaletteTextureProvider implements DataProvider {
         }
 
     }
-
-//    private void generateRecoloredTexture(BlockInit.PaletteBlock palette) throws IOException {
-//        Path baseTexture = output.getModContainer()
-//                .findPath("assets/fnafur/" + palette.templateTexture().getPath())
-//                .orElseThrow();
-//
-//        Path paletteTexture = output.getModContainer()
-//                .findPath("assets/fnafur/" + palette.paletteEnum().getPalette().getPath())
-//                .orElseThrow();
-//
-//        NativeImage base = loadImage(baseTexture);
-//        NativeImage paletteImg = loadImage(paletteTexture);
-//
-//        Map<Integer, Integer> paletteMap = PaletteManager.buildPaletteMap(paletteImg);
-//        NativeImage recolored = PaletteManager.applyPalette(base, paletteMap);
-//
-//        Path out = output.resolvePath(DataOutput.OutputType.RESOURCE_PACK)
-//                .resolve("fnafur/textures/block/two_tile_" + palette.paletteEnum().getName() + ".png");
-//
-//        Files.createDirectories(out.getParent());
-//        try (OutputStream stream = Files.newOutputStream(out)) {
-//            recolored.writeTo(out);
-//        }
-//        if (!Files.exists(out)) {
-//            throw new IllegalStateException("Texture was not written: " + out);
-//        }
-//        else {
-//            System.out.println("Generated palette texture: " + out);
-//        }
-//        base.close();
-//        paletteImg.close();
-//        recolored.close();
-//    }
 }

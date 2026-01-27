@@ -24,6 +24,7 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
 
     private static final TypeToken<Map<String, List<String>>> STRING_LIST_TYPE = new TypeToken<>() {};
     private static final TypeToken<Map<String, Map<String, String>>> STRING_MAP_TYPE = new TypeToken<>() {};
+    private static final TypeToken<Map<String, Map<String, List<String>>>> STRING_MAP_LIST_TYPE = new TypeToken<>() {};
     private static final TypeToken<Map<String, CharaGetter>> CHARACTER_TYPE = new TypeToken<>() {};
 
     @Override
@@ -107,10 +108,10 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
         List<Resource> list = resourceManager.getAllResources(Identifier.of(namespace, path));
         for (Resource resource : list) {
             try (BufferedReader reader = resource.getReader()) {
-                Map<String, Map<String, String>> layerEntries = JsonHelper.deserialize(GSON, reader, STRING_MAP_TYPE);
-                for (Map.Entry<String, Map<String, String>> entry : layerEntries.entrySet()) {
+                Map<String, Map<String, List<String>>> layerEntries = JsonHelper.deserialize(GSON, reader, STRING_MAP_LIST_TYPE);
+                for (Map.Entry<String, Map<String, List<String>>> entry : layerEntries.entrySet()) {
                     if(Objects.equals(entry.getKey(), "default")){
-                        AnimatronicDataHandler.DEFAULT_SOUNDS = entry.getValue().get("default");
+                        AnimatronicDataHandler.DEFAULT_SOUNDS = entry.getValue().get("default").getFirst();
                     }
                     AnimatronicDataHandler.SOUNDS_PER_CATEGORY.put(entry.getKey(), entry.getValue());
 

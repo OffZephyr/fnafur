@@ -1,9 +1,25 @@
 {
     "default": {
-        "default": "entity/default"
+        "default": [
+            ""
+        ]
     },
     "classic": {
-        "freddy_laugh": "fnafur:freddy_laugh",
-        "animatronic_groan": "fnafur:animatronic_groan"
+        "freddy_laugh": [
+            "freddy_laugh1",
+            "freddy_laugh2",
+            "freddy_laugh3"
+        ],
+        "animatronic_groan": [
+            "animatronic_groan1",
+            "animatronic_groan2",
+            "animatronic_groan3",
+            "animatronic_groan4"
+        ]
+    },
+    "test": {
+        "somebodys_watching_me": [
+            "somebodys_watching_me"
+        ]
     }
 }

@@ -23,8 +23,8 @@ public class AnimatronicDataHandler {
     public static final Map<String, List<String>> ANIMATION_NAMES_PER_CATEGORY = new HashMap<>();
     public static final List<String> ALL_ANIMATION_NAMES = new ArrayList<>();
 
-    public static final Map<String, Map<String, String>> SOUNDS_PER_CATEGORY = new HashMap<>();
-    public static final Map<String, String> ALL_SOUNDS = new HashMap<>();
+    public static final Map<String, Map<String, List<String>>> SOUNDS_PER_CATEGORY = new HashMap<>();
+    public static final Map<String, List<String>> ALL_SOUNDS = new HashMap<>();
     public static final Map<String, List<String>> SOUND_NAMES_PER_CATEGORY = new HashMap<>();
     public static final List<String> ALL_SOUND_NAMES = new ArrayList<>();
 
@@ -151,9 +151,12 @@ public class AnimatronicDataHandler {
         Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations().cache();
         BakedAnimations bakedAnimations = animations.get(location);
         String anim = "animation." + name + "." + currentAnim;
+        anim = currentAnim;
+//        System.out.println("animation." + currentAnim);
         if(bakedAnimations == null || !bakedAnimations.animations().containsKey(anim)) {
             path = ALL_ANIMATIONS.get("default");
             anim = "animation.default." + currentAnim;
+            anim = currentAnim;
         }
         return new Pair<>(path, anim);
     }

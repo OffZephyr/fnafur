@@ -13,6 +13,7 @@ public class FnafUniverseRebuiltDataGenerator implements DataGeneratorEntrypoint
 
 		pack.addProvider(PaletteTextureProvider::new);
 		pack.addProvider(DecalPaletteTextureProvider::new);
+		pack.addProvider(JawFromOggAnimationProvider::new);
 		pack.addProvider(BlockTagProvider::new);
 		pack.addProvider(ItemTagProvider::new);
 		pack.addProvider(LootTableProvider::new);

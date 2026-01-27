@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.cl_bon.player_idle": {
+		"player_idle": {
 			"loop": true,
 			"animation_length": 7.5,
 			"bones": {
@@ -258,7 +258,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.stage_idle": {
+		"stage_idle": {
 			"loop": true,
 			"animation_length": 10.8333,
 			"bones": {
@@ -750,7 +750,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.walk_upper": {
+		"walk_upper": {
 			"loop": true,
 			"animation_length": 1.0049,
 			"bones": {
@@ -1154,7 +1154,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.walk_upper_night": {
+		"walk_upper_night": {
 			"loop": true,
 			"animation_length": 0.9999,
 			"bones": {
@@ -1651,7 +1651,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.run_upper": {
+		"run_upper": {
 			"loop": true,
 			"animation_length": 0.9999,
 			"bones": {
@@ -2148,7 +2148,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.walk_lower": {
+		"walk_lower": {
 			"loop": true,
 			"animation_length": 0.9999,
 			"bones": {
@@ -2594,7 +2594,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.drag_move": {
+		"drag_move": {
 			"loop": true,
 			"animation_length": 0.9999,
 			"bones": {
@@ -3186,7 +3186,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.drag_idle": {
+		"drag_idle": {
 			"loop": true,
 			"animation_length": 0.9999,
 			"bones": {
@@ -3608,7 +3608,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.place_player": {
+		"place_player": {
 			"loop": true,
 			"animation_length": 2.9851,
 			"bones": {
@@ -4383,7 +4383,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.haunted_idle": {
+		"haunted_idle": {
 			"loop": true,
 			"bones": {
 				"rightear": {
@@ -4546,7 +4546,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.idle": {
+		"idle": {
 			"loop": true,
 			"bones": {
 				"rightear": {
@@ -4706,7 +4706,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.loweridle": {
+		"loweridle": {
 			"loop": true,
 			"animation_length": 15,
 			"bones": {
@@ -4752,7 +4752,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.crawl_idle": {
+		"crawl_idle": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -5140,7 +5140,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.crawl": {
+		"crawl": {
 			"loop": true,
 			"animation_length": 1.0146,
 			"bones": {
@@ -5867,7 +5867,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.head": {
+		"head": {
 			"loop": true,
 			"bones": {
 				"right_ear": {
@@ -5906,7 +5906,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.floorsit": {
+		"floorsit": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -6152,7 +6152,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.sit": {
+		"sit": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -6207,7 +6207,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.situpper": {
+		"situpper": {
 			"loop": true,
 			"bones": {
 				"torso": {
@@ -6410,7 +6410,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.floorlay": {
+		"floorlay": {
 			"loop": true,
 			"bones": {
 				"Bonnie": {
@@ -6661,7 +6661,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.preview": {
+		"preview": {
 			"loop": true,
 			"bones": {
 				"root": {
@@ -6889,7 +6889,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.menu_preview": {
+		"menu_preview": {
 			"loop": true,
 			"animation_length": 10.7917,
 			"bones": {
@@ -7652,7 +7652,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.performance": {
+		"performance": {
 			"loop": true,
 			"animation_length": 14.5,
 			"bones": {
@@ -8892,7 +8892,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.interact": {
+		"interact": {
 			"animation_length": 0.5,
 			"bones": {
 				"guitar_accessory": {
@@ -8914,7 +8914,7 @@
 				}
 			}
 		},
-		"animation.cl_bon.blink": {
+		"blink": {
 			"animation_length": 0.5,
 			"bones": {
 				"lefteyelid_top": {

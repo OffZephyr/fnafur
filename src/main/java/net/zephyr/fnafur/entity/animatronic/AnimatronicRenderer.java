@@ -9,6 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
+import net.zephyr.fnafur.entity.animatronic.voice.EntityVoiceSoundInstance;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import org.jetbrains.annotations.Nullable;
@@ -114,6 +115,8 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
                 snapshots.get(eyeright_main).setRotation(pitch / 2f, yaw / 4f, 0);
             }
         }
+
+
         super.adjustModelBonesForRender(renderPassInfo, snapshots);
     }
 

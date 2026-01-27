@@ -205,6 +205,7 @@ b0e702945d79ec146c08764e6c158062da56da65 data/fnafur/loot_table/blocks/trash_bin
 07f8b82e7dc8e6a0f18423a3ebed43cf85c46225 data/fnafur/loot_table/blocks/wall_clouds.json
 e56135878e9ab9a243699ef0d90ffaa03740e969 data/fnafur/loot_table/blocks/wall_menu.json
 168211349d7e9899bf5553c5fa4b64f941e7a0ec data/fnafur/loot_table/blocks/wall_outlet.json
+94df8b19f4d9d412c787554f00beec2d15af1c7d data/fnafur/loot_table/blocks/wall_papers.json
 ab396b28e446284aaa52cf949cd74f0083eb1542 data/fnafur/loot_table/blocks/wall_pizza.json
 981e87be62b58f828d5bf54b2c915d725f1a47f6 data/fnafur/loot_table/blocks/wall_tile_full.json
 11ca144845f8031842a37b0f497ea80ef90898e6 data/fnafur/loot_table/blocks/warning_heavy_door.json

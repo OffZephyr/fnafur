@@ -864,8 +864,10 @@
   "sounds.fnafur.honk": "Honk!",
   "sounds.fnafur.cosmo_gift_use": "An Animatronic Becomes Suited",
   "sounds.fnafur.freddy_music_box": "Toreador March Plays",
-  "sounds.fnafur.freddy_laugh": "Freddy Laughs",
-  "sounds.fnafur.animatronic_groan": "An Animatronic Groans",
+
+
+  "sounds.fnafur.freddy_laugh": "Freddy Laugh",
+  "sounds.fnafur.animatronic_groan": "Animatronic Groan",
 
   "sounds.fnafur.main_menu": "Main Menu Music Plays",
   "fnafur.screens.creative_categories.animatronics": "Animatronics",

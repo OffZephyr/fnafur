@@ -22,6 +22,9 @@ public class EntityPayloads {
     public static final Identifier C2SSetEntityRun = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_workbench_save");
     public static final Identifier S2CSetEntityGlow = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_entity_glow");
     public static final Identifier C2SSetEntityGlow = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_entity_glow");
+    public static final Identifier S2CPlayEntityVoiceSound = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_entity_play_voice_sound");
+    public static final Identifier C2SSetSpawnData = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_set_spawn_data");
+    public static final Identifier S2CSetSpawnData = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_set_spawn_data");
     public static void registerPayloads() {
         PayloadTypeRegistry.playC2S().register(UpdateMaskStateC2SPayload.ID, UpdateMaskStateC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(UpdateMaskStateS2CPayload.ID, UpdateMaskStateS2CPayload.CODEC);
@@ -30,6 +33,10 @@ public class EntityPayloads {
         PayloadTypeRegistry.playC2S().register(WalkSoundPlayerC2SPayload.ID, WalkSoundPlayerC2SPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(WorkbenchSaveC2SPayload.ID, WorkbenchSaveC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(WorkbenchSaveS2CPayload.ID, WorkbenchSaveS2CPayload.CODEC);
+
+        PayloadTypeRegistry.playS2C().register(PlayVoiceSoundS2CPayload.ID, PlayVoiceSoundS2CPayload.CODEC);
+        PayloadTypeRegistry.playC2S().register(SetEntitySpawnDataC2SPayload.ID, SetEntitySpawnDataC2SPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(SetEntitySpawnDataS2CPayload.ID, SetEntitySpawnDataS2CPayload.CODEC);
 
         PayloadTypeRegistry.playC2S().register(SetEntityRunC2SPayload.ID, SetEntityRunC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(SetEntityRunS2CPayload.ID, SetEntityRunS2CPayload.CODEC);
@@ -40,6 +47,9 @@ public class EntityPayloads {
     public static void registerClientReceivers() {
         ClientPlayNetworking.registerGlobalReceiver(WorkbenchSaveS2CPayload.ID, WorkbenchSaveS2CPayload::receive);
         ClientPlayNetworking.registerGlobalReceiver(UpdateMaskStateS2CPayload.ID, UpdateMaskStateS2CPayload::receive);
+
+        ClientPlayNetworking.registerGlobalReceiver(PlayVoiceSoundS2CPayload.ID, PlayVoiceSoundS2CPayload::receive);
+        ClientPlayNetworking.registerGlobalReceiver(SetEntitySpawnDataS2CPayload.ID, SetEntitySpawnDataS2CPayload::receive);
 
         ClientPlayNetworking.registerGlobalReceiver(SetEntityRunS2CPayload.ID, SetEntityRunS2CPayload::receive);
         ClientPlayNetworking.registerGlobalReceiver(SetEntityGlowS2CPayload.ID, SetEntityGlowS2CPayload::receive);
@@ -53,5 +63,7 @@ public class EntityPayloads {
 
         ServerPlayNetworking.registerGlobalReceiver(SetEntityRunC2SPayload.ID, SetEntityRunC2SPayload::receive);
         ServerPlayNetworking.registerGlobalReceiver(SetEntityGlowC2SPayload.ID, SetEntityGlowC2SPayload::receive);
+
+        ServerPlayNetworking.registerGlobalReceiver(SetEntitySpawnDataC2SPayload.ID, SetEntitySpawnDataC2SPayload::receive);
     }
 }

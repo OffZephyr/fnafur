@@ -33,9 +33,17 @@ public class SoundsInit {
     public static final SoundEvent ANIMATRONIC_HURT = registerSoundEvent("animatronic_hurt");
     public static final SoundEvent ANIMATRONIC_DEATH = registerSoundEvent("animatronic_death");
     public static final SoundEvent COSMO_GIFT_USE = registerSoundEvent("cosmo_gift_use");
-    public static final SoundEvent FREDDY_LAUGH = registerSoundEvent("freddy_laugh");
+
+    public static final SoundEvent FREDDY_LAUGH1 = registerSoundEvent("freddy_laugh1");
+    public static final SoundEvent FREDDY_LAUGH2 = registerSoundEvent("freddy_laugh2");
+    public static final SoundEvent FREDDY_LAUGH3 = registerSoundEvent("freddy_laugh3");
+    public static final SoundEvent ANIMATRONIC_GROAN1 = registerSoundEvent("animatronic_groan1");
+    public static final SoundEvent ANIMATRONIC_GROAN2 = registerSoundEvent("animatronic_groan2");
+    public static final SoundEvent ANIMATRONIC_GROAN3 = registerSoundEvent("animatronic_groan3");
+    public static final SoundEvent ANIMATRONIC_GROAN4 = registerSoundEvent("animatronic_groan4");
+    public static final SoundEvent SOMEBODYS_WATCHING_ME = registerSoundEvent("somebodys_watching_me");
+
     public static final SoundEvent FREDDY_MUSIC_BOX = registerSoundEvent("freddy_music_box");
-    public static final SoundEvent ANIMATRONIC_GROAN = registerSoundEvent("animatronic_groan");
     public static final SoundEvent HONK = registerSoundEvent("honk");
     public static final SoundEvent HONK_MENU = registerSoundEvent("honk_menu");
     public static final SoundEvent OFFICE_DOOR_ACTIVATE = registerSoundEvent("office_door_activate");

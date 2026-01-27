@@ -143,20 +143,51 @@
       "fnafur:animatronics/death/animatronic_death"
     ]
   },
-  "animatronic_groan": {
+  "animatronic_groan1": {
     "subtitle": "sounds.fnafur.animatronic_groan",
     "sounds": [
-      "fnafur:animatronics/ambient/animatronic_groan1",
-      "fnafur:animatronics/ambient/animatronic_groan2",
-      "fnafur:animatronics/ambient/animatronic_groan3",
+      "fnafur:animatronics/ambient/animatronic_groan1"
+    ]
+  },
+  "animatronic_groan2": {
+    "subtitle": "sounds.fnafur.animatronic_groan",
+    "sounds": [
+      "fnafur:animatronics/ambient/animatronic_groan2"
+    ]
+  },
+  "animatronic_groan3": {
+    "subtitle": "sounds.fnafur.animatronic_groan",
+    "sounds": [
+      "fnafur:animatronics/ambient/animatronic_groan3"
+    ]
+  },
+  "animatronic_groan4": {
+    "subtitle": "sounds.fnafur.animatronic_groan",
+    "sounds": [
       "fnafur:animatronics/ambient/animatronic_groan4"
     ]
   },
-  "freddy_laugh": {
+  "freddy_laugh1": {
     "subtitle": "sounds.fnafur.freddy_laugh",
     "sounds": [
-      "fnafur:animatronics/ambient/freddy_laugh1",
-      "fnafur:animatronics/ambient/freddy_laugh2",
+      "fnafur:animatronics/ambient/freddy_laugh1"
+    ]
+  },
+  "freddy_laugh2": {
+    "subtitle": "sounds.fnafur.freddy_laugh",
+    "sounds": [
+      "fnafur:animatronics/ambient/freddy_laugh2"
+    ]
+  },
+  "somebodys_watching_me": {
+    "subtitle": "sounds.fnafur.somebodys_watching_me",
+    "sounds": [
+      "fnafur:animatronics/songs/somebodys_watching_me"
+    ]
+  },
+  "freddy_laugh3": {
+    "subtitle": "sounds.fnafur.freddy_laugh",
+    "sounds": [
       "fnafur:animatronics/ambient/freddy_laugh3"
     ]
   },

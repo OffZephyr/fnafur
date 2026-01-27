@@ -75,12 +75,9 @@ public class DecalPaletteTextureProvider implements DataProvider {
     }
 
     private static HashCode writeNativeImageAndHash(NativeImage image, Path outPath) throws IOException {
-        // Ensure parent directories exist
         Files.createDirectories(outPath.getParent());
-        // Write the PNG directly
         image.writeTo(outPath);
 
-        // Compute hash from the written file
         return Hashing.sha256().hashBytes(Files.readAllBytes(outPath));
     }
 

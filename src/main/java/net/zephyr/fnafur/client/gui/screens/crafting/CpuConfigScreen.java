@@ -97,7 +97,7 @@ public class CpuConfigScreen extends InWorldScreen {
 
         AmbientSoundList.clear();
         AmbientSoundList.add("back");
-        AmbientSoundList.add("default");
+        AmbientSoundList.add("none");
         AnimatronicDataHandler.SOUND_NAMES_PER_CATEGORY.forEach((category, names) -> {
             if(!category.toLowerCase().contains("default")){
                 AmbientSoundList.add("title_" + category);
@@ -108,7 +108,7 @@ public class CpuConfigScreen extends InWorldScreen {
     }
 
     String getArgumentValue(String argument){
-        if(subWindow == 1){
+        if(subWindow != 0){
             return argument;
         }
         if(Objects.equals(argument, "animation")){
@@ -240,13 +240,15 @@ public class CpuConfigScreen extends InWorldScreen {
                     }
                 }
                 else if(name.equals("ambient_sound")){
-                    String ambientValue = "sound.fnafur." + value;
-                    if(value.isEmpty() || value.equals("default")) ambientValue = "cpu_config.value.none";
+                    String ambientValue = "sounds.fnafur." + value;
+                    if(value.isEmpty() || value.equals("none")) ambientValue = "cpu_config.value.none";
                     valueText = Text.translatable(ambientValue).getWithStyle(style).getFirst();
                 }
+
                 if(isList && !name.equals("back")) {
-                    valueText = Text.translatable("entity.fnafur." + value).getWithStyle(style).getFirst();
-                    if(Objects.equals(value, "default")){
+                    String prefix = subWindow == 1 ? "entity.fnafur." : "sounds.fnafur.";
+                    valueText = Text.translatable(prefix + value).getWithStyle(style).getFirst();
+                    if(Objects.equals(value, "default") || Objects.equals(value, "none")){
                         valueText = Text.translatable("cpu_config.value." + value).getWithStyle(style).getFirst();
                     }
                 }
@@ -334,7 +336,7 @@ public class CpuConfigScreen extends InWorldScreen {
             subWindow = 0;
             selectedIndex = 2;
             scrollAmount = 0;
-            if (index.equals("default")) {
+            if (index.equals("none")) {
                 data.AmbientSound = "";
             }
             if(!index.equals("back")){

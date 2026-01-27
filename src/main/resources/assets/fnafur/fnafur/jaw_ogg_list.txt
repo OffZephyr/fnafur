@@ -1,0 +1,8 @@
+animatronics/ambient/freddy_laugh1.ogg
+animatronics/ambient/freddy_laugh2.ogg
+animatronics/ambient/freddy_laugh3.ogg
+animatronics/ambient/animatronic_groan1.ogg
+animatronics/ambient/animatronic_groan2.ogg
+animatronics/ambient/animatronic_groan3.ogg
+animatronics/ambient/animatronic_groan4.ogg
+animatronics/songs/somebodys_watching_me_voice.ogg

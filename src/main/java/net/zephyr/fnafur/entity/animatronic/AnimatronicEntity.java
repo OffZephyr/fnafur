@@ -5,10 +5,11 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderLayers;
+import net.minecraft.client.sound.SoundManager;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.FuzzyTargeting;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -19,6 +20,7 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.GameEventTags;
@@ -52,12 +54,15 @@ import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimMeleeAttackGoal;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimTargetGoal;
 import net.zephyr.fnafur.entity.animatronic.goals.AnimWanderAroundFarGoal;
+import net.zephyr.fnafur.entity.animatronic.voice.EntityVoiceSoundInstance;
+import net.zephyr.fnafur.entity.animatronic.voice.VoiceSource;
 import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.animatronic.CPUItem;
 import net.zephyr.fnafur.networking.entity.*;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerPayload;
+import net.zephyr.fnafur.networking.sounds.PlayBlockSoundS2CPayload;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityPathfindingHeightOverride;
@@ -81,7 +86,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vibrations, IEntityPathfindingHeightOverride {
+public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vibrations, IEntityPathfindingHeightOverride, VoiceSource {
 
 
     private final EntityGameEventHandler<VibrationListener> gameEventHandler;
@@ -97,8 +102,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     public BlockPos lastSeenPosition = null;
     public BlockPos lastHeardPosition = null;
     public int timeSinceLastHeard = 0;
-
-    //public final AnimatronicPart reachInHitbox;
+    public EntityVoiceSoundInstance currentVoiceSound = null;
+    boolean newVoiceSound = false;
 
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -120,7 +125,6 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     int blinkDelay;
     public AnimatronicEntity(EntityType<? extends PathAwareEntity> entityType, World world){
         super(entityType, world);
-
 
         this.navigation = new AnimatronicNavigation(this, world);
         this.vibrationCallback = new AnimatronicEntity.VibrationCallback();
@@ -152,7 +156,31 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     @Override
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
         //if(!player.getMainHandStack().isEmpty()) return ActionResult.PASS;
+
+        if(getEntityWorld().isClient()){
+            getAnimatableInstanceCache().getManagerForId(getId()).getAnimationControllers().forEach((name, controller) -> {
+                controller.reset();
+            });
+            if(player.getMainHandStack().isEmpty()) {
+                String name = this.getAnimatronicAmbientSoundName();
+                playVoiceSound(name, this.getAnimatronicAmbientSound(name), this.ambientSoundVolume());
+                //playVoiceSound(name, SoundEvents.INTENTIONALLY_EMPTY, this.ambientSoundVolume());
+                return ActionResult.SUCCESS;
+            }
+        }
         return super.interactAt(player, hitPos, hand);
+    }
+
+    @Override
+    public void onSpawnPacket(EntitySpawnS2CPacket packet) {
+        super.onSpawnPacket(packet);
+        if(getEntityWorld().isClient()){
+            double spawnX = packet.getX();
+            double spawnY = packet.getY();
+            double spawnZ = packet.getZ();
+            float spawnYaw = packet.getYaw();
+            ClientPlayNetworking.send(new SetEntitySpawnDataC2SPayload(getId(), spawnX, spawnY, spawnZ, spawnYaw));
+        }
     }
 
     @Override
@@ -163,6 +191,21 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                 .setSoundKeyframeHandler(this::upperSoundKeyframes));
         controllers.add(new AnimationController<>("Blink", 0, this::blinkAnimController)
                 .setCustomInstructionKeyframeHandler(this::instructionHandler));
+        controllers.add(new AnimationController<>("Jaw", 1, this::jawAnimController)
+                .additiveAnimations()
+        );
+    }
+
+    private PlayState jawAnimController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
+        if(currentVoiceSound != null){
+            String name = currentVoiceSound.name;
+            if(newVoiceSound){
+                geoAnimatableAnimationTest.controller().reset();
+                newVoiceSound = false;
+            }
+            return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenPlay(getAnimationName("animation.talk." + name)));
+        }
+        return PlayState.STOP;
     }
 
     private void lowerSoundKeyframes(KeyFrameEvent<AnimatronicEntity, SoundKeyframeData> animatronicEntitySoundKeyframeDataKeyFrameEvent) {
@@ -288,6 +331,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     @Override
     public void tick() {
         blinkDelay = Math.max(0, blinkDelay - 1);
+        if(getEntityWorld().isClient() && currentVoiceSound != null && !currentVoiceSound.getId().equals(SoundManager.INTENTIONALLY_EMPTY_ID) && !MinecraftClient.getInstance().getSoundManager().isPlaying(currentVoiceSound)){
+            currentVoiceSound = null;
+        };
         if(isMenu){
             age++;
         }
@@ -582,8 +628,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         float volume = 0;
 
-        if (data.DATA_LIST.get(CpuData.AmbientSoundsVolume.getDefault().getKey()) instanceof CpuData.CpuDataFloatRangeArgument range) {
-            volume = range.getValue();
+        if (data.DATA_LIST.get(CpuData.AmbientSoundsVolume.getDefault().getKey()) instanceof CpuData.CpuDataRangeArgument range) {
+            volume = range.getFloat01Value();
         }
 
         return volume;
@@ -842,16 +888,18 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                 String alt = ((IEntityDataSaver) this).getPersistentData().getString("suit").orElse("");
 
                 AnimatronicDataHandler.Chara chara1 = AnimatronicDataHandler.CHARACTERS.get(chara);
-                AnimatronicDataHandler.Alt alt1 = chara1.ALTS.get(alt);
+                if(chara1 != null) {
+                    AnimatronicDataHandler.Alt alt1 = chara1.ALTS.get(alt);
 
-                String animString = Objects.equals(getData().Animation, "default") ? alt1.preview_anim() : getData().Animation;
+                    String animString = Objects.equals(getData().Animation, "default") ? alt1.preview_anim() : getData().Animation;
 
-                String anim = AnimatronicDataHandler.ALL_ANIMATIONS.get(animString);
+                    String anim = AnimatronicDataHandler.ALL_ANIMATIONS.get(animString);
 
-                if(isMenu || currentAnim.isEmpty()) currentAnim = "menu_preview";
-                String animations = AnimatronicDataHandler.getAnimationFilePath(currentAnim, animString);
-                if(!animations.isEmpty()){
-                    return animations;
+                    if (isMenu || currentAnim.isEmpty()) currentAnim = "menu_preview";
+                    String animations = AnimatronicDataHandler.getAnimationFilePath(currentAnim, animString);
+                    if (!animations.isEmpty()) {
+                        return animations;
+                    }
                 }
             }
         }
@@ -867,8 +915,18 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return Identifier.of(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"));
     }
 
-    public SoundEvent getAnimatronicAmbientSound(){
+    public String getAnimatronicAmbientSoundName(){
         String ambientSound = getData().AmbientSound;
+
+        if(AnimatronicDataHandler.ALL_SOUNDS.containsKey(ambientSound)){
+            int randomSoundIndex = Random.create().nextBetweenExclusive(0, AnimatronicDataHandler.ALL_SOUNDS.get(ambientSound).size());
+            return AnimatronicDataHandler.ALL_SOUNDS.get(ambientSound).get(randomSoundIndex);
+        }
+        return "";
+    }
+
+    public SoundEvent getAnimatronicAmbientSound(String ambientSound){
+
         if(!ambientSound.isEmpty() && !ambientSound.equals("default") && !ambientSound.equals("none")){
             return Registries.SOUND_EVENT.get(Identifier.of(FnafUniverseRebuilt.MOD_ID, ambientSound));
         }
@@ -876,25 +934,23 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return SoundEvents.INTENTIONALLY_EMPTY;
     }
 
-    public String prefixAnim(String animation){
-        currentAnim = animation;
-        Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, getAnimationsName());
-        Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations().cache();
-        BakedAnimations bakedAnimations = animations.get(location);
-
-        NbtCompound nbt = ((IEntityDataSaver)this).getPersistentData().getCompound("alt").orElse(new NbtCompound());
-        String name = nbt.getString("chara").orElse("");
-        if(name.isEmpty()) name = "default";
-        String anim = "animation." + name + "." + animation;
-        if(bakedAnimations != null && bakedAnimations.animations().containsKey(anim)) {
-            return anim;
+    public void playVoiceSound(String name, SoundEvent sound, float volume){
+        if(name.isEmpty()) return;
+        if(getEntityWorld().isClient()) {
+            newVoiceSound = true;
+            if(currentVoiceSound != null){
+                if(MinecraftClient.getInstance().getSoundManager().isPlaying(currentVoiceSound)){
+                    MinecraftClient.getInstance().getSoundManager().stop(currentVoiceSound);
+                }
+            }
+            currentVoiceSound = new EntityVoiceSoundInstance( this, name, sound, volume, 1.0f);
+            MinecraftClient.getInstance().getSoundManager().play(currentVoiceSound);
         }
-
-        return "animation.default." + animation;
-    }
-
-    void setCPU(ItemStack stack){
-
+        else{
+            for(ServerPlayerEntity p : PlayerLookup.world((ServerWorld) getEntityWorld())){
+                ServerPlayNetworking.send(p, new PlayVoiceSoundS2CPayload(getId(), name, sound, volume));
+            }
+        }
     }
 
     public RenderLayer getRenderType(Identifier texture){
@@ -953,13 +1009,23 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                 }
             }
         }
-        System.out.println("pos: " + pos.toShortString() + " " + favor);
+        //System.out.println("pos: " + pos.toShortString() + " " + favor);
         return favor;
     }
 
     @Override
     public float getPathfindingWidthOverride() {
         return getAnimatronicPose().getPoseDimensions().width();
+    }
+
+    @Override
+    public @Nullable EntityVoiceSoundInstance getVoiceSound() {
+        return currentVoiceSound;
+    }
+
+    @Override
+    public void setVoiceSound(EntityVoiceSoundInstance sound) {
+        currentVoiceSound = sound;
     }
 
     class VibrationCallback implements Vibrations.Callback {
