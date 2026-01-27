@@ -168,6 +168,27 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                 return ActionResult.SUCCESS;
             }
         }
+        if (!player.getMainHandStack().isEmpty()) {
+            BlockPos blockPos = this.getSpawnPos();
+            Vec3d vec3d = blockPos.toBottomCenterPos();
+            if (getData().DATA_LIST.containsKey(CpuData.OnReset.getDefault().getKey())) {
+                if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) == CpuData.OnReset.TELEPORT) {
+                    this.setPos(vec3d.x, vec3d.y, vec3d.z);
+                    this.setYaw(this.getSpawnYaw());
+                }
+
+                if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) == CpuData.OnReset.WALK) {
+                    this.getNavigation().startMovingTo(vec3d.x, vec3d.y, vec3d.z, 0, 1.2F);
+                }
+
+                if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) == CpuData.OnReset.RUN) {
+                    this.getNavigation().startMovingTo(vec3d.x, vec3d.y, vec3d.z, 0, 1.7F);
+                }
+            }
+
+//            this.setPos(vec3d.x, vec3d.y, vec3d.z);
+//            this.setYaw(this.getSpawnYaw());
+        }
         return super.interactAt(player, hitPos, hand);
     }
 
@@ -177,10 +198,21 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         if(getEntityWorld().isClient()){
             double spawnX = packet.getX();
             double spawnY = packet.getY();
-            double spawnZ = packet.getZ();
+            double spawnZ = packet.getZ() - 1.0D;
             float spawnYaw = packet.getYaw();
             ClientPlayNetworking.send(new SetEntitySpawnDataC2SPayload(getId(), spawnX, spawnY, spawnZ, spawnYaw));
         }
+    }
+
+    public BlockPos getSpawnPos() {
+        double x = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnX").orElse(0.0D);
+        double y = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnY").orElse(0.0D);
+        double z = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnZ").orElse(0.0D);
+        return new BlockPos((int) x, (int) y, (int) z);
+    }
+
+    public float getSpawnYaw() {
+        return ((IEntityDataSaver) this).getPersistentData().getFloat("spawnYaw").orElse(0.0F);
     }
 
     @Override
@@ -425,7 +457,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             BlockPos blockPos = new BlockPos((int)Math.floor(pos.getX()), (int)Math.floor(pos.getY()), (int)Math.floor(pos.getZ())).offset(this.getHorizontalFacing());
             if (this.isCrawlSpaceAvailable(world) && this.canReachIn() && this.getEntityWorld() instanceof ServerWorld serverWorld) {
                 for (PlayerEntity player : this.getEntityWorld().getEntitiesByClass(PlayerEntity.class, new Box(blockPos.toCenterPos(), blockPos.offset(this.getHorizontalFacing()).toCenterPos()), (entity) -> (entity instanceof PlayerEntity))) {
-                    player.kill(serverWorld);
+                    if (!(player.isCreative() || player.isSpectator())) player.kill(serverWorld);
                 }
             }
 
