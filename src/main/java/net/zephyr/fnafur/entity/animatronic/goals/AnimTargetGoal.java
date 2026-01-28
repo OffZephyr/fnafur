@@ -63,7 +63,7 @@ public class AnimTargetGoal<T extends LivingEntity> extends TrackTargetGoal {
 
     @Override
     public boolean canStart() {
-        if(!a.isAggressive()) return false;
+        if(!a.isAggressive() || a.isRetreating) return false;
         if (this.reciprocalChance > 0 && this.mob.getRandom().nextInt(this.reciprocalChance) != 0) {
             return false;
         } else {
@@ -125,7 +125,7 @@ public class AnimTargetGoal<T extends LivingEntity> extends TrackTargetGoal {
 
     @Override
     public boolean shouldContinue() {
-        if(!a.isAggressive()) return false;
+        if(!a.isAggressive() || a.isRetreating) return false;
         LivingEntity livingEntity = this.mob.getTarget();
         if (livingEntity == null) {
             livingEntity = this.target;

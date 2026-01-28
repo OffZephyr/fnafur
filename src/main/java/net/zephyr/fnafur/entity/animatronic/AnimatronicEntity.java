@@ -21,6 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.GameEventTags;
@@ -62,7 +63,6 @@ import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.item.animatronic.CPUItem;
 import net.zephyr.fnafur.networking.entity.*;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtC2SGetFromServerPayload;
-import net.zephyr.fnafur.networking.sounds.PlayBlockSoundS2CPayload;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityPathfindingHeightOverride;
@@ -77,10 +77,8 @@ import software.bernie.geckolib.animation.state.AnimationTest;
 import software.bernie.geckolib.animation.object.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.animation.state.KeyFrameEvent;
-import software.bernie.geckolib.cache.GeckoLibResources;
 import software.bernie.geckolib.cache.animation.keyframeevent.CustomInstructionKeyframeData;
 import software.bernie.geckolib.cache.animation.keyframeevent.SoundKeyframeData;
-import software.bernie.geckolib.loading.object.BakedAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
@@ -104,6 +102,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     public int timeSinceLastHeard = 0;
     public EntityVoiceSoundInstance currentVoiceSound = null;
     boolean newVoiceSound = false;
+    public boolean isRetreating = false;
+    public int timeSinceLastMoved = 0;
 
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -161,35 +161,64 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             getAnimatableInstanceCache().getManagerForId(getId()).getAnimationControllers().forEach((name, controller) -> {
                 controller.reset();
             });
-            if(player.getMainHandStack().isEmpty()) {
+            if(player.getMainHandStack().isEmpty() && !player.isSneaking()) {
                 String name = this.getAnimatronicAmbientSoundName();
                 playVoiceSound(name, this.getAnimatronicAmbientSound(name), this.ambientSoundVolume());
                 //playVoiceSound(name, SoundEvents.INTENTIONALLY_EMPTY, this.ambientSoundVolume());
                 return ActionResult.SUCCESS;
             }
         }
-        if (!player.getMainHandStack().isEmpty()) {
-            BlockPos blockPos = this.getSpawnPos();
-            Vec3d vec3d = blockPos.toBottomCenterPos();
-            if (getData().DATA_LIST.containsKey(CpuData.OnReset.getDefault().getKey())) {
-                if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) == CpuData.OnReset.TELEPORT) {
-                    this.setPos(vec3d.x, vec3d.y, vec3d.z);
-                    this.setYaw(this.getSpawnYaw());
-                }
-
-                if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) == CpuData.OnReset.WALK) {
-                    this.getNavigation().startMovingTo(vec3d.x, vec3d.y, vec3d.z, 0, 1.2F);
-                }
-
-                if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) == CpuData.OnReset.RUN) {
-                    this.getNavigation().startMovingTo(vec3d.x, vec3d.y, vec3d.z, 0, 1.7F);
+        else{
+            if (player.getMainHandStack().isEmpty() && player.isSneaking()) {
+                if (getData().DATA_LIST.containsKey(CpuData.OnReset.getDefault().getKey())) {
+                    if(getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) instanceof CpuData.OnReset resetMode){
+                        resetAnimatronic(resetMode);
+                        return ActionResult.SUCCESS;
+                    }
                 }
             }
-
-//            this.setPos(vec3d.x, vec3d.y, vec3d.z);
-//            this.setYaw(this.getSpawnYaw());
         }
         return super.interactAt(player, hitPos, hand);
+    }
+
+    public void resetAnimatronic(CpuData.OnReset mode){
+        Vec3d vec3d = getSpawnPos();
+
+        isRetreating = false;
+        switch (mode){
+            case TELEPORT -> {
+                Set<PositionFlag> flags = EnumSet.of(PositionFlag.X, PositionFlag.Y, PositionFlag.Z, PositionFlag.X_ROT, PositionFlag.Y_ROT);
+                this.getNavigation().stop();
+                this.setPosition(vec3d);
+                this.lastX = vec3d.x;
+                this.lastY = vec3d.y;
+                this.lastZ = vec3d.z;
+                this.setYaw(this.getSpawnYaw());
+                this.setHeadYaw(this.getSpawnYaw());
+                this.setBodyYaw(this.getSpawnYaw());
+                this.setVelocity(0, 0, 0);
+                this.lastBodyYaw = this.getSpawnYaw();
+                this.lastHeadYaw = this.getSpawnYaw();
+                this.lastYaw = this.getSpawnYaw();
+                this.lastYaw = this.getSpawnYaw();
+            }
+            case WALK -> {
+                isRetreating = true;
+                int speed = walkingSpeed();
+                int maxSpeed = CpuData.MovementSpeed.getDefaultValue() + CpuData.RunSpeed.getDefaultValue();
+                float final_speed = MathHelper.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
+                this.getNavigation().startMovingTo(vec3d.x, vec3d.y, vec3d.z, 0, final_speed);
+            }
+            case RUN -> {
+                isRetreating = true;
+                int speed = runningSpeed();
+                int maxSpeed = CpuData.MovementSpeed.getDefaultValue() + CpuData.RunSpeed.getDefaultValue();
+                float final_speed = MathHelper.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
+                this.getNavigation().startMovingTo(vec3d.x, vec3d.y, vec3d.z, 0, final_speed);
+            }
+        }
+
+        ((IEntityDataSaver)this).getPersistentData().putBoolean("isRetreating", isRetreating);
     }
 
     @Override
@@ -204,11 +233,18 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         }
     }
 
-    public BlockPos getSpawnPos() {
+    public BlockPos getSpawnBlockPos() {
+        double x = getSpawnPos().x;
+        double y = getSpawnPos().y;
+        double z = getSpawnPos().z;
+        return new BlockPos((int) x, (int) y, (int) z);
+    }
+
+    public Vec3d getSpawnPos() {
         double x = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnX").orElse(0.0D);
         double y = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnY").orElse(0.0D);
-        double z = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnZ").orElse(0.0D);
-        return new BlockPos((int) x, (int) y, (int) z);
+        double z = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnZ").orElse(0.0D) + 1;
+        return new Vec3d(x, y, z);
     }
 
     public float getSpawnYaw() {
@@ -408,6 +444,35 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         if(!getEntityWorld().isClient()){
             VibrationTicker.tick(this.getEntityWorld(), this.vibrationListenerData, this.vibrationCallback);
+
+
+        if(isRetreating){
+            if(this.getNavigation().getCurrentPath() == null || this.getNavigation().isIdle()){
+                timeSinceLastMoved++;
+                if (getData().DATA_LIST.containsKey(CpuData.OnReset.getDefault().getKey())) {
+                    if(getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) instanceof CpuData.OnReset resetMode){
+                        resetAnimatronic(resetMode);
+                    }
+                }
+            }
+            else{
+                timeSinceLastMoved = 0;
+            }
+            if(
+                    timeSinceLastMoved > 20 ||
+                    getEntityPos().isWithinRangeOf(getSpawnPos(), 1f, 1)
+            ){
+                if(getEntityPos().equals(getSpawnPos()) && getYaw() == getSpawnYaw() && getHeadYaw() == getSpawnYaw() && getBodyYaw() == getSpawnYaw()){
+
+                    isRetreating = false;
+                    ((IEntityDataSaver)this).getPersistentData().putBoolean("isRetreating", isRetreating);
+                }
+                resetAnimatronic(CpuData.OnReset.TELEPORT);
+            }
+        }
+        else{
+            timeSinceLastMoved = 0;
+        }
         }
 
         //this.tickAnimatronicMovement();
@@ -508,19 +573,29 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         }
     }
 
+    public CpuData.MovementMode getMovementMode(){
+        CpuData data = getData();
+
+        CpuData.MovementMode mode = CpuData.MovementMode.getDefault();
+
+        if (data.DATA_LIST.get(CpuData.MovementMode.getDefault().getKey()) instanceof CpuData.MovementMode mode2) {
+            mode = mode2;
+        }
+
+        return mode;
+    }
+
     public boolean isRunning(){
         if(!getEntityWorld().isClient()) {
             CpuData data = getData();
 
-            boolean runBase = false;
+            boolean runBase = getMovementMode() == CpuData.MovementMode.RUN;
             boolean runChase = false;
 
             if (data.DATA_LIST.containsKey(CpuData.AggressionMode.getDefault().getKey())) {
                 runChase = data.DATA_LIST.get(CpuData.AggressionMode.getDefault().getKey()) == CpuData.AggressionMode.CHASE_RUN;
             }
-            if (data.DATA_LIST.containsKey(CpuData.MovementMode.getDefault().getKey())) {
-                runBase = data.DATA_LIST.get(CpuData.MovementMode.getDefault().getKey()) == CpuData.MovementMode.RUN;
-            }
+
             runChase = runChase && getTarget() != null;
 
             boolean run = runChase || runBase;
@@ -1018,8 +1093,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     public float getPathfindingHeightOverride() {
-        if (!canCrawl()) return this.getDimensions(EntityPose.STANDING).height();
-        return isMenu ? this.getDimensions(EntityPose.STANDING).height() : AnimatronicPose.CRAWLING.poseDimensions.height();
+        if (!canCrawl()) return AnimatronicPose.NONE.poseDimensions.height();
+        return isMenu ? AnimatronicPose.NONE.poseDimensions.height() : AnimatronicPose.CRAWLING.poseDimensions.height();
     }
 
     @Override

@@ -43,7 +43,7 @@ public class AnimWanderAroundFarGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        if(mob.lastHeardPosition != null || mob.getTarget() != null) return false;
+        if(mob.isRetreating || mob.lastHeardPosition != null || mob.getTarget() != null) return false;
 
         if (this.mob.hasControllingPassenger()) {
             return false;
@@ -83,7 +83,7 @@ public class AnimWanderAroundFarGoal extends Goal {
 
     @Override
     public boolean shouldContinue() {
-        return !this.mob.getNavigation().isIdle() && !this.mob.hasControllingPassenger();
+        return !this.mob.getNavigation().isIdle() && !this.mob.hasControllingPassenger() && !mob.isRetreating;
     }
 
     @Override

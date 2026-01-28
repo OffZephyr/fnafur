@@ -103,14 +103,14 @@ public class AnimMeleeAttackGoal extends Goal {
         LivingEntity livingEntity = this.mob.getTarget();
         if (livingEntity != null) {
             if(this.mob.canSee()) {
-                if(this.mob.lastSeenPosition != null && !this.mob.getVisibilityCache().canSee(livingEntity)){
-
-                    this.mob.getLookControl().lookAt(this.mob.lastSeenPosition.getX(), this.mob.getEyeY(), this.mob.lastSeenPosition.getZ(), 30.0F, 30.0F);
+                if(this.mob.lastSeenPosition == null || this.mob.getVisibilityCache().canSee(livingEntity)){
+                    this.mob.getLookControl().lookAt(livingEntity, 45.0F, 30.0F);
                 }
                 else{
-                    this.mob.getLookControl().lookAt(livingEntity, 30.0F, 30.0F);
+                    this.mob.getLookControl().lookAt(this.mob.lastSeenPosition.getX(), this.mob.getEyeY(), this.mob.lastSeenPosition.getZ(), 30.0F, 30.0F);
+
                 }
-                this.mob.getLookControl().lookAt(livingEntity, 30.0F, 30.0F);
+                //this.mob.getLookControl().lookAt(livingEntity, 30.0F, 30.0F);
             }
             this.updateCountdownTicks = Math.max(this.updateCountdownTicks - 1, 0);
             if ((this.pauseWhenMobIdle || this.mob.getVisibilityCache().canSee(livingEntity))
