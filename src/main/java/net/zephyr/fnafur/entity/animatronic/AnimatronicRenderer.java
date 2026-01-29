@@ -59,6 +59,13 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
     @Override
     public R fillRenderState(T animatable, Void relatedObject, R renderState, float partialTick) {
 
+        if(animatable.isFrozen){
+            renderState.bodyYaw = animatable.frozenBodyYaw;
+//            renderState.relativeHeadYaw = MathHelper.wrapDegrees(animatable.frozenHeadYaw - renderState.bodyYaw);
+            renderState.relativeHeadYaw = MathHelper.wrapDegrees(animatable.frozenHeadYaw - renderState.bodyYaw);
+            renderState.pitch = (float) animatable.frozenPitch;
+        }
+
         super.fillRenderState(animatable, relatedObject, renderState, partialTick);
 
         if(animatable.isMenu){
@@ -83,6 +90,9 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
         renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.getRenderType(animatable.getTexture(animatable.getEntityWorld())));
 
         renderState.addGeckolibData(CustomDataTickets.ANIMATRONIC_POSE, animatable.getAnimatronicPose());
+        renderState.addGeckolibData(CustomDataTickets.FORCED_HEAD_YAW, MathHelper.wrapDegrees(animatable.getHeadYaw() - renderState.bodyYaw));
+        renderState.addGeckolibData(CustomDataTickets.FORCED_PITCH, animatable.getPitch());
+        renderState.addGeckolibData(CustomDataTickets.IS_FROZEN, animatable.isFrozen);
 
         return renderState;
     }
@@ -97,6 +107,8 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
             GeoBone eyeleft_main = renderPassInfo.model().getBone("eyeleft_main").orElse(null);
             GeoBone eyeright_main = renderPassInfo.model().getBone("eyeright_main").orElse(null);
 
+            boolean isFrozen = renderPassInfo.renderState().hasGeckolibData(CustomDataTickets.IS_FROZEN) && renderPassInfo.renderState().hasGeckolibData(CustomDataTickets.FORCED_HEAD_YAW) && Boolean.TRUE.equals(renderPassInfo.renderState().getGeckolibData(CustomDataTickets.IS_FROZEN));
+
             float pitch = -renderPassInfo.renderState().pitch * MathHelper.RADIANS_PER_DEGREE;
             float yaw = -renderPassInfo.renderState().relativeHeadYaw * MathHelper.RADIANS_PER_DEGREE;
 
@@ -108,11 +120,17 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
                 float halfPitch = pose == AnimatronicEntity.AnimatronicPose.CRAWLING ? 0 : pitch / 4f;
                 snapshots.get(torso_main).setRotation(halfPitch, halfYaw, 0);
             }
+
+            float eyeYaw = !isFrozen ? yaw / 4f : -Math.clamp(renderPassInfo.renderState().getGeckolibData(CustomDataTickets.FORCED_HEAD_YAW), -45f, 45f) * MathHelper.RADIANS_PER_DEGREE;
+            float eyePitch = !isFrozen ? pitch / 2f : -Math.clamp(renderPassInfo.renderState().getGeckolibData(CustomDataTickets.FORCED_PITCH), -30f, 30f) * MathHelper.RADIANS_PER_DEGREE;
+
+            eyeYaw -= yaw/2f;
+
             if (eyeleft_main != null) {
-                snapshots.get(eyeleft_main).setRotation(pitch / 2f, yaw / 4f, 0);
+                snapshots.get(eyeleft_main).setRotation(eyePitch, eyeYaw, 0);
             }
             if (eyeright_main != null) {
-                snapshots.get(eyeright_main).setRotation(pitch / 2f, yaw / 4f, 0);
+                snapshots.get(eyeright_main).setRotation(eyePitch, eyeYaw, 0);
             }
         }
 

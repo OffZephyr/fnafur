@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.decals;
+package net.zephyr.fnafur.rendering.decals;
 
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
@@ -8,13 +8,11 @@ import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.SharedConstants;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.GpuSampler;
-import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.BlockRenderLayerGroup;
 import net.minecraft.client.render.SectionRenderState;
@@ -25,7 +23,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
-import net.zephyr.fnafur.networking.block.RemoveDecalC2SPayload;
 import org.joml.Vector3f;
 import org.lwjgl.system.MemoryUtil;
 

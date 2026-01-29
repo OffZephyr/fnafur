@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.zephyr.fnafur.decals.DecalWorldState;
+import net.zephyr.fnafur.rendering.decals.DecalWorldState;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.init.NetworkingInit;
 import net.zephyr.fnafur.init.ParticlesInit;

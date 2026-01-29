@@ -104,6 +104,12 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     boolean newVoiceSound = false;
     public boolean isRetreating = false;
     public int timeSinceLastMoved = 0;
+    public double frozenSpeed = 0;
+    public float frozenYaw = 0;
+    public float frozenHeadYaw = 0;
+    public float frozenBodyYaw = 0;
+    public float frozenPitch = 0;
+    public boolean isFrozen = false;
 
     private AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -196,11 +202,13 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                 this.setYaw(this.getSpawnYaw());
                 this.setHeadYaw(this.getSpawnYaw());
                 this.setBodyYaw(this.getSpawnYaw());
+                this.setPitch(0);
                 this.setVelocity(0, 0, 0);
                 this.lastBodyYaw = this.getSpawnYaw();
                 this.lastHeadYaw = this.getSpawnYaw();
                 this.lastYaw = this.getSpawnYaw();
                 this.lastYaw = this.getSpawnYaw();
+                setFrozen(false);
             }
             case WALK -> {
                 isRetreating = true;
@@ -315,6 +323,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             animatronicEntityAnimationState.controller().setTransitionTicks(0);
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName("loweridle")));
         }
+        if(isFrozen){
+            animatronicEntityAnimationState.controller().setAnimationSpeed(0);
+        }
 
         String anim = getAnimatronicPose().getLowerIdle();
 
@@ -323,6 +334,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
             anim = isRunning() ? getAnimatronicPose().getLowerRun() : getAnimatronicPose().getLowerWalk();
 
+            if(isRunning()){
+                speed *= 0.75f;
+            }
             animatronicEntityAnimationState.controller().setAnimationSpeed(speed);
         }
 
@@ -340,6 +354,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             animatronicEntityAnimationState.controller().setTransitionTicks(0);
             return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationFullName("menu_preview")));
         }
+        if(isFrozen){
+            animatronicEntityAnimationState.controller().setAnimationSpeed(0);
+        }
 
         String anim = getAnimatronicPose().getUpperIdle();
 
@@ -348,6 +365,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
             anim = isRunning() ? getAnimatronicPose().getUpperRun() : getAnimatronicPose().getUpperWalk();
 
+            if(isRunning()){
+                speed *= 0.75f;
+            }
             animatronicEntityAnimationState.controller().setAnimationSpeed(speed);
         }
 
@@ -398,7 +418,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     @Override
     public void tick() {
-        blinkDelay = Math.max(0, blinkDelay - 1);
+        if(!(isFrozen)){
+            blinkDelay = Math.max(0, blinkDelay - 1);
+        }
         if(getEntityWorld().isClient() && currentVoiceSound != null && !currentVoiceSound.getId().equals(SoundManager.INTENTIONALLY_EMPTY_ID) && !MinecraftClient.getInstance().getSoundManager().isPlaying(currentVoiceSound)){
             currentVoiceSound = null;
         };
@@ -442,42 +464,129 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             }
         }
 
-        if(!getEntityWorld().isClient()){
+        if(!getEntityWorld().isClient()) {
             VibrationTicker.tick(this.getEntityWorld(), this.vibrationListenerData, this.vibrationCallback);
 
 
-        if(isRetreating){
-            if(this.getNavigation().getCurrentPath() == null || this.getNavigation().isIdle()){
-                timeSinceLastMoved++;
+            this.tickSightBehavior();
+
+            if (isRetreating) {
+                if (this.getNavigation().getCurrentPath() == null || this.getNavigation().isIdle()) {
+                    timeSinceLastMoved++;
+                    if (getData().DATA_LIST.containsKey(CpuData.OnReset.getDefault().getKey())) {
+                        if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) instanceof CpuData.OnReset resetMode) {
+                            resetAnimatronic(resetMode);
+                        }
+                    }
+                } else {
+                    timeSinceLastMoved = 0;
+                }
+                if (
+                        timeSinceLastMoved > 20 ||
+                                getEntityPos().isWithinRangeOf(getSpawnPos(), 1f, 1)
+                ) {
+                    if (getEntityPos().equals(getSpawnPos()) && getYaw() == getSpawnYaw() && getHeadYaw() == getSpawnYaw() && getBodyYaw() == getSpawnYaw()) {
+
+                        isRetreating = false;
+                        ((IEntityDataSaver) this).getPersistentData().putBoolean("isRetreating", isRetreating);
+                    }
+                    resetAnimatronic(CpuData.OnReset.TELEPORT);
+                }
+            } else {
+                timeSinceLastMoved = 0;
+            }
+
+
+
+            if(getWanderBehavior() == CpuData.WanderBehavior.STAND_AT_SPAWN && !getBlockPos().equals(getSpawnBlockPos()) && getYaw() != getSpawnYaw() && !isRetreating && !(isAggressive() && getTarget() != null) && lastHeardPosition == null){
                 if (getData().DATA_LIST.containsKey(CpuData.OnReset.getDefault().getKey())) {
-                    if(getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) instanceof CpuData.OnReset resetMode){
+                    if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) instanceof CpuData.OnReset resetMode) {
                         resetAnimatronic(resetMode);
                     }
                 }
             }
-            else{
-                timeSinceLastMoved = 0;
-            }
-            if(
-                    timeSinceLastMoved > 20 ||
-                    getEntityPos().isWithinRangeOf(getSpawnPos(), 1f, 1)
-            ){
-                if(getEntityPos().equals(getSpawnPos()) && getYaw() == getSpawnYaw() && getHeadYaw() == getSpawnYaw() && getBodyYaw() == getSpawnYaw()){
-
-                    isRetreating = false;
-                    ((IEntityDataSaver)this).getPersistentData().putBoolean("isRetreating", isRetreating);
-                }
-                resetAnimatronic(CpuData.OnReset.TELEPORT);
-            }
-        }
-        else{
-            timeSinceLastMoved = 0;
-        }
         }
 
         //this.tickAnimatronicMovement();
         this.tickUpdatePose();
         super.tick();
+    }
+
+    public void tickSightBehavior(){
+        if(getEntityWorld().isClient()) return;
+        switch (getBehaviorWhenSeen()){
+            case FREEZE_ON_SIGHT -> {
+                if(isBeingWatched() && !isRetreating){
+                    freezeMovement();
+                }
+                else{
+                    if(isFrozen){
+                        setFrozen(false);
+                        getNavigation().setSpeed(frozenSpeed);
+                    }
+                }
+            }
+            case RESET_ON_SIGHT -> {
+            }
+            case FREEZE_ON_CAMERA -> {
+            }
+            case RESET_ON_CAMERA -> {
+            }
+            default -> {
+            }
+        }
+
+        if(isFrozen && !getBlockPos().equals(getSpawnBlockPos())){
+            getNavigation().stop();
+            setSidewaysSpeed(0.0F);
+            setUpwardSpeed(0.0F);
+            setMovementSpeed(0.0F);
+            setVelocity(0.0, getVelocity().y, 0.0);
+
+            if(getTarget() != null){
+                getLookControl().lookAt(getTarget(), 45.0F, 30.0F);
+            }
+        }
+    }
+
+    void setFrozen(boolean frozen){
+        isFrozen = frozen;
+        for(ServerPlayerEntity player : PlayerLookup.tracking(this)){
+            ServerPlayNetworking.send(player, new SetAnimatronicFrozenStatusS2CPayload(getId(), frozen, frozenHeadYaw, frozenBodyYaw, frozenPitch));
+        }
+
+    }
+
+    void freezeMovement(){
+        if(!isFrozen){
+            frozenSpeed = ((AnimatronicNavigation)getNavigation()).getSpeed();
+            frozenYaw = getYaw();
+            frozenHeadYaw = getHeadYaw();
+            frozenBodyYaw = getBodyYaw();
+            frozenPitch = getPitch();
+            setFrozen(true);
+        }
+        getNavigation().setSpeed(0);
+    }
+
+    boolean isBeingWatched(){
+        if(getEntityWorld().isClient()) return false;
+
+        List<PlayerEntity> players = getEntityWorld().getEntitiesByClass(PlayerEntity.class, getBoundingBox().expand(10), (entity) -> (entity instanceof PlayerEntity && !entity.isSpectator() && !entity.isCreative()));
+
+        for(PlayerEntity player : players){
+            Vec3d difference = this.getEntityPos().add(player.getEntityPos().multiply(-1));
+            float angle = player.getHeadYaw() - difference.getYawAndPitch().y;
+            while(angle < 0) angle += 360;
+            angle %= 360;
+            if(angle <= sightConeAngle() || angle >= 360 - sightConeAngle()){
+                if(canSee(player)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     //TODO skilld :)
@@ -583,6 +692,29 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         }
 
         return mode;
+    }
+    public CpuData.WanderBehavior getWanderBehavior(){
+        CpuData data = getData();
+
+        CpuData.WanderBehavior mode = CpuData.WanderBehavior.getDefault();
+
+        if (data.DATA_LIST.get(CpuData.WanderBehavior.getDefault().getKey()) instanceof CpuData.WanderBehavior mode2) {
+            mode = mode2;
+        }
+
+        return mode;
+    }
+
+    public CpuData.BehaviorWhenSeen getBehaviorWhenSeen(){
+        CpuData data = getData();
+
+        CpuData.BehaviorWhenSeen behavior = CpuData.BehaviorWhenSeen.getDefault();
+
+        if (data.DATA_LIST.get(CpuData.BehaviorWhenSeen.getDefault().getKey()) instanceof CpuData.BehaviorWhenSeen behavior2) {
+            behavior = behavior2;
+        }
+
+        return behavior;
     }
 
     public boolean isRunning(){
@@ -1318,6 +1450,19 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         protected PathNodeNavigator createPathNodeNavigator(int range) {
             this.nodeMaker = new AnimatronicPathNodeMaker();
             return new PathNodeNavigator(this.nodeMaker, range);
+        }
+
+        double getSpeed(){
+            return this.speed;
+        }
+
+        @Override
+        protected void checkTimeouts(Vec3d currentPos) {
+
+            if(this.entity instanceof AnimatronicEntity ent){
+                if(ent.isFrozen) return;
+            }
+            super.checkTimeouts(currentPos);
         }
 
     }

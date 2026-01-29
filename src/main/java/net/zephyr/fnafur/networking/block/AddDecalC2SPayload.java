@@ -7,10 +7,8 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench.WorkbenchBlock;
-import net.zephyr.fnafur.decals.DecalInstance;
-import net.zephyr.fnafur.decals.DecalWorldState;
+import net.zephyr.fnafur.rendering.decals.DecalInstance;
+import net.zephyr.fnafur.rendering.decals.DecalWorldState;
 
 public record AddDecalC2SPayload(DecalInstance decalInstance) implements CustomPayload {
     public static final Id<AddDecalC2SPayload> ID = new Id<>(BlockPayloads.C2SAddDecal);

@@ -1,4 +1,4 @@
-package net.zephyr.fnafur.decals;
+package net.zephyr.fnafur.rendering.decals;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

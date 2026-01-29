@@ -25,14 +25,19 @@ public record SetEntitySpawnDataC2SPayload(int EntityID, double x, double y, dou
         Entity entity = context.player().getEntityWorld().getEntityById(payload.EntityID);
         System.out.println("RECEIVED");
         if(entity instanceof AnimatronicEntity entity1){
-            ((IEntityDataSaver)entity1).getPersistentData().putDouble("spawnX", payload.x);
-            ((IEntityDataSaver)entity1).getPersistentData().putDouble("spawnY", payload.y);
-            ((IEntityDataSaver)entity1).getPersistentData().putDouble("spawnZ", payload.z);
-            ((IEntityDataSaver)entity1).getPersistentData().putFloat("spawnYaw", payload.yaw);
-            System.out.println("SERVER DATA");
+            if(!((IEntityDataSaver)entity1).getPersistentData().contains("spawnX")) {
+                ((IEntityDataSaver) entity1).getPersistentData().putDouble("spawnX", payload.x);
+                ((IEntityDataSaver) entity1).getPersistentData().putDouble("spawnY", payload.y);
+                ((IEntityDataSaver) entity1).getPersistentData().putDouble("spawnZ", payload.z);
+                ((IEntityDataSaver) entity1).getPersistentData().putFloat("spawnYaw", payload.yaw);
+                System.out.println("SERVER DATA");
 
-            for(ServerPlayerEntity p : PlayerLookup.all(context.server())){
-                ServerPlayNetworking.send(p, new SetEntitySpawnDataS2CPayload(entity1.getId(), payload.x, payload.y, payload.z, payload.yaw));
+                for (ServerPlayerEntity p : PlayerLookup.all(context.server())) {
+                    ServerPlayNetworking.send(p, new SetEntitySpawnDataS2CPayload(entity1.getId(), payload.x, payload.y, payload.z, payload.yaw));
+                }
+            }
+            else{
+                System.out.println("ALREADY HAS DATA");
             }
         }
     }

@@ -1056,6 +1056,57 @@ public class CpuData {
         }
     }
 
+    public enum WanderBehavior implements CpuDataArgument {
+        STAND_AT_SPAWN("stand_at_still"),
+        STAND_STILL("stand_still"),
+        WANDER("wander"),
+        WANDER_TOWARDS_PLAYERS("wander_towards_players")
+        ;
+        final String NAME;
+
+        WanderBehavior(String name) {
+            NAME = name;
+        }
+
+        @Override
+        public String getKey() {
+            return "wander_behavior";
+        }
+
+        @Override
+        public String getName() {
+            return NAME;
+        }
+
+        @Override
+        public CpuDataArgument cycleLeft() {
+            int id = this.ordinal() - 1;
+            id = id < 0 ? values().length - 1 : id;
+            return values()[id];
+        }
+
+        @Override
+        public CpuDataArgument cycleRight() {
+            int id = this.ordinal() + 1;
+            id = id >= values().length ? 0 : id;
+            return values()[id];
+        }
+
+        @Override
+        public CpuDataArgument getFromName(String name) {
+            for (CpuDataArgument arg : values()) {
+                if (Objects.equals(arg.getName(), name)) {
+                    return arg;
+                }
+            }
+            return values()[0];
+        }
+
+        public static WanderBehavior getDefault() {
+            return STAND_AT_SPAWN;
+        }
+    }
+
     public enum CameraJamming implements CpuDataArgument {
         NONE("none"),
         ON_MOVEMENT("on_movement"),
@@ -1577,6 +1628,7 @@ public class CpuData {
     GlowingEyesColor GLOWING_EYES_COLOR = GlowingEyesColor.getDefault();
     GlowingEyesTrigger GLOWING_EYES_TRIGGER = GlowingEyesTrigger.getDefault();
     SingingRole SINGING_ROLE = SingingRole.getDefault();
+    WanderBehavior WANDER = WanderBehavior.getDefault();
     CameraJamming CAMERA_JAMMING = CameraJamming.getDefault();
     MovementSpeed MOVEMENT_SPEED = MovementSpeed.getDefault();
     RunSpeed RUN_SPEED = RunSpeed.getDefault();
@@ -1588,6 +1640,7 @@ public class CpuData {
     List<? extends CpuDataArgument> DefaultList = List.of(
             // BASE
             SINGING_ROLE,
+            WANDER,
             ON_RESET,
             MOVEMENT_MODE,
             BEHAVIOR_WHEN_SEEN,

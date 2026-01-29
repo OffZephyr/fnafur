@@ -1,14 +1,12 @@
 package net.zephyr.fnafur.networking.block;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
-import net.zephyr.fnafur.decals.DecalInstance;
-import net.zephyr.fnafur.decals.DecalManager;
-import net.zephyr.fnafur.decals.DecalWorldState;
+import net.zephyr.fnafur.rendering.decals.DecalInstance;
+import net.zephyr.fnafur.rendering.decals.DecalManager;
 
 import java.util.List;
 

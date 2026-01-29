@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.ai.FuzzyTargeting;
 import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
@@ -12,6 +13,7 @@ import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.entity.animatronic.voice.EntityVoiceSoundInstance;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public class AnimWanderAroundFarGoal extends Goal {
 
@@ -43,7 +45,7 @@ public class AnimWanderAroundFarGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        if(mob.isRetreating || mob.lastHeardPosition != null || mob.getTarget() != null) return false;
+        if(!(mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER || mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER_TOWARDS_PLAYERS)  || mob.isRetreating || mob.lastHeardPosition != null || mob.getTarget() != null) return false;
 
         if (this.mob.hasControllingPassenger()) {
             return false;
@@ -73,22 +75,36 @@ public class AnimWanderAroundFarGoal extends Goal {
 
 
     protected Vec3d getWanderTarget() {
-        if (this.mob.isTouchingWater()) {
-            Vec3d vec3d = FuzzyTargeting.find(this.mob, 15, 7);
-            return vec3d == null ? NoPenaltyTargeting.find(this.mob, 10, 7) : vec3d;
-        } else {
+        List<PlayerEntity> players = this.mob.getEntityWorld().getEntitiesByClass(PlayerEntity.class, this.mob.getBoundingBox().expand(10), (entity) -> (entity instanceof PlayerEntity && !entity.isSpectator() && !entity.isCreative()));
+
+        if(mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER || Random.create().nextBetweenExclusive(0, 100) < 25 || players.isEmpty()) {
+            if (this.mob.isTouchingWater()) {
+                Vec3d vec3d = FuzzyTargeting.find(this.mob, 15, 7);
+                return vec3d == null ? NoPenaltyTargeting.find(this.mob, 10, 7) : vec3d;
+            } else {
+                return FuzzyTargeting.find(this.mob, Random.create().nextBetween(10, 20), 7);
+            }
+        }
+        else{
+
             return FuzzyTargeting.find(this.mob, Random.create().nextBetween(10, 20), 7);
         }
     }
 
     @Override
     public boolean shouldContinue() {
-        return !this.mob.getNavigation().isIdle() && !this.mob.hasControllingPassenger() && !mob.isRetreating;
+        return (mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER || mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER_TOWARDS_PLAYERS) && !this.mob.getNavigation().isIdle() && !this.mob.hasControllingPassenger() && !mob.isRetreating;
     }
 
     @Override
     public void start() {
-        this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, getSpeed());
+        if(this.mob.getMovementMode() == CpuData.MovementMode.TELEPORT){
+            this.mob.setPosition(this.targetX, this.targetY, this.targetZ);
+            this.mob.setYaw(Random.create().nextFloat() * 360f);
+        }
+        else{
+            this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, getSpeed());
+        }
     }
 
     @Override

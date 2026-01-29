@@ -40,6 +40,10 @@ public class CustomDataTickets {
     public static final DataTicket<MatrixStack.Entry> ENTITY_RENDER_MATRIX_ENTRY = DataTicket.create("entity_matrix_entry", MatrixStack.Entry.class);
 
 
+    public static final DataTicket<Float> FORCED_HEAD_YAW = DataTicket.create("forced_head_yaw", Float.class);
+    public static final DataTicket<Float> FORCED_PITCH = DataTicket.create("forced_pitch", Float.class);
+    public static final DataTicket<Boolean> IS_FROZEN = DataTicket.create("is_frozen", Boolean.class);
+
     public static final DataTicket<Float> ROTATION = DataTicket.create("rotation", Float.class);
     public static final DataTicket<Double> X_OFFSET = DataTicket.create("x_offset", Double.class);
     public static final DataTicket<Double> Y_OFFSET = DataTicket.create("y_offset", Double.class);

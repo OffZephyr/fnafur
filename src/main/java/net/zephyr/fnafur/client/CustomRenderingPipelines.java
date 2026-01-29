@@ -11,7 +11,9 @@ import net.minecraft.client.render.RenderSetup;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import net.zephyr.fnafur.decals.DecalManager;
+import net.zephyr.fnafur.rendering.decals.DecalManager;
+import net.zephyr.fnafur.rendering.lighting.AreaLightManager;
+import net.zephyr.fnafur.rendering.lighting.AreaLightShadowResources;
 
 import java.util.function.BiFunction;
 
@@ -39,7 +41,23 @@ public class CustomRenderingPipelines {
             .withUniform("Projection", UniformType.UNIFORM_BUFFER)
             .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
             .withUniform("DecalInfo", UniformType.UNIFORM_BUFFER)
+
+            .withUniform("LightData", UniformType.UNIFORM_BUFFER)
+
+            .withSampler("ShadowSampler0")
+            .withSampler("ShadowSampler1")
+            .withSampler("ShadowSampler2")
+            .withSampler("ShadowSampler3")
+            .withSampler("ShadowSampler4")
+            .withSampler("ShadowSampler5")
+            .withSampler("ShadowSampler6")
+            .withSampler("ShadowSampler7")
+
             .withShaderDefine("MAX_DECAL_DISTANCE", DecalManager.MAX_DISTANCE)
+            .withShaderDefine("MAX_LIGHTS", AreaLightManager.MAX_LIGHTS)
+            .withShaderDefine("MAX_SHADOWED_LIGHTS", AreaLightShadowResources.MAX_SHADOWED_LIGHTS)
+            .withShaderDefine("SHADOW_RES", AreaLightShadowResources.SHADOW_RES)
+
             .withVertexShader("core/terrain")
             .withFragmentShader("core/terrain")
             .buildSnippet();
@@ -65,6 +83,27 @@ public class CustomRenderingPipelines {
                     .withBlend(BlendFunction.TRANSLUCENT)
                     .build()
     );
+
+    public static final RenderPipeline.Snippet AREA_LIGHT_SHADOW_SNIPPET =
+            RenderPipeline.builder(RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET, RenderPipelines.GLOBALS_SNIPPET)
+                    .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
+
+                    // NEW: Shadow matrix UBO (std140 mat4)
+                    .withUniform("LightShadow", UniformType.UNIFORM_BUFFER)
+
+                    .withVertexShader("core/area_light_shadow")
+                    .withFragmentShader("core/area_light_shadow")
+
+                    // Must match the chunk section vertex data format that drawMultipleIndexed supplies:
+                    .withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS)
+                    .buildSnippet();
+
+    public static final RenderPipeline AREA_LIGHT_SHADOW =
+            RenderPipelines.register(
+                    RenderPipeline.builder(AREA_LIGHT_SHADOW_SNIPPET)
+                            .withLocation("pipeline/area_light_shadow")
+                            .build()
+            );
 
     public static final RenderPipeline.Snippet ANIMATRONIC_SNIPPET = RenderPipeline.builder(RenderPipelines.TRANSFORMS_PROJECTION_FOG_LIGHTING_SNIPPET)
             .withVertexShader("core/animatronic")

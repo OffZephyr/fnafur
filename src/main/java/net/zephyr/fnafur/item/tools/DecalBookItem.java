@@ -20,7 +20,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.decals.DecalManager;
+import net.zephyr.fnafur.rendering.decals.DecalManager;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.ItemUtil;

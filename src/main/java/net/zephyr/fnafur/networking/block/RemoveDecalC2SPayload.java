@@ -7,8 +7,8 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.zephyr.fnafur.decals.DecalInstance;
-import net.zephyr.fnafur.decals.DecalWorldState;
+import net.zephyr.fnafur.rendering.decals.DecalInstance;
+import net.zephyr.fnafur.rendering.decals.DecalWorldState;
 
 public record RemoveDecalC2SPayload(DecalInstance decalInstance) implements CustomPayload {
     public static final Id<RemoveDecalC2SPayload> ID = new Id<>(BlockPayloads.C2SRemoveDecal);

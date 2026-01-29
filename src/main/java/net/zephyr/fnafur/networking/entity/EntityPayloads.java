@@ -18,6 +18,7 @@ public class EntityPayloads {
     public static final Identifier C2SWalkSoundPlayer = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_walk_sound_player");
     public static final Identifier C2SWorkbenchSave = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_workbench_save");
     public static final Identifier S2CWorkbenchSave = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_workbench_save");
+    public static final Identifier S2CSetEntityFrozen = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_entity_frozen");
     public static final Identifier S2CSetEntityRun = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_entity_run");
     public static final Identifier C2SSetEntityRun = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_workbench_save");
     public static final Identifier S2CSetEntityGlow = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_entity_glow");
@@ -40,6 +41,7 @@ public class EntityPayloads {
 
         PayloadTypeRegistry.playC2S().register(SetEntityRunC2SPayload.ID, SetEntityRunC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(SetEntityRunS2CPayload.ID, SetEntityRunS2CPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(SetAnimatronicFrozenStatusS2CPayload.ID, SetAnimatronicFrozenStatusS2CPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(SetEntityGlowC2SPayload.ID, SetEntityGlowC2SPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(SetEntityGlowS2CPayload.ID, SetEntityGlowS2CPayload.CODEC);
     }
@@ -52,6 +54,7 @@ public class EntityPayloads {
         ClientPlayNetworking.registerGlobalReceiver(SetEntitySpawnDataS2CPayload.ID, SetEntitySpawnDataS2CPayload::receive);
 
         ClientPlayNetworking.registerGlobalReceiver(SetEntityRunS2CPayload.ID, SetEntityRunS2CPayload::receive);
+        ClientPlayNetworking.registerGlobalReceiver(SetAnimatronicFrozenStatusS2CPayload.ID, SetAnimatronicFrozenStatusS2CPayload::receive);
         ClientPlayNetworking.registerGlobalReceiver(SetEntityGlowS2CPayload.ID, SetEntityGlowS2CPayload::receive);
     }
     public static void registerServerReceivers() {

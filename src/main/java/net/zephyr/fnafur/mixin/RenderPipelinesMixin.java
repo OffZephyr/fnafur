@@ -3,7 +3,7 @@ package net.zephyr.fnafur.mixin;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gl.UniformType;
-import net.zephyr.fnafur.decals.DecalManager;
+import net.zephyr.fnafur.rendering.decals.DecalManager;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;

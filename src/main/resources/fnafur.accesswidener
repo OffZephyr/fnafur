@@ -15,6 +15,10 @@ transitive-accessible field net/minecraft/client/sound/SoundManager soundSystem 
 accessible field net/minecraft/client/sound/SoundSystem sources Ljava/util/Map;
 accessible class net/minecraft/entity/FallingBlockEntity
 
+accessible field net/minecraft/entity/ai/pathing/EntityNavigation nearPathStartPos Z
+accessible method net/minecraft/entity/ai/pathing/EntityNavigation resetNodeAndStop ()V
+accessible field net/minecraft/entity/ai/pathing/EntityNavigation speed D
+
 accessible field net/minecraft/client/model/ModelPart$Quad direction Lorg/joml/Vector3fc;
 accessible field net/minecraft/client/model/ModelPart$Quad vertices [Lnet/minecraft/client/model/ModelPart$Vertex;
 accessible field net/minecraft/client/model/ModelPart$Vertex u F

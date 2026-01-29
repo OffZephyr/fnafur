@@ -74,7 +74,7 @@ public class AnimMeleeAttackGoal extends Goal {
 
     @Override
     public void start() {
-        if(this.mob.canSee()){
+        if(this.mob.canSee() && !mob.isFrozen){
             this.mob.getNavigation().startMovingAlong(this.path, getSpeed());
         }
         this.mob.setAttacking(true);
@@ -102,7 +102,7 @@ public class AnimMeleeAttackGoal extends Goal {
     public void tick() {
         LivingEntity livingEntity = this.mob.getTarget();
         if (livingEntity != null) {
-            if(this.mob.canSee()) {
+            if(this.mob.canSee()) { //  && !this.mob.isFrozen
                 if(this.mob.lastSeenPosition == null || this.mob.getVisibilityCache().canSee(livingEntity)){
                     this.mob.getLookControl().lookAt(livingEntity, 45.0F, 30.0F);
                 }
@@ -110,7 +110,6 @@ public class AnimMeleeAttackGoal extends Goal {
                     this.mob.getLookControl().lookAt(this.mob.lastSeenPosition.getX(), this.mob.getEyeY(), this.mob.lastSeenPosition.getZ(), 30.0F, 30.0F);
 
                 }
-                //this.mob.getLookControl().lookAt(livingEntity, 30.0F, 30.0F);
             }
             this.updateCountdownTicks = Math.max(this.updateCountdownTicks - 1, 0);
             if ((this.pauseWhenMobIdle || this.mob.getVisibilityCache().canSee(livingEntity))
@@ -131,7 +130,7 @@ public class AnimMeleeAttackGoal extends Goal {
                     this.updateCountdownTicks += 5;
                 }
 
-                if (!(this.mob.canSee() && this.mob.getNavigation().startMovingAlong(getPath(livingEntity, 0), getSpeed()))) {
+                if (!mob.isFrozen && !(this.mob.canSee() && this.mob.getNavigation().startMovingAlong(getPath(livingEntity, 0), getSpeed()))) {
                     this.updateCountdownTicks += 15;
                 }
 

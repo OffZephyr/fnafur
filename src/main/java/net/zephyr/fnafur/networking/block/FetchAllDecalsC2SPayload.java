@@ -5,8 +5,7 @@ import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
-import net.zephyr.fnafur.decals.DecalInstance;
-import net.zephyr.fnafur.decals.DecalWorldState;
+import net.zephyr.fnafur.rendering.decals.DecalWorldState;
 
 public record FetchAllDecalsC2SPayload(int guh) implements CustomPayload {
     public static final Id<FetchAllDecalsC2SPayload> ID = new Id<>(BlockPayloads.C2SFetchDecals);
