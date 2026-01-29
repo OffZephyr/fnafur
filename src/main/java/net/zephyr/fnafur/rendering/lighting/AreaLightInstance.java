@@ -9,7 +9,6 @@ public final class AreaLightInstance {
 
     private final Vec3d position;
 
-    // Stored normalized
     private final Vector3f direction;
     private final Vector3f normal;
 
@@ -29,11 +28,8 @@ public final class AreaLightInstance {
     private final Vector4f projectedUVRect;
     private final Vector4f shapeUVRect;
 
-    // Updated each frame (shadow camera)
     private final Matrix4f lightViewProj = new Matrix4f();
 
-    // Assigned each frame by shadow renderer:
-    // -1 = no shadow, else 0..(MAX_SHADOWED_LIGHTS-1)
     private int shadowIndex = -1;
 
     public AreaLightInstance(
@@ -68,16 +64,13 @@ public final class AreaLightInstance {
 
     public Vec3d getPosition() { return position; }
 
-    /** Returns a COPY (safe but allocates). Prefer getDirectionRef() internally. */
     public Vector3f getDirection() { return new Vector3f(direction); }
 
-    /** Returns a COPY (safe but allocates). Prefer getNormalRef() internally. */
     public Vector3f getNormal() { return new Vector3f(normal); }
 
     public float getRadius() { return radius; }
     public float getLength() { return length; }
 
-    /** Returns a COPY (safe but allocates). Prefer getColorRef() internally. */
     public Vector3f getColor() { return new Vector3f(color); }
 
     public float getIntensity() { return intensity; }
@@ -87,13 +80,10 @@ public final class AreaLightInstance {
 
     public float getProjectionRadius() { return projectionRadius; }
 
-    /** Returns a COPY (safe but allocates). Prefer getProjectedUVRectRef() internally. */
     public Vector4f getProjectedUVRect() { return new Vector4f(projectedUVRect); }
 
-    /** Returns a COPY (safe but allocates). Prefer getShapeUVRectRef() internally. */
     public Vector4f getShapeUVRect() { return new Vector4f(shapeUVRect); }
 
-    /** Returns a COPY (safe but allocates). Prefer getLightViewProjRef() internally. */
     public Matrix4f getLightViewProj() { return new Matrix4f(lightViewProj); }
 
     public void setLightViewProj(Matrix4f m) { this.lightViewProj.set(m); }
@@ -101,8 +91,6 @@ public final class AreaLightInstance {
     public int getShadowIndex() { return shadowIndex; }
 
     public void setShadowIndex(int idx) { this.shadowIndex = idx; }
-
-    // -------- Internal no-allocation accessors (use in render code) --------
 
     public Vector3f getDirectionRef() { return direction; }
     public Vector3f getNormalRef() { return normal; }

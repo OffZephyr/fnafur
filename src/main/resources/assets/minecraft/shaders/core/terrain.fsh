@@ -10,7 +10,6 @@
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler2;
 
-// Shadow depth textures (bank), because your API cannot render into array layers.
 uniform sampler2D ShadowSampler0;
 uniform sampler2D ShadowSampler1;
 uniform sampler2D ShadowSampler2;
@@ -48,7 +47,6 @@ vec4 sampleNearest(sampler2D source, vec2 uv, vec2 pixelSize) {
     return sampleNearest(source, uv, pixelSize, du, dv, texelScreenSize);
 }
 
-// Rotated Grid Super-Sampling
 vec4 sampleRGSS(sampler2D source, vec2 uv, vec2 pixelSize) {
     vec2 du = dFdx(uv);
     vec2 dv = dFdy(uv);
@@ -182,7 +180,6 @@ vec4 applyDecals(vec4 baseColor){
 
             vec3 toFrag = biasedWorldPos - finalPos1;
 
-            // Reject steep angles
             if (!normalsWithinDegrees(N, f, 50.0))
             continue;
 
@@ -204,8 +201,6 @@ vec4 applyDecals(vec4 baseColor){
 
     return result;
 }
-
-// ------------------ Area light helpers ------------------
 
 float saturate(float x) { return clamp(x, 0.0, 1.0); }
 
@@ -238,7 +233,6 @@ float sampleShadowDepth(int idx, vec2 uv) {
     return texture(ShadowSampler7, uv).r;
 }
 
-// Manual compare + 3x3 PCF. shadowIndex stored in L.smooth_shadowLayer.w (float).
 float shadowVisibilityForLight(AreaLight L, vec3 worldPos) {
     int sidx = int(L.smooth_shadowLayer.w);
     if (sidx < 0) return 1.0;
@@ -266,21 +260,16 @@ float shadowVisibilityForLight(AreaLight L, vec3 worldPos) {
 
     vec3 P = vWorldPos;
 
-    // Closest point on segment axis to P
     vec3 AP = P - A;
     float t = (len > 1e-6) ? clamp(dot(AP, dir) / len, 0.0, 1.0) : 0.0;
     vec3 axisPoint = A + dir * (t * len);
 
-    // Radial direction from axis to the point
     vec3 radial = P - axisPoint;
     float radialLen = length(radial);
     vec3 radialDir = (radialLen > 1e-6) ? (radial / radialLen) : vec3(0.0);
 
     float d = length(radial);
 
-    // Compute "cone slope" from your changing projection radius
-    // start radius stored in smooth_shadowLayer.z (projectionRadiusStart)
-    // end radius is attenuation radius (pos_radius.w)
     float r0 = max(L.smooth_shadowLayer.z, 0.001);
     float r1 = max(L.pos_radius.w, 0.001);
     float dr = r1 - r0;
@@ -298,20 +287,12 @@ float shadowVisibilityForLight(AreaLight L, vec3 worldPos) {
     vec2 projUv = projectToRectUV(vec2(x, y), L.proj_uv);
     if(projUv.x < L.proj_uv.x || projUv.x > L.proj_uv.z || projUv.y < L.proj_uv.y || projUv.y > L.proj_uv.w) return 1.0;
 
-    // How much radius expands per unit distance along the light
-    // This is tan(theta) for a cone if interpreted literally.
     float slope = (len > 1e-6) ? (dr / len) : 0.0;
 
-    // Build effective light ray direction at P:
-    // It points "forward" along -dir (light traveling outwards)
-    // and "outward" along radialDir based on slope.
     vec3 eff = normalize((-dir) + radialDir * slope);
 
-    // Use this for bias
     float ndotl = clamp(dot(N, eff), 0.0, 1.0);
 
-    //float bias = 0.0015 + 0.0025 * (1.0 - abs(dot(N, normalize(-L.dir_length.xyz))));
-    //float bias = 0.0001 + 0.0025 * (1.0 - abs(dot(N, normalize(-L.dir_length.xyz))));
     float bias = mix(0.0025, 0.0008, ndotl);
 
     vec2 texel = 1.0 / vec2(float(SHADOW_RES), float(SHADOW_RES));
@@ -363,25 +344,19 @@ vec3 applyAreaLights(vec3 baseRgb) {
         vec3 right = normalize(cross(upGuess, dir));
         vec3 up = normalize(cross(dir, right));
 
-        // How far along the segment are we? (0=start, 1=end)
         float t = 0.0;
         if (lengthL > 1e-6) {
             t = clamp(dot(P - A, dir) / lengthL, 0.0, 1.0);
         }
 
-        // Separate projection radius at the source (packed in smooth_shadowLayer.z)
         float projRadiusStart = max(L.smooth_shadowLayer.z, 0.001);
 
-        // Make the projection expand with distance along the light
-        // End radius = attenuation radius (pos_radius.w) by default
         float projRadiusEnd = max(L.pos_radius.w, 0.001);
 
-        // Optional shaping: use t^2 for slower expansion near source
         float tt = t * t;
 
         float projRadius = mix(projRadiusStart, projRadiusEnd, t);
 
-        // local coords for projection
         vec3 rel = P - A;
         float x = dot(rel, right) / projRadius;
         float y = dot(rel, up) / projRadius;
@@ -396,7 +371,6 @@ vec3 applyAreaLights(vec3 baseRgb) {
         float shapeMask = texture(Sampler0, shapeUv).r;
 
         float shadowVis = shadowVisibilityForLight(L, P);
-        //shadowVis = 1.0f; // TEMP DISABLE SHADOWS
 
         float intensity = L.color_intensity.w;
         vec3 lightColor = L.color_intensity.rgb;
@@ -429,7 +403,6 @@ void main() {
     }
     #endif
 
-    // Vanilla-style chunk visibility blend (kept from your file)
     outColor = mix(FogColor * vec4(1, 1, 1, outColor.a), outColor, ChunkVisibility);
 
     fragColor = apply_fog(outColor, sphericalVertexDistance, cylindricalVertexDistance,

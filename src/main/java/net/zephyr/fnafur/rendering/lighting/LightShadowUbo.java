@@ -12,7 +12,6 @@ import java.nio.ByteOrder;
 
 public final class LightShadowUbo {
 
-    // std140 mat4 = 64 bytes
     private static final int SIZE = 64;
 
     public static final GpuBuffer buffer = RenderSystem.getDevice().createBuffer(

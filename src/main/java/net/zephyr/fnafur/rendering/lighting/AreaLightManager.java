@@ -22,21 +22,6 @@ public class AreaLightManager {
     public static final int MAX_DISTANCE = 128;
     public static final int MAX_LIGHTS = 128;
 
-    /**
-     * std140 sizing:
-     * Header: 16 bytes (int + ivec3)
-     *
-     * Per-light:
-     *   vec4 pos_radius              16
-     *   vec4 dir_length              16
-     *   vec4 color_intensity         16
-     *   vec4 normal_influence        16
-     *   vec4 smooth_shadowLayer      16
-     *   vec4 proj_uv                 16
-     *   vec4 shape_uv                16
-     *   mat4 lightViewProj           64
-     * = 192 bytes per light
-     */
     public static final int STRIDE = 192;
     public static final int UBO_SIZE = 16 + MAX_LIGHTS * STRIDE;
 
@@ -50,14 +35,8 @@ public class AreaLightManager {
 
     public static final GpuBufferSlice lightSlice = new GpuBufferSlice(lightBuffer, 0, UBO_SIZE);
 
-    // Reuse to avoid per-light allocations
     private static final float[] MAT_TMP_16 = new float[16];
 
-    /**
-     * Uploads a std140 UBO for the provided visible lights.
-     * IMPORTANT: This expects each AreaLightInstance already has shadowIndex set
-     * (0..MAX_SHADOWED_LIGHTS-1 or -1) by the shadow renderer.
-     */
     public static GpuBufferSlice uploadAndGetLightUbo(List<AreaLightInstance> visibleLights) {
         ByteBuffer buf = buildLightUbo(visibleLights);
 
@@ -68,10 +47,6 @@ public class AreaLightManager {
         return lightSlice;
     }
 
-    /**
-     * Returns lights near the camera, sorted by distance ascending (closest first).
-     * This is important because the first MAX_SHADOWED_LIGHTS are typically assigned shadows.
-     */
     public static List<AreaLightInstance> getVisibleLights() {
         List<AreaLightInstance> out = new ArrayList<>();
 
@@ -85,7 +60,6 @@ public class AreaLightManager {
             }
         }
 
-        // Closest first (stable shadow assignment)
         out.sort(Comparator.comparingDouble(l -> l.getPosition().squaredDistanceTo(cam)));
         return out;
     }
@@ -95,11 +69,9 @@ public class AreaLightManager {
 
         int count = Math.min(list.size(), MAX_LIGHTS);
 
-        // Header
         buffer.putInt(count);
         buffer.putInt(0).putInt(0).putInt(0);
 
-        // Body
         for (int i = 0; i < MAX_LIGHTS; i++) {
             if (i < count) {
                 packLight(buffer, list.get(i));
@@ -115,46 +87,33 @@ public class AreaLightManager {
     private static void packLight(ByteBuffer b, AreaLightInstance L) {
         Vec3d p = L.getPosition();
 
-        // Normalize defensively to avoid weird lighting/shadow bias if callers forget.
         Vector3f dir = new Vector3f(L.getDirection()).normalize();
         Vector3f col = new Vector3f(L.getColor());
         Vector3f nrm = new Vector3f(L.getNormal()).normalize();
 
-        // vec4 pos_radius
         b.putFloat((float) p.x).putFloat((float) p.y).putFloat((float) p.z).putFloat(L.getRadius());
         b.putFloat((float) p.x).putFloat((float) p.y).putFloat((float) p.z).putFloat(L.getRadius());
 
-        // vec4 dir_length
         putVec3(b, dir);
         b.putFloat(L.getLength());
 
-        // vec4 color_intensity
         putVec3(b, col);
         b.putFloat(L.getIntensity());
 
-        // vec4 normal_influence
         putVec3(b, nrm);
         b.putFloat(L.getNormalInfluence());
 
-        // vec4 smooth_shadowLayer
-        // x = edge smoothness (0..1)
-        // y = distance falloff factor (>=0)
-        // z = projection radius
-        // w = shadowIndex (-1 or 0..MAX_SHADOWED_LIGHTS-1)
         b.putFloat(L.getEdgeSmoothness());
         b.putFloat(L.getDistanceSmoothness());
         b.putFloat(L.getProjectionRadius());
         b.putFloat((float) L.getShadowIndex());
 
-        // vec4 proj_uv
         Vector4f proj = L.getProjectedUVRect();
         b.putFloat(proj.x).putFloat(proj.y).putFloat(proj.z).putFloat(proj.w);
 
-        // vec4 shape_uv
         Vector4f shape = L.getShapeUVRect();
         b.putFloat(shape.x).putFloat(shape.y).putFloat(shape.z).putFloat(shape.w);
 
-        // mat4 lightViewProj (std140 mat4 = 16 floats)
         Matrix4f m = L.getLightViewProj();
         m.get(MAT_TMP_16);
         for (int i = 0; i < 16; i++) b.putFloat(MAT_TMP_16[i]);

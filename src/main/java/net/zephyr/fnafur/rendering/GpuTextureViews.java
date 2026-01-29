@@ -61,9 +61,6 @@ public final class GpuTextureViews {
         Object device = RenderSystem.getDevice();
         Class<?> dc = device.getClass();
 
-        // Find any method returning GpuTextureView with params:
-        // (GpuTexture, int, int)  -> mip view
-        // (GpuTexture, int, int, int, int) -> layer view
         for (Method m : dc.getMethods()) {
             if (!GpuTextureView.class.isAssignableFrom(m.getReturnType())) continue;
 
@@ -85,15 +82,12 @@ public final class GpuTextureViews {
             }
         }
 
-        // Helpful crash context if nothing found:
         if (cachedMipViewMethod == null || cachedLayerViewMethod == null) {
             String candidates = Arrays.stream(dc.getMethods())
                     .filter(m -> GpuTextureView.class.isAssignableFrom(m.getReturnType()))
                     .map(m -> m.getName() + Arrays.toString(m.getParameterTypes()))
                     .reduce("", (a, b) -> a + "\n  " + b);
 
-            // Don’t throw here—some setups might only expose one of them.
-            // The public creators throw with a clear message when needed.
         }
     }
 }

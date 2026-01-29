@@ -18,19 +18,11 @@ public final class AreaLightShadowRenderer {
 
     private AreaLightShadowRenderer() {}
 
-    /**
-     * Renders shadows for up to MAX_SHADOWED_LIGHTS lights.
-     * Lights beyond that get shadowIndex = -1 (no shadow).
-     *
-     * IMPORTANT: visibleLights should be sorted closest-first so the nearest lights get shadows.
-     * (AreaLightManager.getVisibleLights() should do this.)
-     */
     public static void renderShadowsForSectionState(
             SectionRenderState state,
             BlockRenderLayerGroup group,
             List<AreaLightInstance> visibleLights
     ) {
-        // Reset all to "no shadow" so indices don't go stale
         for (AreaLightInstance L : visibleLights) {
             L.setShadowIndex(-1);
         }
@@ -46,7 +38,6 @@ public final class AreaLightShadowRenderer {
             AreaLightInstance L = visibleLights.get(si);
             L.setShadowIndex(si);
 
-            // Upload per-light matrix UBO
             LightShadowUbo.upload(L.getLightViewProj());
 
             final int layerIndex = si;
@@ -55,9 +46,9 @@ public final class AreaLightShadowRenderer {
                     .createRenderPass(
                             () -> "AreaLight Shadow Depth " + layerIndex,
                             AreaLightShadowResources.shadowColorDummyView,
-                            OptionalInt.of(0), // clear dummy color
+                            OptionalInt.of(0),
                             AreaLightShadowResources.shadowDepthView[si],
-                            OptionalDouble.of(1.0) // clear depth
+                            OptionalDouble.of(1.0)
                     )) {
 
                 RenderSystem.bindDefaultUniforms(pass);
@@ -65,7 +56,6 @@ public final class AreaLightShadowRenderer {
                 pass.setPipeline(CustomRenderingPipelines.AREA_LIGHT_SHADOW);
                 pass.setUniform("LightShadow", LightShadowUbo.buffer);
 
-                // Render chunk geometry to depth; skip translucent for shadows by default
                 for (BlockRenderLayer layer : group.getLayers()) {
                     if (layer == BlockRenderLayer.TRANSLUCENT) continue;
 

@@ -47,7 +47,7 @@ public final class TerrainRenderHook {
         float u1 = sprite.getMaxU();
         float v1 = sprite.getMaxV();
 
-        if(AreaLightManager.WORLD_LIGHTS.isEmpty() || false) {
+        if(AreaLightManager.WORLD_LIGHTS.isEmpty() && false) {
             AreaLightManager.WORLD_LIGHTS.clear();
             AreaLightInstance lightInstance = new AreaLightInstance(
                     MinecraftClient.getInstance().player.getEyePos(),
@@ -68,16 +68,12 @@ public final class TerrainRenderHook {
             AreaLightManager.WORLD_LIGHTS.add(lightInstance);
         }
 
-        // 1) Gather visible lights (should be sorted closest-first)
         List<AreaLightInstance> visibleLights = AreaLightManager.getVisibleLights();
 
-        // 2) Update light view-projection matrices (used by both shadow pass + terrain pass)
         updateLightViewProjMatrices(visibleLights);
 
-        // 3) Render shadow maps for up to MAX_SHADOWED_LIGHTS lights
         AreaLightShadowRenderer.renderShadowsForSectionState(state, group, visibleLights);
 
-        // 4) Upload UBO data for decals + lights
         DecalManager.getDecalData();
         AreaLightManager.uploadAndGetLightUbo(visibleLights);
 
@@ -102,14 +98,12 @@ public final class TerrainRenderHook {
 
             RenderSystem.bindDefaultUniforms(renderPass);
 
-            // Lightmap
             renderPass.bindTexture(
                     "Sampler2",
                     mc.gameRenderer.getLightmapTextureManager().getGlTextureView(),
                     RenderSystem.getSamplerCache().get(FilterMode.LINEAR)
             );
 
-            // Shadow samplers (manual compare in shader)
             var shadowSampler = RenderSystem.getSamplerCache().get(FilterMode.NEAREST);
             renderPass.bindTexture("ShadowSampler0", AreaLightShadowResources.shadowDepthView[0], shadowSampler);
             renderPass.bindTexture("ShadowSampler1", AreaLightShadowResources.shadowDepthView[1], shadowSampler);
@@ -137,10 +131,8 @@ public final class TerrainRenderHook {
 
                 renderPass.setPipeline(wire ? CustomRenderingPipelines.COOL_WIREFRAME : pipeline);
 
-                // Atlas
                 renderPass.bindTexture("Sampler0", state.textureView(), sampler);
 
-                // UBOs
                 renderPass.setUniform("DecalInfo", DecalManager.decal_buffer);
                 renderPass.setUniform("LightData", AreaLightManager.lightBuffer);
 
@@ -149,19 +141,11 @@ public final class TerrainRenderHook {
         }
     }
 
-    /**
-     * Computes a stable light shadow camera matrix for each visible light.
-     *
-     * Default: orthographic projection sized by radius, looking along the light direction.
-     */
     private static void updateLightViewProjMatrices(List<AreaLightInstance> lights) {
         Vec3d cam = MinecraftClient.getInstance().gameRenderer.getCamera().pos;
 
         for (AreaLightInstance L : lights) {
 
-            // If you used the optimized AreaLightInstance I gave:
-            // Vector3f dir = new Vector3f(L.getDirectionRef());
-            // Otherwise, keep:
             Vec3d pWorld = L.getPosition();
             Vector3f dir = L.getDirection();
 
