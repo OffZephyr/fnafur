@@ -135,6 +135,7 @@ public class ItemGroupsInit {
                         entries.add(ItemInit.PAINTBRUSH);
                         entries.add(ItemInit.SCRAPER);
                         entries.add(ItemInit.DECAL_BOOK);
+                        entries.add(ItemInit.FLASHLIGHT);
                         //entries.add(ItemInit.TAPEMEASURE);
 
                         entries.add(ItemInit.ANIMATRONIC_SUIT);

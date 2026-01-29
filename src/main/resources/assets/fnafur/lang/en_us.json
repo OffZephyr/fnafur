@@ -371,6 +371,8 @@
   "item.fnafur.decal_book.description2": "§7§lShift-click in the air to clear",
   "item.fnafur.decal_book.description3": "§7§lthe currently selected Decal.",
 
+  "item.fnafur.flashlight": "Flashlight",
+
   "block.fnafur.has_sticker": " With Decal",
   "decal_book.summary": "§lSUMMARY:",
   "decal_book.clear": "§c§lCLEARED DATA",

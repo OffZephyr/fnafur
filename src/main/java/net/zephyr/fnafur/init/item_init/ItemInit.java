@@ -124,6 +124,12 @@ public class ItemInit {
             new Item.Settings().maxCount(1).rarity(Rarity.COMMON)
     );
 
+    public static final Item FLASHLIGHT = registerItem(
+            "flashlight",
+            Item::new,
+            new Item.Settings().maxCount(1)
+    );
+
     public static Item registerItem(String path, Function<Item.Settings, Item> factory, Item.Settings settings) {
         final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(FnafUniverseRebuilt.MOD_ID, path));
         return Items.register(registryKey, factory, settings);
