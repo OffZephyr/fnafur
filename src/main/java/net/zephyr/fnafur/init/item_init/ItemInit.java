@@ -19,10 +19,7 @@ import net.zephyr.fnafur.item.IllusionDisc;
 import net.zephyr.fnafur.item.animatronic.suit.SuitItem;
 import net.zephyr.fnafur.item.energy.JerryCanItem;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
-import net.zephyr.fnafur.item.tools.DecalBookItem;
-import net.zephyr.fnafur.item.tools.PaintbrushItem;
-import net.zephyr.fnafur.item.tools.ScraperItem;
-import net.zephyr.fnafur.item.tools.WrenchItem;
+import net.zephyr.fnafur.item.tools.*;
 
 import java.util.List;
 import java.util.function.Function;
@@ -126,7 +123,7 @@ public class ItemInit {
 
     public static final Item FLASHLIGHT = registerItem(
             "flashlight",
-            Item::new,
+            FlashlightItem::new,
             new Item.Settings().maxCount(1)
     );
 

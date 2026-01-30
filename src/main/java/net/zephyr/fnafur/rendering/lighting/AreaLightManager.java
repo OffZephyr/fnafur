@@ -13,9 +13,7 @@ import org.lwjgl.system.MemoryUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class AreaLightManager {
 
@@ -25,6 +23,7 @@ public class AreaLightManager {
     public static final int STRIDE = 192;
     public static final int UBO_SIZE = 16 + MAX_LIGHTS * STRIDE;
 
+    public static final Map<ILightHolder, AreaLightInstance> WORLD_LIGHT_MAP = new HashMap<>();
     public static final List<AreaLightInstance> WORLD_LIGHTS = new ArrayList<>();
 
     public static final GpuBuffer lightBuffer = RenderSystem.getDevice().createBuffer(

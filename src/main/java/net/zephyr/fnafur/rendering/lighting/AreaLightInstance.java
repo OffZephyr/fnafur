@@ -7,32 +7,55 @@ import org.joml.Vector4f;
 
 public final class AreaLightInstance {
 
-    private final Vec3d position;
-
-    private final Vector3f direction;
-    private final Vector3f normal;
-
-    private final float radius;
-    private final float length;
-
-    private final Vector3f color;
-    private final float intensity;
-
-    private final float edgeSmoothness;
-    private final float distanceSmoothness;
-
-    private final float normalInfluence;
-
-    private final float projectionRadius;
-
-    private final Vector4f projectedUVRect;
-    private final Vector4f shapeUVRect;
-
-    private final Matrix4f lightViewProj = new Matrix4f();
+    private Vec3d position;
+    private Vector3f direction;
+    private Vector3f normal;
+    private float radius;
+    private float length;
+    private Vector3f color;
+    private float intensity;
+    private float edgeSmoothness;
+    private float distanceSmoothness;
+    private float normalInfluence;
+    private float projectionRadius;
+    private Vector4f projectedUVRect;
+    private Vector4f shapeUVRect;
+    private Matrix4f lightViewProj = new Matrix4f();
 
     private int shadowIndex = -1;
 
     public AreaLightInstance(
+            Vec3d position,
+            Vector3f direction,
+            Vector3f normal,
+            float radius,
+            float length,
+            Vector3f color,
+            float intensity,
+            float edgeSmoothness,
+            float distanceSmoothness,
+            float normalInfluence,
+            float projectionRadius,
+            Vector4f projectedUVRect,
+            Vector4f shapeUVRect
+    ) {
+        this.position = position;
+        this.direction = new Vector3f(direction).normalize();
+        this.normal = new Vector3f(normal).normalize();
+        this.radius = radius;
+        this.length = length;
+        this.color = new Vector3f(color);
+        this.intensity = intensity;
+        this.edgeSmoothness = edgeSmoothness;
+        this.distanceSmoothness = distanceSmoothness;
+        this.normalInfluence = normalInfluence;
+        this.projectionRadius = projectionRadius;
+        this.projectedUVRect = new Vector4f(projectedUVRect);
+        this.shapeUVRect = new Vector4f(shapeUVRect);
+    }
+
+
+    public void updateData(
             Vec3d position,
             Vector3f direction,
             Vector3f normal,

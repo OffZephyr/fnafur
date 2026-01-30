@@ -241,16 +241,6 @@ float shadowVisibilityForLight(AreaLight L, vec3 worldPos) {
     vec3 camWorld = vec3(CameraBlockPos) - CameraOffset;
     vec3 relPos = worldPos - camWorld;
 
-    vec4 lp = L.lightViewProj * vec4(relPos, 1.0);
-    vec3 ndc = lp.xyz / max(lp.w, 1e-6);
-
-    vec3 uvz;
-    uvz.xy = ndc.xy * 0.5 + 0.5;
-    uvz.z  = ndc.z  * 0.5 + 0.5;
-
-    if (uvz.x < 0.0 || uvz.x > 1.0 || uvz.y < 0.0 || uvz.y > 1.0 || uvz.z < 0.0 || uvz.z > 1.0)
-    return 1.0;
-
     vec3 N = normalize(vNormal);
 
     vec3 A = L.pos_radius.xyz;
@@ -281,6 +271,22 @@ float shadowVisibilityForLight(AreaLight L, vec3 worldPos) {
     float projRadiusStart = max(L.smooth_shadowLayer.z, 0.001);
     float projRadiusEnd = max(L.pos_radius.w, 0.001);
     float projRadius = mix(projRadiusStart, projRadiusEnd, t);
+    float projRadius2 = mix(projRadiusStart, projRadiusEnd, 1 - t);
+
+    float warp = clamp(projRadius2 / projRadiusEnd, 0.0, 1.0);
+    vec3 warpedWorldPos = axisPoint + radialDir * (radialLen * warp);
+    vec3 warpedRel = warpedWorldPos - camWorld;
+
+    vec4 lp = L.lightViewProj * vec4(relPos, 1.0);
+    vec3 ndc = lp.xyz / max(lp.w, 1e-6);
+
+    vec3 uvz;
+    uvz.xy = ndc.xy * 0.5 + 0.5;
+    uvz.z  = ndc.z  * 0.5 + 0.5;
+
+    if (uvz.x < 0.5 - projRadius || uvz.x > 0.5 + projRadius || uvz.y < 0.5 - projRadius || uvz.y > 0.5 + projRadius || uvz.z < 0.5 - projRadius || uvz.z > 0.5 + projRadius)
+    return 1.0;
+
     vec3 rel = P - A;
     float x = dot(rel, right) / projRadius;
     float y = dot(rel, up) / projRadius;

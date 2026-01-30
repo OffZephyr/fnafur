@@ -8,12 +8,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
+import net.zephyr.fnafur.entity.player.LightDataProvider;
+import net.zephyr.fnafur.entity.player.PlayerHook;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
+import net.zephyr.fnafur.rendering.lighting.ILightHolder;
 import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -22,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin implements IUniversePlayer {
+public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
     @Unique
     float maskOnDelta = 0;
     @Unique
@@ -31,6 +37,10 @@ public class PlayerEntityMixin implements IUniversePlayer {
     boolean canAnimateMask = false;
     @Nullable LivingEntity currentEntity;
     float mimicBodyYaw = 0;
+
+    @Unique
+    LightDataProvider lightDataProvider;
+
     @Shadow
     PlayerInventory inventory;
 
@@ -40,9 +50,18 @@ public class PlayerEntityMixin implements IUniversePlayer {
 
     }
 
-    @Inject (method = "tick", at = @At("HEAD"))
+    @Unique
+    LightDataProvider getLightDataProvider(){
+        if(lightDataProvider == null){
+            lightDataProvider = new LightDataProvider(((PlayerEntity) (Object)this));
+        }
+        return lightDataProvider;
+    }
+
+    @Inject (method = "tick", at = @At("TAIL"))
     public void tick(CallbackInfo ci) {
         PlayerEntity player = ((PlayerEntity) (Object)this);
+        PlayerHook.playerTick(player);
         //ItemStack stack = player.getInventory()..get(2);
         //if(stack.isOf(ItemInit.ILLUSIONDISC)){
             /*
@@ -176,6 +195,72 @@ public class PlayerEntityMixin implements IUniversePlayer {
     @Override
     public void setCrawling(boolean crawling) {
         this.crawling = crawling;
+    }
+
+
+    @Override
+    public boolean isLightOn(Entity stack) {
+        return getLightDataProvider().isLightOn();
+    }
+
+    @Override
+    public void setLightOn(boolean isOn, Entity stack) {
+        getLightDataProvider().setLightOn(isOn);
+    }
+
+    @Override
+    public Identifier getLightMaskTexture() {
+        return getLightDataProvider().getLightMaskTexture();
+    }
+
+    @Override
+    public Vec3d getLightWorldPos() {
+        return getLightDataProvider().getLightWorldPos();
+    }
+
+    @Override
+    public Vector3f getLightRotation() {
+        return getLightDataProvider().getLightRotation();
+    }
+
+    @Override
+    public float getLength() {
+        return getLightDataProvider().getLength();
+    }
+
+    @Override
+    public float getIntensity() {
+        return getLightDataProvider().getIntensity();
+    }
+
+    @Override
+    public float getEdgeSmoothness() {
+        return getLightDataProvider().getEdgeSmoothness();
+    }
+
+    @Override
+    public float getDistanceSmoothness() {
+        return getLightDataProvider().getDistanceSmoothness();
+    }
+
+    @Override
+    public float getNormalInfluence() {
+        return getLightDataProvider().getNormalInfluence();
+    }
+
+    @Override
+    public float getMinRadius() {
+        return getLightDataProvider().getMinRadius();
+    }
+
+    @Override
+    public float getMaxRadius() {
+        return getLightDataProvider().getMaxRadius();
+    }
+
+    @Override
+    public Vector3f getLightColor() {
+        return getLightDataProvider().getLightColor();
     }
 
     //@Inject(method = "getEquippedStack", at = @At("HEAD"), cancellable = true)
