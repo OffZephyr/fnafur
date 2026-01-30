@@ -19,6 +19,9 @@ public interface ILightHolder {
     default boolean isLightOn(Entity stack){
         return true;
     }
+    default boolean isLightAutoUpdate(Entity stack){
+        return false;
+    }
 
     default void setLightOn(boolean isOn, Entity stack){
 

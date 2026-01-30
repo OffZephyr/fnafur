@@ -199,6 +199,11 @@ public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
 
 
     @Override
+    public boolean isLightAutoUpdate(Entity stack) {
+        return getLightDataProvider().isLightAutoUpdate();
+    }
+
+    @Override
     public boolean isLightOn(Entity stack) {
         return getLightDataProvider().isLightOn();
     }

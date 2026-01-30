@@ -36,6 +36,10 @@ public class FlashlightItem extends Item implements IHasArmPos, ILightItem {
     }
 
 
+    @Override
+    public boolean isLightAutoUpdate(ItemStack stack) {
+        return isLightOn(stack);
+    }
 
     @Override
     public boolean isLightOn(ItemStack stack) {
@@ -51,12 +55,13 @@ public class FlashlightItem extends Item implements IHasArmPos, ILightItem {
 
     @Override
     public Vec3d getLightWorldPos(LivingEntity parent) {
-        return parent.getEyePos();
+        float progress = MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks()/20f;
+        return parent.getLerpedPos(progress).add(0, parent.getDimensions(parent.getPose()).eyeHeight(), 0);
     }
 
     @Override
     public Vector3f getLightRotation(LivingEntity parent) {
-        float progress = MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks();
+        float progress = MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks()/20f;
         Vec3d impl = parent.getRotationVec(progress);
         return impl.toVector3f();
     }

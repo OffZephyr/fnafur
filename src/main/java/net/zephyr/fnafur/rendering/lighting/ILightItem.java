@@ -14,6 +14,10 @@ import org.joml.Vector4f;
 
 public interface ILightItem {
 
+    default boolean isLightAutoUpdate(ItemStack stack){
+        return false;
+    }
+
     default boolean isLightOn(ItemStack stack){
         return true;
     }

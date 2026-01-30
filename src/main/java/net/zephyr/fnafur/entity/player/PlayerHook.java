@@ -14,7 +14,7 @@ public class PlayerHook {
             if (player instanceof ILightHolder holder) {
                 if (holder.isLightOn(player)) {
                     holder.addToWorldIfUnique();
-                    holder.updateLightInstance();
+                    //holder.updateLightInstance();
                 } else {
                     holder.removeFromWorld();
                 }

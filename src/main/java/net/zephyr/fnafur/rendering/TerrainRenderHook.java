@@ -17,15 +17,13 @@ import net.minecraft.client.render.SectionRenderState;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import net.zephyr.fnafur.rendering.decals.DecalManager;
-import net.zephyr.fnafur.rendering.lighting.AreaLightInstance;
-import net.zephyr.fnafur.rendering.lighting.AreaLightManager;
-import net.zephyr.fnafur.rendering.lighting.AreaLightShadowRenderer;
-import net.zephyr.fnafur.rendering.lighting.AreaLightShadowResources;
+import net.zephyr.fnafur.rendering.lighting.*;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -47,6 +45,13 @@ public final class TerrainRenderHook {
         float u1 = sprite.getMaxU();
         float v1 = sprite.getMaxV();
 
+        for(ILightHolder holder : AreaLightManager.WORLD_LIGHT_MAP.keySet()){
+            if(holder instanceof Entity ent){
+                if(holder.isLightOn(ent) && holder.isLightAutoUpdate(ent)){
+                    holder.updateLightInstance();
+                }
+            }
+        }
         if(AreaLightManager.WORLD_LIGHTS.isEmpty() && false) {
             AreaLightManager.WORLD_LIGHTS.clear();
             AreaLightInstance lightInstance = new AreaLightInstance(

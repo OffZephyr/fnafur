@@ -15,6 +15,13 @@ public class LightDataProvider {
         this.parent = parent;
     }
 
+    public boolean isLightAutoUpdate() {
+        if(parent.getMainHandStack().getItem() instanceof ILightItem holder){
+            return holder.isLightAutoUpdate(parent.getMainHandStack());
+        }
+        return false;
+    }
+
     public boolean isLightOn() {
         if(parent.getMainHandStack().getItem() instanceof ILightItem holder){
             return holder.isLightOn(parent.getMainHandStack());
