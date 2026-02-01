@@ -814,7 +814,11 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             run = range.getValue();
         }
 
-        return isRunning() ? walk + run : walk;
+        if (this.isRetreating) {
+            return walk + run;
+        } else {
+            return isRunning() ? walk + run : walk;
+        }
     }
 
     public int walkingSpeed(){
