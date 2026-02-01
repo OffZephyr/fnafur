@@ -86,6 +86,7 @@ import java.util.function.BiConsumer;
 
 public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vibrations, IEntityPathfindingHeightOverride, VoiceSource {
 
+    boolean forceCrawl = false;
 
     private final EntityGameEventHandler<VibrationListener> gameEventHandler;
     private Vibrations.ListenerData vibrationListenerData;
@@ -163,6 +164,11 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
         //if(!player.getMainHandStack().isEmpty()) return ActionResult.PASS;
 
+        //TODO GET RID WHEN GECKOLIB IS DONE TESTING
+//        if(true){
+//            forceCrawl = !forceCrawl;
+//            return ActionResult.SUCCESS;
+//        }
         if(getEntityWorld().isClient()){
             getAnimatableInstanceCache().getManagerForId(getId()).getAnimationControllers().forEach((name, controller) -> {
                 controller.reset();
@@ -985,6 +991,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public AnimatronicPose getAnimatronicPose() {
+        if(forceCrawl) return AnimatronicPose.CRAWLING;
         if (((IEntityDataSaver)this).getPersistentData().contains("pose")) {
             return AnimatronicPose.values()[((IEntityDataSaver)this).getPersistentData().getInt("pose", 0)];
         } else {

@@ -15,6 +15,7 @@ public class SectionRenderStateMixin {
     @Inject(method = "renderSection", at = @At(value = "HEAD"), cancellable = true)
     void renderSectionHook(BlockRenderLayerGroup group, GpuSampler sampler, CallbackInfo ci){
         TerrainRenderHook.render((SectionRenderState)(Object)this, group, sampler);
+//        DecalManager.DecalRenderHook((SectionRenderState)(Object)this, group, sampler);
         ci.cancel();
     }
 }

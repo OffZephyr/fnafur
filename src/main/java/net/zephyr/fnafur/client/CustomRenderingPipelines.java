@@ -2,6 +2,7 @@ package net.zephyr.fnafur.client;
 
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.platform.PolygonMode;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gl.RenderPipelines;
@@ -37,6 +38,79 @@ public class CustomRenderingPipelines {
                     .build()
     );
 
+    public static final RenderPipeline.Snippet NORMALS_PREPASS_SNIPPET =
+            RenderPipeline.builder(RenderPipelines.FOG_AND_SAMPLERS_SNIPPET)
+                    .withUniform("Projection", UniformType.UNIFORM_BUFFER)
+                    .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
+                    .withVertexShader("core/terrain")
+                    .withFragmentShader("core/normals_prepass")
+                    .buildSnippet();
+
+    public static final RenderPipeline NORMALS_PREPASS =
+            RenderPipelines.register(
+                    RenderPipeline.builder(NORMALS_PREPASS_SNIPPET)
+                            .withLocation("pipeline/normals_prepass")
+                            .build()
+            );
+    public static final RenderPipeline.Snippet POSITION_PREPASS_SNIPPET =
+            RenderPipeline.builder(RenderPipelines.FOG_AND_SAMPLERS_SNIPPET)
+                    .withUniform("Projection", UniformType.UNIFORM_BUFFER)
+                    .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
+                    .withVertexShader("core/terrain")
+                    .withFragmentShader("core/position_prepass")
+                    .buildSnippet();
+
+    public static final RenderPipeline POSITION_PREPASS =
+            RenderPipelines.register(
+                    RenderPipeline.builder(POSITION_PREPASS_SNIPPET)
+                            .withLocation("pipeline/position_prepass")
+                            // Only write where depth already matches
+                            .withDepthTestFunction(DepthTestFunction.EQUAL_DEPTH_TEST)
+                            .withDepthWrite(false)
+                            .withColorWrite(true)
+                            .build()
+            );
+
+    public static final RenderPipeline.Snippet LIGHTING_FULLSCREEN_SNIPPET =
+            RenderPipeline.builder(
+                            RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET,
+                            RenderPipelines.GLOBALS_SNIPPET
+                    )
+                    .withSampler("NormalBuffer")
+                    .withSampler("DepthBuffer")
+                    .withSampler("Sampler0")
+                    .withSampler("PositionBuffer")
+                    .withUniform("LightData", UniformType.UNIFORM_BUFFER)
+
+                    .withSampler("ShadowSampler0")
+                    .withSampler("ShadowSampler1")
+                    .withSampler("ShadowSampler2")
+                    .withSampler("ShadowSampler3")
+                    .withSampler("ShadowSampler4")
+                    .withSampler("ShadowSampler5")
+                    .withSampler("ShadowSampler6")
+                    .withSampler("ShadowSampler7")
+
+                    .withShaderDefine("MAX_LIGHTS", AreaLightManager.MAX_LIGHTS)
+                    .withShaderDefine("MAX_SHADOWED_LIGHTS", AreaLightShadowResources.MAX_SHADOWED_LIGHTS)
+                    .withShaderDefine("SHADOW_RES", AreaLightShadowResources.SHADOW_RES)
+
+                    .withVertexShader("core/lighting_fullscreen")
+                    .withFragmentShader("core/lighting_fullscreen")
+
+                    // simple position-only buffer (we created fsTri with 2 floats per vert)
+                    .withVertexFormat(VertexFormats.POSITION, VertexFormat.DrawMode.TRIANGLES)
+                    .buildSnippet();
+
+    public static final RenderPipeline LIGHTING_FULLSCREEN =
+            RenderPipelines.register(
+                    RenderPipeline.builder(LIGHTING_FULLSCREEN_SNIPPET)
+                            .withLocation("pipeline/lighting_fullscreen")
+                            .build()
+            );
+
+
+
     public static final RenderPipeline.Snippet COOL_TERRAIN_SNIPPET = RenderPipeline.builder(RenderPipelines.FOG_AND_SAMPLERS_SNIPPET)
             .withUniform("Projection", UniformType.UNIFORM_BUFFER)
             .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
@@ -52,6 +126,8 @@ public class CustomRenderingPipelines {
             .withSampler("ShadowSampler5")
             .withSampler("ShadowSampler6")
             .withSampler("ShadowSampler7")
+
+            .withSampler("LightBuffer")
 
             .withShaderDefine("MAX_DECAL_DISTANCE", DecalManager.MAX_DISTANCE)
             .withShaderDefine("MAX_LIGHTS", AreaLightManager.MAX_LIGHTS)

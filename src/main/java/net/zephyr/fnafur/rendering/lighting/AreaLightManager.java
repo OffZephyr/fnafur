@@ -84,7 +84,8 @@ public class AreaLightManager {
     }
 
     private static void packLight(ByteBuffer b, AreaLightInstance L) {
-        Vec3d p = L.getPosition();
+        Vec3d cam = MinecraftClient.getInstance().gameRenderer.getCamera().pos;
+        Vec3d p = L.getPosition().subtract(cam);
 
         Vector3f dir = new Vector3f(L.getDirection()).normalize();
         Vector3f col = new Vector3f(L.getColor());

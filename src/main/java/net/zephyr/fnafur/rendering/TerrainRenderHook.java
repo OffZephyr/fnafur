@@ -36,14 +36,17 @@ public final class TerrainRenderHook {
 
     private TerrainRenderHook() {}
 
-    public static void render(SectionRenderState state, BlockRenderLayerGroup group, GpuSampler sampler) {
+    public static void render(SectionRenderState state, BlockRenderLayerGroup group, GpuSampler terrainSampler) {
 
-        Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.ofVanilla("block/white_concrete")));
+//        if(true) return;
+        MinecraftClient mc = MinecraftClient.getInstance();
+        boolean wire = SharedConstants.HOTKEYS && mc.wireFrame;
 
-        float u0 = sprite.getMinU();
-        float v0 = sprite.getMinV();
-        float u1 = sprite.getMaxU();
-        float v1 = sprite.getMaxV();
+        // Ensure screen-sized textures exist (normal/depth/light)
+        LightingPrepassResources.ensureSize(
+                mc.getWindow().getFramebufferWidth(),
+                mc.getWindow().getFramebufferHeight()
+        );
 
         for(ILightHolder holder : AreaLightManager.WORLD_LIGHT_MAP.keySet()){
             if(holder instanceof Entity ent){
@@ -52,77 +55,79 @@ public final class TerrainRenderHook {
                 }
             }
         }
-        if(AreaLightManager.WORLD_LIGHTS.isEmpty() && false) {
-            AreaLightManager.WORLD_LIGHTS.clear();
-            AreaLightInstance lightInstance = new AreaLightInstance(
-                    MinecraftClient.getInstance().player.getEyePos(),
-                    MinecraftClient.getInstance().player.getHeadRotationVector().toVector3f(),
-                    MinecraftClient.getInstance().player.getHeadRotationVector().multiply(-1).toVector3f(),
-                    5,
-                    15,
-                    new Vector3f(1, 1, 1),
-                    1,
-                    0,
-                    0,
-                    1,
-                    0.25f,
-                    new Vector4f(u0, v0, u1, v1),
-                    new Vector4f(u0, v0, u1, v1)
 
-            );
-            AreaLightManager.WORLD_LIGHTS.add(lightInstance);
-        }
-
+        // Gather visible lights
         List<AreaLightInstance> visibleLights = AreaLightManager.getVisibleLights();
 
-        updateLightViewProjMatrices(visibleLights);
-
+        // Shadow maps (your existing pass)
         AreaLightShadowRenderer.renderShadowsForSectionState(state, group, visibleLights);
 
+        // Upload UBOs BEFORE opening any render pass
         DecalManager.getDecalData();
         AreaLightManager.uploadAndGetLightUbo(visibleLights);
 
+        // Only run prepass + fullscreen lighting once (during OPAQUE group)
+        if (group == BlockRenderLayerGroup.OPAQUE) {
+            NormalsPrepassRenderer.renderOpaqueNormalsDepth(state, group, terrainSampler);
+            PositionPrepassRenderer.renderOpaquePosition(state, group, terrainSampler);
+            LightingFullscreenRenderer.renderLightBuffer(visibleLights);
+        }
+
+        // Regular terrain pass
         RenderSystem.ShapeIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.DrawMode.QUADS);
-        GpuBuffer gpuBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexBuffer(state.maxIndicesRequired());
+        GpuBuffer idxBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexBuffer(state.maxIndicesRequired());
         VertexFormat.IndexType indexType = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexType();
 
-        BlockRenderLayer[] layers = group.getLayers();
-        MinecraftClient mc = MinecraftClient.getInstance();
-        boolean wire = SharedConstants.HOTKEYS && mc.wireFrame;
         Framebuffer framebuffer = group.getFramebuffer();
 
-        try (RenderPass renderPass = RenderSystem.getDevice()
+        try (RenderPass pass = RenderSystem.getDevice()
                 .createCommandEncoder()
                 .createRenderPass(
-                        () -> "Cool Terrain for " + group.getName(),
+                        () -> "Cool Terrain " + group.getName(),
                         framebuffer.getColorAttachmentView(),
                         OptionalInt.empty(),
                         framebuffer.getDepthAttachmentView(),
                         OptionalDouble.empty()
                 )) {
 
-            RenderSystem.bindDefaultUniforms(renderPass);
+            RenderSystem.bindDefaultUniforms(pass);
 
-            renderPass.bindTexture(
+            // vanilla lightmap
+            pass.bindTexture(
                     "Sampler2",
                     mc.gameRenderer.getLightmapTextureManager().getGlTextureView(),
                     RenderSystem.getSamplerCache().get(FilterMode.LINEAR)
             );
 
-            var shadowSampler = RenderSystem.getSamplerCache().get(FilterMode.NEAREST);
-            renderPass.bindTexture("ShadowSampler0", AreaLightShadowResources.shadowDepthView[0], shadowSampler);
-            renderPass.bindTexture("ShadowSampler1", AreaLightShadowResources.shadowDepthView[1], shadowSampler);
-            renderPass.bindTexture("ShadowSampler2", AreaLightShadowResources.shadowDepthView[2], shadowSampler);
-            renderPass.bindTexture("ShadowSampler3", AreaLightShadowResources.shadowDepthView[3], shadowSampler);
-            renderPass.bindTexture("ShadowSampler4", AreaLightShadowResources.shadowDepthView[4], shadowSampler);
-            renderPass.bindTexture("ShadowSampler5", AreaLightShadowResources.shadowDepthView[5], shadowSampler);
-            renderPass.bindTexture("ShadowSampler6", AreaLightShadowResources.shadowDepthView[6], shadowSampler);
-            renderPass.bindTexture("ShadowSampler7", AreaLightShadowResources.shadowDepthView[7], shadowSampler);
+            // block atlas
+            pass.bindTexture("Sampler0", state.textureView(), terrainSampler);
 
-            for (BlockRenderLayer layer : layers) {
+            // lighting multiplier buffer
+            pass.bindTexture(
+                    "LightBuffer",
+                    LightingPrepassResources.lightView,
+                    RenderSystem.getSamplerCache().get(FilterMode.LINEAR)
+            );
+
+            // shadows
+            var shadowSampler = RenderSystem.getSamplerCache().get(FilterMode.NEAREST);
+            pass.bindTexture("ShadowSampler0", AreaLightShadowResources.shadowDepthView[0], shadowSampler);
+            pass.bindTexture("ShadowSampler1", AreaLightShadowResources.shadowDepthView[1], shadowSampler);
+            pass.bindTexture("ShadowSampler2", AreaLightShadowResources.shadowDepthView[2], shadowSampler);
+            pass.bindTexture("ShadowSampler3", AreaLightShadowResources.shadowDepthView[3], shadowSampler);
+            pass.bindTexture("ShadowSampler4", AreaLightShadowResources.shadowDepthView[4], shadowSampler);
+            pass.bindTexture("ShadowSampler5", AreaLightShadowResources.shadowDepthView[5], shadowSampler);
+            pass.bindTexture("ShadowSampler6", AreaLightShadowResources.shadowDepthView[6], shadowSampler);
+            pass.bindTexture("ShadowSampler7", AreaLightShadowResources.shadowDepthView[7], shadowSampler);
+
+            // UBOs
+            pass.setUniform("DecalInfo", DecalManager.decal_buffer);
+            pass.setUniform("LightData", AreaLightManager.lightBuffer);
+
+            for (BlockRenderLayer layer : group.getLayers()) {
                 @SuppressWarnings("unchecked")
-                List<RenderPass.RenderObject<GpuBufferSlice[]>> list =
-                        (List<RenderPass.RenderObject<GpuBufferSlice[]>>) state.drawsPerLayer().get(layer);
+                List<RenderPass.RenderObject<com.mojang.blaze3d.buffers.GpuBufferSlice[]>> list =
+                        (List<RenderPass.RenderObject<com.mojang.blaze3d.buffers.GpuBufferSlice[]>>) state.drawsPerLayer().get(layer);
 
                 if (list.isEmpty()) continue;
                 if (layer == BlockRenderLayer.TRANSLUCENT) list = list.reversed();
@@ -134,46 +139,9 @@ public final class TerrainRenderHook {
                     case TRIPWIRE -> CustomRenderingPipelines.COOL_TRIPWIRE_TERRAIN;
                 };
 
-                renderPass.setPipeline(wire ? CustomRenderingPipelines.COOL_WIREFRAME : pipeline);
-
-                renderPass.bindTexture("Sampler0", state.textureView(), sampler);
-
-                renderPass.setUniform("DecalInfo", DecalManager.decal_buffer);
-                renderPass.setUniform("LightData", AreaLightManager.lightBuffer);
-
-                renderPass.drawMultipleIndexed(list, gpuBuffer, indexType, List.of("ChunkSection"), state.chunkSectionInfos());
+                pass.setPipeline(wire ? CustomRenderingPipelines.COOL_WIREFRAME : pipeline);
+                pass.drawMultipleIndexed(list, idxBuffer, indexType, List.of("ChunkSection"), state.chunkSectionInfos());
             }
-        }
-    }
-
-    private static void updateLightViewProjMatrices(List<AreaLightInstance> lights) {
-        Vec3d cam = MinecraftClient.getInstance().gameRenderer.getCamera().pos;
-
-        for (AreaLightInstance L : lights) {
-
-            Vec3d pWorld = L.getPosition();
-            Vector3f dir = L.getDirection();
-
-            Vector3f eye = new Vector3f(
-                    (float) (pWorld.x - cam.x),
-                    (float) (pWorld.y - cam.y),
-                    (float) (pWorld.z - cam.z)
-            );
-            Vector3f center = new Vector3f(eye).add(new Vector3f(dir).mul(Math.max(L.getLength(), 1.0f)));
-
-            Vector3f up = (Math.abs(dir.y) > 0.99f) ? new Vector3f(1, 0, 0) : new Vector3f(0, 1, 0);
-            up = new Vector3f(0, 1, 0);
-
-            Matrix4f view = new Matrix4f().lookAt(eye, center, up);
-
-            float r = Math.max(L.getRadius(), 0.5f);
-            float zNear = 0.1f;
-            float zFar = Math.max(4.0f, L.getLength() + r * 4.0f);
-
-            Matrix4f proj = new Matrix4f().ortho(-r, r, -r, r, zNear, zFar);
-
-            Matrix4f vp = new Matrix4f(proj).mul(view);
-            L.setLightViewProj(vp);
         }
     }
 }

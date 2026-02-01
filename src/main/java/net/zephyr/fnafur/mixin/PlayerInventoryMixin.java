@@ -100,7 +100,7 @@ public class PlayerInventoryMixin {
             ci.setReturnValue(Inventories.splitStack(this.extra, slot - FnafInventoryScreen.SLOTS_OFFSET, amount));
         }
     }
-    @Inject(method = "removeOne", at = @At("HEAD"))
+    @Inject(method = "removeOne(Lnet/minecraft/item/ItemStack;)V", at = @At("HEAD"))
     void removeOne(ItemStack stack, CallbackInfo ci) {
         for (int i = 0; i < this.extra.size(); i++) {
             if (this.extra.get(i) == stack) {

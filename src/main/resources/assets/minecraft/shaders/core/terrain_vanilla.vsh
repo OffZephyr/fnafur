@@ -17,9 +17,6 @@ out float sphericalVertexDistance;
 out float cylindricalVertexDistance;
 out vec4 vertexColor;
 out vec2 texCoord0;
-out vec3 vWorldPos;
-out vec3 vNormal;
-out vec3 vCamRelPos;
 
 vec4 minecraft_sample_lightmap(sampler2D lightMap, ivec2 uv) {
     return texture(lightMap, clamp((uv / 256.0) + 0.5 / 16.0, vec2(0.5 / 16.0), vec2(15.5 / 16.0)));
@@ -27,12 +24,6 @@ vec4 minecraft_sample_lightmap(sampler2D lightMap, ivec2 uv) {
 
 void main() {
     vec3 pos = Position + (ChunkPosition - CameraBlockPos) + CameraOffset;
-    vec3 worldPos = Position + (ChunkPosition);
-
-    vCamRelPos = pos;
-    vWorldPos = worldPos;
-    vNormal = Normal;
-
     gl_Position = ProjMat * ModelViewMat * vec4(pos, 1.0);
 
     sphericalVertexDistance = fog_spherical_distance(pos);

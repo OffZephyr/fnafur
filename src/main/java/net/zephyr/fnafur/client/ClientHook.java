@@ -57,6 +57,7 @@ public class ClientHook {
 
     public static boolean updateCamera(Camera camera, World area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickProgress) {
 
+        if (true) return false;
         float progress = MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks()/20f;
         if(tickTransitionToScreen == 0){
             wasHudHidden = MinecraftClient.getInstance().options.hudHidden;
