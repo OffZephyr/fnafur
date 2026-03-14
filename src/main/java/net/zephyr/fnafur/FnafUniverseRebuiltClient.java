@@ -3,6 +3,8 @@ package net.zephyr.fnafur;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
+import net.zephyr.fnafur.client.rendering.LinkRenderer;
 import net.zephyr.fnafur.init.*;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.block_init.ModelLoading;
@@ -30,6 +32,7 @@ public class FnafUniverseRebuiltClient implements ClientModInitializer {
 		NetworkingInit.registerClientReceivers();
 		net.zephyr.fnafur.networking.PayloadDef.registerS2CPackets();
 		HudRenderCallback.EVENT.register(new net.zephyr.fnafur.client.gui.TabOverlayClass());
+        WorldRenderEvents.BEFORE_TRANSLUCENT.register(LinkRenderer::renderLinks);
 
 		FnafUniverseRebuilt.LOGGER.info("Client Initialized.");
 	}

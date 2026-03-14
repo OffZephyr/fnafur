@@ -511,7 +511,7 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
 
         public boolean mouseClicked(Click click, boolean doubled) {
             if (this.allowConfirmationByKeyboard() && (doubled || click.x() - (double)this.parent.getRowLeft() <= (double)32.0F && this.parent.worldListType == FnafWorldListWidget.WorldListType.SINGLEPLAYER)) {
-                this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                this.client.getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 Consumer<WorldEntry> consumer = this.parent.confirmationCallback;
                 if (consumer != null) {
                     consumer.accept(this);
@@ -524,7 +524,7 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
 
         public boolean keyPressed(KeyInput input) {
             if (input.isEnterOrSpace() && this.allowConfirmationByKeyboard()) {
-                this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                this.client.getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 Consumer<WorldEntry> consumer = this.parent.confirmationCallback;
                 if (consumer != null) {
                     consumer.accept(this);

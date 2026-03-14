@@ -52,7 +52,9 @@ public class BlockEntityInit {
         CPU_CONFIG_PANEL =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "cpu_config_panel"),
                         FabricBlockEntityTypeBuilder.create(CpuConfigPanelBlockEntity::new,
-                                BlockInit.CPU_CONFIG_PANEL).build());
+                                BlockInit.CPU_CONFIG_PANEL,
+                                BlockInit.TRIGGER_BLOCK
+                        ).build());
         CHIP_READER =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "chip_reader"),
                         FabricBlockEntityTypeBuilder.create(ChipReaderBlockEntity::new,

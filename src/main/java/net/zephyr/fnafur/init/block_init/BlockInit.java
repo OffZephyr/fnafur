@@ -24,6 +24,7 @@ import net.zephyr.fnafur.blocks.curtain.CurtainBlockItem;
 import net.zephyr.fnafur.blocks.decorations.BackstageShelfBlock;
 import net.zephyr.fnafur.blocks.decorations.WarehouseShelfBlock;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
+import net.zephyr.fnafur.blocks.dynamic.tiling.vent.VentBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.FuelGeneratorBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.CircuitBreakerBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.ElectricalLockerBlock;
@@ -41,6 +42,7 @@ import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipReaderBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlock;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.trigger_block.TriggerBlock;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench.WorkbenchBlock;
 import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.init.block_init.Palettes.Blocks.*;
@@ -65,6 +67,16 @@ public class BlockInit {
     public static final Block CPU_CONFIG_PANEL = registerBlock(
             "cpu_config_panel",
             CpuConfigPanelBlock::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+                    .nonOpaque()
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+    );
+
+    public static final Block TRIGGER_BLOCK = registerBlock(
+            "trigger_block",
+            TriggerBlock::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
                     .nonOpaque()
                     .solidBlock(Blocks::never)
@@ -305,6 +317,41 @@ public class BlockInit {
             "triangles_wallpaper",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/wallpaper/triangle_wallpaper_template.png"),
             WallpaperPalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block[] TRIANGLES_WALLPAPER2 = registerBlockPalette(
+            "triangles_wallpaper",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/triangle_wallpaper_template.png"),
+            WallPalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block[] CONCRETE = registerBlockPalette(
+            "concrete",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/concrete_template.png"),
+            WallPalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block[] PAINTED_CONCRETE = registerBlockPalette(
+            "painted_concrete",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/painted_concrete_template.png"),
+            WallPalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block[] DIRTY_PAINTED_CONCRETE = registerBlockPalette(
+            "dirty_painted_concrete",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/dirty_painted_concrete_template.png"),
+            WallPalettes.values(),
+            Block::new,
+            AbstractBlock.Settings.copy(Blocks.STONE)
+    );
+    public static final Block[] SPECKLED_STONE = registerBlockPalette(
+            "speckled_stone",
+            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/speckled_stone_template.png"),
+            WallPalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
@@ -1151,6 +1198,11 @@ public class BlockInit {
             RedstoneLampBlock::new,
             AbstractBlock.Settings.copy(Blocks.REDSTONE_LAMP)
     );
+    public static final Block VENT = registerBlock(
+            "vent",
+            VentBlock::new,
+            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+    );
     public static final Block CEILING_TILES_STAINED = registerBlock(
             "ceiling_tiles_stained",
             Random4Block::new,
@@ -1415,6 +1467,7 @@ public class BlockInit {
 
         BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_DIAGONAL, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.CPU_CONFIG_PANEL, BlockRenderLayer.CUTOUT);
+        BlockRenderLayerMap.putBlock(BlockInit.TRIGGER_BLOCK, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.CHIP_READER, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.SERVER_MONITOR, BlockRenderLayer.CUTOUT);
         BlockRenderLayerMap.putBlock(BlockInit.WORKBENCH, BlockRenderLayer.CUTOUT);

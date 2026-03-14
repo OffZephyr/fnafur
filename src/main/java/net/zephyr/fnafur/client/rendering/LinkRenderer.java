@@ -1,9 +1,11 @@
 package net.zephyr.fnafur.client.rendering;
 
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
@@ -28,23 +30,34 @@ import java.util.List;
 
 public class LinkRenderer {
 
-    int frameCount = 0;
-    float moveLerp = 0;
-    public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
+    static int frameCount = 0;
+    static float moveLerp = 0;
+
+
+
+    public static void renderLinks(WorldRenderContext worldRenderContext) {
+        MatrixStack matrices = worldRenderContext.matrices();
+        matrices.push();
+        Vec3d camPos = MinecraftClient.getInstance().gameRenderer.getCamera().getCameraPos();
+        matrices.translate(camPos.multiply(-1));
+        render(matrices, worldRenderContext.commandQueue(), worldRenderContext.consumers());
+        matrices.pop();
+    }
+
+    public static void render(MatrixStack matrices, OrderedRenderCommandQueue queue, VertexConsumerProvider vertexConsumers) {
 
         moveLerp += MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks();
-        int cutLerp = (int)moveLerp / 5;
+        int cutLerp = (int) moveLerp / 5;
         frameCount = cutLerp - ((cutLerp / 4) * 4);
 
-        if(MinecraftClient.getInstance().player != null && !((IUniversePlayer)MinecraftClient.getInstance().player).isUsingVanniMask()){
+        if (MinecraftClient.getInstance().player != null && !((IUniversePlayer) MinecraftClient.getInstance().player).isUsingVanniMask()) {
             return;
         }
 
+        Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
         matrices.push();
-        matrices.translate(-cameraX, -cameraY, -cameraZ);
-
         BlockPos selectPos = BlockPos.ORIGIN;
-        if(MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof WrenchItem) {
+        if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof WrenchItem) {
             NbtCompound nbt = ItemUtil.getNbt(MinecraftClient.getInstance().player.getMainHandStack());
             if (nbt.contains("startLink")) selectPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
 
@@ -70,8 +83,6 @@ public class LinkRenderer {
 
                 Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/link_" + frameCount + ".png");
 
-                VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayers.outlineNoCull(texture));
-
                 Vec3d vec1;
                 if (ent instanceof BlockEntity bent) {
                     vec1 = bent.getPos().toCenterPos();
@@ -82,14 +93,16 @@ public class LinkRenderer {
                 assert MinecraftClient.getInstance().crosshairTarget != null;
                 Vec3d vec2 = MinecraftClient.getInstance().crosshairTarget.getPos();
 
-                drawLink(vec1, vec2, buffer, matrices, true);
+                queue.submitCustom(matrices, RenderLayers.outlineNoCull(texture), ((matricesEntry, vertexConsumer) -> {
+                    drawLink(vec1, vec2, vertexConsumer, matricesEntry, true);
+                }));
 
                 matrices.pop();
             }
         }
 
         List<IEntityDataSaver> blueTargets = new ArrayList<>();
-        for(IEntityDataSaver ent : LinkSource.allSources) {
+        for (IEntityDataSaver ent : LinkSource.allSources) {
 
             for (int i = 0; i < ((LinkSource) ent).getTargets().size(); i++) {
                 IEntityDataSaver target = ((LinkSource) ent).getTargets().get(i);
@@ -101,59 +114,58 @@ public class LinkRenderer {
 
                 Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/link_" + frameCount + ".png");
 
-                VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayers.outlineNoCull(texture));
+                queue.submitCustom(matrices, RenderLayers.outlineNoCull(texture), ((matricesEntry, vertexConsumer) -> {
 
-                Vec3d vec1 = Vec3d.ZERO;
-                if (ent instanceof BlockEntity bent) {
-                    vec1 = bent.getPos().toCenterPos();
-                } else if (ent instanceof Entity ent2) {
-                    vec1 = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
-                }
-                Vec3d vec2 = Vec3d.ZERO;
-                if (target instanceof BlockEntity bent) {
-                    vec2 = bent.getPos().toCenterPos();
-                } else if (target instanceof Entity ent2) {
-                    vec2 = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
-                }
+                    Vec3d vec1 = Vec3d.ZERO;
+                    if (ent instanceof BlockEntity bent) {
+                        vec1 = bent.getPos().toCenterPos();
+                    } else if (ent instanceof Entity ent2) {
+                        vec1 = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
+                    }
+                    Vec3d vec2 = Vec3d.ZERO;
+                    if (target instanceof BlockEntity bent) {
+                        vec2 = bent.getPos().toCenterPos();
+                    } else if (target instanceof Entity ent2) {
+                        vec2 = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
+                    }
 
-                drawLink(vec1, vec2, buffer, matrices, false);
+                    drawLink(vec1, vec2, vertexConsumer, matricesEntry, false);
+                }));
 
                 matrices.pop();
             }
         }
 
-        for(IEntityDataSaver ent : LinkSource.allSources){
+        for (IEntityDataSaver ent : LinkSource.allSources) {
 
             matrices.push();
 
-            Vec3d vec = Vec3d.ZERO;
+            Vec3d vec;
             BlockPos checkPos = BlockPos.ORIGIN;
-            if(ent instanceof BlockEntity bent){
+            if (ent instanceof BlockEntity bent) {
                 vec = bent.getPos().toCenterPos();
                 checkPos = bent.getPos();
-            }
-            else if(ent instanceof Entity ent2){
+            } else if (ent instanceof Entity ent2) {
                 vec = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
                 checkPos = ent2.getBlockPos();
+            } else {
+                vec = Vec3d.ZERO;
             }
 
             boolean bl = !(selectPos != BlockPos.ORIGIN && selectPos.equals(checkPos));
 
             boolean isTarget = ent instanceof LinkTarget;
             String name = isTarget ? "source_target_" : "source_";
-            String color = ((LinkSource)ent).getTargets().isEmpty() && bl ? "red" :  "blue";
+            String color = ((LinkSource) ent).getTargets().isEmpty() && bl ? "red" : "blue";
             String t = "textures/other/link/" + name + color;
-            if(isTarget) t = isTarget && !((LinkTarget)ent).getSources().isEmpty() ? t + "_link" : t;
+            if (isTarget) t = isTarget && !((LinkTarget) ent).getSources().isEmpty() ? t + "_link" : t;
             Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, t + ".png");
-
-            VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayers.outlineNoCull(texture));
 
             float offset = (float) Math.cos(moveLerp / 20f);
             matrices.translate(0, (offset / 10) - 0.25f, 0);
 
-            Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
             float distance2 = 0;
-            for(IEntityDataSaver ent2 : ((LinkSource)ent).getTargets()) {
+            for (IEntityDataSaver ent2 : ((LinkSource) ent).getTargets()) {
                 if (ent2 instanceof BlockEntity bent) {
                     distance2 = Math.max(distance2, (float) camera.getCameraPos().distanceTo(bent.getPos().toCenterPos()));
                 } else if (ent2 instanceof Entity ent3) {
@@ -162,20 +174,22 @@ public class LinkRenderer {
             }
 
             float distance = (float) camera.getCameraPos().distanceTo(vec);
-            float scale = Math.clamp(4 - distance , 0, 1.2f);
-            float scale2 = !bl ? 1.2f : distance2 == 0 ? 0 : Math.clamp(4 - distance2 , 0, 1.2f);
+            float scale = Math.clamp(4 - distance, 0, 1.2f);
+            float scale2 = !bl ? 1.2f : distance2 == 0 ? 0 : Math.clamp(4 - distance2, 0, 1.2f);
 
-            drawIcon(matrices, vec, buffer, Math.max(scale, scale2));
+            queue.submitCustom(matrices, RenderLayers.outlineNoCull(texture), ((matricesEntry, vertexConsumer) -> {
+            }));
+            drawIcon(matrices, vec, queue, RenderLayers.outlineNoCull(texture), Math.max(scale, scale2));
 
-            if(ent.getPersistentData().contains("connectionIndex")){
+            if (ent.getPersistentData().contains("connectionIndex")) {
                 int index = ent.getPersistentData().getInt("connectionIndex", 0);
 
                 StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "metropolis"));
                 Style style = Style.EMPTY.withFont(spriteFont);
                 Text text = Text.literal("" + index).setStyle(style);
 
-                for(IEntityDataSaver target : ((LinkSource)ent).getTargets()){
-                    if(target instanceof BlockEntity){
+                for (IEntityDataSaver target : ((LinkSource) ent).getTargets()) {
+                    if (target instanceof BlockEntity) {
                         int textColor = target.getPersistentData().getInt("usedConnectionIndex", 0) == index ? 0xFF48A7E7 : 0xFFE53E32;
                         drawText(text, matrices, vec, vertexConsumers, Math.max(scale, scale2), textColor);
                     }
@@ -184,27 +198,32 @@ public class LinkRenderer {
 
             matrices.pop();
 
-            blueTargets.addAll(((LinkSource)ent).getTargets());
+            blueTargets.addAll(((LinkSource) ent).getTargets());
         }
-        for(int i = 0; i < LinkTarget.allTargets.size(); i++){
+        for (int i = 0; i < LinkTarget.allTargets.size(); i++) {
             IEntityDataSaver ent = LinkTarget.allTargets.get(i);
 
-            if(ent instanceof Entity ent2 && !(MinecraftClient.getInstance().world.getEntityById(ent2.getId()) instanceof Entity)) continue;
-            if(ent instanceof LinkSource) continue;
+            if (ent instanceof Entity ent2 && !(MinecraftClient.getInstance().world.getEntityById(ent2.getId()) instanceof Entity))
+                continue;
+            if (ent instanceof LinkSource) continue;
             matrices.push();
 
+            String name = "target_";
+            String color = blueTargets.contains(ent) ? "blue" : "red";
+            Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/" + name + color + ".png");
+
+            float offset = (float) Math.sin(moveLerp / 20f);
+            matrices.translate(0, (offset / 10) - 0.25f, 0);
+
             Vec3d vec = Vec3d.ZERO;
-            if(ent instanceof BlockEntity bent){
+            if (ent instanceof BlockEntity bent) {
                 vec = bent.getPos().toCenterPos();
-            }
-            else if(ent instanceof Entity ent2){
+            } else if (ent instanceof Entity ent2) {
                 vec = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
             }
 
-
-            Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
             float distance2 = 0;
-            for(IEntityDataSaver ent2 : ((LinkTarget)ent).getSources()) {
+            for (IEntityDataSaver ent2 : ((LinkTarget) ent).getSources()) {
                 if (ent2 instanceof BlockEntity bent) {
                     distance2 = Math.max(distance2, (float) camera.getCameraPos().distanceTo(bent.getPos().toCenterPos()));
                 } else if (ent2 instanceof Entity ent3) {
@@ -212,28 +231,18 @@ public class LinkRenderer {
                 }
             }
 
-            String name = "target_";
-            String color = blueTargets.contains(ent) ? "blue" :  "red";
-            Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/" + name + color + ".png");
-
-            VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayers.outlineNoCull(texture));
-
-
-            float offset = (float) Math.sin(moveLerp / 20f);
-            matrices.translate(0, (offset / 10) - 0.25f, 0);
-
             float distance = (float) camera.getCameraPos().distanceTo(vec);
-            float scale = Math.clamp(4 - distance , 0, 1.2f);
-            float scale2 = distance2 == 0 ? 0 : Math.clamp(4 - distance2 , 0, 1.2f);
+            float scale = Math.clamp(4 - distance, 0, 1.2f);
+            float scale2 = distance2 == 0 ? 0 : Math.clamp(4 - distance2, 0, 1.2f);
 
-            drawIcon(matrices, vec, buffer, Math.max(scale, scale2));
+            drawIcon(matrices, vec, queue, RenderLayers.outlineNoCull(texture), Math.max(scale, scale2));
 
             matrices.pop();
         }
-            matrices.pop();
+        matrices.pop();
     }
 
-    private void drawLink(Vec3d vec1, Vec3d vec2, VertexConsumer buffer, MatrixStack matrices, boolean forceScale) {
+    private static void drawLink(Vec3d vec1, Vec3d vec2, VertexConsumer buffer, MatrixStack.Entry entry, boolean forceScale) {
 
         Vec3d length = (vec2.add(vec1.multiply(-1)));
 
@@ -257,14 +266,14 @@ public class LinkRenderer {
             float tHeight = 0.5f;
             float vHeight = 0.5f * scale;
 
-            buffer.vertex(matrices.peek().getPositionMatrix(), (float) vec1.x, (float) vec1.y + vHeight, (float) vec1.z)
+            buffer.vertex(entry.getPositionMatrix(), (float) vec1.x, (float) vec1.y + vHeight, (float) vec1.z)
                     .texture(0.5f - tWidth + offset, 0.5f - tHeight)
                     .color(0xFFFFFFFF)
                     .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                     .overlay(OverlayTexture.DEFAULT_UV)
                     .normal(normal.x(), normal.y(), normal.z())
             ;
-            buffer.vertex(matrices.peek().getPositionMatrix(), (float) vec1.x, (float) vec1.y - vHeight, (float) vec1.z)
+            buffer.vertex(entry.getPositionMatrix(), (float) vec1.x, (float) vec1.y - vHeight, (float) vec1.z)
                     .texture(0.5f - tWidth + offset, 0.5f + tHeight)
                     .color(0xFFFFFFFF)
                     .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
@@ -272,14 +281,14 @@ public class LinkRenderer {
                     .normal(normal.x(), normal.y(), normal.z())
             ;
 
-            buffer.vertex(matrices.peek().getPositionMatrix(), (float) vec2.x, (float) vec2.y - vHeight, (float) vec2.z)
+            buffer.vertex(entry.getPositionMatrix(), (float) vec2.x, (float) vec2.y - vHeight, (float) vec2.z)
                     .texture(0.5f + tWidth + offset, 0.5f + tHeight)
                     .color(0xFFFFFFFF)
                     .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                     .overlay(OverlayTexture.DEFAULT_UV)
                     .normal(normal.x(), normal.y(), normal.z())
             ;
-            buffer.vertex(matrices.peek().getPositionMatrix(), (float) vec2.x, (float) vec2.y + vHeight, (float) vec2.z)
+            buffer.vertex(entry.getPositionMatrix(), (float) vec2.x, (float) vec2.y + vHeight, (float) vec2.z)
                     .texture(0.5f + tWidth + offset, 0.5f - tHeight)
                     .color(0xFFFFFFFF)
                     .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
@@ -289,7 +298,7 @@ public class LinkRenderer {
         }
     }
 
-    void drawIcon(MatrixStack matrices, Vec3d vec, VertexConsumer buffer, float scale){
+    static void drawIcon(MatrixStack matrices, Vec3d vec, OrderedRenderCommandQueue queue, RenderLayer layer, float scale){
         matrices.push();
         matrices.translate(vec);
 
@@ -302,11 +311,13 @@ public class LinkRenderer {
 
 
         if(scale > 0){
-            drawQuad(matrices, buffer, normal, scale);
+            queue.submitCustom(matrices, layer, ((matricesEntry, vertexConsumer) -> {
+                drawQuad(matricesEntry, vertexConsumer, normal, scale);
+            }));
         }
         matrices.pop();
     }
-    void drawText(Text text, MatrixStack matrices, Vec3d vec, VertexConsumerProvider vertexConsumers, float scale, int color){
+    static void drawText(Text text, MatrixStack matrices, Vec3d vec, VertexConsumerProvider vertexConsumers, float scale, int color){
         matrices.push();
         matrices.translate(vec);
 
@@ -339,35 +350,35 @@ public class LinkRenderer {
         matrices.pop();
     }
 
-    public void drawQuad(MatrixStack matrices, VertexConsumer buffer, Vector3f normal, float scale){
+    public static void drawQuad(MatrixStack.Entry entry, VertexConsumer buffer, Vector3f normal, float scale){
 
         float tWidth = 0.5f;
         float tHeight = 0.5f;
         float vWidth = 0.5f * scale;
         float vHeight1 = 0.75f * scale;
         float vHeight2 = 0.25f * scale;
-        buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth , -vHeight1, 0.0f)
+        buffer.vertex(entry.getPositionMatrix(), -vWidth , -vHeight1, 0.0f)
                 .texture(0.5f - tWidth, 0.5f - tHeight)
                 .color(0xFFFFFFFF)
                 .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                 .overlay(OverlayTexture.DEFAULT_UV)
                 .normal(normal.x(), normal.y(), normal.z())
         ;
-        buffer.vertex(matrices.peek().getPositionMatrix(), -vWidth, vHeight2, 0.0f)
+        buffer.vertex(entry.getPositionMatrix(), -vWidth, vHeight2, 0.0f)
                 .texture(0.5f - tWidth, 0.5f + tHeight)
                 .color(0xFFFFFFFF)
                 .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                 .overlay(OverlayTexture.DEFAULT_UV)
                 .normal(normal.x(), normal.y(), normal.z())
         ;
-        buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, vHeight2, 0.0f)
+        buffer.vertex(entry.getPositionMatrix(), vWidth, vHeight2, 0.0f)
                 .texture(0.5f + tWidth, 0.5f + tHeight)
                 .color(0xFFFFFFFF)
                 .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                 .overlay(OverlayTexture.DEFAULT_UV)
                 .normal(normal.x(), normal.y(), normal.z())
         ;
-        buffer.vertex(matrices.peek().getPositionMatrix(), vWidth, -vHeight1, 0.0f)
+        buffer.vertex(entry.getPositionMatrix(), vWidth, -vHeight1, 0.0f)
                 .texture(0.5f + tWidth, 0.5f - tHeight)
                 .color(0xFFFFFFFF)
                 .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)

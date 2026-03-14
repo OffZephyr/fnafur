@@ -2,6 +2,7 @@
   "values": [
     "fnafur:ac_unit",
     "fnafur:cpu_config_panel",
+    "fnafur:trigger_block",
     "fnafur:mimic_frame_diagonal",
     "fnafur:chip_reader",
     "fnafur:server_monitor",

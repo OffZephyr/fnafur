@@ -62,6 +62,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
         valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(PropInit.AC_UNIT)
                 .add(BlockInit.CPU_CONFIG_PANEL)
+                .add(BlockInit.TRIGGER_BLOCK)
                 .add(BlockInit.MIMIC_FRAME_DIAGONAL)
                 .add(BlockInit.CHIP_READER)
                 .add(BlockInit.SERVER_MONITOR)

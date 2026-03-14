@@ -1,7 +1,7 @@
 // 1.21.11	-999999999-01-01T00:00:00	Fnaf Universe Rebuilt/Tags for minecraft:block
 c15713a801034b0390579ba26a5279a611bbbcdc data/minecraft/tags/block/bamboo_blocks.json
 a5acfdcf50ca6317232c848267a3e78ba7fae382 data/minecraft/tags/block/climbable.json
-55fc02cd5416cc9dea62fc72fb0357849c97a22b data/minecraft/tags/block/mineable/pickaxe.json
+ff5fb81ce39580c84e8e9d346097b2219f1bf3e0 data/minecraft/tags/block/mineable/pickaxe.json
 bc9f1505533396e34fc0b8b3bf15d6014dc93ebe data/minecraft/tags/block/planks.json
 a566d1ddc2a4d3ace563712b9a55b568ec30c991 data/minecraft/tags/block/sword_efficient.json
 1a4feee68d56e0191495d36c736ad7400fbf3ae4 data/minecraft/tags/block/wool.json

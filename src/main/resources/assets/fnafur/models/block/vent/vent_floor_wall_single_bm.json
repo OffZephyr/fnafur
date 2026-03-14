@@ -1,0 +1,575 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "fnafur:block/vent",
+		"1": "fnafur:block/debug",
+		"particle": "fnafur:block/vent"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"east": {"uv": [0, 0, 8, 6], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"west": {"uv": [0, 0, 8, 6], "texture": "#1"},
+				"up": {"uv": [0, 2.75, 16, 13.25], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "wall1",
+			"origin": [16, 8, 16],
+			"color": 0,
+			"children": [
+				{
+					"name": "UL",
+					"origin": [0, -10, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UM",
+					"origin": [0, -1, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UR",
+					"origin": [8, -2, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CL",
+					"origin": [0, -7, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CR",
+					"origin": [-8, -7, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BL",
+					"origin": [0, -1, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BM",
+					"origin": [0, -8, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BR",
+					"origin": [8, -9, 0],
+					"color": 0,
+					"children": []
+				}
+			]
+		},
+		{
+			"name": "wall2",
+			"origin": [16, 8, 16],
+			"color": 0,
+			"children": [
+				{
+					"name": "UL2",
+					"origin": [0, -10, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UM2",
+					"origin": [0, -1, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UR2",
+					"origin": [8, -2, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CL2",
+					"origin": [0, -7, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CR2",
+					"origin": [32, -7, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BL2",
+					"origin": [0, -1, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BM2",
+					"origin": [-8, -9, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BR2",
+					"origin": [8, -9, 0],
+					"color": 0,
+					"children": []
+				}
+			]
+		},
+		{
+			"name": "wall_end",
+			"origin": [16, 8, 16],
+			"color": 0,
+			"children": [
+				{
+					"name": "UL3",
+					"origin": [0, -10, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UM3",
+					"origin": [-20, -14, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UR3",
+					"origin": [-4, -14, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CL3",
+					"origin": [-9, -7, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CR3",
+					"origin": [25, -7, 15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BL3",
+					"origin": [-9, 9, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BM3",
+					"origin": [-20, -12, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BR3",
+					"origin": [-4, -12, -15],
+					"color": 0,
+					"children": []
+				}
+			]
+		},
+		{
+			"name": "wall_single",
+			"origin": [16, 8, 16],
+			"color": 0,
+			"children": [
+				{
+					"name": "UL4",
+					"origin": [-9, -23, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UM4",
+					"origin": [-20, -14, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UR4",
+					"origin": [-4, -14, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CL4",
+					"origin": [-9, -7, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CR4",
+					"origin": [25, -7, 15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BL4",
+					"origin": [-36, -12, -15],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BM4",
+					"origin": [0, -8, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BR4",
+					"origin": [8, -9, 0],
+					"color": 0,
+					"children": []
+				}
+			]
+		},
+		{
+			"name": "vent1",
+			"origin": [11, -7, 0],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "vent1_end",
+			"origin": [11, -7, 0],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "vent2",
+			"origin": [16, -7, -16],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "vent2_end",
+			"origin": [16, -7, -16],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "vent_single",
+			"origin": [11, -7, 0],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "vent_transition",
+			"origin": [8, 8, 12],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "vent_plus",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "vent_t",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "vent_corner",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "floor_wall1",
+			"origin": [16, 8, 16],
+			"color": 0,
+			"children": [
+				{
+					"name": "UL5",
+					"origin": [0, -6, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UM5",
+					"origin": [0, 3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UR5",
+					"origin": [8, 2, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CL5",
+					"origin": [0, -3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CR5",
+					"origin": [-8, -3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BL5",
+					"origin": [0, 3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BM5",
+					"origin": [0, -4, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BR5",
+					"origin": [8, -5, 0],
+					"color": 0,
+					"children": []
+				}
+			]
+		},
+		{
+			"name": "floor_wall2",
+			"origin": [16, 8, 16],
+			"color": 0,
+			"children": [
+				{
+					"name": "UL6",
+					"origin": [0, -6, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UM6",
+					"origin": [0, 3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UR6",
+					"origin": [8, 2, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CL6",
+					"origin": [0, -3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CR6",
+					"origin": [-8, -3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BL6",
+					"origin": [0, 3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BM6",
+					"origin": [0, -4, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BR6",
+					"origin": [8, -5, 0],
+					"color": 0,
+					"children": []
+				}
+			]
+		},
+		{
+			"name": "floor_wall_end",
+			"origin": [16, 8, 16],
+			"color": 0,
+			"children": [
+				{
+					"name": "UL7",
+					"origin": [0, -6, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UM7",
+					"origin": [0, 3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UR7",
+					"origin": [8, 2, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CL7",
+					"origin": [0, -3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CR7",
+					"origin": [-8, -3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BL7",
+					"origin": [0, 3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BM7",
+					"origin": [0, -4, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BR7",
+					"origin": [8, -5, 0],
+					"color": 0,
+					"children": []
+				}
+			]
+		},
+		{
+			"name": "floor_wall_single",
+			"origin": [16, 8, 16],
+			"color": 0,
+			"children": [
+				{
+					"name": "UL8",
+					"origin": [0, -6, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UM8",
+					"origin": [0, 3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "UR8",
+					"origin": [8, 2, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CL8",
+					"origin": [0, -3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "CR8",
+					"origin": [-8, -3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BL8",
+					"origin": [0, 3, 0],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "BM8",
+					"origin": [0, -4, 0],
+					"color": 0,
+					"children": [0]
+				},
+				{
+					"name": "BR8",
+					"origin": [8, -5, 0],
+					"color": 0,
+					"children": []
+				}
+			]
+		},
+		{
+			"name": "floor_vent1",
+			"origin": [11, -3, 0],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "floor_vent1_end",
+			"origin": [11, -3, 0],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "floor_vent2",
+			"origin": [16, -3, -16],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "floor_vent2_end",
+			"origin": [16, -3, -16],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "floor_vent_single",
+			"origin": [11, -3, 0],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "floor_vent_transition",
+			"origin": [8, 12, 12],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "floor_vent_plus",
+			"origin": [8, 12, 8],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "floor_vent_t",
+			"origin": [8, 12, 8],
+			"color": 0,
+			"children": []
+		},
+		{
+			"name": "floor_vent_corner",
+			"origin": [8, 12, 8],
+			"color": 0,
+			"children": []
+		}
+	]
+}

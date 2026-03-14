@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "fnafur:block/triangles_wallpaper_yellow_2"
+  }
+}

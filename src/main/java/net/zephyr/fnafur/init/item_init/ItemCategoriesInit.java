@@ -319,6 +319,26 @@ public class ItemCategoriesInit {
     public static final ItemCategory BUILDING = ItemCategory.create(ItemCategory.builder()
             .setID("building")
             .addItems(
+                    ItemCategory.Entry.create(BlockInit.TRIANGLES_WALLPAPER[0],
+                            BlockInit.TRIANGLES_WALLPAPER,
+                            BlockInit.TRIANGLES_WALLPAPER2,
+                            new Block[]{
+                                    BlockInit.GRAY_WALL,
+                                    BlockInit.DARK_GRAY_WALL
+                            }
+                    ),
+                    ItemCategory.Entry.create(BlockInit.CONCRETE[0],
+                            BlockInit.CONCRETE
+                    ),
+                    ItemCategory.Entry.create(BlockInit.PAINTED_CONCRETE[0],
+                            BlockInit.PAINTED_CONCRETE
+                    ),
+                    ItemCategory.Entry.create(BlockInit.DIRTY_PAINTED_CONCRETE[0],
+                            BlockInit.DIRTY_PAINTED_CONCRETE
+                    ),
+                    ItemCategory.Entry.create(BlockInit.SPECKLED_STONE[0],
+                            BlockInit.SPECKLED_STONE
+                    ),
                     ItemCategory.Entry.create(BlockInit.CONCRETE_FLOOR,
                             BlockInit.CONCRETE_FLOOR,
                             BlockInit.CONCRETE_FLOOR_DARK,
@@ -328,13 +348,6 @@ public class ItemCategoriesInit {
                             BlockInit.DARK_GRAY_CONCRETE,
                             BlockInit.GRAY_CONCRETE_WALL,
                             BlockInit.GRAY_CONCRETE_WALL_SPLIT
-                    ),
-                    ItemCategory.Entry.create(BlockInit.TRIANGLES_WALLPAPER[0],
-                            BlockInit.TRIANGLES_WALLPAPER,
-                            new Block[]{
-                                    BlockInit.GRAY_WALL,
-                                    BlockInit.DARK_GRAY_WALL
-                            }
                     ),
                     ItemCategory.Entry.create(BlockInit.WHITE_DINER_WALL,
                             BlockInit.WHITE_DINER_WALL,

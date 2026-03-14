@@ -39,7 +39,7 @@ public class DebugRendererMixin {
         stickerPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         tileDoorPlacingRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
 
-        linkRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
+        //linkRenderer.render(matrices, vertexConsumers, cameraX, cameraY, cameraZ);
         matrices.pop();
     }
 }

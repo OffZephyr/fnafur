@@ -144,8 +144,10 @@ public class ItemGroupsInit {
                         entries.add(ItemInit.DEATHCOIN);
                         entries.add(BlockInit.WORKBENCH);
                         entries.add(BlockInit.CPU_CONFIG_PANEL);
+                        entries.add(BlockInit.TRIGGER_BLOCK);
                         entries.add(BlockInit.CHIP_READER);
                         entries.add(BlockInit.SERVER_MONITOR);
+                        entries.add(BlockInit.VENT);
                         //entries.add(ItemInit.ILLUSIONDISC);
 
                         // MIMIC FRAMES

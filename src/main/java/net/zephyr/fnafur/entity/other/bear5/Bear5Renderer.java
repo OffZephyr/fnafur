@@ -40,41 +40,41 @@ public class Bear5Renderer extends EntityRenderer<Bear5Entity, Bear5RenderState>
         //matrices.translate(new Vec3d(renderState.x, renderState.y, renderState.z));
         //matrices.translate(cameraState.entityPos.multiply(1));
         //matrices.translate(-1, 0, -1);
+        matrices.translate(0, 1.5f, 0);
+        matrices.multiply(MinecraftClient.getInstance().gameRenderer.getCamera().getRotation());
         queue.submitCustom(matrices, RenderLayers.outlineNoCull(texture), (entry, buffer) -> {
 
-            matrices.translate(0, 1.5f, 0);
-            matrices.multiply(MinecraftClient.getInstance().gameRenderer.getCamera().getRotation());
 
             buffer
-                    .vertex(matrices.peek().getPositionMatrix(), 0.75f, -1.5f, 0)
+                    .vertex(entry.getPositionMatrix(), 0.75f, -1.5f, 0)
                     .texture(1, 1)
                     //.light(255, 255)
                     //.overlay(0, 0)
                     //.normal(0, 0, 0)
                     .color(0xFFFFFFFF);
             buffer
-                    .vertex(matrices.peek().getPositionMatrix(), 0.75f, 1.5f, 0)
+                    .vertex(entry.getPositionMatrix(), 0.75f, 1.5f, 0)
                     .texture(1, 0)
                     //.light(255, 255)
                     //.overlay(0, 0)
                     //.normal(0, 0, 0)
                     .color(0xFFFFFFFF);
             buffer
-                    .vertex(matrices.peek().getPositionMatrix(), -0.75f, 1.5f, 0)
+                    .vertex(entry.getPositionMatrix(), -0.75f, 1.5f, 0)
                     .texture(0, 0)
                     //.light(255, 255)
                     //.overlay(0, 0)
                     //.normal(0, 0, 0)
                     .color(0xFFFFFFFF);
             buffer
-                    .vertex(matrices.peek().getPositionMatrix(), -0.75f, -1.5f, 0)
+                    .vertex(entry.getPositionMatrix(), -0.75f, -1.5f, 0)
                     .texture(0, 1)
                     //.light(255, 255)
                     //.overlay(0, 0)
                     //.normal(0, 0, 0)
                     .color(0xFFFFFFFF);
-            matrices.pop();
         });
+        matrices.pop();
         super.render(renderState, matrices, queue, cameraState);
     }
 
