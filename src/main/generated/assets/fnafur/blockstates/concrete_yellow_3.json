@@ -1,7 +1,78 @@
 {
   "variants": {
-    "": {
-      "model": "fnafur:block/concrete_yellow_3"
-    }
+    "": [
+      {
+        "model": "fnafur:block/concrete_yellow_3"
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 90
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 180
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 270
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 270,
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 270,
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/concrete_yellow_3",
+        "x": 270,
+        "y": 270
+      }
+    ]
   }
 }

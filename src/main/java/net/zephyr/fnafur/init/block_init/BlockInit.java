@@ -47,7 +47,6 @@ import net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench.WorkbenchB
 import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.init.block_init.Palettes.Blocks.*;
 import net.zephyr.fnafur.init.block_init.Palettes.PaletteEnum;
-import net.zephyr.fnafur.item.block.RandomBlockItem;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -55,12 +54,11 @@ import java.util.function.Function;
 
 public class BlockInit {
 
-    public record PaletteBlock(Block block, String name, PaletteEnum paletteEnum, Identifier templateTexture) {
+    public record PaletteBlock(Block block, String name, PaletteEnum paletteEnum, boolean rotates, Identifier... templateTextures) {
     }
     public static List<PaletteBlock> PALETTES = new ArrayList<>();
 
     public static Boolean randomize = true;
-    public static Map<Block, List<Block>> RANDOM_LIST = new HashMap<>();
 
     /* CUSTOM MODELS */
 
@@ -327,23 +325,19 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
-    public static final Block[] CONCRETE = registerBlockPalette(
+    public static final Block[] CONCRETE = registerRotatingBlockPalette(
             "concrete",
             Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/concrete_template.png"),
             WallPalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
-    public static final Block[] PAINTED_CONCRETE = registerBlockPalette(
+    public static final Block[] PAINTED_CONCRETE = registerBlockPaletteRotatingRandom(
             "painted_concrete",
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/painted_concrete_template.png"),
-            WallPalettes.values(),
-            Block::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-    );
-    public static final Block[] DIRTY_PAINTED_CONCRETE = registerBlockPalette(
-            "dirty_painted_concrete",
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/dirty_painted_concrete_template.png"),
+            new Identifier[]{
+                    Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/painted_concrete_template.png"),
+                    Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/walls/dirty_painted_concrete_template.png"),
+            },
             WallPalettes.values(),
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
@@ -910,35 +904,39 @@ public class BlockInit {
             Block::new,
             AbstractBlock.Settings.copy(Blocks.STONE)
     );
-    public static final Block[] ONE_BY_ONE_TILE_FIRST_DIRTY2 = registerBlockPalette(
-            "one_tile_one_dirty2",
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_dirty2.png"),
-            UnicolorOnePalettes.values(),
-            Block::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-    );
-    public static final Block[] ONE_BY_ONE_TILE_SECOND_DIRTY2 = registerBlockPalette(
-            "one_tile_two_dirty2",
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_two_dirty2.png"),
-            UnicolorTwoPalettes.values(),
-            Block::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-    );
+    //public static final Block[] ONE_BY_ONE_TILE_FIRST_DIRTY2 = registerBlockPalette(
+    //        "one_tile_one_dirty2",
+    //        Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_dirty2.png"),
+    //        UnicolorOnePalettes.values(),
+    //        Block::new,
+    //        AbstractBlock.Settings.copy(Blocks.STONE)
+    //);
+    //public static final Block[] ONE_BY_ONE_TILE_SECOND_DIRTY2 = registerBlockPalette(
+    //        "one_tile_two_dirty2",
+    //        Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_two_dirty2.png"),
+    //        UnicolorTwoPalettes.values(),
+    //        Block::new,
+    //        AbstractBlock.Settings.copy(Blocks.STONE)
+    //);
     public static final Block[] ONE_BY_ONE_TILE_FIRST_DIRTY1 = registerBlockPaletteRandom(
-            "one_tile_one_dirty1",
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_dirty1.png"),
+            "one_tile_one_dirty",
+            new Identifier[]{
+                    Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_dirty1.png"),
+                    Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_dirty2.png")
+            },
             UnicolorOnePalettes.values(),
             Block::new,
-            AbstractBlock.Settings.copy(Blocks.STONE),
-            ONE_BY_ONE_TILE_FIRST_DIRTY2
+            AbstractBlock.Settings.copy(Blocks.STONE)
     );
     public static final Block[] ONE_BY_ONE_TILE_SECOND_DIRTY1 = registerBlockPaletteRandom(
-            "one_tile_two_dirty1",
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_two_dirty1.png"),
+            "one_tile_two_dirty",
+            new Identifier[]{
+                    Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_two_dirty1.png"),
+                    Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/tiles/one_tile_template_two_dirty2.png")
+            },
             UnicolorTwoPalettes.values(),
             Block::new,
-            AbstractBlock.Settings.copy(Blocks.STONE),
-            ONE_BY_ONE_TILE_SECOND_DIRTY2
+            AbstractBlock.Settings.copy(Blocks.STONE)
     );
     public static final Block[] FOUR_BY_FOUR_TILES = registerBlockPalette(
             "four_tile",
@@ -1391,26 +1389,23 @@ public class BlockInit {
 
 
     private static<T extends Enum<T> & PaletteEnum> Block[] registerBlockPalette(String name, Identifier template, T[] palettes, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
-        return registerBlockPalette(name, template, palettes, factory, BlockItem::new, settings);
+        return registerBlockPalette(name, new Identifier[]{template}, palettes, factory, BlockItem::new, false, settings);
+    }
+    private static<T extends Enum<T> & PaletteEnum> Block[] registerRotatingBlockPalette(String name, Identifier template, T[] palettes, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+        return registerBlockPalette(name, new Identifier[]{template}, palettes, factory, BlockItem::new, true, settings);
     }
 
-    private static<T extends Enum<T> & PaletteEnum> Block[] registerBlockPaletteRandom(String name, Identifier template, T[] palettes, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, Block[]... Variants) {
-        Block[] main = registerBlockPalette(name, template, palettes, factory, RandomBlockItem::new, settings);
-        for(int i = 0; i < main.length; i++){
-            Block block = main[i];
-            List<Block> list = new ArrayList<>();
-            list.add(block);
-            for (Block[] array : Variants) {
-                if(main.length == array.length){
-                    list.add(array[i]);
-                }
-            }
-            RANDOM_LIST.put(block, list);
-        }
-        return main;
+    private static<T extends Enum<T> & PaletteEnum> Block[] registerBlockPaletteRandom(String name, Identifier[] templates, T[] palettes, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+        return registerBlockPaletteRandom(name, templates, palettes, factory, false, settings);
+    }
+    private static<T extends Enum<T> & PaletteEnum> Block[] registerBlockPaletteRandom(String name, Identifier[] templates, T[] palettes, Function<AbstractBlock.Settings, Block> factory, boolean rotates, AbstractBlock.Settings settings) {
+        return registerBlockPalette(name, templates, palettes, factory, BlockItem::new, rotates, settings);
+    }
+    private static<T extends Enum<T> & PaletteEnum> Block[] registerBlockPaletteRotatingRandom(String name, Identifier[] templates, T[] palettes, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+        return registerBlockPaletteRandom(name, templates, palettes, factory, true, settings);
     }
 
-    private static<T extends Enum<T> & PaletteEnum> Block[] registerBlockPalette(String name, Identifier template, T[] palettes, Function<AbstractBlock.Settings, Block> factory, BiFunction<Block, Item.Settings, Item> itemFactory, AbstractBlock.Settings settings) {
+    private static<T extends Enum<T> & PaletteEnum> Block[] registerBlockPalette(String name, Identifier[] templates, T[] palettes, Function<AbstractBlock.Settings, Block> factory, BiFunction<Block, Item.Settings, Item> itemFactory, boolean rotate, AbstractBlock.Settings settings) {
         Block[] array = new Block[palettes.length];
         for(int i = 0; i < palettes.length; i++) {
             T palette = palettes[i];
@@ -1421,7 +1416,7 @@ public class BlockInit {
                     settings
             );
             array[i] = block;
-            PALETTES.add(new PaletteBlock(block, name, palette, template));
+            PALETTES.add(new PaletteBlock(block, name, palette, rotate, templates));
         }
         return array;
     }

@@ -333,9 +333,6 @@ public class ItemCategoriesInit {
                     ItemCategory.Entry.create(BlockInit.PAINTED_CONCRETE[0],
                             BlockInit.PAINTED_CONCRETE
                     ),
-                    ItemCategory.Entry.create(BlockInit.DIRTY_PAINTED_CONCRETE[0],
-                            BlockInit.DIRTY_PAINTED_CONCRETE
-                    ),
                     ItemCategory.Entry.create(BlockInit.SPECKLED_STONE[0],
                             BlockInit.SPECKLED_STONE
                     ),

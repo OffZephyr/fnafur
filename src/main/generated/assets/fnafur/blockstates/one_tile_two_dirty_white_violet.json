@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "fnafur:block/one_tile_two_dirty_white_violet"
+      },
+      {
+        "model": "fnafur:block/one_tile_two_dirty_white_violet_2"
+      }
+    ]
+  }
+}

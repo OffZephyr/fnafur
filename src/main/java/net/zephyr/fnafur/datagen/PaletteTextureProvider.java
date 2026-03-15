@@ -7,6 +7,7 @@ import net.minecraft.client.texture.NativeImage;
 import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
 import net.zephyr.fnafur.init.block_init.BlockInit;
@@ -53,9 +54,10 @@ public class PaletteTextureProvider implements DataProvider {
         }
     }
 
-    private NativeImage generateRecoloredImage(BlockInit.PaletteBlock palette) throws IOException {
+    private NativeImage generateRecoloredImage(BlockInit.PaletteBlock palette, Identifier template) throws IOException {
+
         Path baseTexture = output.getModContainer()
-                .findPath("assets/fnafur/" + palette.templateTexture().getPath())
+                .findPath("assets/fnafur/" + template.getPath())
                 .orElseThrow();
 
         Path paletteTexture = output.getModContainer()
@@ -89,16 +91,23 @@ public class PaletteTextureProvider implements DataProvider {
 
     public void generate(DataWriter writer, List<CompletableFuture<?>> futures) throws IOException {
         for (BlockInit.PaletteBlock palette : BlockInit.PALETTES) {
-            NativeImage recolored = generateRecoloredImage(palette);
 
-            Path outPath = output.resolvePath(DataOutput.OutputType.RESOURCE_PACK)
-                    .resolve("fnafur/textures/block/" + palette.name() + "_" + palette.paletteEnum().getName() + ".png");
+            for(int i = 0; i < palette.templateTextures().length; i++) {
+                NativeImage recolored = generateRecoloredImage(palette, palette.templateTextures()[i]);
 
-            HashCode pngHash = writeNativeImageAndHash(recolored, outPath);
+                String suffix = "";
+                if(palette.templateTextures().length > 1 && i != 0) suffix = "_" + (i + 1);
 
-            writer.write(outPath, Files.readAllBytes(outPath), pngHash);
+                Path outPath = output.resolvePath(DataOutput.OutputType.RESOURCE_PACK)
+                        .resolve("fnafur/textures/block/" + palette.name() + "_" + palette.paletteEnum().getName() + suffix + ".png");
 
-            recolored.close();
+                HashCode pngHash = writeNativeImageAndHash(recolored, outPath);
+
+                writer.write(outPath, Files.readAllBytes(outPath), pngHash);
+
+                recolored.close();
+
+            }
         }
 
     }

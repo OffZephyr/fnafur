@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "fnafur:block/one_tile_two_dirty_white_frozen_rose"
+      },
+      {
+        "model": "fnafur:block/one_tile_two_dirty_white_frozen_rose_2"
+      }
+    ]
+  }
+}

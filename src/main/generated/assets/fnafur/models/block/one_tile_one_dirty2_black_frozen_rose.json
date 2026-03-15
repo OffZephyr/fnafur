@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "fnafur:block/one_tile_one_dirty2_black_frozen_rose"
-  }
-}

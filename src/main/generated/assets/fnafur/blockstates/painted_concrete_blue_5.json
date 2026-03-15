@@ -1,7 +1,150 @@
 {
   "variants": {
-    "": {
-      "model": "fnafur:block/painted_concrete_blue_5"
-    }
+    "": [
+      {
+        "model": "fnafur:block/painted_concrete_blue_5"
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 270
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 270,
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 270,
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5",
+        "x": 270,
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2"
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 270
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 270,
+        "y": 90
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 270,
+        "y": 180
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "fnafur:block/painted_concrete_blue_5_2",
+        "x": 270,
+        "y": 270
+      }
+    ]
   }
 }

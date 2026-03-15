@@ -2,6 +2,7 @@ package net.zephyr.fnafur.datagen;
 
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariant;
@@ -11,6 +12,9 @@ import net.minecraft.util.Identifier;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.block_init.Palettes.PaletteManager;
 import net.zephyr.fnafur.init.item_init.ItemInit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModelProvider extends FabricModelProvider {
     public ModelProvider(FabricDataOutput output) {
@@ -154,7 +158,6 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.RED_BRICKS_BLACK_GROUT);
 
 
-
         // WOODEN BLOCKS
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.STAGE_PLANKS);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.STAGE_PLANKS_THIN);
@@ -194,8 +197,27 @@ public class ModelProvider extends FabricModelProvider {
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CHEESE_BLOCK);
         blockStateModelGenerator.registerSimpleCubeAll(BlockInit.CHEESE_BLOCK_WHITE);
 
-        for(BlockInit.PaletteBlock paletteBlock : BlockInit.PALETTES) {
-            blockStateModelGenerator.registerSimpleCubeAll(paletteBlock.block());
+        for (BlockInit.PaletteBlock paletteBlock : BlockInit.PALETTES) {
+
+            if (paletteBlock.rotates()) {
+                //blockStateModelGenerator.registerMirrorable(paletteBlock.block());
+
+                if(paletteBlock.templateTextures().length > 1){
+                    generateRotatingRandomModel(blockStateModelGenerator, paletteBlock.block(), paletteBlock.templateTextures().length);
+                }
+                else{
+                    generateRotatingModel(blockStateModelGenerator, paletteBlock.block());
+                }
+
+            } else {
+
+                if(paletteBlock.templateTextures().length > 1){
+                    generateRandomModel(blockStateModelGenerator, paletteBlock.block(), paletteBlock.templateTextures().length);
+                }
+                else{
+                    blockStateModelGenerator.registerSimpleCubeAll(paletteBlock.block());
+                }
+            }
 
 //            Identifier texture = PaletteManager.getRecoloredIdentifier(paletteBlock.name(), paletteBlock.paletteEnum());
 //
@@ -220,5 +242,100 @@ public class ModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ItemInit.DEATHCOIN, Models.GENERATED);
         itemModelGenerator.register(ItemInit.ILLUSIONDISC, Models.GENERATED);
         //itemModelGenerator.register(Item.fromBlock(BlockInit.CAMERA), Models.GENERATED);
+    }
+
+    public void generateRandomModel(BlockStateModelGenerator blockStateModelGenerator, Block block, int variantLength) {
+
+        List<ModelVariant> modelVariants = new ArrayList<>();
+        for (int i = 1; i <= variantLength; i++) {
+            String suffix = "";
+            if(i != 1) suffix = "_" + i;
+            ModelVariant modelVariant = blockStateModelGenerator.createModelVariant(Models.CUBE_ALL.upload(block, suffix, new TextureMap().put(TextureKey.ALL, TextureMap.getSubId(block, suffix)), blockStateModelGenerator.modelCollector));
+            modelVariants.add(modelVariant);
+        }
+
+        ModelVariant[] variantsArray = modelVariants.toArray(new ModelVariant[0]);
+
+        blockStateModelGenerator.blockStateCollector
+                .accept(
+                        VariantsBlockModelDefinitionCreator.of(
+                                block,
+                                blockStateModelGenerator.createWeightedVariant(
+                                        variantsArray
+                                )
+                        )
+                );
+    }
+    public void generateRotatingRandomModel(BlockStateModelGenerator blockStateModelGenerator, Block block, int variantLength) {
+
+        List<ModelVariant> modelVariants = new ArrayList<>();
+        for (int i = 1; i <= variantLength; i++) {
+            String suffix = "";
+            if(i != 1) suffix = "_" + i;
+            ModelVariant modelVariant = blockStateModelGenerator.createModelVariant(TexturedModel.CUBE_ALL.upload(block, suffix, blockStateModelGenerator.modelCollector));
+
+            List<ModelVariant> list = List.of(
+                    modelVariant,
+                    modelVariant.with(blockStateModelGenerator.ROTATE_X_90),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_X_180),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_X_270),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_90),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_90.then(blockStateModelGenerator.ROTATE_X_90)),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_90.then(blockStateModelGenerator.ROTATE_X_180)),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_90.then(blockStateModelGenerator.ROTATE_X_270)),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_180),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_180.then(blockStateModelGenerator.ROTATE_X_90)),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_180.then(blockStateModelGenerator.ROTATE_X_180)),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_180.then(blockStateModelGenerator.ROTATE_X_270)),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_270),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_270.then(blockStateModelGenerator.ROTATE_X_90)),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_270.then(blockStateModelGenerator.ROTATE_X_180)),
+                    modelVariant.with(blockStateModelGenerator.ROTATE_Y_270.then(blockStateModelGenerator.ROTATE_X_270))
+            );
+
+            modelVariants.addAll(list);
+        }
+
+        ModelVariant[] variantsArray = modelVariants.toArray(new ModelVariant[0]);
+
+        blockStateModelGenerator.blockStateCollector
+                .accept(
+                        VariantsBlockModelDefinitionCreator.of(
+                                block,
+                                blockStateModelGenerator.createWeightedVariant(
+                                        variantsArray
+                                )
+                        )
+                );
+    }
+
+    public void generateRotatingModel(BlockStateModelGenerator blockStateModelGenerator, Block block) {
+
+        ModelVariant modelVariant = blockStateModelGenerator.createModelVariant(TexturedModel.CUBE_ALL.upload(block, blockStateModelGenerator.modelCollector));
+
+        blockStateModelGenerator.blockStateCollector
+                .accept(
+                        VariantsBlockModelDefinitionCreator.of(
+                                block,
+                                blockStateModelGenerator.createWeightedVariant(
+                                        modelVariant,
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_X_90),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_X_180),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_X_270),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_90),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_90.then(blockStateModelGenerator.ROTATE_X_90)),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_90.then(blockStateModelGenerator.ROTATE_X_180)),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_90.then(blockStateModelGenerator.ROTATE_X_270)),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_180),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_180.then(blockStateModelGenerator.ROTATE_X_90)),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_180.then(blockStateModelGenerator.ROTATE_X_180)),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_180.then(blockStateModelGenerator.ROTATE_X_270)),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_270),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_270.then(blockStateModelGenerator.ROTATE_X_90)),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_270.then(blockStateModelGenerator.ROTATE_X_180)),
+                                        modelVariant.with(blockStateModelGenerator.ROTATE_Y_270.then(blockStateModelGenerator.ROTATE_X_270))
+                                )
+                        )
+                );
     }
 }

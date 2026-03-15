@@ -21,26 +21,29 @@ public class PaletteTextureReloader implements SimpleSynchronousResourceReloadLi
         BlockInit.PALETTES.forEach(
                 (PaletteBlock) -> {
                     try {
-                        NativeImage base = NativeImage.read(
-                                manager.getResource(
-                                        PaletteBlock.templateTexture()
-                                ).get().getInputStream()
-                        );
+                        for(Identifier template : PaletteBlock.templateTextures()) {
+                            NativeImage base = NativeImage.read(
+                                    manager.getResource(
+                                            template
+                                    ).get().getInputStream()
+                            );
 
-                        NativeImage palette = NativeImage.read(
-                                manager.getResource(
-                                        PaletteBlock.paletteEnum().getPalette()
-                                ).get().getInputStream()
-                        );
+                            NativeImage palette = NativeImage.read(
+                                    manager.getResource(
+                                            PaletteBlock.paletteEnum().getPalette()
+                                    ).get().getInputStream()
+                            );
 
-                        Map<Integer, Integer> map = PaletteManager.buildPaletteMap(palette);
-                        NativeImage recolored = PaletteManager.applyPalette(base, map);
+                            Map<Integer, Integer> map = PaletteManager.buildPaletteMap(palette);
+                            NativeImage recolored = PaletteManager.applyPalette(base, map);
 
-                        PaletteManager.registerTexture(
-                                PaletteManager.getRecoloredIdentifier(PaletteBlock.name(), PaletteBlock.paletteEnum()),
-                                recolored
-                        );
+                            PaletteManager.registerTexture(
+                                    PaletteManager.getRecoloredIdentifier(PaletteBlock.name(), PaletteBlock.paletteEnum()),
+                                    recolored
+                            );
+                        }
                         FnafUniverseRebuilt.LOGGER.info("Built palette {} texture for {} ({})", PaletteBlock.paletteEnum().getName(), PaletteBlock.block().getName(), PaletteManager.getRecoloredIdentifier(PaletteBlock.name(), PaletteBlock.paletteEnum()));
+
                     } catch (Exception e) {
                         throw new RuntimeException("Failed to build palette " + PaletteBlock.paletteEnum().getName() + " texture for " + PaletteBlock.block().getName(), e);
                     }

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "fnafur:block/one_tile_two_dirty1_white_forest_green"
-  }
-}

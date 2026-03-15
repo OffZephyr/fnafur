@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "fnafur:block/painted_concrete_blue_3"
+  }
+}
