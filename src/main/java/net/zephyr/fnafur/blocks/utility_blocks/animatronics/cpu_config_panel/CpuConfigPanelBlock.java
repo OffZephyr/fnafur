@@ -21,6 +21,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
@@ -45,7 +46,7 @@ public class CpuConfigPanelBlock extends BlockWithEntity {
         if(player.getMainHandStack().isOf(ItemInit.CPU)){
 
             if(world.getBlockEntity(pos) instanceof CpuConfigPanelBlockEntity ent){
-                GoopyNetworkingUtils.setScreen(player, "cpu_config", ((IEntityDataSaver)ent).getPersistentData(), pos);
+                GoopyNetworkingUtils.setScreen(player, ScreensInit.CPU_CONFIG, ((IEntityDataSaver)ent).getPersistentData(), pos);
                 return ActionResult.SUCCESS;
             }
         }

@@ -164,11 +164,6 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
         //if(!player.getMainHandStack().isEmpty()) return ActionResult.PASS;
 
-        //TODO GET RID WHEN GECKOLIB IS DONE TESTING
-//        if(true){
-//            forceCrawl = !forceCrawl;
-//            return ActionResult.SUCCESS;
-//        }
         if(getEntityWorld().isClient()){
             getAnimatableInstanceCache().getManagerForId(getId()).getAnimationControllers().forEach((name, controller) -> {
                 controller.reset();
@@ -1016,6 +1011,11 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         ((IEntityDataSaver)this).getPersistentData().putString("chara", chara);
         ((IEntityDataSaver)this).getPersistentData().putString("suit", alt2);
         ((IEntityDataSaver)this).getPersistentData().putString("eyes", eyes2);
+
+
+        getAnimatableInstanceCache().getManagerForId(getId()).getAnimationControllers().forEach((name, controller) -> {
+            controller.reset();
+        });
     }
     public String getChara(){
         return ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");

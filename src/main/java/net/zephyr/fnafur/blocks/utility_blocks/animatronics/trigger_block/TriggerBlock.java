@@ -20,7 +20,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlockEntity;
+import net.zephyr.fnafur.init.ScreensInit;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
@@ -41,12 +41,10 @@ public class TriggerBlock extends BlockWithEntity {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if(player.getMainHandStack().isOf(ItemInit.CPU)){
 
-            if(world.getBlockEntity(pos) instanceof CpuConfigPanelBlockEntity ent){
-                GoopyNetworkingUtils.setScreen(player, "cpu_config", ((IEntityDataSaver)ent).getPersistentData(), pos);
-                return ActionResult.SUCCESS;
-            }
+        if(world.getBlockEntity(pos) instanceof TriggerBlockEntity ent){
+            GoopyNetworkingUtils.setScreen(player, ScreensInit.TRIGGER, ((IEntityDataSaver)ent).getPersistentData(), pos);
+            return ActionResult.SUCCESS;
         }
             return ActionResult.PASS;
     }
@@ -59,7 +57,7 @@ public class TriggerBlock extends BlockWithEntity {
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new CpuConfigPanelBlockEntity(pos, state);
+        return new TriggerBlockEntity(pos, state);
     }
 
     @Override
@@ -84,7 +82,7 @@ public class TriggerBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, BlockEntityInit.CPU_CONFIG_PANEL,
+        return validateTicker(type, BlockEntityInit.TRIGGER_BLOCK,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
     }
 }

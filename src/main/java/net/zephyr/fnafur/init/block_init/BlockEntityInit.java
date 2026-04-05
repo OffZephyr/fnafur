@@ -29,9 +29,11 @@ import net.zephyr.fnafur.blocks.utility_blocks.animatronics.chip_reader.ChipRead
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.server_monitor.ServerMonitorBlockEntity;
+import net.zephyr.fnafur.blocks.utility_blocks.animatronics.trigger_block.TriggerBlockEntity;
 
 public class BlockEntityInit {
     public static BlockEntityType<CpuConfigPanelBlockEntity> CPU_CONFIG_PANEL;
+    public static BlockEntityType<TriggerBlockEntity> TRIGGER_BLOCK;
     public static BlockEntityType<ChipReaderBlockEntity> CHIP_READER;
     public static BlockEntityType<ServerMonitorBlockEntity> SERVER_MONITOR;
     public static BlockEntityType<FogBlockEntity> FOG_BLOCK;
@@ -52,7 +54,11 @@ public class BlockEntityInit {
         CPU_CONFIG_PANEL =
                 Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "cpu_config_panel"),
                         FabricBlockEntityTypeBuilder.create(CpuConfigPanelBlockEntity::new,
-                                BlockInit.CPU_CONFIG_PANEL,
+                                BlockInit.CPU_CONFIG_PANEL
+                        ).build());
+        TRIGGER_BLOCK =
+                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "trigger_block"),
+                        FabricBlockEntityTypeBuilder.create(TriggerBlockEntity::new,
                                 BlockInit.TRIGGER_BLOCK
                         ).build());
         CHIP_READER =
