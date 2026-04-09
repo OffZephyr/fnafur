@@ -5,9 +5,9 @@ import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.BlockRenderLayerGroup;
-import net.minecraft.client.render.SectionRenderState;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayerGroup;
+import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 
 import java.util.List;
@@ -19,8 +19,8 @@ public final class AreaLightShadowRenderer {
     private AreaLightShadowRenderer() {}
 
     public static void renderShadowsForSectionState(
-            SectionRenderState state,
-            BlockRenderLayerGroup group,
+            ChunkSectionsToRender state,
+            ChunkSectionLayerGroup group,
             List<AreaLightInstance> visibleLights
     ) {
         for (AreaLightInstance L : visibleLights) {
@@ -30,9 +30,9 @@ public final class AreaLightShadowRenderer {
         int shadowCount = Math.min(visibleLights.size(), AreaLightShadowResources.MAX_SHADOWED_LIGHTS);
         if (shadowCount == 0) return;
 
-        RenderSystem.ShapeIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.DrawMode.QUADS);
-        GpuBuffer gpuBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexBuffer(state.maxIndicesRequired());
-        VertexFormat.IndexType indexType = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexType();
+        RenderSystem.AutoStorageIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+        GpuBuffer gpuBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getBuffer(state.maxIndicesRequired());
+        VertexFormat.IndexType indexType = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.type();
 
         for (int si = 0; si < shadowCount; si++) {
             AreaLightInstance L = visibleLights.get(si);
@@ -56,12 +56,12 @@ public final class AreaLightShadowRenderer {
                 pass.setPipeline(CustomRenderingPipelines.AREA_LIGHT_SHADOW);
                 pass.setUniform("LightShadow", LightShadowUbo.buffer);
 
-                for (BlockRenderLayer layer : group.getLayers()) {
-                    if (layer == BlockRenderLayer.TRANSLUCENT) continue;
+                for (ChunkSectionLayer layer : group.layers()) {
+                    if (layer == ChunkSectionLayer.TRANSLUCENT) continue;
 
                     @SuppressWarnings("unchecked")
-                    List<RenderPass.RenderObject<GpuBufferSlice[]>> list =
-                            (List<RenderPass.RenderObject<GpuBufferSlice[]>>) state.drawsPerLayer().get(layer);
+                    List<RenderPass.Draw<GpuBufferSlice[]>> list =
+                            (List<RenderPass.Draw<GpuBufferSlice[]>>) state.drawsPerLayer().get(layer);
 
                     if (list.isEmpty()) continue;
 

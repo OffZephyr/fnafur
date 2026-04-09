@@ -1,25 +1,27 @@
 package net.zephyr.fnafur.item.tools;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.nbt.*;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.rendering.decals.DecalManager;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
@@ -28,30 +30,30 @@ import org.jspecify.annotations.Nullable;
 
 public class DecalBookItem extends Item {
     public static final int MAX_STICKER_AMOUNT = 5;
-    public DecalBookItem(Settings settings) {
+    public DecalBookItem(Properties settings) {
         super(settings);
     }
 
     @Override
-    public boolean allowContinuingBlockBreaking(PlayerEntity player, ItemStack oldStack, ItemStack newStack) {
+    public boolean allowContinuingBlockBreaking(Player player, ItemStack oldStack, ItemStack newStack) {
         return super.allowContinuingBlockBreaking(player, oldStack, newStack);
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        if(user.isSneaking()){
-            NbtCompound nbt = ItemUtil.getNbt(user.getMainHandStack());
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        if(user.isShiftKeyDown()){
+            CompoundTag nbt = ItemUtil.getNbt(user.getMainHandItem());
             nbt.putString("activeDecal", "");
-            ItemUtil.setNbt(user.getMainHandStack(), nbt);
-            user.sendMessage(Text.translatable("decal_book.clear"), true);
-            return ActionResult.SUCCESS;
+            ItemUtil.setNbt(user.getMainHandItem(), nbt);
+            user.displayClientMessage(Component.translatable("decal_book.clear"), true);
+            return InteractionResult.SUCCESS;
         }
-        NbtCompound nbt = ItemUtil.getNbt(user.getMainHandStack());
-        if(!nbt.getBoolean("isHolding", false)){
+        CompoundTag nbt = ItemUtil.getNbt(user.getMainHandItem());
+        if(!nbt.getBooleanOr("isHolding", false)){
             GoopyNetworkingUtils.setScreen(user, "decal_book_edit");
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
     public static DecalInit.Decal getDecal(ItemStack stack){
@@ -64,37 +66,37 @@ public class DecalBookItem extends Item {
 
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
+    public InteractionResult useOn(UseOnContext context) {
 
-        if(context.getWorld().isClient()){
+        if(context.getLevel().isClientSide()){
             if(DecalManager.PREVIEW_DECAL != null){
 
                 if(DecalManager.PREVIEW_DECAL.addToWorld()){
-                    context.getWorld().playSound(context.getPlayer(), context.getBlockPos().getX(), context.getBlockPos().getY(), context.getBlockPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 1, 1);
-                    return ActionResult.SUCCESS;
+                    context.getLevel().playSound(context.getPlayer(), context.getClickedPos().getX(), context.getClickedPos().getY(), context.getClickedPos().getZ(), SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS, 1, 1);
+                    return InteractionResult.SUCCESS;
                 }
 
-                return ActionResult.FAIL;
+                return InteractionResult.FAIL;
             }
-            NbtCompound nbt = ItemUtil.getNbt(context.getStack());
+            CompoundTag nbt = ItemUtil.getNbt(context.getItemInHand());
             nbt.putBoolean("isHolding", true);
-            ItemUtil.setNbt(context.getStack(), nbt);
+            ItemUtil.setNbt(context.getItemInHand(), nbt);
         }
-        return context.getPlayer().isSneaking() || DecalBookItem.getDecal(context.getPlayer().getMainHandStack()) == null ? ActionResult.PASS : ActionResult.FAIL;
+        return context.getPlayer().isShiftKeyDown() || DecalBookItem.getDecal(context.getPlayer().getMainHandItem()) == null ? InteractionResult.PASS : InteractionResult.FAIL;
     }
 
     @Override
-    public boolean onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        NbtCompound nbt = ItemUtil.getNbt(stack);
+    public boolean releaseUsing(ItemStack stack, Level world, LivingEntity user, int remainingUseTicks) {
+        CompoundTag nbt = ItemUtil.getNbt(stack);
         nbt.putBoolean("isHolding", false);
         ItemUtil.setNbt(stack, nbt);
 
-        return super.onStoppedUsing(stack, world, user, remainingUseTicks);
+        return super.releaseUsing(stack, world, user, remainingUseTicks);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
-        NbtCompound nbt = ItemUtil.getNbt(stack);
+    public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, @Nullable EquipmentSlot slot) {
+        CompoundTag nbt = ItemUtil.getNbt(stack);
         nbt.putBoolean("isHolding", false);
         ItemUtil.setNbt(stack, nbt);
 
@@ -106,16 +108,16 @@ public class DecalBookItem extends Item {
 
 
         if(movementMode == DecalInit.Movable.VERTICAL){
-            while(MinecraftClient.getInstance().world.getBlockState(checkedPos.offset(direction.rotateYClockwise())).getCollisionShape(MinecraftClient.getInstance().world, checkedPos) != VoxelShapes.empty() && MinecraftClient.getInstance().world.getBlockState(checkedPos.offset(direction.rotateYClockwise()).offset(direction)).getCollisionShape(MinecraftClient.getInstance().world, checkedPos) == VoxelShapes.empty()){
-                checkedPos = checkedPos.offset(direction.rotateYClockwise());
+            while(Minecraft.getInstance().level.getBlockState(checkedPos.relative(direction.getClockWise())).getCollisionShape(Minecraft.getInstance().level, checkedPos) != Shapes.empty() && Minecraft.getInstance().level.getBlockState(checkedPos.relative(direction.getClockWise()).relative(direction)).getCollisionShape(Minecraft.getInstance().level, checkedPos) == Shapes.empty()){
+                checkedPos = checkedPos.relative(direction.getClockWise());
             }
             if(direction == Direction.NORTH || direction == Direction.EAST){
-                checkedPos = checkedPos.offset(direction.rotateYClockwise());
+                checkedPos = checkedPos.relative(direction.getClockWise());
             }
         }
         else if(movementMode == DecalInit.Movable.HORIZONTAL){
-            while(MinecraftClient.getInstance().world.getBlockState(checkedPos.down()).getCollisionShape(MinecraftClient.getInstance().world, checkedPos) != VoxelShapes.empty() && MinecraftClient.getInstance().world.getBlockState(checkedPos.down().offset(direction)).getCollisionShape(MinecraftClient.getInstance().world, checkedPos) == VoxelShapes.empty()){
-                checkedPos = checkedPos.down();
+            while(Minecraft.getInstance().level.getBlockState(checkedPos.below()).getCollisionShape(Minecraft.getInstance().level, checkedPos) != Shapes.empty() && Minecraft.getInstance().level.getBlockState(checkedPos.below().relative(direction)).getCollisionShape(Minecraft.getInstance().level, checkedPos) == Shapes.empty()){
+                checkedPos = checkedPos.below();
             }
         }
 
@@ -136,8 +138,8 @@ public class DecalBookItem extends Item {
         BlockPos checkedPos = pos;
 
         if(movementMode == DecalInit.Movable.VERTICAL){
-            while (MinecraftClient.getInstance().world.getBlockState(checkedPos.offset(direction.rotateYCounterclockwise())).getCollisionShape(MinecraftClient.getInstance().world, checkedPos) != VoxelShapes.empty() && MinecraftClient.getInstance().world.getBlockState(checkedPos.offset(direction.rotateYCounterclockwise()).offset(direction)).getCollisionShape(MinecraftClient.getInstance().world, checkedPos) == VoxelShapes.empty()) {
-                checkedPos = checkedPos.offset(direction.rotateYCounterclockwise());
+            while (Minecraft.getInstance().level.getBlockState(checkedPos.relative(direction.getCounterClockWise())).getCollisionShape(Minecraft.getInstance().level, checkedPos) != Shapes.empty() && Minecraft.getInstance().level.getBlockState(checkedPos.relative(direction.getCounterClockWise()).relative(direction)).getCollisionShape(Minecraft.getInstance().level, checkedPos) == Shapes.empty()) {
+                checkedPos = checkedPos.relative(direction.getCounterClockWise());
                 i++;
             }
             if (direction == Direction.NORTH || direction == Direction.EAST) {
@@ -145,8 +147,8 @@ public class DecalBookItem extends Item {
             }
         }
         else if(movementMode == DecalInit.Movable.HORIZONTAL){
-            while (MinecraftClient.getInstance().world.getBlockState(checkedPos.up()).getCollisionShape(MinecraftClient.getInstance().world, checkedPos) != VoxelShapes.empty() && MinecraftClient.getInstance().world.getBlockState(checkedPos.up().offset(direction)).getCollisionShape(MinecraftClient.getInstance().world, checkedPos) == VoxelShapes.empty()) {
-                checkedPos = checkedPos.up();
+            while (Minecraft.getInstance().level.getBlockState(checkedPos.above()).getCollisionShape(Minecraft.getInstance().level, checkedPos) != Shapes.empty() && Minecraft.getInstance().level.getBlockState(checkedPos.above().relative(direction)).getCollisionShape(Minecraft.getInstance().level, checkedPos) == Shapes.empty()) {
+                checkedPos = checkedPos.above();
                 i++;
             }
         }
@@ -163,17 +165,17 @@ public class DecalBookItem extends Item {
         return i;
     }
 
-    public static Vec3d stickerPos(BlockPos pos, Vec3d hitPos, Direction direction, DecalInit.Decal decal, PlayerEntity player, World world){
+    public static Vec3 stickerPos(BlockPos pos, Vec3 hitPos, Direction direction, DecalInit.Decal decal, Player player, Level world){
 
-        boolean snapBelow = world.getBlockState(pos.down()).isSideSolidFullSquare(world, pos.down(), direction);
-        boolean snapAbove = world.getBlockState(pos.up()).isSideSolidFullSquare(world, pos.up(), direction);
+        boolean snapBelow = world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), direction);
+        boolean snapAbove = world.getBlockState(pos.above()).isFaceSturdy(world, pos.above(), direction);
 
         String name = decal.name();
 
-        double yOffset = hitPos.getY() - pos.getY() - decal.mouseOffset();
+        double yOffset = hitPos.y() - pos.getY() - decal.mouseOffset();
 
-        double xOffset = hitPos.getX() - pos.getX() - decal.mouseOffset();
-        double zOffset = hitPos.getZ() - pos.getZ() - decal.mouseOffset();
+        double xOffset = hitPos.x() - pos.getX() - decal.mouseOffset();
+        double zOffset = hitPos.z() - pos.getZ() - decal.mouseOffset();
 
         float grid = decal.getPixelDensity();
         float space = decal.getSize();
@@ -192,7 +194,7 @@ public class DecalBookItem extends Item {
 
             y = Math.round(y / SnapGrid) * SnapGrid;
 
-            if (player.isSneaking()) {
+            if (player.isShiftKeyDown()) {
                 y = ((Math.round((y) / 0.2f) * 0.5f) / grid) * space;
                 //space = space / 4f;
 
@@ -206,7 +208,7 @@ public class DecalBookItem extends Item {
 
             x = Math.round(x / SnapGrid) * SnapGrid;
 
-            if (player.isSneaking()) {
+            if (player.isShiftKeyDown()) {
                 x = ((Math.round((x) / 0.2f) * 0.5f) / grid) * space;
                 //space = space / 4f;
 
@@ -217,7 +219,7 @@ public class DecalBookItem extends Item {
 
             z = Math.round(z / SnapGrid) * SnapGrid;
 
-            if (player.isSneaking()) {
+            if (player.isShiftKeyDown()) {
                 z = ((Math.round((z) / 0.2f) * 0.5f) / grid) * space;
                 //space = space / 4f;
 
@@ -232,6 +234,6 @@ public class DecalBookItem extends Item {
             z = 0;
         }
 
-        return new Vec3d(x, y, z);
+        return new Vec3(x, y, z);
     }
 }

@@ -1,41 +1,42 @@
 package net.zephyr.fnafur.blocks.energy.blocks.switches;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 
 import javax.swing.plaf.ComponentUI;
 
 public class CircuitBreakerBlock extends BaseWallSwitchBlock {
 
     public static String KEY_CIRCUIT_OPEN = "circuit_open";
-    public static BooleanProperty CIRCUIT_OPEN = BooleanProperty.of(KEY_CIRCUIT_OPEN);
+    public static BooleanProperty CIRCUIT_OPEN = BooleanProperty.create(KEY_CIRCUIT_OPEN);
 
-    public CircuitBreakerBlock(Settings settings) {
+    public CircuitBreakerBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        world.setBlockState(pos, state.cycle(CIRCUIT_OPEN));
-        return ActionResult.PASS;
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        world.setBlockAndUpdate(pos, state.cycle(CIRCUIT_OPEN));
+        return InteractionResult.PASS;
     }
 
     @Override
-    public boolean isPowered(BlockView world, BlockPos pos) {
-        return world.getBlockState(pos).get(CIRCUIT_OPEN) && super.isPowered(world, pos);
+    public boolean isPowered(BlockGetter world, BlockPos pos) {
+        return world.getBlockState(pos).getValue(CIRCUIT_OPEN) && super.isPowered(world, pos);
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder builder) {
         builder.add(CIRCUIT_OPEN);
-        super.appendProperties(builder);
+        super.createBlockStateDefinition(builder);
     }
 
 }

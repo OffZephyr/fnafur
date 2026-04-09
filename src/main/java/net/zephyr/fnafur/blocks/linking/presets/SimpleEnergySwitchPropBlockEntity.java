@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.linking.presets;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.BlockPos;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.links.energy.EnergySourceTargetPropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
@@ -15,9 +15,9 @@ public class SimpleEnergySwitchPropBlockEntity extends EnergySourceTargetPropBlo
 
     @Override
     public boolean isSendingPower(IEntityDataSaver target) {
-        BlockState state = getWorld().getBlockState(getPos());
-        if(state.contains(Properties.POWERED)){
-            return state.get(Properties.POWERED) && isReceivingPower();
+        BlockState state = getLevel().getBlockState(getBlockPos());
+        if(state.hasProperty(BlockStateProperties.POWERED)){
+            return state.getValue(BlockStateProperties.POWERED) && isReceivingPower();
         }
         return false;
     }

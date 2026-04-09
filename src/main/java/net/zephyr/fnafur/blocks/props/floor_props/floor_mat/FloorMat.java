@@ -1,19 +1,20 @@
 package net.zephyr.fnafur.blocks.props.floor_props.floor_mat;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.floor_props.floor_trash.FloorTrashSkins;
 import org.lwjgl.system.Pointer;
 
 public class FloorMat extends FloorPropBlock<DefaultPropColorEnum> {
-    public FloorMat(Settings settings) { super(settings);
+    public FloorMat(Properties settings) { super(settings);
     }
 
     @Override
@@ -22,15 +23,15 @@ public class FloorMat extends FloorPropBlock<DefaultPropColorEnum> {
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.25, 0, -0.05, 1.25, 0.07, 1.05)));
-        return drawingOutline ? shape : VoxelShapes.fullCube();
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.or(shape, Shapes.create(new AABB(-0.25, 0, -0.05, 1.25, 0.07, 1.05)));
+        return drawingOutline ? shape : Shapes.block();
     }
 
     @Override
-    protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
-        return VoxelShapes.fullCube();
+    protected VoxelShape getInteractionShape(BlockState state, BlockGetter world, BlockPos pos) {
+        return Shapes.block();
     }
 
 

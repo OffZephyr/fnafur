@@ -2,15 +2,15 @@ package net.zephyr.fnafur.client.gui.screens.creative_menu;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.impl.itemgroup.FabricItemGroupBuilderImpl;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 import java.util.ArrayList;
@@ -30,14 +30,14 @@ public class ItemCategory {
     }
 
     void createSearchItems() {
-        Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, ID),
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, ID),
                 FabricItemGroup.builder()
-                        .displayName(Text.translatable(FnafUniverseRebuilt.MOD_ID + "." + ID))
-                        .noRenderedName()
+                        .title(Component.translatable(FnafUniverseRebuilt.MOD_ID + "." + ID))
+                        .hideTitle()
                         .icon(() -> new ItemStack(Blocks.STONE))
-                        .entries((displayContext, entries) -> {
+                        .displayItems((displayContext, entries) -> {
                             ITEM_ENTRIES.forEach((entry) -> {
-                                entries.addAll(entry.items(), ItemGroup.StackVisibility.SEARCH_TAB_ONLY);
+                                entries.acceptAll(entry.items(), CreativeModeTab.TabVisibility.SEARCH_TAB_ONLY);
                             });
                         }).build());
     }
@@ -63,23 +63,23 @@ public class ItemCategory {
 
     public record Entry(ItemStack icon, Collection<ItemStack> items) {
 
-        public static Entry create(ItemConvertible icon, ItemConvertible[]... items) {
-            List<ItemConvertible> list = new ArrayList<>();
+        public static Entry create(ItemLike icon, ItemLike[]... items) {
+            List<ItemLike> list = new ArrayList<>();
 
-            for(ItemConvertible[] itemCollection : items) {
+            for(ItemLike[] itemCollection : items) {
                 list.addAll(Arrays.asList(itemCollection));
             }
 
-            ItemConvertible[] array = new ItemConvertible[list.size()];
+            ItemLike[] array = new ItemLike[list.size()];
             array = list.toArray(array);
             return create(new ItemStack(icon), array);
         }
 
-        public static Entry create(ItemConvertible icon, ItemConvertible... items) {
+        public static Entry create(ItemLike icon, ItemLike... items) {
             return create(new ItemStack(icon), items);
         }
 
-        public static Entry create(ItemStack icon, ItemConvertible... items) {
+        public static Entry create(ItemStack icon, ItemLike... items) {
             ItemStack[] itemStacks = new ItemStack[items.length];
             for (int i = 0; i < items.length; i++) {
                 itemStacks[i] = new ItemStack(items[i]);
@@ -87,7 +87,7 @@ public class ItemCategory {
             return create(icon, itemStacks);
         }
 
-        public static Entry create(ItemConvertible icon, ItemStack... items) {
+        public static Entry create(ItemLike icon, ItemStack... items) {
             return create(new ItemStack(icon), items);
         }
         public static Entry create(ItemStack icon, ItemStack... items) {

@@ -1,6 +1,6 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.client.gui.screen.DeathScreen;
+import net.minecraft.client.gui.screens.DeathScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,16 +11,16 @@ public class DeathScreenMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void customDeathScreen(CallbackInfo ci) {
-        /*if(MinecraftClient.getInstance().player.getLastAttacker() instanceof FnafUniverseRebuiltEntity entity && entity.hasJumpScare()) {
-            NbtCompound deathNbt = new NbtCompound();
-            deathNbt.putBoolean("isHardcore", MinecraftClient.getInstance().world.getLevelProperties().isHardcore());
+        /*if(Minecraft.getInstance().player.getLastAttacker() instanceof FnafUniverseRebuiltEntity entity && entity.hasJumpScare()) {
+            CompoundTag deathNbt = new CompoundTag();
+            deathNbt.putBoolean("isHardcore", Minecraft.getInstance().level.getLevelProperties().isHardcore());
             String index = entity.killScreenID;
 
             ClientHook.openScreen(index, deathNbt, entity.getId());
         }*/
-        //if(MinecraftClient.getInstance().world.getEntityById(((IEntityDataSaver)MinecraftClient.getInstance().player).getPersistentData().getInt("JumpscareID")) instanceof DefaultEntity entity && entity.hasJumpScare()) {
-        //NbtCompound deathNbt = new NbtCompound();
-        //deathNbt.putBoolean("isHardcore", MinecraftClient.getInstance().world.getLevelProperties().isHardcore());
+        //if(Minecraft.getInstance().level.getEntityById(((IEntityDataSaver)Minecraft.getInstance().player).getPersistentData().getInt("JumpscareID")) instanceof DefaultEntity entity && entity.hasJumpScare()) {
+        //CompoundTag deathNbt = new CompoundTag();
+        //deathNbt.putBoolean("isHardcore", Minecraft.getInstance().level.getLevelProperties().isHardcore());
         //String index = entity.killScreenID;
 
         //GoopyNetworkingUtils.setClientScreen(index, deathNbt, entity.getId());

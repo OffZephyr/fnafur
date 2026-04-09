@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.blocks.geo_doors;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.init.block_init.GeoBlockEntityInit;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
@@ -48,21 +48,21 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
         return this.cache;
     }
 
-    public void tick(World world, BlockPos pos, BlockState state, GeoDoorEntity blockEntity) {
-        if(state.get(GeoDoor.MAIN)) {
-            Box box = ((GeoDoor) state.getBlock()).getEntityArea(state, pos);
+    public void tick(Level world, BlockPos pos, BlockState state, GeoDoorEntity blockEntity) {
+        if(state.getValue(GeoDoor.MAIN)) {
+            AABB box = ((GeoDoor) state.getBlock()).getEntityArea(state, pos);
             Entity entity = checkOpen(world, box);
             open = entity != null;
 
             for(BlockPos pos1 : ((GeoDoor) state.getBlock()).doorPos(state, pos)){
                 BlockState doorState = world.getBlockState(pos1);
-                if(doorState.contains(GeoDoor.OPEN)) {
-                    world.setBlockState(pos1, doorState.with(GeoDoor.OPEN, open));
+                if(doorState.hasProperty(GeoDoor.OPEN)) {
+                    world.setBlockAndUpdate(pos1, doorState.setValue(GeoDoor.OPEN, open));
                 }
             }
             if(open) {
-                float rot = state.get(GeoDoor.FACING).getPositiveHorizontalDegrees();
-                float entityRot = entity.getYaw() + 90 - rot;
+                float rot = state.getValue(GeoDoor.FACING).toYRot();
+                float entityRot = entity.getYRot() + 90 - rot;
                 int turns = (int) (entityRot / 360);
                 float entityYaw = entityRot - (360 * turns);
                 entityYaw = entityRot < 0 ? 360 + entityYaw : entityYaw;
@@ -71,12 +71,12 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
             }
         }
     }
-    private Entity checkOpen(World world, Box box){
-        List<Entity> list = world.getOtherEntities(null, box);
+    private Entity checkOpen(Level world, AABB box){
+        List<Entity> list = world.getEntities(null, box);
         if(list.isEmpty()) return null;
         for(Entity ent : list){
-            BlockHitResult result = (BlockHitResult) ent.raycast(5, 0.0f, true);
-            if(world.getBlockState(result.getBlockPos()).getBlock() instanceof GeoDoor && !ent.isSneaking()){
+            BlockHitResult result = (BlockHitResult) ent.pick(5, 0.0f, true);
+            if(world.getBlockState(result.getBlockPos()).getBlock() instanceof GeoDoor && !ent.isShiftKeyDown()){
                 return ent;
             }
         }
@@ -84,7 +84,7 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
     }
 
     public Identifier getTexture() {
-        if(getCachedState().getBlock() instanceof GeoDoor door) {
+        if(getBlockState().getBlock() instanceof GeoDoor door) {
             return door.getTexture();
         }
         return null;
@@ -92,14 +92,14 @@ public class GeoDoorEntity extends BlockEntity implements GeoBlockEntity {
 
 
     public Identifier getWindowTexture() {
-        if(getCachedState().getBlock() instanceof GeoDoor door) {
+        if(getBlockState().getBlock() instanceof GeoDoor door) {
             return door.getWindowTexture();
         }
         return null;
     }
 
     public Identifier getModel() {
-        if(getCachedState().getBlock() instanceof GeoDoor door) {
+        if(getBlockState().getBlock() instanceof GeoDoor door) {
             return door.getModel();
         }
         return null;

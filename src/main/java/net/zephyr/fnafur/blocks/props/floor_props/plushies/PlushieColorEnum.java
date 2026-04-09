@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.floor_props.plushies;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum PlushieColorEnum implements StringIdentifiable, ColorEnumInterface {
+public enum PlushieColorEnum implements StringRepresentable, ColorEnumInterface {
     FREDDY("freddy", 0),
     BONNIE("bonnie", 1),
     CHICA("chica", 1),
@@ -20,7 +20,7 @@ public enum PlushieColorEnum implements StringIdentifiable, ColorEnumInterface {
         this.index = index;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

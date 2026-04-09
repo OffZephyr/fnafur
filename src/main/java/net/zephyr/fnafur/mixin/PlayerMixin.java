@@ -1,16 +1,16 @@
 package net.zephyr.fnafur.mixin;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.entity.player.LightDataProvider;
 import net.zephyr.fnafur.entity.player.PlayerHook;
@@ -27,8 +27,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerEntity.class)
-public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
+@Mixin(Player.class)
+public class PlayerMixin implements IUniversePlayer, ILightHolder {
     @Unique
     float maskOnDelta = 0;
     @Unique
@@ -42,10 +42,10 @@ public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
     LightDataProvider lightDataProvider;
 
     @Shadow
-    PlayerInventory inventory;
+    Inventory inventory;
 
     @Inject (method = "<init>", at = @At("TAIL"))
-    public void init(World world, GameProfile profile, CallbackInfo ci) {
+    public void init(Level world, GameProfile profile, CallbackInfo ci) {
         //this.inventory = new FnafPlayerInventory(((PlayerEntity)(Object)this), ((PlayerEntity)(Object)this).equipment);
 
     }
@@ -53,20 +53,20 @@ public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
     @Unique
     LightDataProvider getLightDataProvider(){
         if(lightDataProvider == null){
-            lightDataProvider = new LightDataProvider(((PlayerEntity) (Object)this));
+            lightDataProvider = new LightDataProvider(((Player) (Object)this));
         }
         return lightDataProvider;
     }
 
     @Inject (method = "tick", at = @At("TAIL"))
     public void tick(CallbackInfo ci) {
-        PlayerEntity player = ((PlayerEntity) (Object)this);
+        Player player = ((Player) (Object)this);
         PlayerHook.playerTick(player);
         //ItemStack stack = player.getInventory()..get(2);
         //if(stack.isOf(ItemInit.ILLUSIONDISC)){
             /*
             String animatronic = ItemNbtUtil.getNbt(stack).getString("entity");
-            NbtCompound animatronicData = ItemNbtUtil.getNbt(stack).getCompound("entityData");
+            CompoundTag animatronicData = ItemNbtUtil.getNbt(stack).getCompound("entityData");
             if (!animatronic.isEmpty() && ComputerData.getAIAnimatronic(animatronic) instanceof ComputerData.Initializer.AnimatronicAI ai) {
 
                 if (((IPlayerCustomModel) player).getCurrentEntity() == null || ((IPlayerCustomModel)player).getCurrentEntity().getType() != ai.entityType()) {
@@ -102,11 +102,11 @@ public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
         //}
     }
 
-    @Inject(method = "updatePose", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "updatePlayerPose", at = @At("HEAD"), cancellable = true)
     public void updatePose(CallbackInfo ci){
-        PlayerEntity player = ((PlayerEntity) (Object)this);
+        Player player = ((Player) (Object)this);
         if(shouldBeCrawling()) {
-            player.setPose(EntityPose.SWIMMING);
+            player.setPose(Pose.SWIMMING);
             ci.cancel();
         }
     }
@@ -123,17 +123,17 @@ public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
 
     @Override
     public boolean hasVanniMaskOn() {
-        ItemStack stack = ((PlayerEntity) (Object)this).getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
+        ItemStack stack = ((Player) (Object)this).getInventory().getItem(FnafInventoryScreen.SLOTS_OFFSET);
         if(stack.getItem() instanceof VanniMaskItem){
-            NbtCompound nbt = ItemUtil.getNbt(stack);
-            return nbt.getBoolean("inVanniMask", false);
+            CompoundTag nbt = ItemUtil.getNbt(stack);
+            return nbt.getBooleanOr("inVanniMask", false);
         }
         return false;
     }
 
     @Override
     public boolean hasVanniMaskEquipped() {
-        ItemStack stack = ((PlayerEntity) (Object)this).getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
+        ItemStack stack = ((Player) (Object)this).getInventory().getItem(FnafInventoryScreen.SLOTS_OFFSET);
         return stack.getItem() instanceof VanniMaskItem;
     }
 
@@ -141,7 +141,7 @@ public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
     public boolean isUsingVanniMask() {
 
         boolean bl = true;
-        if(((PlayerEntity) (Object)this).getEntityWorld().isClient()){
+        if(((Player) (Object)this).level().isClientSide()){
             bl = getMaskDelta() > 1.42f;
         }
         return bl && hasVanniMaskOn();
@@ -168,12 +168,12 @@ public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
     }
     @Override
     public void resetCurrentEntity() {
-        PlayerEntity player = ((PlayerEntity) (Object)this);
+        Player player = ((Player) (Object)this);
         if(currentEntity != null) {
             //currentEntity.mimicPlayer.calculateDimensions(); //TODO FIX THIS
             currentEntity.remove(Entity.RemovalReason.DISCARDED);
             currentEntity = null;
-            player.calculateDimensions();
+            player.refreshDimensions();
         }
     }
 
@@ -219,7 +219,7 @@ public class PlayerEntityMixin implements IUniversePlayer, ILightHolder {
     }
 
     @Override
-    public Vec3d getLightWorldPos() {
+    public Vec3 getLightWorldPos() {
         return getLightDataProvider().getLightWorldPos();
     }
 

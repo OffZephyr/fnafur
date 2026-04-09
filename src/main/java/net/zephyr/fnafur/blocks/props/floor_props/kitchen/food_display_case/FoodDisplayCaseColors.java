@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.floor_props.kitchen.food_display_case;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum FoodDisplayCaseColors implements StringIdentifiable, ColorEnumInterface {
+public enum FoodDisplayCaseColors implements StringRepresentable, ColorEnumInterface {
     DEFAULT("default", 0),
     METAL("metal", 1),
     ;
@@ -15,7 +15,7 @@ public enum FoodDisplayCaseColors implements StringIdentifiable, ColorEnumInterf
         this.index = index;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

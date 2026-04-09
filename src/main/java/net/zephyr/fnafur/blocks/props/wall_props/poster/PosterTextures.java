@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.wall_props.poster;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum PosterTextures implements ColorEnumInterface, StringIdentifiable {
+public enum PosterTextures implements ColorEnumInterface, StringRepresentable {
     FNAFONE_CELEBRATE_SMALL("fnafone_celebrate_small", 0),
     FNAFONE_CELEBRATE("fnafone_celebrate", 1),
     FREDDY_FUN_TIME("freddy_fun_time", 2),
@@ -21,7 +21,7 @@ public enum PosterTextures implements ColorEnumInterface, StringIdentifiable {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return name;
     }
 

@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.props.base;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 
-public enum WallHalfProperty implements StringIdentifiable {
+public enum WallHalfProperty implements StringRepresentable {
     WALL("wall"),
     CEILING("ceiling"),
     FLOOR("floor");
@@ -11,7 +11,7 @@ public enum WallHalfProperty implements StringIdentifiable {
         this.name = name;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
 }

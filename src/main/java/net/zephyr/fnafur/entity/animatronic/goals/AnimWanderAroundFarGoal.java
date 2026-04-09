@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.entity.animatronic.goals;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.ai.FuzzyTargeting;
-import net.minecraft.entity.ai.NoPenaltyTargeting;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.RandomSource;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.entity.animatronic.voice.EntityVoiceSoundInstance;
@@ -40,27 +40,27 @@ public class AnimWanderAroundFarGoal extends Goal {
         this.mob = entity;
         this.chance = chance;
         this.canDespawn = canDespawn;
-        this.setControls(EnumSet.of(Goal.Control.MOVE));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
-    public boolean canStart() {
+    public boolean canUse() {
         if(!(mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER || mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER_TOWARDS_PLAYERS)  || mob.isRetreating || mob.lastHeardPosition != null || mob.getTarget() != null) return false;
 
         if (this.mob.hasControllingPassenger()) {
             return false;
         } else {
             if (!this.ignoringChance) {
-                if (this.canDespawn && this.mob.getDespawnCounter() >= 100) {
+                if (this.canDespawn && this.mob.getNoActionTime() >= 100) {
                     return false;
                 }
 
-                if (this.mob.getRandom().nextInt(toGoalTicks(this.chance)) != 0) {
+                if (this.mob.getRandom().nextInt(reducedTickDelay(this.chance)) != 0) {
                     return false;
                 }
             }
 
-            Vec3d vec3d = this.getWanderTarget();
+            Vec3 vec3d = this.getWanderTarget();
             if (vec3d == null) {
                 return false;
             } else {
@@ -74,36 +74,36 @@ public class AnimWanderAroundFarGoal extends Goal {
     }
 
 
-    protected Vec3d getWanderTarget() {
-        List<PlayerEntity> players = this.mob.getEntityWorld().getEntitiesByClass(PlayerEntity.class, this.mob.getBoundingBox().expand(10), (entity) -> (entity instanceof PlayerEntity && !entity.isSpectator() && !entity.isCreative()));
+    protected Vec3 getWanderTarget() {
+        List<Player> players = this.mob.level().getEntitiesOfClass(Player.class, this.mob.getBoundingBox().inflate(10), (entity) -> (entity instanceof Player && !entity.isSpectator() && !entity.isCreative()));
 
-        if(mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER || Random.create().nextBetweenExclusive(0, 100) < 25 || players.isEmpty()) {
-            if (this.mob.isTouchingWater()) {
-                Vec3d vec3d = FuzzyTargeting.find(this.mob, 15, 7);
-                return vec3d == null ? NoPenaltyTargeting.find(this.mob, 10, 7) : vec3d;
+        if(mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER || RandomSource.create().nextInt(0, 100) < 25 || players.isEmpty()) {
+            if (this.mob.isInWater()) {
+                Vec3 vec3d = LandRandomPos.getPos(this.mob, 15, 7);
+                return vec3d == null ? DefaultRandomPos.getPos(this.mob, 10, 7) : vec3d;
             } else {
-                return FuzzyTargeting.find(this.mob, Random.create().nextBetween(10, 20), 7);
+                return LandRandomPos.getPos(this.mob, RandomSource.create().nextIntBetweenInclusive(10, 20), 7);
             }
         }
         else{
 
-            return FuzzyTargeting.find(this.mob, Random.create().nextBetween(10, 20), 7);
+            return LandRandomPos.getPos(this.mob, RandomSource.create().nextIntBetweenInclusive(10, 20), 7);
         }
     }
 
     @Override
-    public boolean shouldContinue() {
-        return (mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER || mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER_TOWARDS_PLAYERS) && !this.mob.getNavigation().isIdle() && !this.mob.hasControllingPassenger() && !mob.isRetreating;
+    public boolean canContinueToUse() {
+        return (mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER || mob.getWanderBehavior() == CpuData.WanderBehavior.WANDER_TOWARDS_PLAYERS) && !this.mob.getNavigation().isDone() && !this.mob.hasControllingPassenger() && !mob.isRetreating;
     }
 
     @Override
     public void start() {
         if(this.mob.getMovementMode() == CpuData.MovementMode.TELEPORT){
-            this.mob.setPosition(this.targetX, this.targetY, this.targetZ);
-            this.mob.setYaw(Random.create().nextFloat() * 360f);
+            this.mob.setPos(this.targetX, this.targetY, this.targetZ);
+            this.mob.setYRot(RandomSource.create().nextFloat() * 360f);
         }
         else{
-            this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, getSpeed());
+            this.mob.getNavigation().moveTo(this.targetX, this.targetY, this.targetZ, getSpeed());
         }
     }
 
@@ -130,6 +130,6 @@ public class AnimWanderAroundFarGoal extends Goal {
         int speed = mob.runningSpeed();
         int maxSpeed = CpuData.MovementSpeed.getDefaultValue() + CpuData.RunSpeed.getDefaultValue();
 
-        return MathHelper.lerp(((float) speed / maxSpeed), 0f, 2.5f)/1.5f;
+        return Mth.lerp(((float) speed / maxSpeed), 0f, 2.5f)/1.5f;
     }
 }

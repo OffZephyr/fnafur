@@ -1,20 +1,20 @@
 package net.zephyr.fnafur.client.gui.screens.crafting;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Style;
-import net.minecraft.text.StyleSpriteSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.FontDescription;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cpu_config_panel.CpuConfigPanelBlock;
 import net.zephyr.fnafur.client.ClientHook;
@@ -44,10 +44,10 @@ public class CpuConfigScreen extends InWorldScreen {
     List<String> AnimationList = new ArrayList<>();
     List<String> AmbientSoundList = new ArrayList<>();
 
-    public CpuConfigScreen(Text title, NbtCompound nbt, long l) {
+    public CpuConfigScreen(Component title, CompoundTag nbt, long l) {
         super(title, nbt, l);
-        ItemStack stack = MinecraftClient.getInstance().player.getMainHandStack();
-        if(stack.isOf(ItemInit.CPU)){
+        ItemStack stack = Minecraft.getInstance().player.getMainHandItem();
+        if(stack.is(ItemInit.CPU)){
             data = CPUItem.getCpuData(stack);
         }
         selectedIndex++;
@@ -129,10 +129,10 @@ public class CpuConfigScreen extends InWorldScreen {
         return argument;
     }
 
-    public CpuConfigScreen(Text text, NbtCompound nbtCompound, Object o) {
-        super(text, nbtCompound, o);
-        ItemStack stack = MinecraftClient.getInstance().player.getMainHandStack();
-        if(stack.isOf(ItemInit.CPU)){
+    public CpuConfigScreen(Component text, CompoundTag CompoundTag, Object o) {
+        super(text, CompoundTag, o);
+        ItemStack stack = Minecraft.getInstance().player.getMainHandItem();
+        if(stack.is(ItemInit.CPU)){
             data = CPUItem.getCpuData(stack);
         }
         selectedIndex++;
@@ -141,77 +141,77 @@ public class CpuConfigScreen extends InWorldScreen {
     }
 
     @Override
-    public Vec3d getCameraPos() {
-        BlockState blockState = MinecraftClient.getInstance().world.getBlockState(getBlockPos());
-        if(blockState.isOf(BlockInit.CPU_CONFIG_PANEL)){
-            Vec3d offset = blockState.get(CpuConfigPanelBlock.FACING).getDoubleVector().multiply(0.3f);
-            Vec3d offset2 = blockState.get(CpuConfigPanelBlock.FACING).rotateYClockwise().getDoubleVector().multiply(-0.175f);
-            return getBlockPos().toCenterPos().add(0, -0.04f, 0).add(offset.add(offset2));
+    public Vec3 getCameraPos() {
+        BlockState blockState = Minecraft.getInstance().level.getBlockState(getBlockPos());
+        if(blockState.is(BlockInit.CPU_CONFIG_PANEL)){
+            Vec3 offset = blockState.getValue(CpuConfigPanelBlock.FACING).getUnitVec3().scale(0.3f);
+            Vec3 offset2 = blockState.getValue(CpuConfigPanelBlock.FACING).getClockWise().getUnitVec3().scale(-0.175f);
+            return getBlockPos().getCenter().add(0, -0.04f, 0).add(offset.add(offset2));
         }
-        return getBlockPos().toCenterPos().add(new Vec3d(0, 0, 0));
+        return getBlockPos().getCenter().add(new Vec3(0, 0, 0));
     }
 
     @Override
     public Vector3f getCameraAngle() {
-        BlockState blockState = MinecraftClient.getInstance().world.getBlockState(getBlockPos());
-        if(blockState.isOf(BlockInit.CPU_CONFIG_PANEL)){
-            return new Vector3f(blockState.get(CpuConfigPanelBlock.FACING).getPositiveHorizontalDegrees() + 180, 0, 0);
+        BlockState blockState = Minecraft.getInstance().level.getBlockState(getBlockPos());
+        if(blockState.is(BlockInit.CPU_CONFIG_PANEL)){
+            return new Vector3f(blockState.getValue(CpuConfigPanelBlock.FACING).toYRot() + 180, 0, 0);
         }
         return new Vector3f(0, 0, 0);
     }
 
     @Override
-    public boolean shouldPause() {
+    public boolean isPauseScreen() {
         return false;
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
 
         if(ClientHook.tickTransitionToScreen == 1){
             age += delta/20f;
-            StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "lemon_terminal"));
+            FontDescription spriteFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "lemon_terminal"));
             Style style = Style.EMPTY.withFont(spriteFont);
 
-            Text MenuInitials = Text.literal("A.B.C.U.").getWithStyle(style).getFirst();
-            Text MenuName = Text.literal("Animatronic Behavior Configuration Unit").getWithStyle(style).getFirst();
+            Component MenuInitials = Component.literal("A.B.C.U.").toFlatList(style).getFirst();
+            Component MenuName = Component.literal("Animatronic Behavior Configuration Unit").toFlatList(style).getFirst();
             if(age < 2){
 
                 if(age > 1.75f) return;
 
-                drawResizableText(context, textRenderer, MenuInitials, 5, width/2f, height/2f - 20, 0xFF33FF66, 0x00000000, false, true);
+                drawResizableText(context, font, MenuInitials, 5, width/2f, height/2f - 20, 0xFF33FF66, 0x00000000, false, true);
                 if(age > 0.45f){
-                    drawResizableText(context, textRenderer, MenuName, 0.9f, width/2f - 2, height/2f + 20, 0xFF00FF00, 0x00000000, false, true);
+                    drawResizableText(context, font, MenuName, 0.9f, width/2f - 2, height/2f + 20, 0xFF00FF00, 0x00000000, false, true);
                 }
 
                 return;
             }
 
-            Text Controls = Text.literal("")
-                    .append(Text.literal("[").getWithStyle(style).getFirst())
-                    .append(Text.literal("↑↓"))
-                    .append(Text.literal("]/[").getWithStyle(style).getFirst())
-                    .append(Text.literal("🖱"))
-                    .append(Text.literal("] - Navigate").getWithStyle(style).getFirst());
+            Component Controls = Component.literal("")
+                    .append(Component.literal("[").toFlatList(style).getFirst())
+                    .append(Component.literal("↑↓"))
+                    .append(Component.literal("]/[").toFlatList(style).getFirst())
+                    .append(Component.literal("🖱"))
+                    .append(Component.literal("] - Navigate").toFlatList(style).getFirst());
 
-            Text Controls2 = Text.literal("")
-                    .append(Text.literal("[").getWithStyle(style).getFirst())
-                    .append(Text.literal("←→"))
-                    .append(Text.literal("]/[").getWithStyle(style).getFirst())
-                    .append(Text.literal("🖱"))
-                    .append(Text.literal("]/[Enter] - Cycle Options").getWithStyle(style).getFirst());
+            Component Controls2 = Component.literal("")
+                    .append(Component.literal("[").toFlatList(style).getFirst())
+                    .append(Component.literal("←→"))
+                    .append(Component.literal("]/[").toFlatList(style).getFirst())
+                    .append(Component.literal("🖱"))
+                    .append(Component.literal("]/[Enter] - Cycle Options").toFlatList(style).getFirst());
 
-            Text Controls3 = Text.literal("- Controls -").getWithStyle(style).getFirst();
+            Component Controls3 = Component.literal("- Controls -").toFlatList(style).getFirst();
 
-            drawResizableText(context, textRenderer, MenuInitials, 2.7f, width/4f - 2, height/28f + 2, 0xFF33FF66, 0x00000000, false, false);
-            drawResizableText(context, textRenderer, MenuName, 0.475f, width/4f - 4, height/28f + 23, 0xFF00FF00, 0x00000000, false, false);
+            drawResizableText(context, font, MenuInitials, 2.7f, width/4f - 2, height/28f + 2, 0xFF33FF66, 0x00000000, false, false);
+            drawResizableText(context, font, MenuName, 0.475f, width/4f - 4, height/28f + 23, 0xFF00FF00, 0x00000000, false, false);
 
-            float controlWidth1 = textRenderer.getWidth(Controls) * 0.75f;
-            float controlWidth2 = textRenderer.getWidth(Controls2) * 0.75f;
-            float controlWidth3 = textRenderer.getWidth(Controls3) * 0.9f;
-            drawResizableText(context, textRenderer, Controls3, 0.9f, -12 + width - (width/4f) - controlWidth3, height/28f + 0, 0xFF33FF66, 0x00000000, false, false);
-            drawResizableText(context, textRenderer, Controls, 0.75f, -12 + width - (width/4f) - controlWidth1, height/28f + 11, 0xFF00FF00, 0x00000000, false, false);
-            drawResizableText(context, textRenderer, Controls2, 0.75f, -12 + width - (width/4f) - controlWidth2, height/28f + 20, 0xFF00FF00, 0x00000000, false, false);
+            float controlWidth1 = font.width(Controls) * 0.75f;
+            float controlWidth2 = font.width(Controls2) * 0.75f;
+            float controlWidth3 = font.width(Controls3) * 0.9f;
+            drawResizableText(context, font, Controls3, 0.9f, -12 + width - (width/4f) - controlWidth3, height/28f + 0, 0xFF33FF66, 0x00000000, false, false);
+            drawResizableText(context, font, Controls, 0.75f, -12 + width - (width/4f) - controlWidth1, height/28f + 11, 0xFF00FF00, 0x00000000, false, false);
+            drawResizableText(context, font, Controls2, 0.75f, -12 + width - (width/4f) - controlWidth2, height/28f + 20, 0xFF00FF00, 0x00000000, false, false);
 
             context.fill(width/4 - 4, height/28 + 31, -12 + width - (width/4), height/28 + 32, 0xFF33FF66);
 
@@ -226,40 +226,40 @@ public class CpuConfigScreen extends InWorldScreen {
                 boolean isList = subWindow != 0;
                 int color = title ? 0xFF33FF66 : i == selected ? 0xFF00FF00 : 0xFF006622;
 
-                Text nameText = Text.translatable("cpu_config.argument." + name).getWithStyle(style).getFirst();
-                Text valueText = Text.translatable("cpu_config.value." + value).getWithStyle(style).getFirst();
+                Component nameText = Component.translatable("cpu_config.argument." + name).toFlatList(style).getFirst();
+                Component valueText = Component.translatable("cpu_config.value." + value).toFlatList(style).getFirst();
 
                 if(data.DATA_LIST.get(name) instanceof CpuData.CpuDataRangeArgument ||
                         data.DATA_LIST.get(name) instanceof CpuData.CpuDataFloatRangeArgument){
-                    valueText = Text.literal(value);
+                    valueText = Component.literal(value);
                 }
                 if(name.equals("animation")){
-                    valueText = Text.translatable("entity.fnafur."+ value).getWithStyle(style).getFirst();
+                    valueText = Component.translatable("entity.fnafur."+ value).toFlatList(style).getFirst();
                     if(Objects.equals(value, "default")){
-                        valueText = Text.translatable("cpu_config.value." + value).getWithStyle(style).getFirst();
+                        valueText = Component.translatable("cpu_config.value." + value).toFlatList(style).getFirst();
                     }
                 }
                 else if(name.equals("ambient_sound")){
                     String ambientValue = "sounds.fnafur." + value;
                     if(value.isEmpty() || value.equals("none")) ambientValue = "cpu_config.value.none";
-                    valueText = Text.translatable(ambientValue).getWithStyle(style).getFirst();
+                    valueText = Component.translatable(ambientValue).toFlatList(style).getFirst();
                 }
 
                 if(isList && !name.equals("back")) {
                     String prefix = subWindow == 1 ? "entity.fnafur." : "sounds.fnafur.";
-                    valueText = Text.translatable(prefix + value).getWithStyle(style).getFirst();
+                    valueText = Component.translatable(prefix + value).toFlatList(style).getFirst();
                     if(Objects.equals(value, "default") || Objects.equals(value, "none")){
-                        valueText = Text.translatable("cpu_config.value." + value).getWithStyle(style).getFirst();
+                        valueText = Component.translatable("cpu_config.value." + value).toFlatList(style).getFirst();
                     }
                 }
 
                 if(selected == i){
-                    Style optionStyle = style.withUnderline(true);
-                    valueText = valueText.getWithStyle(optionStyle).getFirst();
+                    Style optionStyle = style.withUnderlined(true);
+                    valueText = valueText.toFlatList(optionStyle).getFirst();
                 }
 
-                Text selectionText = Text.literal("").append(Text.literal("< ").getWithStyle(style).getFirst()).append(valueText).append(Text.literal(" >").getWithStyle(style).getFirst());
-                Text text = Text.literal("").append(nameText).append(Text.literal(": ").getWithStyle(style).getFirst()).append(selectionText);
+                Component selectionText = Component.literal("").append(Component.literal("< ").toFlatList(style).getFirst()).append(valueText).append(Component.literal(" >").toFlatList(style).getFirst());
+                Component text = Component.literal("").append(nameText).append(Component.literal(": ").toFlatList(style).getFirst()).append(selectionText);
                 if(title){
                     text = nameText;
                 }
@@ -270,12 +270,12 @@ public class CpuConfigScreen extends InWorldScreen {
                 float scale = title ? 1.75f : 1f;
                 float lowScale = title ? 1.1f : 0.5f;
                 float scaleIndex = selected == i ? scale : lowScale;
-                scale = i == selected ? scale : MathHelper.lerp(scaleIndex, lowScale, scale)/1.25f;
+                scale = i == selected ? scale : Mth.lerp(scaleIndex, lowScale, scale)/1.25f;
                 scale = Math.max(scale, 0);
                 float x = width/4f;
                 float y = 3 + height/6f + i * 18;
                 context.fill(-4 + (int)x, (int) y - 3, -12 + width - (width/4), (int) y + 11, 0xAA000101);
-                drawResizableText(context, textRenderer, text, scale, x, y, color, 0x00000000, false, false);
+                drawResizableText(context, font, text, scale, x, y, color, 0x00000000, false, false);
 
             }
 
@@ -284,9 +284,9 @@ public class CpuConfigScreen extends InWorldScreen {
     }
 
     @Override
-    protected void renderDarkening(DrawContext context) {
+    protected void renderMenuBackground(GuiGraphics context) {
         float index = Math.clamp(ClientHook.tickTransitionToScreen, 0, 1);
-        int color = ColorHelper.getArgb((int) (MathHelper.lerp(index, 0, 0.6f) * 255f), 0, 0, 0);
+        int color = ARGB.color((int) (Mth.lerp(index, 0, 0.6f) * 255f), 0, 0, 0);
         context.fill(0, 0, width, height, color);
         //super.renderDarkening(context);
     }
@@ -316,7 +316,7 @@ public class CpuConfigScreen extends InWorldScreen {
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         if(age < 2) {
             age = 2;
             return super.mouseClicked(click, doubled);
@@ -367,7 +367,7 @@ public class CpuConfigScreen extends InWorldScreen {
     }
 
     @Override
-    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+    public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {
         return super.mouseDragged(click, offsetX, offsetY);
     }
 
@@ -386,23 +386,23 @@ public class CpuConfigScreen extends InWorldScreen {
     }
 
     @Override
-    public void close() {
-        super.close();
-        NbtCompound nbt = new NbtCompound();
-        ItemStack stack = ItemInit.CPU.getDefaultStack();
+    public void onClose() {
+        super.onClose();
+        CompoundTag nbt = new CompoundTag();
+        ItemStack stack = ItemInit.CPU.getDefaultInstance();
         stack = CPUItem.putCpuData(stack, data);
-        nbt.put("stack", ItemStack.CODEC, stack);
-        MinecraftClient.getInstance().player.setStackInHand(MinecraftClient.getInstance().player.preferredHand, stack);
+        nbt.store("stack", ItemStack.CODEC, stack);
+        Minecraft.getInstance().player.setItemInHand(Minecraft.getInstance().player.swingingArm, stack);
         ClientPlayNetworking.send(new UpdateMainHandItemC2SPayload(nbt));
     }
 
     @Override
-    public boolean mouseReleased(Click click) {
+    public boolean mouseReleased(MouseButtonEvent click) {
         return super.mouseReleased(click);
     }
 
     @Override
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         if(age < 2) {
             age = 2;
             return super.keyPressed(input);
@@ -431,7 +431,7 @@ public class CpuConfigScreen extends InWorldScreen {
 
             if(selectedIndex < scrollAmount) scrollAmount = selectedIndex;
             if(selectedIndex > scrollAmount + 11) scrollAmount = selectedIndex - 11;
-        } else if (input.isRight() || input.isEnterOrSpace()) {
+        } else if (input.isRight() || input.isSelection()) {
 
             String index = getList().get(selectedIndex);
             if(subWindow == 1){
@@ -484,7 +484,7 @@ public class CpuConfigScreen extends InWorldScreen {
     }
 
     @Override
-    public boolean keyReleased(KeyInput input) {
+    public boolean keyReleased(KeyEvent input) {
         return super.keyReleased(input);
     }
 }

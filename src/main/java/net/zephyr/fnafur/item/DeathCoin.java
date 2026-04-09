@@ -1,39 +1,40 @@
 package net.zephyr.fnafur.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
 import net.zephyr.fnafur.init.ParticlesInit;
 
 public class DeathCoin extends Item {
-    public DeathCoin(Settings settings) {
+    public DeathCoin(Properties settings) {
         super(settings);
     }
 
     @Override
-    public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if(target.getEntityWorld() instanceof ServerWorld level) {
-            double width = target.getBoundingBox().getLengthX() / 2f;
-            double height = target.getBoundingBox().getLengthY() / 2f;
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(target.level() instanceof ServerLevel level) {
+            double width = target.getBoundingBox().getXsize() / 2f;
+            double height = target.getBoundingBox().getYsize() / 2f;
             double amount = (height + 1) * 100f;
 
-            level.spawnParticles(ParticlesInit.FOG_PARTICLE, target.getX(), (target.getY() + height), target.getZ(), (int)amount, width, height, width, 0.15);
+            level.sendParticles(ParticlesInit.FOG_PARTICLE, target.getX(), (target.getY() + height), target.getZ(), (int)amount, width, height, width, 0.15);
         }
-        target.getEntityWorld().playSound(target, target.getBlockPos(), SoundEvents.ENTITY_WIND_CHARGE_WIND_BURST.value(), SoundCategory.PLAYERS, 1, 0);
+        target.level().playSound(target, target.blockPosition(), SoundEvents.WIND_CHARGE_BURST.value(), SoundSource.PLAYERS, 1, 0);
 
-        if(target instanceof PlayerEntity ent && ent.getEntityWorld() instanceof ServerWorld serverWorld){
-            ent.damage(serverWorld, ent.getEntityWorld().getDamageSources().generic(), 999999999);
+        if(target instanceof Player ent && ent.level() instanceof ServerLevel serverWorld){
+            ent.hurtServer(serverWorld, ent.level().damageSources().generic(), 999999999);
         }
         else {
             target.remove(Entity.RemovalReason.DISCARDED);
         }
 
-        stack.decrementUnlessCreative(1, attacker);
+        stack.consume(1, attacker);
     }
 }

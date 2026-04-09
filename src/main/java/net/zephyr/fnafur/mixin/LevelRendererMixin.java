@@ -1,28 +1,28 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexRendering;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRenderManager;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.client.render.command.OrderedRenderCommandQueueImpl;
-import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.client.render.state.OutlineRenderState;
-import net.minecraft.client.render.state.WorldRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.RotationAxis;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Camera;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.ShapeRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.SubmitNodeStorage;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.state.BlockOutlineRenderState;
+import net.minecraft.client.renderer.state.LevelRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import com.mojang.math.Axis;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
@@ -47,12 +47,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Mixin(WorldRenderer.class)
-public class WorldRendererMixin<R extends BlockEntityRenderState & GeoRenderState> implements IWorldRendererAccessor<R> {
+@Mixin(LevelRenderer.class)
+public class LevelRendererMixin<R extends BlockEntityRenderState & GeoRenderState> implements IWorldRendererAccessor<R> {
     @Shadow
-    private ClientWorld world;
+    private ClientLevel level;
 
-    @Shadow @Final private BlockEntityRenderManager blockEntityRenderManager;
+    @Shadow @Final private BlockEntityRenderDispatcher blockEntityRenderDispatcher;
     @Unique
     Map<R, BlockEntityRenderer<?, R>> entityRenderStates = new HashMap();
 
@@ -65,21 +65,21 @@ public class WorldRendererMixin<R extends BlockEntityRenderState & GeoRenderStat
 //    )
 //
 //    public boolean Goopy_player_isThirdPerson(Camera camera) {
-//        return camera.isThirdPerson()|| /*CameraRenderer.isDrawing() ||*/ MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen;
+//        return camera.isThirdPerson()|| /*CameraRenderer.isDrawing() ||*/ Minecraft.getInstance().currentScreen instanceof CameraTabletScreen;
 //    }
 
-    @Inject(method = "drawBlockOutline", at = @At("HEAD"), cancellable = true)
-    public void drawBlockOutline(MatrixStack matrices, VertexConsumer vertexConsumer, double x, double y, double z, OutlineRenderState state, int color, float lineWidth, CallbackInfo ci){
-        BlockState blockState = world.getBlockState(state.pos());
+    @Inject(method = "renderHitOutline", at = @At("HEAD"), cancellable = true)
+    public void drawBlockOutline(PoseStack matrices, VertexConsumer vertexConsumer, double x, double y, double z, BlockOutlineRenderState state, int color, float lineWidth, CallbackInfo ci){
+        BlockState blockState = level.getBlockState(state.pos());
         BlockPos pos = state.pos();
         if(blockState.getBlock() instanceof PropBlock) {
-            PropBlock.drawBlockOutlineHook(world, blockState, pos, matrices, vertexConsumer, x, y, z, state, color, lineWidth);
+            PropBlock.drawBlockOutlineHook(level, blockState, pos, matrices, vertexConsumer, x, y, z, state, color, lineWidth);
             ci.cancel();
         }
     }
 
-    @Inject(method = "renderBlockEntities", at = @At("TAIL"))
-    void renderBlockEntities(MatrixStack matrices, WorldRenderState renderStates, OrderedRenderCommandQueueImpl queue, CallbackInfo ci){
+    @Inject(method = "submitBlockEntities", at = @At("TAIL"))
+    void renderBlockEntities(PoseStack matrices, LevelRenderState renderStates, SubmitNodeStorage queue, CallbackInfo ci){
 
         if(!getEntityRenderStates().isEmpty()) {
             for (R renderState : getEntityRenderStates().keySet()) {

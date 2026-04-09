@@ -1,14 +1,14 @@
 package net.zephyr.fnafur.blocks.linking;
 
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -23,12 +23,12 @@ public interface LinkTarget {
         getSources().add(source);
     }
     default int getButtonId(IEntityDataSaver source){
-        NbtCompound nbtButtonIndexHolder = ((IEntityDataSaver)this).getPersistentData().getCompound("buttonIndexData").orElse(new NbtCompound());
+        CompoundTag nbtButtonIndexHolder = ((IEntityDataSaver)this).getPersistentData().getCompound("buttonIndexData").orElse(new CompoundTag());
         if (!nbtButtonIndexHolder.isEmpty()){
             if(source instanceof BlockEntity ent){
-                String name = "" + ent.getPos().asLong();
+                String name = "" + ent.getBlockPos().asLong();
                 if(nbtButtonIndexHolder.contains(name)) {
-                    return nbtButtonIndexHolder.getInt(name, -1);
+                    return nbtButtonIndexHolder.getIntOr(name, -1);
                 }
             }
         }
@@ -46,9 +46,9 @@ public interface LinkTarget {
 
     int getUpdateDepth();
     void setUpdateDepth(int depth);
-    default void updateStatus(World world, BlockPos sourcePos, IEntityDataSaver source){
+    default void updateStatus(Level world, BlockPos sourcePos, IEntityDataSaver source){
         if(this instanceof BlockEntity ent){
-            world.updateNeighbors(ent.getPos(), world.getBlockState(ent.getPos()).getBlock());
+            world.updateNeighborsAt(ent.getBlockPos(), world.getBlockState(ent.getBlockPos()).getBlock());
         }
 
         setUpdateDepth(getUpdateDepth() + 1);
@@ -63,21 +63,21 @@ public interface LinkTarget {
         setUpdateDepth(0);
     }
 
-    default void writeData(WriteView view, World world){
-        WriteView.ListAppender<BlockPos> pos = view.getListAppender("Sources", BlockPos.CODEC);
+    default void writeData(ValueOutput view, Level world){
+        ValueOutput.TypedOutputList<BlockPos> pos = view.list("Sources", BlockPos.CODEC);
 
         for(IEntityDataSaver link : getSources()){
             if(link instanceof BlockEntity ent){
-                pos.add(ent.getPos());
+                pos.add(ent.getBlockPos());
             }
         }
     }
-    default void readData(ReadView view, World world){
+    default void readData(ValueInput view, Level world){
         if(!allTargets.contains((IEntityDataSaver)this)){
             allTargets.add((IEntityDataSaver)this);
         }
 
-        ReadView.TypedListReadView<BlockPos> list = view.getTypedListView("Sources", BlockPos.CODEC);
+        ValueInput.TypedInputList<BlockPos> list = view.listOrEmpty("Sources", BlockPos.CODEC);
 
         if(world != null){
             for(BlockPos pos : list){
@@ -103,13 +103,13 @@ public interface LinkTarget {
         LinkTarget.allTargets.remove((IEntityDataSaver) this);
     }
 
-    default ActionResult tryEndLink(PlayerEntity player, World world, BlockPos pos){
+    default InteractionResult tryEndLink(Player player, Level world, BlockPos pos){
 
-        ItemStack stack = player.getMainHandStack();
-        if(player.getMainHandStack().getItem() instanceof WrenchItem){
-            NbtCompound nbt = ItemUtil.getNbt(stack);
+        ItemStack stack = player.getMainHandItem();
+        if(player.getMainHandItem().getItem() instanceof WrenchItem){
+            CompoundTag nbt = ItemUtil.getNbt(stack);
 
-            BlockPos startPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
+            BlockPos startPos = nbt.read("startLink", BlockPos.CODEC).orElse(BlockPos.ZERO);
 
             if(!nbt.contains("startLink")){
                 return null;
@@ -118,8 +118,8 @@ public interface LinkTarget {
                 if(world.getBlockEntity(startPos) instanceof BlockEntity source){
                     if(((LinkSource)source).getTargets().contains((IEntityDataSaver)this)){
 
-                        NbtCompound nbtButtonIndexHolder = ((IEntityDataSaver)this).getPersistentData().getCompoundOrEmpty("buttonIndexData");
-                        if(nbtButtonIndexHolder.contains("" + source.getPos().asLong())) nbtButtonIndexHolder.remove("" + source.getPos().asLong());
+                        CompoundTag nbtButtonIndexHolder = ((IEntityDataSaver)this).getPersistentData().getCompoundOrEmpty("buttonIndexData");
+                        if(nbtButtonIndexHolder.contains("" + source.getBlockPos().asLong())) nbtButtonIndexHolder.remove("" + source.getBlockPos().asLong());
                         ((IEntityDataSaver) this).getPersistentData().put("buttonIndexData", nbtButtonIndexHolder);
 
                         ((LinkSource)source).unlink((IEntityDataSaver) this);
@@ -129,23 +129,23 @@ public interface LinkTarget {
                     }
                     if(this instanceof BlockEntity ent){
                         if(nbt.contains("buttonIndex")) {
-                            int buttonIndex = nbt.getInt("buttonIndex", 0);
+                            int buttonIndex = nbt.getIntOr("buttonIndex", 0);
 
-                            NbtCompound nbtButtonIndexHolder = ((IEntityDataSaver)this).getPersistentData().getCompoundOrEmpty("buttonIndexData");
-                            nbtButtonIndexHolder.putInt("" + source.getPos().asLong(), buttonIndex);
+                            CompoundTag nbtButtonIndexHolder = ((IEntityDataSaver)this).getPersistentData().getCompoundOrEmpty("buttonIndexData");
+                            nbtButtonIndexHolder.putInt("" + source.getBlockPos().asLong(), buttonIndex);
                             ((IEntityDataSaver) this).getPersistentData().put("buttonIndexData", nbtButtonIndexHolder);
                         }
-                        ent.markDirty();
+                        ent.setChanged();
                     }
 
-                    source.markDirty();
+                    source.setChanged();
                 }
             }
 
             nbt.remove("startLink");
             nbt.remove("buttonIndex");
             ItemUtil.setNbt(stack, nbt);
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
         return null;
     }

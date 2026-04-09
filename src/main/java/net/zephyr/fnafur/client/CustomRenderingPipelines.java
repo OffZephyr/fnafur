@@ -5,12 +5,12 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.platform.PolygonMode;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gl.UniformType;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderSetup;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.RenderPipelines;
+import com.mojang.blaze3d.shaders.UniformType;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 import net.zephyr.fnafur.rendering.decals.DecalManager;
 import net.zephyr.fnafur.rendering.lighting.AreaLightManager;
@@ -21,13 +21,13 @@ import java.util.function.BiFunction;
 public class CustomRenderingPipelines {
 
     private static final RenderPipeline.Snippet RENDERTYPE_COSMO_SPACE_SNIPPET = RenderPipeline.builder(
-                    RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET, RenderPipelines.FOG_SNIPPET, RenderPipelines.GLOBALS_SNIPPET
+                    RenderPipelines.MATRICES_PROJECTION_SNIPPET, RenderPipelines.FOG_SNIPPET, RenderPipelines.GLOBALS_SNIPPET
             )
             .withVertexShader("core/rendertype_cosmo_space")
             .withFragmentShader("core/rendertype_cosmo_space")
             .withSampler("Sampler0")
             .withSampler("Sampler1")
-            .withVertexFormat(VertexFormats.POSITION, VertexFormat.DrawMode.QUADS)
+            .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS)
             .buildSnippet();
 
 
@@ -39,7 +39,7 @@ public class CustomRenderingPipelines {
     );
 
     public static final RenderPipeline.Snippet NORMALS_PREPASS_SNIPPET =
-            RenderPipeline.builder(RenderPipelines.FOG_AND_SAMPLERS_SNIPPET)
+            RenderPipeline.builder(RenderPipelines.GENERIC_BLOCKS_SNIPPET)
                     .withUniform("Projection", UniformType.UNIFORM_BUFFER)
                     .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
                     .withVertexShader("core/terrain")
@@ -53,7 +53,7 @@ public class CustomRenderingPipelines {
                             .build()
             );
     public static final RenderPipeline.Snippet POSITION_PREPASS_SNIPPET =
-            RenderPipeline.builder(RenderPipelines.FOG_AND_SAMPLERS_SNIPPET)
+            RenderPipeline.builder(RenderPipelines.GENERIC_BLOCKS_SNIPPET)
                     .withUniform("Projection", UniformType.UNIFORM_BUFFER)
                     .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
                     .withVertexShader("core/terrain")
@@ -73,7 +73,7 @@ public class CustomRenderingPipelines {
 
     public static final RenderPipeline.Snippet LIGHTING_FULLSCREEN_SNIPPET =
             RenderPipeline.builder(
-                            RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET,
+                            RenderPipelines.MATRICES_PROJECTION_SNIPPET,
                             RenderPipelines.GLOBALS_SNIPPET
                     )
                     .withSampler("NormalBuffer")
@@ -99,7 +99,7 @@ public class CustomRenderingPipelines {
                     .withFragmentShader("core/lighting_fullscreen")
 
                     // simple position-only buffer (we created fsTri with 2 floats per vert)
-                    .withVertexFormat(VertexFormats.POSITION, VertexFormat.DrawMode.TRIANGLES)
+                    .withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.TRIANGLES)
                     .buildSnippet();
 
     public static final RenderPipeline LIGHTING_FULLSCREEN =
@@ -111,7 +111,7 @@ public class CustomRenderingPipelines {
 
 
 
-    public static final RenderPipeline.Snippet COOL_TERRAIN_SNIPPET = RenderPipeline.builder(RenderPipelines.FOG_AND_SAMPLERS_SNIPPET)
+    public static final RenderPipeline.Snippet COOL_TERRAIN_SNIPPET = RenderPipeline.builder(RenderPipelines.GENERIC_BLOCKS_SNIPPET)
             .withUniform("Projection", UniformType.UNIFORM_BUFFER)
             .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
             .withUniform("DecalInfo", UniformType.UNIFORM_BUFFER)
@@ -161,7 +161,7 @@ public class CustomRenderingPipelines {
     );
 
     public static final RenderPipeline.Snippet AREA_LIGHT_SHADOW_SNIPPET =
-            RenderPipeline.builder(RenderPipelines.TRANSFORMS_AND_PROJECTION_SNIPPET, RenderPipelines.GLOBALS_SNIPPET)
+            RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET, RenderPipelines.GLOBALS_SNIPPET)
                     .withUniform("ChunkSection", UniformType.UNIFORM_BUFFER)
 
                     // NEW: Shadow matrix UBO (std140 mat4)
@@ -171,7 +171,7 @@ public class CustomRenderingPipelines {
                     .withFragmentShader("core/area_light_shadow")
 
                     // Must match the chunk section vertex data format that drawMultipleIndexed supplies:
-                    .withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS)
+                    .withVertexFormat(DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS)
                     .buildSnippet();
 
     public static final RenderPipeline AREA_LIGHT_SHADOW =
@@ -181,12 +181,12 @@ public class CustomRenderingPipelines {
                             .build()
             );
 
-    public static final RenderPipeline.Snippet ANIMATRONIC_SNIPPET = RenderPipeline.builder(RenderPipelines.TRANSFORMS_PROJECTION_FOG_LIGHTING_SNIPPET)
+    public static final RenderPipeline.Snippet ANIMATRONIC_SNIPPET = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_LIGHT_DIR_SNIPPET)
             .withVertexShader("core/animatronic")
             .withFragmentShader("core/animatronic")
             .withSampler("Sampler0")
             .withSampler("Sampler2")
-            .withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS)
+            .withVertexFormat(DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS)
             .buildSnippet();
 
     public static final RenderPipeline ANIMATRONIC_TRANSLUCENT = RenderPipelines.register(
@@ -289,12 +289,12 @@ public class CustomRenderingPipelines {
                     .withCull(false)
                     .build()
     );
-    public static final RenderPipeline.Snippet ANIMATRONIC_SUIT_SNIPPET = RenderPipeline.builder(RenderPipelines.TRANSFORMS_PROJECTION_FOG_LIGHTING_SNIPPET)
+    public static final RenderPipeline.Snippet ANIMATRONIC_SUIT_SNIPPET = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_LIGHT_DIR_SNIPPET)
             .withVertexShader("core/animatronic_suit")
             .withFragmentShader("core/animatronic_suit")
             .withSampler("Sampler0")
             .withSampler("Sampler2")
-            .withVertexFormat(VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS)
+            .withVertexFormat(DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS)
             .buildSnippet();
 
     public static final RenderPipeline ANIMATRONIC_SUIT_TRANSLUCENT = RenderPipelines.register(
@@ -310,130 +310,130 @@ public class CustomRenderingPipelines {
                     .build()
     );
 
-    private static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_SUIT = Util.memoize(
+    private static final BiFunction<AnimatronicTexture, Boolean, RenderType> ENTITY_ANIMATRONIC_SUIT = Util.memoize(
             ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_SUIT_TRANSLUCENT)
-                        .texture("Sampler0", texture.main)
-                        .texture("Sampler3", texture.eyes)
+                        .withTexture("Sampler0", texture.main)
+                        .withTexture("Sampler3", texture.eyes)
                         .useLightmap()
                         .useOverlay()
-                        .crumbling()
-                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
-                        .build();
-                return RenderLayer.of("animatronic_translucent_suit", renderSetup);
+                        .affectsCrumbling()
+                        .setOutline(affectsOutline ? RenderSetup.OutlineProperty.AFFECTS_OUTLINE : RenderSetup.OutlineProperty.NONE)
+                        .createRenderSetup();
+                return RenderType.create("animatronic_translucent_suit", renderSetup);
             })
     );
-    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC = Util.memoize(
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderType> ENTITY_ANIMATRONIC = Util.memoize(
             ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_TRANSLUCENT)
-                        .texture("Sampler0", texture.main)
-                        .texture("Sampler3", texture.eyes)
-                        .texture("Sampler4", texture.eyes_map)
-                        .texture("Sampler5", texture.glow_color)
+                        .withTexture("Sampler0", texture.main)
+                        .withTexture("Sampler3", texture.eyes)
+                        .withTexture("Sampler4", texture.eyes_map)
+                        .withTexture("Sampler5", texture.glow_color)
                         .useLightmap()
                         .useOverlay()
-                        .crumbling()
-                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
-                        .build();
-                return RenderLayer.of("animatronic_translucent", renderSetup);
+                        .affectsCrumbling()
+                        .setOutline(affectsOutline ? RenderSetup.OutlineProperty.AFFECTS_OUTLINE : RenderSetup.OutlineProperty.NONE)
+                        .createRenderSetup();
+                return RenderType.create("animatronic_translucent", renderSetup);
             })
     );
-    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_NO_EYES = Util.memoize(
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderType> ENTITY_ANIMATRONIC_NO_EYES = Util.memoize(
             ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_NO_EYES_TRANSLUCENT)
-                        .texture("Sampler0", texture.main)
-                        .texture("Sampler3", texture.eyes)
-                        .texture("Sampler4", texture.eyes_map)
-                        .texture("Sampler5", texture.glow_color)
+                        .withTexture("Sampler0", texture.main)
+                        .withTexture("Sampler3", texture.eyes)
+                        .withTexture("Sampler4", texture.eyes_map)
+                        .withTexture("Sampler5", texture.glow_color)
                         .useLightmap()
                         .useOverlay()
-                        .crumbling()
-                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
-                        .build();
-                return RenderLayer.of("animatronic_no_eyes_translucent", renderSetup);
+                        .affectsCrumbling()
+                        .setOutline(affectsOutline ? RenderSetup.OutlineProperty.AFFECTS_OUTLINE : RenderSetup.OutlineProperty.NONE)
+                        .createRenderSetup();
+                return RenderType.create("animatronic_no_eyes_translucent", renderSetup);
             })
     );
-    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_GLOWING_EYES_DOTS = Util.memoize(
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderType> ENTITY_ANIMATRONIC_GLOWING_EYES_DOTS = Util.memoize(
             ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_GLOWING_EYES_DOTS_TRANSLUCENT)
-                        .texture("Sampler0", texture.main)
-                        .texture("Sampler3", texture.eyes)
-                        .texture("Sampler4", texture.eyes_map)
-                        .texture("Sampler5", texture.glow_color)
+                        .withTexture("Sampler0", texture.main)
+                        .withTexture("Sampler3", texture.eyes)
+                        .withTexture("Sampler4", texture.eyes_map)
+                        .withTexture("Sampler5", texture.glow_color)
                         .useLightmap()
                         .useOverlay()
-                        .crumbling()
-                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
-                        .build();
-                return RenderLayer.of("animatronic_glowing_eyes_translucent", renderSetup);
+                        .affectsCrumbling()
+                        .setOutline(affectsOutline ? RenderSetup.OutlineProperty.AFFECTS_OUTLINE : RenderSetup.OutlineProperty.NONE)
+                        .createRenderSetup();
+                return RenderType.create("animatronic_glowing_eyes_translucent", renderSetup);
             })
     );
-    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_GLOWING_EYES_IRISES = Util.memoize(
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderType> ENTITY_ANIMATRONIC_GLOWING_EYES_IRISES = Util.memoize(
             ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_GLOWING_EYES_IRISES_TRANSLUCENT)
-                        .texture("Sampler0", texture.main)
-                        .texture("Sampler3", texture.eyes)
-                        .texture("Sampler4", texture.eyes_map)
-                        .texture("Sampler5", texture.glow_color)
+                        .withTexture("Sampler0", texture.main)
+                        .withTexture("Sampler3", texture.eyes)
+                        .withTexture("Sampler4", texture.eyes_map)
+                        .withTexture("Sampler5", texture.glow_color)
                         .useLightmap()
                         .useOverlay()
-                        .crumbling()
-                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
-                        .build();
-                return RenderLayer.of("animatronic_glowing_eyes_translucent", renderSetup);
+                        .affectsCrumbling()
+                        .setOutline(affectsOutline ? RenderSetup.OutlineProperty.AFFECTS_OUTLINE : RenderSetup.OutlineProperty.NONE)
+                        .createRenderSetup();
+                return RenderType.create("animatronic_glowing_eyes_translucent", renderSetup);
             })
     );
-    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_GLOWING_EYES_FULL_EYES = Util.memoize(
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderType> ENTITY_ANIMATRONIC_GLOWING_EYES_FULL_EYES = Util.memoize(
             ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_GLOWING_EYES_FULL_EYES_TRANSLUCENT)
-                        .texture("Sampler0", texture.main)
-                        .texture("Sampler3", texture.eyes)
-                        .texture("Sampler4", texture.eyes_map)
-                        .texture("Sampler5", texture.glow_color)
+                        .withTexture("Sampler0", texture.main)
+                        .withTexture("Sampler3", texture.eyes)
+                        .withTexture("Sampler4", texture.eyes_map)
+                        .withTexture("Sampler5", texture.glow_color)
                         .useLightmap()
                         .useOverlay()
-                        .crumbling()
-                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
-                        .build();
-                return RenderLayer.of("animatronic_glowing_eyes_translucent", renderSetup);
+                        .affectsCrumbling()
+                        .setOutline(affectsOutline ? RenderSetup.OutlineProperty.AFFECTS_OUTLINE : RenderSetup.OutlineProperty.NONE)
+                        .createRenderSetup();
+                return RenderType.create("animatronic_glowing_eyes_translucent", renderSetup);
             })
     );
-    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_GLOWING_EYES_IRISES_DOTS = Util.memoize(
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderType> ENTITY_ANIMATRONIC_GLOWING_EYES_IRISES_DOTS = Util.memoize(
             ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_GLOWING_EYES_IRISES_DOTS_TRANSLUCENT)
-                        .texture("Sampler0", texture.main)
-                        .texture("Sampler3", texture.eyes)
-                        .texture("Sampler4", texture.eyes_map)
-                        .texture("Sampler5", texture.glow_color)
+                        .withTexture("Sampler0", texture.main)
+                        .withTexture("Sampler3", texture.eyes)
+                        .withTexture("Sampler4", texture.eyes_map)
+                        .withTexture("Sampler5", texture.glow_color)
                         .useLightmap()
                         .useOverlay()
-                        .crumbling()
-                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
-                        .build();
-                return RenderLayer.of("animatronic_glowing_eyes_translucent", renderSetup);
+                        .affectsCrumbling()
+                        .setOutline(affectsOutline ? RenderSetup.OutlineProperty.AFFECTS_OUTLINE : RenderSetup.OutlineProperty.NONE)
+                        .createRenderSetup();
+                return RenderType.create("animatronic_glowing_eyes_translucent", renderSetup);
             })
     );
-    public static final BiFunction<AnimatronicTexture, Boolean, RenderLayer> ENTITY_ANIMATRONIC_GLOWING_EYES_FULL_EYES_DOTS = Util.memoize(
+    public static final BiFunction<AnimatronicTexture, Boolean, RenderType> ENTITY_ANIMATRONIC_GLOWING_EYES_FULL_EYES_DOTS = Util.memoize(
             ((texture, affectsOutline) -> {
 
                 RenderSetup renderSetup = RenderSetup.builder(ANIMATRONIC_GLOWING_EYES_FULL_EYES_DOTS_TRANSLUCENT)
-                        .texture("Sampler0", texture.main)
-                        .texture("Sampler3", texture.eyes)
-                        .texture("Sampler4", texture.eyes_map)
-                        .texture("Sampler5", texture.glow_color)
+                        .withTexture("Sampler0", texture.main)
+                        .withTexture("Sampler3", texture.eyes)
+                        .withTexture("Sampler4", texture.eyes_map)
+                        .withTexture("Sampler5", texture.glow_color)
                         .useLightmap()
                         .useOverlay()
-                        .crumbling()
-                        .outlineMode(affectsOutline ? RenderSetup.OutlineMode.AFFECTS_OUTLINE : RenderSetup.OutlineMode.NONE)
-                        .build();
-                return RenderLayer.of("animatronic_glowing_eyes_translucent", renderSetup);
+                        .affectsCrumbling()
+                        .setOutline(affectsOutline ? RenderSetup.OutlineProperty.AFFECTS_OUTLINE : RenderSetup.OutlineProperty.NONE)
+                        .createRenderSetup();
+                return RenderType.create("animatronic_glowing_eyes_translucent", renderSetup);
             })
     );
 
@@ -442,41 +442,41 @@ public class CustomRenderingPipelines {
     }
 
 
-    public static RenderLayer getAnimatronicSuit(Identifier main, Identifier map) {
+    public static RenderType getAnimatronicSuit(Identifier main, Identifier map) {
         AnimatronicTexture texture = new AnimatronicTexture(main, map, map, map);
         return ENTITY_ANIMATRONIC_SUIT.apply(texture, true);
     }
-    public static  RenderLayer getAnimatronic(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+    public static RenderType getAnimatronic(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
         AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
         return ENTITY_ANIMATRONIC.apply(texture, true);
     }
 
-    public static  RenderLayer getAnimatronicGlowingEyesDots(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+    public static RenderType getAnimatronicGlowingEyesDots(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
         AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
         return ENTITY_ANIMATRONIC_GLOWING_EYES_DOTS.apply(texture, true);
     }
-    public static  RenderLayer getAnimatronicGlowingEyesIrises(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+    public static RenderType getAnimatronicGlowingEyesIrises(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
         AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
         return ENTITY_ANIMATRONIC_GLOWING_EYES_IRISES.apply(texture, true);
     }
-    public static  RenderLayer getAnimatronicGlowingEyesIrisesDots(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+    public static RenderType getAnimatronicGlowingEyesIrisesDots(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
         AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
         return ENTITY_ANIMATRONIC_GLOWING_EYES_IRISES_DOTS.apply(texture, true);
     }
-    public static  RenderLayer getAnimatronicGlowingEyesFullEyes(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+    public static RenderType getAnimatronicGlowingEyesFullEyes(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
         AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
         return ENTITY_ANIMATRONIC_GLOWING_EYES_FULL_EYES.apply(texture, true);
     }
-    public static  RenderLayer getAnimatronicGlowingEyesFullEyesDots(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+    public static RenderType getAnimatronicGlowingEyesFullEyesDots(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
         AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
         return ENTITY_ANIMATRONIC_GLOWING_EYES_FULL_EYES_DOTS.apply(texture, true);
     }
 
-    public static  RenderLayer getAnimatronicNoEyes(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+    public static RenderType getAnimatronicNoEyes(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
         AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
         return ENTITY_ANIMATRONIC_NO_EYES.apply(texture, true);
     }
-    public static  RenderLayer getItemWithArms(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
+    public static RenderType getItemWithArms(Identifier main, Identifier eyes, Identifier eyes_map, Identifier glow_color) {
         AnimatronicTexture texture = new AnimatronicTexture(main, eyes, eyes_map, glow_color);
         return ENTITY_ANIMATRONIC.apply(texture, true);
     }

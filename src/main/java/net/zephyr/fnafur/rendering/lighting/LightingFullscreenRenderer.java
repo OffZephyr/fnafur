@@ -4,8 +4,8 @@ import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.FilterMode;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 
 import java.nio.ByteBuffer;
@@ -58,8 +58,8 @@ public final class LightingFullscreenRenderer {
 
             pass.setPipeline(CustomRenderingPipelines.LIGHTING_FULLSCREEN);
 
-            var linear  = RenderSystem.getSamplerCache().get(FilterMode.LINEAR);
-            var nearest = RenderSystem.getSamplerCache().get(FilterMode.NEAREST);
+            var linear  = RenderSystem.getSamplerCache().getClampToEdge(FilterMode.LINEAR);
+            var nearest = RenderSystem.getSamplerCache().getClampToEdge(FilterMode.NEAREST);
 
             // Inputs
             pass.bindTexture("NormalBuffer", LightingPrepassResources.normalView, linear);
@@ -69,10 +69,10 @@ public final class LightingFullscreenRenderer {
             // Block atlas (projected textures + masks)
             pass.bindTexture(
                     "Sampler0",
-                    MinecraftClient.getInstance()
+                    Minecraft.getInstance()
                             .getTextureManager()
-                            .getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE)
-                            .getGlTextureView(),
+                            .getTexture(TextureAtlas.LOCATION_BLOCKS)
+                            .getTextureView(),
                     linear
             );
 

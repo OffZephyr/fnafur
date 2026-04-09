@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.floor_props.floor_monitors;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum FloorMonitorColors implements StringIdentifiable, ColorEnumInterface {
+public enum FloorMonitorColors implements StringRepresentable, ColorEnumInterface {
     BLACK_0("black_0", 0),
     BLACK_1("black_1", 1),
     BLACK_2("black_2", 2),
@@ -28,7 +28,7 @@ public enum FloorMonitorColors implements StringIdentifiable, ColorEnumInterface
         this.index = index;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

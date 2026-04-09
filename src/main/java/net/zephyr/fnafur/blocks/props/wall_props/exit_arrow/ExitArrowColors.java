@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.wall_props.exit_arrow;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum ExitArrowColors implements ColorEnumInterface, StringIdentifiable {
+public enum ExitArrowColors implements ColorEnumInterface, StringRepresentable {
     LEFT("left", 0),
     RIGHT("right", 1),
     ;
@@ -15,7 +15,7 @@ public enum ExitArrowColors implements ColorEnumInterface, StringIdentifiable {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return name;
     }
 

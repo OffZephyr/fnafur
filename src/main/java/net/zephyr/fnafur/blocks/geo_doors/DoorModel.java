@@ -1,6 +1,6 @@
 package net.zephyr.fnafur.blocks.geo_doors;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import software.bernie.geckolib.model.GeoModel;
@@ -20,6 +20,6 @@ public class DoorModel extends GeoModel<GeoDoorEntity> {
 
     @Override
     public Identifier getAnimationResource(GeoDoorEntity animatable) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/door/geo_door");
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/door/geo_door");
     }
 }

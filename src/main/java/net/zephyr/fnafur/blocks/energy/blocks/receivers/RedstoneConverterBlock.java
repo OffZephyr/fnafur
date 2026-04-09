@@ -1,21 +1,21 @@
 package net.zephyr.fnafur.blocks.energy.blocks.receivers;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.BaseFloorSwitchBlock;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons.OfficeButtonsBlockEntity;
 import net.zephyr.fnafur.blocks.energy.enums.EnergyNodeType;
@@ -27,22 +27,22 @@ import org.jetbrains.annotations.Nullable;
 
 public class RedstoneConverterBlock extends FloorPropBlock<DefaultPropColorEnum> {
 
-    public static final BooleanProperty POWERED = Properties.POWERED;
-    public RedstoneConverterBlock(AbstractBlock.Settings settings) {
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    public RedstoneConverterBlock(BlockBehaviour.Properties settings) {
         super(settings);
-        setDefaultState(getDefaultState().with(POWERED, false));
+        registerDefaultState(defaultBlockState().setValue(POWERED, false));
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
 
         BlockEntity entity = world.getBlockEntity(pos);
         if (entity instanceof SimpleEnergyTargetPropBlockEntity ent) {
 
-            ActionResult result2 = ent.tryEndLink(player, world, pos);
+            InteractionResult result2 = ent.tryEndLink(player, world, pos);
             if (result2 != null) return result2;
         }
-        return super.onUse(state, world, pos, player, hit);
+        return super.useWithoutItem(state, world, pos, player, hit);
     }
 
     @Override
@@ -56,33 +56,33 @@ public class RedstoneConverterBlock extends FloorPropBlock<DefaultPropColorEnum>
     }
 
     @Override
-    protected boolean emitsRedstonePower(BlockState state) {
+    protected boolean isSignalSource(BlockState state) {
         return true;
     }
 
     @Override
-    protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return (Boolean)state.get(POWERED) ? 15 : 0;
+    protected int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
+        return (Boolean)state.getValue(POWERED) ? 15 : 0;
     }
 
     @Override
-    protected int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return state.getWeakRedstonePower(world, pos, direction);
+    protected int getDirectSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
+        return state.getSignal(world, pos, direction);
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(POWERED));
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(POWERED));
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new SimpleEnergyTargetPropBlockEntity(pos, state);
     }
     @Nullable
     @Override
-    public <Q extends BlockEntity> BlockEntityTicker<Q> getTicker(World world, BlockState state, BlockEntityType<Q> type) {
-        return validateTicker(type, BlockEntityInit.SIMPLE_PROP_ENERGY_TARGET,
+    public <Q extends BlockEntity> BlockEntityTicker<Q> getTicker(Level world, BlockState state, BlockEntityType<Q> type) {
+        return createTickerHelper(type, BlockEntityInit.SIMPLE_PROP_ENERGY_TARGET,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
 
     }

@@ -5,10 +5,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.DataOutput;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.DataWriter;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.util.Mth;
 import net.zephyr.fnafur.datagen.animations.*;
 
 import java.io.ByteArrayOutputStream;
@@ -50,7 +50,7 @@ public final class JawFromOggAnimationProvider implements DataProvider {
     }
 
     @Override
-    public CompletableFuture<?> run(DataWriter writer) {
+    public CompletableFuture<?> run(CachedOutput writer) {
 
         Path listFile = output.getModContainer()
                 .findPath("assets/fnafur/fnafur/jaw_ogg_list.txt")
@@ -82,10 +82,10 @@ public final class JawFromOggAnimationProvider implements DataProvider {
             animations.add(animationName, GeckoAnimationJsonBuilder.buildJawOnly(anim));
         }
 
-        Path outPath = output.resolvePath(DataOutput.OutputType.RESOURCE_PACK)
+        Path outPath = output.getOutputFolder(PackOutput.Target.RESOURCE_PACK)
                 .resolve("fnafur/geckolib/animations/entity/" + "jaw_movements.animation.json");
 
-        return DataProvider.writeToPath(writer, root, outPath);
+        return DataProvider.saveStable(writer, root, outPath);
     }
 
     @Override
@@ -245,11 +245,11 @@ public final class JawFromOggAnimationProvider implements DataProvider {
     public static float mapAmplitudeToJawDegrees(
             float amp
     ) {
-        amp = MathHelper.clamp(amp, 0, 1);
+        amp = Mth.clamp(amp, 0, 1);
 
         float curved = (float) Math.pow(amp, 0.65);
 
-        float jaw = MathHelper.lerp(curved, JAW_TALK_MIN, JAW_TALK_MAX);
+        float jaw = Mth.lerp(curved, JAW_TALK_MIN, JAW_TALK_MAX);
 
         if (amp > LOUD_THRESHOLD) {
             float extra = (amp - LOUD_THRESHOLD) / (1f - LOUD_THRESHOLD);

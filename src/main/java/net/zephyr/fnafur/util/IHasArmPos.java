@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.util;
 
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 
 public interface IHasArmPos {
-    Vec3d getLeftArmPos(boolean isMainStack);
-    Vec3d getRightArmPos(boolean isMainStack);
+    Vec3 getLeftArmPos(boolean isMainStack);
+    Vec3 getRightArmPos(boolean isMainStack);
 }

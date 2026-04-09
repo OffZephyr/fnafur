@@ -2,16 +2,16 @@ package net.zephyr.fnafur.blocks.props.wall_props.clocks;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.client.Minecraft;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.util.Mth;
+import com.mojang.math.Axis;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import software.bernie.geckolib.cache.model.GeoBone;
@@ -23,17 +23,17 @@ import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity, R extends BlockEntityRenderState & GeoRenderState> extends GeoPropRenderer<T, R> {
-    MinecraftClient client;
-    BlockRenderManager manager;
-    public GeoClockPropRenderer(BlockEntityRendererFactory.Context context) {
+    Minecraft client;
+    BlockRenderDispatcher manager;
+    public GeoClockPropRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
-        client = MinecraftClient.getInstance();
-        manager = client.getBlockRenderManager();
+        client = Minecraft.getInstance();
+        manager = client.getBlockRenderer();
     }
 
     @Override
-    public void render(R renderState, MatrixStack matrices, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraRenderState) {
-        super.render(renderState, matrices, renderTasks, cameraRenderState);
+    public void submit(R renderState, PoseStack matrices, SubmitNodeCollector renderTasks, CameraRenderState cameraRenderState) {
+        super.submit(renderState, matrices, renderTasks, cameraRenderState);
     }
 
     @Override
@@ -50,15 +50,15 @@ public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity, R extends B
 
         if(seconds != null) {
             rot = deltaMinute * 60;
-            snapshots.get(seconds).setRotation(0, 0, 180 * rot * MathHelper.RADIANS_PER_DEGREE);
+            snapshots.get(seconds).setRotation(0, 0, 180 * rot * Mth.DEG_TO_RAD);
         }
         if(minutes != null){
             rot = deltaMinute;
-            snapshots.get(minutes).setRotation(0, 0, 180 * rot * MathHelper.RADIANS_PER_DEGREE);
+            snapshots.get(minutes).setRotation(0, 0, 180 * rot * Mth.DEG_TO_RAD);
         }
         if(hours != null){
             rot = (deltaHour + (((1 / 12f) * (deltaMinute))));
-            snapshots.get(hours).setRotation(0, 0, 180 * rot * MathHelper.RADIANS_PER_DEGREE);
+            snapshots.get(hours).setRotation(0, 0, 180 * rot * Mth.DEG_TO_RAD);
         }
 
         super.adjustModelBonesForRender(renderPassInfo, snapshots);

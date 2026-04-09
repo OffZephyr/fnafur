@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.util.mixinAccessing;
 
-import net.minecraft.client.render.BufferBuilderStorage;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.client.renderer.RenderBuffers;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import software.bernie.geckolib.renderer.base.GeoRenderState;

@@ -1,20 +1,20 @@
 package net.zephyr.fnafur.client.gui.screens.crafting;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Style;
-import net.minecraft.text.StyleSpriteSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.FontDescription;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class SuitMakingScreen extends InWorldScreen {
-    public static final Identifier TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench/workbench.png");
+    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench/workbench.png");
 
     AnimatronicEntity preview;
     AnimatronicEntity icon_preview;
@@ -73,67 +73,67 @@ public class SuitMakingScreen extends InWorldScreen {
 
     boolean needsSave = false;
 
-    public SuitMakingScreen(Text text, NbtCompound nbtCompound, Object o) {
-        super(text, nbtCompound, o);
-        preview = EntityInit.ANIMATRONIC.create(this.client.world, SpawnReason.TRIGGERED);
+    public SuitMakingScreen(Component text, CompoundTag CompoundTag, Object o) {
+        super(text, CompoundTag, o);
+        preview = EntityInit.ANIMATRONIC.create(this.minecraft.level, EntitySpawnReason.TRIGGERED);
         preview.isMenu = true;
-        icon_preview = EntityInit.ANIMATRONIC.create(this.client.world, SpawnReason.TRIGGERED);
+        icon_preview = EntityInit.ANIMATRONIC.create(this.minecraft.level, EntitySpawnReason.TRIGGERED);
         icon_preview.isMenu = true;
         shakingLocks = new float[AnimatronicDataHandler.CATEGORIES.size()];
 
 
-        if(nbtCompound.contains("chara")) {
-            this.previous_character = nbtCompound.getString("chara").orElse("");
-            this.previous_alt = nbtCompound.getString("alt").orElse("");
-            this.previous_eyes = nbtCompound.getString("eyes").orElse("");
+        if(CompoundTag.contains("chara")) {
+            this.previous_character = CompoundTag.getString("chara").orElse("");
+            this.previous_alt = CompoundTag.getString("alt").orElse("");
+            this.previous_eyes = CompoundTag.getString("eyes").orElse("");
 
             preview.setChara(this.previous_character, this.previous_alt, this.previous_eyes);
         }
     }
 
     @Override
-    protected void renderDarkening(DrawContext context) {
+    protected void renderMenuBackground(GuiGraphics context) {
         float index = Math.clamp(ClientHook.tickTransitionToScreen, 0, 1);
-        int color = ColorHelper.getArgb((int) (MathHelper.lerp(index, 0, 0.4f) * 255f), 0, 0, 0);
+        int color = ARGB.color((int) (Mth.lerp(index, 0, 0.4f) * 255f), 0, 0, 0);
         context.fill(0, 0, width, height, color);
     }
 
     @Override
-    public Vec3d getCameraPos() {
-        BlockState blockState = MinecraftClient.getInstance().world.getBlockState(getBlockPos());
-        if(blockState.isOf(BlockInit.WORKBENCH)){
-            if(MinecraftClient.getInstance().world.getBlockEntity(getBlockPos()) instanceof PropBlockEntity entity) {
+    public Vec3 getCameraPos() {
+        BlockState blockState = Minecraft.getInstance().level.getBlockState(getBlockPos());
+        if(blockState.is(BlockInit.WORKBENCH)){
+            if(Minecraft.getInstance().level.getBlockEntity(getBlockPos()) instanceof PropBlockEntity entity) {
                 double offsetX = ((IEntityDataSaver) entity).getPersistentData().getDouble("xOffset").orElse(0.0);
                 double offsetY = ((IEntityDataSaver) entity).getPersistentData().getDouble("yOffset").orElse(0.0);
                 double offsetZ = ((IEntityDataSaver) entity).getPersistentData().getDouble("zOffset").orElse(0.0);
 
 
                 float yaw = ((IEntityDataSaver) entity).getPersistentData().getFloat("Rotation").orElse(0f);
-                Vec3d propOffset = new Vec3d(offsetX, offsetY, offsetZ);
+                Vec3 propOffset = new Vec3(offsetX, offsetY, offsetZ);
 
                 //Vec3d offset = blockState.get(WorkbenchBlock.FACING).getDoubleVector().multiply(0.3f);
                 //Vec3d offset2 = blockState.get(WorkbenchBlock.FACING).rotateYClockwise().getDoubleVector().multiply(-0.175f);
-                Vec3d finalOffset = new Vec3d(0, 0.4f, -0.1f).rotateY(-yaw * MathHelper.RADIANS_PER_DEGREE).add(propOffset);
+                Vec3 finalOffset = new Vec3(0, 0.4f, -0.1f).yRot(-yaw * Mth.DEG_TO_RAD).add(propOffset);
                 //finalOffset = finalOffset.rotateY(yaw * MathHelper.RADIANS_PER_DEGREE);
                 finalOffset = finalOffset;
-                return new Vec3d(getBlockPos()).add(finalOffset);
+                return new Vec3(getBlockPos()).add(finalOffset);
             }
         }
-        return getBlockPos().toCenterPos().add(new Vec3d(0, 0, 0));
+        return getBlockPos().getCenter().add(new Vec3(0, 0, 0));
     }
 
     @Override
     public Vector3f getCameraAngle() {
-        BlockState blockState = MinecraftClient.getInstance().world.getBlockState(getBlockPos());
-        if(blockState.isOf(BlockInit.WORKBENCH)){
-            if(MinecraftClient.getInstance().world.getBlockEntity(getBlockPos()) instanceof PropBlockEntity entity) {
+        BlockState blockState = Minecraft.getInstance().level.getBlockState(getBlockPos());
+        if(blockState.is(BlockInit.WORKBENCH)){
+            if(Minecraft.getInstance().level.getBlockEntity(getBlockPos()) instanceof PropBlockEntity entity) {
                 float yaw = ((IEntityDataSaver) entity).getPersistentData().getFloat("Rotation").orElse(0f);
                 while(yaw < 0){
                     yaw += 360;
                 }
 
                 yaw %= 360;
-                return new Vector3f(blockState.get(WorkbenchBlock.FACING).getPositiveHorizontalDegrees() + 180 + yaw, 90, 0);
+                return new Vector3f(blockState.getValue(WorkbenchBlock.FACING).toYRot() + 180 + yaw, 90, 0);
             }
         }
         return new Vector3f(0, 0, 0);
@@ -147,7 +147,7 @@ public class SuitMakingScreen extends InWorldScreen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if(ClientHook.tickTransitionToScreen != 1) return;
         float startAnimationIndex = Math.clamp(age /1f, 0, 1);
         preview.force_age += delta;
@@ -159,7 +159,7 @@ public class SuitMakingScreen extends InWorldScreen {
         age += deltaTicks;
 
 
-        context.getMatrices().translate((float) 0, (float) MathHelper.lerp(EasingMathUtil.easeInOutBack(startAnimationIndex), height, 0));
+        context.pose().translate((float) 0, (float) Mth.lerp(EasingMathUtil.easeInOutBack(startAnimationIndex), height, 0));
 
         // BACK
         show_preview = this.category.isEmpty() && age > 1f;
@@ -167,8 +167,8 @@ public class SuitMakingScreen extends InWorldScreen {
         back_offset_index = (float) Math.clamp(back_offset_index, 0, 1);
 
         // BOTTOM
-        int back_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 74, (width / 2f) + 55);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, back_x, (height / 2) - 127, 364, 0, 148, 256, 512, 512);
+        int back_x = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 74, (width / 2f) + 55);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, back_x, (height / 2) - 127, 364, 0, 148, 256, 512, 512);
 
         int preview_x = back_x;
         int preview_y = (height / 2) - 92;
@@ -190,13 +190,13 @@ public class SuitMakingScreen extends InWorldScreen {
         int color_export = needsSave || preview.getChara().isEmpty() ? 0xFF223366 : 0xFFFFFFFF;
         int color_close = needsSave ? 0xFF223366 : 0xFFFFFFFF;
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, save_x, save_y, 320, save_v2, 32, 32, 512, 512, color_save);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, export_x, save_y, 288, export_v2, 32, 32, 512, 512, color_export);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, close_x, save_y, 320, close_v2, 32, 32, 512, 512, color_close);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, save_x, save_y, 320, save_v2, 32, 32, 512, 512, color_save);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, export_x, save_y, 288, export_v2, 32, 32, 512, 512, color_export);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, close_x, save_y, 320, close_v2, 32, 32, 512, 512, color_close);
 
         // TOP
-        int front_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, front_x, (height / 2) - 128, 0, 0, 256, 256, 512, 512);
+        int front_x = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, front_x, (height / 2) - 128, 0, 0, 256, 256, 512, 512);
 
         drawAltTitle(context, front_x + 128, (height / 2) - 118, "fnafur.screens.workbench.title", 2);
         drawAltTitle(context, front_x + 128, (height / 2) - 96, "fnafur.screens.workbench.title2", 1.25f);
@@ -216,21 +216,21 @@ public class SuitMakingScreen extends InWorldScreen {
 
             boolean isHovering = isOnButton(mouseX, mouseY, x, y, 124, 48);
             String suffix = isHovering || AnimatronicDataHandler.EMPTY_CATEGORIES.contains(category) ? "_list_select" : "_list";
-            Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench/" + category + suffix + ".png");
+            Identifier texture = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench/" + category + suffix + ".png");
 
 
             boolean empty_category = AnimatronicDataHandler.EMPTY_CATEGORIES.contains(category);
             int color = empty_category ? 0xFF223366 : isHovering ? 0xFFFFFFFF : 0xFFFFFFFF;
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, uoffset, 0, 126, 48, 128, 48, color);
+            context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, uoffset, 0, 126, 48, 128, 48, color);
             if(empty_category){
                 int lockX = x + 47;
                 if(shakingLocks[i] > 0){
                     shakingLocks[i] -= deltaTicks;
-                    lockX += (int) (MathHelper.sin(shakingLocks[i] * 20) * (10 * shakingLocks[i]));
+                    lockX += (int) (Mth.sin(shakingLocks[i] * 20) * (10 * shakingLocks[i]));
                 }
                 int v = isHovering ? 192 : 224;
                 int color2 = isHovering ? 0xFFFFFFFF : 0xFFFFFFFF;
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, lockX, y + 8, 256, v, 32, 32, 512, 512, color2);
+                context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, lockX, y + 8, 256, v, 32, 32, 512, 512, color2);
             }
 
         }
@@ -267,19 +267,19 @@ public class SuitMakingScreen extends InWorldScreen {
         //super.render(context, mouseX, mouseY, delta);
     }
 
-    void renderList(String title, DrawContext context, int mouseX, int mouseY, int offsetX, int offsetY, float deltaTicks, List<String> arraylist, float index, String name_prefix, GetMissing missingCheck, DrawTitle drawTitle, boolean show_icons) {
+    void renderList(String title, GuiGraphics context, int mouseX, int mouseY, int offsetX, int offsetY, float deltaTicks, List<String> arraylist, float index, String name_prefix, GetMissing missingCheck, DrawTitle drawTitle, boolean show_icons) {
 
-        int front_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
+        int front_x = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
 
         int x1 = -256;
         int x2 = (front_x + offsetX);
-        int x = (int) MathHelper.lerp(EasingMathUtil.easeOutQuad(index), x1, x2);
+        int x = (int) Mth.lerp(EasingMathUtil.easeOutQuad(index), x1, x2);
         int y = (height / 2) - 128 + offsetY;
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, 256, 256, 512, 512);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, 256, 256, 512, 512);
 
         // BACK ICON
         int back_v2 = isOnButton(mouseX, mouseY, x + 3, y + 3, 32, 32) ? 64 : 96;
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 3, y + 3, 320, back_v2, 32, 32, 512, 512);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 3, y + 3, 320, back_v2, 32, 32, 512, 512);
 
         drawTitle.draw(context, x + 128, y + 18, title, 2);
         //context.drawTexture(RenderPipelines.GUI_TEXTURED, category_name, category_x + 64, category_y, 0, 0, 128, 48, 128, 48);
@@ -300,10 +300,10 @@ public class SuitMakingScreen extends InWorldScreen {
             }
 
             int offset = selected ? -20 : 0;
-            StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
+            FontDescription spriteFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
             Style style = Style.EMPTY.withStrikethrough(missing).withFont(spriteFont);
-            Text text = Text.translatable(name_prefix + list_name).setStyle(style);
-            int textWidth = textRenderer.getWidth(text);
+            Component text = Component.translatable(name_prefix + list_name).setStyle(style);
+            int textWidth = font.width(text);
 
             boolean textVisible = !selected;
             if(show_icons && !missing){
@@ -319,81 +319,81 @@ public class SuitMakingScreen extends InWorldScreen {
                 if(isOn){
                     context.fill(list_x + 1, list_y + 1, list_x + 80, list_y + 55, 0x66556699);
                     textVisible = true;
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, list_x, icon_y - (int) (32 * size), altU * size, V * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, list_x, icon_y, eyeU * size, V * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
+                    context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, list_x, icon_y - (int) (32 * size), altU * size, V * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
+                    context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, list_x, icon_y, eyeU * size, V * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
 
                     AnimatronicDataHandler.Chara chara = AnimatronicDataHandler.CHARACTERS.get(list_name);
                     int altCount = chara.ALTS.size();
                     int eyeCount = chara.EYE_ALTS.size();
-                    Text alts_text = altCount == 1 ? Text.translatable("fnafur.screens.workbench.alt", altCount).setStyle(style) : Text.translatable("fnafur.screens.workbench.alts", altCount).setStyle(style);
-                    Text eyes_text = Text.translatable("fnafur.screens.workbench.eyes", eyeCount).setStyle(style);
+                    Component alts_text = altCount == 1 ? Component.translatable("fnafur.screens.workbench.alt", altCount).setStyle(style) : Component.translatable("fnafur.screens.workbench.alts", altCount).setStyle(style);
+                    Component eyes_text = Component.translatable("fnafur.screens.workbench.eyes", eyeCount).setStyle(style);
 
-                    context.getMatrices().pushMatrix();
-                    context.getMatrices().translate(list_x + (int) (34 * size), icon_y);
-                    context.drawText(textRenderer, eyes_text,0, 4, 0xFFFFFFFF, false);
-                    context.getMatrices().translate(0, - (int) (32 * size));
-                    context.drawText(textRenderer, alts_text,0, 4, 0xFFFFFFFF, false);
-                    context.getMatrices().popMatrix();
+                    context.pose().pushMatrix();
+                    context.pose().translate(list_x + (int) (34 * size), icon_y);
+                    context.drawString(font, eyes_text,0, 4, 0xFFFFFFFF, false);
+                    context.pose().translate(0, - (int) (32 * size));
+                    context.drawString(font, alts_text,0, 4, 0xFFFFFFFF, false);
+                    context.pose().popMatrix();
                 }
                 else{
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, list_x, icon_y, iconU * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size), color);
+                    context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, list_x, icon_y, iconU * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size), color);
                 }
 
             }
             if(textVisible){
-                context.getMatrices().pushMatrix();
-                context.getMatrices().translate(list_x + 41, offset + list_y + 27);
+                context.pose().pushMatrix();
+                context.pose().translate(list_x + 41, offset + list_y + 27);
                 if (textWidth > 76) {
                     float diff = (1f / textWidth) * 76;
-                    context.getMatrices().scale(diff);
+                    context.pose().scale(diff);
                 }
-                context.drawText(textRenderer, text, -(textWidth / 2), -4, color, false);
-                context.getMatrices().popMatrix();
+                context.drawString(font, text, -(textWidth / 2), -4, color, false);
+                context.pose().popMatrix();
             }
         }
     }
 
-    void drawCategoryTitle(DrawContext context, int x, int y, String extra, float scale){
-        Identifier category_name = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench/" + extra + "_list_select.png");
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, category_name, x - 64, y - 16, 0, 0, 128, 48, 128, 48);
+    void drawCategoryTitle(GuiGraphics context, int x, int y, String extra, float scale){
+        Identifier category_name = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench/" + extra + "_list_select.png");
+        context.blit(RenderPipelines.GUI_TEXTURED, category_name, x - 64, y - 16, 0, 0, 128, 48, 128, 48);
 
         float size = 1f;
         int U = 256;
         //int y2 = 234 - (int) (32 * size);
         int y2 = 6 - (int) (16 * size);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
     }
 
-    void drawSuitTitle(DrawContext context, int x, int y, String extra, float scale) {
+    void drawSuitTitle(GuiGraphics context, int x, int y, String extra, float scale) {
 
         float size = 1f;
         int U = 256 + 32;
         //int y2 = 234 - (int) (32 * size);
         int y2 = 2 - (int) (16 * size);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
         drawAltTitle(context, x, y, extra, scale);
     }
-    void drawEyesTitle(DrawContext context, int x, int y, String extra, float scale) {
+    void drawEyesTitle(GuiGraphics context, int x, int y, String extra, float scale) {
 
         float size = 1f;
         int U = 256 + 64;
         //int y2 = 234 - (int) (32 * size);
         int y2 = 2 - (int) (16 * size);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
         drawAltTitle(context, x, y, extra, scale);
     }
-    void drawAltTitle(DrawContext context, int x, int y, String extra, float scale){
+    void drawAltTitle(GuiGraphics context, int x, int y, String extra, float scale){
 
-        StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
+        FontDescription spriteFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
         Style style = Style.EMPTY.withFont(spriteFont);
-        Text text = Text.translatable(extra).setStyle(style);
+        Component text = Component.translatable(extra).setStyle(style);
 
-        context.getMatrices().pushMatrix();
-        context.getMatrices().translate(x, y);
-        context.getMatrices().translate(-(textRenderer.getWidth(text)/2f)*scale, 0);
-        context.getMatrices().scale(scale);
-        context.drawText(textRenderer, text, 0, 0, 0xFFFFFFFF, false);
-        context.getMatrices().popMatrix();
+        context.pose().pushMatrix();
+        context.pose().translate(x, y);
+        context.pose().translate(-(font.width(text)/2f)*scale, 0);
+        context.pose().scale(scale);
+        context.drawString(font, text, 0, 0, 0xFFFFFFFF, false);
+        context.pose().popMatrix();
     }
 
     boolean isSelected(int i){
@@ -418,8 +418,8 @@ public class SuitMakingScreen extends InWorldScreen {
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
-        int front_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
+        int front_x = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
 
         if(category.isEmpty()) {
             for (int i = 0; i < AnimatronicDataHandler.CATEGORIES.size(); i++) {
@@ -444,7 +444,7 @@ public class SuitMakingScreen extends InWorldScreen {
                 }
             }
 
-            int back_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 74, (width / 2f) + 55);
+            int back_x = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 74, (width / 2f) + 55);
             int preview_x = back_x;
             int preview_y = (height / 2) - 92;
 
@@ -459,7 +459,7 @@ public class SuitMakingScreen extends InWorldScreen {
                     getNbtData().putString("alt", preview.getAlt());
                     getNbtData().putString("eyes", preview.getEyes());
 
-                    GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), getNbtData(), MinecraftClient.getInstance().world);
+                    GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), getNbtData(), Minecraft.getInstance().level);
                 }
             }
             else{
@@ -469,13 +469,13 @@ public class SuitMakingScreen extends InWorldScreen {
                         getNbtData().remove("alt");
                         getNbtData().remove("eyes");
 
-                        GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), getNbtData(), MinecraftClient.getInstance().world);
+                        GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), getNbtData(), Minecraft.getInstance().level);
                         ClientPlayNetworking.send(new DropItemFromWorkbenchC2SPayload(getBlockPos().asLong(), preview.getChara(), preview.getAlt(), preview.getEyes()));
-                        close();
+                        onClose();
                     }
                 }
                 if(isOnButton(click.x(), click.y(), close_x, save_y, 32, 32)){
-                    close();
+                    onClose();
                 }
             }
         }
@@ -555,8 +555,8 @@ public class SuitMakingScreen extends InWorldScreen {
     }
 
     @Override
-    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
-        int back_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 74, (width / 2f) + 55);
+    public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {
+        int back_x = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 74, (width / 2f) + 55);
         int preview_x = back_x;
         int preview_y = (height / 2) - 92;
 
@@ -564,14 +564,14 @@ public class SuitMakingScreen extends InWorldScreen {
             if(this.category.isEmpty()){
                 preview_rotation_x += (offsetX/50.0);
                 preview_rotation_y += (-offsetY/75.0);
-                preview_rotation_y = MathHelper.clamp(preview_rotation_y, -(Math.PI/7.0), (Math.PI/7.0));
+                preview_rotation_y = Mth.clamp(preview_rotation_y, -(Math.PI/7.0), (Math.PI/7.0));
             }
         }
         return super.mouseDragged(click, offsetX, offsetY);
     }
 
     @Override
-    public boolean mouseReleased(Click click) {
+    public boolean mouseReleased(MouseButtonEvent click) {
         return super.mouseReleased(click);
     }
 
@@ -595,7 +595,7 @@ public class SuitMakingScreen extends InWorldScreen {
                 offsetX = 1;
                 offsetY = 1;
             }
-            int front_x = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
+            int front_x = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
 
             int category_x = front_x + offsetX;
             int category_y = (height / 2) - 128 + offsetY;
@@ -653,8 +653,8 @@ public class SuitMakingScreen extends InWorldScreen {
     }
 
     @Override
-    public void close() {
-        super.close();
+    public void onClose() {
+        super.onClose();
     }
 
     @Override
@@ -663,13 +663,13 @@ public class SuitMakingScreen extends InWorldScreen {
     }
 
     @Override
-    public boolean shouldPause() {
+    public boolean isPauseScreen() {
         return false;
     }
 
     @FunctionalInterface
     public interface DrawTitle {
-        void draw(DrawContext context, int x, int y, String extra, float scale);
+        void draw(GuiGraphics context, int x, int y, String extra, float scale);
     }
     @FunctionalInterface
     public interface GetMissing {

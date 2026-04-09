@@ -1,11 +1,11 @@
 package net.zephyr.fnafur.blocks.props.floor_props.cutouts;
 
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 import net.zephyr.fnafur.init.SoundsInit;
 
-public enum SeriousCutoutColors implements StringIdentifiable, ColorEnumInterface {
+public enum SeriousCutoutColors implements StringRepresentable, ColorEnumInterface {
     BEAR5("bear5", 0, SoundsInit.BEAR5, SoundsInit.BEAR5),
     HELPY("helpy", 1, SoundsInit.HELPULES, SoundsInit.HELPULES_PLACE),
     MARKIPLIER("markiplier", 2, SoundsInit.MARKIPLIER, SoundsInit.MARKIPLIER_PLACE),
@@ -25,7 +25,7 @@ public enum SeriousCutoutColors implements StringIdentifiable, ColorEnumInterfac
         this.place = place;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

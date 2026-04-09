@@ -1,17 +1,17 @@
 package net.zephyr.fnafur.entity.animatronic;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.server.network.EntityTrackerEntry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 // Idk where else to put this -Skillet
@@ -21,44 +21,44 @@ public class AnimatronicPart extends Entity {
     private final EntityDimensions partDimensions;
 
     public AnimatronicPart(AnimatronicEntity owner, String name, float width, float height) {
-        super(owner.getType(), owner.getEntityWorld());
-        this.partDimensions = EntityDimensions.changing(width, height);
-        this.calculateDimensions();
+        super(owner.getType(), owner.level());
+        this.partDimensions = EntityDimensions.scalable(width, height);
+        this.refreshDimensions();
         this.owner = owner;
         this.name = name;
     }
 
-    protected void initDataTracker(DataTracker.Builder builder) {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
     }
 
     @Override
-    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel world, DamageSource source, float amount) {
         return false;
     }
 
-    protected void readCustomData(ReadView view) {
+    protected void readAdditionalSaveData(ValueInput view) {
     }
 
-    protected void writeCustomData(WriteView view) {
+    protected void addAdditionalSaveData(ValueOutput view) {
     }
 
-    public @Nullable ItemStack getPickBlockStack() {
-        return this.owner.getPickBlockStack();
+    public @Nullable ItemStack getPickResult() {
+        return this.owner.getPickResult();
     }
 
-    public boolean isPartOf(Entity entity) {
+    public boolean is(Entity entity) {
         return this == entity || this.owner == entity;
     }
 
-    public Packet<ClientPlayPacketListener> createSpawnPacket(EntityTrackerEntry entityTrackerEntry) {
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entityTrackerEntry) {
         throw new UnsupportedOperationException();
     }
 
-    public EntityDimensions getDimensions(EntityPose pose) {
+    public EntityDimensions getDimensions(Pose pose) {
         return this.partDimensions;
     }
 
-    public boolean shouldSave() {
+    public boolean shouldBeSaved() {
         return false;
     }
 }

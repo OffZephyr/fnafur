@@ -1,16 +1,16 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.item.HeldItemRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemDisplayContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.ItemInHandRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.InteractionHand;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.util.hooks.ItemRenderingHook;
@@ -21,24 +21,24 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(HeldItemRenderer.class)
-public abstract class HeldItemRendererMixin implements IHeldItemAccessor {
+@Mixin(ItemInHandRenderer.class)
+public abstract class ItemInHandRendererMixin implements IHeldItemAccessor {
     //PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer)this.entityRenderDispatcher.<AbstractClientPlayerEntity>getRenderer(this.client.player);
 
 
-    @Shadow protected abstract void renderArm(MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light, Arm arm);
+    @Shadow protected abstract void renderMapHand(PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, HumanoidArm arm);
 
-    @Shadow public abstract void renderItem(LivingEntity entity, ItemStack stack, ItemDisplayContext renderMode, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light);
+    @Shadow public abstract void renderItem(LivingEntity entity, ItemStack stack, ItemDisplayContext renderMode, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light);
 
     @Shadow
-    public abstract void swingArm(float swingProgress, MatrixStack matrixStack, int i, Arm arm);
+    public abstract void swingArm(float swingProgress, PoseStack matrixStack, int i, HumanoidArm arm);
 
-    @Inject(method = "renderFirstPersonItem", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
     private void renderFirstPersonItem(
-            AbstractClientPlayerEntity player, float tickProgress, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light, CallbackInfo ci
+            AbstractClientPlayer player, float tickProgress, float pitch, InteractionHand hand, float swingProgress, ItemStack item, float equipProgress, PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, CallbackInfo ci
     ) {
 
-        if (ItemRenderingHook.renderFirstPersonItem(player, tickProgress, pitch, hand, swingProgress, item, equipProgress, matrices, orderedRenderCommandQueue, light, ((HeldItemRenderer)(Object)this))){
+        if (ItemRenderingHook.renderFirstPersonItem(player, tickProgress, pitch, hand, swingProgress, item, equipProgress, matrices, orderedRenderCommandQueue, light, ((ItemInHandRenderer)(Object)this))){
             ci.cancel();
         }
         //ItemStack maskStack = player.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
@@ -68,7 +68,7 @@ public abstract class HeldItemRendererMixin implements IHeldItemAccessor {
     }
 
     @Override
-    public void doSwingArm(float swingProgress, float equipProgress, MatrixStack matrices, int armX, Arm arm) {
+    public void doSwingArm(float swingProgress, float equipProgress, PoseStack matrices, int armX, HumanoidArm arm) {
         swingArm(swingProgress, matrices, armX, arm);
     }
 }

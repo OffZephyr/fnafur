@@ -1,32 +1,32 @@
 package net.zephyr.fnafur.blocks.fog;
 
 import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.client.render.command.ModelCommandRenderer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class FogBlockRenderer implements BlockEntityRenderer<FogBlockEntity, FogBlockEntityRenderState> {
-    MinecraftClient client;
-    BlockRenderManager manager;
+    Minecraft client;
+    BlockRenderDispatcher manager;
 
-    public FogBlockRenderer(BlockEntityRendererFactory.Context context){
-        client = MinecraftClient.getInstance();
-        manager = context.renderManager();
+    public FogBlockRenderer(BlockEntityRendererProvider.Context context){
+        client = Minecraft.getInstance();
+        manager = context.blockRenderDispatcher();
     }
 
     @Override
@@ -35,19 +35,19 @@ public class FogBlockRenderer implements BlockEntityRenderer<FogBlockEntity, Fog
     }
 
     @Override
-    public void updateRenderState(FogBlockEntity blockEntity, FogBlockEntityRenderState state, float tickProgress, Vec3d cameraPos, @Nullable ModelCommandRenderer.CrumblingOverlayCommand crumblingOverlay) {
-        BlockEntityRenderer.super.updateRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
+    public void extractRenderState(FogBlockEntity blockEntity, FogBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
         state.visible = blockEntity.visible;
     }
 
     @Override
-    public void render(FogBlockEntityRenderState state, MatrixStack matrices, OrderedRenderCommandQueue queue, CameraRenderState cameraState) {
-        BlockPos pos = state.pos;
+    public void submit(FogBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
+        BlockPos pos = state.blockPos;
         BlockState blockState = state.blockState;
 
         if(blockState.getBlock() instanceof FogBlock) {
             if(state.visible) {
-                queue.submitBlockStateModel(matrices, RenderLayers.solid(), this.manager.getModel(blockState), 1, 1, 1, state.lightmapCoordinates, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
+                queue.submitBlockModel(matrices, RenderTypes.solidMovingBlock(), this.manager.getBlockModel(blockState), 1, 1, 1, state.lightCoords, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
     }

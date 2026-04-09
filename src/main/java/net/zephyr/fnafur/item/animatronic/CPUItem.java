@@ -1,50 +1,51 @@
 package net.zephyr.fnafur.item.animatronic;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import net.zephyr.fnafur.util.ItemUtil;
 
 public class CPUItem extends Item {
-    public CPUItem(Settings settings) {
+    public CPUItem(Properties settings) {
         super(settings);
     }
 
     @Override
-    public Text getName(ItemStack stack) {
+    public Component getName(ItemStack stack) {
 
         String extra = ItemUtil.getNbt(stack).isEmpty() ? "Empty " : "";
 
-        return Text.translatable(this.getTranslationKey(), extra);
+        return Component.translatable(this.getDescriptionId(), extra);
 
     }
 
     public static CpuData getCpuData(ItemStack stack){
 
-        NbtCompound nbt = ItemUtil.getNbt(stack).getCompound("cpu_data").orElse(new CpuData().toNbt());
+        CompoundTag nbt = ItemUtil.getNbt(stack).getCompound("cpu_data").orElse(new CpuData().toNbt());
         return CpuData.fromNbt(nbt);
     }
 
     public static ItemStack putCpuData(ItemStack stack, CpuData data){
 
-        NbtCompound nbt = new NbtCompound();
+        CompoundTag nbt = new CompoundTag();
         nbt.put("cpu_data", data.toNbt());
 
         return ItemUtil.setNbt(stack, nbt);
     }
 
     @Override
-    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+    public InteractionResult interactLivingEntity(ItemStack stack, Player user, LivingEntity entity, InteractionHand hand) {
         if(entity instanceof AnimatronicEntity ent){
             ent.setData(user, stack);
         }
-        return super.useOnEntity(stack, user, entity, hand);
+        return super.interactLivingEntity(stack, user, entity, hand);
     }
 }

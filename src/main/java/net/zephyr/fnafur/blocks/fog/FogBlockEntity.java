@@ -2,15 +2,15 @@ package net.zephyr.fnafur.blocks.fog;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleRenderEvents;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.init.ParticlesInit;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
@@ -24,20 +24,20 @@ public class FogBlockEntity extends BlockEntity {
     public FogBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityInit.FOG_BLOCK, pos, state);
     }
-    void tick(World world, BlockPos pos, BlockState state, FogBlockEntity blockEntity){
-        if(world.isClient()) {
+    void tick(Level world, BlockPos pos, BlockState state, FogBlockEntity blockEntity){
+        if(world.isClientSide()) {
             visible =
-                    MinecraftClient.getInstance().player.getMainHandStack().isOf(BlockInit.FOG_BLOCK.asItem()) || (MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen)
-                        && ((world.getLightLevel(LightType.BLOCK, pos) < 4 && world.getLightLevel(LightType.SKY, pos) < 4) || world.isNight());
+                    Minecraft.getInstance().player.getMainHandItem().is(BlockInit.FOG_BLOCK.asItem()) || (Minecraft.getInstance().screen instanceof CameraTabletScreen)
+                        && ((world.getBrightness(LightLayer.BLOCK, pos) < 4 && world.getBrightness(LightLayer.SKY, pos) < 4) || world.isDarkOutside());
 
             if(visibleCache != visible) {
-                world.updateListeners(pos, state, state, Block.field_31025);
-                world.setBlockState(pos, state, Block.field_31025);
+                world.sendBlockUpdated(pos, state, state, Block.UPDATE_LIMIT);
+                world.setBlock(pos, state, Block.UPDATE_LIMIT);
                 visibleCache = visible;
             }
         }
         /*if(world.isClient())
-            if(MinecraftClient.getInstance().player.getMainHandStack().isOf(BlockInit.FOG_BLOCK.asItem()) || MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen) {
+            if(Minecraft.getInstance().player.getMainHandStack().isOf(BlockInit.FOG_BLOCK.asItem()) || Minecraft.getInstance().currentScreen instanceof CameraTabletScreen) {
 
                 Random random = new Random();
                 double randomX = random.nextDouble(-0.5, 0.5);

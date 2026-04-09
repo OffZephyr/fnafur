@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.other.hanging_stars;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum HangingStarSkins implements StringIdentifiable, ColorEnumInterface {
+public enum HangingStarSkins implements StringRepresentable, ColorEnumInterface {
     WHITE("white"),
     BLACK("black"),
     WHITE_COLORED("white_colored"),
@@ -15,7 +15,7 @@ public enum HangingStarSkins implements StringIdentifiable, ColorEnumInterface {
         this.NAME = name;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return NAME;
     }
 

@@ -1,21 +1,22 @@
 package net.zephyr.fnafur.networking.screens;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 
-public record SetEntityScreenS2CPayload(String index, NbtCompound data, int entityID) implements CustomPayload {
+public record SetEntityScreenS2CPayload(String index, CompoundTag data, int entityID) implements CustomPacketPayload {
 
-    public static final Id<SetEntityScreenS2CPayload> ID = new Id<>(ScreenPayloads.SetEntityScreen);
+    public static final Type<SetEntityScreenS2CPayload> ID = new Type<>(ScreenPayloads.SetEntityScreen);
 
-    public static final PacketCodec<RegistryByteBuf, SetEntityScreenS2CPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.STRING, SetEntityScreenS2CPayload::index,
-            PacketCodecs.NBT_COMPOUND, SetEntityScreenS2CPayload::data,
-            PacketCodecs.INTEGER, SetEntityScreenS2CPayload::entityID,
+    public static final StreamCodec<RegistryFriendlyByteBuf, SetEntityScreenS2CPayload> CODEC = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8, SetEntityScreenS2CPayload::index,
+            ByteBufCodecs.COMPOUND_TAG, SetEntityScreenS2CPayload::data,
+            ByteBufCodecs.INT, SetEntityScreenS2CPayload::entityID,
             SetEntityScreenS2CPayload::new);
 
     public static void receive(SetEntityScreenS2CPayload payload, ClientPlayNetworking.Context context) {
@@ -25,5 +26,5 @@ public record SetEntityScreenS2CPayload(String index, NbtCompound data, int enti
     }
 
     @Override
-    public Id<? extends CustomPayload> getId() { return ID; }
+    public Type<? extends CustomPacketPayload> type() { return ID; }
 }

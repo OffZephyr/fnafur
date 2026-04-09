@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.floor_props.arcade;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum ArcadeCabinetColors implements StringIdentifiable, ColorEnumInterface {
+public enum ArcadeCabinetColors implements StringRepresentable, ColorEnumInterface {
     GRAY("0", 0),
     BLUE("1", 1),
     TEAL("2", 2),
@@ -22,7 +22,7 @@ public enum ArcadeCabinetColors implements StringIdentifiable, ColorEnumInterfac
         this.index = index;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

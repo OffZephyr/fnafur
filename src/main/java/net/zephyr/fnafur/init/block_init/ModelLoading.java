@@ -29,9 +29,9 @@ public class ModelLoading implements ModelLoadingPlugin {
             else if(context.state().getBlock() instanceof BlockWithSticker && original != null) {
                 if (context.state().getBlock() instanceof MimicFrames) {
 
-                    if(context.state().isOf(BlockInit.MIMIC_FRAME_2x2)) return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME_2x2.getDefaultState());
-                    else if(context.state().isOf(BlockInit.MIMIC_FRAME_4x4)) return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME_4x4.getDefaultState());
-                    else return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME.getDefaultState());
+                    if(context.state().is(BlockInit.MIMIC_FRAME_2x2)) return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME_2x2.defaultBlockState());
+                    else if(context.state().is(BlockInit.MIMIC_FRAME_4x4)) return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME_4x4.defaultBlockState());
+                    else return new MimicFrameBlockModel(original, BlockInit.MIMIC_FRAME.defaultBlockState());
                 }
                 else if (context.state().getBlock() instanceof BlockWithSticker) {
                     return new StickerBlockModel(original);

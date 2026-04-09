@@ -1,26 +1,26 @@
 package net.zephyr.fnafur.client.gui.screens.editing;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 
 public class DoorEditScreen extends GoopyScreen {
-    static final Identifier TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/edit_screens/large_door.png");
+    static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/edit_screens/large_door.png");
 
     int cornerX = 0;
     int cornerY = 0;
     float speed = 0;
     boolean isInverted = false;
     String direction = "up";
-    public DoorEditScreen(Text text, NbtCompound nbtCompound, Object o) {
-        super(text, nbtCompound, o);
+    public DoorEditScreen(Component text, CompoundTag CompoundTag, Object o) {
+        super(text, CompoundTag, o);
     }
 
     @Override
@@ -35,28 +35,28 @@ public class DoorEditScreen extends GoopyScreen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY, 0, 0, 184, 88, 256, 256);
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY, 0, 0, 184, 88, 256, 256);
 
         int adjustedSpeed = (int) (speed * 4);
         int speedWidth = 2 + (adjustedSpeed * 6);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 46, cornerY + 18, 0, 90, speedWidth, 28, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 46, cornerY + 18, 0, 90, speedWidth, 28, 256, 256);
 
         float dial = (9 * (adjustedSpeed / 20f));
         int u = 26 * (int) (dial - 0.1f);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 6, cornerY + 18, u, 118, 26, 26, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 6, cornerY + 18, u, 118, 26, 26, 256, 256);
 
         float invertU = isInverted ? 190 : 186;
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 10, cornerY + 68, invertU, 30, 4, 12, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 10, cornerY + 68, invertU, 30, 4, 12, 256, 256);
 
         float invertTextV = isInverted ? 42 : 52;
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 24, cornerY + 68, 186, invertTextV, 22, 10, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 24, cornerY + 68, 186, invertTextV, 22, 10, 256, 256);
 
         if (isOnButton(mouseX, mouseY, cornerX + 92, cornerY + 64, 12, 18)) {
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 92, cornerY + 64, 186, 12, 14, 18, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 92, cornerY + 64, 186, 12, 14, 18, 256, 256);
         }
         if (isOnButton(mouseX, mouseY, cornerX + 106, cornerY + 64, 12, 18)) {
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 104, cornerY + 64, 198, 12, 14, 18, 256, 256);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 104, cornerY + 64, 198, 12, 14, 18, 256, 256);
         }
 
         boolean bl1 = isOnButton(mouseX, mouseY, cornerX + 124, cornerY + 64, 10, 18);
@@ -69,37 +69,37 @@ public class DoorEditScreen extends GoopyScreen {
 
         if (bl1 || direction.equals("up")) {
             int color = bl1 && !direction.equals("up") ? 0x66FFFFFF : 0xFFFFFFFF;
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 124, cornerY + 68, 186, 0, 10, 10, 256, 256, color);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 124, cornerY + 68, 186, 0, 10, 10, 256, 256, color);
         }
         if (bl2 || direction.equals("down")) {
             int color = bl2 && !direction.equals("down") ? 0x66FFFFFF : 0xFFFFFFFF;
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 136, cornerY + 68, 196, 0, 10, 10, 256, 256, color);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 136, cornerY + 68, 196, 0, 10, 10, 256, 256, color);
         }
         if (bl3 || direction.equals("left")) {
             int color = bl3 && !direction.equals("left") ? 0x66FFFFFF : 0xFFFFFFFF;
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 148, cornerY + 68, 206, 0, 10, 10, 256, 256, color);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 148, cornerY + 68, 206, 0, 10, 10, 256, 256, color);
         }
         if (bl4 || direction.equals("right")) {
             int color = bl4 && !direction.equals("right") ? 0x66FFFFFF : 0xFFFFFFFF;
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 160, cornerY + 68, 216, 0, 10, 10, 256, 256, color);
+            context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 160, cornerY + 68, 216, 0, 10, 10, 256, 256, color);
         }
 
         super.render(context, mouseX, mouseY, delta);
     }
 
     @Override
-    public void close() {
-        NbtCompound nbt = getNbtData().copy();
+    public void onClose() {
+        CompoundTag nbt = getNbtData().copy();
         nbt.putBoolean("inverted", isInverted);
         nbt.putFloat("speed", speed);
         nbt.putString("direction", direction);
-        GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), nbt, MinecraftClient.getInstance().world);
+        GoopyNetworkingUtils.saveBlockNbt(getBlockPos(), nbt, Minecraft.getInstance().level);
 
-        super.close();
+        super.onClose();
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         double mouseX = click.x();
         double mouseY = click.y();
         int button = click.button();
@@ -145,7 +145,7 @@ public class DoorEditScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+    public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {
         if(click.button() != 0) return false;
         updateSpeed(click.x(), click.y());
         return super.mouseDragged(click, offsetX, offsetY);

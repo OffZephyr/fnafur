@@ -1,17 +1,18 @@
 package net.zephyr.fnafur.item.masks;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemDisplayContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.util.CustomDataTickets;
@@ -38,7 +39,7 @@ import java.util.function.Consumer;
 public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public VanniMaskItem(Settings settings) {
+    public VanniMaskItem(Properties settings) {
         super(settings);
     }
 
@@ -48,11 +49,11 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
+    public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, @Nullable EquipmentSlot slot) {
 
-        if (entity instanceof PlayerEntity p) {
-            if (!p.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET).equals(stack)) {
-                NbtCompound nbt = ItemUtil.getNbt(stack);
+        if (entity instanceof Player p) {
+            if (!p.getInventory().getItem(FnafInventoryScreen.SLOTS_OFFSET).equals(stack)) {
+                CompoundTag nbt = ItemUtil.getNbt(stack);
                 nbt.putBoolean("inVanniMask", false);
                 ItemUtil.setNbt(stack, nbt);
             }
@@ -76,7 +77,7 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
 
         ItemDisplayContext context = geoAnimatableAnimationTest.getData(DataTickets.ITEM_RENDER_PERSPECTIVE);
 
-        if(!context.isFirstPerson()){
+        if(!context.firstPerson()){
             return geoAnimatableAnimationTest.setAndContinue(RawAnimation.begin().thenLoop("animation.ar_mask.thirdperson"));
         }
         else{
@@ -100,7 +101,7 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
             }
         }
 
-       //if (MinecraftClient.getInstance().currentScreen == null && (context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) && isInSlot) {
+       //if (Minecraft.getInstance().currentScreen == null && (context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) && isInSlot) {
 
        //    RawAnimation putOn = RawAnimation.begin().thenPlayAndHold("animation.ar_mask.open");
 
@@ -128,7 +129,7 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
         return super.use(world, user, hand);
     }
 
@@ -153,13 +154,13 @@ public class VanniMaskItem extends Item implements GeoItem, IHasArmPos {
     }
 
     @Override
-    public Vec3d getLeftArmPos(boolean isMainStack) {
-        return new Vec3d(20, -50, 0);
+    public Vec3 getLeftArmPos(boolean isMainStack) {
+        return new Vec3(20, -50, 0);
     }
 
     @Override
-    public Vec3d getRightArmPos(boolean isMainStack) {
-        return new Vec3d(-20, -50, 0);
+    public Vec3 getRightArmPos(boolean isMainStack) {
+        return new Vec3(-20, -50, 0);
     }
 
     static class SoundHandler<T extends GeoAnimatable> implements AnimationController.KeyframeEventHandler<T, SoundKeyframeData>{

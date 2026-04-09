@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.entity.animatronic;
 
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import net.zephyr.fnafur.util.CustomDataTickets;
@@ -33,14 +33,14 @@ public class AnimatronicModel<T extends AnimatronicEntity> extends GeoModel<T> {
     public Identifier getAnimationResource(T animatable) {
         if(animatable != null)
             return animatable.getAnimations();
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"));
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"));
     }
 
     @Override
     public Identifier[] getAnimationResourceFallbacks(T animatable) {
         return new Identifier[]{
-                Identifier.of(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default")),
-                Identifier.of(FnafUniverseRebuilt.MOD_ID, "entity/jaw_movements")
+                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default")),
+                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "entity/jaw_movements")
         };
     }
 }

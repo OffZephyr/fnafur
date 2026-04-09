@@ -1,22 +1,22 @@
 package net.zephyr.fnafur.blocks.energy.blocks.switches;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtLongArray;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.LongArrayTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.CallableByMesurer;
 import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
 import net.zephyr.fnafur.blocks.energy.enums.EnergyNodeType;
@@ -29,12 +29,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BaseWallSwitchBlock extends WallPropBlock implements BlockEntityProvider, EnergyNode, CallableByMesurer {
+public class BaseWallSwitchBlock extends WallPropBlock implements EntityBlock, EnergyNode, CallableByMesurer {
 
     int tick;
     final int TICK_RATE = 20;
 
-    public BaseWallSwitchBlock(AbstractBlock.Settings settings) {
+    public BaseWallSwitchBlock(BlockBehaviour.Properties settings) {
         super(settings);
     }
 
@@ -45,36 +45,36 @@ public class BaseWallSwitchBlock extends WallPropBlock implements BlockEntityPro
 
 
     @Override
-    public ActionResult addNode(World world, BlockPos pos, BlockPos toAdd, Vec3d hit) {
+    public InteractionResult addNode(Level world, BlockPos pos, BlockPos toAdd, Vec3 hit) {
         //System.out.println("[SWITCH]: try to connect node...");
-        if(pos == toAdd) return ActionResult.FAIL;
-        if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return ActionResult.FAIL;
+        if(pos == toAdd) return InteractionResult.FAIL;
+        if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return InteractionResult.FAIL;
         List<Long> p = new ArrayList<>(
                 Arrays.stream(base.getData().getLongArray(BaseEnergyBlockEntity.KEY_NODES).get()).boxed().toList()
         );
 
-        if(p.contains(toAdd.asLong()))return ActionResult.SUCCESS;
+        if(p.contains(toAdd.asLong()))return InteractionResult.SUCCESS;
         p.add(toAdd.asLong());
 
         //base.setData(BaseEnergyBlockEntity.KEY_NODES, new NbtLongArray(p) );
         //System.out.println("[SWITCH]: data nodes : "+ base.getNodes().toString());
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public ActionResult remNode(World world, BlockPos pos, BlockPos toRem, Vec3d hit) {
-        if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return ActionResult.FAIL;
+    public InteractionResult remNode(Level world, BlockPos pos, BlockPos toRem, Vec3 hit) {
+        if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return InteractionResult.FAIL;
         List<Long> p = new ArrayList<>(
                 Arrays.stream(base.getData().getLongArray(BaseEnergyBlockEntity.KEY_NODES).get()).boxed().toList()
         );
 
         p.remove(toRem.asLong());
         //base.setData(BaseEnergyBlockEntity.KEY_NODES, new NbtLongArray(p) );
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public boolean isPowered(BlockView world, BlockPos pos) {
+    public boolean isPowered(BlockGetter world, BlockPos pos) {
         if(!(world.getBlockEntity(pos) instanceof BaseEnergyBlockEntity base)) return false;
         //System.out.println("[SWITCH] nodes l: "+base.getNodes().length);
         for(BlockPos p  : base.getNodes()){
@@ -92,24 +92,24 @@ public class BaseWallSwitchBlock extends WallPropBlock implements BlockEntityPro
 
 
     @Override
-    public ActionResult ExecuteAction(ItemUsageContext context) {
-        NbtCompound data = context.getStack().getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
+    public InteractionResult ExecuteAction(UseOnContext context) {
+        CompoundTag data = context.getItemInHand().getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
 
         if(data.getBoolean("needConnection").get()){
-            if(context.getPlayer().isSneaking()){
+            if(context.getPlayer().isShiftKeyDown()){
                 remNode(
-                        context.getWorld(),
-                        context.getBlockPos(),
-                        BlockPos.fromLong(data.getLong("posConnection").get()),
-                        context.getHitPos()
+                        context.getLevel(),
+                        context.getClickedPos(),
+                        BlockPos.of(data.getLong("posConnection").get()),
+                        context.getClickLocation()
                 );
                 //System.out.println("[SWITCH] node removed! ");
             } else {
                 addNode(
-                        context.getWorld(),
-                        context.getBlockPos(),
-                        BlockPos.fromLong(data.getLong("posConnection").get()),
-                        context.getHitPos()
+                        context.getLevel(),
+                        context.getClickedPos(),
+                        BlockPos.of(data.getLong("posConnection").get()),
+                        context.getClickLocation()
                 );
                 //System.out.println("[SWITCH] node added! ");
             }
@@ -120,34 +120,34 @@ public class BaseWallSwitchBlock extends WallPropBlock implements BlockEntityPro
         }
         else {
             data.putBoolean("needConnection", true);
-            data.putLong("posConnection", context.getBlockPos().asLong());
+            data.putLong("posConnection", context.getClickedPos().asLong());
         }
 
         //System.out.println("[SWITCH] tool data: "+data.toString());
 
-        context.getStack().apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(currentNbt -> {
-            currentNbt.copyFrom(data);
+        context.getItemInHand().update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, comp -> comp.update(currentNbt -> {
+            currentNbt.merge(data);
         }));
 
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public @Nullable BlockEntityTicker getTicker(World world, BlockState state, BlockEntityType type) {
+    public @Nullable BlockEntityTicker getTicker(Level world, BlockState state, BlockEntityType type) {
         return ((world1, pos, state1, blockEntity) -> {
-            if(world1.isClient()) return;
+            if(world1.isClientSide()) return;
 
             tick = Math.max(tick-1, 0);
             if(tick > 0) return;
             tick = TICK_RATE;
 
-            world1.updateNeighbors(pos, world1.getBlockState(pos).getBlock());
+            world1.updateNeighborsAt(pos, world1.getBlockState(pos).getBlock());
         });
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return BlockEntityInit.ENERGY.instantiate(pos, state);
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return BlockEntityInit.ENERGY.create(pos, state);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class BaseWallSwitchBlock extends WallPropBlock implements BlockEntityPro
     }
 
     @Override
-    public boolean goesOnFloor(BlockStateComponent state) {
+    public boolean goesOnFloor(BlockItemStateProperties state) {
         return false;
     }
 

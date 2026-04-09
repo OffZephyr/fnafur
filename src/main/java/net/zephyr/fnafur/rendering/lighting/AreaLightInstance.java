@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.rendering.lighting;
 
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public final class AreaLightInstance {
 
-    private Vec3d position;
+    private Vec3 position;
     private Vector3f direction;
     private Vector3f normal;
     private float radius;
@@ -25,7 +25,7 @@ public final class AreaLightInstance {
     private int shadowIndex = -1;
 
     public AreaLightInstance(
-            Vec3d position,
+            Vec3 position,
             Vector3f direction,
             Vector3f normal,
             float radius,
@@ -56,7 +56,7 @@ public final class AreaLightInstance {
 
 
     public void updateData(
-            Vec3d position,
+            Vec3 position,
             Vector3f direction,
             Vector3f normal,
             float radius,
@@ -85,7 +85,7 @@ public final class AreaLightInstance {
         this.shapeUVRect = new Vector4f(shapeUVRect);
     }
 
-    public Vec3d getPosition() { return position; }
+    public Vec3 getPosition() { return position; }
 
     public Vector3f getDirection() { return new Vector3f(direction); }
 
@@ -122,7 +122,7 @@ public final class AreaLightInstance {
     public Vector4f getShapeUVRectRef() { return shapeUVRect; }
     public Matrix4f getLightViewProjRef() { return lightViewProj; }
 
-    public double squaredDistanceTo(Vec3d p) {
-        return position.squaredDistanceTo(p);
+    public double squaredDistanceTo(Vec3 p) {
+        return position.distanceToSqr(p);
     }
 }

@@ -1,12 +1,12 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.resource.ReloadableResourceManagerImpl;
+import net.minecraft.client.Minecraft;
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.zephyr.fnafur.init.block_init.Palettes.PaletteManager;
 import net.zephyr.fnafur.init.block_init.Palettes.PaletteTextureReloader;
 import net.zephyr.fnafur.util.hooks.JoinHook;
@@ -26,17 +26,17 @@ import java.util.concurrent.CompletableFuture;
 /**
  * When drawing a mirror, always use the mirror's framebuffer instead of the normal one.
  */
-@Mixin(MinecraftClient.class)
-public class MinecraftClientMixin implements IGetClientManagers {
+@Mixin(Minecraft.class)
+public class MinecraftMixin implements IGetClientManagers {
 	@Shadow
-	private long startTime;
+	private long clientStartTimeMs;
 	@Shadow
-	ReloadableResourceManagerImpl resourceManager;
+    ReloadableResourceManager resourceManager;
 	@Shadow
-	public Screen currentScreen;
+	public Screen screen;
 
 	@Shadow
-	CompletableFuture<Void> reloadResources() {
+	CompletableFuture<Void> reloadResourcePacks() {
 		return null;
 	}
 	@Unique
@@ -46,12 +46,12 @@ public class MinecraftClientMixin implements IGetClientManagers {
 	@Unique
 	private CreditsDataManager creditsDataManager = new CreditsDataManager();
 
-	@Inject(method = "joinWorld", at = @At("HEAD"), cancellable = true)
-	void joinWorld(ClientWorld world, CallbackInfo ci){
+	@Inject(method = "setLevel", at = @At("HEAD"), cancellable = true)
+	void joinWorld(ClientLevel world, CallbackInfo ci){
 		JoinHook.joinHook(world);
 	}
-	@Inject(method = "getFramebuffer", at = @At("HEAD"), cancellable = true)
-	public void getFramebuffer(CallbackInfoReturnable<Framebuffer> cir) {
+	@Inject(method = "getMainRenderTarget", at = @At("HEAD"), cancellable = true)
+	public void getFramebuffer(CallbackInfoReturnable<RenderTarget> cir) {
 		//if (CameraRenderer.isDrawing()) {
 		//	var framebuffer = CameraRenderer.getFramebuffer();
 		//	if (framebuffer != null) {
@@ -62,15 +62,15 @@ public class MinecraftClientMixin implements IGetClientManagers {
 	}
 	@Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
 	public void setScreen(Screen screen, CallbackInfo cir) {
-		MinecraftClient client = ((MinecraftClient) (Object) this);
+		Minecraft client = ((Minecraft) (Object) this);
 
-		ClientPlayerEntity player = client.player;
+		LocalPlayer player = client.player;
 		//if(player != null) {
 		//	Entity entity = client.world.getEntityById(((IEntityDataSaver) player).getPersistentData().getInt("JumpscareID"));
 
 		//	if (entity instanceof DefaultEntity ent &&
 		//			ent.hasJumpScare()) {
-		//		if (MinecraftClient.getInstance().currentScreen instanceof GoopyScreen && screen != null) {
+		//		if (Minecraft.getInstance().currentScreen instanceof GoopyScreen && screen != null) {
 		//			cir.cancel();
 		//		}
 		//	}
@@ -78,11 +78,11 @@ public class MinecraftClientMixin implements IGetClientManagers {
 		// TODO Jumpscare Screen
     }
 
-	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourcePackManager;scanPacks()V", shift = At.Shift.BEFORE))
+	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/repository/PackRepository;reload()V", shift = At.Shift.BEFORE))
 	public void reloaders(CallbackInfo ci) {
-		this.resourceManager.registerReloader(this.paletteManager);
-		this.resourceManager.registerReloader(this.animatronicDataManager);
-		this.resourceManager.registerReloader(this.creditsDataManager);
+		this.resourceManager.registerReloadListener(this.paletteManager);
+		this.resourceManager.registerReloadListener(this.animatronicDataManager);
+		this.resourceManager.registerReloadListener(this.creditsDataManager);
 	}
 
 	@Inject(method = "getCameraEntity", at = @At("HEAD"), cancellable = true)
@@ -92,6 +92,6 @@ public class MinecraftClientMixin implements IGetClientManagers {
 
 	@Override
 	public long getStartTime() {
-		return startTime;
+		return clientStartTimeMs;
 	}
 }

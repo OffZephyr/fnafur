@@ -1,45 +1,46 @@
 package net.zephyr.fnafur.blocks.energy.blocks.generators;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtInt;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.energy.entity.BaseEnergyBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class FuelGeneratorBlock extends BaseGeneratorBlock {
-    public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    public FuelGeneratorBlock(Settings settings) {
+    public FuelGeneratorBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    public boolean isPowered(BlockView world, BlockPos pos) {
+    public boolean isPowered(BlockGetter world, BlockPos pos) {
         return true;
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(ACTIVE));
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(ACTIVE));
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        ActionResult result = super.onUse(state, world, pos, player, hit);
-        if(result != ActionResult.PASS) return result;
-        world.setBlockState(pos, state.cycle(ACTIVE));
-        return ActionResult.PASS;
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        InteractionResult result = super.useWithoutItem(state, world, pos, player, hit);
+        if(result != InteractionResult.PASS) return result;
+        world.setBlockAndUpdate(pos, state.cycle(ACTIVE));
+        return InteractionResult.PASS;
     }
 }
 

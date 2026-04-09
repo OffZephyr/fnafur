@@ -2,22 +2,24 @@ package net.zephyr.fnafur.blocks.dynamic.illusion_block.models;
 
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.model.*;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.model.BlockStateModel.UnbakedRoot;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
@@ -29,13 +31,13 @@ import java.util.List;
 public class MimicFrameBlockModel extends StickerBlockModel {
     public final BlockState defaultState;
 
-    public MimicFrameBlockModel(UnbakedGrouped model, BlockState state){
+    public MimicFrameBlockModel(UnbakedRoot model, BlockState state){
         super(model);
         this.defaultState = state;
     }
 
     @Override
-    public void emitBaseCube(BlockState baseState, BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt) {
+    public void emitBaseCube(BlockState baseState, BlockState state, BlockPos pos, QuadEmitter emitter, CompoundTag nbt) {
         if(!(baseState.getBlock() instanceof MimicFrames)) {
             super.emitBaseCube(baseState, state, pos, emitter, nbt);
             return;
@@ -43,7 +45,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
 
         this.particlesprite = DiagonalMimicFrameModel.FRAME;
 
-        World world = MinecraftClient.getInstance().world;
+        Level world = Minecraft.getInstance().level;
         if (state.getBlock() instanceof MimicFrames block) {
 
             int matrixSize = block.getMatrixSize();
@@ -73,7 +75,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                                             (y == matrixSize - 1 && direction == Direction.UP) ||
                                             (y == 0 && direction == Direction.DOWN)
                             ) {
-                                if (world != null && world.getBlockState(pos.offset(direction)).getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), MinecraftClient.getInstance().world, pos.offset(direction), pos, frame.getMatrixSize(), matrixSize))
+                                if (world != null && world.getBlockState(pos.relative(direction)).getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), Minecraft.getInstance().level, pos.relative(direction), pos, frame.getMatrixSize(), matrixSize))
                                     continue;
                             }
                             Block sideBlock = block.getCurrentBlock(nbt, world, direction, new Vec3i(x, y, z));
@@ -94,20 +96,20 @@ public class MimicFrameBlockModel extends StickerBlockModel {
     }
 
     @Override
-    public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
-        return MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+    public TextureAtlasSprite particleSprite(BlockAndTintGetter blockView, BlockPos pos, BlockState state) {
+        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 
     @Override
-    public Sprite particleSprite() {
-        return MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+    public TextureAtlasSprite particleIcon() {
+        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 
-    public void emitSide(QuadEmitter emitter, NbtCompound nbt, Direction direction, Block sideBlock, BlockPos pos, boolean reColor, int matrixSize, int x, int y, int z, int colorIndex) {
+    public void emitSide(QuadEmitter emitter, CompoundTag nbt, Direction direction, Block sideBlock, BlockPos pos, boolean reColor, int matrixSize, int x, int y, int z, int colorIndex) {
 
         int frameSize = matrixSize * matrixSize;
 
-        Sprite frame = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_" + frameSize)));
+        TextureAtlasSprite frame = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_" + frameSize)));
 
         if (frame == null) return;
 
@@ -145,11 +147,11 @@ public class MimicFrameBlockModel extends StickerBlockModel {
         }
         emitter.square(direction, x0, z0, x1, z1, depth);
 
-        Sprite sprite;
+        TextureAtlasSprite sprite;
         if(sideBlock != null){
-            BlockState textureState = sideBlock.getDefaultState();
-            BlockStateModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(textureState);
-            List<BlockModelPart> parts = model.getParts(Random.create());
+            BlockState textureState = sideBlock.defaultBlockState();
+            BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(textureState);
+            List<BlockModelPart> parts = model.collectParts(RandomSource.create());
             sprite = parts.get(0).getQuads(direction).get(0).sprite();
         }
         else{
@@ -178,7 +180,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
     }
 
     @Override
-    public void emitStickers(BlockState baseState, BlockPos pos, QuadEmitter emitter, NbtCompound nbt) {
+    public void emitStickers(BlockState baseState, BlockPos pos, QuadEmitter emitter, CompoundTag nbt) {
 
         if(!(baseState.getBlock() instanceof MimicFrames)) {
             super.emitStickers(baseState, pos, emitter, nbt);
@@ -186,12 +188,12 @@ public class MimicFrameBlockModel extends StickerBlockModel {
 
     }
 
-    public void emitStickers(Direction direction, QuadEmitter emitter, NbtCompound nbt, BlockPos pos, float x0, float x1, float z0, float z1, float depth, int matrixSize) {
+    public void emitStickers(Direction direction, QuadEmitter emitter, CompoundTag nbt, BlockPos pos, float x0, float x1, float z0, float z1, float depth, int matrixSize) {
         if (!nbt.isEmpty()) {
 
-            MinecraftClient client = MinecraftClient.getInstance();
-            NbtList list = nbt.getList(direction.name()).orElse(new NbtList());
-            NbtList offset_list = nbt.getList(direction.name() + "_offset").orElse(new NbtList());
+            Minecraft client = Minecraft.getInstance();
+            ListTag list = nbt.getList(direction.name()).orElse(new ListTag());
+            ListTag offset_list = nbt.getList(direction.name() + "_offset").orElse(new ListTag());
 
             for (int i = 0; i < list.size(); i++) {
                 String name = list.getString(i).orElse("");
@@ -202,14 +204,14 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                                 0;
                 int num = dirPos % decal.getTextures().length;
                 Identifier identifier = decal.getTextures()[num];
-                Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier));
+                TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, identifier));
 
                 float Offset = offset_list.getFloat(i).orElse(0f);
                 float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;
                 float yOffset = decal.getDirection() == DecalInit.Movable.VERTICAL ? Offset : 0;
 
-                boolean snapBelow = client.world.getBlockState(pos.down()).isSideSolidFullSquare(client.world, pos.down(), direction);
-                boolean snapAbove = client.world.getBlockState(pos.up()).isSideSolidFullSquare(client.world, pos.up(), direction);
+                boolean snapBelow = client.level.getBlockState(pos.below()).isFaceSturdy(client.level, pos.below(), direction);
+                boolean snapAbove = client.level.getBlockState(pos.above()).isFaceSturdy(client.level, pos.above(), direction);
 
                 float textureSize = decal.getPixelDensity() - decal.getSize();
                 float scaledSpace = (float) decal.getSize() / decal.getPixelDensity();

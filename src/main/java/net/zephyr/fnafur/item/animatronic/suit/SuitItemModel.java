@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.item.animatronic.suit;
 
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;

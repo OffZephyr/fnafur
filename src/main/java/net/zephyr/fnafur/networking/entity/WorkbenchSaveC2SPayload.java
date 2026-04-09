@@ -2,37 +2,38 @@ package net.zephyr.fnafur.networking.entity;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift.GalaxyLayerGeoPropEntity;
 import net.zephyr.fnafur.init.block_init.PropInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
-public record WorkbenchSaveC2SPayload(long pos, NbtCompound nbt) implements CustomPayload {
-    public static final Id<WorkbenchSaveC2SPayload> ID = new Id<>(EntityPayloads.C2SWorkbenchSave);
+public record WorkbenchSaveC2SPayload(long pos, CompoundTag nbt) implements CustomPacketPayload {
+    public static final Type<WorkbenchSaveC2SPayload> ID = new Type<>(EntityPayloads.C2SWorkbenchSave);
 
-    public static final PacketCodec<RegistryByteBuf, WorkbenchSaveC2SPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.LONG, WorkbenchSaveC2SPayload::pos,
-            PacketCodecs.NBT_COMPOUND, WorkbenchSaveC2SPayload::nbt,
+    public static final StreamCodec<RegistryFriendlyByteBuf, WorkbenchSaveC2SPayload> CODEC = StreamCodec.composite(
+            ByteBufCodecs.LONG, WorkbenchSaveC2SPayload::pos,
+            ByteBufCodecs.COMPOUND_TAG, WorkbenchSaveC2SPayload::nbt,
             WorkbenchSaveC2SPayload::new);
 
     public static void receive(WorkbenchSaveC2SPayload payload, ServerPlayNetworking.Context context) {
-        context.player().getEntityWorld().setBlockState(BlockPos.fromLong(payload.pos()), PropInit.COSMO_GIFT.getDefaultState());
+        context.player().level().setBlockAndUpdate(BlockPos.of(payload.pos()), PropInit.COSMO_GIFT.defaultBlockState());
 
-        if(context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos())) instanceof GalaxyLayerGeoPropEntity ent){
-            if(context.player().getEntityWorld().getBlockEntity(BlockPos.fromLong(payload.pos()).down()) instanceof PropBlockEntity ent2) {
-                NbtCompound nbt2 = ((IEntityDataSaver) ent2).getPersistentData().copy();
-                BlockState state = context.player().getEntityWorld().getBlockState(BlockPos.fromLong(payload.pos()).down());
+        if(context.player().level().getBlockEntity(BlockPos.of(payload.pos())) instanceof GalaxyLayerGeoPropEntity ent){
+            if(context.player().level().getBlockEntity(BlockPos.of(payload.pos()).below()) instanceof PropBlockEntity ent2) {
+                CompoundTag nbt2 = ((IEntityDataSaver) ent2).getPersistentData().copy();
+                BlockState state = context.player().level().getBlockState(BlockPos.of(payload.pos()).below());
 
                 float rotation = nbt2.getFloat("Rotation").get() + 270;
 
@@ -40,25 +41,25 @@ public record WorkbenchSaveC2SPayload(long pos, NbtCompound nbt) implements Cust
                 double offsetY = nbt2.getDouble("yOffset").get();
                 double offsetZ = nbt2.getDouble("zOffset").get();
 
-                float rot = (rotation) * MathHelper.RADIANS_PER_DEGREE;
-                Vec2f angle = new Vec2f(MathHelper.cos(rot), MathHelper.sin(rot)).multiply(0.25f);
-                Vec3d vec = new Vec3d(offsetX + angle.x, offsetY, offsetZ + angle.y);
+                float rot = (rotation) * Mth.DEG_TO_RAD;
+                Vec2 angle = new Vec2(Mth.cos(rot), Mth.sin(rot)).scale(0.25f);
+                Vec3 vec = new Vec3(offsetX + angle.x, offsetY, offsetZ + angle.y);
 
-                nbt2.putDouble("xOffset", vec.getX());
-                nbt2.putDouble("yOffset", vec.getY());
-                nbt2.putDouble("zOffset", vec.getZ());
+                nbt2.putDouble("xOffset", vec.x());
+                nbt2.putDouble("yOffset", vec.y());
+                nbt2.putDouble("zOffset", vec.z());
 
-                ((IEntityDataSaver) ent).getPersistentData().copyFrom(nbt2);
+                ((IEntityDataSaver) ent).getPersistentData().merge(nbt2);
             }
             ((IEntityDataSaver)ent).getPersistentData().put("contains", payload.nbt());
 
-            for(ServerPlayerEntity p : PlayerLookup.all(context.server())){
+            for(ServerPlayer p : PlayerLookup.all(context.server())){
                 ServerPlayNetworking.send(p, new WorkbenchSaveS2CPayload(payload.pos(), ((IEntityDataSaver)ent).getPersistentData()));
             }
         }
     }
     @Override
-    public Id<? extends CustomPayload> getId() {
+    public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 }

@@ -2,17 +2,17 @@ package net.zephyr.fnafur.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.HolderLookup;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
-    public ItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+    public ItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
         super(output, completableFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+    protected void addTags(HolderLookup.Provider wrapperLookup) {
 
     }
 }

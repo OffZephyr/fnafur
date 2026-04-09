@@ -1,35 +1,36 @@
 package net.zephyr.fnafur.blocks.props.base;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
-import net.minecraft.util.StringIdentifiable;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class FloorPropBlock<T extends Enum<T> & ColorEnumInterface & StringIdentifiable> extends PropBlock<T> {
+public abstract class FloorPropBlock<T extends Enum<T> & ColorEnumInterface & StringRepresentable> extends PropBlock<T> {
 
-    protected FloorPropBlock(Settings settings) {
+    protected FloorPropBlock(Properties settings) {
         super(settings);
     }
 
     @Nullable
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        Direction facing = getDefaultState().get(FACING);
-        return getDefaultState()
-                .with(FACING, facing);
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        Direction facing = defaultBlockState().getValue(FACING);
+        return defaultBlockState()
+                .setValue(FACING, facing);
     }
 
     @Override
@@ -38,27 +39,27 @@ public abstract class FloorPropBlock<T extends Enum<T> & ColorEnumInterface & St
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        if (world.getBlockEntity(pos) != null && placer instanceof PlayerEntity player) {
-            if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof BlockItem blockItem) {
-                if (blockItem.getBlock() instanceof FloorPropBlock && world.isClient()) {
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        if (world.getBlockEntity(pos) != null && placer instanceof Player player) {
+            if (player.getMainHandItem() != null && player.getMainHandItem().getItem() instanceof BlockItem blockItem) {
+                if (blockItem.getBlock() instanceof FloorPropBlock && world.isClientSide()) {
                     FloorPropBlock.drawingOutline = true;
-                    HitResult blockHit = MinecraftClient.getInstance().crosshairTarget;
+                    HitResult blockHit = Minecraft.getInstance().hitResult;
                     if (blockHit.getType() == HitResult.Type.BLOCK && blockHit instanceof BlockHitResult blockHitResult) {
 
-                        double x = blockHitResult.getPos().getX() - blockHitResult.getBlockPos().getX();
-                        double y = blockHitResult.getPos().getY() - blockHitResult.getBlockPos().getY();
-                        double z = blockHitResult.getPos().getZ() - blockHitResult.getBlockPos().getZ();
+                        double x = blockHitResult.getLocation().x() - blockHitResult.getBlockPos().getX();
+                        double y = blockHitResult.getLocation().y() - blockHitResult.getBlockPos().getY();
+                        double z = blockHitResult.getLocation().z() - blockHitResult.getBlockPos().getZ();
 
-                        y = blockHitResult.getSide().getAxis() != Direction.Axis.Y ? y + 1 : y;
+                        y = blockHitResult.getDirection().getAxis() != Direction.Axis.Y ? y + 1 : y;
 
-                        float rotation = player.getHeadYaw();
+                        float rotation = player.getYHeadRot();
 
                         x = Math.clamp(x, 0, 1);
                         y = Math.clamp(y, 0, 1);
                         z = Math.clamp(z, 0, 1);
 
-                        if (player.isSneaking()) {
+                        if (player.isShiftKeyDown()) {
                             x = Math.round(x / PropBlock.gridSnap) * PropBlock.gridSnap;
                             y = Math.round(y / PropBlock.gridSnap) * PropBlock.gridSnap;
                             z = Math.round(z / PropBlock.gridSnap) * PropBlock.gridSnap;
@@ -74,11 +75,11 @@ public abstract class FloorPropBlock<T extends Enum<T> & ColorEnumInterface & St
                 }
             }
         }
-        super.onPlaced(world, pos, state, placer, itemStack);
+        super.setPlacedBy(world, pos, state, placer, itemStack);
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         if(COLOR_ENUM() != null) {
             builder.add(COLOR_PROPERTY());
         }

@@ -2,15 +2,15 @@ package net.zephyr.fnafur.init.entity_init;
 
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.special.SeatEntity;
 import net.zephyr.fnafur.blocks.special.SeatEntityRenderer;
@@ -22,27 +22,27 @@ import net.zephyr.fnafur.entity.other.bear5.Bear5Renderer;
 public class EntityInit {
     public static final EntityType<AnimatronicEntity> ANIMATRONIC = register(
             "animatronic",
-            EntityType.Builder.create(AnimatronicEntity::new, SpawnGroup.MISC)
-                    .dimensions(0.8f, 2.25f).eyeHeight(1.8f)
+            EntityType.Builder.of(AnimatronicEntity::new, MobCategory.MISC)
+                    .sized(0.8f, 2.25f).eyeHeight(1.8f)
     );
     public static final EntityType<Bear5Entity> BEAR5 = register(
             "bear5",
-            EntityType.Builder.create(Bear5Entity::new, SpawnGroup.MISC).dimensions(1, 3).eyeHeight(2)
+            EntityType.Builder.of(Bear5Entity::new, MobCategory.MISC).sized(1, 3).eyeHeight(2)
     );
     public static final EntityType<SeatEntity> SEAT = register(
             "seat",
-            EntityType.Builder.create(SeatEntity::new, SpawnGroup.MISC).dimensions(0.01f, 0.01f)
+            EntityType.Builder.of(SeatEntity::new, MobCategory.MISC).sized(0.01f, 0.01f)
     );
 
-    private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
-        return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
+    private static <T extends Entity> EntityType<T> register(ResourceKey<EntityType<?>> key, EntityType.Builder<T> type) {
+        return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, type.build(key));
     }
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
         return register(keyOf(id), type);
     }
 
-    private static RegistryKey<EntityType<?>> keyOf(String id) {
-        return RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, id));
+    private static ResourceKey<EntityType<?>> keyOf(String id) {
+        return ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, id));
     }
 
     public static void registerEntities(){
@@ -63,7 +63,7 @@ public class EntityInit {
         FnafUniverseRebuilt.LOGGER.info("Registering Entities on CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }
 
-    public static <E extends AnimatronicEntity> void makeRenderer(EntityType<? extends E> entityType, EntityRendererFactory<E> entityRendererFactory) {
+    public static <E extends AnimatronicEntity> void makeRenderer(EntityType<? extends E> entityType, EntityRendererProvider<E> entityRendererFactory) {
         FnafUniverseRebuilt.RENDER_FACTORIES.put(entityType, entityRendererFactory);
         EntityRendererRegistry.register(entityType, entityRendererFactory);
     }

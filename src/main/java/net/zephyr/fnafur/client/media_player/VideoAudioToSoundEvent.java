@@ -72,7 +72,7 @@ public class VideoAudioToSoundEvent {
 //    }
 //
 //    public static void playSoundEvent(SoundEvent event, double x, double y, double z, boolean spatial) {
-//        SoundManager soundManager = MinecraftClient.getInstance().getSoundManager();
+//        SoundManager soundManager = Minecraft.getInstance().getSoundManager();
 //        if (spatial) {
 //            soundManager.play(new PositionedSoundInstance(event, SoundCategory.MASTER, 1.0f, 1.0f, Random.create(), x, y, z));
 //        } else {

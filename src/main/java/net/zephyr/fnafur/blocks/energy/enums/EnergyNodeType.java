@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.energy.enums;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum EnergyNodeType implements StringIdentifiable, ColorEnumInterface {
+public enum EnergyNodeType implements StringRepresentable, ColorEnumInterface {
     GENERATOR("generator", 0),
     SWITCH("switch", 1),
     OUTPUT("output", 2);
@@ -17,7 +17,7 @@ public enum EnergyNodeType implements StringIdentifiable, ColorEnumInterface {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

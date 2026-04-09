@@ -1,22 +1,22 @@
 package net.zephyr.fnafur.client.gui.screens.main_menu.Singleplayer;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.Style;
-import net.minecraft.text.StyleSpriteSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.FontDescription;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.client.gui.screens.main_menu.FnafTitleScreen;
@@ -38,11 +38,11 @@ import java.util.Objects;
 public class CreditsScreen extends Screen {
     SoundInstance music;
     public final FnafTitleScreen TITLE_SCREEN;
-    private static final Identifier SCROLLING_TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/credits/scrolling_texture.png");
-    private static final Identifier COMMENT_BACKDROP = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/credits/comment_backdrop.png");
-    private static final Identifier CHECKER = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/credits/checker.png");
+    private static final Identifier SCROLLING_TEXTURE = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/credits/scrolling_texture.png");
+    private static final Identifier COMMENT_BACKDROP = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/credits/comment_backdrop.png");
+    private static final Identifier CHECKER = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/credits/checker.png");
 
-    public CreditsScreen(Text title, FnafTitleScreen titleScreen) {
+    public CreditsScreen(Component title, FnafTitleScreen titleScreen) {
         super(title);
         TITLE_SCREEN = titleScreen;
         updateCreditsList();
@@ -67,37 +67,37 @@ public class CreditsScreen extends Screen {
     @Override
     protected void init() {
         if(music == null) {
-            music = new PositionedSoundInstance(SoundsInit.THANK_YOU_FOR_YOUR_PATIENCE.id(), SoundCategory.MASTER, 0.35f, 1, Random.create(), true, 0, SoundInstance.AttenuationType.NONE, 0, 0, 0, false);
-            MinecraftClient.getInstance().getSoundManager().play(music);
+            music = new SimpleSoundInstance(SoundsInit.THANK_YOU_FOR_YOUR_PATIENCE.location(), SoundSource.MASTER, 0.35f, 1, RandomSource.create(), true, 0, SoundInstance.Attenuation.NONE, 0, 0, 0, false);
+            Minecraft.getInstance().getSoundManager().play(music);
             scrollList(1);
         }
         super.init();
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
         TITLE_SCREEN.width = this.width;
         TITLE_SCREEN.height = this.height;
 
         TITLE_SCREEN.renderBackgroundRender(context, (int) (width/2f), (int) (height/2f), deltaTicks);
-        scrollY = MathHelper.lerp(deltaTicks, scrollY, scrollIndex);
-        currentR = MathHelper.lerp(deltaTicks/5f, currentR, goalR);
-        currentG = MathHelper.lerp(deltaTicks/5f, currentG, goalG);
-        currentB = MathHelper.lerp(deltaTicks/5f, currentB, goalB);
+        scrollY = Mth.lerp(deltaTicks, scrollY, scrollIndex);
+        currentR = Mth.lerp(deltaTicks/5f, currentR, goalR);
+        currentG = Mth.lerp(deltaTicks/5f, currentG, goalG);
+        currentB = Mth.lerp(deltaTicks/5f, currentB, goalB);
         sidebars_u += deltaTicks/2f;
         checker_u += deltaTicks/20f;
 
-        int color = ColorHelper.fromFloats(1, currentR, currentG,currentB);
-        int inverted_color = ColorHelper.fromFloats(1, 1 - currentR, 1 - currentG, 1 - currentB);
-        int color_dark = ColorHelper.fromFloats(1, currentR/3f, currentG/3f,currentB/3f);
+        int color = ARGB.colorFromFloat(1, currentR, currentG,currentB);
+        int inverted_color = ARGB.colorFromFloat(1, 1 - currentR, 1 - currentG, 1 - currentB);
+        int color_dark = ARGB.colorFromFloat(1, currentR/3f, currentG/3f,currentB/3f);
         context.fill(0, 0, width, height, color_dark);
 
-        context.getMatrices().pushMatrix();
-        context.getMatrices().translate(width/2f, height/2f);
-        context.getMatrices().rotate(15f * MathHelper.RADIANS_PER_DEGREE);
-        context.getMatrices().scale(onHeight(25f));
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, CHECKER, -width/2, -height/2, checker_u, checker_u/2f, width, height, 64,64, ColorHelper.withAlpha(0.25f, color));
-        context.getMatrices().popMatrix();
+        context.pose().pushMatrix();
+        context.pose().translate(width/2f, height/2f);
+        context.pose().rotate(15f * Mth.DEG_TO_RAD);
+        context.pose().scale(onHeight(25f));
+        context.blit(RenderPipelines.GUI_TEXTURED, CHECKER, -width/2, -height/2, checker_u, checker_u/2f, width, height, 64,64, ARGB.color(0.25f, color));
+        context.pose().popMatrix();
 
         int scrollTextureWidth = (int) onHeight(1024);
         int scrollTextureHeight = (int) onHeight(1024);
@@ -111,10 +111,10 @@ public class CreditsScreen extends Screen {
             String string = creditsList.get(i);
             boolean main = mains.contains(string);
             boolean sub = subs.contains(string);
-            StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
+            FontDescription spriteFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
             Style style = Style.EMPTY.withFont(spriteFont);
-            Text text = main ? Text.translatable("credits.main." + string) : sub ? Text.translatable("credits.sub." + string) : Text.translatable(string);
-            text = text.getWithStyle(style).getFirst();
+            Component text = main ? Component.translatable("credits.main." + string) : sub ? Component.translatable("credits.sub." + string) : Component.translatable(string);
+            text = text.toFlatList(style).getFirst();
             float y = height / 2f + (j * offset);
             float scale = main ? 3f : sub ? 2f : i == scrollIndex ? 1.25f : 1f;
             float positionIndex = Math.abs(y - (height / 2f))/(height / 2f);
@@ -123,20 +123,20 @@ public class CreditsScreen extends Screen {
             double x = 30 * EasingMathUtil.easeOutSine(1 - positionIndex);
             if(i == scrollIndex) x += 20;
 
-            int text_color = ColorHelper.withAlpha(MathHelper.lerp(positionIndex, 255, 0), inverted_color);
+            int text_color = ARGB.color(Mth.lerpInt(positionIndex, 255, 0), inverted_color);
 
-            context.getMatrices().pushMatrix();
-            context.getMatrices().translate((float)x, y);
-            context.getMatrices().scale(scale);
-            context.drawText(textRenderer, text, 0, (int) (scale * -1), text_color, false);
-            context.getMatrices().popMatrix();
+            context.pose().pushMatrix();
+            context.pose().translate((float)x, y);
+            context.pose().scale(scale);
+            context.drawString(font, text, 0, (int) (scale * -1), text_color, false);
+            context.pose().popMatrix();
         }
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE, scrollTextureX, scrollTextureY, sidebars_u, 0, width, scrollTextureHeight, width, scrollTextureWidth, scrollTextureWidth, scrollTextureWidth, color);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE, scrollTextureX, height - scrollTextureY2, -sidebars_u, 0, width, scrollTextureHeight, width, scrollTextureWidth, scrollTextureWidth, scrollTextureWidth, color);
+        context.blit(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE, scrollTextureX, scrollTextureY, sidebars_u, 0, width, scrollTextureHeight, width, scrollTextureWidth, scrollTextureWidth, scrollTextureWidth, color);
+        context.blit(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE, scrollTextureX, height - scrollTextureY2, -sidebars_u, 0, width, scrollTextureHeight, width, scrollTextureWidth, scrollTextureWidth, scrollTextureWidth, color);
 
 
-        StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
+        FontDescription spriteFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
         String checkName = StringUtils.replaceIgnoreCase(creditsList.get(scrollIndex), "credits.name.", "");
         Style style = Style.EMPTY.withFont(spriteFont);
 
@@ -148,22 +148,22 @@ public class CreditsScreen extends Screen {
                 int commentBackTextureHeight = (int) onHeight((1024 / 720f) * 1080f);
                 int commentX = width - commentBackWidth - (int) onHeight(30);
                 int commentY = height / 2 - commentBackHeight / 2;
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, COMMENT_BACKDROP, commentX, commentY, 0, 0, commentBackWidth, commentBackHeight, commentBackWidth, commentBackHeight, commentBackTextureWidth, commentBackTextureHeight, color);
+                context.blit(RenderPipelines.GUI_TEXTURED, COMMENT_BACKDROP, commentX, commentY, 0, 0, commentBackWidth, commentBackHeight, commentBackWidth, commentBackHeight, commentBackTextureWidth, commentBackTextureHeight, color);
 
-                Text intro = Text.translatable("credits.comment.intro", Text.translatable("credits.name." + entry.NAME()).getString());
-                Text comment = Text.translatable("credits.comment." + entry.NAME());
-                comment = comment.getWithStyle(style).getFirst();
+                Component intro = Component.translatable("credits.comment.intro", Component.translatable("credits.name." + entry.NAME()).getString());
+                Component comment = Component.translatable("credits.comment." + entry.NAME());
+                comment = comment.toFlatList(style).getFirst();
 
-                intro = Text.literal(intro.getString()).setStyle(style);
+                intro = Component.literal(intro.getString()).setStyle(style);
 
                 float comment_scale = 3.25f;
-                context.getMatrices().pushMatrix();
-                context.getMatrices().translate(commentX + (int) onHeight(63), commentY + (int) onHeight(63));
-                context.getMatrices().scale(onHeight(comment_scale));
-                context.drawText(textRenderer, intro, 0, 0, inverted_color, false);
-                context.getMatrices().translate(0, (int) onHeight(141 - 63));
-                context.drawWrappedText(textRenderer, comment, 0, 0, (int)(900 / comment_scale), inverted_color, false);
-                context.getMatrices().popMatrix();
+                context.pose().pushMatrix();
+                context.pose().translate(commentX + (int) onHeight(63), commentY + (int) onHeight(63));
+                context.pose().scale(onHeight(comment_scale));
+                context.drawString(font, intro, 0, 0, inverted_color, false);
+                context.pose().translate(0, (int) onHeight(141 - 63));
+                context.drawWordWrap(font, comment, 0, 0, (int)(900 / comment_scale), inverted_color, false);
+                context.pose().popMatrix();
 
             }
         }
@@ -182,37 +182,37 @@ public class CreditsScreen extends Screen {
 
         context.fill(scrollX2, scrollStart, scrollWidth2, scrollHeightPos,inverted_color);
 
-        Text text = Text.literal(checkName);
+        Component text = Component.literal(checkName);
         if(CreditsDataHandler.ALL_ENTRIES.get(checkName) instanceof CreditsDataHandler.CreditsEntry entry){
-            text = Text.literal("");
+            text = Component.literal("");
             for(int i = 0; i < entry.ROLES().size(); i++){
                 String s = entry.ROLES().get(i);
-                Text translatable = Text.translatable("credits.role." + s);
+                Component translatable = Component.translatable("credits.role." + s);
 
                 String end = i < entry.ROLES().size() - 1 ? " | " : "";
-                translatable = Text.literal(translatable.getString() + end);
+                translatable = Component.literal(translatable.getString() + end);
 
-                text = Text.literal(text.getString() + translatable.getLiteralString());
+                text = Component.literal(text.getString() + translatable.tryCollapseToString());
             }
         }
-        Text rolesText = text.getWithStyle(style).getFirst();
+        Component rolesText = text.toFlatList(style).getFirst();
 
 
-        context.getMatrices().pushMatrix();
-        context.getMatrices().translate(width/2f, height - onHeight(75));
-        context.getMatrices().scale(1.25f);
-        context.drawText(textRenderer, rolesText, -(textRenderer.getWidth(rolesText)/2), -3, inverted_color, false);
-        context.getMatrices().popMatrix();
+        context.pose().pushMatrix();
+        context.pose().translate(width/2f, height - onHeight(75));
+        context.pose().scale(1.25f);
+        context.drawString(font, rolesText, -(font.width(rolesText)/2), -3, inverted_color, false);
+        context.pose().popMatrix();
 
 
         if(CreditsDataHandler.ALL_ENTRIES.get(checkName) instanceof CreditsDataHandler.CreditsEntry entry) {
             if(!(entry.ROLES().contains("fazbear_family") || entry.ROLES().contains("pizza_lover"))){
-                Text quote_text = Text.translatable("credits.quote." + entry.NAME()).getWithStyle(style).getFirst();
-                context.getMatrices().pushMatrix();
-                context.getMatrices().translate(width / 2f, onHeight(75));
-                context.getMatrices().scale(1.25f);
-                context.drawText(textRenderer, quote_text, -(textRenderer.getWidth(quote_text) / 2), -3, inverted_color, false);
-                context.getMatrices().popMatrix();
+                Component quote_text = Component.translatable("credits.quote." + entry.NAME()).toFlatList(style).getFirst();
+                context.pose().pushMatrix();
+                context.pose().translate(width / 2f, onHeight(75));
+                context.pose().scale(1.25f);
+                context.drawString(font, quote_text, -(font.width(quote_text) / 2), -3, inverted_color, false);
+                context.pose().popMatrix();
             }
         }
 
@@ -221,7 +221,7 @@ public class CreditsScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return super.mouseClicked(click, doubled);
     }
 
@@ -233,7 +233,7 @@ public class CreditsScreen extends Screen {
 
     void scrollList(int amount){
         scrollIndex += amount;
-        scrollIndex = MathHelper.clamp(scrollIndex, 0, creditsList.size() - 1);
+        scrollIndex = Mth.clamp(scrollIndex, 0, creditsList.size() - 1);
         while(mains.contains(creditsList.get(scrollIndex)) || subs.contains(creditsList.get(scrollIndex))){
             if(scrollIndex + amount <= 0 || scrollIndex + amount >= creditsList.size()){
                 amount *= -1;
@@ -241,14 +241,14 @@ public class CreditsScreen extends Screen {
             scrollIndex += amount;
         }
 
-        MinecraftClient.getInstance().getSoundManager().play(new PositionedSoundInstance(SoundsInit.CREDITS_SCROLL, SoundCategory.UI, 0.25f, 1, Random.create(), 0, 0, 0));
+        Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(SoundsInit.CREDITS_SCROLL, SoundSource.UI, 0.25f, 1, RandomSource.create(), 0, 0, 0));
 
         String checkName = StringUtils.replaceIgnoreCase(creditsList.get(scrollIndex), "credits.name.", "");
         if(CreditsDataHandler.ALL_ENTRIES.get(checkName) instanceof CreditsDataHandler.CreditsEntry entry){
             int color = entry.COLOR();
-            goalR = ColorHelper.getRedFloat(color);
-            goalG = ColorHelper.getGreenFloat(color);
-            goalB = ColorHelper.getBlueFloat(color);
+            goalR = ARGB.redFloat(color);
+            goalG = ARGB.greenFloat(color);
+            goalB = ARGB.blueFloat(color);
         }
     }
 
@@ -258,19 +258,19 @@ public class CreditsScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(KeyInput input) {
+    public boolean keyPressed(KeyEvent input) {
         if(input.isUp()) scrollList(-1);
         if(input.isDown()) scrollList(1);
 
-        if(input.isEnter()) {
+        if(input.isConfirmation()) {
             String checkName = StringUtils.replaceIgnoreCase(creditsList.get(scrollIndex), "credits.name.", "");
             if (CreditsDataHandler.ALL_ENTRIES.get(checkName) instanceof CreditsDataHandler.CreditsEntry entry) {
                 String link = entry.LINK();
 
-                MinecraftClient.getInstance().getSoundManager().play(new PositionedSoundInstance(SoundsInit.CREDITS_HOVER, SoundCategory.UI, 1, 1, Random.create(), 0, 0, 0));
+                Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(SoundsInit.CREDITS_HOVER, SoundSource.UI, 1, 1, RandomSource.create(), 0, 0, 0));
                 if(!link.isEmpty()){
                     try {
-                        Util.getOperatingSystem().open(new URI(link));
+                        Util.getPlatform().openUri(new URI(link));
                     } catch (URISyntaxException e) {
                         throw new RuntimeException(e);
                     }
@@ -281,10 +281,10 @@ public class CreditsScreen extends Screen {
     }
 
     @Override
-    public void close() {
-        MinecraftClient.getInstance().getSoundManager().stop(music);
+    public void onClose() {
+        Minecraft.getInstance().getSoundManager().stop(music);
         music = null;
-        this.client.setScreen(TITLE_SCREEN);
+        this.minecraft.setScreen(TITLE_SCREEN);
         TITLE_SCREEN.fadeBackground(6, 0.35f);
     }
 

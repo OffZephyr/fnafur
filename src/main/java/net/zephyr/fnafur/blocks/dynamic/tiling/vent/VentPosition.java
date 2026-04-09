@@ -1,10 +1,10 @@
 package net.zephyr.fnafur.blocks.dynamic.tiling.vent;
 
-import net.minecraft.util.StringIdentifiable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 
-public enum VentPosition implements StringIdentifiable {
+public enum VentPosition implements StringRepresentable {
     C("c"),
     BL("bl"),
     BM("bm"),
@@ -22,20 +22,20 @@ public enum VentPosition implements StringIdentifiable {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return NAME;
     }
 
     public static BlockPos getCenter(VentPosition pos, BlockPos blockPos, Direction facing){
         return switch (pos){
-            case BL -> blockPos.up().offset(facing.rotateYCounterclockwise());
-            case BM -> blockPos.up();
-            case BR -> blockPos.up().offset(facing.rotateYClockwise());
-            case UL -> blockPos.down().offset(facing.rotateYCounterclockwise());
-            case UM -> blockPos.down();
-            case UR -> blockPos.down().offset(facing.rotateYClockwise());
-            case CL -> blockPos.offset(facing.rotateYCounterclockwise());
-            case CR -> blockPos.offset(facing.rotateYClockwise());
+            case BL -> blockPos.above().relative(facing.getCounterClockWise());
+            case BM -> blockPos.above();
+            case BR -> blockPos.above().relative(facing.getClockWise());
+            case UL -> blockPos.below().relative(facing.getCounterClockWise());
+            case UM -> blockPos.below();
+            case UR -> blockPos.below().relative(facing.getClockWise());
+            case CL -> blockPos.relative(facing.getCounterClockWise());
+            case CR -> blockPos.relative(facing.getClockWise());
             default -> blockPos;
         };
     }

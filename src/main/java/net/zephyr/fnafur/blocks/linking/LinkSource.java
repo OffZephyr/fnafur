@@ -3,19 +3,19 @@ package net.zephyr.fnafur.blocks.linking;
 import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.item.tools.WrenchItem;
 import net.zephyr.fnafur.networking.block.LinkVisualUpdateS2CPayload;
 import net.zephyr.fnafur.util.ItemUtil;
@@ -34,13 +34,13 @@ public interface LinkSource {
     int getSourceAmountSync();
     void setSourceAmountSync(int num);
 
-    default void updateSources(World world, BlockPos pos){
-        if(world instanceof ServerWorld sw){
+    default void updateSources(Level world, BlockPos pos){
+        if(world instanceof ServerLevel sw){
             List<BlockPos> blockList = new ArrayList<>();
             List<Integer> idList = new ArrayList<>();
             for(IEntityDataSaver ent : getTargets()){
                 if(ent instanceof BlockEntity bEnt){
-                    blockList.add(bEnt.getPos());
+                    blockList.add(bEnt.getBlockPos());
                 }
                 if(ent instanceof Entity eEnt){
                     idList.add(eEnt.getId());
@@ -56,7 +56,7 @@ public interface LinkSource {
                 ids[i] = idList.get(i);
             }
 
-            for(ServerPlayerEntity p : PlayerLookup.tracking(sw, pos)){
+            for(ServerPlayer p : PlayerLookup.tracking(sw, pos)){
                 ServerPlayNetworking.send(p, new LinkVisualUpdateS2CPayload(pos.asLong(), blocks, ids, getTargets().size()));
             }
         }
@@ -67,7 +67,7 @@ public interface LinkSource {
     default boolean canUnlink(IEntityDataSaver link){
         return true;
     }
-    default ActionResult makeLink(IEntityDataSaver link){
+    default InteractionResult makeLink(IEntityDataSaver link){
         updateLinks();
 
         if(link instanceof LinkTarget ent && canLink(link)){
@@ -82,17 +82,17 @@ public interface LinkSource {
                     link.getPersistentData().remove("synced");
                 }
 
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
-    default ActionResult unlink(IEntityDataSaver link){
+    default InteractionResult unlink(IEntityDataSaver link){
         return unlink(link, true);
     }
 
-    default ActionResult unlink(IEntityDataSaver link, boolean update){
+    default InteractionResult unlink(IEntityDataSaver link, boolean update){
         if(update){
             updateLinks();
         }
@@ -100,23 +100,23 @@ public interface LinkSource {
         if(link instanceof LinkTarget ent && canUnlink(link)){
             boolean bl = getTargets().remove(link);
             ent.removeSource((IEntityDataSaver)this);
-            return bl ? ActionResult.SUCCESS : ActionResult.FAIL;
+            return bl ? InteractionResult.SUCCESS : InteractionResult.FAIL;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
-    default Vec3d getLinkPos(IEntityDataSaver link){
+    default Vec3 getLinkPos(IEntityDataSaver link){
         if(link instanceof BlockEntity ent){
-            return ent.getPos().toCenterPos();
+            return ent.getBlockPos().getCenter();
         }
         else if(link instanceof Entity ent){
-            return new Vec3d(ent.getX(), ent.getEyeY(), ent.getZ());
+            return new Vec3(ent.getX(), ent.getEyeY(), ent.getZ());
         }
-        return Vec3d.ZERO;
+        return Vec3.ZERO;
     }
     default void updateLinks(){
         for(IEntityDataSaver link : getTargets()){
-            if(link instanceof BlockEntity ent && ent.getWorld().getBlockEntity(ent.getPos()) == null){
+            if(link instanceof BlockEntity ent && ent.getLevel().getBlockEntity(ent.getBlockPos()) == null){
                 unlink(link, false);
                 continue;
             }
@@ -128,10 +128,10 @@ public interface LinkSource {
         }
     }
 
-    default void writeSourceData(WriteView view, World world){
+    default void writeSourceData(ValueOutput view, Level world){
         updateData(world);
-        WriteView.ListAppender<BlockPos> pos = view.getListAppender("BlockEntity", BlockPos.CODEC);
-        WriteView.ListAppender<Integer> id = view.getListAppender("Entity", Codec.INT);
+        ValueOutput.TypedOutputList<BlockPos> pos = view.list("BlockEntity", BlockPos.CODEC);
+        ValueOutput.TypedOutputList<Integer> id = view.list("Entity", Codec.INT);
 
         for(BlockPos p : blockTargetQueue()){
             pos.add(p);
@@ -142,16 +142,16 @@ public interface LinkSource {
 
         for(IEntityDataSaver link : getTargets()){
             if(link instanceof BlockEntity ent){
-                pos.add(ent.getPos());
+                pos.add(ent.getBlockPos());
             }
             else if(link instanceof Entity ent){
                 id.add(ent.getId());
             }
         }
     }
-    default void readSourceData(ReadView view, World world){
-        ReadView.TypedListReadView<BlockPos> list = view.getTypedListView("BlockEntity", BlockPos.CODEC);
-        ReadView.TypedListReadView<Integer> list2 = view.getTypedListView("Entity", Codec.INT);
+    default void readSourceData(ValueInput view, Level world){
+        ValueInput.TypedInputList<BlockPos> list = view.listOrEmpty("BlockEntity", BlockPos.CODEC);
+        ValueInput.TypedInputList<Integer> list2 = view.listOrEmpty("Entity", Codec.INT);
 
         for(BlockPos pos : list){
             blockTargetQueue().add(pos);
@@ -165,7 +165,7 @@ public interface LinkSource {
         allSources.add((IEntityDataSaver)this);
     }
 
-    default void updateData(World world){
+    default void updateData(Level world){
         if(world != null){
             List<BlockPos> remBlockList = new ArrayList<>();
             for(BlockPos pos : blockTargetQueue()){
@@ -184,7 +184,7 @@ public interface LinkSource {
 
             List<Integer> remIdList = new ArrayList<>();
             for(int id : entityTargetQueue()){
-                if(world.getEntityById(id) instanceof Entity ent){
+                if(world.getEntity(id) instanceof Entity ent){
                     getTargets().add((IEntityDataSaver) ent);
                     if(ent instanceof LinkTarget t){
                         t.addSource((IEntityDataSaver)this);
@@ -193,27 +193,27 @@ public interface LinkSource {
             }
         }
     }
-    default ActionResult tryStartLink(PlayerEntity player, BlockPos pos){
+    default InteractionResult tryStartLink(Player player, BlockPos pos){
 
-        ItemStack stack = player.getMainHandStack();
+        ItemStack stack = player.getMainHandItem();
         if(stack.getItem() instanceof WrenchItem && ((IUniversePlayer)player).isUsingVanniMask()){
-            NbtCompound nbt = ItemUtil.getNbt(stack);
+            CompoundTag nbt = ItemUtil.getNbt(stack);
 
-            BlockPos startPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
-            if(player.isSneaking()){
+            BlockPos startPos = nbt.read("startLink", BlockPos.CODEC).orElse(BlockPos.ZERO);
+            if(player.isShiftKeyDown()){
                 nbt.remove("startLink");
                 for(IEntityDataSaver ent : getTargets()){
                     unlink(ent);
                 }
             }
-            else if(startPos.equals(pos) || startPos != BlockPos.ORIGIN){
+            else if(startPos.equals(pos) || startPos != BlockPos.ZERO){
                 nbt.remove("startLink");
             }
             else{
-                nbt.put("startLink", BlockPos.CODEC, pos);
+                nbt.store("startLink", BlockPos.CODEC, pos);
             }
             ItemUtil.setNbt(stack, nbt);
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         return null;

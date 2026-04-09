@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.init.block_init.Palettes;
 
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Identifier;
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 
@@ -13,11 +13,11 @@ public class PaletteTextureReloader implements SimpleSynchronousResourceReloadLi
 
     @Override
     public Identifier getFabricId() {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "palette_textures");
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "palette_textures");
     }
 
     @Override
-    public void reload(ResourceManager manager) {
+    public void onResourceManagerReload(ResourceManager manager) {
         BlockInit.PALETTES.forEach(
                 (PaletteBlock) -> {
                     try {
@@ -25,13 +25,13 @@ public class PaletteTextureReloader implements SimpleSynchronousResourceReloadLi
                             NativeImage base = NativeImage.read(
                                     manager.getResource(
                                             template
-                                    ).get().getInputStream()
+                                    ).get().open()
                             );
 
                             NativeImage palette = NativeImage.read(
                                     manager.getResource(
                                             PaletteBlock.paletteEnum().getPalette()
-                                    ).get().getInputStream()
+                                    ).get().open()
                             );
 
                             Map<Integer, Integer> map = PaletteManager.buildPaletteMap(palette);

@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.wall_props.wall_pizza;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum WallPizzaSkins implements ColorEnumInterface, StringIdentifiable {
+public enum WallPizzaSkins implements ColorEnumInterface, StringRepresentable {
     DEFAULT("default", 0),
     PEPPERONI("pepperoni", 1),
     SLICE("slice",2),
@@ -17,7 +17,7 @@ public enum WallPizzaSkins implements ColorEnumInterface, StringIdentifiable {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return name;
     }
 

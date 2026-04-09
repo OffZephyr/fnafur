@@ -1,23 +1,24 @@
 package net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
@@ -37,7 +38,7 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
     private Identifier model;
     private Identifier animations;
 
-    public CosmoGift(Settings settings) {
+    public CosmoGift(Properties settings) {
         super(settings);
     }
 
@@ -59,33 +60,33 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        NbtCompound nbt = ItemUtil.getNbt(itemStack);
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        CompoundTag nbt = ItemUtil.getNbt(itemStack);
 
         if(world.getBlockEntity(pos) instanceof BlockEntity ent){
             ((IEntityDataSaver)ent).getPersistentData().put("contains", nbt);
         }
 
-        super.onPlaced(world, pos, state, placer, itemStack);
+        super.setPlacedBy(world, pos, state, placer, itemStack);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GalaxyLayerGeoPropEntity(pos, state, this);
     }
     @Override
-    public @Nullable BlockEntityTicker<GeoPropBlockEntity> getTicker(World world, BlockState state, BlockEntityType type) {
-        return validateTicker(type, BlockEntityInit.GALAXY_GEO_PROPS,
+    public @Nullable BlockEntityTicker<GeoPropBlockEntity> getTicker(Level world, BlockState state, BlockEntityType type) {
+        return createTickerHelper(type, BlockEntityInit.GALAXY_GEO_PROPS,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if(player.getMainHandStack().isEmpty()){
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        if(player.getMainHandItem().isEmpty()){
             if(world.getBlockEntity(pos) instanceof GalaxyLayerGeoPropEntity ent){
                 ItemStack stack = ItemUtil.setNbt(new ItemStack(PropInit.COSMO_GIFT, 1), ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").get());
 
-                NbtCompound nbt = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").orElse(new NbtCompound());
+                CompoundTag nbt = ((IEntityDataSaver)ent).getPersistentData().getCompound("contains").orElse(new CompoundTag());
 
                 boolean isEmpty = nbt.isEmpty();
 
@@ -97,21 +98,21 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
                 eyes = isEmpty ? "entity_eyes.fnafur.none" : "entity_eyes.fnafur." + chara + "." + eyes;
                 chara = isEmpty ? "entity.fnafur.none" : "entity.fnafur." + chara;
 
-                List<Text> lore = List.of(
-                        Text.literal("§8Use on Inactive Animatronic"),
-                        Text.literal("§8Character: " + "§7" + Text.translatable(chara).getString()),
-                        Text.literal("§8Alt: " + "§7" + Text.translatable(alt).getString()),
-                        Text.literal("§8Eyes: " + "§7" + Text.translatable(eyes).getString())
+                List<Component> lore = List.of(
+                        Component.literal("§8Use on Inactive Animatronic"),
+                        Component.literal("§8Character: " + "§7" + Component.translatable(chara).getString()),
+                        Component.literal("§8Alt: " + "§7" + Component.translatable(alt).getString()),
+                        Component.literal("§8Eyes: " + "§7" + Component.translatable(eyes).getString())
                 );
 
-                stack.set(DataComponentTypes.LORE, new LoreComponent(lore));
+                stack.set(DataComponents.LORE, new ItemLore(lore));
 
-                player.giveItemStack(stack);
-                world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                player.addItem(stack);
+                world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
             }
         }
 
-        return super.onUse(state, world, pos, player, hit);
+        return super.useWithoutItem(state, world, pos, player, hit);
     }
 
     @Override
@@ -135,12 +136,12 @@ public class CosmoGift extends FloorPropBlock<DefaultPropColorEnum> implements G
     }
 
     @Override
-    public Vec3d getLeftArmPos(boolean isMainStack) {
-        return new Vec3d(0, -45, 0);
+    public Vec3 getLeftArmPos(boolean isMainStack) {
+        return new Vec3(0, -45, 0);
     }
 
     @Override
-    public Vec3d getRightArmPos(boolean isMainStack) {
-        return new Vec3d(0, -45, 0);
+    public Vec3 getRightArmPos(boolean isMainStack) {
+        return new Vec3(0, -45, 0);
     }
 }

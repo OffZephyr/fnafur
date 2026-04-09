@@ -1,14 +1,14 @@
 package net.zephyr.fnafur.init.item_init;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.block_init.GeoBlockInit;
@@ -16,146 +16,146 @@ import net.zephyr.fnafur.init.block_init.PropInit;
 
 public class ItemGroupsInit {
 
-    Item icon = new Item(new Item.Settings());
-    public static final ItemGroup FNAF_PROPS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, "props"),
+    Item icon = new Item(new Item.Properties());
+    public static final CreativeModeTab FNAF_PROPS = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "props"),
             FabricItemGroup.builder()
-                    .displayName(Text.translatable(FnafUniverseRebuilt.MOD_ID + ".props"))
-                    .noRenderedName()
+                    .title(Component.translatable(FnafUniverseRebuilt.MOD_ID + ".props"))
+                    .hideTitle()
                     .icon(() -> new ItemStack(PropInit.PRESENT_STACK))
-                    .entries((displayContext, entries) -> {
-                        entries.add(PropInit.FNAF_1_DESK);
-                        entries.add(BlockInit.GARAGE_DOOR);
-                        entries.add(BlockInit.HEAVY_DOOR);
-                        entries.add(BlockInit.WARNING_HEAVY_DOOR);
-                        entries.add(PropInit.OFFICE_BUTTONS);
-                        entries.add(PropInit.WOODEN_CLOCK);
-                        entries.add(BlockInit.BACKSTAGE_SHELF);
-                        entries.add(PropInit.FLYING_V_GUITAR);
-                        entries.add(PropInit.STANDING_MICROPHONE);
-                        entries.add(PropInit.STANDING_SPEAKER);
-                        entries.add(PropInit.STANDING_PIANO);
-                        entries.add(PropInit.SPEAKER);
-                        entries.add(PropInit.PLUSHIE);
-                        entries.add(PropInit.RECEPTION_COUNTER);
-                        entries.add(PropInit.PARTY_TABLE);
-                        entries.add(PropInit.PARTY_TABLE_CONFETTI);
-                        entries.add(PropInit.PARTY_HAT);
-                        entries.add(PropInit.STAR_PLASTIC_CHAIR);
-                        entries.add(PropInit.WOODEN_CHAIR);
-                        entries.add(PropInit.WOODEN_STOOL);
-                        entries.add(PropInit.SPOT_LIGHT);
-                        entries.add(PropInit.SCONCE);
-                        entries.add(PropInit.HANGING_LIGHT);
-                        entries.add(PropInit.HANGING_LIGHTBULB);
-                        entries.add(PropInit.WALL_PIZZA);
-                        entries.add(PropInit.WALL_CLOUDS);
-                        entries.add(PropInit.STAGE_SUN);
-                        entries.add(PropInit.HANGING_STARS);
-                        entries.add(PropInit.PRESENT_STACK);
-                        entries.add(PropInit.EXIT_SIGN);
-                        entries.add(PropInit.EXIT_ARROW);
-                        entries.add(PropInit.LIGHT_SWITCH);
-                        entries.add(PropInit.WALL_OUTLET);
-                        entries.add(PropInit.PUNCH_IN_CARDS);
-                        entries.add(PropInit.BULLETIN_BOARD);
+                    .displayItems((displayContext, entries) -> {
+                        entries.accept(PropInit.FNAF_1_DESK);
+                        entries.accept(BlockInit.GARAGE_DOOR);
+                        entries.accept(BlockInit.HEAVY_DOOR);
+                        entries.accept(BlockInit.WARNING_HEAVY_DOOR);
+                        entries.accept(PropInit.OFFICE_BUTTONS);
+                        entries.accept(PropInit.WOODEN_CLOCK);
+                        entries.accept(BlockInit.BACKSTAGE_SHELF);
+                        entries.accept(PropInit.FLYING_V_GUITAR);
+                        entries.accept(PropInit.STANDING_MICROPHONE);
+                        entries.accept(PropInit.STANDING_SPEAKER);
+                        entries.accept(PropInit.STANDING_PIANO);
+                        entries.accept(PropInit.SPEAKER);
+                        entries.accept(PropInit.PLUSHIE);
+                        entries.accept(PropInit.RECEPTION_COUNTER);
+                        entries.accept(PropInit.PARTY_TABLE);
+                        entries.accept(PropInit.PARTY_TABLE_CONFETTI);
+                        entries.accept(PropInit.PARTY_HAT);
+                        entries.accept(PropInit.STAR_PLASTIC_CHAIR);
+                        entries.accept(PropInit.WOODEN_CHAIR);
+                        entries.accept(PropInit.WOODEN_STOOL);
+                        entries.accept(PropInit.SPOT_LIGHT);
+                        entries.accept(PropInit.SCONCE);
+                        entries.accept(PropInit.HANGING_LIGHT);
+                        entries.accept(PropInit.HANGING_LIGHTBULB);
+                        entries.accept(PropInit.WALL_PIZZA);
+                        entries.accept(PropInit.WALL_CLOUDS);
+                        entries.accept(PropInit.STAGE_SUN);
+                        entries.accept(PropInit.HANGING_STARS);
+                        entries.accept(PropInit.PRESENT_STACK);
+                        entries.accept(PropInit.EXIT_SIGN);
+                        entries.accept(PropInit.EXIT_ARROW);
+                        entries.accept(PropInit.LIGHT_SWITCH);
+                        entries.accept(PropInit.WALL_OUTLET);
+                        entries.accept(PropInit.PUNCH_IN_CARDS);
+                        entries.accept(PropInit.BULLETIN_BOARD);
 
-                        entries.add(PropInit.FLOOR_MONITORS);
-                        entries.add(PropInit.WOODEN_SHELF);
-                        entries.add(PropInit.AC_UNIT);
-                        entries.add(PropInit.RETRO_TABLE);
-                        entries.add(PropInit.RETRO_STOOL);
+                        entries.accept(PropInit.FLOOR_MONITORS);
+                        entries.accept(PropInit.WOODEN_SHELF);
+                        entries.accept(PropInit.AC_UNIT);
+                        entries.accept(PropInit.RETRO_TABLE);
+                        entries.accept(PropInit.RETRO_STOOL);
 
-                        entries.add(PropInit.AIR_VENT);
-                        entries.add(PropInit.CEILING_TILE_VENT);
-                        entries.add(PropInit.CEILING_TILE_VENT_BLACK);
-                        entries.add(PropInit.RESTROOM_SIGN);
-                        entries.add(PropInit.TOILET_PAPER_ROLL);
-                        entries.add(PropInit.TOILET);
-                        entries.add(PropInit.URINAL);
-                        entries.add(PropInit.BATHROOM_SINK);
-                        entries.add(PropInit.FLOOR_TRASH);
-                        entries.add(PropInit.BROOM);
-                        entries.add(PropInit.MOP_BUCKET);
-                        entries.add(PropInit.TRASH_BIN);
-                        entries.add(PropInit.WET_FLOOR_SIGN);
-                        entries.add(PropInit.FLOOR_MAT);
+                        entries.accept(PropInit.AIR_VENT);
+                        entries.accept(PropInit.CEILING_TILE_VENT);
+                        entries.accept(PropInit.CEILING_TILE_VENT_BLACK);
+                        entries.accept(PropInit.RESTROOM_SIGN);
+                        entries.accept(PropInit.TOILET_PAPER_ROLL);
+                        entries.accept(PropInit.TOILET);
+                        entries.accept(PropInit.URINAL);
+                        entries.accept(PropInit.BATHROOM_SINK);
+                        entries.accept(PropInit.FLOOR_TRASH);
+                        entries.accept(PropInit.BROOM);
+                        entries.accept(PropInit.MOP_BUCKET);
+                        entries.accept(PropInit.TRASH_BIN);
+                        entries.accept(PropInit.WET_FLOOR_SIGN);
+                        entries.accept(PropInit.FLOOR_MAT);
 
-                        entries.add(PropInit.FOOD_DISPLAY_CASE);
-                        entries.add(PropInit.CONDIMENT_COUNTER);
-                        entries.add(PropInit.UTENSILS_BOX);
-                        entries.add(PropInit.STANDING_MENU);
-                        entries.add(PropInit.WALL_MENU);
-                        entries.add(PropInit.PIZZA_OVEN);
-                        entries.add(PropInit.FRIDGE);
-                        entries.add(PropInit.DOUBLE_DOOR_FRIDGE);
-                        entries.add(PropInit.KITCHEN_PREP_TABLE);
-                        entries.add(PropInit.POTS_AND_PANS_RACK);
-                        entries.add(PropInit.WATER_DISPENSER);
-                        entries.add(PropInit.ICE_CREAM_DISPENSER);
+                        entries.accept(PropInit.FOOD_DISPLAY_CASE);
+                        entries.accept(PropInit.CONDIMENT_COUNTER);
+                        entries.accept(PropInit.UTENSILS_BOX);
+                        entries.accept(PropInit.STANDING_MENU);
+                        entries.accept(PropInit.WALL_MENU);
+                        entries.accept(PropInit.PIZZA_OVEN);
+                        entries.accept(PropInit.FRIDGE);
+                        entries.accept(PropInit.DOUBLE_DOOR_FRIDGE);
+                        entries.accept(PropInit.KITCHEN_PREP_TABLE);
+                        entries.accept(PropInit.POTS_AND_PANS_RACK);
+                        entries.accept(PropInit.WATER_DISPENSER);
+                        entries.accept(PropInit.ICE_CREAM_DISPENSER);
 
-                        entries.add(PropInit.ATM);
-                        entries.add(PropInit.ARCADE_CABINET);
-                        entries.add(PropInit.SKEEBALL_ARCADE);
-                        entries.add(PropInit.POSTER);
-                        entries.add(PropInit.FNAF1_RULES);
-                        entries.add(PropInit.WALL_PAPERS);
-                        entries.add(GeoBlockInit.PIRATES_COVE_STAGE);
-                        entries.add(GeoBlockInit.PIRATES_COVE_CURTAIN);
+                        entries.accept(PropInit.ATM);
+                        entries.accept(PropInit.ARCADE_CABINET);
+                        entries.accept(PropInit.SKEEBALL_ARCADE);
+                        entries.accept(PropInit.POSTER);
+                        entries.accept(PropInit.FNAF1_RULES);
+                        entries.accept(PropInit.WALL_PAPERS);
+                        entries.accept(GeoBlockInit.PIRATES_COVE_STAGE);
+                        entries.accept(GeoBlockInit.PIRATES_COVE_CURTAIN);
 
-                        entries.add(PropInit.FILING_CABINET);
-                        entries.add(PropInit.WOODEN_CRATE);
-                        entries.add(PropInit.TOOL_WALL_MOUNT);
-                        entries.add(BlockInit.WAREHOUSE_SHELF);
-                        entries.add(GeoBlockInit.SMALL_GRAY_DOOR);
-                        entries.add(GeoBlockInit.TWO_FIVE_RED_DOOR);
-                        entries.add(GeoBlockInit.TWO_FIVE_BLACK_DOOR);
-                        entries.add(GeoBlockInit.TWO_FIVE_GREEN_DOOR);
-                        entries.add(GeoBlockInit.TWO_FIVE_CYAN_DOOR);
-                        entries.add(GeoBlockInit.TWO_FIVE_BROWN_DOOR);
-                        entries.add(GeoBlockInit.TWO_FIVE_RED_DOOR_WINDOW);
-                        entries.add(GeoBlockInit.TWO_FIVE_BLACK_DOOR_WINDOW);
-                        entries.add(GeoBlockInit.TWO_FIVE_GREEN_DOOR_WINDOW);
-                        entries.add(GeoBlockInit.TWO_FIVE_CYAN_DOOR_WINDOW);
-                        entries.add(GeoBlockInit.TWO_FIVE_BROWN_DOOR_WINDOW);
-                        entries.add(GeoBlockInit.BIG_GRAY_DOOR);
-                        entries.add(GeoBlockInit.BIG_MAGENTA_DOOR);
-                        entries.add(GeoBlockInit.BIG_GREEN_DOOR);
-                        entries.add(PropInit.SERIOUS_CUTOUT);
+                        entries.accept(PropInit.FILING_CABINET);
+                        entries.accept(PropInit.WOODEN_CRATE);
+                        entries.accept(PropInit.TOOL_WALL_MOUNT);
+                        entries.accept(BlockInit.WAREHOUSE_SHELF);
+                        entries.accept(GeoBlockInit.SMALL_GRAY_DOOR);
+                        entries.accept(GeoBlockInit.TWO_FIVE_RED_DOOR);
+                        entries.accept(GeoBlockInit.TWO_FIVE_BLACK_DOOR);
+                        entries.accept(GeoBlockInit.TWO_FIVE_GREEN_DOOR);
+                        entries.accept(GeoBlockInit.TWO_FIVE_CYAN_DOOR);
+                        entries.accept(GeoBlockInit.TWO_FIVE_BROWN_DOOR);
+                        entries.accept(GeoBlockInit.TWO_FIVE_RED_DOOR_WINDOW);
+                        entries.accept(GeoBlockInit.TWO_FIVE_BLACK_DOOR_WINDOW);
+                        entries.accept(GeoBlockInit.TWO_FIVE_GREEN_DOOR_WINDOW);
+                        entries.accept(GeoBlockInit.TWO_FIVE_CYAN_DOOR_WINDOW);
+                        entries.accept(GeoBlockInit.TWO_FIVE_BROWN_DOOR_WINDOW);
+                        entries.accept(GeoBlockInit.BIG_GRAY_DOOR);
+                        entries.accept(GeoBlockInit.BIG_MAGENTA_DOOR);
+                        entries.accept(GeoBlockInit.BIG_GREEN_DOOR);
+                        entries.accept(PropInit.SERIOUS_CUTOUT);
 
                     }).build());
-    public static final ItemGroup FNAF_TECHNICAL = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, "technical"),
+    public static final CreativeModeTab FNAF_TECHNICAL = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "technical"),
             FabricItemGroup.builder()
-                    .displayName(Text.translatable(FnafUniverseRebuilt.MOD_ID + ".technical"))
-                    .noRenderedName()
+                    .title(Component.translatable(FnafUniverseRebuilt.MOD_ID + ".technical"))
+                    .hideTitle()
                     .icon(() -> new ItemStack(ItemInit.PIPE_WRENCH))
-                    .entries((displayContext, entries) -> {
+                    .displayItems((displayContext, entries) -> {
 
-                        entries.add(ItemInit.VANNI_MASK);
-                        entries.add(ItemInit.PIPE_WRENCH);
-                        entries.add(ItemInit.PAINTBRUSH);
-                        entries.add(ItemInit.SCRAPER);
-                        entries.add(ItemInit.DECAL_BOOK);
-                        entries.add(ItemInit.FLASHLIGHT);
+                        entries.accept(ItemInit.VANNI_MASK);
+                        entries.accept(ItemInit.PIPE_WRENCH);
+                        entries.accept(ItemInit.PAINTBRUSH);
+                        entries.accept(ItemInit.SCRAPER);
+                        entries.accept(ItemInit.DECAL_BOOK);
+                        entries.accept(ItemInit.FLASHLIGHT);
                         //entries.add(ItemInit.TAPEMEASURE);
 
-                        entries.add(ItemInit.ANIMATRONIC_SUIT);
-                        entries.add(ItemInit.CPU);
-                        entries.add(PropInit.COSMO_GIFT);
-                        entries.add(ItemInit.DEATHCOIN);
-                        entries.add(BlockInit.WORKBENCH);
-                        entries.add(BlockInit.CPU_CONFIG_PANEL);
-                        entries.add(BlockInit.TRIGGER_BLOCK);
-                        entries.add(BlockInit.CHIP_READER);
-                        entries.add(BlockInit.SERVER_MONITOR);
-                        entries.add(BlockInit.VENT);
+                        entries.accept(ItemInit.ANIMATRONIC_SUIT);
+                        entries.accept(ItemInit.CPU);
+                        entries.accept(PropInit.COSMO_GIFT);
+                        entries.accept(ItemInit.DEATHCOIN);
+                        entries.accept(BlockInit.WORKBENCH);
+                        entries.accept(BlockInit.CPU_CONFIG_PANEL);
+                        entries.accept(BlockInit.TRIGGER_BLOCK);
+                        entries.accept(BlockInit.CHIP_READER);
+                        entries.accept(BlockInit.SERVER_MONITOR);
+                        entries.accept(BlockInit.VENT);
                         //entries.add(ItemInit.ILLUSIONDISC);
 
                         // MIMIC FRAMES
-                        entries.add(BlockInit.MIMIC_FRAME);
-                        entries.add(BlockInit.MIMIC_FRAME_2x2);
-                        entries.add(BlockInit.MIMIC_FRAME_4x4);
-                        entries.add(BlockInit.MIMIC_FRAME_DIAGONAL);
-                        entries.add(BlockInit.CURTAIN_TEST);
+                        entries.accept(BlockInit.MIMIC_FRAME);
+                        entries.accept(BlockInit.MIMIC_FRAME_2x2);
+                        entries.accept(BlockInit.MIMIC_FRAME_4x4);
+                        entries.accept(BlockInit.MIMIC_FRAME_DIAGONAL);
+                        entries.accept(BlockInit.CURTAIN_TEST);
 
                         //entries.add(BlockInit.CAMERA);
                         //entries.add(ItemInit.TABLET);
@@ -163,10 +163,10 @@ public class ItemGroupsInit {
 
                         //entries.add(BlockInit.COMPUTER);
 
-                        entries.add(ItemInit.JERRYCAN);
-                        entries.add(BlockInit.FUEL_GENERATOR);
-                        entries.add(BlockInit.REDSTONE_CONVERTER);
-                        entries.add(BlockInit.ELECTRICAL_LOCKER);
+                        entries.accept(ItemInit.JERRYCAN);
+                        entries.accept(BlockInit.FUEL_GENERATOR);
+                        entries.accept(BlockInit.REDSTONE_CONVERTER);
+                        entries.accept(BlockInit.ELECTRICAL_LOCKER);
                     }).build());
 //    public static final ItemGroup FNAF_BLOCKS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, "blocks"),
 //            FabricItemGroup.builder()
@@ -345,14 +345,14 @@ public class ItemGroupsInit {
 //                        entries.add(BlockInit.CHEESE_BLOCK);
 //                        entries.add(BlockInit.CHEESE_BLOCK_WHITE);
 //                    }).build());
-    public static final ItemGroup FNAF = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, FnafUniverseRebuilt.MOD_ID),
+    public static final CreativeModeTab FNAF = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, FnafUniverseRebuilt.MOD_ID),
             FabricItemGroup.builder()
-                    .displayName(Text.literal(FnafUniverseRebuilt.MOD_ID))
-                    .noRenderedName()
-                    .texture(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/tabs_fnaf.png"))
+                    .title(Component.literal(FnafUniverseRebuilt.MOD_ID))
+                    .hideTitle()
+                    .backgroundTexture(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/tabs_fnaf.png"))
                     .icon(() -> new ItemStack(Blocks.STONE))
-                    .entries((displayContext, entries) -> {
-                        entries.add(Blocks.STONE);
+                    .displayItems((displayContext, entries) -> {
+                        entries.accept(Blocks.STONE);
                     }).build());
 
     public static void registerItemGroups() {

@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.EntityType;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.SinglePreparationResourceReloader;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.profiler.Profiler;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.jsonReaders.entity_skins.DefaultEntityData;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Environment(EnvType.CLIENT)
-public class AnimatronicDataManager extends SinglePreparationResourceReloader<Map<EntityType<?>, DefaultEntityData>> {
+public class AnimatronicDataManager extends SimplePreparableReloadListener<Map<EntityType<?>, DefaultEntityData>> {
     static final Gson GSON = new Gson();
 
     private static final TypeToken<Map<String, List<String>>> STRING_LIST_TYPE = new TypeToken<>() {};
@@ -28,11 +28,11 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
     private static final TypeToken<Map<String, CharaGetter>> CHARACTER_TYPE = new TypeToken<>() {};
 
     @Override
-    protected Map<EntityType<?>, DefaultEntityData> prepare(ResourceManager resourceManager, Profiler profiler) {
+    protected Map<EntityType<?>, DefaultEntityData> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
 
         clear();
         Map<EntityType<?>, DefaultEntityData> data = new HashMap<>();
-        for (String string : resourceManager.getAllNamespaces()) {
+        for (String string : resourceManager.getNamespaces()) {
             getCategories(resourceManager, profiler, string);
             getAnimations(resourceManager, profiler, string);
             getAmbientSounds(resourceManager, profiler, string);
@@ -46,16 +46,16 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
     }
 
     @Override
-    protected void apply(Map<EntityType<?>, DefaultEntityData> prepared, ResourceManager manager, Profiler profiler) {
+    protected void apply(Map<EntityType<?>, DefaultEntityData> prepared, ResourceManager manager, ProfilerFiller profiler) {
     }
 
 
-    void getCategories(ResourceManager resourceManager, Profiler profiler, String namespace) {
+    void getCategories(ResourceManager resourceManager, ProfilerFiller profiler, String namespace) {
         String path = FnafUniverseRebuilt.MOD_ID + "/characters.json";
-        List<Resource> list = resourceManager.getAllResources(Identifier.of(namespace, path));
+        List<Resource> list = resourceManager.getResourceStack(Identifier.fromNamespaceAndPath(namespace, path));
         for (Resource resource : list) {
-            try (BufferedReader reader = resource.getReader();) {
-                Map<String, List<String>> layerEntries = JsonHelper.deserialize(GSON, reader, STRING_LIST_TYPE);
+            try (BufferedReader reader = resource.openAsReader();) {
+                Map<String, List<String>> layerEntries = GsonHelper.fromJson(GSON, reader, STRING_LIST_TYPE);
                 for (Map.Entry<String, List<String>> entry : layerEntries.entrySet()) {
                     AnimatronicDataHandler.CATEGORIES.add(entry.getKey());
                     AnimatronicDataHandler.CHARAS_PER_CATEGORY.put(entry.getKey(), entry.getValue());
@@ -65,16 +65,16 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
                     //}
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.sourcePackId(), runtimeException);
             }
         }
     }
-    void getAnimations(ResourceManager resourceManager, Profiler profiler, String namespace) {
+    void getAnimations(ResourceManager resourceManager, ProfilerFiller profiler, String namespace) {
         String path = FnafUniverseRebuilt.MOD_ID + "/animations.json";
-        List<Resource> list = resourceManager.getAllResources(Identifier.of(namespace, path));
+        List<Resource> list = resourceManager.getResourceStack(Identifier.fromNamespaceAndPath(namespace, path));
         for (Resource resource : list) {
-            try (BufferedReader reader = resource.getReader();) {
-                Map<String, Map<String, String>> layerEntries = JsonHelper.deserialize(GSON, reader, STRING_MAP_TYPE);
+            try (BufferedReader reader = resource.openAsReader();) {
+                Map<String, Map<String, String>> layerEntries = GsonHelper.fromJson(GSON, reader, STRING_MAP_TYPE);
                 for (Map.Entry<String, Map<String, String>> entry : layerEntries.entrySet()) {
                     if(Objects.equals(entry.getKey(), "default")){
                         AnimatronicDataHandler.DEFAULT_ANIMATIONS = entry.getValue().get("default");
@@ -99,16 +99,16 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
                     AnimatronicDataHandler.ANIMATION_NAMES_PER_CATEGORY.put(category, animations_list);
                 });
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.sourcePackId(), runtimeException);
             }
         }
     }
-    void getAmbientSounds(ResourceManager resourceManager, Profiler profiler, String namespace) {
+    void getAmbientSounds(ResourceManager resourceManager, ProfilerFiller profiler, String namespace) {
         String path = FnafUniverseRebuilt.MOD_ID + "/ambient_sounds.json";
-        List<Resource> list = resourceManager.getAllResources(Identifier.of(namespace, path));
+        List<Resource> list = resourceManager.getResourceStack(Identifier.fromNamespaceAndPath(namespace, path));
         for (Resource resource : list) {
-            try (BufferedReader reader = resource.getReader()) {
-                Map<String, Map<String, List<String>>> layerEntries = JsonHelper.deserialize(GSON, reader, STRING_MAP_LIST_TYPE);
+            try (BufferedReader reader = resource.openAsReader()) {
+                Map<String, Map<String, List<String>>> layerEntries = GsonHelper.fromJson(GSON, reader, STRING_MAP_LIST_TYPE);
                 for (Map.Entry<String, Map<String, List<String>>> entry : layerEntries.entrySet()) {
                     if(Objects.equals(entry.getKey(), "default")){
                         AnimatronicDataHandler.DEFAULT_SOUNDS = entry.getValue().get("default").getFirst();
@@ -133,16 +133,16 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
                     AnimatronicDataHandler.SOUND_NAMES_PER_CATEGORY.put(category, sounds_list);
                 });
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.sourcePackId(), runtimeException);
             }
         }
     }
-    void getCharacters(String category, String name, ResourceManager resourceManager, Profiler profiler, String namespace) {
+    void getCharacters(String category, String name, ResourceManager resourceManager, ProfilerFiller profiler, String namespace) {
         String path = FnafUniverseRebuilt.MOD_ID + "/" + category + "/" + name + ".data.json";
-        List<Resource> list = resourceManager.getAllResources(Identifier.of(namespace, path));
+        List<Resource> list = resourceManager.getResourceStack(Identifier.fromNamespaceAndPath(namespace, path));
         for (Resource resource : list) {
-            try (BufferedReader reader = resource.getReader();) {
-                Map<String, CharaGetter> layerEntries = JsonHelper.deserialize(GSON, reader, CHARACTER_TYPE);
+            try (BufferedReader reader = resource.openAsReader();) {
+                Map<String, CharaGetter> layerEntries = GsonHelper.fromJson(GSON, reader, CHARACTER_TYPE);
                 for (Map.Entry<String, CharaGetter> entry : layerEntries.entrySet()) {
                     CharaGetter getter = entry.getValue();
                     if (!AnimatronicDataHandler.CHARACTERS.containsKey(name)) {
@@ -160,7 +160,7 @@ public class AnimatronicDataManager extends SinglePreparationResourceReloader<Ma
                     }
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.sourcePackId(), runtimeException);
             }
         }
 

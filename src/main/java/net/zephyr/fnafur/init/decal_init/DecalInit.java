@@ -1,6 +1,6 @@
 package net.zephyr.fnafur.init.decal_init;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.decal_init.Palettes.WallTilesPalettes;
 import net.zephyr.fnafur.init.block_init.Palettes.PaletteEnum;
@@ -36,7 +36,7 @@ public class DecalInit {
                 "wall_tiles",
                 registerDecalPalette(
                         "b_w_two_wall_tiles",
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/decals/tiles/wall_tile_template.png"),
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/decals/tiles/wall_tile_template.png"),
                         WallTilesPalettes.values(),
                         5.5f,
                         16,
@@ -46,7 +46,7 @@ public class DecalInit {
                 ),
                 registerDecalPalette(
                         "b_w_two_wall_tiles_dirty",
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/decals/tiles/wall_tile_template_dirty.png"),
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/decals/tiles/wall_tile_template_dirty.png"),
                         WallTilesPalettes.values(),
                         5.5f,
                         16,
@@ -62,7 +62,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_r_wall_tiles2",
@@ -71,7 +71,7 @@ public class DecalInit {
                                 Movable.HORIZONTAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_r_wall_tiles3",
@@ -80,7 +80,7 @@ public class DecalInit {
                                 Movable.FREE,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_r_wall_tiles4",
@@ -89,7 +89,7 @@ public class DecalInit {
                                 Movable.NONE,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_hr2_wall_tiles",
@@ -98,7 +98,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_hotred2_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_hotred2_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_hr_wall_tiles",
@@ -107,7 +107,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_hotred_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_hotred_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_o_wall_tiles",
@@ -116,7 +116,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_orange_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_orange_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_y_wall_tiles",
@@ -125,7 +125,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_yellow_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_yellow_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_l_wall_tiles",
@@ -134,7 +134,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_lime_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_lime_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_lbl_wall_tiles",
@@ -143,7 +143,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_light_blue_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_light_blue_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_bl_wall_tiles",
@@ -152,7 +152,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_blue_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_blue_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_p_wall_tiles",
@@ -161,7 +161,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_purple_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_purple_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_m_wall_tiles",
@@ -170,7 +170,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_magenta_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_magenta_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_pi_wall_tiles",
@@ -179,7 +179,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_pink_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_pink_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_g_wall_tiles",
@@ -188,7 +188,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_gray_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_gray_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_b_wall_tiles",
@@ -197,7 +197,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_b_dirty_wall_tiles",
@@ -206,7 +206,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black_dirty_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black_dirty_wall_tiles")
                         ),
                         registerDecal(
                                 "b_w_b2_wall_tiles",
@@ -215,7 +215,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black2_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_black2_wall_tiles")
                         ),
                         registerDecal(
                                 "b_p_b_wall_tiles",
@@ -224,7 +224,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/purple_black_wall_tile")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/purple_black_wall_tile")
                         ),
                         registerDecal(
                                 "c_w_wall_tiles",
@@ -233,7 +233,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/colored_white_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/colored_white_wall_tiles")
                         ),
                         registerDecal(
                                 "c_w_long_wall_tiles",
@@ -242,7 +242,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/colored_white_long_wall_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/colored_white_long_wall_tiles")
                         ),
                         registerDecal(
                                 "b_r_wall_diamond_tiles",
@@ -251,7 +251,7 @@ public class DecalInit {
                                 Movable.VERTICAL,
                                 true,
                                 true,
-                                Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_red_diamond_tiles")
+                                Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_red_diamond_tiles")
                         )
                 }
         );
@@ -264,7 +264,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_big_tiles")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/black_white_red_wall_big_tiles")
                 )
         );
         registerCategory(
@@ -276,7 +276,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_red")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_red")
                 ),
                 registerDecal(
                         "b_w_o_wall_tiny_tiles",
@@ -285,7 +285,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_orange")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_orange")
                 ),
                 registerDecal(
                         "b_w_y_wall_tiny_tiles",
@@ -294,7 +294,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_yellow")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_yellow")
                 ),
                 registerDecal(
                         "b_w_g_wall_tiny_tiles",
@@ -303,7 +303,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_green")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_green")
                 ),
                 registerDecal(
                         "b_w_c_wall_tiny_tiles",
@@ -312,7 +312,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_cyan")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_cyan")
                 ),
                 registerDecal(
                         "b_w_bl_wall_tiny_tiles",
@@ -321,7 +321,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_blue")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_blue")
                 ),
                 registerDecal(
                         "b_w_p_wall_tiny_tiles",
@@ -330,7 +330,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_purple")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_tiles/small_wall_tiles_purple")
                 )
         );
         registerCategory(
@@ -342,7 +342,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/star_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/star_trim")
                 ),
                 registerDecal(
                         "red_wall_trimming",
@@ -351,7 +351,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/red_wall_trimming")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/red_wall_trimming")
                 ),
                 registerDecal(
                         "orange_wall_trimming",
@@ -360,7 +360,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/orange_wall_trimming")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/orange_wall_trimming")
                 ),
                 registerDecal(
                         "yellow_wall_trimming",
@@ -369,7 +369,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/yellow_wall_trimming")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/yellow_wall_trimming")
                 ),
                 registerDecal(
                         "green_wall_trimming",
@@ -378,7 +378,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/green_wall_trimming")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/green_wall_trimming")
                 ),
                 registerDecal(
                         "turquoise_wall_trimming",
@@ -387,7 +387,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/turquoise_wall_trimming")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/turquoise_wall_trimming")
                 ),
                 registerDecal(
                         "cyan_wall_trimming",
@@ -396,7 +396,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/cyan_wall_trimming")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/cyan_wall_trimming")
                 ),
                 registerDecal(
                         "blue_trimming",
@@ -405,7 +405,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/blue_trimming")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/blue_trimming")
                 ),
                 registerDecal(
                         "purple_blue_trimming",
@@ -414,7 +414,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/purple_blue_trimming")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/purple_blue_trimming")
                 ),
                 registerDecal(
                         "silver_wall_trimming",
@@ -423,7 +423,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/silver_wall_trimming")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/silver_wall_trimming")
                 ),
                 registerDecal(
                         "red_tile_trim",
@@ -432,7 +432,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/red_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/red_tile_trim")
                 ),
                 registerDecal(
                         "orange_tile_trim",
@@ -441,7 +441,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/orange_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/orange_tile_trim")
                 ),
                 registerDecal(
                         "yellow_tile_trim",
@@ -450,7 +450,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/yellow_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/yellow_tile_trim")
                 ),
                 registerDecal(
                         "green_tile_trim",
@@ -459,7 +459,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/green_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/green_tile_trim")
                 ),
                 registerDecal(
                         "mint_green_tile_trim",
@@ -468,7 +468,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/mint_green_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/mint_green_tile_trim")
                 ),
                 registerDecal(
                         "turquoise_tile_trim",
@@ -477,7 +477,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/turquoise_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/turquoise_tile_trim")
                 ),
                 registerDecal(
                         "cyan_tile_trim",
@@ -486,7 +486,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/cyan_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/cyan_tile_trim")
                 ),
                 registerDecal(
                         "blue_tile_trim",
@@ -495,7 +495,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/blue_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/blue_tile_trim")
                 ),
                 registerDecal(
                         "purple_tile_trim",
@@ -504,7 +504,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/purple_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/purple_tile_trim")
                 ),
                 registerDecal(
                         "purple_tile_trim",
@@ -513,7 +513,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/purple_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/purple_tile_trim")
                 ),
                 registerDecal(
                         "magenta_tile_trim",
@@ -522,7 +522,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/magenta_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/magenta_tile_trim")
                 ),
                 registerDecal(
                         "pink_tile_trim",
@@ -531,7 +531,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/pink_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/pink_tile_trim")
                 ),
                 registerDecal(
                         "silver_tile_trim",
@@ -540,7 +540,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/silver_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/silver_tile_trim")
                 ),
                 registerDecal(
                         "white_tile_trim",
@@ -549,7 +549,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/white_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/white_tile_trim")
                 ),
                 registerDecal(
                         "black_tile_trim",
@@ -558,7 +558,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/black_tile_trim")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/trims/black_tile_trim")
                 )
         );
         registerCategory(
@@ -570,10 +570,10 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_1"),
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_2"),
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_3"),
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_4")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_1"),
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_2"),
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_3"),
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_4")
                 ),
                 registerDecal(
                         "wall_grunge_2",
@@ -582,7 +582,7 @@ public class DecalInit {
                         Movable.VERTICAL,
                         true,
                         true,
-                        Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_flat")
+                        Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/stickers/wall_grunge_flat")
                 )
         );
     }
@@ -597,7 +597,7 @@ public class DecalInit {
                     direction,
                     isWallSticker,
                     isStackable,
-                    Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/decals/" + stickerName + "_" + palette.name().toLowerCase(Locale.ROOT))
+                    Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/decals/" + stickerName + "_" + palette.name().toLowerCase(Locale.ROOT))
 
             );
             array[i] = decal;

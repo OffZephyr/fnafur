@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.util.mixinAccessing;
 
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.renderer.MultiBufferSource;
 
 public interface IDCVertexConsumersAcc {
-    public VertexConsumerProvider.Immediate getVertexConsumers();
+    public MultiBufferSource.BufferSource getVertexConsumers();
 }

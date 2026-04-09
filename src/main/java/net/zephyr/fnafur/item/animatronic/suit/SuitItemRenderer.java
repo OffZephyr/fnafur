@@ -1,10 +1,10 @@
 package net.zephyr.fnafur.item.animatronic.suit;
 
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.command.RenderCommandQueue;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.ItemUtil;
@@ -25,7 +25,7 @@ public class SuitItemRenderer extends GeoItemRenderer<SuitItem> {
 
     @Override
     public GeoRenderState fillRenderState(SuitItem animatable, RenderData relatedObject, GeoRenderState renderState, float partialTick) {
-        NbtCompound nbt = ItemUtil.getNbt(relatedObject.itemStack());
+        CompoundTag nbt = ItemUtil.getNbt(relatedObject.itemStack());
 
         nbt.getString("chara").ifPresent(chara -> {
             AnimatronicDataHandler.Chara c = AnimatronicDataHandler.CHARACTERS.get(chara);
@@ -43,7 +43,7 @@ public class SuitItemRenderer extends GeoItemRenderer<SuitItem> {
     }
 
     @Override
-    public @Nullable RenderLayer getRenderType(GeoRenderState renderState, Identifier texture) {
+    public @Nullable RenderType getRenderType(GeoRenderState renderState, Identifier texture) {
         if(renderState.hasGeckolibData(CustomDataTickets.SUIT_MAP_TEXTURE)){
             return CustomRenderingPipelines.getAnimatronicSuit(texture, renderState.getGeckolibData(CustomDataTickets.SUIT_MAP_TEXTURE));
         }
@@ -51,7 +51,7 @@ public class SuitItemRenderer extends GeoItemRenderer<SuitItem> {
     }
 
     @Override
-    public void submitRenderTasks(RenderPassInfo<GeoRenderState> renderPassInfo, RenderCommandQueue renderTasks, @org.jspecify.annotations.Nullable RenderLayer renderType) {
+    public void submitRenderTasks(RenderPassInfo<GeoRenderState> renderPassInfo, OrderedSubmitNodeCollector renderTasks, @org.jspecify.annotations.Nullable RenderType renderType) {
         if (renderType == null)
             return;
 
@@ -61,10 +61,10 @@ public class SuitItemRenderer extends GeoItemRenderer<SuitItem> {
 
         if(renderPassInfo.model().getBone("head").isPresent()) {
             GeoRenderState renderState = renderPassInfo.renderState();
-            MatrixStack poseStack = renderPassInfo.poseStack();
+            PoseStack poseStack = renderPassInfo.poseStack();
             BakedGeoModel model = renderPassInfo.model();
 
-            poseStack.push();
+            poseStack.pushPose();
             GeoBone bone = model.getBone("head").get();
             //poseStack.translate(-bone.getPosX(), -bone.getPosY(), -bone.getPosZ());
             float scale = 1;
@@ -74,15 +74,15 @@ public class SuitItemRenderer extends GeoItemRenderer<SuitItem> {
 
             poseStack.scale(scale, scale, scale);
             poseStack.translate(0, -2.15f * (1f / scale), 0);
-            renderTasks.submitCustom(renderPassInfo.poseStack(), renderType, (pose, vertexConsumer) -> {
-                final MatrixStack poseStack2 = renderPassInfo.poseStack();
+            renderTasks.submitCustomGeometry(renderPassInfo.poseStack(), renderType, (pose, vertexConsumer) -> {
+                final PoseStack poseStack2 = renderPassInfo.poseStack();
 
-                poseStack2.push();
-                poseStack2.peek().copy(pose);
+                poseStack2.pushPose();
+                poseStack2.last().set(pose);
                 bone.positionAndRender(renderPassInfo, vertexConsumer, packedLight, packedOverlay, renderColor);
-                poseStack2.pop();
+                poseStack2.popPose();
             });
-            poseStack.pop();
+            poseStack.popPose();
         }
     }
 }

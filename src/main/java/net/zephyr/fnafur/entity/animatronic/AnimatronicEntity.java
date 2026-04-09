@@ -3,52 +3,67 @@ package net.zephyr.fnafur.entity.animatronic;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.sound.SoundManager;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.ai.pathing.*;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.network.packet.s2c.play.PositionFlag;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.GameEventTags;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.event.EntityPositionSource;
-import net.minecraft.world.event.GameEvent;
-import net.minecraft.world.event.PositionSource;
-import net.minecraft.world.event.Vibrations;
-import net.minecraft.world.event.listener.EntityGameEventHandler;
-import net.minecraft.world.event.listener.Vibration;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.world.entity.Relative;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.tags.GameEventTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.gameevent.vibrations.VibrationSystem.Data;
+import net.minecraft.world.level.gameevent.vibrations.VibrationSystem.Listener;
+import net.minecraft.world.level.gameevent.vibrations.VibrationSystem.User;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.gameevent.EntityPositionSource;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gameevent.PositionSource;
+import net.minecraft.world.level.gameevent.vibrations.VibrationSystem;
+import net.minecraft.world.level.gameevent.DynamicGameEventListener;
+import net.minecraft.world.level.gameevent.vibrations.VibrationInfo;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.animatronic.data.AnimatronicPathNodeMaker;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
@@ -84,13 +99,13 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vibrations, IEntityPathfindingHeightOverride, VoiceSource {
+public class AnimatronicEntity extends PathfinderMob implements GeoEntity, VibrationSystem, IEntityPathfindingHeightOverride, VoiceSource {
 
     boolean forceCrawl = false;
 
-    private final EntityGameEventHandler<VibrationListener> gameEventHandler;
-    private Vibrations.ListenerData vibrationListenerData;
-    private final Vibrations.Callback vibrationCallback;
+    private final DynamicGameEventListener<Listener> gameEventHandler;
+    private VibrationSystem.Data vibrationListenerData;
+    private final VibrationSystem.User vibrationCallback;
     int updateDepth = 0;
     public List<IEntityDataSaver> sources = new ArrayList<>();
     public double force_age = 0;
@@ -130,17 +145,17 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     );
     String currentAnim = "";
     int blinkDelay;
-    public AnimatronicEntity(EntityType<? extends PathAwareEntity> entityType, World world){
+    public AnimatronicEntity(EntityType<? extends PathfinderMob> entityType, Level world){
         super(entityType, world);
 
         this.navigation = new AnimatronicNavigation(this, world);
         this.vibrationCallback = new AnimatronicEntity.VibrationCallback();
-        this.vibrationListenerData = new Vibrations.ListenerData();
-        this.gameEventHandler = new EntityGameEventHandler<>(new Vibrations.VibrationListener(this));
+        this.vibrationListenerData = new VibrationSystem.Data();
+        this.gameEventHandler = new DynamicGameEventListener<>(new VibrationSystem.Listener(this));
 
-        this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, 16);
-        this.setPathfindingPenalty(PathNodeType.STICKY_HONEY, 24);
-        this.setPathfindingPenalty(PathNodeType.COCOA, 8);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, 16);
+        this.setPathfindingMalus(PathType.STICKY_HONEY, 24);
+        this.setPathfindingMalus(PathType.COCOA, 8);
 
         //this.reachInHitbox = new AnimatronicPart(this, "reach_in_hitbox", 1.0F, 1.0F);
     }
@@ -148,8 +163,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
 
     @Override
-    public void updateEventHandler(BiConsumer<EntityGameEventHandler<?>, ServerWorld> callback) {
-        if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
+    public void updateDynamicGameEventListener(BiConsumer<DynamicGameEventListener<?>, ServerLevel> callback) {
+        if (this.level() instanceof ServerLevel serverWorld) {
             callback.accept(this.gameEventHandler, serverWorld);
         }
     }
@@ -161,26 +176,26 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
 
     @Override
-    public ActionResult interactAt(PlayerEntity player, Vec3d hitPos, Hand hand) {
-        //if(!player.getMainHandStack().isEmpty()) return ActionResult.PASS;
+    public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
+        //if(!player.getMainHandStack().isEmpty()) return InteractionResult.PASS;
 
-        if(getEntityWorld().isClient()){
+        if(level().isClientSide()){
             getAnimatableInstanceCache().getManagerForId(getId()).getAnimationControllers().forEach((name, controller) -> {
                 controller.reset();
             });
-            if(player.getMainHandStack().isEmpty() && !player.isSneaking()) {
+            if(player.getMainHandItem().isEmpty() && !player.isShiftKeyDown()) {
                 String name = this.getAnimatronicAmbientSoundName();
                 playVoiceSound(name, this.getAnimatronicAmbientSound(name), this.ambientSoundVolume());
                 //playVoiceSound(name, SoundEvents.INTENTIONALLY_EMPTY, this.ambientSoundVolume());
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
         else{
-            if (player.getMainHandStack().isEmpty() && player.isSneaking()) {
+            if (player.getMainHandItem().isEmpty() && player.isShiftKeyDown()) {
                 if (getData().DATA_LIST.containsKey(CpuData.OnReset.getDefault().getKey())) {
                     if(getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) instanceof CpuData.OnReset resetMode){
                         resetAnimatronic(resetMode);
-                        return ActionResult.SUCCESS;
+                        return InteractionResult.SUCCESS;
                     }
                 }
             }
@@ -189,41 +204,41 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public void resetAnimatronic(CpuData.OnReset mode){
-        Vec3d vec3d = getSpawnPos();
+        Vec3 vec3d = getSpawnPos();
 
         isRetreating = false;
         switch (mode){
             case TELEPORT -> {
-                Set<PositionFlag> flags = EnumSet.of(PositionFlag.X, PositionFlag.Y, PositionFlag.Z, PositionFlag.X_ROT, PositionFlag.Y_ROT);
+                Set<Relative> flags = EnumSet.of(Relative.X, Relative.Y, Relative.Z, Relative.X_ROT, Relative.Y_ROT);
                 this.getNavigation().stop();
-                this.setPosition(vec3d);
-                this.lastX = vec3d.x;
-                this.lastY = vec3d.y;
-                this.lastZ = vec3d.z;
-                this.setYaw(this.getSpawnYaw());
-                this.setHeadYaw(this.getSpawnYaw());
-                this.setBodyYaw(this.getSpawnYaw());
-                this.setPitch(0);
-                this.setVelocity(0, 0, 0);
-                this.lastBodyYaw = this.getSpawnYaw();
-                this.lastHeadYaw = this.getSpawnYaw();
-                this.lastYaw = this.getSpawnYaw();
-                this.lastYaw = this.getSpawnYaw();
+                this.setPos(vec3d);
+                this.xo = vec3d.x;
+                this.yo = vec3d.y;
+                this.zo = vec3d.z;
+                this.setYRot(this.getSpawnYaw());
+                this.setYHeadRot(this.getSpawnYaw());
+                this.setYBodyRot(this.getSpawnYaw());
+                this.setXRot(0);
+                this.setDeltaMovement(0, 0, 0);
+                this.yBodyRotO = this.getSpawnYaw();
+                this.yHeadRotO = this.getSpawnYaw();
+                this.yRotO = this.getSpawnYaw();
+                this.yRotO = this.getSpawnYaw();
                 setFrozen(false);
             }
             case WALK -> {
                 isRetreating = true;
                 int speed = walkingSpeed();
                 int maxSpeed = CpuData.MovementSpeed.getDefaultValue() + CpuData.RunSpeed.getDefaultValue();
-                float final_speed = MathHelper.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
-                this.getNavigation().startMovingTo(vec3d.x, vec3d.y, vec3d.z, 0, final_speed);
+                float final_speed = Mth.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
+                this.getNavigation().moveTo(vec3d.x, vec3d.y, vec3d.z, 0, final_speed);
             }
             case RUN -> {
                 isRetreating = true;
                 int speed = runningSpeed();
                 int maxSpeed = CpuData.MovementSpeed.getDefaultValue() + CpuData.RunSpeed.getDefaultValue();
-                float final_speed = MathHelper.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
-                this.getNavigation().startMovingTo(vec3d.x, vec3d.y, vec3d.z, 0, final_speed);
+                float final_speed = Mth.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
+                this.getNavigation().moveTo(vec3d.x, vec3d.y, vec3d.z, 0, final_speed);
             }
         }
 
@@ -231,13 +246,13 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     @Override
-    public void onSpawnPacket(EntitySpawnS2CPacket packet) {
-        super.onSpawnPacket(packet);
-        if(getEntityWorld().isClient()){
+    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+        super.recreateFromPacket(packet);
+        if(level().isClientSide()){
             double spawnX = packet.getX();
             double spawnY = packet.getY();
             double spawnZ = packet.getZ() - 1.0D;
-            float spawnYaw = packet.getYaw();
+            float spawnYaw = packet.getYRot();
             ClientPlayNetworking.send(new SetEntitySpawnDataC2SPayload(getId(), spawnX, spawnY, spawnZ, spawnYaw));
         }
     }
@@ -249,11 +264,11 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return new BlockPos((int) x, (int) y, (int) z);
     }
 
-    public Vec3d getSpawnPos() {
+    public Vec3 getSpawnPos() {
         double x = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnX").orElse(0.0D);
         double y = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnY").orElse(0.0D);
         double z = ((IEntityDataSaver) this).getPersistentData().getDouble("spawnZ").orElse(0.0D) + 1;
-        return new Vec3d(x, y, z);
+        return new Vec3(x, y, z);
     }
 
     public float getSpawnYaw() {
@@ -305,8 +320,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         if(!isMenu && getAnimatronicPose().canBlink()){
             if(blinkDelay <= 0){
-                Random random1 = Random.create();
-                blinkDelay = random1.nextBetween(100, 250);
+                RandomSource random1 = RandomSource.create();
+                blinkDelay = random1.nextIntBetweenInclusive(100, 250);
                 geoAnimatableAnimationTest.controller().reset();
             }
             RawAnimation anim = RawAnimation.begin().thenPlayAndHold(getAnimationName("blink"));
@@ -330,7 +345,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         String anim = getAnimatronicPose().getLowerIdle();
 
-        double speed = getMovement().horizontalLength() * 20;
+        double speed = getKnownMovement().horizontalDistance() * 20;
         if(animatronicEntityAnimationState.isMoving() && speed > 0){
 
             anim = isRunning() ? getAnimatronicPose().getLowerRun() : getAnimatronicPose().getLowerWalk();
@@ -361,7 +376,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         String anim = getAnimatronicPose().getUpperIdle();
 
-        double speed = getMovement().horizontalLength() * 20;
+        double speed = getKnownMovement().horizontalDistance() * 20;
         if(animatronicEntityAnimationState.isMoving() && speed > 0){
 
             anim = isRunning() ? getAnimatronicPose().getUpperRun() : getAnimatronicPose().getUpperWalk();
@@ -377,8 +392,8 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return animatronicEntityAnimationState.setAndContinue(RawAnimation.begin().thenLoop(getAnimationName(anim)));
     }
 
-    public void playWalkSound(World world){
-        if(!world.isClient()) {
+    public void playWalkSound(Level world){
+        if(!world.isClientSide()) {
             this.playSound(SoundsInit.FNAF1_FOOTSTEPS, 1.0f, 1.0f);
         }
     }
@@ -403,7 +418,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     @Override
-    public boolean cannotDespawn() {
+    public boolean requiresCustomPersistence() {
         return true;
     }
 
@@ -413,7 +428,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     @Override
-    public float getStepHeight() {
+    public float maxUpStep() {
         return 0.9f;
     }
 
@@ -422,14 +437,14 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         if(!(isFrozen)){
             blinkDelay = Math.max(0, blinkDelay - 1);
         }
-        if(getEntityWorld().isClient() && currentVoiceSound != null && !currentVoiceSound.getId().equals(SoundManager.INTENTIONALLY_EMPTY_ID) && !MinecraftClient.getInstance().getSoundManager().isPlaying(currentVoiceSound)){
+        if(level().isClientSide() && currentVoiceSound != null && !currentVoiceSound.getIdentifier().equals(SoundManager.INTENTIONALLY_EMPTY_SOUND_LOCATION) && !Minecraft.getInstance().getSoundManager().isActive(currentVoiceSound)){
             currentVoiceSound = null;
         };
         if(isMenu){
-            age++;
+            tickCount++;
         }
 
-        if(!getEntityWorld().isClient()) {
+        if(!level().isClientSide()) {
             ((IEntityDataSaver) this).getPersistentData().putString("getupAnim", "");
         }
         else{
@@ -438,15 +453,15 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             }
 
             //if (((IEntityDataSaver) this).getServerUpdateStatus()) {
-            //    //MinecraftClient.getInstance().player.sendMessage(Text.literal("SYNCING PROP"), false);
+            //    //Minecraft.getInstance().player.sendMessage(Text.literal("SYNCING PROP"), false);
             //    ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(getPos().asLong(), ((IEntityDataSaver) this).getPersistentData()));
             //}
         }
 
-        if(!getEntityWorld().isClient()) {
+        if(!level().isClientSide()) {
             if (getTarget() == null && canSee()) {
                 if (lastHeardPosition != null) {
-                    if (timeSinceLastHeard > 0 || getNavigation().isFollowingPath()) {
+                    if (timeSinceLastHeard > 0 || getNavigation().isInProgress()) {
                         if (timeSinceLastHeard > 0) {
                             timeSinceLastHeard -= 1;
                             getNavigation().stop();
@@ -454,7 +469,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                                 startMovingToHeardPosition();
                             }
                         }
-                        getLookControl().lookAt(lastHeardPosition.getX(), lastHeardPosition.up().getY(), lastHeardPosition.getZ(), 30.0F, 30.0F);
+                        getLookControl().setLookAt(lastHeardPosition.getX(), lastHeardPosition.above().getY(), lastHeardPosition.getZ(), 30.0F, 30.0F);
 
                     } else {
                         lastHeardPosition = null;
@@ -465,14 +480,14 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             }
         }
 
-        if(!getEntityWorld().isClient()) {
-            VibrationTicker.tick(this.getEntityWorld(), this.vibrationListenerData, this.vibrationCallback);
+        if(!level().isClientSide()) {
+            VibrationTicker.tick(this.level(), this.vibrationListenerData, this.vibrationCallback);
 
 
             this.tickSightBehavior();
 
             if (isRetreating) {
-                if (this.getNavigation().getCurrentPath() == null || this.getNavigation().isIdle()) {
+                if (this.getNavigation().getPath() == null || this.getNavigation().isDone()) {
                     timeSinceLastMoved++;
                     if (getData().DATA_LIST.containsKey(CpuData.OnReset.getDefault().getKey())) {
                         if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) instanceof CpuData.OnReset resetMode) {
@@ -484,9 +499,9 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                 }
                 if (
                         timeSinceLastMoved > 20 ||
-                                getEntityPos().isWithinRangeOf(getSpawnPos(), 1f, 1)
+                                position().closerThan(getSpawnPos(), 1f, 1)
                 ) {
-                    if (getEntityPos().equals(getSpawnPos()) && getYaw() == getSpawnYaw() && getHeadYaw() == getSpawnYaw() && getBodyYaw() == getSpawnYaw()) {
+                    if (position().equals(getSpawnPos()) && getYRot() == getSpawnYaw() && getYHeadRot() == getSpawnYaw() && getVisualRotationYInDegrees() == getSpawnYaw()) {
 
                         isRetreating = false;
                         ((IEntityDataSaver) this).getPersistentData().putBoolean("isRetreating", isRetreating);
@@ -499,7 +514,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
 
 
-            if(getWanderBehavior() == CpuData.WanderBehavior.STAND_AT_SPAWN && !getBlockPos().equals(getSpawnBlockPos()) && getYaw() != getSpawnYaw() && !isRetreating && !(isAggressive() && getTarget() != null) && lastHeardPosition == null){
+            if(getWanderBehavior() == CpuData.WanderBehavior.STAND_AT_SPAWN && !blockPosition().equals(getSpawnBlockPos()) && getYRot() != getSpawnYaw() && !isRetreating && !(isAggressive() && getTarget() != null) && lastHeardPosition == null){
                 if (getData().DATA_LIST.containsKey(CpuData.OnReset.getDefault().getKey())) {
                     if (getData().DATA_LIST.get(CpuData.OnReset.getDefault().getKey()) instanceof CpuData.OnReset resetMode) {
                         resetAnimatronic(resetMode);
@@ -514,7 +529,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public void tickSightBehavior(){
-        if(getEntityWorld().isClient()) return;
+        if(level().isClientSide()) return;
         switch (getBehaviorWhenSeen()){
             case FREEZE_ON_SIGHT -> {
                 if(isBeingWatched() && !isRetreating){
@@ -523,7 +538,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                 else{
                     if(isFrozen){
                         setFrozen(false);
-                        getNavigation().setSpeed(frozenSpeed);
+                        getNavigation().setSpeedModifier(frozenSpeed);
                     }
                 }
             }
@@ -537,22 +552,22 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             }
         }
 
-        if(isFrozen && !getBlockPos().equals(getSpawnBlockPos())){
+        if(isFrozen && !blockPosition().equals(getSpawnBlockPos())){
             getNavigation().stop();
-            setSidewaysSpeed(0.0F);
-            setUpwardSpeed(0.0F);
-            setMovementSpeed(0.0F);
-            setVelocity(0.0, getVelocity().y, 0.0);
+            setXxa(0.0F);
+            setYya(0.0F);
+            setSpeed(0.0F);
+            setDeltaMovement(0.0, getDeltaMovement().y, 0.0);
 
             if(getTarget() != null){
-                getLookControl().lookAt(getTarget(), 45.0F, 30.0F);
+                getLookControl().setLookAt(getTarget(), 45.0F, 30.0F);
             }
         }
     }
 
     void setFrozen(boolean frozen){
         isFrozen = frozen;
-        for(ServerPlayerEntity player : PlayerLookup.tracking(this)){
+        for(ServerPlayer player : PlayerLookup.tracking(this)){
             ServerPlayNetworking.send(player, new SetAnimatronicFrozenStatusS2CPayload(getId(), frozen, frozenHeadYaw, frozenBodyYaw, frozenPitch));
         }
 
@@ -561,27 +576,27 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     void freezeMovement(){
         if(!isFrozen){
             frozenSpeed = ((AnimatronicNavigation)getNavigation()).getSpeed();
-            frozenYaw = getYaw();
-            frozenHeadYaw = getHeadYaw();
-            frozenBodyYaw = getBodyYaw();
-            frozenPitch = getPitch();
+            frozenYaw = getYRot();
+            frozenHeadYaw = getYHeadRot();
+            frozenBodyYaw = getVisualRotationYInDegrees();
+            frozenPitch = getXRot();
             setFrozen(true);
         }
-        getNavigation().setSpeed(0);
+        getNavigation().setSpeedModifier(0);
     }
 
     boolean isBeingWatched(){
-        if(getEntityWorld().isClient()) return false;
+        if(level().isClientSide()) return false;
 
-        List<PlayerEntity> players = getEntityWorld().getEntitiesByClass(PlayerEntity.class, getBoundingBox().expand(10), (entity) -> (entity instanceof PlayerEntity && !entity.isSpectator() && !entity.isCreative()));
+        List<Player> players = level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(10), (entity) -> (entity instanceof Player && !entity.isSpectator() && !entity.isCreative()));
 
-        for(PlayerEntity player : players){
-            Vec3d difference = this.getEntityPos().add(player.getEntityPos().multiply(-1));
-            float angle = player.getHeadYaw() - difference.getYawAndPitch().y;
+        for(Player player : players){
+            Vec3 difference = this.position().add(player.position().scale(-1));
+            float angle = player.getYHeadRot() - difference.rotation().y;
             while(angle < 0) angle += 360;
             angle %= 360;
             if(angle <= sightConeAngle() || angle >= 360 - sightConeAngle()){
-                if(canSee(player)){
+                if(hasLineOfSight(player)){
                     return true;
                 }
             }
@@ -615,23 +630,23 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 //    }
 
     public void tickUpdatePose() {
-        World world = this.getEntityWorld();
+        Level world = this.level();
         if (world == null) return;
 
-        Box box = AnimatronicPose.NONE.getPoseDimensions().getBoxAt(this.getEntityPos());
-        Box box2 = AnimatronicPose.CRAWLING.getPoseDimensions().getBoxAt(this.getEntityPos());
+        AABB box = AnimatronicPose.NONE.getPoseDimensions().makeBoundingBox(this.position());
+        AABB box2 = AnimatronicPose.CRAWLING.getPoseDimensions().makeBoundingBox(this.position());
 
-        boolean wouldSuffocate = !this.getEntityWorld().isBlockSpaceEmpty(this, box);
-        boolean wouldntSuffocateCrawling = this.getEntityWorld().isBlockSpaceEmpty(this, box2);
+        boolean wouldSuffocate = !this.level().noBlockCollision(this, box);
+        boolean wouldntSuffocateCrawling = this.level().noBlockCollision(this, box2);
 
-        if (this.canCrawl() && (this.isCrawlSpaceAvailable(world) && !this.getNavigation().isIdle()) || wouldSuffocate && wouldntSuffocateCrawling) {
+        if (this.canCrawl() && (this.isCrawlSpaceAvailable(world) && !this.getNavigation().isDone()) || wouldSuffocate && wouldntSuffocateCrawling) {
             this.setAnimatronicPose(AnimatronicPose.CRAWLING);
         } else {
 
-            Vec3d pos = this.getEntityPos();
-            BlockPos blockPos = new BlockPos((int)Math.floor(pos.getX()), (int)Math.floor(pos.getY()), (int)Math.floor(pos.getZ())).offset(this.getHorizontalFacing());
-            if (this.isCrawlSpaceAvailable(world) && this.canReachIn() && this.getEntityWorld() instanceof ServerWorld serverWorld) {
-                for (PlayerEntity player : this.getEntityWorld().getEntitiesByClass(PlayerEntity.class, new Box(blockPos.toCenterPos(), blockPos.offset(this.getHorizontalFacing()).toCenterPos()), (entity) -> (entity instanceof PlayerEntity))) {
+            Vec3 pos = this.position();
+            BlockPos blockPos = new BlockPos((int)Math.floor(pos.x()), (int)Math.floor(pos.y()), (int)Math.floor(pos.z())).relative(this.getDirection());
+            if (this.isCrawlSpaceAvailable(world) && this.canReachIn() && this.level() instanceof ServerLevel serverWorld) {
+                for (Player player : this.level().getEntitiesOfClass(Player.class, new AABB(blockPos.getCenter(), blockPos.relative(this.getDirection()).getCenter()), (entity) -> (entity instanceof Player))) {
                     if (!(player.isCreative() || player.isSpectator())) player.kill(serverWorld);
                 }
             }
@@ -645,40 +660,40 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     // Checks to see if there's a 1 block tall gap for an animatronic to crawl through
-    public boolean isCrawlSpaceAvailable(World world) {
+    public boolean isCrawlSpaceAvailable(Level world) {
 
-        Vec3d pos = this.getEntityPos();
-        BlockPos blockPos = new BlockPos((int)Math.floor(pos.getX()), (int)Math.floor(pos.getY()), (int)Math.floor(pos.getZ())).offset(this.getHorizontalFacing());
+        Vec3 pos = this.position();
+        BlockPos blockPos = new BlockPos((int)Math.floor(pos.x()), (int)Math.floor(pos.y()), (int)Math.floor(pos.z())).relative(this.getDirection());
 
-        return !world.getBlockState(blockPos.up()).isAir()
-                && !Block.sideCoversSmallSquare(world, blockPos, this.getHorizontalFacing())
-                && !(getAnimatronicPose() == AnimatronicPose.CRAWLING && wouldNotSuffocateInPose(EntityPose.STANDING));
+        return !world.getBlockState(blockPos.above()).isAir()
+                && !Block.canSupportCenter(world, blockPos, this.getDirection())
+                && !(getAnimatronicPose() == AnimatronicPose.CRAWLING && wouldNotSuffocateAtTargetPose(Pose.STANDING));
     }
 
     void startMovingToHeardPosition(){
 
-        RaycastContext context = new RaycastContext(
-                getEyePos(),
-                lastHeardPosition.toCenterPos(),
-                RaycastContext.ShapeType.COLLIDER,
-                RaycastContext.FluidHandling.NONE,
+        ClipContext context = new ClipContext(
+                getEyePosition(),
+                lastHeardPosition.getCenter(),
+                net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE,
                 this
         );
-        BlockHitResult result = getEntityWorld().raycast(context);
+        BlockHitResult result = level().clip(context);
 
         if(result.getType() != HitResult.Type.MISS && !result.getBlockPos().equals(lastHeardPosition)) {
             int speed = runningSpeed();
             int maxSpeed = CpuData.MovementSpeed.getDefaultValue() + CpuData.RunSpeed.getDefaultValue();
 
-            float finalspeed = MathHelper.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
+            float finalspeed = Mth.lerp(((float) speed / maxSpeed), 0f, 2.5f) / 1.5f;
 
-            EntityNavigation nav = this.getNavigation();
+            PathNavigation nav = this.getNavigation();
 
             nav.stop(); // force recomputation
 
-            Path path = nav.findPathTo(lastHeardPosition, 0);
+            Path path = nav.createPath(lastHeardPosition, 0);
             if (path != null) {
-                nav.startMovingAlong(path, finalspeed);
+                nav.moveTo(path, finalspeed);
             }
         }
     }
@@ -719,7 +734,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public boolean isRunning(){
-        if(!getEntityWorld().isClient()) {
+        if(!level().isClientSide()) {
             CpuData data = getData();
 
             boolean runBase = getMovementMode() == CpuData.MovementMode.RUN;
@@ -734,7 +749,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
             boolean run = runChase || runBase;
             if(canRunCheck != run){
             canRunCheck = run;
-            for(ServerPlayerEntity p : PlayerLookup.world((ServerWorld) getEntityWorld())){
+            for(ServerPlayer p : PlayerLookup.world((ServerLevel) level())){
                 ServerPlayNetworking.send(p, new SetEntityRunS2CPayload(getId(), canRunCheck));
             }
             }
@@ -770,7 +785,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public boolean shouldEyesGlow(){
-        if(!getEntityWorld().isClient()) {
+        if(!level().isClientSide()) {
             CpuData data = getData();
 
             boolean shouldGlow = false;
@@ -940,15 +955,15 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     public CpuData getData(){
-        return CpuData.fromNbt(((IEntityDataSaver)this).getPersistentData().getCompound("data").orElse(new NbtCompound()));
+        return CpuData.fromNbt(((IEntityDataSaver)this).getPersistentData().getCompound("data").orElse(new CompoundTag()));
     }
 
-    public void setData(PlayerEntity entity, ItemStack stack){
-        if(stack.isOf(ItemInit.CPU)){
+    public void setData(Player entity, ItemStack stack){
+        if(stack.is(ItemInit.CPU)){
             setData(CPUItem.getCpuData(stack));
             canGlowCheck = !canGlowCheck;
             canRunCheck = !canRunCheck;
-            entity.sendMessage(Text.literal("UPDATED_DATA"), true);
+            entity.displayClientMessage(Component.literal("UPDATED_DATA"), true);
         }
     }
 
@@ -960,39 +975,39 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 //    @Override
 //    public double getTick(Object entity) {
 //        if(isMenu){
-//            return MinecraftClient.getInstance().world.getTime();
+//            return Minecraft.getInstance().level.getTime();
 //        }
 //
 //        return age;
 //    }
 
-    public static DefaultAttributeContainer.Builder setAttributes() {
+    public static AttributeSupplier.Builder setAttributes() {
 
-        return MobEntity.createMobAttributes()
-                .add(EntityAttributes.MAX_HEALTH, 50f)
-                .add(EntityAttributes.ATTACK_DAMAGE, 9999f)
-                .add(EntityAttributes.JUMP_STRENGTH, 0)
-                .add(EntityAttributes.ATTACK_SPEED, 1f)
-                .add(EntityAttributes.ATTACK_KNOCKBACK, 0f)
-                .add(EntityAttributes.MOVEMENT_SPEED, 0.2f)
-                .add(EntityAttributes.KNOCKBACK_RESISTANCE, 9999f)
-                .add(EntityAttributes.FOLLOW_RANGE, 9999D);
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 50f)
+                .add(Attributes.ATTACK_DAMAGE, 9999f)
+                .add(Attributes.JUMP_STRENGTH, 0)
+                .add(Attributes.ATTACK_SPEED, 1f)
+                .add(Attributes.ATTACK_KNOCKBACK, 0f)
+                .add(Attributes.MOVEMENT_SPEED, 0.2f)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 9999f)
+                .add(Attributes.FOLLOW_RANGE, 9999D);
     }
 
 
     @Override
-    protected void initGoals() {
-        this.goalSelector.add(1, new AnimMeleeAttackGoal(this, false));
-        this.goalSelector.add(2, new AnimWanderAroundFarGoal(this));
-        this.targetSelector.add(1, new AnimTargetGoal(this, PlayerEntity.class, true, true));
-        this.targetSelector.add(2, new AnimTargetGoal(this, VillagerEntity.class, true, true));
-        this.targetSelector.add(3, new RevengeGoal(this));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new AnimMeleeAttackGoal(this, false));
+        this.goalSelector.addGoal(2, new AnimWanderAroundFarGoal(this));
+        this.targetSelector.addGoal(1, new AnimTargetGoal(this, Player.class, true, true));
+        this.targetSelector.addGoal(2, new AnimTargetGoal(this, Villager.class, true, true));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
     public AnimatronicPose getAnimatronicPose() {
         if(forceCrawl) return AnimatronicPose.CRAWLING;
         if (((IEntityDataSaver)this).getPersistentData().contains("pose")) {
-            return AnimatronicPose.values()[((IEntityDataSaver)this).getPersistentData().getInt("pose", 0)];
+            return AnimatronicPose.values()[((IEntityDataSaver)this).getPersistentData().getIntOr("pose", 0)];
         } else {
             return AnimatronicPose.NONE;
         }
@@ -1000,7 +1015,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
     public void setAnimatronicPose(AnimatronicPose animatronicPose) {
         ((IEntityDataSaver)this).getPersistentData().putInt("pose", animatronicPose.ordinal());
-        this.calculateDimensions();
+        this.refreshDimensions();
     }
 
     public void setChara(String chara, @Nullable String alt, @Nullable String eyes){
@@ -1027,7 +1042,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return ((IEntityDataSaver)this).getPersistentData().getString("eyes").orElse("");
     }
 
-    public Identifier getTexture(World world){
+    public Identifier getTexture(Level world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("chara")) {
             String chara = ((IEntityDataSaver) this).getPersistentData().getString("chara").orElse("");
@@ -1058,7 +1073,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         return false;
     }
-    public Identifier getEyeTexture(World world){
+    public Identifier getEyeTexture(Level world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("chara")){
             String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
@@ -1075,7 +1090,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         return AnimatronicDataHandler.getDefaultEyeTexture();
     }
-    public Identifier getEyeMapTexture(World world){
+    public Identifier getEyeMapTexture(Level world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("chara")){
             String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
@@ -1093,10 +1108,10 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return AnimatronicDataHandler.getDefaultEyeMapTexture();
     }
 
-    public Identifier getReRenderTexture(World world){
+    public Identifier getReRenderTexture(Level world){
         return getTexture(world);
     }
-    public Identifier getModel(World world){
+    public Identifier getModel(Level world){
 
         if(((IEntityDataSaver)this).getPersistentData().contains("chara")){
             String chara = ((IEntityDataSaver)this).getPersistentData().getString("chara").orElse("");
@@ -1111,7 +1126,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         return AnimatronicDataHandler.getDefaultModel();
     }
 
-    public Identifier getReRenderModel(World world){
+    public Identifier getReRenderModel(Level world){
         return getModel(world);
     }
 
@@ -1159,17 +1174,17 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
 
         String animation = getAnimationsName();
         if(!animation.isEmpty()){
-            return Identifier.of(FnafUniverseRebuilt.MOD_ID, animation);
+            return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, animation);
         }
 
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"));
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, AnimatronicDataHandler.getAnimationFilePath("default"));
     }
 
     public String getAnimatronicAmbientSoundName(){
         String ambientSound = getData().AmbientSound;
 
         if(AnimatronicDataHandler.ALL_SOUNDS.containsKey(ambientSound)){
-            int randomSoundIndex = Random.create().nextBetweenExclusive(0, AnimatronicDataHandler.ALL_SOUNDS.get(ambientSound).size());
+            int randomSoundIndex = RandomSource.create().nextInt(0, AnimatronicDataHandler.ALL_SOUNDS.get(ambientSound).size());
             return AnimatronicDataHandler.ALL_SOUNDS.get(ambientSound).get(randomSoundIndex);
         }
         return "";
@@ -1178,59 +1193,59 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     public SoundEvent getAnimatronicAmbientSound(String ambientSound){
 
         if(!ambientSound.isEmpty() && !ambientSound.equals("default") && !ambientSound.equals("none")){
-            return Registries.SOUND_EVENT.get(Identifier.of(FnafUniverseRebuilt.MOD_ID, ambientSound));
+            return BuiltInRegistries.SOUND_EVENT.getValue(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, ambientSound));
         }
 
-        return SoundEvents.INTENTIONALLY_EMPTY;
+        return SoundEvents.EMPTY;
     }
 
     public void playVoiceSound(String name, SoundEvent sound, float volume){
         if(name.isEmpty()) return;
-        if(getEntityWorld().isClient()) {
+        if(level().isClientSide()) {
             newVoiceSound = true;
             if(currentVoiceSound != null){
-                if(MinecraftClient.getInstance().getSoundManager().isPlaying(currentVoiceSound)){
-                    MinecraftClient.getInstance().getSoundManager().stop(currentVoiceSound);
+                if(Minecraft.getInstance().getSoundManager().isActive(currentVoiceSound)){
+                    Minecraft.getInstance().getSoundManager().stop(currentVoiceSound);
                 }
             }
             currentVoiceSound = new EntityVoiceSoundInstance( this, name, sound, volume, 1.0f);
-            MinecraftClient.getInstance().getSoundManager().play(currentVoiceSound);
+            Minecraft.getInstance().getSoundManager().play(currentVoiceSound);
         }
         else{
-            for(ServerPlayerEntity p : PlayerLookup.world((ServerWorld) getEntityWorld())){
+            for(ServerPlayer p : PlayerLookup.world((ServerLevel) level())){
                 ServerPlayNetworking.send(p, new PlayVoiceSoundS2CPayload(getId(), name, sound, volume));
             }
         }
     }
 
-    public RenderLayer getRenderType(Identifier texture){
-        return RenderLayers.entityTranslucent(texture);
+    public RenderType getRenderType(Identifier texture){
+        return RenderTypes.entityTranslucent(texture);
     }
 
     @Override
-    protected void writeCustomData(WriteView view) {
-        view.put("listener", Vibrations.ListenerData.CODEC, this.vibrationListenerData);
-        super.writeCustomData(view);
+    protected void addAdditionalSaveData(ValueOutput view) {
+        view.store("listener", VibrationSystem.Data.CODEC, this.vibrationListenerData);
+        super.addAdditionalSaveData(view);
     }
 
     @Override
-    protected void readCustomData(ReadView view) {
-        this.vibrationListenerData = view.read("listener", ListenerData.CODEC).orElseGet(ListenerData::new);
-        super.readCustomData(view);
+    protected void readAdditionalSaveData(ValueInput view) {
+        this.vibrationListenerData = view.read("listener", Data.CODEC).orElseGet(Data::new);
+        super.readAdditionalSaveData(view);
     }
 
     @Override
-    public ListenerData getVibrationListenerData() {
+    public Data getVibrationData() {
         return vibrationListenerData;
     }
 
     @Override
-    public Callback getVibrationCallback() {
+    public User getVibrationUser() {
         return vibrationCallback;
     }
 
     @Override
-    public EntityDimensions getBaseDimensions(EntityPose pose) {
+    public EntityDimensions getDefaultDimensions(Pose pose) {
         return this.getAnimatronicPose().getPoseDimensions();
     }
 
@@ -1241,12 +1256,12 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
     }
 
     @Override
-    public float getPathfindingFavor(BlockPos pos, WorldView world) {
-        float favor =  super.getPathfindingFavor(pos, world);
+    public float getWalkTargetValue(BlockPos pos, LevelReader world) {
+        float favor =  super.getWalkTargetValue(pos, world);
 
         int radius = 2;
 
-        BlockPos.Mutable checkPos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos checkPos = new BlockPos.MutableBlockPos();
 
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
@@ -1278,12 +1293,12 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         currentVoiceSound = sound;
     }
 
-    class VibrationCallback implements Vibrations.Callback {
+    class VibrationCallback implements VibrationSystem.User {
         private static final int RANGE = 16;
-        private final PositionSource positionSource = new EntityPositionSource(AnimatronicEntity.this, AnimatronicEntity.this.getStandingEyeHeight());
+        private final PositionSource positionSource = new EntityPositionSource(AnimatronicEntity.this, AnimatronicEntity.this.getEyeHeight());
 
         @Override
-        public int getRange() {
+        public int getListenerRadius() {
             return 64;
         }
 
@@ -1293,35 +1308,35 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         }
 
         @Override
-        public boolean accepts(ServerWorld world, BlockPos pos, RegistryEntry<GameEvent> event, GameEvent.Emitter emitter) {
+        public boolean canReceiveVibration(ServerLevel world, BlockPos pos, Holder<GameEvent> event, GameEvent.Context emitter) {
 
             if(AnimatronicEntity.this.getTarget() != null && AnimatronicEntity.this.canSee()) return false;
             if(!AnimatronicEntity.this.isAggressive()) return false;
             if(!AnimatronicEntity.this.canHear()) return false;
 
-            if (emitter.sourceEntity() instanceof PlayerEntity p) {
+            if (emitter.sourceEntity() instanceof Player p) {
 
                 //if(p.isSpectator() || p.isCreative()) return false;
 
-                if (event.matches(GameEvent.STEP)) {
+                if (event.is(GameEvent.STEP)) {
                     if (AnimatronicEntity.this.canSee() && !p.isSprinting()) {
                         return false;
                     }
                 }
             }
 
-            if (AnimatronicEntity.this.isAiDisabled()) {
+            if (AnimatronicEntity.this.isNoAi()) {
                 return false;
             } else {
-                return pos.isWithinDistance(AnimatronicEntity.this.getBlockPos(), getRange());
+                return pos.closerThan(AnimatronicEntity.this.blockPosition(), getListenerRadius());
             }
 
         }
 
         @Override
-        public void accept(ServerWorld world, BlockPos pos, RegistryEntry<GameEvent> event, @org.jspecify.annotations.Nullable Entity sourceEntity, @org.jspecify.annotations.Nullable Entity entity, float distance) {
+        public void onReceiveVibration(ServerLevel world, BlockPos pos, Holder<GameEvent> event, @org.jspecify.annotations.Nullable Entity sourceEntity, @org.jspecify.annotations.Nullable Entity entity, float distance) {
 
-            List<RegistryEntry.Reference<GameEvent>> references = List.of(
+            List<Holder.Reference<GameEvent>> references = List.of(
                     GameEvent.STEP,
                     GameEvent.PROJECTILE_LAND,
                     GameEvent.HIT_GROUND,
@@ -1340,7 +1355,7 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
                     GameEvent.NOTE_BLOCK_PLAY
             );
 
-            if (sourceEntity instanceof PlayerEntity p) {
+            if (sourceEntity instanceof Player p) {
                 boolean alreadyHeard = lastHeardPosition != null;
                 lastHeardPosition = pos;
                 timeSinceLastHeard = 30;
@@ -1352,96 +1367,96 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         }
 
         @Override
-        public TagKey<GameEvent> getTag() {
+        public TagKey<GameEvent> getListenableEvents() {
             return GameEventTags.VIBRATIONS;
         }
 
         @Override
-        public void onListen() {
+        public void onDataChanged() {
 
         }
     }
 
     public interface VibrationTicker {
-        static void tick(World world, Vibrations.ListenerData listenerData, Vibrations.Callback callback) {
-            if (world instanceof ServerWorld serverWorld) {
-                if (listenerData.getVibration() == null) {
+        static void tick(Level world, VibrationSystem.Data listenerData, VibrationSystem.User callback) {
+            if (world instanceof ServerLevel serverWorld) {
+                if (listenerData.getCurrentVibration() == null) {
                     tryListen(serverWorld, listenerData, callback);
                 }
 
-                if (listenerData.getVibration() != null) {
-                    boolean bl = listenerData.getDelay() > 0;
+                if (listenerData.getCurrentVibration() != null) {
+                    boolean bl = listenerData.getTravelTimeInTicks() > 0;
                     //spawnVibrationParticle(serverWorld, listenerData, callback);
-                    listenerData.tickDelay();
-                    if (listenerData.getDelay() <= 0) {
-                        bl = accept(serverWorld, listenerData, callback, listenerData.getVibration());
+                    listenerData.decrementTravelTime();
+                    if (listenerData.getTravelTimeInTicks() <= 0) {
+                        bl = accept(serverWorld, listenerData, callback, listenerData.getCurrentVibration());
                     }
 
                     if (bl) {
-                        callback.onListen();
+                        callback.onDataChanged();
                     }
                 }
             }
         }
 
-        private static void tryListen(ServerWorld world, Vibrations.ListenerData listenerData, Vibrations.Callback callback) {
-            listenerData.getSelector().getVibrationToTick(world.getTime()).ifPresent(vibration -> {
-                listenerData.setVibration(vibration);
-                Vec3d vec3d = vibration.pos();
-                listenerData.setDelay(callback.getDelay(vibration.distance()));
+        private static void tryListen(ServerLevel world, VibrationSystem.Data listenerData, VibrationSystem.User callback) {
+            listenerData.getSelectionStrategy().chosenCandidate(world.getGameTime()).ifPresent(vibration -> {
+                listenerData.setCurrentVibration(vibration);
+                Vec3 vec3d = vibration.pos();
+                listenerData.setTravelTimeInTicks(callback.calculateTravelTimeInTicks(vibration.distance()));
                 //world.spawnParticles(new VibrationParticleEffect(callback.getPositionSource(), listenerData.getDelay()), vec3d.x, vec3d.y, vec3d.z, 1, 0.0, 0.0, 0.0, 0.0);
-                callback.onListen();
-                listenerData.getSelector().clear();
+                callback.onDataChanged();
+                listenerData.getSelectionStrategy().startOver();
             });
         }
 
-        private static void spawnVibrationParticle(ServerWorld world, Vibrations.ListenerData listenerData, Vibrations.Callback callback) {
-            if (listenerData.shouldSpawnParticle()) {
-                if (listenerData.getVibration() == null) {
-                    listenerData.setSpawnParticle(false);
+        private static void spawnVibrationParticle(ServerLevel world, VibrationSystem.Data listenerData, VibrationSystem.User callback) {
+            if (listenerData.shouldReloadVibrationParticle()) {
+                if (listenerData.getCurrentVibration() == null) {
+                    listenerData.setReloadVibrationParticle(false);
                 } else {
-                    Vec3d vec3d = listenerData.getVibration().pos();
+                    Vec3 vec3d = listenerData.getCurrentVibration().pos();
                     PositionSource positionSource = callback.getPositionSource();
-                    Vec3d vec3d2 = (Vec3d)positionSource.getPos(world).orElse(vec3d);
-                    int i = listenerData.getDelay();
-                    int j = callback.getDelay(listenerData.getVibration().distance());
+                    Vec3 vec3d2 = (Vec3)positionSource.getPosition(world).orElse(vec3d);
+                    int i = listenerData.getTravelTimeInTicks();
+                    int j = callback.calculateTravelTimeInTicks(listenerData.getCurrentVibration().distance());
                     double d = 1.0 - (double)i / j;
-                    double e = MathHelper.lerp(d, vec3d.x, vec3d2.x);
-                    double f = MathHelper.lerp(d, vec3d.y, vec3d2.y);
-                    double g = MathHelper.lerp(d, vec3d.z, vec3d2.z);
+                    double e = Mth.lerp(d, vec3d.x, vec3d2.x);
+                    double f = Mth.lerp(d, vec3d.y, vec3d2.y);
+                    double g = Mth.lerp(d, vec3d.z, vec3d2.z);
                     boolean bl = false;
                     if (bl) {
-                        listenerData.setSpawnParticle(false);
+                        listenerData.setReloadVibrationParticle(false);
                     }
                 }
             }
         }
 
-        private static boolean accept(ServerWorld world, Vibrations.ListenerData listenerData, Vibrations.Callback callback, Vibration vibration) {
-            BlockPos blockPos = BlockPos.ofFloored(vibration.pos());
-            BlockPos blockPos2 = (BlockPos)callback.getPositionSource().getPos(world).map(BlockPos::ofFloored).orElse(blockPos);
-            if (callback.requiresTickingChunksAround() && !areChunksTickingAround(world, blockPos2)) {
+        private static boolean accept(ServerLevel world, VibrationSystem.Data listenerData, VibrationSystem.User callback, VibrationInfo vibration) {
+            BlockPos blockPos = BlockPos.containing(vibration.pos());
+            BlockPos blockPos2 = (BlockPos)callback.getPositionSource().getPosition(world).map(BlockPos::containing).orElse(blockPos);
+            if (callback.requiresAdjacentChunksToBeTicking() && !areChunksTickingAround(world, blockPos2)) {
                 return false;
             } else {
-                callback.accept(
+                callback.onReceiveVibration(
                         world,
                         blockPos,
                         vibration.gameEvent(),
                         (Entity)vibration.getEntity(world).orElse(null),
-                        (Entity)vibration.getOwner(world).orElse(null),
-                        Vibrations.VibrationListener.getTravelDelay(blockPos, blockPos2)
+                        (Entity)vibration.getProjectileOwner(world).orElse(null),
+                        VibrationSystem.Listener.distanceBetweenInBlocks(blockPos, blockPos2)
                 );
-                listenerData.setVibration(null);
+                listenerData.setCurrentVibration(null);
                 return true;
             }
         }
 
-        private static boolean areChunksTickingAround(World world, BlockPos pos) {
+        private static boolean areChunksTickingAround(Level world, BlockPos pos) {
             ChunkPos chunkPos = new ChunkPos(pos);
 
             for (int i = chunkPos.x - 1; i <= chunkPos.x + 1; i++) {
                 for (int j = chunkPos.z - 1; j <= chunkPos.z + 1; j++) {
-                    if (!world.shouldTickBlocksInChunk(ChunkPos.toLong(i, j)) || world.getChunkManager().getWorldChunk(i, j) == null) {
+                    if (!world.shouldTickBlocksAt(ChunkPos.asLong(i, j)) || world.getChunkSource().getChunkNow(i, j) == null) {
                         return false;
                     }
                 }
@@ -1451,29 +1466,29 @@ public class AnimatronicEntity extends PathAwareEntity implements GeoEntity, Vib
         }
     }
 
-    public class AnimatronicNavigation extends MobNavigation {
+    public class AnimatronicNavigation extends GroundPathNavigation {
 
-        public AnimatronicNavigation(MobEntity mobEntity, World world) {
+        public AnimatronicNavigation(Mob mobEntity, Level world) {
             super(mobEntity, world);
         }
 
         @Override
-        protected PathNodeNavigator createPathNodeNavigator(int range) {
-            this.nodeMaker = new AnimatronicPathNodeMaker();
-            return new PathNodeNavigator(this.nodeMaker, range);
+        protected PathFinder createPathFinder(int range) {
+            this.nodeEvaluator = new AnimatronicPathNodeMaker();
+            return new PathFinder(this.nodeEvaluator, range);
         }
 
         double getSpeed(){
-            return this.speed;
+            return this.speedModifier;
         }
 
         @Override
-        protected void checkTimeouts(Vec3d currentPos) {
+        protected void doStuckDetection(Vec3 currentPos) {
 
-            if(this.entity instanceof AnimatronicEntity ent){
+            if(this.mob instanceof AnimatronicEntity ent){
                 if(ent.isFrozen) return;
             }
-            super.checkTimeouts(currentPos);
+            super.doStuckDetection(currentPos);
         }
 
     }

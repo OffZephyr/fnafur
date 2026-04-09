@@ -1,10 +1,10 @@
 package net.zephyr.fnafur.util.mixinAccessing;
 
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 
 public interface IEntityDataSaver {
-    NbtCompound getPersistentData();
-    void setPersistentData(NbtCompound nbt);
+    CompoundTag getPersistentData();
+    void setPersistentData(CompoundTag nbt);
     void setServerUpdateStatus(boolean value);
     boolean getServerUpdateStatus();
 }

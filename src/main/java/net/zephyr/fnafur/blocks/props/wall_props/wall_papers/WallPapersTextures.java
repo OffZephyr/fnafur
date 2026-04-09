@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.wall_props.wall_papers;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum WallPapersTextures implements ColorEnumInterface, StringIdentifiable {
+public enum WallPapersTextures implements ColorEnumInterface, StringRepresentable {
     MISSING_1_FEMALE("missing_1_female", 0),
     MISSING_1_MALE("missing_1_male", 1),
     MISSING_2("missing_2", 2),
@@ -22,7 +22,7 @@ public enum WallPapersTextures implements ColorEnumInterface, StringIdentifiable
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return name;
     }
 

@@ -1,10 +1,10 @@
 package net.zephyr.fnafur.blocks;
 
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
 
 public interface CallableByMesurer {
 
-    public ActionResult ExecuteAction(ItemUsageContext context);
+    public InteractionResult ExecuteAction(UseOnContext context);
 
 }

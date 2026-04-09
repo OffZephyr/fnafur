@@ -1,10 +1,10 @@
 package net.zephyr.fnafur.blocks.linking.presets;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.linking.links.energy.EnergyTargetPropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -15,10 +15,10 @@ public class SimpleEnergyTargetPropBlockEntity extends EnergyTargetPropBlockEnti
     }
 
     @Override
-    public void updateStatus(World world, BlockPos sourcePos, IEntityDataSaver source) {
-        if(world.getBlockState(pos).contains(Properties.POWERED)){
-            BlockState state = world.getBlockState(pos).with(Properties.POWERED, isReceivingPower());
-            world.setBlockState(pos, state);
+    public void updateStatus(Level world, BlockPos sourcePos, IEntityDataSaver source) {
+        if(world.getBlockState(worldPosition).hasProperty(BlockStateProperties.POWERED)){
+            BlockState state = world.getBlockState(worldPosition).setValue(BlockStateProperties.POWERED, isReceivingPower());
+            world.setBlockAndUpdate(worldPosition, state);
         }
         super.updateStatus(world, sourcePos, source);
     }

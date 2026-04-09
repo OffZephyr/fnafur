@@ -1,19 +1,22 @@
 package net.zephyr.fnafur.client.rendering;
 
 import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.BlockItem;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.ShapeRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
@@ -21,46 +24,46 @@ import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class SpecialBlockPlacingRenderer {
-        public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
+        public void render(PoseStack matrices, MultiBufferSource.BufferSource vertexConsumers, double cameraX, double cameraY, double cameraZ) {
 
-            MinecraftClient client = MinecraftClient.getInstance();
-            ClientPlayerEntity player = client.player;
+            Minecraft client = Minecraft.getInstance();
+            LocalPlayer player = client.player;
 
-            if(!player.getAbilities().allowModifyWorld) return;
+            if(!player.getAbilities().mayBuild) return;
 
-            if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof BlockItem blockItem) {
+            if (player.getMainHandItem() != null && player.getMainHandItem().getItem() instanceof BlockItem blockItem) {
                 if (blockItem.getBlock() instanceof BlockWithSticker block) {
                     FloorPropBlock.drawingOutline = true;
-                    HitResult blockHit = client.crosshairTarget;
+                    HitResult blockHit = client.hitResult;
                     if (blockHit.getType() == HitResult.Type.BLOCK) {
-                        BlockPos pos = ((BlockHitResult) blockHit).getBlockPos().offset(((BlockHitResult) blockHit).getSide());
+                        BlockPos pos = ((BlockHitResult) blockHit).getBlockPos().relative(((BlockHitResult) blockHit).getDirection());
 
-                        BlockState state = block.getDefaultState();
-                        VoxelShape shape = state.getOutlineShape(client.world, pos, ShapeContext.absent());
+                        BlockState state = block.defaultBlockState();
+                        VoxelShape shape = state.getShape(client.level, pos, CollisionContext.empty());
 
-                        BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);
+                        BlockStateModel model = client.getModelManager().getBlockModelShaper().getBlockModel(state);
 
-                        if(!client.world.canPlace(state, pos, ShapeContext.of(client.player)) || !client.world.getBlockState(pos).isReplaceable()) return;
+                        if(!client.level.isUnobstructed(state, pos, CollisionContext.of(client.player)) || !client.level.getBlockState(pos).canBeReplaced()) return;
 
-                        if(ItemUtil.getNbt(client.player.getMainHandStack()).isEmpty()) return;
-                        matrices.push();
+                        if(ItemUtil.getNbt(client.player.getMainHandItem()).isEmpty()) return;
+                        matrices.pushPose();
                         matrices.translate(-cameraX, -cameraY, -cameraZ);
                         matrices.translate(pos.getX(), pos.getY(), pos.getZ());
 
                         if(model instanceof StickerBlockModel m){
-                            BlockEntity entity = block.createBlockEntity(BlockPos.ORIGIN, state);
+                            BlockEntity entity = block.newBlockEntity(BlockPos.ZERO, state);
 
-                            ((IEntityDataSaver)entity).getPersistentData().copyFrom(ItemUtil.getNbt(client.player.getMainHandStack()));
+                            ((IEntityDataSaver)entity).getPersistentData().merge(ItemUtil.getNbt(client.player.getMainHandItem()));
 
                             m.forceEnt = entity;
-                            client.getBlockRenderManager().getModelRenderer().render(client.world, m, state, pos, matrices, RenderLayerHelper.movingDelegate(vertexConsumers), false, 0, OverlayTexture.DEFAULT_UV);
+                            client.getBlockRenderer().getModelRenderer().render(client.level, m, state, pos, matrices, RenderLayerHelper.movingDelegate(vertexConsumers), false, 0, OverlayTexture.NO_OVERLAY);
                             m.forceEnt = null;
 
 
-                            VertexRendering.drawOutline(matrices, vertexConsumers.getBuffer(RenderLayers.LINES), shape, 0, 0, 0, 0x88FFFFFF, MinecraftClient.getInstance().getWindow().getMinimumLineWidth());
+                            ShapeRenderer.renderShape(matrices, vertexConsumers.getBuffer(RenderTypes.LINES), shape, 0, 0, 0, 0x88FFFFFF, Minecraft.getInstance().getWindow().getAppropriateLineWidth());
                         }
 
-                        matrices.pop();
+                        matrices.popPose();
                     }
                 }
             }

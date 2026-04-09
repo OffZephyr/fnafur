@@ -3,11 +3,14 @@ package net.zephyr.fnafur.rendering.decals;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.util.math.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.networking.block.AddDecalC2SPayload;
 import org.joml.Vector4f;
@@ -65,31 +68,31 @@ public record DecalInstance(BlockPos pos, Direction direction, float xOffset, fl
 
     public Vector4f getUV(){
 
-        Vec3d comparing = new Vec3d(pos()).multiply(getRight());
-        int index = (int) (Math.max(Math.max(comparing.getX(), comparing.getY()), comparing.getZ())%getDecal().getTextures().length);
+        Vec3 comparing = new Vec3(pos()).multiply(getRight());
+        int index = (int) (Math.max(Math.max(comparing.x(), comparing.y()), comparing.z())%getDecal().getTextures().length);
 
-        Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, getDecal().getTextures()[index]));
+        TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, getDecal().getTextures()[index]));
 
-        float u0 = sprite.getMinU();
-        float v0 = sprite.getMinV();
-        float u1 = sprite.getMaxU();
-        float v1 = sprite.getMaxV();
+        float u0 = sprite.getU0();
+        float v0 = sprite.getV0();
+        float u1 = sprite.getU1();
+        float v1 = sprite.getV1();
 
         return new Vector4f(u0, v0, u1, v1);
     }
 
-    public Vec3d getForward(){
-        return direction.getDoubleVector();
+    public Vec3 getForward(){
+        return direction.getUnitVec3();
     }
-    public Vec3d getRight(){
-        return direction.rotateYClockwise().getDoubleVector();
+    public Vec3 getRight(){
+        return direction.getClockWise().getUnitVec3();
     }
-    public Vec3d getUp(){
-        return getDecal().getDirection() == DecalInit.Movable.HORIZONTAL ? Direction.DOWN.getDoubleVector() : direction.rotateYClockwise().getDoubleVector();
+    public Vec3 getUp(){
+        return getDecal().getDirection() == DecalInit.Movable.HORIZONTAL ? Direction.DOWN.getUnitVec3() : direction.getClockWise().getUnitVec3();
     }
 
-    public Vec3d getStartPos() {
-        Vec3d pos = getPos();
+    public Vec3 getStartPos() {
+        Vec3 pos = getPos();
         int repeats = repeats();
         if(direction == Direction.NORTH || direction == Direction.EAST){
             if(getDecal().getDirection() == DecalInit.Movable.VERTICAL){
@@ -99,18 +102,18 @@ public record DecalInstance(BlockPos pos, Direction direction, float xOffset, fl
                 pos = pos.add(getRight());
             }
         }
-        Vec3d last_pos = pos.add(getUp().multiply(repeats * -1));
+        Vec3 last_pos = pos.add(getUp().scale(repeats * -1));
 
         double x = Math.min(pos.x, last_pos.x);
         double y = Math.min(pos.y, last_pos.y);
         double z = Math.min(pos.z, last_pos.z);
 
-        Vec3d v = new Vec3d(x, y, z);
+        Vec3 v = new Vec3(x, y, z);
 
         return v;
     }
-    public Vec3d getEndPos() {
-        Vec3d pos = getPos();
+    public Vec3 getEndPos() {
+        Vec3 pos = getPos();
         int repeats = repeats();
         if(direction == Direction.NORTH || direction == Direction.EAST){
             if(getDecal().getDirection() == DecalInit.Movable.VERTICAL){
@@ -120,50 +123,50 @@ public record DecalInstance(BlockPos pos, Direction direction, float xOffset, fl
                 pos = pos.add(getRight());
             }
         }
-        Vec3d last_pos = pos.add(getUp().multiply(repeats * -1));
+        Vec3 last_pos = pos.add(getUp().scale(repeats * -1));
 
         double x = Math.max(pos.x, last_pos.x);
         double y = Math.max(pos.y, last_pos.y);
         double z = Math.max(pos.z, last_pos.z);
 
-        Vec3d v = new Vec3d(x, y, z);
+        Vec3 v = new Vec3(x, y, z);
 
         return v;
     }
 
-    public Vec3d getPos(){
+    public Vec3 getPos(){
 
-        Vec3d adjustedPos;
+        Vec3 adjustedPos;
         double sizeY = 1 - getDecal().getSize()/getDecal().getPixelDensity();
         double x = 0;
         double y = 0;
         double z = 0;
 
         if(getDecal().getDirection() == DecalInit.Movable.HORIZONTAL){
-            adjustedPos = pos.toBottomCenterPos().add(-1, 0, -1).add(direction.getDoubleVector().multiply(0.5f));
+            adjustedPos = pos.getBottomCenter().add(-1, 0, -1).add(direction.getUnitVec3().scale(0.5f));
             x = adjustedPos.x + (direction.getAxis() == Direction.Axis.X ? 0 : xOffset + sizeY/2f + (0.25f/16f));
             y = adjustedPos.y;
             z = adjustedPos.z + (direction.getAxis() == Direction.Axis.Z ? 0 : xOffset + sizeY/2f + (0.25f/16f));
         }
 
         if(getDecal().getDirection() == DecalInit.Movable.VERTICAL){
-            adjustedPos = pos.toBottomCenterPos().add(-1, 0, -1).add(direction.getDoubleVector().multiply(0.5f));
+            adjustedPos = pos.getBottomCenter().add(-1, 0, -1).add(direction.getUnitVec3().scale(0.5f));
 
             x = adjustedPos.x;
             y = adjustedPos.y + yOffset;
             z = adjustedPos.z;
         }
 
-        return new Vec3d(x, y, z);
+        return new Vec3(x, y, z);
     }
 
-    public Box getHitbox(){
+    public AABB getHitbox(){
 
         double sizeY = 1 - getDecal().getSize()/getDecal().getPixelDensity();
-        Vec3d worldpos = getPos();
-        double x = worldpos.getX();
-        double y = worldpos.getY();
-        double z = worldpos.getZ();
+        Vec3 worldpos = getPos();
+        double x = worldpos.x();
+        double y = worldpos.y();
+        double z = worldpos.z();
         double x2 = 0;
         double y2 = 0;
         double z2 = 0;
@@ -175,11 +178,11 @@ public record DecalInstance(BlockPos pos, Direction direction, float xOffset, fl
 
         if(getDecal().getDirection() == DecalInit.Movable.VERTICAL){
             y += sizeY/2f;
-            x2 = x + 1f + (repeats * direction.rotateYCounterclockwise().getOffsetX());
+            x2 = x + 1f + (repeats * direction.getCounterClockWise().getStepX());
             y2 = y + sizeY;
-            z2 = z + 1f + (repeats * direction.rotateYCounterclockwise().getOffsetZ());
+            z2 = z + 1f + (repeats * direction.getCounterClockWise().getStepZ());
         }
 
-        return new Box(x, y, z, x2, y2, z2).expand(-Math.abs(0.45f * direction.getOffsetX()), -Math.abs(0.45f * direction.getOffsetY()), -Math.abs(0.45f * direction.getOffsetZ()));
+        return new AABB(x, y, z, x2, y2, z2).inflate(-Math.abs(0.45f * direction.getStepX()), -Math.abs(0.45f * direction.getStepY()), -Math.abs(0.45f * direction.getStepZ()));
     }
 }

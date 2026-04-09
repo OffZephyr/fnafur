@@ -1,31 +1,31 @@
 package net.zephyr.fnafur.entity.animatronic.goals;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.TrackTargetGoal;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.scoreboard.AbstractTeam;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.scores.Team;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import org.jspecify.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.Map;
 
-public class AnimTargetGoal<T extends LivingEntity> extends TrackTargetGoal {
+public class AnimTargetGoal<T extends LivingEntity> extends TargetGoal {
     private static final int DEFAULT_RECIPROCAL_CHANCE = 10;
     protected final Class<T> targetClass;
     protected final int reciprocalChance;
     @Nullable
     protected LivingEntity targetEntity;
-    protected TargetPredicate targetPredicate;
+    protected TargetingConditions targetPredicate;
 
     private int timeWithoutVisibility;
 
@@ -37,7 +37,7 @@ public class AnimTargetGoal<T extends LivingEntity> extends TrackTargetGoal {
         this(mob, targetClass, 10, checkVisibility, false, null);
     }
 
-    public AnimTargetGoal(AnimatronicEntity mob, Class<T> targetClass, boolean checkVisibility, TargetPredicate.EntityPredicate predicate) {
+    public AnimTargetGoal(AnimatronicEntity mob, Class<T> targetClass, boolean checkVisibility, TargetingConditions.Selector predicate) {
         this(mob, targetClass, 10, checkVisibility, false, predicate);
     }
 
@@ -51,26 +51,26 @@ public class AnimTargetGoal<T extends LivingEntity> extends TrackTargetGoal {
             int reciprocalChance,
             boolean checkVisibility,
             boolean checkCanNavigate,
-            TargetPredicate.EntityPredicate targetPredicate
+            TargetingConditions.Selector targetPredicate
     ) {
         super(mob, checkVisibility, checkCanNavigate);
         this.a = mob;
         this.targetClass = targetClass;
-        this.reciprocalChance = toGoalTicks(reciprocalChance);
-        this.setControls(EnumSet.of(Goal.Control.TARGET));
-        this.targetPredicate = TargetPredicate.createAttackable().setBaseMaxDistance(this.getFollowRange()).setPredicate(targetPredicate);
+        this.reciprocalChance = reducedTickDelay(reciprocalChance);
+        this.setFlags(EnumSet.of(Goal.Flag.TARGET));
+        this.targetPredicate = TargetingConditions.forCombat().range(this.getFollowDistance()).selector(targetPredicate);
     }
 
     @Override
-    public boolean canStart() {
+    public boolean canUse() {
         if(!a.isAggressive() || a.isRetreating) return false;
         if (this.reciprocalChance > 0 && this.mob.getRandom().nextInt(this.reciprocalChance) != 0) {
             return false;
         } else {
             this.findClosestTarget();
             if(this.targetEntity != null){
-                Vec3d difference = this.targetEntity.getEntityPos().add(mob.getEntityPos().multiply(-1));
-                float angle = mob.getHeadYaw() - difference.getYawAndPitch().y;
+                Vec3 difference = this.targetEntity.position().add(mob.position().scale(-1));
+                float angle = mob.getYHeadRot() - difference.rotation().y;
                 while(angle < 0) angle += 360;
                 angle %= 360;
                 if(difference.length() > a.sightRange()) return false;
@@ -89,15 +89,15 @@ public class AnimTargetGoal<T extends LivingEntity> extends TrackTargetGoal {
         super.stop();
     }
 
-    protected Box getSearchBox(double distance) {
-        return this.mob.getBoundingBox().expand(distance, distance, distance);
+    protected AABB getSearchBox(double distance) {
+        return this.mob.getBoundingBox().inflate(distance, distance, distance);
     }
 
     protected void findClosestTarget() {
-        ServerWorld serverWorld = getServerWorld(this.mob);
-        if (this.targetClass != PlayerEntity.class && this.targetClass != ServerPlayerEntity.class) {
-            this.targetEntity = serverWorld.getClosestEntity(
-                    this.mob.getEntityWorld().getEntitiesByClass(this.targetClass, this.getSearchBox(this.getFollowRange()), livingEntity -> true),
+        ServerLevel serverWorld = getServerLevel(this.mob);
+        if (this.targetClass != Player.class && this.targetClass != ServerPlayer.class) {
+            this.targetEntity = serverWorld.getNearestEntity(
+                    this.mob.level().getEntitiesOfClass(this.targetClass, this.getSearchBox(this.getFollowDistance()), livingEntity -> true),
                     this.getAndUpdateTargetPredicate(),
                     this.mob,
                     this.mob.getX(),
@@ -105,7 +105,7 @@ public class AnimTargetGoal<T extends LivingEntity> extends TrackTargetGoal {
                     this.mob.getZ()
             );
         } else {
-            this.targetEntity = serverWorld.getClosestPlayer(this.getAndUpdateTargetPredicate(), this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
+            this.targetEntity = serverWorld.getNearestPlayer(this.getAndUpdateTargetPredicate(), this.mob, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ());
         }
     }
 
@@ -119,44 +119,44 @@ public class AnimTargetGoal<T extends LivingEntity> extends TrackTargetGoal {
         this.targetEntity = targetEntity;
     }
 
-    private TargetPredicate getAndUpdateTargetPredicate() {
-        return this.targetPredicate.setBaseMaxDistance(this.getFollowRange());
+    private TargetingConditions getAndUpdateTargetPredicate() {
+        return this.targetPredicate.range(this.getFollowDistance());
     }
 
     @Override
-    public boolean shouldContinue() {
+    public boolean canContinueToUse() {
         if(!a.isAggressive() || a.isRetreating) return false;
         LivingEntity livingEntity = this.mob.getTarget();
         if (livingEntity == null) {
-            livingEntity = this.target;
+            livingEntity = this.targetMob;
         }
 
         if (livingEntity == null) {
             return false;
-        } else if (!this.mob.canTarget(livingEntity)) {
+        } else if (!this.mob.canAttack(livingEntity)) {
             return false;
         } else {
-            AbstractTeam abstractTeam = this.mob.getScoreboardTeam();
-            AbstractTeam abstractTeam2 = livingEntity.getScoreboardTeam();
+            Team abstractTeam = this.mob.getTeam();
+            Team abstractTeam2 = livingEntity.getTeam();
             if (abstractTeam != null && abstractTeam2 == abstractTeam) {
                 return false;
             } else {
-                double d = this.getFollowRange();
-                if (this.mob.squaredDistanceTo(livingEntity) > d * d) {
+                double d = this.getFollowDistance();
+                if (this.mob.distanceToSqr(livingEntity) > d * d) {
                     return false;
                 } else {
-                    if (this.checkVisibility) {
-                        if (this.mob.getVisibilityCache().canSee(livingEntity)) {
-                            this.a.lastSeenPosition = livingEntity.getBlockPos();
+                    if (this.mustSee) {
+                        if (this.mob.getSensing().hasLineOfSight(livingEntity)) {
+                            this.a.lastSeenPosition = livingEntity.blockPosition();
                             this.timeWithoutVisibility = 0;
                         }
-                        else if(a.lastSeenPosition != null && this.mob.getBlockPos().isWithinDistance(this.a.lastSeenPosition, 0.5f)) {
-                            maxTimeWithoutVisibility = 20;
+                        else if(a.lastSeenPosition != null && this.mob.blockPosition().closerThan(this.a.lastSeenPosition, 0.5f)) {
+                            unseenMemoryTicks = 20;
                             a.lastSeenPosition = null;
                         }
                         else if(a.lastSeenPosition == null){
-                            if (++this.timeWithoutVisibility > toGoalTicks(this.maxTimeWithoutVisibility)){
-                                maxTimeWithoutVisibility = 5;
+                            if (++this.timeWithoutVisibility > reducedTickDelay(this.unseenMemoryTicks)){
+                                unseenMemoryTicks = 5;
                                 return false;
                             }
                         }

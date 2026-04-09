@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.blocks.props.wall_props.clocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
@@ -37,8 +37,8 @@ public class GeoClockPropBlockEntity extends GeoPropBlockEntity implements GeoBl
     }
 
     @Override
-    public void tick(World world, BlockPos blockPos, BlockState state, PropBlockEntity entity) {
-        long dayTime = (world.getTimeOfDay());
+    public void tick(Level world, BlockPos blockPos, BlockState state, PropBlockEntity entity) {
+        long dayTime = (world.getDayTime());
         double currentDay = dayTime / 24000d;
 
         float minute = ((dayTime / 1000f) * 60f);

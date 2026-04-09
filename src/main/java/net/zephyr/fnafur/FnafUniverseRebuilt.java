@@ -6,9 +6,9 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.entity.EntityType;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.server.level.ServerPlayer;
 import net.zephyr.fnafur.rendering.decals.DecalWorldState;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.init.NetworkingInit;
@@ -31,7 +31,7 @@ import java.util.Map;
 
 public class FnafUniverseRebuilt implements ModInitializer {
 
-	public static final Map<EntityType<? extends AnimatronicEntity>, EntityRendererFactory<?>> RENDER_FACTORIES = new Object2ObjectOpenHashMap<>();
+	public static final Map<EntityType<? extends AnimatronicEntity>, EntityRendererProvider<?>> RENDER_FACTORIES = new Object2ObjectOpenHashMap<>();
 
 	// TODO ADD MENU CONFIG
 	public static final boolean DISABLE_MAIN_MENU = false;
@@ -76,9 +76,9 @@ public class FnafUniverseRebuilt implements ModInitializer {
     private static void registerEvents() {
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            ServerPlayerEntity player = handler.player;
+            ServerPlayer player = handler.player;
 
-            DecalWorldState state = DecalWorldState.get(player.getEntityWorld());
+            DecalWorldState state = DecalWorldState.get(player.level());
             ServerPlayNetworking.send(player, new FetchAllDecalsS2CPayload(state.getDecals()));
         });
 

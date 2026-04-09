@@ -1,16 +1,17 @@
 package net.zephyr.fnafur.blocks.props.floor_props.party_hats;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 
 public class PartyHats extends FloorPropBlock<PartyHatsColors> {
-    public PartyHats(Settings settings) {
+    public PartyHats(Properties settings) {
         super(settings);
     }
 
@@ -20,15 +21,15 @@ public class PartyHats extends FloorPropBlock<PartyHatsColors> {
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0.25, 0, 0.25, 0.75, 0.6, 0.75)));
-        return drawingOutline ? shape : VoxelShapes.fullCube();
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.or(shape, Shapes.create(new AABB(0.25, 0, 0.25, 0.75, 0.6, 0.75)));
+        return drawingOutline ? shape : Shapes.block();
     }
 
     @Override
-    protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
-        return VoxelShapes.fullCube();
+    protected VoxelShape getInteractionShape(BlockState state, BlockGetter world, BlockPos pos) {
+        return Shapes.block();
     }
 
 

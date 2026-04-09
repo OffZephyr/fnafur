@@ -3,26 +3,25 @@ package net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal;
 import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperUnbakedGroupedBlockStateModel;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.model.Baker;
-import net.minecraft.client.render.model.BlockModelPart;
-import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.client.util.math.Vector2f;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.World;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
@@ -30,81 +29,82 @@ import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateModel implements BlockStateModel {
-    public static Sprite FRAME;
-    public DiagonalMimicFrameModel(BlockStateModel.UnbakedGrouped wrapped){
+    public static TextureAtlasSprite FRAME;
+    public DiagonalMimicFrameModel(BlockStateModel.UnbakedRoot wrapped){
         super(wrapped);
     }
     @Override
-    public void addParts(Random random, List<BlockModelPart> parts) {
+    public void collectParts(RandomSource random, List<BlockModelPart> parts) {
 
     }
 
     @Override
-    public Sprite particleSprite() {
-        return MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+    public TextureAtlasSprite particleIcon() {
+        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 
     @Override
-    public BlockStateModel bake(BlockState state, Baker baker) {
+    public BlockStateModel bake(BlockState state, ModelBaker baker) {
         return this;
     }
 
     @Override
-    public void emitQuads(QuadEmitter emitter, BlockRenderView blockView, BlockPos pos, BlockState state, Random random, Predicate<@Nullable Direction> cullTest) {
+    public void emitQuads(QuadEmitter emitter, BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random, Predicate<@Nullable Direction> cullTest) {
 
 
-        Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+        TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
 
         if(blockView.getBlockEntity(pos) instanceof StickerBlockEntity ent) {
-            NbtCompound nbt = ((IEntityDataSaver) ent).getPersistentData();
+            CompoundTag nbt = ((IEntityDataSaver) ent).getPersistentData();
             if (nbt.contains("BlockData")) {
-                ItemStack blockStack = nbt.get("BlockData", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+                ItemStack blockStack = nbt.read("BlockData", ItemStack.CODEC).orElse(ItemStack.EMPTY);
                 if (blockStack.getItem() instanceof BlockItem blockItem) {
                     Block block = blockItem.getBlock();
 
-                    BlockState textureState = block.getDefaultState();
-                    BlockStateModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(textureState);
-                    sprite = model.getParts(Random.create()).get(0).getQuads(Direction.UP).get(0).sprite();
+                    BlockState textureState = block.defaultBlockState();
+                    BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(textureState);
+                    sprite = model.collectParts(RandomSource.create()).get(0).getQuads(Direction.UP).get(0).sprite();
                 }
             }
 
             emitStickers(state, pos, emitter, nbt);
         }
 
-        boolean freeUp = !blockView.getBlockState(pos.up()).isFullCube(blockView, pos);
-        boolean freeDown = !blockView.getBlockState(pos.down()).isFullCube(blockView, pos);
+        boolean freeUp = !blockView.getBlockState(pos.above()).isCollisionShapeFullBlock(blockView, pos);
+        boolean freeDown = !blockView.getBlockState(pos.below()).isCollisionShapeFullBlock(blockView, pos);
 
         for (Direction direction : Direction.values()) {
             if (direction.getAxis() == Direction.Axis.Y) continue;
 
-            Direction nextDirection = direction.rotateYClockwise();
-            Direction prevDirection = direction.rotateYCounterclockwise();
+            Direction nextDirection = direction.getClockWise();
+            Direction prevDirection = direction.getCounterClockWise();
             Direction oppositeDirection = direction.getOpposite();
 
-            boolean bl = state.get(DiagonalMimicFrame.DIRECTION_MAP.get(prevDirection)) && state.get(DiagonalMimicFrame.DIRECTION_MAP.get(oppositeDirection)) && !state.get(DiagonalMimicFrame.DIRECTION_MAP.get(nextDirection));
-            boolean bl2 = state.get(DiagonalMimicFrame.DIRECTION_MAP.get(nextDirection)) && state.get(DiagonalMimicFrame.DIRECTION_MAP.get(oppositeDirection)) && !state.get(DiagonalMimicFrame.DIRECTION_MAP.get(prevDirection));
-            boolean bl3 = state.get(DiagonalMimicFrame.DIRECTION_MAP.get(nextDirection)) && state.get(DiagonalMimicFrame.DIRECTION_MAP.get(oppositeDirection)) && state.get(DiagonalMimicFrame.DIRECTION_MAP.get(prevDirection)) && state.get(DiagonalMimicFrame.DIRECTION_MAP.get(direction));
+            boolean bl = state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(prevDirection)) && state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(oppositeDirection)) && !state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(nextDirection));
+            boolean bl2 = state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(nextDirection)) && state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(oppositeDirection)) && !state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(prevDirection));
+            boolean bl3 = state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(nextDirection)) && state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(oppositeDirection)) && state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(prevDirection)) && state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(direction));
 
-            if (!state.get(DiagonalMimicFrame.DIRECTION_MAP.get(direction)) && bl) {
+            if (!state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(direction)) && bl) {
                 Vector2f[] vertices = new Vector2f[4];
                 Vector2f[] uvs = new Vector2f[4];
                 for (int i = 0; i < 4; i++) {
 
                     float x, y, z;
 
-                    x = i < 2 ? prevDirection.getVector().getX() * 0.5f : nextDirection.getVector().getX() * 0.5f;
+                    x = i < 2 ? prevDirection.getUnitVec3i().getX() * 0.5f : nextDirection.getUnitVec3i().getX() * 0.5f;
                     y = i == 1 || i == 2 ? 1 : 0;
-                    z = i < 2 ? direction.getVector().getZ() * 0.5f : oppositeDirection.getVector().getZ() * 0.5f;
+                    z = i < 2 ? direction.getUnitVec3i().getZ() * 0.5f : oppositeDirection.getUnitVec3i().getZ() * 0.5f;
 
                     if (direction.getAxis() == Direction.Axis.X) {
-                        x = i < 2 ? direction.getVector().getX() * 0.5f : oppositeDirection.getVector().getX() * 0.5f;
+                        x = i < 2 ? direction.getUnitVec3i().getX() * 0.5f : oppositeDirection.getUnitVec3i().getX() * 0.5f;
                         y = i == 1 || i == 2 ? 1 : 0;
-                        z = i < 2 ? prevDirection.getVector().getZ() * 0.5f : nextDirection.getVector().getZ() * 0.5f;
+                        z = i < 2 ? prevDirection.getUnitVec3i().getZ() * 0.5f : nextDirection.getUnitVec3i().getZ() * 0.5f;
                     }
 
                     x += 0.5f;
@@ -156,7 +156,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
 
                 continue;
             }
-            else if(!state.get(DiagonalMimicFrame.DIRECTION_MAP.get(direction)) && !bl2) {
+            else if(!state.getValue(DiagonalMimicFrame.DIRECTION_MAP.get(direction)) && !bl2) {
                 for (int i = 0; i < 4; i++) {
                     emitter.square(direction, 0, 0, 1, 1, 0);
 
@@ -215,17 +215,17 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
         BlockStateModel.super.emitQuads(emitter, blockView, pos, state, random, cullTest);
     }
 
-    public void emitStickers(BlockState baseState, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
+    public void emitStickers(BlockState baseState, BlockPos pos, QuadEmitter emitter, CompoundTag nbt){
 
         if(!nbt.isEmpty()) {
-            MinecraftClient client = MinecraftClient.getInstance();
+            Minecraft client = Minecraft.getInstance();
             for (Direction direction : Direction.values()) {
-                BlockState sideState = client.world.getBlockState(pos.offset(direction));
-                if (pos != BlockPos.ORIGIN && !(sideState.getBlock() instanceof MimicFrames) && sideState.isOpaque() && client.world.getBlockState(pos.offset(direction)).isSideSolidFullSquare(client.world, pos.offset(direction), direction.getOpposite())) continue;
-                if (pos != BlockPos.ORIGIN && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.world, pos.offset(direction), frame.getMatrixSize())) continue;
+                BlockState sideState = client.level.getBlockState(pos.relative(direction));
+                if (pos != BlockPos.ZERO && !(sideState.getBlock() instanceof MimicFrames) && sideState.isSolidRender() && client.level.getBlockState(pos.relative(direction)).isFaceSturdy(client.level, pos.relative(direction), direction.getOpposite())) continue;
+                if (pos != BlockPos.ZERO && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.level, pos.relative(direction), frame.getMatrixSize())) continue;
 
-                NbtList list = nbt.getList(direction.name()).orElse(new NbtList());
-                NbtList offset_list = nbt.getList(direction.name() + "_offset").orElse(new NbtList());
+                ListTag list = nbt.getList(direction.name()).orElse(new ListTag());
+                ListTag offset_list = nbt.getList(direction.name() + "_offset").orElse(new ListTag());
 
                 for (int i = 0; i < list.size(); i++) {
                     String name = list.getString(i).orElse("");
@@ -239,15 +239,15 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                     int num = dirPos % decal.getTextures().length;
                     Identifier identifier = decal.getTextures()[num];
 
-                    Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier));
+                    TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, identifier));
 
                     float Offset = offset_list.getFloat(i).orElse(0f);
                     float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;
                     float yOffset = decal.getDirection() == DecalInit.Movable.VERTICAL ? Offset : 0;
 
-                    World world = MinecraftClient.getInstance().world;
-                    boolean snapBelow = world.getBlockState(pos.down()).isSideSolidFullSquare(world, pos.down(), direction) || (world.getBlockState(pos).getBlock() instanceof DiagonalMimicFrame && world.getBlockState(pos.down()).getBlock() instanceof DiagonalMimicFrame);
-                    boolean snapAbove = world.getBlockState(pos.up()).isSideSolidFullSquare(world, pos.up(), direction) || (world.getBlockState(pos).getBlock() instanceof DiagonalMimicFrame && world.getBlockState(pos.up()).getBlock() instanceof DiagonalMimicFrame);
+                    Level world = Minecraft.getInstance().level;
+                    boolean snapBelow = world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), direction) || (world.getBlockState(pos).getBlock() instanceof DiagonalMimicFrame && world.getBlockState(pos.below()).getBlock() instanceof DiagonalMimicFrame);
+                    boolean snapAbove = world.getBlockState(pos.above()).isFaceSturdy(world, pos.above(), direction) || (world.getBlockState(pos).getBlock() instanceof DiagonalMimicFrame && world.getBlockState(pos.above()).getBlock() instanceof DiagonalMimicFrame);
 
                     float textureSize = decal.getPixelDensity() - decal.getSize();
                     float scaledSpace = (float) decal.getSize() / decal.getPixelDensity();
@@ -265,26 +265,26 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                             Direction usedD = direction;
                             if(DiagonalMimicFrame.NEXT_MAP.get(direction) == f.getDiagonalDirection(baseState)){
 
-                                Direction nextDirection = usedD.rotateYClockwise();
-                                Direction prevDirection = usedD.rotateYCounterclockwise();
+                                Direction nextDirection = usedD.getClockWise();
+                                Direction prevDirection = usedD.getCounterClockWise();
                                 Direction oppositeDirection = usedD.getOpposite();
                                 for (int j = 0; j < 4; j++) {
 
                                     float x, y, z;
 
-                                    x = j < 2 ? prevDirection.getVector().getX() * 0.5f : nextDirection.getVector().getX() * 0.5f;
+                                    x = j < 2 ? prevDirection.getUnitVec3i().getX() * 0.5f : nextDirection.getUnitVec3i().getX() * 0.5f;
                                     y = j == 1 || j == 2 ? top : bottom;
-                                    z = j < 2 ? direction.getVector().getZ() * 0.5f : oppositeDirection.getVector().getZ() * 0.5f;
+                                    z = j < 2 ? direction.getUnitVec3i().getZ() * 0.5f : oppositeDirection.getUnitVec3i().getZ() * 0.5f;
 
                                     if (direction.getAxis() == Direction.Axis.X) {
-                                        x = j < 2 ? direction.getVector().getX() * 0.5f : oppositeDirection.getVector().getX() * 0.5f;
-                                        z = j < 2 ? prevDirection.getVector().getZ() * 0.5f : nextDirection.getVector().getZ() * 0.5f;
+                                        x = j < 2 ? direction.getUnitVec3i().getX() * 0.5f : oppositeDirection.getUnitVec3i().getX() * 0.5f;
+                                        z = j < 2 ? prevDirection.getUnitVec3i().getZ() * 0.5f : nextDirection.getUnitVec3i().getZ() * 0.5f;
                                     }
 
                                     x += 0.5f;
                                     z += 0.5f;
-                                    x -= (i + 1) * (((StickerBlockModel.STICKER_OFFSET/2) * usedD.getVector().getX()) + ((StickerBlockModel.STICKER_OFFSET/2) * nextDirection.getVector().getX()));
-                                    z -= (i + 1) * (((StickerBlockModel.STICKER_OFFSET/2) * usedD.getVector().getZ()) + ((StickerBlockModel.STICKER_OFFSET/2) * nextDirection.getVector().getZ()));
+                                    x -= (i + 1) * (((StickerBlockModel.STICKER_OFFSET/2) * usedD.getUnitVec3i().getX()) + ((StickerBlockModel.STICKER_OFFSET/2) * nextDirection.getUnitVec3i().getX()));
+                                    z -= (i + 1) * (((StickerBlockModel.STICKER_OFFSET/2) * usedD.getUnitVec3i().getZ()) + ((StickerBlockModel.STICKER_OFFSET/2) * nextDirection.getUnitVec3i().getZ()));
                                     emitter.pos(j, x, y, z);
 
                                     int u = j < 2 ? 1 : 0;
@@ -319,7 +319,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
         }
     }
     @Override
-    public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
-        return MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+    public TextureAtlasSprite particleSprite(BlockAndTintGetter blockView, BlockPos pos, BlockState state) {
+        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 }

@@ -1,13 +1,14 @@
 package net.zephyr.fnafur.client.gui.screens.editing;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.*;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
@@ -21,7 +22,7 @@ import java.util.Map;
 public class DecalBookEditScreen extends GoopyScreen {
 
     static final int PER_PAGE = 6;
-    static final Identifier TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/decal_book_gui.png");
+    static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/decal_book_gui.png");
     int page = 0;
     int pageAmount = 1;
 
@@ -31,8 +32,8 @@ public class DecalBookEditScreen extends GoopyScreen {
     Map<String, Integer> categoryMap = new HashMap<>();
     Map<String, Integer> categoryNextMap = new HashMap<>();
 
-    public DecalBookEditScreen(Text text, NbtCompound nbtCompound, Object o) {
-        super(text, nbtCompound, o);
+    public DecalBookEditScreen(Component text, CompoundTag CompoundTag, Object o) {
+        super(text, CompoundTag, o);
         for(int i = 0; i < DecalInit.CATEGORIES.size(); i++){
 
             String category = DecalInit.CATEGORIES_LIST.get(i);
@@ -59,7 +60,7 @@ public class DecalBookEditScreen extends GoopyScreen {
         return "";
     }
     @Override
-    public boolean shouldPause() {
+    public boolean isPauseScreen() {
         return false;
     }
 
@@ -71,9 +72,9 @@ public class DecalBookEditScreen extends GoopyScreen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         context.fill(RenderPipelines.GUI, 0, 0, width, height,0x66000000);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY, 0, 0, 256, 187, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY, 0, 0, 256, 187, 256, 256);
 
         String category = getCategory();
 
@@ -85,17 +86,17 @@ public class DecalBookEditScreen extends GoopyScreen {
             renderPage(context,  page + 1, category, mouseX, mouseY);
         }
         else{
-            drawResizableText(context, textRenderer, Text.translatable("decal_book.summary"), 1, cornerX + 13, cornerY + 12, 0xFF554422, 0x00000000, false, false);
+            drawResizableText(context, font, Component.translatable("decal_book.summary"), 1, cornerX + 13, cornerY + 12, 0xFF554422, 0x00000000, false, false);
 
             for(int i = 0; i < DecalInit.CATEGORIES.size(); i++){
                 category = DecalInit.CATEGORIES_LIST.get(i);
                 int y = cornerY + 26 + (i * 10);
 
-                Text text = Text.literal((categoryMap.get(category) + 1) + ": " + Text.translatable("decal.category." + category).getString());
+                Component text = Component.literal((categoryMap.get(category) + 1) + ": " + Component.translatable("decal.category." + category).getString());
 
-                Style style = text.getStyle().withUnderline(isOnButton(mouseX, mouseY, cornerX + 13, y, textRenderer.getWidth(text), textRenderer.fontHeight));
+                Style style = text.getStyle().withUnderlined(isOnButton(mouseX, mouseY, cornerX + 13, y, font.width(text), font.lineHeight));
 
-                drawResizableText(context, textRenderer, text.getWithStyle(style).getFirst(), 1, cornerX + 13, y, 0xFF554422, 0x00000000, false, false);
+                drawResizableText(context, font, text.toFlatList(style).getFirst(), 1, cornerX + 13, y, 0xFF554422, 0x00000000, false, false);
 
             }
         }
@@ -134,20 +135,20 @@ public class DecalBookEditScreen extends GoopyScreen {
             }
         }
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY + 190, u0, 198, 9, 9, 256, 256);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 12, cornerY + 189, u2, 198, 18, 10, 256, 256);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 256 - 30, cornerY + 189, u3, 188, 18, 10, 256, 256);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 256 - 9, cornerY + 190, u1, 188, 9, 9, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY + 190, u0, 198, 9, 9, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 12, cornerY + 189, u2, 198, 18, 10, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 256 - 30, cornerY + 189, u3, 188, 18, 10, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 256 - 9, cornerY + 190, u1, 188, 9, 9, 256, 256);
 
         super.render(context, mouseX, mouseY, delta);
     }
 
-    void renderPage(DrawContext context, int page, String category, int mouseX, int mouseY){
+    void renderPage(GuiGraphics context, int page, String category, int mouseX, int mouseY){
         int xOffset = page % 2 == 0 ? 0 : 129;
 
         List<DecalInit.Decal> list = DecalInit.CATEGORIES.get(category);
 
-        drawResizableText(context, textRenderer, Text.translatable("decal.category." + category).getWithStyle(Style.EMPTY.withBold(true)).getFirst(), 1, cornerX + 13, cornerY + 12, 0xFF554422, 0x00000000, false, false);
+        drawResizableText(context, font, Component.translatable("decal.category." + category).toFlatList(Style.EMPTY.withBold(true)).getFirst(), 1, cornerX + 13, cornerY + 12, 0xFF554422, 0x00000000, false, false);
 
         for(int i = 0; i < PER_PAGE; i++) {
             if (list != null && list.size() > (i + (page * PER_PAGE)))
@@ -159,12 +160,12 @@ public class DecalBookEditScreen extends GoopyScreen {
 
                 String namespace = decal.getTextures()[0].getNamespace();
                 String path = "textures/" + decal.getTextures()[0].getPath() + ".png";
-                Identifier id = Identifier.of(namespace, path);
+                Identifier id = Identifier.fromNamespaceAndPath(namespace, path);
 
                 int color = isOnButton(mouseX, mouseY, x - 1, y  - 1, 50, 50) ? 0x55AA8877 : 0x55886655;
 
                 context.fill(RenderPipelines.GUI, x - 1, y  - 1, x + 49, y + 49, color);
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, id, x, y, 0, 0, 48, 48, 48, 48);
+                context.blit(RenderPipelines.GUI_TEXTURED, id, x, y, 0, 0, 48, 48, 48, 48);
 
             }
         }
@@ -179,7 +180,7 @@ public class DecalBookEditScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
 
         double mouseX = click.x();
         double mouseY = click.y();
@@ -210,9 +211,9 @@ public class DecalBookEditScreen extends GoopyScreen {
                 String category = DecalInit.CATEGORIES_LIST.get(i);
                 int y = cornerY + 26 + (i * 10);
 
-                Text text = Text.literal(categoryMap.get(category) + ": " + Text.translatable("decal.category." + category).getString());
+                Component text = Component.literal(categoryMap.get(category) + ": " + Component.translatable("decal.category." + category).getString());
 
-                if(isOnButton(mouseX, mouseY, cornerX + 13, y, textRenderer.getWidth(text), textRenderer.fontHeight)){
+                if(isOnButton(mouseX, mouseY, cornerX + 13, y, font.width(text), font.lineHeight)){
                     this.page = categoryMap.get(category);
                 }
 
@@ -235,12 +236,12 @@ public class DecalBookEditScreen extends GoopyScreen {
                         int y = cornerY + 24 + ((i / 2) * 52);
 
                         if (isOnButton(mouseX, mouseY, x - 1, y - 1, 50, 50)) {
-                            NbtCompound nbt = ItemUtil.getNbt(MinecraftClient.getInstance().player.getMainHandStack());
+                            CompoundTag nbt = ItemUtil.getNbt(Minecraft.getInstance().player.getMainHandItem());
                             nbt.putString("activeDecal", decal.name());
 
                             GoopyNetworkingUtils.saveItemNbt(EquipmentSlot.MAINHAND.getName(), nbt);
 
-                            close();
+                            onClose();
                         }
                     }
                 }
@@ -251,8 +252,8 @@ public class DecalBookEditScreen extends GoopyScreen {
     }
 
     @Override
-    public void close() {
+    public void onClose() {
 
-        super.close();
+        super.onClose();
     }
 }

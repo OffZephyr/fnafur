@@ -1,34 +1,35 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.pathing.NavigationType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.state.property.Property;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.item_init.ItemInit;
@@ -36,53 +37,53 @@ import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
-public class BlockWithSticker extends BlockWithEntity {
-    public BlockWithSticker(Settings settings) {
+public class BlockWithSticker extends BaseEntityBlock {
+    public BlockWithSticker(Properties settings) {
         super(settings);
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
         return null;
     }
 
     @Nullable
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return super.getPlacementState(ctx);
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        return super.getStateForPlacement(ctx);
     }
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new StickerBlockEntity(pos, state);
     }
 
     @Override
-    public boolean canPathfindThrough(BlockState state, NavigationType type) {
+    public boolean isPathfindable(BlockState state, PathComputationType type) {
         return false;
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
     @Override
-    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
-        ItemStack itemStack = super.getPickStack(world, pos, state, includeData);
+    protected ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state, boolean includeData) {
+        ItemStack itemStack = super.getCloneItemStack(world, pos, state, includeData);
 
-        BlockStateComponent component = BlockStateComponent.DEFAULT;
+        BlockItemStateProperties component = BlockItemStateProperties.EMPTY;
         for(Property property : state.getProperties()){
-            component = component.with(property, state.get(property));
+            component = component.with(property, state.getValue(property));
         }
 
         //itemStack.set(DataComponentTypes.BLOCK_STATE, component);
-        NbtCompound nbt = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData();
+        CompoundTag nbt = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData();
 
-        ItemStack stack = nbt.get("BlockState", ItemStack.CODEC).orElse(ItemStack.EMPTY);
-        BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem)stack.getItem()).getBlock().getDefaultState()) : state;
+        ItemStack stack = nbt.read("BlockState", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+        BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY).apply(((BlockItem)stack.getItem()).getBlock().defaultBlockState()) : state;
 
         if(!(state.getBlock() instanceof MimicFrames)){
-            itemStack.set(DataComponentTypes.ITEM_NAME, Text.literal(newState.getBlock().getName().getString() + Text.translatable("block.fnafur.has_sticker").getString()));
+            itemStack.set(DataComponents.ITEM_NAME, Component.literal(newState.getBlock().getName().getString() + Component.translatable("block.fnafur.has_sticker").getString()));
         }
 
         ItemUtil.setNbt(itemStack, nbt);
@@ -92,31 +93,31 @@ public class BlockWithSticker extends BlockWithEntity {
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        NbtCompound data = ItemUtil.getNbt(itemStack);
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        CompoundTag data = ItemUtil.getNbt(itemStack);
 
-        world.setBlockState(pos, state);
-        if (world.isClient()) {
+        world.setBlockAndUpdate(pos, state);
+        if (world.isClientSide()) {
             if (world.getBlockEntity(pos) instanceof BlockEntity entity) {
-                ((IEntityDataSaver) entity).getPersistentData().copyFrom(data);
+                ((IEntityDataSaver) entity).getPersistentData().merge(data);
                 ((IEntityDataSaver)entity).setServerUpdateStatus(true);
             }
-            world.updateListeners(pos, getDefaultState(), getDefaultState(), 3);
+            world.sendBlockUpdated(pos, defaultBlockState(), defaultBlockState(), 3);
         }
     }
 
     @Override
-    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if(stack.isOf(ItemInit.SCRAPER)){
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if(stack.is(ItemInit.SCRAPER)){
             System.out.println("SCRAPE");
 
             if(world.getBlockEntity(pos) instanceof StickerBlockEntity ent){
                 System.out.println("SCRAPE2");
-                NbtCompound nbt = ((IEntityDataSaver)ent).getPersistentData();
-                String side = hit.getSide().name();
+                CompoundTag nbt = ((IEntityDataSaver)ent).getPersistentData();
+                String side = hit.getDirection().name();
 
-                NbtList list = nbt.getList(side).orElse(new NbtList());
-                NbtList offset_list = nbt.getList(side + "_offset").orElse(new NbtList());
+                ListTag list = nbt.getList(side).orElse(new ListTag());
+                ListTag offset_list = nbt.getList(side + "_offset").orElse(new ListTag());
 
                 if(!list.isEmpty()) {
                     System.out.println("SCRAPE3");
@@ -130,48 +131,48 @@ public class BlockWithSticker extends BlockWithEntity {
                     if (offset_list.isEmpty()) nbt.remove(side + "_offset");
                     else nbt.put(side + "_offset", offset_list);
 
-                    world.playSound(player, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 0.125f, 1.25f);
-                    world.playSound(player, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), SoundEvents.ITEM_GLOW_INK_SAC_USE, SoundCategory.BLOCKS, 0.5f, 1.1f);
+                    world.playSound(player, pos.getCenter().x(), pos.getCenter().y(), pos.getCenter().z(), SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 0.125f, 1.25f);
+                    world.playSound(player, pos.getCenter().x(), pos.getCenter().y(), pos.getCenter().z(), SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS, 0.5f, 1.1f);
 
-                    if(world.isClient()) {
+                    if(world.isClientSide()) {
                         if (hasNoStickers(nbt) && !(asBlock() instanceof MimicFrames)) {
                             System.out.println("SCRAPE5");
-                            ItemStack blockStack = nbt.get("BlockState", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+                            ItemStack blockStack = nbt.read("BlockState", ItemStack.CODEC).orElse(ItemStack.EMPTY);
 
-                            state = !blockStack.isEmpty() ? blockStack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem) blockStack.getItem()).getBlock().getDefaultState()) : state;
+                            state = !blockStack.isEmpty() ? blockStack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY).apply(((BlockItem) blockStack.getItem()).getBlock().defaultBlockState()) : state;
                         } else {
                             ((IEntityDataSaver) ent).setServerUpdateStatus(true);
                             ((IEntityDataSaver) ent).getPersistentData().putBoolean("synced", false);
                         }
-                        world.setBlockState(pos, state, Block.NOTIFY_ALL_AND_REDRAW);
-                        world.updateListeners(pos, state, state, Block.NOTIFY_ALL_AND_REDRAW);
+                        world.setBlock(pos, state, Block.UPDATE_ALL_IMMEDIATE);
+                        world.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL_IMMEDIATE);
                     }
-                    return ActionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+        return super.useItemOn(stack, state, world, pos, player, hand, hit);
     }
 
-    boolean hasNoStickers(NbtCompound nbt){
+    boolean hasNoStickers(CompoundTag nbt){
         boolean empty = true;
 
         for(Direction d : Direction.values()){
-            if(nbt.contains(d.getId().toUpperCase())) empty = false;
+            if(nbt.contains(d.getName().toUpperCase())) empty = false;
         }
 
         return empty;
     }
 
     @Override
-    protected boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
-        return super.onSyncedBlockEvent(state, world, pos, type, data);
+    protected boolean triggerEvent(BlockState state, Level world, BlockPos pos, int type, int data) {
+        return super.triggerEvent(state, world, pos, type, data);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, BlockEntityInit.STICKER_BLOCK,
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, BlockEntityInit.STICKER_BLOCK,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
 
     }

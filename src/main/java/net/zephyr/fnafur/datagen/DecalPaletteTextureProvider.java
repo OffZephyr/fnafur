@@ -3,10 +3,10 @@ package net.zephyr.fnafur.datagen;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.data.DataOutput;
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.DataWriter;
+import net.minecraft.data.CachedOutput;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.init.block_init.Palettes.PaletteManager;
 
@@ -21,16 +21,16 @@ import java.util.concurrent.CompletableFuture;
 
 public class DecalPaletteTextureProvider implements DataProvider {
 
-    private final DataOutput.PathResolver texturePathResolver;
+    private final PackOutput.PathProvider texturePathResolver;
     private final FabricDataOutput output;
 
     public DecalPaletteTextureProvider(FabricDataOutput output) {
-        this.texturePathResolver = output.getResolver(DataOutput.OutputType.RESOURCE_PACK, "textures/block/decals/");
+        this.texturePathResolver = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "textures/block/decals/");
         this.output = output;
     }
 
     @Override
-    public CompletableFuture<?> run(DataWriter writer) {
+    public CompletableFuture<?> run(CachedOutput writer) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
         return CompletableFuture.runAsync(() -> {
@@ -76,21 +76,21 @@ public class DecalPaletteTextureProvider implements DataProvider {
 
     private static HashCode writeNativeImageAndHash(NativeImage image, Path outPath) throws IOException {
         Files.createDirectories(outPath.getParent());
-        image.writeTo(outPath);
+        image.writeToFile(outPath);
 
         return Hashing.sha256().hashBytes(Files.readAllBytes(outPath));
     }
 
-    public void generate(DataWriter writer, List<CompletableFuture<?>> futures) throws IOException {
+    public void generate(CachedOutput writer, List<CompletableFuture<?>> futures) throws IOException {
         for (DecalInit.PaletteDecal palette : DecalInit.PALETTES) {
             NativeImage recolored = generateRecoloredImage(palette);
 
-            Path outPath = output.resolvePath(DataOutput.OutputType.RESOURCE_PACK)
+            Path outPath = output.getOutputFolder(PackOutput.Target.RESOURCE_PACK)
                     .resolve("fnafur/textures/block/decals/" + palette.name() + "_" + palette.paletteEnum().getName() + ".png");
 
             HashCode pngHash = writeNativeImageAndHash(recolored, outPath);
 
-            writer.write(outPath, Files.readAllBytes(outPath), pngHash);
+            writer.writeIfNeeded(outPath, Files.readAllBytes(outPath), pngHash);
 
             recolored.close();
         }

@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.common_block_entity;
 
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.Direction;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
@@ -10,7 +10,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 import java.util.Map;
 
 public class CommonGeoBlockEntityRenderState extends BlockEntityRenderState implements GeoRenderState {
-    public NbtCompound nbt;
+    public CompoundTag nbt;
     public Direction facing;
 
     @Override

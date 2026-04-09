@@ -4,42 +4,45 @@ import com.mojang.authlib.minecraft.BanDetails;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.LogoDrawer;
-import net.minecraft.client.gui.screen.*;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerWarningScreen;
-import net.minecraft.client.gui.screen.option.AccessibilityOptionsScreen;
-import net.minecraft.client.gui.screen.option.CreditsAndAttributionScreen;
-import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
-import net.minecraft.client.gui.screen.option.OptionsScreen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.PressableTextWidget;
-import net.minecraft.client.gui.widget.TextIconButtonWidget;
-import net.minecraft.client.realms.gui.screen.RealmsMainScreen;
-import net.minecraft.client.realms.gui.screen.RealmsNotificationsScreen;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.screen.ScreenTexts;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.CommonButtons;
+import net.minecraft.client.gui.components.SplashRenderer;
+import net.minecraft.client.gui.screens.ConfirmScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.LogoRenderer;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.client.gui.screens.multiplayer.SafetyScreen;
+import net.minecraft.client.gui.screens.options.AccessibilityOptionsScreen;
+import net.minecraft.client.gui.screens.CreditsAndAttributionScreen;
+import net.minecraft.client.gui.screens.options.LanguageSelectScreen;
+import net.minecraft.client.gui.screens.options.OptionsScreen;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.PlainTextButton;
+import net.minecraft.client.gui.components.SpriteIconButton;
+import com.mojang.realmsclient.RealmsMainScreen;
+import com.mojang.realmsclient.gui.screens.RealmsNotificationsScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.Style;
-import net.minecraft.text.StyleSpriteSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.gen.GeneratorOptions;
-import net.minecraft.world.gen.WorldPresets;
-import net.minecraft.world.level.storage.LevelStorage;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.FontDescription;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.levelgen.WorldOptions;
+import net.minecraft.world.level.levelgen.presets.WorldPresets;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.client.gui.screens.main_menu.Singleplayer.CreditsScreen;
@@ -57,17 +60,17 @@ import java.util.Objects;
 public class FnafTitleScreen extends Screen {
     SoundInstance music;
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final Text NARRATOR_SCREEN_TITLE = Text.translatable("narrator.screen.title");
-    private static final Text COPYRIGHT = Text.translatable("title.credits");
+    private static final Component NARRATOR_SCREEN_TITLE = Component.translatable("narrator.screen.title");
+    private static final Component COPYRIGHT = Component.translatable("title.credits");
     private static final String DEMO_WORLD_NAME = "Demo_World";
-    private static final Identifier PIXELS = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/pixels.png");
-    private static final Identifier STARS = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/stars.png");
-    private static final Identifier SCROLLING_TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/scrolling_texture.png");
-    private static final Identifier SCROLLING_TEXTURE_WHITE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/credits/scrolling_texture.png");
-    private static final Identifier BG = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/bg.png");
-    private static final Identifier OUTLINE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/outline.png");
-    private static final Identifier BUTTONS = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/buttons.png");
-    private static final Identifier DISCLAIMER = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/demo_disclaimer.png");
+    private static final Identifier PIXELS = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/pixels.png");
+    private static final Identifier STARS = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/stars.png");
+    private static final Identifier SCROLLING_TEXTURE = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/scrolling_texture.png");
+    private static final Identifier SCROLLING_TEXTURE_WHITE = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/credits/scrolling_texture.png");
+    private static final Identifier BG = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/bg.png");
+    private static final Identifier OUTLINE = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/outline.png");
+    private static final Identifier BUTTONS = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/buttons.png");
+    private static final Identifier DISCLAIMER = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/demo_disclaimer.png");
     float bgFadeTimer = 0;
     float bgFadeTimerGoal = 0;
     float bgFadeStart = 0;
@@ -95,7 +98,7 @@ public class FnafTitleScreen extends Screen {
 
 
     float scrollShapeRot = 0;
-    Vec2f scrollShapePos = new Vec2f(0, 0);
+    Vec2 scrollShapePos = new Vec2(0, 0);
 
     private record triggerSoundZone(SoundEvent sound, int x, int y, int width, int height){
 
@@ -107,38 +110,38 @@ public class FnafTitleScreen extends Screen {
     int offsetX = 0, offsetY = 0;
     private static final Identifier[][] RENDERS = new Identifier[][]{
         {
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/main.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/freddyglitch1.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/freddyglitch2.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/bonnieglitch1.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/bonnieglitch2.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/chicaglitch1.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/chicaglitch2.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/foxyglitch1.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/foxyglitch2.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/main.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/freddyglitch1.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/freddyglitch2.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/bonnieglitch1.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/bonnieglitch2.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/chicaglitch1.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/chicaglitch2.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/foxyglitch1.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/renders/fnafone/foxyglitch2.png"),
         }
     };
     private static final Identifier[] STATIC = new Identifier[]{
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/0.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/1.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/2.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/3.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/4.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/5.png")
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/0.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/1.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/2.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/3.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/4.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/mainmenu/static/5.png")
     };
     private Map<Identifier, triggerSoundZone> easterEggMap = Map.of(
             RENDERS[0][0], new triggerSoundZone(SoundsInit.HONK_MENU, 1550, 560, 187, 90)
     );
     private static final float field_49900 = 2000.0F;
     @Nullable
-    private SplashTextRenderer splashText;
-    private ButtonWidget buttonResetDemo;
+    private SplashRenderer splashText;
+    private Button buttonResetDemo;
     @Nullable
     private RealmsNotificationsScreen realmsNotificationGui;
     private float backgroundAlpha = 1.0F;
     private boolean doBackgroundFade;
     private long backgroundFadeStart;
-    private final LogoDrawer logoDrawer;
+    private final LogoRenderer logoDrawer;
     //private MediaPlayerInstance media_test;
 
     public FnafTitleScreen() {
@@ -149,10 +152,10 @@ public class FnafTitleScreen extends Screen {
         this(doBackgroundFade, null);
     }
 
-    public FnafTitleScreen(boolean doBackgroundFade, @Nullable LogoDrawer logoDrawer) {
+    public FnafTitleScreen(boolean doBackgroundFade, @Nullable LogoRenderer logoDrawer) {
         super(NARRATOR_SCREEN_TITLE);
         this.doBackgroundFade = doBackgroundFade;
-        this.logoDrawer = (LogoDrawer) Objects.requireNonNullElseGet(logoDrawer, () -> new LogoDrawer(false));
+        this.logoDrawer = (LogoRenderer) Objects.requireNonNullElseGet(logoDrawer, () -> new LogoRenderer(false));
 
 
 //        video_test1 = new VideoInstance(VideoInit.IGNITED_BONER, false);
@@ -167,17 +170,17 @@ public class FnafTitleScreen extends Screen {
 
     @Override
     public void tick() {
-        if(MinecraftClient.getInstance().getMusicInstance() != null){
-            MinecraftClient.getInstance().getMusicTracker().stop();
+        if(Minecraft.getInstance().getSituationalMusic() != null){
+            Minecraft.getInstance().getMusicManager().stopPlaying();
         }
-        MinecraftClient.getInstance().getMusicTracker().stop();
+        Minecraft.getInstance().getMusicManager().stopPlaying();
         if (this.isRealmsNotificationsGuiDisplayed()) {
             this.realmsNotificationGui.tick();
         }
     }
 
     @Override
-    public boolean shouldPause() {
+    public boolean isPauseScreen() {
         return false;
     }
 
@@ -189,44 +192,44 @@ public class FnafTitleScreen extends Screen {
     @Override
     protected void init() {
         if (this.splashText == null) {
-            this.splashText = this.client.getSplashTextLoader().get();
+            this.splashText = this.minecraft.getSplashManager().getSplash();
         }
 
-        int i = this.textRenderer.getWidth(COPYRIGHT);
+        int i = this.font.width(COPYRIGHT);
         int j = this.width - i - 2;
         int k = 24;
         int l = this.height / 4 + 48;
-        if (this.client.isDemo()) {
+        if (this.minecraft.isDemo()) {
             l = this.addDemoWidgets(l, 24);
         } else {
             l = this.addNormalWidgets(l, 24);
         }
 
         l = this.addDevelopmentWidgets(l, 24);
-        TextIconButtonWidget textIconButtonWidget = this.addDrawableChild(
-                AccessibilityOnboardingButtons.createLanguageButton(
-                        20, button -> this.client.setScreen(new LanguageOptionsScreen(this, this.client.options, this.client.getLanguageManager())), true
+        SpriteIconButton textIconButtonWidget = this.addRenderableWidget(
+                CommonButtons.language(
+                        20, button -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager())), true
                 )
         );
         int var10001 = this.width / 2 - 124;
         l += 36;
         textIconButtonWidget.setPosition(var10001, l);
-        this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.options"), button -> this.client.setScreen(new OptionsScreen(this, this.client.options)))
-                        .dimensions(this.width / 2 - 100, l, 98, 20)
+        this.addRenderableWidget(
+                Button.builder(Component.translatable("menu.options"), button -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options)))
+                        .bounds(this.width / 2 - 100, l, 98, 20)
                         .build()
         );
-        this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.quit"), button -> this.client.scheduleStop()).dimensions(this.width / 2 + 2, l, 98, 20).build()
+        this.addRenderableWidget(
+                Button.builder(Component.translatable("menu.quit"), button -> this.minecraft.stop()).bounds(this.width / 2 + 2, l, 98, 20).build()
         );
-        TextIconButtonWidget textIconButtonWidget2 = this.addDrawableChild(
-                AccessibilityOnboardingButtons.createAccessibilityButton(
-                        20, button -> this.client.setScreen(new AccessibilityOptionsScreen(this, this.client.options)), true
+        SpriteIconButton textIconButtonWidget2 = this.addRenderableWidget(
+                CommonButtons.accessibility(
+                        20, button -> this.minecraft.setScreen(new AccessibilityOptionsScreen(this, this.minecraft.options)), true
                 )
         );
         textIconButtonWidget2.setPosition(this.width / 2 + 104, l);
-        this.addDrawableChild(
-                new PressableTextWidget(j, this.height - 10, i, 10, COPYRIGHT, button -> this.client.setScreen(new CreditsAndAttributionScreen(this)), this.textRenderer)
+        this.addRenderableWidget(
+                new PlainTextButton(j, this.height - 10, i, 10, COPYRIGHT, button -> this.minecraft.setScreen(new CreditsAndAttributionScreen(this)), this.font)
         );
         if (this.realmsNotificationGui == null) {
             this.realmsNotificationGui = new RealmsNotificationsScreen();
@@ -235,10 +238,10 @@ public class FnafTitleScreen extends Screen {
         if (this.isRealmsNotificationsGuiDisplayed()) {
             this.realmsNotificationGui.init(this.width, this.height);
         }
-        renderIndex = Random.create().nextBetween(0, RENDERS.length - 1);
+        renderIndex = RandomSource.create().nextIntBetweenInclusive(0, RENDERS.length - 1);
         if(music == null) {
-            music = new PositionedSoundInstance(SoundsInit.MAIN_MENU.id(), SoundCategory.MASTER, 0.35f, 1, Random.create(), true, 0, SoundInstance.AttenuationType.NONE, 0, 0, 0, false);
-            MinecraftClient.getInstance().getSoundManager().play(music);
+            music = new SimpleSoundInstance(SoundsInit.MAIN_MENU.location(), SoundSource.MASTER, 0.35f, 1, RandomSource.create(), true, 0, SoundInstance.Attenuation.NONE, 0, 0, 0, false);
+            Minecraft.getInstance().getSoundManager().play(music);
         }
         fadeBackground(6, 0.35f);
     }
@@ -256,22 +259,22 @@ public class FnafTitleScreen extends Screen {
     }
 
     private int addNormalWidgets(int y, int spacingY) {
-        this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.singleplayer"), button -> this.client.setScreen(new FnafSelectWorldScreen(this)))
-                        .dimensions(this.width / 2 - 100, y, 200, 20)
+        this.addRenderableWidget(
+                Button.builder(Component.translatable("menu.singleplayer"), button -> this.minecraft.setScreen(new FnafSelectWorldScreen(this)))
+                        .bounds(this.width / 2 - 100, y, 200, 20)
                         .build()
         );
-        Text text = this.getMultiplayerDisabledText();
+        Component text = this.getMultiplayerDisabledText();
         boolean bl = text == null;
-        Tooltip tooltip = text != null ? Tooltip.of(text) : null;
+        Tooltip tooltip = text != null ? Tooltip.create(text) : null;
         int var6;
-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.multiplayer"), button -> {
-            Screen screen = (Screen)(this.client.options.skipMultiplayerWarning ? new MultiplayerScreen(this) : new MultiplayerWarningScreen(this));
-            this.client.setScreen(screen);
-        }).dimensions(this.width / 2 - 100, var6 = y + spacingY, 200, 20).tooltip(tooltip).build()).active = bl;
-        this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.online"), button -> this.client.setScreen(new RealmsMainScreen(this)))
-                        .dimensions(this.width / 2 - 100, y = var6 + spacingY, 200, 20)
+        this.addRenderableWidget(Button.builder(Component.translatable("menu.multiplayer"), button -> {
+            Screen screen = (Screen)(this.minecraft.options.skipMultiplayerWarning ? new JoinMultiplayerScreen(this) : new SafetyScreen(this));
+            this.minecraft.setScreen(screen);
+        }).bounds(this.width / 2 - 100, var6 = y + spacingY, 200, 20).tooltip(tooltip).build()).active = bl;
+        this.addRenderableWidget(
+                Button.builder(Component.translatable("menu.online"), button -> this.minecraft.setScreen(new RealmsMainScreen(this)))
+                        .bounds(this.width / 2 - 100, y = var6 + spacingY, 200, 20)
                         .tooltip(tooltip)
                         .build()
         )
@@ -280,68 +283,68 @@ public class FnafTitleScreen extends Screen {
     }
 
     @Nullable
-    private Text getMultiplayerDisabledText() {
-        if (this.client.isMultiplayerEnabled()) {
+    private Component getMultiplayerDisabledText() {
+        if (this.minecraft.allowsMultiplayer()) {
             return null;
-        } else if (this.client.isUsernameBanned()) {
-            return Text.translatable("title.multiplayer.disabled.banned.name");
+        } else if (this.minecraft.isNameBanned()) {
+            return Component.translatable("title.multiplayer.disabled.banned.name");
         } else {
-            BanDetails banDetails = this.client.getMultiplayerBanDetails();
+            BanDetails banDetails = this.minecraft.multiplayerBan();
             if (banDetails != null) {
                 return banDetails.expires() != null
-                        ? Text.translatable("title.multiplayer.disabled.banned.temporary")
-                        : Text.translatable("title.multiplayer.disabled.banned.permanent");
+                        ? Component.translatable("title.multiplayer.disabled.banned.temporary")
+                        : Component.translatable("title.multiplayer.disabled.banned.permanent");
             } else {
-                return Text.translatable("title.multiplayer.disabled");
+                return Component.translatable("title.multiplayer.disabled");
             }
         }
     }
 
     private int addDemoWidgets(int y, int spacingY) {
         boolean bl = this.canReadDemoWorldData();
-        this.addDrawableChild(
-                ButtonWidget.builder(
-                                Text.translatable("menu.playdemo"),
+        this.addRenderableWidget(
+                Button.builder(
+                                Component.translatable("menu.playdemo"),
                                 button -> {
                                     if (bl) {
-                                        this.client.createIntegratedServerLoader().start("Demo_World", () -> this.client.setScreen(this));
+                                        this.minecraft.createWorldOpenFlows().openWorld("Demo_World", () -> this.minecraft.setScreen(this));
                                     } else {
-                                        this.client
-                                                .createIntegratedServerLoader()
-                                                .createAndStart("Demo_World", MinecraftServer.DEMO_LEVEL_INFO, GeneratorOptions.DEMO_OPTIONS, WorldPresets::createDemoOptions, this);
+                                        this.minecraft
+                                                .createWorldOpenFlows()
+                                                .createFreshLevel("Demo_World", MinecraftServer.DEMO_SETTINGS, WorldOptions.DEMO_OPTIONS, WorldPresets::createNormalWorldDimensions, this);
                                     }
                                 }
                         )
-                        .dimensions(this.width / 2 - 100, y, 200, 20)
+                        .bounds(this.width / 2 - 100, y, 200, 20)
                         .build()
         );
         int var4;
-        this.buttonResetDemo = this.addDrawableChild(
-                ButtonWidget.builder(
-                                Text.translatable("menu.resetdemo"),
+        this.buttonResetDemo = this.addRenderableWidget(
+                Button.builder(
+                                Component.translatable("menu.resetdemo"),
                                 button -> {
-                                    LevelStorage levelStorage = this.client.getLevelStorage();
+                                    LevelStorageSource levelStorage = this.minecraft.getLevelSource();
 
-                                    try (LevelStorage.Session session = levelStorage.createSessionWithoutSymlinkCheck("Demo_World")) {
-                                        if (session.levelDatExists()) {
-                                            this.client
+                                    try (LevelStorageSource.LevelStorageAccess session = levelStorage.createAccess("Demo_World")) {
+                                        if (session.hasWorldData()) {
+                                            this.minecraft
                                                     .setScreen(
                                                             new ConfirmScreen(
                                                                     this::onDemoDeletionConfirmed,
-                                                                    Text.translatable("selectWorld.deleteQuestion"),
-                                                                    Text.translatable("selectWorld.deleteWarning", MinecraftServer.DEMO_LEVEL_INFO.getLevelName()),
-                                                                    Text.translatable("selectWorld.deleteButton"),
-                                                                    ScreenTexts.CANCEL
+                                                                    Component.translatable("selectWorld.deleteQuestion"),
+                                                                    Component.translatable("selectWorld.deleteWarning", MinecraftServer.DEMO_SETTINGS.levelName()),
+                                                                    Component.translatable("selectWorld.deleteButton"),
+                                                                    CommonComponents.GUI_CANCEL
                                                             )
                                                     );
                                         }
                                     } catch (IOException var8) {
-                                        SystemToast.addWorldAccessFailureToast(this.client, "Demo_World");
+                                        SystemToast.onWorldAccessFailure(this.minecraft, "Demo_World");
                                         LOGGER.warn("Failed to access demo world", (Throwable)var8);
                                     }
                                 }
                         )
-                        .dimensions(this.width / 2 - 100, var4 = y + spacingY, 200, 20)
+                        .bounds(this.width / 2 - 100, var4 = y + spacingY, 200, 20)
                         .build()
         );
         this.buttonResetDemo.active = bl;
@@ -351,23 +354,23 @@ public class FnafTitleScreen extends Screen {
     private boolean canReadDemoWorldData() {
         try {
             boolean var2;
-            try (LevelStorage.Session session = this.client.getLevelStorage().createSessionWithoutSymlinkCheck("Demo_World")) {
-                var2 = session.levelDatExists();
+            try (LevelStorageSource.LevelStorageAccess session = this.minecraft.getLevelSource().createAccess("Demo_World")) {
+                var2 = session.hasWorldData();
             }
 
             return var2;
         } catch (IOException var6) {
-            SystemToast.addWorldAccessFailureToast(this.client, "Demo_World");
+            SystemToast.onWorldAccessFailure(this.minecraft, "Demo_World");
             LOGGER.warn("Failed to read demo world data", (Throwable)var6);
             return false;
         }
     }
 
-    public void renderForeground(DrawContext context, int mouseX, int mouseY, float delta){
+    public void renderForeground(GuiGraphics context, int mouseX, int mouseY, float delta){
         renderForeground(context, mouseX, mouseY, delta, 1);
 
     }
-    public void renderForeground(DrawContext context, int mouseX, int mouseY, float delta, float opacity){
+    public void renderForeground(GuiGraphics context, int mouseX, int mouseY, float delta, float opacity){
 
         int deltaAmount2 = 10;
         float largeWidth2 = width + onWidth(bgDeltaAmount);
@@ -385,16 +388,16 @@ public class FnafTitleScreen extends Screen {
         GoopyScreen.drawRecolorableTexture(context, PIXELS, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.05f * opacity);
 
     }
-    public void renderBackgroundRender(DrawContext context, int mouseX, int mouseY, float delta){
-        if (client.getOverlay() == null && bgFadeTimer < bgFadeTimerGoal) {
+    public void renderBackgroundRender(GuiGraphics context, int mouseX, int mouseY, float delta){
+        if (minecraft.getOverlay() == null && bgFadeTimer < bgFadeTimerGoal) {
             if(FnafUniverseRebuilt.MENU_REDUCE_MOVEMENTS) bgFadeTimer = bgFadeTimerGoal;
             else bgFadeTimer = Math.clamp(bgFadeTimer + delta / 20f, 0, bgFadeTimerGoal);
         }
-        if (client.getOverlay() == null && bgScrollMoveTimer < bgScrollMoveTimerGoal) {
+        if (minecraft.getOverlay() == null && bgScrollMoveTimer < bgScrollMoveTimerGoal) {
             if(FnafUniverseRebuilt.MENU_REDUCE_MOVEMENTS) bgScrollMoveTimer = bgScrollMoveTimerGoal;
             else bgScrollMoveTimer = Math.clamp(bgScrollMoveTimer + delta / 20f, 0, bgScrollMoveTimerGoal);
         }
-        if (client.getOverlay() == null && transitionFadeTimer < transitionFadeTimerGoal) {
+        if (minecraft.getOverlay() == null && transitionFadeTimer < transitionFadeTimerGoal) {
             if(FnafUniverseRebuilt.MENU_REDUCE_MOVEMENTS) transitionFadeTimer = transitionFadeTimerGoal;
             else transitionFadeTimer = Math.clamp(transitionFadeTimer + delta / 20f, 0, transitionFadeTimerGoal);
         }
@@ -418,21 +421,21 @@ public class FnafTitleScreen extends Screen {
         GoopyScreen.drawRecolorableTexture(context, BG, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 1);
 
 
-        Random random = Random.create();
+        RandomSource random = RandomSource.create();
         if (renderGlitchTimer > renderGlitchTimerGoal - 0.20f && renderGlitchIndex == 0)
-            renderGlitchIndex = random.nextBetween(0, RENDERS[renderIndex].length - 1);
+            renderGlitchIndex = random.nextIntBetweenInclusive(0, RENDERS[renderIndex].length - 1);
         renderGlitchTimer = Math.clamp(renderGlitchTimer + delta / 20f, 0, renderGlitchTimerGoal);
         if (renderGlitchTimer == renderGlitchTimerGoal) {
             renderGlitchTimer = 0;
             renderGlitchIndex = 0;
-            renderGlitchTimerGoal = random.nextBetween(50, 2000) / 100f;
+            renderGlitchTimerGoal = random.nextIntBetweenInclusive(50, 2000) / 100f;
         }
 
         Identifier render = RENDERS[renderIndex][renderGlitchIndex];
 
         int renderX = !isVertical ? (int) ((bgDeltaAmount / 2) - xDelta) : (int) ((bgDeltaAmount / 2) - xDelta - (largeWidth / 2f) + (width / 2f));
         int renderY = isVertical ? (int) ((bgDeltaAmount / 2) - yDelta) : (int) ((bgDeltaAmount / 2) - yDelta - (largeHeight / 2f) + (height / 2f));
-        GoopyScreen.drawRecolorableTexture(context, render, renderX, renderY, 0, largeWidth, largeHeight, 0, 0, largeWidth, largeHeight, 1, 1, 1, MathHelper.lerp(bgFadeTimer / bgFadeTimerGoal, bgFadeStart, bgFadeGoal));
+        GoopyScreen.drawRecolorableTexture(context, render, renderX, renderY, 0, largeWidth, largeHeight, 0, 0, largeWidth, largeHeight, 1, 1, 1, Mth.lerp(bgFadeTimer / bgFadeTimerGoal, bgFadeStart, bgFadeGoal));
 
 
         offsetX = renderX;
@@ -444,18 +447,18 @@ public class FnafTitleScreen extends Screen {
         bgScroll++;
         float scroll_width = onHeight(1500);
         float scroll_height = onHeight(1500);
-        float translate = onWidth(MathHelper.lerp(bgScrollMoveIndex, bgScrollMoveStart, bgScrollMoveGoal));
-        context.getMatrices().pushMatrix();
+        float translate = onWidth(Mth.lerp(bgScrollMoveIndex, bgScrollMoveStart, bgScrollMoveGoal));
+        context.pose().pushMatrix();
         //context.getMatrices().translate(-scroll_width / 2.25f, scroll_height / 1.5f);
-        context.getMatrices().translate(translate,  (height / 2f));
-        context.getMatrices().rotate(MathHelper.lerp(bgScrollMoveIndex, bgScrollRotStart, bgScrollRotGoal) * MathHelper.RADIANS_PER_DEGREE);
-        context.getMatrices().translate(-(scroll_width / 2f), -(scroll_height /2f));
+        context.pose().translate(translate,  (height / 2f));
+        context.pose().rotate(Mth.lerp(bgScrollMoveIndex, bgScrollRotStart, bgScrollRotGoal) * Mth.DEG_TO_RAD);
+        context.pose().translate(-(scroll_width / 2f), -(scroll_height /2f));
         GoopyScreen.drawRecolorableTexture(context, SCROLLING_TEXTURE, 0, 0, 0, scroll_height, scroll_width, -bgScroll / 2f, 0, scroll_height, scroll_width, 1, 1, 1, 0.75f);
-        context.getMatrices().popMatrix();
+        context.pose().popMatrix();
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
 
         renderBackgroundRender(context, mouseX, mouseY, delta);
 
@@ -525,10 +528,10 @@ public class FnafTitleScreen extends Screen {
                 GoopyScreen.drawRecolorableTexture(context, BUTTONS, (int) (width - (credits_width * 1.25f)), (int) (sprite_height/2 - credits_height), 0, credits_width, credits_height, sprite_width/2, sprite_height - credits_height*2, sprite_width, sprite_height, 1, 1, 1, 1);
             }
 
-            StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "metropolis"));
+            FontDescription spriteFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "metropolis"));
             Style style = Style.EMPTY.withFont(spriteFont);
-            Text version_text = Text.literal(FnafUniverseRebuilt.MOD_VERSION).setStyle(style);
-            context.drawText(textRenderer, version_text, width / 2 - textRenderer.getWidth(version_text) / 2, height - textRenderer.fontHeight - 1, 0x88FFFFFF, false);
+            Component version_text = Component.literal(FnafUniverseRebuilt.MOD_VERSION).setStyle(style);
+            context.drawString(font, version_text, width / 2 - font.width(version_text) / 2, height - font.lineHeight - 1, 0x88FFFFFF, false);
 
             if (tab == -1) {
 
@@ -595,32 +598,32 @@ public class FnafTitleScreen extends Screen {
         bgFadeStart = bgFadeGoal;
         bgFadeGoal = opacity;
     }
-    public void renderTransition(DrawContext context, int mouseX, int mouseY, float delta){
-        float index = 1 - MathHelper.lerp(transitionFadeTimer / transitionFadeTimerGoal, transitionFadeStart, transitionFadeGoal);
+    public void renderTransition(GuiGraphics context, int mouseX, int mouseY, float delta){
+        float index = 1 - Mth.lerp(transitionFadeTimer / transitionFadeTimerGoal, transitionFadeStart, transitionFadeGoal);
 
         int scale = (int) onHeight(1400);
         int y = -scale;
 
-        int y2 = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(index - 0.1f), y, y + (int) onHeight(1250));
-        int y3 = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(index - 0.05f), y, y + (int) onHeight(1250));
-        int y4 = (int) MathHelper.lerp(EasingMathUtil.easeInOutQuad(index), y, y + (int) onHeight(1250));
+        int y2 = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(index - 0.1f), y, y + (int) onHeight(1250));
+        int y3 = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(index - 0.05f), y, y + (int) onHeight(1250));
+        int y4 = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(index), y, y + (int) onHeight(1250));
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE_WHITE, 0, y4, 0, 0, width, scale, scale, scale, 0xFF000000);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE_WHITE, 0, y3, 0, 0, width, scale, scale, scale, 0xFF432248);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE_WHITE, 0, y2, 0, 0, width, scale, scale, scale, 0xFF000000);
+        context.blit(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE_WHITE, 0, y4, 0, 0, width, scale, scale, scale, 0xFF000000);
+        context.blit(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE_WHITE, 0, y3, 0, 0, width, scale, scale, scale, 0xFF432248);
+        context.blit(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE_WHITE, 0, y2, 0, 0, width, scale, scale, scale, 0xFF000000);
         //context.drawTexture(RenderPipelines.GUI_TEXTURED, SCROLLING_TEXTURE_WHITE, 0, y1, 0, 0, width, scale, scale, scale, 0xFFFFFFFF);
     }
     public void updateTransition(){
-        float index = MathHelper.lerp(transitionFadeTimer / transitionFadeTimerGoal, transitionFadeStart, transitionFadeGoal);
+        float index = Mth.lerp(transitionFadeTimer / transitionFadeTimerGoal, transitionFadeStart, transitionFadeGoal);
 
-        MinecraftClient.getInstance().getSoundManager().soundSystem.sources.get(music).run(
+        Minecraft.getInstance().getSoundManager().soundEngine.instanceToChannel.get(music).execute(
                 source -> source.setVolume(index)
         );
         if(index <= 0){
 
-            MinecraftClient.getInstance().getSoundManager().stop(music);
+            Minecraft.getInstance().getSoundManager().stop(music);
             music = null;
-            MinecraftClient.getInstance().setScreen(transitionScreen);
+            Minecraft.getInstance().setScreen(transitionScreen);
 
             isTransitioning = false;
             transitionFadeTimer = 1;
@@ -648,17 +651,17 @@ public class FnafTitleScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void renderBackground(GuiGraphics context, int mouseX, int mouseY, float delta) {
     }
 
 
     @Override
-    protected void renderPanoramaBackground(DrawContext context, float deltaTicks) {
-        super.renderPanoramaBackground(context, deltaTicks);
+    protected void renderPanorama(GuiGraphics context, float deltaTicks) {
+        super.renderPanorama(context, deltaTicks);
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
 //        if(click.hasShift()){
 //            video_test.getMediaPlayer().stop();
 //            video_test = video_test1;
@@ -702,16 +705,16 @@ public class FnafTitleScreen extends Screen {
 
 
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, x, y, width, height)) {
-                PositionedSoundInstance sound = new PositionedSoundInstance(zone.sound().id(), SoundCategory.MASTER, 1, 1, Random.create(), false, 0, SoundInstance.AttenuationType.NONE, 0, 0, 0, false);
-                MinecraftClient.getInstance().getSoundManager().play(sound);
+                SimpleSoundInstance sound = new SimpleSoundInstance(zone.sound().location(), SoundSource.MASTER, 1, 1, RandomSource.create(), false, 0, SoundInstance.Attenuation.NONE, 0, 0, 0, false);
+                Minecraft.getInstance().getSoundManager().play(sound);
             }
         }
 
         if(tab == -1){
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(636), (int) onHeight(789), (int) onWidth(660), (int) onHeight(98))) {
                 tab = 0;
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.15f, Random.create(), BlockPos.ORIGIN);
-                MinecraftClient.getInstance().getSoundManager().play(instance);
+                SoundInstance instance = new SimpleSoundInstance(SoundsInit.CAM_SWITCH, SoundSource.MASTER, 1, 1.15f, RandomSource.create(), BlockPos.ZERO);
+                Minecraft.getInstance().getSoundManager().play(instance);
             }
         }
         else if(tab == 0){
@@ -721,24 +724,24 @@ public class FnafTitleScreen extends Screen {
                 fadeBackground(0.75f, 0.65f);
                 moveBackgroundScroll(0.5f, 200, -75f);
 
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.15f, Random.create(), BlockPos.ORIGIN);
-                MinecraftClient.getInstance().getSoundManager().play(instance);
+                SoundInstance instance = new SimpleSoundInstance(SoundsInit.CAM_SWITCH, SoundSource.MASTER, 1, 1.15f, RandomSource.create(), BlockPos.ZERO);
+                Minecraft.getInstance().getSoundManager().play(instance);
             }
             if(GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(812), (int) onWidth(490), (int) onHeight(85))){
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1f, Random.create(), BlockPos.ORIGIN);
-                MinecraftClient.getInstance().getSoundManager().play(instance);
+                SoundInstance instance = new SimpleSoundInstance(SoundsInit.CAM_SWITCH, SoundSource.MASTER, 1, 1f, RandomSource.create(), BlockPos.ZERO);
+                Minecraft.getInstance().getSoundManager().play(instance);
 
-                this.client.setScreen(new OptionsScreen(this, this.client.options));
+                this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options));
             }
             if(GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(938), (int) onWidth(490), (int) onHeight(85))){
-                this.client.scheduleStop();
+                this.minecraft.stop();
             }
             if(GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) (width - (credits_width * 1.25f)), (int) (sprite_height/2 - credits_height), (int) credits_width, (int) credits_height)){
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.25f, Random.create(), BlockPos.ORIGIN);
-                MinecraftClient.getInstance().getSoundManager().play(instance);
+                SoundInstance instance = new SimpleSoundInstance(SoundsInit.CAM_SWITCH, SoundSource.MASTER, 1, 1.25f, RandomSource.create(), BlockPos.ZERO);
+                Minecraft.getInstance().getSoundManager().play(instance);
 
-                //MinecraftClient.getInstance().getSoundManager().stop(music);
-                startTransition(2, 0, new CreditsScreen(Text.literal("CREDITS"), this));
+                //Minecraft.getInstance().getSoundManager().stop(music);
+                startTransition(2, 0, new CreditsScreen(Component.literal("CREDITS"), this));
 
                 //music = null;
                 //this.client.setScreen(new CreditsScreen(Text.literal("CREDITS"), this));
@@ -747,31 +750,31 @@ public class FnafTitleScreen extends Screen {
         else if(tab == 1){
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(536), (int) onWidth(500), (int) onHeight(64))) {
                 // TYCOON
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.OFFICE_DOOR_ERROR.id(), SoundCategory.MASTER, 0.5f, 1, Random.create(), false, 0, SoundInstance.AttenuationType.NONE, 0, 0, 0, false);
-                MinecraftClient.getInstance().getSoundManager().play(instance);
+                SoundInstance instance = new SimpleSoundInstance(SoundsInit.OFFICE_DOOR_ERROR.location(), SoundSource.MASTER, 0.5f, 1, RandomSource.create(), false, 0, SoundInstance.Attenuation.NONE, 0, 0, 0, false);
+                Minecraft.getInstance().getSoundManager().play(instance);
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(636), (int) onWidth(500), (int) onHeight(64))) {
                 // SINGLEPLAYER
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.2f, Random.create(), BlockPos.ORIGIN);
-                MinecraftClient.getInstance().getSoundManager().play(instance);
-                this.client.setScreen(new FnafSelectWorldScreen(this));
+                SoundInstance instance = new SimpleSoundInstance(SoundsInit.CAM_SWITCH, SoundSource.MASTER, 1, 1.2f, RandomSource.create(), BlockPos.ZERO);
+                Minecraft.getInstance().getSoundManager().play(instance);
+                this.minecraft.setScreen(new FnafSelectWorldScreen(this));
 
                 moveBackgroundScroll(0.5f, 1650, -105f);
                 fadeBackground(0.75f, 0.35f);
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(736), (int) onWidth(500), (int) onHeight(64))) {
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.2f, Random.create(), BlockPos.ORIGIN);
-                MinecraftClient.getInstance().getSoundManager().play(instance);
-                this.client.setScreen(new MultiplayerScreen(this));
+                SoundInstance instance = new SimpleSoundInstance(SoundsInit.CAM_SWITCH, SoundSource.MASTER, 1, 1.2f, RandomSource.create(), BlockPos.ZERO);
+                Minecraft.getInstance().getSoundManager().play(instance);
+                this.minecraft.setScreen(new JoinMultiplayerScreen(this));
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(836), (int) onWidth(500), (int) onHeight(64))) {
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.2f, Random.create(), BlockPos.ORIGIN);
-                MinecraftClient.getInstance().getSoundManager().play(instance);
-                this.client.setScreen(new RealmsMainScreen(this));
+                SoundInstance instance = new SimpleSoundInstance(SoundsInit.CAM_SWITCH, SoundSource.MASTER, 1, 1.2f, RandomSource.create(), BlockPos.ZERO);
+                Minecraft.getInstance().getSoundManager().play(instance);
+                this.minecraft.setScreen(new RealmsMainScreen(this));
             }
             if (GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(120), (int) onHeight(936), (int) onWidth(500), (int) onHeight(64))) {
-                SoundInstance instance = new PositionedSoundInstance(SoundsInit.CAM_SWITCH, SoundCategory.MASTER, 1, 1.1f, Random.create(), BlockPos.ORIGIN);
-                MinecraftClient.getInstance().getSoundManager().play(instance);
+                SoundInstance instance = new SimpleSoundInstance(SoundsInit.CAM_SWITCH, SoundSource.MASTER, 1, 1.1f, RandomSource.create(), BlockPos.ZERO);
+                Minecraft.getInstance().getSoundManager().play(instance);
 
                 moveBackgroundScroll(0.5f, -1500, -90f);
                 tab = 0;
@@ -789,30 +792,30 @@ public class FnafTitleScreen extends Screen {
     }
 
     @Override
-    public void close() {
-        MinecraftClient.getInstance().getSoundManager().stop(music);
+    public void onClose() {
+        Minecraft.getInstance().getSoundManager().stop(music);
         music = null;
-        super.close();
+        super.onClose();
     }
 
     @Override
-    public void onDisplayed() {
-        super.onDisplayed();
+    public void added() {
+        super.added();
         if (this.realmsNotificationGui != null) {
-            this.realmsNotificationGui.onDisplayed();
+            this.realmsNotificationGui.added();
         }
     }
 
     private void onDemoDeletionConfirmed(boolean delete) {
         if (delete) {
-            try (LevelStorage.Session session = this.client.getLevelStorage().createSessionWithoutSymlinkCheck("Demo_World")) {
-                session.deleteSessionLock();
+            try (LevelStorageSource.LevelStorageAccess session = this.minecraft.getLevelSource().createAccess("Demo_World")) {
+                session.deleteLevel();
             } catch (IOException var7) {
-                SystemToast.addWorldDeleteFailureToast(this.client, "Demo_World");
+                SystemToast.onWorldDeleteFailure(this.minecraft, "Demo_World");
                 LOGGER.warn("Failed to delete demo world", (Throwable)var7);
             }
         }
 
-        this.client.setScreen(this);
+        this.minecraft.setScreen(this);
     }
 }

@@ -1,16 +1,16 @@
 package net.zephyr.fnafur.blocks.energy.enums;
 
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 
 /// Using a node-base system, for dispatching the power
 public interface EnergyNode {
-    ActionResult addNode(World world, BlockPos pos, BlockPos toAdd, Vec3d hit);
-    ActionResult remNode(World world, BlockPos pos, BlockPos toRem, Vec3d hit);
-    boolean isPowered(BlockView world, BlockPos pos);
+    InteractionResult addNode(Level world, BlockPos pos, BlockPos toAdd, Vec3 hit);
+    InteractionResult remNode(Level world, BlockPos pos, BlockPos toRem, Vec3 hit);
+    boolean isPowered(BlockGetter world, BlockPos pos);
     default boolean typeOf(EnergyNodeType type){
         return  this.nodeType() == type;
     }

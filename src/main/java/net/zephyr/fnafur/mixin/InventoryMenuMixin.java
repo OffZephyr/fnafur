@@ -1,14 +1,14 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.DeathCoin;
 import net.zephyr.fnafur.item.IllusionDisc;
@@ -19,45 +19,45 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerScreenHandler.class)
-public class PlayerScreenHandlerMixin {
+@Mixin(InventoryMenu.class)
+public class InventoryMenuMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    void fnafInit(PlayerInventory inventory, boolean onServer, PlayerEntity owner, CallbackInfo callbackInfo) {
+    void fnafInit(Inventory inventory, boolean onServer, Player owner, CallbackInfo callbackInfo) {
 
-        ((PlayerScreenHandler) (Object) this).addSlot(
+        ((InventoryMenu) (Object) this).addSlot(
                 new Slot(inventory, FnafInventoryScreen.SLOTS_OFFSET, 77, 8) {
                     @Override
-                    public void setStack(ItemStack stack, ItemStack previousStack) {
-                        super.setStack(stack, previousStack);
+                    public void setByPlayer(ItemStack stack, ItemStack previousStack) {
+                        super.setByPlayer(stack, previousStack);
                     }
 
                     @Override
-                    public boolean canInsert(ItemStack stack) {
+                    public boolean mayPlace(ItemStack stack) {
                         return stack.getItem() instanceof VanniMaskItem;
                     }
 
                     @Override
-                    public Identifier getBackgroundSprite() {
+                    public Identifier getNoItemIcon() {
                         return FnafInventoryScreen.EMPTY_AR_DEVICE_SLOT_TEXTURE;
                     }
                 }
         );
 
-        ((PlayerScreenHandler) (Object) this).addSlot(
+        ((InventoryMenu) (Object) this).addSlot(
                 new Slot(inventory, FnafInventoryScreen.SLOTS_OFFSET + 1, 77, 26) {
                     @Override
-                    public void setStack(ItemStack stack, ItemStack previousStack) {
-                        super.setStack(stack, previousStack);
+                    public void setByPlayer(ItemStack stack, ItemStack previousStack) {
+                        super.setByPlayer(stack, previousStack);
                     }
 
                     @Override
-                    public boolean canInsert(ItemStack stack) {
+                    public boolean mayPlace(ItemStack stack) {
                         return stack.getItem() instanceof IllusionDisc;
                     }
 
                     @Override
-                    public Identifier getBackgroundSprite() {
+                    public Identifier getNoItemIcon() {
                         return FnafInventoryScreen.EMPTY_ILLUSION_DISC_SLOT_TEXTURE;
                     }
                 }

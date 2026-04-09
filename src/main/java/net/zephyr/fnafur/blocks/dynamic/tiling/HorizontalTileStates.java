@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.dynamic.tiling;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 
-public enum HorizontalTileStates implements StringIdentifiable {
+public enum HorizontalTileStates implements StringRepresentable {
     SINGLE("single", false, false, false, false),
     NORTH_WEST("north_west", false, true, true, false),
     NORTH("north", false, true, true, true),
@@ -40,7 +40,7 @@ public enum HorizontalTileStates implements StringIdentifiable {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.NAME;
     }
 

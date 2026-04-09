@@ -1,17 +1,18 @@
 package net.zephyr.fnafur.blocks.props.floor_props.fnaf1desk;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
@@ -24,25 +25,25 @@ public class Fnaf1Desk extends FloorPropBlock<DefaultPropColorEnum> implements G
     private Identifier texture;
     private Identifier model;
     private Identifier animations;
-    public Fnaf1Desk(Settings settings) {
+    public Fnaf1Desk(Properties settings) {
         super(settings);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GeoPropBlockEntity(pos, state, this);
     }
 
     @Override
-    public @Nullable BlockEntityTicker<GeoPropBlockEntity> getTicker(World world, BlockState state, BlockEntityType type) {
-        return validateTicker(type, BlockEntityInit.GEO_PROPS,
+    public @Nullable BlockEntityTicker<GeoPropBlockEntity> getTicker(Level world, BlockState state, BlockEntityType type) {
+        return createTickerHelper(type, BlockEntityInit.GEO_PROPS,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
     }
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-1, 0, 0, 2, 2.25f, 1)));
-        return drawingOutline ? shape : VoxelShapes.fullCube();
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.or(shape, Shapes.create(new AABB(-1, 0, 0, 2, 2.25f, 1)));
+        return drawingOutline ? shape : Shapes.block();
     }
 
     @Override

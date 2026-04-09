@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,33 +17,33 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public class LivingEntityMixin{
-    @Inject(method = "onEquipStack", at = @At("HEAD"))
+public class LivingEntityMixin {
+    @Inject(method = "onEquipItem", at = @At("HEAD"))
     public void onEquipStack(EquipmentSlot slot, ItemStack oldStack, ItemStack newStack, CallbackInfo ci){
         LivingEntity player = ((LivingEntity) (Object)this);
 
-        if(player instanceof PlayerEntity p) {
-            if ((oldStack.isOf(ItemInit.ILLUSIONDISC) || newStack.isOf(ItemInit.ILLUSIONDISC)) && slot.isArmorSlot()) {
-                if(p.getEntityWorld() instanceof ServerWorld world) {
-                    double width = p.getBoundingBox().getLengthX() / 2f;
-                    double height = p.getBoundingBox().getLengthY() / 2f;
+        if(player instanceof Player p) {
+            if ((oldStack.is(ItemInit.ILLUSIONDISC) || newStack.is(ItemInit.ILLUSIONDISC)) && slot.isArmor()) {
+                if(p.level() instanceof ServerLevel world) {
+                    double width = p.getBoundingBox().getXsize() / 2f;
+                    double height = p.getBoundingBox().getYsize() / 2f;
                     double amount = (height + 1) * 100f;
 
-                    world.spawnParticles(ParticleTypes.CLOUD, p.getX(), (p.getY() + height), p.getZ(), (int) amount, width, height, width, 0.15f);
+                    world.sendParticles(ParticleTypes.CLOUD, p.getX(), (p.getY() + height), p.getZ(), (int) amount, width, height, width, 0.15f);
                 }
-                p.calculateDimensions();
-                p.setPose(EntityPose.STANDING);
+                p.refreshDimensions();
+                p.setPose(Pose.STANDING);
             }
         }
     }
 
 
 
-    @Inject(method = "getBaseDimensions", at = @At("HEAD"), cancellable = true)
-    public void getBaseDimensions(EntityPose pose, CallbackInfoReturnable<EntityDimensions> ci){
-        if((LivingEntity)(Object)this instanceof PlayerEntity p) {
+    @Inject(method = "getDefaultDimensions", at = @At("HEAD"), cancellable = true)
+    public void getBaseDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> ci){
+        if((LivingEntity)(Object)this instanceof Player p) {
             if (((IUniversePlayer) p).getCurrentEntity() != null) {
-                ci.setReturnValue(((IUniversePlayer) p).getCurrentEntity().getType().getDimensions().scaled(((IUniversePlayer) p).getCurrentEntity().getScaleFactor()));
+                ci.setReturnValue(((IUniversePlayer) p).getCurrentEntity().getType().getDimensions().scale(((IUniversePlayer) p).getCurrentEntity().getAgeScale()));
             }
         }
     }

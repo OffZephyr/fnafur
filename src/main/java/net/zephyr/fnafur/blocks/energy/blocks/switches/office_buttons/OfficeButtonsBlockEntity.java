@@ -1,11 +1,11 @@
 package net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.blocks.linking.links.energy.EnergySourceTargetPropBlockEntity;
@@ -20,28 +20,28 @@ public class OfficeButtonsBlockEntity extends EnergySourceTargetPropBlockEntity 
         super(BlockEntityInit.OFFICE_BUTTONS, pos, state);
     }
 
-    public ActionResult tryStartLink(PlayerEntity player, BlockPos pos, int hitButton) {
+    public InteractionResult tryStartLink(Player player, BlockPos pos, int hitButton) {
         if(hitButton != -1){
-            ItemStack stack = player.getMainHandStack();
+            ItemStack stack = player.getMainHandItem();
             if(stack.getItem() instanceof WrenchItem && ((IUniversePlayer)player).isUsingVanniMask()){
-                NbtCompound nbt = ItemUtil.getNbt(stack);
+                CompoundTag nbt = ItemUtil.getNbt(stack);
 
                 nbt.putInt("buttonIndex", hitButton);
-                BlockPos startPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
-                if(player.isSneaking()){
+                BlockPos startPos = nbt.read("startLink", BlockPos.CODEC).orElse(BlockPos.ZERO);
+                if(player.isShiftKeyDown()){
                     nbt.remove("startLink");
                     for(IEntityDataSaver ent : getTargets()){
                         unlink(ent);
                     }
                 }
-                else if(startPos.equals(pos) || startPos != BlockPos.ORIGIN){
+                else if(startPos.equals(pos) || startPos != BlockPos.ZERO){
                     nbt.remove("startLink");
                 }
                 else{
-                    nbt.put("startLink", BlockPos.CODEC, pos);
+                    nbt.store("startLink", BlockPos.CODEC, pos);
                 }
                 ItemUtil.setNbt(stack, nbt);
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
         return null;
@@ -57,9 +57,9 @@ public class OfficeButtonsBlockEntity extends EnergySourceTargetPropBlockEntity 
     public boolean isSendingPower(IEntityDataSaver target) {
         int id = ((LinkTarget)target).getButtonId((IEntityDataSaver)this);
         if(id > -1){
-            BlockState state = getWorld().getBlockState(getPos());
+            BlockState state = getLevel().getBlockState(getBlockPos());
             if(state.getBlock() instanceof OfficeButtons){
-                if((id == 0 && state.get(OfficeButtons.DOOR_ON)) || (id == 1 && state.get(OfficeButtons.LIGHT_ON))){
+                if((id == 0 && state.getValue(OfficeButtons.DOOR_ON)) || (id == 1 && state.getValue(OfficeButtons.LIGHT_ON))){
                     return isReceivingPower();
                 }
             }

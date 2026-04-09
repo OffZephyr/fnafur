@@ -3,25 +3,28 @@ package net.zephyr.fnafur.blocks.stickers_blocks;
 import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperUnbakedGroupedBlockStateModel;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.model.*;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
@@ -33,35 +36,35 @@ import java.util.function.Predicate;
 
 public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel implements BlockStateModel {
 
-    public StickerBlockModel(BlockStateModel.UnbakedGrouped wrapped){
+    public StickerBlockModel(BlockStateModel.UnbakedRoot wrapped){
         super(wrapped);
     }
 
-    public Sprite particlesprite;
+    public TextureAtlasSprite particlesprite;
 
     Block block;
     public BlockEntity forceEnt = null;
     public static float STICKER_OFFSET = -0.002f;
 
-    Random random = Random.create();
+    RandomSource random = RandomSource.create();
 
     @Override
-    public void addParts(Random random, List<BlockModelPart> parts) {
+    public void collectParts(RandomSource random, List<BlockModelPart> parts) {
 
     }
 
     @Override
-    public List<BlockModelPart> getParts(Random random) {
-        return BlockStateModel.super.getParts(random);
+    public List<BlockModelPart> collectParts(RandomSource random) {
+        return BlockStateModel.super.collectParts(random);
     }
 
     @Override
-    public Sprite particleSprite() {
-        return MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+    public TextureAtlasSprite particleIcon() {
+        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 
     @Override
-    public void emitQuads(QuadEmitter emitter, BlockRenderView blockView, BlockPos pos, BlockState state, Random random, Predicate<@Nullable Direction> cullTest) {
+    public void emitQuads(QuadEmitter emitter, BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random, Predicate<@Nullable Direction> cullTest) {
 
         BlockStateModel.super.emitQuads(emitter, blockView, pos, state, random, cullTest);
         block = state.getBlock();
@@ -70,7 +73,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
 
         if (entity instanceof BlockEntity ent) {
 
-            NbtCompound nbt = ((IEntityDataSaver) ent).getPersistentData();
+            CompoundTag nbt = ((IEntityDataSaver) ent).getPersistentData();
 
             //if(!nbt.getBoolean("synced")){
             //    ClientPlayNetworking.send(new UpdateBlockNbtC2SGetFromServerPayload(pos.asLong()));
@@ -81,34 +84,34 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
     }
 
     @Override
-    public Sprite particleSprite(BlockRenderView blockView, BlockPos pos, BlockState state) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);
-        if(model != null && model.particleSprite() != null){
-            particlesprite = model.particleSprite();
+    public TextureAtlasSprite particleSprite(BlockAndTintGetter blockView, BlockPos pos, BlockState state) {
+        Minecraft client = Minecraft.getInstance();
+        BlockStateModel model = client.getModelManager().getBlockModelShaper().getBlockModel(state);
+        if(model != null && model.particleIcon() != null){
+            particlesprite = model.particleIcon();
         }
         return particlesprite;
     }
 
-    public void emitQuads(BlockState state, BlockPos pos, NbtCompound nbt, QuadEmitter emitter){
-        ItemStack stack = nbt.get("BlockState", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+    public void emitQuads(BlockState state, BlockPos pos, CompoundTag nbt, QuadEmitter emitter){
+        ItemStack stack = nbt.read("BlockState", ItemStack.CODEC).orElse(ItemStack.EMPTY);
 
-        BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT).applyToState(((BlockItem)stack.getItem()).getBlock().getDefaultState()) : state;
+        BlockState newState = state.getBlock() instanceof BlockWithSticker && !stack.isEmpty() ? stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY).apply(((BlockItem)stack.getItem()).getBlock().defaultBlockState()) : state;
 
         emitBaseCube(state, newState, pos, emitter, nbt);
         emitStickers(state, pos, emitter, nbt);
     }
-    public void emitBaseCube(BlockState baseState, BlockState state, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
-        MinecraftClient client = MinecraftClient.getInstance();
-        BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);
+    public void emitBaseCube(BlockState baseState, BlockState state, BlockPos pos, QuadEmitter emitter, CompoundTag nbt){
+        Minecraft client = Minecraft.getInstance();
+        BlockStateModel model = client.getModelManager().getBlockModelShaper().getBlockModel(state);
 
         for(Direction direction : Direction.values()) {
 
-            BlockState sideState = client.world.getBlockState(pos.offset(direction));
-            if (pos != BlockPos.ORIGIN && !(sideState.getBlock() instanceof MimicFrames) && sideState.isOpaque() && client.world.getBlockState(pos.offset(direction)).isSideSolidFullSquare(client.world, pos.offset(direction), direction.getOpposite())) continue;
-            if (pos != BlockPos.ORIGIN && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.world, pos.offset(direction), frame.getMatrixSize())) continue;
+            BlockState sideState = client.level.getBlockState(pos.relative(direction));
+            if (pos != BlockPos.ZERO && !(sideState.getBlock() instanceof MimicFrames) && sideState.isSolidRender() && client.level.getBlockState(pos.relative(direction)).isFaceSturdy(client.level, pos.relative(direction), direction.getOpposite())) continue;
+            if (pos != BlockPos.ZERO && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.level, pos.relative(direction), frame.getMatrixSize())) continue;
 
-            List<BlockModelPart> parts = model.getParts(Random.create());
+            List<BlockModelPart> parts = model.collectParts(RandomSource.create());
             if(!parts.isEmpty()){
                 List<BakedQuad> quadList = parts.get(0).getQuads(direction);
 
@@ -120,17 +123,17 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
             }
         }
     }
-    public void emitStickers(BlockState baseState, BlockPos pos, QuadEmitter emitter, NbtCompound nbt){
+    public void emitStickers(BlockState baseState, BlockPos pos, QuadEmitter emitter, CompoundTag nbt){
 
         if(!nbt.isEmpty()) {
-            MinecraftClient client = MinecraftClient.getInstance();
+            Minecraft client = Minecraft.getInstance();
             for (Direction direction : Direction.values()) {
-                BlockState sideState = client.world.getBlockState(pos.offset(direction));
-                if (pos != BlockPos.ORIGIN && !(sideState.getBlock() instanceof MimicFrames) && sideState.isOpaque() && client.world.getBlockState(pos.offset(direction)).isSideSolidFullSquare(client.world, pos.offset(direction), direction.getOpposite())) continue;
-                if (pos != BlockPos.ORIGIN && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.world, pos.offset(direction), frame.getMatrixSize())) continue;
+                BlockState sideState = client.level.getBlockState(pos.relative(direction));
+                if (pos != BlockPos.ZERO && !(sideState.getBlock() instanceof MimicFrames) && sideState.isSolidRender() && client.level.getBlockState(pos.relative(direction)).isFaceSturdy(client.level, pos.relative(direction), direction.getOpposite())) continue;
+                if (pos != BlockPos.ZERO && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.level, pos.relative(direction), frame.getMatrixSize())) continue;
 
-                NbtList list = nbt.getList(direction.name()).orElse(new NbtList());
-                NbtList offset_list = nbt.getList(direction.name() + "_offset").orElse(new NbtList());
+                ListTag list = nbt.getList(direction.name()).orElse(new ListTag());
+                ListTag offset_list = nbt.getList(direction.name() + "_offset").orElse(new ListTag());
 
                 for (int i = 0; i < list.size(); i++) {
                     String name = list.getString(i).orElse("");
@@ -144,14 +147,14 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
                     int num = dirPos % decal.getTextures().length;
                     Identifier identifier = decal.getTextures()[num];
 
-                    Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, identifier));
+                    TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, identifier));
 
                     float Offset = offset_list.getFloat(i).orElse(0f);
                     float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;
                     float yOffset = decal.getDirection() == DecalInit.Movable.VERTICAL ? Offset : 0;
 
-                    boolean snapBelow = client.world.getBlockState(pos.down()).isSideSolidFullSquare(client.world, pos.down(), direction);
-                    boolean snapAbove = client.world.getBlockState(pos.up()).isSideSolidFullSquare(client.world, pos.up(), direction);
+                    boolean snapBelow = client.level.getBlockState(pos.below()).isFaceSturdy(client.level, pos.below(), direction);
+                    boolean snapAbove = client.level.getBlockState(pos.above()).isFaceSturdy(client.level, pos.above(), direction);
 
                     float textureSize = decal.getPixelDensity() - decal.getSize();
                     float scaledSpace = (float) decal.getSize() / decal.getPixelDensity();
@@ -181,7 +184,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
     }
 
     @Override
-    public BlockStateModel bake(BlockState state, Baker baker) {
+    public BlockStateModel bake(BlockState state, ModelBaker baker) {
         return this;
     }
 }

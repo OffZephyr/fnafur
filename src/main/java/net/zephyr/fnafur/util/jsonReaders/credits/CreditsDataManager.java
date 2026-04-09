@@ -4,14 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.EntityType;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.SinglePreparationResourceReloader;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.profiler.Profiler;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import net.zephyr.fnafur.util.jsonReaders.entity_skins.DefaultEntityData;
@@ -22,17 +22,17 @@ import java.io.InputStream;
 import java.util.*;
 
 @Environment(EnvType.CLIENT)
-public class CreditsDataManager extends SinglePreparationResourceReloader<Map<String, Map<String, String>>> {
+public class CreditsDataManager extends SimplePreparableReloadListener<Map<String, Map<String, String>>> {
     static final Gson GSON = new Gson();
 
     private static final TypeToken<Map<String, Map<String, Map<String, Entry>>>> STRING_LIST_TYPE = new TypeToken<>() {};
 
     @Override
-    protected Map<String, Map<String, String>> prepare(ResourceManager resourceManager, Profiler profiler) {
+    protected Map<String, Map<String, String>> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
 
         clear();
         Map<String, Map<String, String>> data = new HashMap<>();
-        for (String string : resourceManager.getAllNamespaces()) {
+        for (String string : resourceManager.getNamespaces()) {
             getEntries(resourceManager, profiler, string);
         }
 
@@ -57,7 +57,7 @@ public class CreditsDataManager extends SinglePreparationResourceReloader<Map<St
     }
 
     @Override
-    protected void apply(Map<String, Map<String, String>> prepared, ResourceManager manager, Profiler profiler) {
+    protected void apply(Map<String, Map<String, String>> prepared, ResourceManager manager, ProfilerFiller profiler) {
 
     }
 
@@ -80,7 +80,7 @@ public class CreditsDataManager extends SinglePreparationResourceReloader<Map<St
 
                 int color = rank2.equals("fazbear_family") ? 0xFF2d74ad : 0xFFad4f2d;
 
-                CreditsDataHandler.CreditsEntry entry = new CreditsDataHandler.CreditsEntry(name, "https://ko-fi.com/fnafuniverserebuilt", Identifier.of(""), color, List.of(rank2));
+                CreditsDataHandler.CreditsEntry entry = new CreditsDataHandler.CreditsEntry(name, "https://ko-fi.com/fnafuniverserebuilt", Identifier.parse(""), color, List.of(rank2));
                 entries.add(entry);
                 CreditsDataHandler.ALL_ENTRIES.putIfAbsent(entry.NAME(), entry);
             });
@@ -89,12 +89,12 @@ public class CreditsDataManager extends SinglePreparationResourceReloader<Map<St
         }
     }
 
-    void getEntries(ResourceManager resourceManager, Profiler profiler, String namespace) {
+    void getEntries(ResourceManager resourceManager, ProfilerFiller profiler, String namespace) {
         String path = FnafUniverseRebuilt.MOD_ID + "/credits.json";
-        List<Resource> list = resourceManager.getAllResources(Identifier.of(namespace, path));
+        List<Resource> list = resourceManager.getResourceStack(Identifier.fromNamespaceAndPath(namespace, path));
         for (Resource resource : list) {
-            try (BufferedReader reader = resource.getReader();) {
-                Map<String, Map<String, Map<String, Entry>>> layerEntries = JsonHelper.deserialize(GSON, reader, STRING_LIST_TYPE);
+            try (BufferedReader reader = resource.openAsReader();) {
+                Map<String, Map<String, Map<String, Entry>>> layerEntries = GsonHelper.fromJson(GSON, reader, STRING_LIST_TYPE);
                 for (Map.Entry<String, Map<String, Map<String, Entry>>> entry : layerEntries.entrySet()) {
 
                     CreditsDataHandler.MAIN_CATEGORIES.add(entry.getKey());
@@ -107,8 +107,8 @@ public class CreditsDataManager extends SinglePreparationResourceReloader<Map<St
                         for(String key : entry.getValue().get(sub).keySet()){
                             Entry entry1 = entry.getValue().get(sub).get(key);
                             System.out.println(entry1.color.get(0) + " " + entry1.color.get(1) + " " + entry1.color.get(2));
-                            int color = ColorHelper.getArgb(255, entry1.color.get(0), entry1.color.get(1), entry1.color.get(2));
-                            CreditsDataHandler.CreditsEntry creditsEntry = new CreditsDataHandler.CreditsEntry(key, entry1.link, Identifier.of(namespace, entry1.logo), color, entry1.roles);
+                            int color = ARGB.color(255, entry1.color.get(0), entry1.color.get(1), entry1.color.get(2));
+                            CreditsDataHandler.CreditsEntry creditsEntry = new CreditsDataHandler.CreditsEntry(key, entry1.link, Identifier.fromNamespaceAndPath(namespace, entry1.logo), color, entry1.roles);
                             entries.add(creditsEntry);
                             CreditsDataHandler.ALL_ENTRIES.putIfAbsent(creditsEntry.NAME(), creditsEntry);
                         }
@@ -120,7 +120,7 @@ public class CreditsDataManager extends SinglePreparationResourceReloader<Map<St
                     //}
                 }
             } catch (RuntimeException | IOException runtimeException) {
-                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.getPackId(), runtimeException);
+                FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", path, resource.sourcePackId(), runtimeException);
             }
         }
     }

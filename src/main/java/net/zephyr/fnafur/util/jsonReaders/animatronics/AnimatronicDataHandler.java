@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.util.jsonReaders.animatronics;
 
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Tuple;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import software.bernie.geckolib.cache.GeckoLibResources;
@@ -36,7 +36,7 @@ public class AnimatronicDataHandler {
     }
     public static Identifier getTexture(Chara chara, String path){
         String category = chara.CATEGORY;
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/" + getPath(category, chara.NAME) + path + ".png");
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/" + getPath(category, chara.NAME) + path + ".png");
     }
     public static Identifier getAltTexture(String character, String alt){
         Chara chara = CHARACTERS.get(character);
@@ -66,7 +66,7 @@ public class AnimatronicDataHandler {
             if (!chara.ALTS.get(alt).model_override.isEmpty()) {
                 model = chara.ALTS.get(alt).model_override;
             }
-            return Identifier.of(FnafUniverseRebuilt.MOD_ID, "" + getPath(category, character) + model + "");
+            return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "" + getPath(category, character) + model + "");
         }
         return getDefaultModel();
     }
@@ -83,7 +83,7 @@ public class AnimatronicDataHandler {
     }
 
     public static Identifier getDefaultTexture(String path){
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/" + getPath(DEFAULT_CHARA.CATEGORY, DEFAULT_CHARA.NAME) + path + ".png");
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/" + getPath(DEFAULT_CHARA.CATEGORY, DEFAULT_CHARA.NAME) + path + ".png");
     }
     public static Identifier getDefaultAltTexture(){
         return getDefaultTexture(DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).texture);
@@ -111,7 +111,7 @@ public class AnimatronicDataHandler {
         if (!DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).model_override.isEmpty()) {
             model = DEFAULT_CHARA.ALTS.get(DEFAULT_CHARA.DEFAULT_ALT).model_override;
         }
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "" + getPath(category, DEFAULT_CHARA.NAME) + model + "");
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "" + getPath(category, DEFAULT_CHARA.NAME) + model + "");
     }
     public static Identifier getDefaultEndoMask() {
         String mask = DEFAULT_CHARA.ENDO_MASK;
@@ -135,19 +135,19 @@ public class AnimatronicDataHandler {
         return getAnimationFilePath("loweridle", name);
     }
     public static String getAnimationFilePath(String currentAnim, String name){
-        return prefixAnim(currentAnim, name).getLeft();
+        return prefixAnim(currentAnim, name).getA();
     }
     public static String getAnimationFullName(String currentAnim, String name){
-        return prefixAnim(currentAnim, name).getRight();
+        return prefixAnim(currentAnim, name).getB();
     }
-    public static Pair<String, String> prefixAnim(String currentAnim, String name){
+    public static Tuple<String, String> prefixAnim(String currentAnim, String name){
         String path = ALL_ANIMATIONS.get("default");
 
         if(ALL_ANIMATION_NAMES.contains(name)){
             path = ALL_ANIMATIONS.get(name);
         }
 
-        Identifier location = Identifier.of(FnafUniverseRebuilt.MOD_ID, path);
+        Identifier location = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, path);
         Map<Identifier, BakedAnimations> animations = GeckoLibResources.getBakedAnimations().cache();
         BakedAnimations bakedAnimations = animations.get(location);
         String anim = "animation." + name + "." + currentAnim;
@@ -158,7 +158,7 @@ public class AnimatronicDataHandler {
             anim = "animation.default." + currentAnim;
             anim = currentAnim;
         }
-        return new Pair<>(path, anim);
+        return new Tuple<>(path, anim);
     }
 
     public static class Chara {

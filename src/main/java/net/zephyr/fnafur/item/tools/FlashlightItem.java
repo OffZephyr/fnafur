@@ -1,13 +1,14 @@
 package net.zephyr.fnafur.item.tools;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.rendering.lighting.ILightItem;
 import net.zephyr.fnafur.util.IHasArmPos;
@@ -16,23 +17,23 @@ import net.zephyr.fnafur.util.ItemUtil;
 import org.joml.Vector3f;
 
 public class FlashlightItem extends Item implements IHasArmPos, ILightItem {
-    public FlashlightItem(Settings settings) {
+    public FlashlightItem(Properties settings) {
         super(settings);
     }
 
     @Override
-    public Vec3d getLeftArmPos(boolean isMainStack) {
-        return new Vec3d(0, 0, 0);
+    public Vec3 getLeftArmPos(boolean isMainStack) {
+        return new Vec3(0, 0, 0);
     }
 
     @Override
-    public Vec3d getRightArmPos(boolean isMainStack) {
-        return new Vec3d(0, 0, 0);
+    public Vec3 getRightArmPos(boolean isMainStack) {
+        return new Vec3(0, 0, 0);
     }
 
     @Override
     public Identifier getLightMaskTexture() {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/lighting/flashlight_map");
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/lighting/flashlight_map");
     }
 
 
@@ -43,26 +44,26 @@ public class FlashlightItem extends Item implements IHasArmPos, ILightItem {
 
     @Override
     public boolean isLightOn(ItemStack stack) {
-        return ItemUtil.getNbt(stack).getBoolean("lightOn", true);
+        return ItemUtil.getNbt(stack).getBooleanOr("lightOn", true);
     }
 
     @Override
     public void setLightOn(boolean isOn, ItemStack stack) {
-        NbtCompound nbt = ItemUtil.getNbt(stack);
+        CompoundTag nbt = ItemUtil.getNbt(stack);
         nbt.putBoolean("lightOn", isOn);
         ItemUtil.setNbt(stack, nbt);
     }
 
     @Override
-    public Vec3d getLightWorldPos(LivingEntity parent) {
-        float progress = MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks()/20f;
-        return parent.getLerpedPos(progress).add(0, parent.getDimensions(parent.getPose()).eyeHeight(), 0);
+    public Vec3 getLightWorldPos(LivingEntity parent) {
+        float progress = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks()/20f;
+        return parent.getPosition(progress).add(0, parent.getDimensions(parent.getPose()).eyeHeight(), 0);
     }
 
     @Override
     public Vector3f getLightRotation(LivingEntity parent) {
-        float progress = MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks()/20f;
-        Vec3d impl = parent.getRotationVec(progress);
+        float progress = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks()/20f;
+        Vec3 impl = parent.getViewVector(progress);
         return impl.toVector3f();
     }
 

@@ -1,30 +1,34 @@
 package net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.tick.ScheduledTickView;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.zephyr.fnafur.blocks.stickers_blocks.BlockWithSticker;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.init.block_init.BlockInit;
@@ -35,14 +39,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public class DiagonalMimicFrame extends BlockWithSticker {
-    public static final BooleanProperty NORTH = BooleanProperty.of("n");
-    public static final BooleanProperty NORTH_WEST = BooleanProperty.of("nw");
-    public static final BooleanProperty NORTH_EAST = BooleanProperty.of("ne");
-    public static final BooleanProperty WEST = BooleanProperty.of("w");
-    public static final BooleanProperty EAST = BooleanProperty.of("e");
-    public static final BooleanProperty SOUTH = BooleanProperty.of("s");
-    public static final BooleanProperty SOUTH_WEST = BooleanProperty.of("sw");
-    public static final BooleanProperty SOUTH_EAST = BooleanProperty.of("se");
+    public static final BooleanProperty NORTH = BooleanProperty.create("n");
+    public static final BooleanProperty NORTH_WEST = BooleanProperty.create("nw");
+    public static final BooleanProperty NORTH_EAST = BooleanProperty.create("ne");
+    public static final BooleanProperty WEST = BooleanProperty.create("w");
+    public static final BooleanProperty EAST = BooleanProperty.create("e");
+    public static final BooleanProperty SOUTH = BooleanProperty.create("s");
+    public static final BooleanProperty SOUTH_WEST = BooleanProperty.create("sw");
+    public static final BooleanProperty SOUTH_EAST = BooleanProperty.create("se");
     public static final Map<Direction, BooleanProperty> DIRECTION_MAP = Map.of(
             Direction.NORTH, DiagonalMimicFrame.NORTH,
             Direction.EAST, DiagonalMimicFrame.EAST,
@@ -57,47 +61,47 @@ public class DiagonalMimicFrame extends BlockWithSticker {
     );
 
     public static boolean drawingOutline = false;
-    public DiagonalMimicFrame(Settings settings) {
+    public DiagonalMimicFrame(Properties settings) {
         super(settings);
-        setDefaultState(
-                getDefaultState()
-                        .with(NORTH, false)
-                        .with(NORTH_WEST, false)
-                        .with(NORTH_EAST, false)
-                        .with(WEST, false)
-                        .with(EAST, false)
-                        .with(SOUTH, false)
-                        .with(SOUTH_WEST, false)
-                        .with(SOUTH_EAST, false)
+        registerDefaultState(
+                defaultBlockState()
+                        .setValue(NORTH, false)
+                        .setValue(NORTH_WEST, false)
+                        .setValue(NORTH_EAST, false)
+                        .setValue(WEST, false)
+                        .setValue(EAST, false)
+                        .setValue(SOUTH, false)
+                        .setValue(SOUTH_WEST, false)
+                        .setValue(SOUTH_EAST, false)
         );
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
         return null;
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return VoxelShapes.fullCube();
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return Shapes.block();
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
         BlockEntity entity = world.getBlockEntity(pos);
-        ItemStack stack = player.getMainHandStack();
+        ItemStack stack = player.getMainHandItem();
         Block currentBlock = null;
         if(entity != null) {
-            NbtCompound nbt = ((IEntityDataSaver) entity).getPersistentData();
+            CompoundTag nbt = ((IEntityDataSaver) entity).getPersistentData();
             if(nbt.contains("BlockData")) {
-                ItemStack blockStack = nbt.get("BlockData", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+                ItemStack blockStack = nbt.read("BlockData", ItemStack.CODEC).orElse(ItemStack.EMPTY);
                 if (blockStack.getItem() instanceof BlockItem blockItem) {
                     currentBlock = blockItem.getBlock();
                 }
             }
 
 
-            if (stack != null && stack.isOf(ItemInit.SCRAPER)) {
+            if (stack != null && stack.is(ItemInit.SCRAPER)) {
                 if (currentBlock != null) {
                     nbt.remove("BlockData");
                     saveBlockTexture(
@@ -106,72 +110,72 @@ public class DiagonalMimicFrame extends BlockWithSticker {
                             pos
                     );
 
-                    if (!world.isClient()) {
-                        world.playSound(null, pos, SoundEvents.BLOCK_GRINDSTONE_USE, SoundCategory.BLOCKS, 1, 1.25f);
+                    if (!world.isClientSide()) {
+                        world.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1, 1.25f);
                     } else {
                         ((IEntityDataSaver) world.getBlockEntity(pos)).setServerUpdateStatus(true);
                     }
-                    return ActionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
-            else if (stack != null && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock().getDefaultState().isSolidBlock(world, pos)) {
+            else if (stack != null && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock().defaultBlockState().isRedstoneConductor(world, pos)) {
                 if (!(blockItem.getBlock() instanceof BlockWithSticker) && currentBlock == null) {
 
-                    nbt.put("BlockData", ItemStack.CODEC, stack);
+                    nbt.store("BlockData", ItemStack.CODEC, stack);
                     saveBlockTexture(
                             nbt,
                             world,
                             pos
                     );
-                    world.updateListeners(pos, state, state, 3);
+                    world.sendBlockUpdated(pos, state, state, 3);
 
-                    return ActionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
 
             }
         }
 
-        return super.onUse(state, world, pos, player, hit);
+        return super.useWithoutItem(state, world, pos, player, hit);
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 
-        VoxelShape shape1 = VoxelShapes.cuboid(0, 0, 0, 0.5f, 1, 0.5f);
-        VoxelShape shape2 = VoxelShapes.cuboid(0.5f, 0, 0, 1, 1, 0.5f);
-        VoxelShape shape3 = VoxelShapes.cuboid(0, 0, 0.5f, 0.5f, 1, 1);
-        VoxelShape shape4 = VoxelShapes.cuboid(0.5f, 0, 0.5f, 1, 1, 1);
+        VoxelShape shape1 = Shapes.box(0, 0, 0, 0.5f, 1, 0.5f);
+        VoxelShape shape2 = Shapes.box(0.5f, 0, 0, 1, 1, 0.5f);
+        VoxelShape shape3 = Shapes.box(0, 0, 0.5f, 0.5f, 1, 1);
+        VoxelShape shape4 = Shapes.box(0.5f, 0, 0.5f, 1, 1, 1);
 
-        boolean bl1 = (!state.get(NORTH) && !state.get(EAST) && state.get(SOUTH) && state.get(WEST));
-        boolean bl2 = (!state.get(NORTH) && state.get(EAST) && state.get(SOUTH) && !state.get(WEST));
-        boolean bl3 = (state.get(NORTH) && !state.get(EAST) && !state.get(SOUTH) && state.get(WEST));
-        boolean bl4 = (state.get(NORTH) && state.get(EAST) && !state.get(SOUTH) && !state.get(WEST));
+        boolean bl1 = (!state.getValue(NORTH) && !state.getValue(EAST) && state.getValue(SOUTH) && state.getValue(WEST));
+        boolean bl2 = (!state.getValue(NORTH) && state.getValue(EAST) && state.getValue(SOUTH) && !state.getValue(WEST));
+        boolean bl3 = (state.getValue(NORTH) && !state.getValue(EAST) && !state.getValue(SOUTH) && state.getValue(WEST));
+        boolean bl4 = (state.getValue(NORTH) && state.getValue(EAST) && !state.getValue(SOUTH) && !state.getValue(WEST));
 
-        VoxelShape shape = VoxelShapes.fullCube();
+        VoxelShape shape = Shapes.block();
         if (bl1 || bl2 || bl3 || bl4) {
-            shape = VoxelShapes.empty();
-            if (!bl2) shape = VoxelShapes.union(shape, shape1);
-            if (!bl1) shape = VoxelShapes.union(shape, shape2);
-            if (!bl4) shape = VoxelShapes.union(shape, shape3);
-            if (!bl3) shape = VoxelShapes.union(shape, shape4);
+            shape = Shapes.empty();
+            if (!bl2) shape = Shapes.or(shape, shape1);
+            if (!bl1) shape = Shapes.or(shape, shape2);
+            if (!bl4) shape = Shapes.or(shape, shape3);
+            if (!bl3) shape = Shapes.or(shape, shape4);
         }
         return shape;
     }
 
     public boolean isDiagonal(BlockState state){
-        boolean bl1 = (!state.get(NORTH) && !state.get(EAST) && state.get(SOUTH) && state.get(WEST));
-        boolean bl2 = (!state.get(NORTH) && state.get(EAST) && state.get(SOUTH) && !state.get(WEST));
-        boolean bl3 = (state.get(NORTH) && !state.get(EAST) && !state.get(SOUTH) && state.get(WEST));
-        boolean bl4 = (state.get(NORTH) && state.get(EAST) && !state.get(SOUTH) && !state.get(WEST));
+        boolean bl1 = (!state.getValue(NORTH) && !state.getValue(EAST) && state.getValue(SOUTH) && state.getValue(WEST));
+        boolean bl2 = (!state.getValue(NORTH) && state.getValue(EAST) && state.getValue(SOUTH) && !state.getValue(WEST));
+        boolean bl3 = (state.getValue(NORTH) && !state.getValue(EAST) && !state.getValue(SOUTH) && state.getValue(WEST));
+        boolean bl4 = (state.getValue(NORTH) && state.getValue(EAST) && !state.getValue(SOUTH) && !state.getValue(WEST));
 
         return bl1 || bl2 || bl3 || bl4;
     }
 
     public BooleanProperty getDiagonalDirection(BlockState state){
-        boolean bl1 = (!state.get(NORTH) && !state.get(EAST) && state.get(SOUTH) && state.get(WEST));
-        boolean bl2 = (!state.get(NORTH) && state.get(EAST) && state.get(SOUTH) && !state.get(WEST));
-        boolean bl3 = (state.get(NORTH) && !state.get(EAST) && !state.get(SOUTH) && state.get(WEST));
-        boolean bl4 = (state.get(NORTH) && state.get(EAST) && !state.get(SOUTH) && !state.get(WEST));
+        boolean bl1 = (!state.getValue(NORTH) && !state.getValue(EAST) && state.getValue(SOUTH) && state.getValue(WEST));
+        boolean bl2 = (!state.getValue(NORTH) && state.getValue(EAST) && state.getValue(SOUTH) && !state.getValue(WEST));
+        boolean bl3 = (state.getValue(NORTH) && !state.getValue(EAST) && !state.getValue(SOUTH) && state.getValue(WEST));
+        boolean bl4 = (state.getValue(NORTH) && state.getValue(EAST) && !state.getValue(SOUTH) && !state.getValue(WEST));
 
         if(bl1) return NORTH_EAST;
         if(bl2) return NORTH_WEST;
@@ -182,20 +186,20 @@ public class DiagonalMimicFrame extends BlockWithSticker {
     }
     @Nullable
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return getNeighborState(ctx.getWorld(), ctx.getBlockPos(), true);
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        return getNeighborState(ctx.getLevel(), ctx.getClickedPos(), true);
     }
 
-    BlockState getNeighborState(World world, BlockPos checkPos, boolean updateNeighbors) {
-        BlockState newState = getDefaultState();
+    BlockState getNeighborState(Level world, BlockPos checkPos, boolean updateNeighbors) {
+        BlockState newState = defaultBlockState();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (j == 0 && i == 0) continue;
                 //boolean isDiagonalCheck = i != 0 && j != 0;
-                BlockPos pos = checkPos.offset(Direction.Axis.Z, j).offset(Direction.Axis.X, i);
+                BlockPos pos = checkPos.relative(Direction.Axis.Z, j).relative(Direction.Axis.X, i);
                 BlockState checkState = world.getBlockState(pos);
-                newState = newState.with(getDirectionProp(i, j), checkState.isFullCube(world, checkPos) || (checkState.isOf(BlockInit.MIMIC_FRAME_DIAGONAL)));
-                if (updateNeighbors) world.updateNeighbors(pos, world.getBlockState(pos).getBlock());
+                newState = newState.setValue(getDirectionProp(i, j), checkState.isCollisionShapeFullBlock(world, checkPos) || (checkState.is(BlockInit.MIMIC_FRAME_DIAGONAL)));
+                if (updateNeighbors) world.updateNeighborsAt(pos, world.getBlockState(pos).getBlock());
             }
         }
         return newState;
@@ -229,41 +233,41 @@ public class DiagonalMimicFrame extends BlockWithSticker {
     }
 
     @Override
-    protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
-        return getNeighborState((World) world, pos, false);
+    protected BlockState updateShape(BlockState state, LevelReader world, ScheduledTickAccess tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+        return getNeighborState((Level) world, pos, false);
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(NORTH, NORTH_EAST, NORTH_WEST, WEST, EAST, SOUTH, SOUTH_EAST, SOUTH_WEST));
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(NORTH, NORTH_EAST, NORTH_WEST, WEST, EAST, SOUTH, SOUTH_EAST, SOUTH_WEST));
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, BlockEntityInit.STICKER_BLOCK,
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, BlockEntityInit.STICKER_BLOCK,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
 
     }
 
     @Override
-    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+    protected ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state, boolean includeData) {
         return new ItemStack(this.asItem());
     }
 
-    public void saveBlockTexture(NbtCompound nbt, World world, BlockPos pos){
+    public void saveBlockTexture(CompoundTag nbt, Level world, BlockPos pos){
 
-        if(!world.isClient()) {
-            world.playSound(null, pos, SoundEvents.BLOCK_COPPER_GRATE_PLACE, SoundCategory.BLOCKS, 1,1);
+        if(!world.isClientSide()) {
+            world.playSound(null, pos, SoundEvents.COPPER_GRATE_PLACE, SoundSource.BLOCKS, 1,1);
         }
 
-        if(world.isClient()) {
-            ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().copyFrom(nbt);
+        if(world.isClientSide()) {
+            ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().merge(nbt);
             ((IEntityDataSaver)world.getBlockEntity(pos)).setServerUpdateStatus(true);
         }
 
-        world.setBlockState(pos, world.getBlockState(pos), Block.NOTIFY_ALL_AND_REDRAW);
-        world.updateListeners(pos, world.getBlockState(pos), world.getBlockState(pos), Block.NOTIFY_ALL_AND_REDRAW);
+        world.setBlock(pos, world.getBlockState(pos), Block.UPDATE_ALL_IMMEDIATE);
+        world.sendBlockUpdated(pos, world.getBlockState(pos), world.getBlockState(pos), Block.UPDATE_ALL_IMMEDIATE);
     }
 
 }
