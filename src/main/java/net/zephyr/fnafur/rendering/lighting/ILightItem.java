@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.rendering.lighting;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -27,11 +27,11 @@ public interface ILightItem {
     }
 
     default Identifier getLightTexture(){
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/lighting/default_full");
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/lighting/default_full");
     }
     Identifier getLightMaskTexture();
 
-    Vec3d getLightWorldPos(LivingEntity parent);
+    Vec3 getLightWorldPos(LivingEntity parent);
     Vector3f getLightRotation(LivingEntity parent);
     float getLength();
     float getIntensity();

@@ -2,27 +2,28 @@ package net.zephyr.fnafur.networking.sounds;
 
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.sounds.SoundEvent;
 import net.zephyr.fnafur.init.SoundsInit;
 import net.zephyr.fnafur.util.SoundUtils;
 
-public record StopSoundS2CPayload(int entityID, String name) implements CustomPayload {
+public record StopSoundS2CPayload(int entityID, String name) implements CustomPacketPayload {
 
-    public static final Id<StopSoundS2CPayload> ID = new Id<>(SoundPayloads.StopSoundS2C);
+    public static final Type<StopSoundS2CPayload> ID = new Type<>(SoundPayloads.StopSoundS2C);
 
-    public static final PacketCodec<RegistryByteBuf, StopSoundS2CPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.INTEGER, StopSoundS2CPayload::entityID,
-            PacketCodecs.STRING, StopSoundS2CPayload::name,
+    public static final StreamCodec<RegistryFriendlyByteBuf, StopSoundS2CPayload> CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, StopSoundS2CPayload::entityID,
+            ByteBufCodecs.STRING_UTF8, StopSoundS2CPayload::name,
             StopSoundS2CPayload::new);
 
     public static void receive(StopSoundS2CPayload payload, ClientPlayNetworking.Context context) {
         context.client().execute(() -> {
-            Entity entity = context.player().getEntityWorld().getEntityById(payload.entityID());
+            Entity entity = context.player().level().getEntity(payload.entityID());
             SoundEvent soundEvent = SoundsInit.getSound(payload.name());
             if(entity != null && SoundUtils.playingSound(context.player(), soundEvent)) {
                 SoundUtils.stopSound(entity, soundEvent);
@@ -31,5 +32,5 @@ public record StopSoundS2CPayload(int entityID, String name) implements CustomPa
     }
 
     @Override
-    public Id<? extends CustomPayload> getId() { return ID; }
+    public Type<? extends CustomPacketPayload> type() { return ID; }
 }

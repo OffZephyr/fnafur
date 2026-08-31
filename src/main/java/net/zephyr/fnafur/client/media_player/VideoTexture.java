@@ -40,7 +40,7 @@ public class VideoTexture {
 //            throw new RuntimeException(e);
 //        }
 //        this.texture = new NativeImageBackedTexture("Video " + ID, this.width, this.height, false);
-//        MinecraftClient.getInstance().getTextureManager().registerTexture(id, texture);
+//        Minecraft.getInstance().getTextureManager().registerTexture(id, texture);
 //
 //        this.decoderThread = Executors.newSingleThreadExecutor();
 //        setupCache();
@@ -125,7 +125,7 @@ public class VideoTexture {
 //        decoderThread.shutdownNow();
 //        decoderThread.close();
 //        converter.close();
-//        MinecraftClient.getInstance().getTextureManager().destroyTexture(id);
+//        Minecraft.getInstance().getTextureManager().destroyTexture(id);
 //
 //        try { grab.stop(); } catch (Exception ignored) {}
 //        try { grab.release(); } catch (Exception ignored) {}

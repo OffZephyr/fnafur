@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.wall_props.fnaf1_rules;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum FNaF1RulesTextures implements ColorEnumInterface, StringIdentifiable {
+public enum FNaF1RulesTextures implements ColorEnumInterface, StringRepresentable {
     TORN("torn", 0),
     CLEAN("clean", 1)
     ;
@@ -15,7 +15,7 @@ public enum FNaF1RulesTextures implements ColorEnumInterface, StringIdentifiable
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return name;
     }
 

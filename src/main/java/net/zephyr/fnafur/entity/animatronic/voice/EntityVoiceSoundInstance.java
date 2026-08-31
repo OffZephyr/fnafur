@@ -1,32 +1,32 @@
 package net.zephyr.fnafur.entity.animatronic.voice;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.sound.MovingSoundInstance;
-import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.client.sound.SoundManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 
-public class EntityVoiceSoundInstance extends MovingSoundInstance {
+public class EntityVoiceSoundInstance extends AbstractTickableSoundInstance {
 
     private final AnimatronicEntity entity;
     public String name = "";
 
     public EntityVoiceSoundInstance(AnimatronicEntity entity, String name, SoundEvent sound, float volume, float pitch) {
-        super(sound, entity.getSoundCategory(), SoundInstance.createRandom());
+        super(sound, entity.getSoundSource(), SoundInstance.createUnseededRandom());
         this.entity = entity;
         this.volume = volume;
         this.pitch = pitch;
-        this.repeat = false;
+        this.looping = false;
         this.name = name;
     }
 
     @Override
     public void tick() {
         if (entity.isRemoved()) {
-            this.setDone();
+            this.stop();
             return;
         }
 

@@ -1,12 +1,13 @@
 package net.zephyr.fnafur.item.animatronic.suit;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.util.ItemUtil;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -23,7 +24,7 @@ import java.util.function.Consumer;
 
 public class SuitItem extends Item implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    public SuitItem(Settings settings) {
+    public SuitItem(Properties settings) {
         super(settings);
     }
 
@@ -58,16 +59,16 @@ public class SuitItem extends Item implements GeoItem {
 
 
     @Override
-    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+    public InteractionResult interactLivingEntity(ItemStack stack, Player user, LivingEntity entity, InteractionHand hand) {
         if(entity instanceof AnimatronicEntity ent){
-            NbtCompound nbt = ItemUtil.getNbt(stack);
+            CompoundTag nbt = ItemUtil.getNbt(stack);
             if(nbt.contains("chara")){
-                String chara = nbt.getString("chara", "");
-                String alt = nbt.getString("alt", "");
-                String eyes = nbt.getString("eyes", "");
+                String chara = nbt.getStringOr("chara", "");
+                String alt = nbt.getStringOr("alt", "");
+                String eyes = nbt.getStringOr("eyes", "");
                 ent.setChara(chara, alt, eyes);
             }
         }
-        return super.useOnEntity(stack, user, entity, hand);
+        return super.interactLivingEntity(stack, user, entity, hand);
     }
 }

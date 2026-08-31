@@ -4,41 +4,46 @@ import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexRendering;
-import net.minecraft.client.render.state.OutlineRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.pathing.NavigationType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.state.property.Property;
-import net.minecraft.text.Text;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.client.Minecraft;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.ShapeRenderer;
+import net.minecraft.client.renderer.state.BlockOutlineRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.*;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.RotationAxis;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockRenderView;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.Direction;
+import com.mojang.math.Axis;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.client.gui.screens.editing.PaintbrushAltPickerScreen;
@@ -52,21 +57,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringIdentifiable>  extends BlockWithEntity {
+public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringRepresentable>  extends BaseEntityBlock {
 
     public static boolean drawingOutline = false;
     public static final float angleSnap = 22.5f;
     public static final float gridSnap = 0.25f;
 
-    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     private EnumProperty<T> COLOR;
-    protected PropBlock(Settings settings) {
+    protected PropBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
-        return VoxelShapes.fullCube();
+    protected VoxelShape getInteractionShape(BlockState state, BlockGetter world, BlockPos pos) {
+        return Shapes.block();
     }
 
     public boolean canChangeState(Item item){
@@ -74,46 +79,46 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        ItemStack stack = player.getMainHandStack();
-        if(stack != null && canChangeState(stack.getItem()) && state.contains(COLOR_PROPERTY())) {
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        ItemStack stack = player.getMainHandItem();
+        if(stack != null && canChangeState(stack.getItem()) && state.hasProperty(COLOR_PROPERTY())) {
             //world.setBlockState(pos, state.cycle(COLOR_PROPERTY()));
-            if(world.isClient()){
-                MinecraftClient.getInstance().setScreen(new PaintbrushAltPickerScreen<>(Text.literal("guh"), pos, COLOR_PROPERTY(), state.get(COLOR_PROPERTY())));
+            if(world.isClientSide()){
+                Minecraft.getInstance().setScreen(new PaintbrushAltPickerScreen<>(Component.literal("guh"), pos, COLOR_PROPERTY(), state.getValue(COLOR_PROPERTY())));
             }
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return super.onUse(state, world, pos, player, hit);
+        return super.useWithoutItem(state, world, pos, player, hit);
     }
     public abstract Class<T> COLOR_ENUM();
     public EnumProperty<T> COLOR_PROPERTY(){
         if(COLOR_ENUM() == null) return COLOR;
-        if(COLOR == null) COLOR = EnumProperty.of("color", COLOR_ENUM());
+        if(COLOR == null) COLOR = EnumProperty.create("color", COLOR_ENUM());
         return COLOR;
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        if(world.isClient()){
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        if(world.isClientSide()){
             if(world.getBlockEntity(pos) instanceof PropBlockEntity ent){
                 ((IEntityDataSaver)ent).setServerUpdateStatus(true);
             }
         }
 
-        super.onPlaced(world, pos, state, placer, itemStack);
+        super.setPlacedBy(world, pos, state, placer, itemStack);
     }
 
     @Override
-    protected BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
     @Override
-    protected BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new PropBlockEntity(pos, state);
     }
 
@@ -121,52 +126,52 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     public abstract boolean snapsVertically();
 
     @Override
-    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
+    protected boolean isPathfindable(BlockState state, PathComputationType type) {
         return true;
     }
 
 
     @Nullable
     @Override
-    public <Q extends BlockEntity> BlockEntityTicker<Q> getTicker(World world, BlockState state, BlockEntityType<Q> type) {
+    public <Q extends BlockEntity> BlockEntityTicker<Q> getTicker(Level world, BlockState state, BlockEntityType<Q> type) {
 
-        return validateTicker(type, BlockEntityInit.PROPS,
+        return createTickerHelper(type, BlockEntityInit.PROPS,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
 
     }
 
-    public List<Box> getClickHitBoxes(BlockState state){
+    public List<AABB> getClickHitBoxes(BlockState state){
         return new ArrayList<>();
     }
 
     @Override
-    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
-        ItemStack itemStack = super.getPickStack(world, pos, state, includeData);
+    public ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state, boolean includeData) {
+        ItemStack itemStack = super.getCloneItemStack(world, pos, state, includeData);
 
-        BlockStateComponent component = BlockStateComponent.DEFAULT;
+        BlockItemStateProperties component = BlockItemStateProperties.EMPTY;
         /*for(Property property : state.getProperties()){
             component = component.with(property, state.get(property));
         }*/
 
-        if(state.contains(COLOR)) {
-            component = component.with(COLOR, state.get(COLOR));
+        if(state.hasProperty(COLOR)) {
+            component = component.with(COLOR, state.getValue(COLOR));
         }
-        itemStack.set(DataComponentTypes.BLOCK_STATE, component);
+        itemStack.set(DataComponents.BLOCK_STATE, component);
 
         return itemStack;
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
         return null;
     }
 
     @Override
-    public boolean isTransparent(BlockState state) { return true;}
+    public boolean propagatesSkylightDown(BlockState state) { return true;}
 
     @Override
-    protected BlockRenderType getRenderType(BlockState state) {
-        return this instanceof GeoPropBlock ? BlockRenderType.INVISIBLE : BlockRenderType.MODEL;
+    protected RenderShape getRenderShape(BlockState state) {
+        return this instanceof GeoPropBlock ? RenderShape.INVISIBLE : RenderShape.MODEL;
     }
 
     public static int getPreviewColor() {
@@ -174,10 +179,10 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
     }
 
     @Environment(EnvType.CLIENT)
-    public static void drawBlockOutlineHook(World world, BlockState blockState, BlockPos pos, MatrixStack matrices, VertexConsumer vertexConsumer, double x, double y, double z, OutlineRenderState state, int color, float lineWidth) {
+    public static void drawBlockOutlineHook(Level world, BlockState blockState, BlockPos pos, PoseStack matrices, VertexConsumer vertexConsumer, double x, double y, double z, BlockOutlineRenderState state, int color, float lineWidth) {
 
         PropBlock.drawingOutline = true;
-        matrices.push();
+        matrices.pushPose();
         float rotation = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getFloat("Rotation").orElse(0.0f) + 180;
 
         double offsetX = ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getDouble("xOffset").orElse(0.0);
@@ -186,25 +191,25 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
 
         if(blockState.getBlock() instanceof WallPropBlock<?>) {
 
-            BlockPos checkPos = pos.offset(blockState.get(WallPropBlock.FACING).getOpposite());
+            BlockPos checkPos = pos.relative(blockState.getValue(WallPropBlock.FACING).getOpposite());
             if(world.getBlockState(checkPos).getBlock() instanceof DiagonalMimicFrame f){
 
-                Direction direction = blockState.get(WallPropBlock.FACING);
+                Direction direction = blockState.getValue(WallPropBlock.FACING);
                 float wallOffsetRotation = 0f;
                 double wallOffsetPositionX = 0f;
                 double wallOffsetPositionZ = 0f;
                 if (f.isDiagonal(world.getBlockState(checkPos))) {
                     BooleanProperty p = f.getDiagonalDirection(world.getBlockState(checkPos));
-                    wallOffsetRotation = blockState.get(WallPropBlock.FACING).getPositiveHorizontalDegrees();
+                    wallOffsetRotation = blockState.getValue(WallPropBlock.FACING).toYRot();
                     if (p == DiagonalMimicFrame.NEXT_MAP.get(direction)) {
                         wallOffsetRotation += 45f;
-                        wallOffsetPositionX = -0.4f * direction.getOffsetX() + -0.075f * direction.getOffsetZ();
-                        wallOffsetPositionZ = -0.4f * direction.getOffsetZ() + 0.125f * direction.getOffsetX();
+                        wallOffsetPositionX = -0.4f * direction.getStepX() + -0.075f * direction.getStepZ();
+                        wallOffsetPositionZ = -0.4f * direction.getStepZ() + 0.125f * direction.getStepX();
                     }
-                    if (p == DiagonalMimicFrame.NEXT_MAP.get(direction.rotateYCounterclockwise())) {
+                    if (p == DiagonalMimicFrame.NEXT_MAP.get(direction.getCounterClockWise())) {
                         wallOffsetRotation += -45f;
-                        wallOffsetPositionX = -0.4f * direction.getOffsetX() + 0.075f * direction.getOffsetZ();
-                        wallOffsetPositionZ = -0.4f * direction.getOffsetZ() + -0.125f * direction.getOffsetX();
+                        wallOffsetPositionX = -0.4f * direction.getStepX() + 0.075f * direction.getStepZ();
+                        wallOffsetPositionZ = -0.4f * direction.getStepZ() + -0.125f * direction.getStepX();
                     }
                     rotation = wallOffsetRotation;
                     offsetX += wallOffsetPositionX;
@@ -212,7 +217,7 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
                 }
             }
             else{
-                rotation += blockState.get(WallPropBlock.FACING).getPositiveHorizontalDegrees() + 180;
+                rotation += blockState.getValue(WallPropBlock.FACING).toYRot() + 180;
             }
         }
 
@@ -223,16 +228,16 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
         matrices.translate(offsetX + posX - x, offsetY + posY - y, offsetZ + posZ - z);
 
         //matrices.translate(-cameraX,-cameraY,-cameraZ);
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-rotation));
+        matrices.mulPose(Axis.YP.rotationDegrees(-rotation));
         matrices.translate(-0.5f, -1, -0.5f);
         if(blockState.getBlock() instanceof WallPropBlock<?>) {
             matrices.translate(0, 0.5f, 0);
         }
 
-        VertexRendering.drawOutline(
+        ShapeRenderer.renderShape(
                 matrices,
                 vertexConsumer,
-                blockState.getBlock().getDefaultState().getOutlineShape(world, pos),
+                blockState.getBlock().defaultBlockState().getShape(world, pos),
                 0,
                 0,
                 0,
@@ -241,7 +246,7 @@ public abstract class PropBlock<T extends Enum<T> & ColorEnumInterface & StringI
 
         );
 
-        matrices.pop();
+        matrices.popPose();
         PropBlock.drawingOutline = false;
     }
 }

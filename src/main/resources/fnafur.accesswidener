@@ -1,43 +1,43 @@
 accessWidener v2 named
 # Methods
-accessible method net/minecraft/client/render/GameRenderer setPostProcessor (Lnet/minecraft/util/Identifier;)V
+accessible method net/minecraft/client/renderer/GameRenderer setPostEffect (Lnet/minecraft/resources/Identifier;)V
 # accessible method net/minecraft/client/render/model/UnbakedModel getTransformation ()Lnet/minecraft/client/render/model/json/ModelTransformation;
 
 # Classes
-transitive-accessible class net/minecraft/client/texture/AtlasManager$Entry
-transitive-extendable class net/minecraft/client/texture/AtlasManager$Entry
-extendable class net/minecraft/client/render/block/BlockModelRenderer$AmbientOcclusionCalculator
+transitive-accessible class net/minecraft/client/resources/model/AtlasManager$AtlasEntry
+transitive-extendable class net/minecraft/client/resources/model/AtlasManager$AtlasEntry
+extendable class net/minecraft/client/renderer/block/ModelBlockRenderer$AmbientOcclusionRenderStorage
 # transitive-accessible class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
 # transitive-accessible class net/minecraft/client/render/RenderPhase$Texture
 # transitive-accessible class net/minecraft/client/render/RenderPhase$Target
 # transitive-accessible class net/minecraft/client/render/RenderPhase$ShaderProgram
-transitive-accessible field net/minecraft/client/sound/SoundManager soundSystem Lnet/minecraft/client/sound/SoundSystem;
-accessible field net/minecraft/client/sound/SoundSystem sources Ljava/util/Map;
-accessible class net/minecraft/entity/FallingBlockEntity
+transitive-accessible field net/minecraft/client/sounds/SoundManager soundEngine Lnet/minecraft/client/sounds/SoundEngine;
+accessible field net/minecraft/client/sounds/SoundEngine instanceToChannel Ljava/util/Map;
+accessible class net/minecraft/world/entity/item/FallingBlockEntity
 
-accessible field net/minecraft/entity/ai/pathing/EntityNavigation nearPathStartPos Z
-accessible method net/minecraft/entity/ai/pathing/EntityNavigation resetNodeAndStop ()V
-accessible field net/minecraft/entity/ai/pathing/EntityNavigation speed D
+accessible field net/minecraft/world/entity/ai/navigation/PathNavigation isStuck Z
+accessible method net/minecraft/world/entity/ai/navigation/PathNavigation timeoutPath ()V
+accessible field net/minecraft/world/entity/ai/navigation/PathNavigation speedModifier D
 
-accessible field net/minecraft/client/model/ModelPart$Quad direction Lorg/joml/Vector3fc;
-accessible field net/minecraft/client/model/ModelPart$Quad vertices [Lnet/minecraft/client/model/ModelPart$Vertex;
-accessible field net/minecraft/client/model/ModelPart$Vertex u F
-accessible field net/minecraft/client/model/ModelPart$Vertex v F
-accessible field net/minecraft/client/model/ModelPart cuboids Ljava/util/List;
-accessible method net/minecraft/client/render/item/HeldItemRenderer renderArmHoldingItem (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;IFFLnet/minecraft/util/Arm;)V
-accessible method net/minecraft/client/render/item/HeldItemRenderer swingArm (FLnet/minecraft/client/util/math/MatrixStack;ILnet/minecraft/util/Arm;)V
-accessible method net/minecraft/client/render/item/HeldItemRenderer renderArm (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;ILnet/minecraft/util/Arm;)V
-accessible field net/minecraft/client/gui/screen/ingame/CreativeInventoryScreen$CreativeSlot slot Lnet/minecraft/screen/slot/Slot;
-accessible class net/minecraft/client/gui/screen/ingame/CreativeInventoryScreen$CreativeSlot
-accessible field net/minecraft/entity/LivingEntity equipment Lnet/minecraft/entity/EntityEquipment;
-accessible method net/minecraft/entity/LivingEntity getEquipSound (Lnet/minecraft/entity/EquipmentSlot;Lnet/minecraft/item/ItemStack;Lnet/minecraft/component/type/EquippableComponent;)Lnet/minecraft/registry/entry/RegistryEntry;
-accessible method net/minecraft/screen/ScreenHandler addSlot (Lnet/minecraft/screen/slot/Slot;)Lnet/minecraft/screen/slot/Slot;
+accessible field net/minecraft/client/model/geom/ModelPart$Polygon normal Lorg/joml/Vector3fc;
+accessible field net/minecraft/client/model/geom/ModelPart$Polygon vertices [Lnet/minecraft/client/model/geom/ModelPart$Vertex;
+accessible field net/minecraft/client/model/geom/ModelPart$Vertex u F
+accessible field net/minecraft/client/model/geom/ModelPart$Vertex v F
+accessible field net/minecraft/client/model/geom/ModelPart cubes Ljava/util/List;
+accessible method net/minecraft/client/renderer/ItemInHandRenderer renderPlayerArm (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;IFFLnet/minecraft/world/entity/HumanoidArm;)V
+accessible method net/minecraft/client/renderer/ItemInHandRenderer swingArm (FLcom/mojang/blaze3d/vertex/PoseStack;ILnet/minecraft/world/entity/HumanoidArm;)V
+accessible method net/minecraft/client/renderer/ItemInHandRenderer renderMapHand (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;ILnet/minecraft/world/entity/HumanoidArm;)V
+accessible field net/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen$SlotWrapper target Lnet/minecraft/world/inventory/Slot;
+accessible class net/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen$SlotWrapper
+accessible field net/minecraft/world/entity/LivingEntity equipment Lnet/minecraft/world/entity/EntityEquipment;
+accessible method net/minecraft/world/entity/LivingEntity getEquipSound (Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/equipment/Equippable;)Lnet/minecraft/core/Holder;
+accessible method net/minecraft/world/inventory/AbstractContainerMenu addSlot (Lnet/minecraft/world/inventory/Slot;)Lnet/minecraft/world/inventory/Slot;
 # transitive-accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;ILnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
 # transitive-accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
 # transitive-accessible method net/minecraft/client/render/RenderLayer of (Lnet/minecraft/client/render/RenderPhase$ShaderProgram;)Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
-transitive-accessible method net/minecraft/client/render/GameRenderer getFov (Lnet/minecraft/client/render/Camera;FZ)F
-transitive-accessible method net/minecraft/client/render/Camera setRotation (FF)V
-accessible method net/minecraft/client/render/WorldRenderer drawBlockOutline (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;DDDLnet/minecraft/client/render/state/OutlineRenderState;IF)V
+transitive-accessible method net/minecraft/client/renderer/GameRenderer getFov (Lnet/minecraft/client/Camera;FZ)F
+transitive-accessible method net/minecraft/client/Camera setRotation (FF)V
+accessible method net/minecraft/client/renderer/LevelRenderer renderHitOutline (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;DDDLnet/minecraft/client/renderer/state/BlockOutlineRenderState;IF)V
 # transitive-accessible field net/minecraft/client/render/RenderPhase ENTITY_TRANSLUCENT_PROGRAM Lnet/minecraft/client/render/RenderPhase$ShaderProgram;
 # transitive-accessible field net/minecraft/client/render/RenderPhase TRANSLUCENT_TRANSPARENCY Lnet/minecraft/client/render/RenderPhase$Transparency;
 # transitive-accessible field net/minecraft/client/render/RenderPhase DISABLE_CULLING Lnet/minecraft/client/render/RenderPhase$Cull;
@@ -46,12 +46,12 @@ accessible method net/minecraft/client/render/WorldRenderer drawBlockOutline (Ln
 # transitive-accessible field net/minecraft/client/render/RenderPhase SOLID_PROGRAM Lnet/minecraft/client/render/RenderPhase$ShaderProgram;
 # transitive-accessible field net/minecraft/client/render/RenderPhase MIPMAP_BLOCK_ATLAS_TEXTURE Lnet/minecraft/client/render/RenderPhase$Texture;
 
-transitive-accessible field net/minecraft/client/render/WorldRenderer capturedFrustum Lnet/minecraft/client/render/Frustum;
-transitive-accessible field net/minecraft/client/render/Camera pos Lnet/minecraft/util/math/Vec3d;
+transitive-accessible field net/minecraft/client/renderer/LevelRenderer capturedFrustum Lnet/minecraft/client/renderer/culling/Frustum;
+transitive-accessible field net/minecraft/client/Camera position Lnet/minecraft/world/phys/Vec3;
 
 transitive-accessible field com/mojang/blaze3d/systems/RenderSystem modelViewStack Lorg/joml/Matrix4fStack;
 transitive-mutable field com/mojang/blaze3d/systems/RenderSystem modelViewStack Lorg/joml/Matrix4fStack;
 
-accessible method net/minecraft/client/render/entity/feature/HeadFeatureRenderer getRenderLayer (Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;Lnet/minecraft/block/SkullBlock$SkullType;)Lnet/minecraft/client/render/RenderLayer;
-accessible field net/minecraft/client/render/block/BlockRenderManager spriteHolder Lnet/minecraft/client/texture/SpriteHolder;
-transitive-accessible method net/minecraft/client/gui/screen/ingame/HandledScreen onMouseClick (Lnet/minecraft/screen/slot/Slot;Lnet/minecraft/screen/slot/SlotActionType;)V
+accessible method net/minecraft/client/renderer/entity/layers/CustomHeadLayer resolveSkullRenderType (Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lnet/minecraft/world/level/block/SkullBlock$Type;)Lnet/minecraft/client/renderer/rendertype/RenderType;
+accessible field net/minecraft/client/renderer/block/BlockRenderDispatcher materials Lnet/minecraft/client/resources/model/MaterialSet;
+transitive-accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen onMouseClickAction (Lnet/minecraft/world/inventory/Slot;Lnet/minecraft/world/inventory/ClickType;)V

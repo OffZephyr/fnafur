@@ -1,19 +1,20 @@
 package net.zephyr.fnafur.blocks.props.floor_props.chairs;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
@@ -28,37 +29,37 @@ public class StarPlasticChair extends FloorPropBlock<DefaultPropColorEnum> imple
     private Identifier texture;
     private Identifier model;
     private Identifier animations;
-    public StarPlasticChair(Settings settings) {
+    public StarPlasticChair(Properties settings) {
         super(settings);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GeoPropBlockEntity(pos, state, this);
     }
 
     @Override
-    public @Nullable BlockEntityTicker<GeoPropBlockEntity> getTicker(World world, BlockState state, BlockEntityType type) {
-        return validateTicker(type, BlockEntityInit.GEO_PROPS,
+    public @Nullable BlockEntityTicker<GeoPropBlockEntity> getTicker(Level world, BlockState state, BlockEntityType type) {
+        return createTickerHelper(type, BlockEntityInit.GEO_PROPS,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
     }
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.fullCube();
-        return drawingOutline ? shape : VoxelShapes.fullCube();
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.block();
+        return drawingOutline ? shape : Shapes.block();
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if(!isUsed(world, pos) && player.getMainHandStack().isEmpty()){
-            if(player.getEntityPos().distanceTo(hit.getPos()) < 1.25f) {
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        if(!isUsed(world, pos) && player.getMainHandItem().isEmpty()){
+            if(player.position().distanceTo(hit.getLocation()) < 1.25f) {
                 player.startRiding(sit(player, pos));
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return super.onUse(state, world, pos, player, hit);
+        return super.useWithoutItem(state, world, pos, player, hit);
     }
 
     @Override
@@ -98,12 +99,12 @@ public class StarPlasticChair extends FloorPropBlock<DefaultPropColorEnum> imple
     }
 
     @Override
-    public float getSittingOffset(World world, BlockPos pos) {
+    public float getSittingOffset(Level world, BlockPos pos) {
         return 0.1f;
     }
 
     @Override
-    public float getSittingHeight(World world, BlockPos pos) {
+    public float getSittingHeight(Level world, BlockPos pos) {
         return 0;
     }
 }

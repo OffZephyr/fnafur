@@ -1,21 +1,22 @@
 package net.zephyr.fnafur.blocks.utility_blocks.animatronics.workbench;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.entity.ai.pathing.NavigationType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.init.ScreensInit;
@@ -26,28 +27,28 @@ import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
-    public WorkbenchBlock(Settings settings) {
+    public WorkbenchBlock(Properties settings) {
         super(settings);
-        setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
+        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        VoxelShape shape = VoxelShapes.empty();
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = Shapes.empty();
 
-        switch (state.get(FACING).getAxis()){
-            default -> shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(-0.5f, 0f, 0f, 1.5f, 1.9f, 1f)));
+        switch (state.getValue(FACING).getAxis()){
+            default -> shape = Shapes.or(shape, Shapes.create(new AABB(-0.5f, 0f, 0f, 1.5f, 1.9f, 1f)));
             //case Direction.Axis.Z -> shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0f, 0f, -0.5f, 1f, 1.9f, 1.5f)));
         }
 
-        return drawingOutline ? shape : VoxelShapes.fullCube();
+        return drawingOutline ? shape : Shapes.block();
 
         //return VoxelShapes.fullCube();
     }
 
     @Override
-    protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
-        return VoxelShapes.fullCube();
+    protected VoxelShape getInteractionShape(BlockState state, BlockGetter world, BlockPos pos) {
+        return Shapes.block();
     }
 
     @Override
@@ -56,38 +57,38 @@ public class WorkbenchBlock extends FloorPropBlock<DefaultPropColorEnum> {
     }
 
     @Override
-    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 
-        if(stack.isEmpty() || stack.isOf(PropInit.COSMO_GIFT.asItem())) {
-            if (!world.isClient()) {
-                NbtCompound nbt2 = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().copy();
-                if (stack.isOf(PropInit.COSMO_GIFT.asItem())) {
-                    NbtCompound nbt = ItemUtil.getNbt(stack);
+        if(stack.isEmpty() || stack.is(PropInit.COSMO_GIFT.asItem())) {
+            if (!world.isClientSide()) {
+                CompoundTag nbt2 = ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().copy();
+                if (stack.is(PropInit.COSMO_GIFT.asItem())) {
+                    CompoundTag nbt = ItemUtil.getNbt(stack);
 
-                    if (nbt.isEmpty()) return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+                    if (nbt.isEmpty()) return super.useItemOn(stack, state, world, pos, player, hand, hit);
 
                     nbt2.put("GiftData", nbt);
-                    stack.decrement(1);
+                    stack.shrink(1);
                 }
                 GoopyNetworkingUtils.setScreen(player, ScreensInit.WORKBENCH, nbt2, pos);
             }
         }
-        return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
+        return super.useItemOn(stack, state, world, pos, player, hand, hit);
     }
 
     @Override
-    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
+    protected boolean isPathfindable(BlockState state, PathComputationType type) {
         return false;
     }
 
-    public static void spawnItem(World world, BlockPos pos, String chara, String alt, String eyes){
+    public static void spawnItem(Level world, BlockPos pos, String chara, String alt, String eyes){
         ItemStack stack = new ItemStack(ItemInit.ANIMATRONIC_SUIT);
-        NbtCompound nbt = new NbtCompound();
+        CompoundTag nbt = new CompoundTag();
         nbt.putString("chara", chara);
         nbt.putString("alt", alt);
         nbt.putString("eyes", eyes);
         ItemUtil.setNbt(stack, nbt);
-        dropStack(world, pos, Direction.UP, stack);
+        popResourceFromFace(world, pos, Direction.UP, stack);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.init.item_init;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemConvertible;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.ItemLike;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.creative_menu.ItemCategoriesManager;
 import net.zephyr.fnafur.client.gui.screens.creative_menu.ItemCategory;

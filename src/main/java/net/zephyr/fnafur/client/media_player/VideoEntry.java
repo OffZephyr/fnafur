@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.client.media_player;
 
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.resources.Identifier;
 
 public class VideoEntry {
     Identifier ID;

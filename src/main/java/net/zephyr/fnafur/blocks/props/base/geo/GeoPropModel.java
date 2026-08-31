@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.blocks.props.base.geo;
 
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
@@ -23,8 +23,8 @@ public class GeoPropModel<T extends GeoPropBlockEntity> extends GeoModel<T> {
 
     @Override
     public Identifier getAnimationResource(T animatable) {
-        if(animatable != null && animatable.getWorld() != null)
-            return animatable.getAnimations(animatable.getWorld());
+        if(animatable != null && animatable.getLevel() != null)
+            return animatable.getAnimations(animatable.getLevel());
         return null;
     }
 }

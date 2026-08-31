@@ -1,25 +1,26 @@
 package net.zephyr.fnafur.blocks.props.floor_props.cutouts;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import org.jetbrains.annotations.Nullable;
 
 public class SeriousCutout extends FloorPropBlock<SeriousCutoutColors> {
-    public SeriousCutout(Settings settings) {
+    public SeriousCutout(Properties settings) {
         super(settings);
     }
 
@@ -29,44 +30,44 @@ public class SeriousCutout extends FloorPropBlock<SeriousCutoutColors> {
     }
 
     @Override
-    protected void onStateReplaced(BlockState state, ServerWorld world, BlockPos pos, boolean moved) {
-        if(state.get(COLOR_PROPERTY()).getPlace() != null){
-            world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), state.get(COLOR_PROPERTY()).getPlace(), SoundCategory.BLOCKS, 1f, 1f);
+    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
+        if(state.getValue(COLOR_PROPERTY()).getPlace() != null){
+            world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), state.getValue(COLOR_PROPERTY()).getPlace(), SoundSource.BLOCKS, 1f, 1f);
         }
-        super.onStateReplaced(state, world, pos, moved);
+        super.affectNeighborsAfterRemoval(state, world, pos, moved);
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if(player.getMainHandStack().isEmpty()){
-            if(state.get(COLOR_PROPERTY()).getSound() != null){
-                world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), state.get(COLOR_PROPERTY()).getSound(), SoundCategory.BLOCKS, 1f, 1f);
-                return ActionResult.SUCCESS;
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        if(player.getMainHandItem().isEmpty()){
+            if(state.getValue(COLOR_PROPERTY()).getSound() != null){
+                world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), state.getValue(COLOR_PROPERTY()).getSound(), SoundSource.BLOCKS, 1f, 1f);
+                return InteractionResult.SUCCESS;
             }
         }
-        return super.onUse(state, world, pos, player, hit);
+        return super.useWithoutItem(state, world, pos, player, hit);
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
 
-        if(state.get(COLOR_PROPERTY()).getPlace() != null){
-            world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), state.get(COLOR_PROPERTY()).getPlace(), SoundCategory.BLOCKS, 1f, 1f);
+        if(state.getValue(COLOR_PROPERTY()).getPlace() != null){
+            world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), state.getValue(COLOR_PROPERTY()).getPlace(), SoundSource.BLOCKS, 1f, 1f);
         }
 
-        super.onPlaced(world, pos, state, placer, itemStack);
+        super.setPlacedBy(world, pos, state, placer, itemStack);
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.union(shape, VoxelShapes.cuboid(new Box(0, 0, 0, 1, 2, 1)));
-        return drawingOutline ? shape : VoxelShapes.fullCube();
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.or(shape, Shapes.create(new AABB(0, 0, 0, 1, 2, 1)));
+        return drawingOutline ? shape : Shapes.block();
     }
 
     @Override
-    protected VoxelShape getRaycastShape(BlockState state, BlockView world, BlockPos pos) {
-        return VoxelShapes.fullCube();
+    protected VoxelShape getInteractionShape(BlockState state, BlockGetter world, BlockPos pos) {
+        return Shapes.block();
     }
     @Override
     public boolean rotates() {

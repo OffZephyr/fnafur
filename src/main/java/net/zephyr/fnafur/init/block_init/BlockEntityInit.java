@@ -3,15 +3,15 @@ package net.zephyr.fnafur.init.block_init;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.entity.ai.pathing.PathNodeType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.curtain.CurtainBlockEntity;
 import net.zephyr.fnafur.blocks.energy.blocks.generators.GeneratorBlockEntity;
@@ -52,37 +52,37 @@ public class BlockEntityInit {
 
     public static void registerBlockEntities() {
         CPU_CONFIG_PANEL =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "cpu_config_panel"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "cpu_config_panel"),
                         FabricBlockEntityTypeBuilder.create(CpuConfigPanelBlockEntity::new,
                                 BlockInit.CPU_CONFIG_PANEL
                         ).build());
         TRIGGER_BLOCK =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "trigger_block"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "trigger_block"),
                         FabricBlockEntityTypeBuilder.create(TriggerBlockEntity::new,
                                 BlockInit.TRIGGER_BLOCK
                         ).build());
         CHIP_READER =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "chip_reader"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "chip_reader"),
                         FabricBlockEntityTypeBuilder.create(ChipReaderBlockEntity::new,
                                 BlockInit.CHIP_READER).build());
         SERVER_MONITOR =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "server_monitor"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "server_monitor"),
                         FabricBlockEntityTypeBuilder.create(ServerMonitorBlockEntity::new,
                                 BlockInit.SERVER_MONITOR).build());
         FOG_BLOCK =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "fog_block"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "fog_block"),
                         FabricBlockEntityTypeBuilder.create(FogBlockEntity::new,
                                 BlockInit.FOG_BLOCK).build());
 
         TILE_DOOR =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "tile_door"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "tile_door"),
                         FabricBlockEntityTypeBuilder.create(TileDoorBlockEntity::new,
                                 BlockInit.GARAGE_DOOR,
                                 BlockInit.HEAVY_DOOR,
                                 BlockInit.WARNING_HEAVY_DOOR
                         ).build());
         PROPS =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "props"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "props"),
                         FabricBlockEntityTypeBuilder.create(PropBlockEntity::new,
                                 BlockInit.WORKBENCH,
 
@@ -144,22 +144,22 @@ public class BlockEntityInit {
                                 PropInit.BEPH_PLUSHIE
                         ).build());
         OFFICE_BUTTONS =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "office_buttons"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "office_buttons"),
                         FabricBlockEntityTypeBuilder.create(OfficeButtonsBlockEntity::new,
                                 PropInit.OFFICE_BUTTONS
                         ).build());
         SIMPLE_PROP_ENERGY_SWITCH =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "energy_switch_prop"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "energy_switch_prop"),
                         FabricBlockEntityTypeBuilder.create(SimpleEnergySwitchPropBlockEntity::new,
                                 PropInit.LIGHT_SWITCH
                         ).build());
         SIMPLE_PROP_ENERGY_TARGET =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "energy_target_prop"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "energy_target_prop"),
                         FabricBlockEntityTypeBuilder.create(SimpleEnergyTargetPropBlockEntity::new,
                                 BlockInit.REDSTONE_CONVERTER
                         ).build());
         GEO_PROPS =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo_props"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "geo_props"),
                         FabricBlockEntityTypeBuilder.create(GeoPropBlockEntity::new,
                                 PropInit.FNAF_1_DESK,
                                 PropInit.FLYING_V_GUITAR,
@@ -170,19 +170,19 @@ public class BlockEntityInit {
                                 PropInit.FILING_CABINET
                         ).build());
         GEO_CLOCK_PROP =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "clock_geo_props"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "clock_geo_props"),
                         FabricBlockEntityTypeBuilder.create(GeoClockPropBlockEntity::new,
                                 PropInit.WOODEN_CLOCK
                         ).build());
 
         GALAXY_GEO_PROPS =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "galaxy_geo_props"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "galaxy_geo_props"),
                         FabricBlockEntityTypeBuilder.create(GalaxyLayerGeoPropEntity::new,
                                 PropInit.COSMO_GIFT
                         ).build());
 
         STICKER_BLOCK =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "sticker_block"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "sticker_block"),
                         FabricBlockEntityTypeBuilder.create(StickerBlockEntity::new,
                                 BlockInit.STICKER_BLOCK,
                                 BlockInit.MIMIC_FRAME_DIAGONAL,
@@ -192,28 +192,28 @@ public class BlockEntityInit {
                         ).build());
 
         GENERATOR      =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "generator"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "generator"),
                         FabricBlockEntityTypeBuilder.create(GeneratorBlockEntity::new,
                                 BlockInit.FUEL_GENERATOR
                         ).build());
         //battery.blocks
         ENERGY      =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "energy"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "energy"),
                         FabricBlockEntityTypeBuilder.create(BaseEnergyBlockEntity::new,
                                 BlockInit.ELECTRICAL_LOCKER,
                                 BlockInit.CIRCUIT_BREAKER
                         ).build());
         CURTAIN      =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "curtain"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "curtain"),
                         FabricBlockEntityTypeBuilder.create(CurtainBlockEntity::new,
                                 BlockInit.CURTAIN_TEST
                         ).build());
 
 
         for (Block block : PropInit.AVOIDED_PROPS) {
-            LandPathNodeTypesRegistry.register(block, PathNodeType.COCOA, PathNodeType.COCOA);
-            LandPathNodeTypesRegistry.register(block, PathNodeType.DANGER_FIRE, PathNodeType.DANGER_FIRE);
-            LandPathNodeTypesRegistry.register(block, PathNodeType.DANGER_OTHER, PathNodeType.DANGER_OTHER);
+            LandPathNodeTypesRegistry.register(block, PathType.COCOA, PathType.COCOA);
+            LandPathNodeTypesRegistry.register(block, PathType.DANGER_FIRE, PathType.DANGER_FIRE);
+            LandPathNodeTypesRegistry.register(block, PathType.DANGER_OTHER, PathType.DANGER_OTHER);
         }
 
         FnafUniverseRebuilt.LOGGER.info("Registering Block Entities for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());

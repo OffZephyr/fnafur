@@ -1,32 +1,33 @@
 package net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.zephyr.fnafur.util.ItemUtil;
 
 public class TileDoorItem extends BlockItem {
-    public TileDoorItem(Block block, Settings settings) {
+    public TileDoorItem(Block block, Properties settings) {
         super(block, settings);
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        NbtCompound nbt = ItemUtil.getNbt(context.getStack());
+    public InteractionResult useOn(UseOnContext context) {
+        CompoundTag nbt = ItemUtil.getNbt(context.getItemInHand());
 
         if(!nbt.contains("pos1")){
-            nbt.putLong("pos1", context.getBlockPos().offset(context.getSide()).asLong());
-            ItemUtil.setNbt(context.getStack(), nbt.copy());
-            return ActionResult.SUCCESS;
+            nbt.putLong("pos1", context.getClickedPos().relative(context.getClickedFace()).asLong());
+            ItemUtil.setNbt(context.getItemInHand(), nbt.copy());
+            return InteractionResult.SUCCESS;
         }
         else{
-            nbt.putLong("pos2", context.getBlockPos().offset(context.getSide()).asLong());
-            ItemUtil.setNbt(context.getStack(), nbt.copy());
-            return super.useOnBlock(context);
+            nbt.putLong("pos2", context.getClickedPos().relative(context.getClickedFace()).asLong());
+            ItemUtil.setNbt(context.getItemInHand(), nbt.copy());
+            return super.useOn(context);
         }
     }
 
@@ -48,7 +49,7 @@ public class TileDoorItem extends BlockItem {
     }
 
     public static Vec3i getDistance(Vec3i pos1, Vec3i pos2, Direction facing){
-        Vec3i direction = facing.getVector();
+        Vec3i direction = facing.getUnitVec3i();
 
         Vec3i minPos = getMin(pos1, pos2);
         Vec3i maxPos = getMax(pos1, pos2);

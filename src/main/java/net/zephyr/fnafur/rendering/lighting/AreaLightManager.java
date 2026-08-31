@@ -4,8 +4,8 @@ import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.systems.CommandEncoder;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -49,17 +49,17 @@ public class AreaLightManager {
     public static List<AreaLightInstance> getVisibleLights() {
         List<AreaLightInstance> out = new ArrayList<>();
 
-        Vec3d cam = MinecraftClient.getInstance().gameRenderer.getCamera().pos;
+        Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().position;
 
         for (AreaLightInstance L : WORLD_LIGHTS) {
-            Vec3d rel = L.getPosition().subtract(cam);
+            Vec3 rel = L.getPosition().subtract(cam);
             if (rel.length() < MAX_DISTANCE) {
                 out.add(L);
                 if (out.size() >= MAX_LIGHTS) break;
             }
         }
 
-        out.sort(Comparator.comparingDouble(l -> l.getPosition().squaredDistanceTo(cam)));
+        out.sort(Comparator.comparingDouble(l -> l.getPosition().distanceToSqr(cam)));
         return out;
     }
 
@@ -84,8 +84,8 @@ public class AreaLightManager {
     }
 
     private static void packLight(ByteBuffer b, AreaLightInstance L) {
-        Vec3d cam = MinecraftClient.getInstance().gameRenderer.getCamera().pos;
-        Vec3d p = L.getPosition().subtract(cam);
+        Vec3 cam = Minecraft.getInstance().gameRenderer.getMainCamera().position;
+        Vec3 p = L.getPosition().subtract(cam);
 
         Vector3f dir = new Vector3f(L.getDirection()).normalize();
         Vector3f col = new Vector3f(L.getColor());

@@ -1,10 +1,10 @@
 package net.zephyr.fnafur.init.block_init;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.geo_doors.GeoDoorEntity;
 import net.zephyr.fnafur.blocks.props.other.pirates_cove.curtain.PiratesCoveCurtainBlockEntity;
@@ -17,19 +17,19 @@ public class GeoBlockEntityInit {
     public static void registerBlockEntities() {
 
         PIRATES_COVE_STAGE =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "pirates_cove_stage"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "pirates_cove_stage"),
                         FabricBlockEntityTypeBuilder.create(PiratesCoveStageBlockEntity::new,
                                 GeoBlockInit.PIRATES_COVE_STAGE
                         ).build());
 
         PIRATES_COVE_CURTAIN =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "pirates_cove_curtain"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "pirates_cove_curtain"),
                         FabricBlockEntityTypeBuilder.create(PiratesCoveCurtainBlockEntity::new,
                                 GeoBlockInit.PIRATES_COVE_CURTAIN
                         ).build());
 
         GEO_DOOR =
-                Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "geo_door"),
+                Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "geo_door"),
                         FabricBlockEntityTypeBuilder.create(GeoDoorEntity::new,
                                 GeoBlockInit.SMALL_GRAY_DOOR,
                                 GeoBlockInit.TWO_FIVE_RED_DOOR,

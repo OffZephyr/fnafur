@@ -1,14 +1,14 @@
 package net.zephyr.fnafur.entity.animatronic.goals;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.pathing.Path;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.util.Mth;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 
@@ -31,13 +31,13 @@ public class AnimMeleeAttackGoal extends Goal {
     public AnimMeleeAttackGoal(AnimatronicEntity mob, boolean pauseWhenMobIdle) {
         this.mob = mob;
         this.pauseWhenMobIdle = pauseWhenMobIdle;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean canStart() {
+    public boolean canUse() {
         if(!mob.isAggressive()) return false;
-        long l = this.mob.getEntityWorld().getTime();
+        long l = this.mob.level().getGameTime();
         if (l - this.lastUpdateTime < 20L) {
             return false;
         } else {
@@ -49,13 +49,13 @@ public class AnimMeleeAttackGoal extends Goal {
                 return false;
             } else {
                 this.path = getPath(livingEntity, 0);
-                return this.path != null ? true : this.mob.isInAttackRange(livingEntity);
+                return this.path != null ? true : this.mob.isWithinMeleeAttackRange(livingEntity);
             }
         }
     }
 
     @Override
-    public boolean shouldContinue() {
+    public boolean canContinueToUse() {
         if(!mob.isAggressive()) return false;
 
         LivingEntity livingEntity = this.mob.getTarget();
@@ -64,20 +64,20 @@ public class AnimMeleeAttackGoal extends Goal {
         } else if (!livingEntity.isAlive()) {
             return false;
         } else if (!this.pauseWhenMobIdle) {
-            return !this.mob.getNavigation().isIdle();
+            return !this.mob.getNavigation().isDone();
         } else {
-            return !this.mob.isInPositionTargetRange(livingEntity.getBlockPos())
+            return !this.mob.isWithinHome(livingEntity.blockPosition())
                     ? false
-                    : !(livingEntity instanceof PlayerEntity playerEntity && (playerEntity.isSpectator() || playerEntity.isCreative()));
+                    : !(livingEntity instanceof Player playerEntity && (playerEntity.isSpectator() || playerEntity.isCreative()));
         }
     }
 
     @Override
     public void start() {
         if(this.mob.canSee() && !mob.isFrozen){
-            this.mob.getNavigation().startMovingAlong(this.path, getSpeed());
+            this.mob.getNavigation().moveTo(this.path, getSpeed());
         }
-        this.mob.setAttacking(true);
+        this.mob.setAggressive(true);
         this.updateCountdownTicks = 0;
         this.cooldown = 0;
     }
@@ -85,16 +85,16 @@ public class AnimMeleeAttackGoal extends Goal {
     @Override
     public void stop() {
         LivingEntity livingEntity = this.mob.getTarget();
-        if (!EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
+        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
             this.mob.setTarget(null);
         }
 
-        this.mob.setAttacking(false);
+        this.mob.setAggressive(false);
         this.mob.getNavigation().stop();
     }
 
     @Override
-    public boolean shouldRunEveryTick() {
+    public boolean requiresUpdateEveryTick() {
         return true;
     }
 
@@ -103,38 +103,38 @@ public class AnimMeleeAttackGoal extends Goal {
         LivingEntity livingEntity = this.mob.getTarget();
         if (livingEntity != null) {
             if(this.mob.canSee()) { //  && !this.mob.isFrozen
-                if(this.mob.lastSeenPosition == null || this.mob.getVisibilityCache().canSee(livingEntity)){
-                    this.mob.getLookControl().lookAt(livingEntity, 45.0F, 30.0F);
+                if(this.mob.lastSeenPosition == null || this.mob.getSensing().hasLineOfSight(livingEntity)){
+                    this.mob.getLookControl().setLookAt(livingEntity, 45.0F, 30.0F);
                 }
                 else{
-                    this.mob.getLookControl().lookAt(this.mob.lastSeenPosition.getX(), this.mob.getEyeY(), this.mob.lastSeenPosition.getZ(), 30.0F, 30.0F);
+                    this.mob.getLookControl().setLookAt(this.mob.lastSeenPosition.getX(), this.mob.getEyeY(), this.mob.lastSeenPosition.getZ(), 30.0F, 30.0F);
 
                 }
             }
             this.updateCountdownTicks = Math.max(this.updateCountdownTicks - 1, 0);
-            if ((this.pauseWhenMobIdle || this.mob.getVisibilityCache().canSee(livingEntity))
+            if ((this.pauseWhenMobIdle || this.mob.getSensing().hasLineOfSight(livingEntity))
                     && this.updateCountdownTicks <= 0
                     && (
                     this.targetX == 0.0 && this.targetY == 0.0 && this.targetZ == 0.0
-                            || livingEntity.squaredDistanceTo(this.targetX, this.targetY, this.targetZ) >= 1.0
+                            || livingEntity.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1.0
                             || this.mob.getRandom().nextFloat() < 0.05F
             )) {
                 this.targetX = livingEntity.getX();
                 this.targetY = livingEntity.getY();
                 this.targetZ = livingEntity.getZ();
                 this.updateCountdownTicks = 4 + this.mob.getRandom().nextInt(7);
-                double d = this.mob.squaredDistanceTo(livingEntity);
+                double d = this.mob.distanceToSqr(livingEntity);
                 if (d > 1024.0) {
                     this.updateCountdownTicks += 10;
                 } else if (d > 256.0) {
                     this.updateCountdownTicks += 5;
                 }
 
-                if (!mob.isFrozen && !(this.mob.canSee() && this.mob.getNavigation().startMovingAlong(getPath(livingEntity, 0), getSpeed()))) {
+                if (!mob.isFrozen && !(this.mob.canSee() && this.mob.getNavigation().moveTo(getPath(livingEntity, 0), getSpeed()))) {
                     this.updateCountdownTicks += 15;
                 }
 
-                this.updateCountdownTicks = this.getTickCount(this.updateCountdownTicks);
+                this.updateCountdownTicks = this.adjustedTickDelay(this.updateCountdownTicks);
             }
 
             this.cooldown = Math.max(this.cooldown - 1, 0);
@@ -145,13 +145,13 @@ public class AnimMeleeAttackGoal extends Goal {
     protected void attack(LivingEntity target) {
         if (this.canAttack(target)) {
             this.resetCooldown();
-            this.mob.swingHand(Hand.MAIN_HAND);
-            this.mob.tryAttack(getServerWorld(this.mob), target);
+            this.mob.swing(InteractionHand.MAIN_HAND);
+            this.mob.doHurtTarget(getServerLevel(this.mob), target);
         }
     }
 
     protected void resetCooldown() {
-        this.cooldown = this.getTickCount(20);
+        this.cooldown = this.adjustedTickDelay(20);
     }
 
     protected boolean isCooledDown() {
@@ -159,7 +159,7 @@ public class AnimMeleeAttackGoal extends Goal {
     }
 
     protected boolean canAttack(LivingEntity target) {
-        return this.isCooledDown() && this.mob.isInAttackRange(target) && this.mob.getVisibilityCache().canSee(target);
+        return this.isCooledDown() && this.mob.isWithinMeleeAttackRange(target) && this.mob.getSensing().hasLineOfSight(target);
     }
 
     protected int getCooldown() {
@@ -167,13 +167,13 @@ public class AnimMeleeAttackGoal extends Goal {
     }
 
     protected int getMaxCooldown() {
-        return this.getTickCount(20);
+        return this.adjustedTickDelay(20);
     }
 
     Path getPath(LivingEntity livingEntity, int distance){
-        Path path = this.mob.getNavigation().findPathTo(livingEntity, 0);
-        if(this.mob.lastSeenPosition != null && !this.mob.getVisibilityCache().canSee(livingEntity)){
-            path = this.mob.getNavigation().findPathTo(this.mob.lastSeenPosition, distance);
+        Path path = this.mob.getNavigation().createPath(livingEntity, 0);
+        if(this.mob.lastSeenPosition != null && !this.mob.getSensing().hasLineOfSight(livingEntity)){
+            path = this.mob.getNavigation().createPath(this.mob.lastSeenPosition, distance);
         }
         return path;
     }
@@ -183,6 +183,6 @@ public class AnimMeleeAttackGoal extends Goal {
         int speed = mob.runningSpeed();
         int maxSpeed = CpuData.MovementSpeed.getDefaultValue() + CpuData.RunSpeed.getDefaultValue();
 
-        return MathHelper.lerp(((float) speed / maxSpeed), 0f, 2.5f)/1.5f;
+        return Mth.lerp(((float) speed / maxSpeed), 0f, 2.5f)/1.5f;
     }
 }

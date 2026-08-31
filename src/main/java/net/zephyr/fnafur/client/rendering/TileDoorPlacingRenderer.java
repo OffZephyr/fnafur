@@ -1,47 +1,50 @@
 package net.zephyr.fnafur.client.rendering;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.block.BlockModelRenderer;
-import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.zephyr.fnafur.blocks.dynamic.tiling.VerticalTileStates;
 import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorBlock;
 import net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors.TileDoorItem;
 import net.zephyr.fnafur.util.ItemUtil;
 
 public class TileDoorPlacingRenderer {
-    public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
+    public void render(PoseStack matrices, MultiBufferSource.BufferSource vertexConsumers, double cameraX, double cameraY, double cameraZ) {
 
-        MinecraftClient client = MinecraftClient.getInstance();
-        PlayerEntity player = client.player;
+        Minecraft client = Minecraft.getInstance();
+        Player player = client.player;
 
-        if(!player.getAbilities().allowModifyWorld) return;
+        if(!player.getAbilities().mayBuild) return;
 
-        matrices.push();
+        matrices.pushPose();
         matrices.translate(-cameraX, -cameraY, -cameraZ);
-        ItemStack stack = player.getMainHandStack();
+        ItemStack stack = player.getMainHandItem();
         if(stack.getItem() instanceof TileDoorItem item){
-            NbtCompound nbt = ItemUtil.getNbt(stack);
+            CompoundTag nbt = ItemUtil.getNbt(stack);
             if(nbt.contains("pos1")){
-                BlockState state = item.getBlock().getDefaultState();
+                BlockState state = item.getBlock().defaultBlockState();
 
-                state = state.with(TileDoorBlock.FACING, player.getHorizontalFacing().getAxis().getNegativeDirection());
+                state = state.setValue(TileDoorBlock.FACING, player.getDirection().getAxis().getNegative());
 
 
-                BlockPos pos1 = BlockPos.fromLong(nbt.getLong("pos1").get());
-                if(client.crosshairTarget instanceof BlockHitResult hitResult){
-                    BlockPos pos2 = hitResult.getBlockPos().offset(hitResult.getSide());
+                BlockPos pos1 = BlockPos.of(nbt.getLong("pos1").get());
+                if(client.hitResult instanceof BlockHitResult hitResult){
+                    BlockPos pos2 = hitResult.getBlockPos().relative(hitResult.getDirection());
 
-                    Direction dir = player.getHorizontalFacing().getOpposite();
+                    Direction dir = player.getDirection().getOpposite();
                     Vec3i distance = TileDoorItem.getDistance(pos1, pos2, dir);
 
                     int h = Math.clamp(Math.max(distance.getX(), distance.getZ()), 0, 16);
@@ -53,29 +56,29 @@ public class TileDoorPlacingRenderer {
                     for(int x = 0; x <= h; x++){
                         for(int y = 0; y <= v; y++){
 
-                            boolean right = state.get(TileDoorBlock.FACING).getAxis() == Direction.Axis.Z ? x != h : x != 0;
-                            boolean left = state.get(TileDoorBlock.FACING).getAxis() == Direction.Axis.Z ? x != 0 : x != h;
-                            state = state.with(TileDoorBlock.TYPE, VerticalTileStates.get(y != v, right, y != 0, left));
+                            boolean right = state.getValue(TileDoorBlock.FACING).getAxis() == Direction.Axis.Z ? x != h : x != 0;
+                            boolean left = state.getValue(TileDoorBlock.FACING).getAxis() == Direction.Axis.Z ? x != 0 : x != h;
+                            state = state.setValue(TileDoorBlock.TYPE, VerticalTileStates.get(y != v, right, y != 0, left));
 
-                            BlockStateModel model = client.getBakedModelManager().getBlockModels().getModel(state);
+                            BlockStateModel model = client.getModelManager().getBlockModelShaper().getBlockModel(state);
 
                             Vec3i pos = new Vec3i(
-                                    h == distance.getZ() ? pos1.getX() : minPos.getX() + (Math.abs(dir.getVector().getZ()) * x),
+                                    h == distance.getZ() ? pos1.getX() : minPos.getX() + (Math.abs(dir.getUnitVec3i().getZ()) * x),
                                     pos1.getY() + y,
-                                    h == distance.getX() ? pos1.getZ() :minPos.getZ() + (Math.abs(dir.getVector().getX()) * x)
+                                    h == distance.getX() ? pos1.getZ() :minPos.getZ() + (Math.abs(dir.getUnitVec3i().getX()) * x)
                             );
 
-                            matrices.push();
+                            matrices.pushPose();
                             matrices.translate(pos.getX(), pos.getY(), pos.getZ());
 
-                            BlockModelRenderer.render(matrices.peek(), vertexConsumers.getBuffer(BlockRenderLayers.getMovingBlockLayer(state)), model, 1, 1, 1, LightmapTextureManager.MAX_BLOCK_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV);
+                            ModelBlockRenderer.renderModel(matrices.last(), vertexConsumers.getBuffer(ItemBlockRenderTypes.getMovingBlockRenderType(state)), model, 1, 1, 1, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY);
 
-                            matrices.pop();
+                            matrices.popPose();
                         }
                     }
                 }
             }
         }
-        matrices.pop();
+        matrices.popPose();
     }
 }

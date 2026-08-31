@@ -1,6 +1,6 @@
 package net.zephyr.fnafur.util;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 public class EasingMathUtil {
     public static double easeInSine(double index){

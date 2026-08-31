@@ -4,23 +4,29 @@ import com.mojang.logging.LogUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.world.CreateWorldScreen;
-import net.minecraft.client.gui.widget.*;
-import net.minecraft.resource.DataConfiguration;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
-import net.minecraft.util.Colors;
-import net.minecraft.util.path.PathUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
+import net.minecraft.world.level.WorldDataConfiguration;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.CommonColors;
+import net.minecraft.util.FileUtil;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.GameMode;
-import net.minecraft.world.gen.GeneratorOptions;
-import net.minecraft.world.gen.WorldPresets;
-import net.minecraft.world.level.LevelInfo;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.levelgen.WorldOptions;
+import net.minecraft.world.level.levelgen.presets.WorldPresets;
+import net.minecraft.world.level.LevelSettings;
 import net.minecraft.world.level.storage.LevelSummary;
-import net.minecraft.world.rule.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.zephyr.fnafur.client.gui.screens.main_menu.FnafTitleScreen;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -32,78 +38,78 @@ import java.util.function.Consumer;
 @Environment(EnvType.CLIENT)
 public class FnafSelectWorldScreen extends Screen {
     private static final Logger LOGGER = LogUtils.getLogger();
-    public static final GeneratorOptions DEBUG_GENERATOR_OPTIONS = new GeneratorOptions((long)"test1".hashCode(), true, false);
+    public static final WorldOptions DEBUG_GENERATOR_OPTIONS = new WorldOptions((long)"test1".hashCode(), true, false);
     protected final FnafTitleScreen parent;
-    private final ThreePartsLayoutWidget layout;
+    private final HeaderAndFooterLayout layout;
     @Nullable
-    private ButtonWidget deleteButton;
+    private Button deleteButton;
     @Nullable
-    private ButtonWidget selectButton;
+    private Button selectButton;
     @Nullable
-    private ButtonWidget editButton;
+    private Button editButton;
     @Nullable
-    private ButtonWidget recreateButton;
+    private Button recreateButton;
     @Nullable
-    protected TextFieldWidget searchBox;
+    protected EditBox searchBox;
     @Nullable
     private FnafWorldListWidget levelList;
 
     public FnafSelectWorldScreen(FnafTitleScreen parent) {
-        super(Text.translatable("selectWorld.title"));
-        Objects.requireNonNull(MinecraftClient.getInstance().textRenderer);
-        this.layout = new ThreePartsLayoutWidget(this, 8 + 9 + 8 + 20 + 4, 60);
+        super(Component.translatable("selectWorld.title"));
+        Objects.requireNonNull(Minecraft.getInstance().font);
+        this.layout = new HeaderAndFooterLayout(this, 8 + 9 + 8 + 20 + 4, 60);
         this.parent = parent;
     }
 
     @Override
     protected void init() {
-        DirectionalLayoutWidget directionalLayoutWidget = (DirectionalLayoutWidget)this.layout.addHeader(DirectionalLayoutWidget.vertical().spacing(4));
-        directionalLayoutWidget.getMainPositioner().alignHorizontalCenter();
-        directionalLayoutWidget.add(new TextWidget(this.title, this.textRenderer));
-        DirectionalLayoutWidget directionalLayoutWidget2 = (DirectionalLayoutWidget)directionalLayoutWidget.add(DirectionalLayoutWidget.horizontal().spacing(4));
-        if (SharedConstants.WORLD_RECREATE) {
-            directionalLayoutWidget2.add(this.createDebugRecreateButton());
+        LinearLayout directionalLayoutWidget = (LinearLayout)this.layout.addToHeader(LinearLayout.vertical().spacing(4));
+        directionalLayoutWidget.defaultCellSetting().alignHorizontallyCenter();
+        directionalLayoutWidget.addChild(new StringWidget(this.title, this.font));
+        LinearLayout directionalLayoutWidget2 = (LinearLayout)directionalLayoutWidget.addChild(LinearLayout.horizontal().spacing(4));
+        if (SharedConstants.DEBUG_WORLD_RECREATE) {
+            directionalLayoutWidget2.addChild(this.createDebugRecreateButton());
         }
 
-        this.searchBox = (TextFieldWidget)directionalLayoutWidget2.add(new TextFieldWidget(this.textRenderer, this.width / 2 - 100, 22, 200, 20, this.searchBox, Text.translatable("selectWorld.search")));
-        this.searchBox.setChangedListener((search) -> {
+        this.searchBox = (EditBox)directionalLayoutWidget2.addChild(new EditBox(this.font, this.width / 2 - 100, 22, 200, 20, this.searchBox, Component.translatable("selectWorld.search")));
+        this.searchBox.setResponder((search) -> {
             if (this.levelList != null) {
                 this.levelList.setSearch(search);
             }
 
         });
         Consumer<FnafWorldListWidget.WorldEntry> consumer = FnafWorldListWidget.WorldEntry::play;
-        this.levelList = (FnafWorldListWidget)this.layout.addBody((new FnafWorldListWidget.Builder(this.client, this)).width(this.width).height(this.layout.getContentHeight()).search(this.searchBox.getText()).predecessor(this.levelList).selectionCallback(this::worldSelected).confirmationCallback(consumer).toWidget());
+        this.levelList = (FnafWorldListWidget)this.layout.addToContents((new FnafWorldListWidget.Builder(this.minecraft, this)).width(this.width).height(this.layout.getContentHeight()).search(this.searchBox.getValue()).predecessor(this.levelList).selectionCallback(this::worldSelected).confirmationCallback(consumer).toWidget());
         this.addButtons(consumer, this.levelList);
-        this.layout.forEachChild((child) -> {
-            ClickableWidget var10000 = (ClickableWidget)this.addDrawableChild(child);
+        this.layout.visitWidgets((child) -> {
+            AbstractWidget var10000 = (AbstractWidget)this.addRenderableWidget(child);
         });
-        this.refreshWidgetPositions();
+        this.repositionElements();
         this.worldSelected((LevelSummary)null);
     }
 
     private void addButtons(Consumer<FnafWorldListWidget.WorldEntry> playAction, FnafWorldListWidget levelList) {
-        GridWidget gridWidget = (GridWidget)this.layout.addFooter((new GridWidget()).setColumnSpacing(8).setRowSpacing(4));
-        gridWidget.getMainPositioner().alignHorizontalCenter();
-        GridWidget.Adder adder = gridWidget.createAdder(4);
-        this.selectButton = (ButtonWidget)adder.add(ButtonWidget.builder(LevelSummary.SELECT_WORLD_TEXT, (button) -> levelList.getSelectedAsOptional().ifPresent(playAction)).build(), 2);
-        adder.add(ButtonWidget.builder(Text.translatable("selectWorld.create"), (button) -> {
-            MinecraftClient var10000 = this.client;
+        GridLayout gridWidget = (GridLayout)this.layout.addToFooter((new GridLayout()).columnSpacing(8).rowSpacing(4));
+        gridWidget.defaultCellSetting().alignHorizontallyCenter();
+        GridLayout.RowHelper adder = gridWidget.createRowHelper(4);
+        this.selectButton = (Button)adder.addChild(Button.builder(LevelSummary.PLAY_WORLD, (button) -> levelList.getSelectedAsOptional().ifPresent(playAction)).build(), 2);
+        adder.addChild(Button.builder(Component.translatable("selectWorld.create"), (button) -> {
+            Minecraft var10000 = this.minecraft;
             Objects.requireNonNull(levelList);
-            CreateWorldScreen.show(var10000, levelList::refresh);
+            CreateWorldScreen.openFresh(var10000, levelList::refresh);
         }).build(), 2);
-        this.editButton = (ButtonWidget)adder.add(ButtonWidget.builder(Text.translatable("selectWorld.edit"), (button) -> levelList.getSelectedAsOptional().ifPresent(FnafWorldListWidget.WorldEntry::edit)).width(71).build());
-        this.deleteButton = (ButtonWidget)adder.add(ButtonWidget.builder(Text.translatable("selectWorld.delete"), (button) -> levelList.getSelectedAsOptional().ifPresent(FnafWorldListWidget.WorldEntry::deleteIfConfirmed)).width(71).build());
-        this.recreateButton = (ButtonWidget)adder.add(ButtonWidget.builder(Text.translatable("selectWorld.recreate"), (button) -> levelList.getSelectedAsOptional().ifPresent(FnafWorldListWidget.WorldEntry::recreate)).width(71).build());
-        adder.add(ButtonWidget.builder(ScreenTexts.BACK, (button) -> {
+        this.editButton = (Button)adder.addChild(Button.builder(Component.translatable("selectWorld.edit"), (button) -> levelList.getSelectedAsOptional().ifPresent(FnafWorldListWidget.WorldEntry::edit)).width(71).build());
+        this.deleteButton = (Button)adder.addChild(Button.builder(Component.translatable("selectWorld.delete"), (button) -> levelList.getSelectedAsOptional().ifPresent(FnafWorldListWidget.WorldEntry::deleteIfConfirmed)).width(71).build());
+        this.recreateButton = (Button)adder.addChild(Button.builder(Component.translatable("selectWorld.recreate"), (button) -> levelList.getSelectedAsOptional().ifPresent(FnafWorldListWidget.WorldEntry::recreate)).width(71).build());
+        adder.addChild(Button.builder(CommonComponents.GUI_BACK, (button) -> {
             parent.moveBackgroundScroll(0.5f, 200, -75f);
             parent.fadeBackground(0.75f, 0.65f);
-            this.client.setScreen(this.parent);
+            this.minecraft.setScreen(this.parent);
         }).width(71).build());
     }
 
-    private ButtonWidget createDebugRecreateButton() {
-        return ButtonWidget.builder(Text.literal("DEBUG recreate"), (button) -> {
+    private Button createDebugRecreateButton() {
+        return Button.builder(Component.literal("DEBUG recreate"), (button) -> {
             try {
                 String string = "DEBUG world";
                 if (this.levelList != null && !this.levelList.children().isEmpty()) {
@@ -116,9 +122,9 @@ public class FnafSelectWorldScreen extends Screen {
                     }
                 }
 
-                LevelInfo levelInfo = new LevelInfo("DEBUG world", GameMode.SPECTATOR, false, Difficulty.NORMAL, true, new GameRules(DataConfiguration.SAFE_MODE.enabledFeatures()), DataConfiguration.SAFE_MODE);
-                String string2 = PathUtil.getNextUniqueName(this.client.getLevelStorage().getSavesDirectory(), "DEBUG world", "");
-                this.client.createIntegratedServerLoader().createAndStart(string2, levelInfo, DEBUG_GENERATOR_OPTIONS, WorldPresets::createDemoOptions, this);
+                LevelSettings levelInfo = new LevelSettings("DEBUG world", GameType.SPECTATOR, false, Difficulty.NORMAL, true, new GameRules(WorldDataConfiguration.DEFAULT.enabledFeatures()), WorldDataConfiguration.DEFAULT);
+                String string2 = FileUtil.findAvailableName(this.minecraft.getLevelSource().getBaseDir(), "DEBUG world", "");
+                this.minecraft.createWorldOpenFlows().createFreshLevel(string2, levelInfo, DEBUG_GENERATOR_OPTIONS, WorldPresets::createNormalWorldDimensions, this);
             } catch (IOException iOException) {
                 LOGGER.error("Failed to recreate the debug world", iOException);
             }
@@ -127,7 +133,7 @@ public class FnafSelectWorldScreen extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
         parent.width = this.width;
         parent.height = this.height;
         parent.renderBackgroundRender(context, mouseX, mouseY, deltaTicks);
@@ -141,12 +147,12 @@ public class FnafSelectWorldScreen extends Screen {
         super.tick();
     }
 
-    protected void refreshWidgetPositions() {
+    protected void repositionElements() {
         if (this.levelList != null) {
-            this.levelList.position(this.width, this.layout);
+            this.levelList.updateSize(this.width, this.layout);
         }
 
-        this.layout.refreshPositions();
+        this.layout.arrangeElements();
     }
 
     protected void setInitialFocus() {
@@ -156,24 +162,24 @@ public class FnafSelectWorldScreen extends Screen {
 
     }
 
-    public void close() {
-        this.client.setScreen(this.parent);
+    public void onClose() {
+        this.minecraft.setScreen(this.parent);
     }
 
     public void worldSelected(@Nullable LevelSummary levelSummary) {
         if (this.selectButton != null && this.editButton != null && this.recreateButton != null && this.deleteButton != null) {
             if (levelSummary == null) {
-                this.selectButton.setMessage(LevelSummary.SELECT_WORLD_TEXT);
+                this.selectButton.setMessage(LevelSummary.PLAY_WORLD);
                 this.selectButton.active = false;
                 this.editButton.active = false;
                 this.recreateButton.active = false;
                 this.deleteButton.active = false;
             } else {
-                this.selectButton.setMessage(levelSummary.getSelectWorldText());
-                this.selectButton.active = levelSummary.isSelectable();
-                this.editButton.active = levelSummary.isEditable();
-                this.recreateButton.active = levelSummary.isRecreatable();
-                this.deleteButton.active = levelSummary.isDeletable();
+                this.selectButton.setMessage(levelSummary.primaryActionMessage());
+                this.selectButton.active = levelSummary.primaryActionActive();
+                this.editButton.active = levelSummary.canEdit();
+                this.recreateButton.active = levelSummary.canRecreate();
+                this.deleteButton.active = levelSummary.canDelete();
             }
 
         }

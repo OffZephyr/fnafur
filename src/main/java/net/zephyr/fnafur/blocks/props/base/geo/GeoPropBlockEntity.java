@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.blocks.props.base.geo;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.props.base.PropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -40,12 +40,12 @@ public class GeoPropBlockEntity extends PropBlockEntity implements GeoBlockEntit
     }
 
     private PlayState mainController(AnimationTest<GeoAnimatable> geoAnimatableAnimationTest) {
-        BlockState state = getWorld().getBlockState(getPos());
+        BlockState state = getLevel().getBlockState(getBlockPos());
 
-        if(block.getCurrentAnimation(state, getPos()) != null){
-            state = state.getBlock() instanceof GeoPropBlock ? state : ((Block)block).getDefaultState();
+        if(block.getCurrentAnimation(state, getBlockPos()) != null){
+            state = state.getBlock() instanceof GeoPropBlock ? state : ((Block)block).defaultBlockState();
 
-            return geoAnimatableAnimationTest.setAndContinue(block.getCurrentAnimation(state, getPos()));
+            return geoAnimatableAnimationTest.setAndContinue(block.getCurrentAnimation(state, getBlockPos()));
         }
         return PlayState.CONTINUE;
     }
@@ -54,30 +54,30 @@ public class GeoPropBlockEntity extends PropBlockEntity implements GeoBlockEntit
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
     }
-    public Identifier getTexture(World world){
-        BlockState state = world.getBlockState(getPos()).isOf(this.getCachedState().getBlock()) ? world.getBlockState(getPos()) : getCachedState();
-        if(block != null) return block.getTexture(state, getPos());
-        return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getTexture(state, getPos());
+    public Identifier getTexture(Level world){
+        BlockState state = world.getBlockState(getBlockPos()).is(this.getBlockState().getBlock()) ? world.getBlockState(getBlockPos()) : getBlockState();
+        if(block != null) return block.getTexture(state, getBlockPos());
+        return ((GeoPropBlock)world.getBlockState(getBlockPos()).getBlock()).getTexture(state, getBlockPos());
     }
-    public Identifier getReRenderTexture(World world){
+    public Identifier getReRenderTexture(Level world){
         return getTexture(world);
     }
-    public Identifier getModel(World world){
-        BlockState state = world.getBlockState(getPos()).isOf(this.getCachedState().getBlock()) ? world.getBlockState(getPos()) : getCachedState();
-        if(block != null) return block.getModel(state, getPos());
-        return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getModel(state, getPos());
+    public Identifier getModel(Level world){
+        BlockState state = world.getBlockState(getBlockPos()).is(this.getBlockState().getBlock()) ? world.getBlockState(getBlockPos()) : getBlockState();
+        if(block != null) return block.getModel(state, getBlockPos());
+        return ((GeoPropBlock)world.getBlockState(getBlockPos()).getBlock()).getModel(state, getBlockPos());
     }
-    public Identifier getReRenderModel(World world){
+    public Identifier getReRenderModel(Level world){
         return getModel(world);
     }
-    public Identifier getAnimations(World world){
-        BlockState state = world.getBlockState(getPos()).isOf(this.getCachedState().getBlock()) ? world.getBlockState(getPos()) : getCachedState();
-        if(block != null) return block.getAnimations(state, getPos());
-        return ((GeoPropBlock)world.getBlockState(getPos()).getBlock()).getAnimations(state, getPos());
+    public Identifier getAnimations(Level world){
+        BlockState state = world.getBlockState(getBlockPos()).is(this.getBlockState().getBlock()) ? world.getBlockState(getBlockPos()) : getBlockState();
+        if(block != null) return block.getAnimations(state, getBlockPos());
+        return ((GeoPropBlock)world.getBlockState(getBlockPos()).getBlock()).getAnimations(state, getBlockPos());
     }
-    public RenderLayer getRenderType(){
-        BlockState state = world.getBlockState(getPos()).isOf(this.getCachedState().getBlock()) ? world.getBlockState(getPos()) : getCachedState();
-        if(block != null) return block.getRenderType(state, getPos());
+    public RenderType getRenderType(){
+        BlockState state = level.getBlockState(getBlockPos()).is(this.getBlockState().getBlock()) ? level.getBlockState(getBlockPos()) : getBlockState();
+        if(block != null) return block.getRenderType(state, getBlockPos());
         return null;
     }
 }

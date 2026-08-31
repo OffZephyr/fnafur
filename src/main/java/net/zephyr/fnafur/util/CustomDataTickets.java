@@ -1,10 +1,10 @@
 package net.zephyr.fnafur.util;
 
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.Direction;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
@@ -26,7 +26,7 @@ public class CustomDataTickets {
     public static final DataTicket<Boolean> EYE_NONE = DataTicket.create("eye_none", Boolean.class);
     public static final DataTicket<Boolean> EYES_GLOW = DataTicket.create("eyes_glow", Boolean.class);
     public static final DataTicket<CpuData.GlowingEyesMode> EYES_GLOW_MODE = DataTicket.create("eyes_glow_mode", CpuData.GlowingEyesMode.class);
-    public static final DataTicket<RenderLayer> RENDER_LAYER = DataTicket.create("render_layer", RenderLayer.class);
+    public static final DataTicket<RenderType> RENDER_LAYER = DataTicket.create("render_layer", RenderType.class);
     public static final DataTicket<Identifier> DOOR_WINDOW_TEXTURE = DataTicket.create("door_window_texture", Identifier.class);
     public static final DataTicket<Float> CLOCK_DELTA_MINUTE = DataTicket.create("clock_delta_minute", Float.class);
     public static final DataTicket<Float> CLOCK_DELTA_HOUR = DataTicket.create("clock_delta_hour", Float.class);
@@ -37,7 +37,7 @@ public class CustomDataTickets {
     public static final DataTicket<Boolean> IS_ENTITY_PREVIEW = DataTicket.create("is_entity_preview", Boolean.class);
     public static final DataTicket<Boolean> IS_VISIBLE = DataTicket.create("is_visible", Boolean.class);
     public static final DataTicket<Direction> FACING = DataTicket.create("facing", Direction.class);
-    public static final DataTicket<MatrixStack.Entry> ENTITY_RENDER_MATRIX_ENTRY = DataTicket.create("entity_matrix_entry", MatrixStack.Entry.class);
+    public static final DataTicket<PoseStack.Pose> ENTITY_RENDER_MATRIX_ENTRY = DataTicket.create("entity_matrix_entry", PoseStack.Pose.class);
 
 
     public static final DataTicket<Float> FORCED_HEAD_YAW = DataTicket.create("forced_head_yaw", Float.class);

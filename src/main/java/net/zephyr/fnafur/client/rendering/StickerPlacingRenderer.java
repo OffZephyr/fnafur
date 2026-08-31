@@ -1,17 +1,22 @@
 package net.zephyr.fnafur.client.rendering;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.*;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.shape.VoxelShapes;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.ShapeRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
 import net.zephyr.fnafur.rendering.decals.DecalInstance;
@@ -24,33 +29,33 @@ public class StickerPlacingRenderer {
     double height = 0;
     int block_height = 0;
 
-        public void render(MatrixStack matrices, VertexConsumerProvider.Immediate vertexConsumers, double cameraX, double cameraY, double cameraZ) {
+        public void render(PoseStack matrices, MultiBufferSource.BufferSource vertexConsumers, double cameraX, double cameraY, double cameraZ) {
 
-            MinecraftClient client = MinecraftClient.getInstance();
+            Minecraft client = Minecraft.getInstance();
             DecalManager.PREVIEW_DECAL = null;
-            ClientPlayerEntity player = client.player;
-            if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof DecalBookItem) {
-                DecalInit.Decal decal = DecalBookItem.getDecal(player.getMainHandStack());
-                HitResult blockHit = client.crosshairTarget;
+            LocalPlayer player = client.player;
+            if (player.getMainHandItem() != null && player.getMainHandItem().getItem() instanceof DecalBookItem) {
+                DecalInit.Decal decal = DecalBookItem.getDecal(player.getMainHandItem());
+                HitResult blockHit = client.hitResult;
                 if (decal != null && blockHit.getType() == HitResult.Type.BLOCK) {
                     BlockPos pos = ((BlockHitResult) blockHit).getBlockPos();
-                    Direction direction = ((BlockHitResult) blockHit).getSide();
-                    BlockState checkedState = client.world.getBlockState(pos);
-                    if (checkedState.isSideSolidFullSquare(client.world, pos, direction) || checkedState.getBlock() instanceof DiagonalMimicFrame) {
+                    Direction direction = ((BlockHitResult) blockHit).getDirection();
+                    BlockState checkedState = client.level.getBlockState(pos);
+                    if (checkedState.isFaceSturdy(client.level, pos, direction) || checkedState.getBlock() instanceof DiagonalMimicFrame) {
 
-                        if (decal.isWallSticker() && (((BlockHitResult) blockHit).getSide() == Direction.UP || ((BlockHitResult) blockHit).getSide() == Direction.DOWN)) {
+                        if (decal.isWallSticker() && (((BlockHitResult) blockHit).getDirection() == Direction.UP || ((BlockHitResult) blockHit).getDirection() == Direction.DOWN)) {
                             return;
                         }
 
-                        Vec3d hitPos = blockHit.getPos();
+                        Vec3 hitPos = blockHit.getLocation();
 
-                        Vec3d stickerPos = DecalBookItem.stickerPos(pos, hitPos, direction, decal, player, client.world);
+                        Vec3 stickerPos = DecalBookItem.stickerPos(pos, hitPos, direction, decal, player, client.level);
 
                         float offsetX = (float) (direction.getAxis() == Direction.Axis.X ? stickerPos.z : stickerPos.x);
                         float offsetY = (float) stickerPos.y;
 
                         if(decal.getDirection() == DecalInit.Movable.VERTICAL){
-                            if(MinecraftClient.getInstance().options.useKey.isPressed()){
+                            if(Minecraft.getInstance().options.keyUse.isDown()){
                                 offsetY = (float) height;
                                 pos = new BlockPos(pos.getX(), block_height, pos.getZ());
                             }
@@ -65,7 +70,7 @@ public class StickerPlacingRenderer {
 
 
                         DecalManager.PREVIEW_DECAL = instance;
-                        matrices.push();
+                        matrices.pushPose();
                         matrices.translate(-cameraX + 0.5f, -cameraY, -cameraZ + 0.5f);
                         //matrices.translate(stickerPos.getX(), stickerPos.getY(), stickerPos.getZ());
                         //matrices.translate(pos.getX(), pos.getY(), pos.getZ());
@@ -78,21 +83,21 @@ public class StickerPlacingRenderer {
                                         0;
                         int num = dirPos % decal.getTextures().length;
                         String path = "textures/" + decal.getTextures()[num].getPath() + ".png";
-                        Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, path);
+                        Identifier identifier = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, path);
 
                         float tWidth = 0.5f;
                         float tHeight = 0.5f;
                         float vWidth = 0.5f;
                         float vHeight = 0.5f;
 
-                        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayers.entityCutout(identifier));
-                        VertexConsumer ourlineVertexConsumer = vertexConsumers.getBuffer(RenderLayers.secondaryBlockOutline());
+                        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderTypes.entityCutout(identifier));
+                        VertexConsumer ourlineVertexConsumer = vertexConsumers.getBuffer(RenderTypes.secondaryBlockOutline());
 
                         if(false) {
-                            VertexRendering.drawOutline(
+                            ShapeRenderer.renderShape(
                                     matrices,
                                     ourlineVertexConsumer,
-                                    VoxelShapes.cuboid(instance.getHitbox()),
+                                    Shapes.create(instance.getHitbox()),
                                     0,
                                     0,
                                     0,
@@ -104,15 +109,15 @@ public class StickerPlacingRenderer {
 
                         if(false) {
                             float y = 0;
-                            Vector3f normal = new Vector3f(direction.getOffsetX(), direction.getOffsetY(), direction.getOffsetZ());
+                            Vector3f normal = new Vector3f(direction.getStepX(), direction.getStepY(), direction.getStepZ());
                             if (checkedState.getBlock() instanceof DiagonalMimicFrame f) {
-                                Direction d = ((BlockHitResult) blockHit).getSide();
+                                Direction d = ((BlockHitResult) blockHit).getDirection();
                                 if (f.isDiagonal(checkedState)) {
                                     if (DiagonalMimicFrame.NEXT_MAP.get(d) == f.getDiagonalDirection(checkedState)) {
                                         y = -1;
                                         normal.rotateY((float) Math.toRadians(45f));
                                     }
-                                    if (DiagonalMimicFrame.NEXT_MAP.get(d.rotateYCounterclockwise()) == f.getDiagonalDirection(checkedState)) {
+                                    if (DiagonalMimicFrame.NEXT_MAP.get(d.getCounterClockWise()) == f.getDiagonalDirection(checkedState)) {
                                         y = -1;
                                         vWidth = -0.5f;
                                         vHeight = -0.5f;
@@ -123,36 +128,36 @@ public class StickerPlacingRenderer {
                                     }
                                 }
                             }
-                            vertexConsumer.vertex(matrices.peek().getPositionMatrix(), -vWidth, y, -vHeight)
-                                    .texture(0.5f - tWidth, 0.5f - tHeight)
-                                    .color(0xFFFFFFFF)
-                                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                                    .overlay(OverlayTexture.DEFAULT_UV)
-                                    .normal(normal.x(), normal.y(), normal.z())
+                            vertexConsumer.addVertex(matrices.last().pose(), -vWidth, y, -vHeight)
+                                    .setUv(0.5f - tWidth, 0.5f - tHeight)
+                                    .setColor(0xFFFFFFFF)
+                                    .setLight(LightTexture.FULL_BRIGHT)
+                                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                                    .setNormal(normal.x(), normal.y(), normal.z())
                             ;
-                            vertexConsumer.vertex(matrices.peek().getPositionMatrix(), -vWidth, y, vHeight)
-                                    .texture(0.5f - tWidth, 0.5f + tHeight)
-                                    .color(0xFFFFFFFF)
-                                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                                    .overlay(OverlayTexture.DEFAULT_UV)
-                                    .normal(normal.x(), normal.y(), normal.z())
+                            vertexConsumer.addVertex(matrices.last().pose(), -vWidth, y, vHeight)
+                                    .setUv(0.5f - tWidth, 0.5f + tHeight)
+                                    .setColor(0xFFFFFFFF)
+                                    .setLight(LightTexture.FULL_BRIGHT)
+                                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                                    .setNormal(normal.x(), normal.y(), normal.z())
                             ;
-                            vertexConsumer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, vHeight)
-                                    .texture(0.5f + tWidth, 0.5f + tHeight)
-                                    .color(0xFFFFFFFF)
-                                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                                    .overlay(OverlayTexture.DEFAULT_UV)
-                                    .normal(normal.x(), normal.y(), normal.z())
+                            vertexConsumer.addVertex(matrices.last().pose(), vWidth, 0.0f, vHeight)
+                                    .setUv(0.5f + tWidth, 0.5f + tHeight)
+                                    .setColor(0xFFFFFFFF)
+                                    .setLight(LightTexture.FULL_BRIGHT)
+                                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                                    .setNormal(normal.x(), normal.y(), normal.z())
                             ;
-                            vertexConsumer.vertex(matrices.peek().getPositionMatrix(), vWidth, 0.0f, -vHeight)
-                                    .texture(0.5f + tWidth, 0.5f - tHeight)
-                                    .color(0xFFFFFFFF)
-                                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                                    .overlay(OverlayTexture.DEFAULT_UV)
-                                    .normal(normal.x(), normal.y(), normal.z())
+                            vertexConsumer.addVertex(matrices.last().pose(), vWidth, 0.0f, -vHeight)
+                                    .setUv(0.5f + tWidth, 0.5f - tHeight)
+                                    .setColor(0xFFFFFFFF)
+                                    .setLight(LightTexture.FULL_BRIGHT)
+                                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                                    .setNormal(normal.x(), normal.y(), normal.z())
                             ;
                         }
-                        matrices.pop();
+                        matrices.popPose();
                     }
                 }
             }

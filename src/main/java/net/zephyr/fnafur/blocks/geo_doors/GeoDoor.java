@@ -1,48 +1,54 @@
 package net.zephyr.fnafur.blocks.geo_doors;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.zephyr.fnafur.init.block_init.GeoBlockEntityInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class GeoDoor extends BlockWithEntity {
-    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
-    public static final BooleanProperty LOCKED = BooleanProperty.of("lock");
-    public static final BooleanProperty OPEN = BooleanProperty.of("open");
-    public static final BooleanProperty MAIN = BooleanProperty.of("main");
+public abstract class GeoDoor extends BaseEntityBlock {
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty LOCKED = BooleanProperty.create("lock");
+    public static final BooleanProperty OPEN = BooleanProperty.create("open");
+    public static final BooleanProperty MAIN = BooleanProperty.create("main");
     private Identifier texture;
     private Identifier windowTexture;
     private Identifier model;
 
-    public GeoDoor(Settings settings) {
+    public GeoDoor(Properties settings) {
         super(settings);
-        setDefaultState(getDefaultState().with(LOCKED, false));
+        registerDefaultState(defaultBlockState().setValue(LOCKED, false));
     }
     public GeoDoor setActualModelTexture(Identifier texture, Identifier windowTexture, Identifier model){
         this.texture = texture;
@@ -61,79 +67,79 @@ public abstract class GeoDoor extends BlockWithEntity {
     }
 
     @Override
-    protected BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.INVISIBLE;
+    protected RenderShape getRenderShape(BlockState state) {
+        return RenderShape.INVISIBLE;
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
         return null;
     }
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GeoDoorEntity(pos, state);
     }
 
     @Override
-    protected BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
-    protected BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(FACING, MAIN, LOCKED, OPEN));
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(FACING, MAIN, LOCKED, OPEN));
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         BlockEntity entity = world.getBlockEntity(pos);
         if(entity instanceof GeoDoorEntity ent) {
-            BlockPos origin = BlockPos.fromLong(((IEntityDataSaver) ent).getPersistentData().getLong("origin").orElse(0L));
+            BlockPos origin = BlockPos.of(((IEntityDataSaver) ent).getPersistentData().getLong("origin").orElse(0L));
             BlockState originState = world.getBlockState(origin);
-            return !(state.contains(OPEN) && state.get(OPEN)) || originState.contains(LOCKED) && originState.get(LOCKED) ? super.getCollisionShape(state, world, pos, context) : VoxelShapes.empty();
+            return !(state.hasProperty(OPEN) && state.getValue(OPEN)) || originState.hasProperty(LOCKED) && originState.getValue(LOCKED) ? super.getCollisionShape(state, world, pos, context) : Shapes.empty();
         }
-        return VoxelShapes.fullCube();
+        return Shapes.block();
     }
 
     @Nullable
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-       Direction facing = ctx.getHorizontalPlayerFacing().getOpposite();
-       if(ctx.getWorld().getBlockState(ctx.getBlockPos().offset(facing.rotateYClockwise())).getBlock() instanceof GeoDoor){
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+       Direction facing = ctx.getHorizontalDirection().getOpposite();
+       if(ctx.getLevel().getBlockState(ctx.getClickedPos().relative(facing.getClockWise())).getBlock() instanceof GeoDoor){
            facing = facing.getOpposite();
        }
-        return this.getDefaultState().with(FACING, facing);
+        return this.defaultBlockState().setValue(FACING, facing);
     }
 
     @Override
-    protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+    protected boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         for(BlockPos pos1 : doorPos(state, pos)){
-            if(!world.getBlockState(pos1).isReplaceable()) return false;
+            if(!world.getBlockState(pos1).canBeReplaced()) return false;
         }
         return true;
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         placeWholeDoor(world, pos, state, doorPos(state, pos));
     }
 
     @Override
-    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         breakWholeDoor(world, pos, state);
-        return super.onBreak(world, pos, state, player);
+        return super.playerWillDestroy(world, pos, state, player);
     }
-    void placeWholeDoor(World world, BlockPos pos, BlockState state, List<BlockPos> door){
+    void placeWholeDoor(Level world, BlockPos pos, BlockState state, List<BlockPos> door){
         for(BlockPos pos1 : door){
             boolean isMain = pos == pos1;
-            world.setBlockState(pos1, state.with(MAIN, isMain));
+            world.setBlockAndUpdate(pos1, state.setValue(MAIN, isMain));
 
             BlockEntity blockEntity = world.getBlockEntity(pos1);
             if(blockEntity instanceof GeoDoorEntity geoDoor) {
@@ -141,16 +147,16 @@ public abstract class GeoDoor extends BlockWithEntity {
             }
         }
     }
-    void breakWholeDoor(World world, BlockPos pos, BlockState state){
+    void breakWholeDoor(Level world, BlockPos pos, BlockState state){
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if(blockEntity instanceof GeoDoorEntity geoDoor) {
-            BlockPos origin = BlockPos.fromLong(((IEntityDataSaver)geoDoor).getPersistentData().getLong("origin").orElse(0L));
+            BlockPos origin = BlockPos.of(((IEntityDataSaver)geoDoor).getPersistentData().getLong("origin").orElse(0L));
             for(BlockPos pos1 : doorPos(state, origin)){
-                world.setBlockState(pos1, Blocks.AIR.getDefaultState());
+                world.setBlockAndUpdate(pos1, Blocks.AIR.defaultBlockState());
             }
         }
     }
     public abstract List<BlockPos> doorPos(BlockState state, BlockPos origin);
 
-    public abstract Box getEntityArea(BlockState state, BlockPos pos);
+    public abstract AABB getEntityArea(BlockState state, BlockPos pos);
 }

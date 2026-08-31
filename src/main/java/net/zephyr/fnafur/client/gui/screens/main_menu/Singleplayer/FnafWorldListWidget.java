@@ -32,53 +32,50 @@ import java.util.function.Consumer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ConfirmScreen;
-import net.minecraft.client.gui.screen.FatalErrorScreen;
-import net.minecraft.client.gui.screen.LoadingDisplay;
-import net.minecraft.client.gui.screen.MessageScreen;
-import net.minecraft.client.gui.screen.NoticeScreen;
-import net.minecraft.client.gui.screen.ProgressScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.world.CreateWorldScreen;
-import net.minecraft.client.gui.screen.world.EditWorldScreen;
-import net.minecraft.client.gui.screen.world.SymlinkWarningScreen;
-import net.minecraft.client.gui.screen.world.WorldIcon;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.client.world.GeneratorOptionsHolder;
-import net.minecraft.nbt.NbtCrashException;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.worldselection.*;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.ConfirmScreen;
+import net.minecraft.client.gui.screens.ErrorScreen;
+import net.minecraft.client.gui.screens.LoadingDotsText;
+import net.minecraft.client.gui.screens.GenericMessageScreen;
+import net.minecraft.client.gui.screens.AlertScreen;
+import net.minecraft.client.gui.screens.ProgressScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.NoticeWithLinkScreen;
+import net.minecraft.client.gui.screens.FaviconTexture;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.nbt.ReportedNbtException;
 import net.minecraft.nbt.NbtException;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.server.integrated.IntegratedServerLoader;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
-import net.minecraft.util.WorldSavePath;
-import net.minecraft.util.crash.CrashReport;
-import net.minecraft.util.path.SymlinkEntry;
-import net.minecraft.util.path.SymlinkValidationException;
-import net.minecraft.world.level.LevelInfo;
-import net.minecraft.world.level.storage.LevelStorage;
+import net.minecraft.world.level.storage.LevelResource;
+import net.minecraft.CrashReport;
+import net.minecraft.world.level.validation.ForbiddenSymlinkInfo;
+import net.minecraft.world.level.validation.ContentValidationException;
+import net.minecraft.world.level.LevelSettings;
+import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.LevelStorageException;
 import net.minecraft.world.level.storage.LevelSummary;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 @Environment(EnvType.CLIENT)
-public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorldListWidget.Entry> {
+public class FnafWorldListWidget extends ObjectSelectionList<FnafWorldListWidget.Entry> {
     public static final DateTimeFormatter DATE_FORMAT;
     static final Identifier ERROR_HIGHLIGHTED_TEXTURE;
     static final Identifier ERROR_TEXTURE;
@@ -89,14 +86,14 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
     static final Identifier JOIN_HIGHLIGHTED_TEXTURE;
     static final Identifier JOIN_TEXTURE;
     static final Logger LOGGER;
-    static final Text FROM_NEWER_VERSION_FIRST_LINE;
-    static final Text FROM_NEWER_VERSION_SECOND_LINE;
-    static final Text SNAPSHOT_FIRST_LINE;
-    static final Text SNAPSHOT_SECOND_LINE;
-    static final Text LOCKED_TEXT;
-    static final Text CONVERSION_TOOLTIP;
-    static final Text INCOMPATIBLE_TOOLTIP;
-    static final Text EXPERIMENTAL_TEXT;
+    static final Component FROM_NEWER_VERSION_FIRST_LINE;
+    static final Component FROM_NEWER_VERSION_SECOND_LINE;
+    static final Component SNAPSHOT_FIRST_LINE;
+    static final Component SNAPSHOT_SECOND_LINE;
+    static final Component LOCKED_TEXT;
+    static final Component CONVERSION_TOOLTIP;
+    static final Component INCOMPATIBLE_TOOLTIP;
+    static final Component EXPERIMENTAL_TEXT;
     private final Screen parent;
     private CompletableFuture<List<LevelSummary>> levelsFuture;
     @Nullable
@@ -110,7 +107,7 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
     @Nullable
     final Consumer<WorldEntry> confirmationCallback;
 
-    FnafWorldListWidget(Screen parent, MinecraftClient client, int width, int height, String search, @Nullable FnafWorldListWidget predecessor, @Nullable Consumer<LevelSummary> selectionCallback, @Nullable Consumer<WorldEntry> confirmationCallback, WorldListType worldListType) {
+    FnafWorldListWidget(Screen parent, Minecraft client, int width, int height, String search, @Nullable FnafWorldListWidget predecessor, @Nullable Consumer<LevelSummary> selectionCallback, @Nullable Consumer<WorldEntry> confirmationCallback, WorldListType worldListType) {
         super(client, width, height, 0, 36);
         this.parent = parent;
         this.loadingEntry = new LoadingEntry(client);
@@ -143,7 +140,7 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
                 }
 
                 this.failedToGetLevels = true;
-                list = list.stream().filter(LevelSummary::isImmediatelyLoadable).toList();
+                list = list.stream().filter(LevelSummary::canUpload).toList();
             }
 
             return list;
@@ -156,7 +153,7 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
         this.levelsFuture = this.loadLevels();
     }
 
-    public void renderWidget(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+    public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
         List<LevelSummary> list = this.tryGet();
         if (list != this.levels) {
             this.show(list);
@@ -170,11 +167,11 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
             if (summaries.isEmpty()) {
                 switch (this.worldListType.ordinal()) {
                     case 0:
-                        CreateWorldScreen.show(this.client, () -> this.client.setScreen((Screen)null));
+                        CreateWorldScreen.openFresh(this.minecraft, () -> this.minecraft.setScreen((Screen)null));
                         break;
                     case 1:
                         this.clearEntries();
-                        this.addEntry(new EmptyListEntry(Text.translatable("mco.upload.select.world.none"), this.parent.getTextRenderer()));
+                        this.addEntry(new EmptyListEntry(Component.translatable("mco.upload.select.world.none"), this.parent.getFont()));
                 }
             } else {
                 this.showSummaries(this.search, summaries);
@@ -193,17 +190,17 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
     }
 
     private CompletableFuture<List<LevelSummary>> loadLevels() {
-        LevelStorage.LevelList levelList;
+        LevelStorageSource.LevelCandidates levelList;
         try {
-            levelList = this.client.getLevelStorage().getLevelList();
+            levelList = this.minecraft.getLevelSource().findLevelCandidates();
         } catch (LevelStorageException levelStorageException) {
             LOGGER.error("Couldn't load level list", levelStorageException);
-            this.showUnableToLoadScreen(levelStorageException.getMessageText());
+            this.showUnableToLoadScreen(levelStorageException.getMessageComponent());
             return CompletableFuture.completedFuture(List.of());
         }
 
-        return this.client.getLevelStorage().loadSummaries(levelList).exceptionally((throwable) -> {
-            this.client.setCrashReportSupplierAndAddDetails(CrashReport.create(throwable, "Couldn't load level list"));
+        return this.minecraft.getLevelSource().loadLevelSummaries(levelList).exceptionally((throwable) -> {
+            this.minecraft.delayCrash(CrashReport.forThrowable(throwable, "Couldn't load level list"));
             return List.of();
         });
     }
@@ -215,7 +212,7 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
 
         for(LevelSummary levelSummary : summaries.stream().filter((summary) -> this.shouldShow(search.toLowerCase(Locale.ROOT), summary)).toList()) {
             WorldEntry worldEntry2 = new WorldEntry(this, levelSummary);
-            if (optional.isPresent() && ((WorldEntry)optional.get()).getLevel().getName().equals(worldEntry2.getLevel().getName())) {
+            if (optional.isPresent() && ((WorldEntry)optional.get()).getLevel().getLevelId().equals(worldEntry2.getLevel().getLevelId())) {
                 worldEntry = worldEntry2;
             }
 
@@ -234,16 +231,16 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
     }
 
     private boolean shouldShow(String search, LevelSummary summary) {
-        return summary.getDisplayName().toLowerCase(Locale.ROOT).contains(search) || summary.getName().toLowerCase(Locale.ROOT).contains(search);
+        return summary.getLevelName().toLowerCase(Locale.ROOT).contains(search) || summary.getLevelId().toLowerCase(Locale.ROOT).contains(search);
     }
 
     private void narrateScreenIfNarrationEnabled() {
-        this.refreshScroll();
-        this.parent.narrateScreenIfNarrationEnabled(true);
+        this.refreshScrollAmount();
+        this.parent.triggerImmediateNarration(true);
     }
 
-    private void showUnableToLoadScreen(Text message) {
-        this.client.setScreen(new FatalErrorScreen(Text.translatable("selectWorld.unable_to_load"), message));
+    private void showUnableToLoadScreen(Component message) {
+        this.minecraft.setScreen(new ErrorScreen(Component.translatable("selectWorld.unable_to_load"), message));
     }
 
     public int getRowWidth() {
@@ -268,7 +265,7 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
     }
 
     public Optional<WorldEntry> getSelectedAsOptional() {
-        Entry entry = (Entry)this.getSelectedOrNull();
+        Entry entry = (Entry)this.getSelected();
         if (entry instanceof WorldEntry worldEntry) {
             return Optional.of(worldEntry);
         } else {
@@ -278,44 +275,44 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
 
     public void refresh() {
         this.load();
-        this.client.setScreen(this.parent);
+        this.minecraft.setScreen(this.parent);
     }
 
     public Screen getParent() {
         return this.parent;
     }
 
-    public void appendClickableNarrations(NarrationMessageBuilder builder) {
+    public void updateWidgetNarration(NarrationElementOutput builder) {
         if (this.children().contains(this.loadingEntry)) {
-            this.loadingEntry.appendNarrations(builder);
+            this.loadingEntry.updateNarration(builder);
         } else {
-            super.appendClickableNarrations(builder);
+            super.updateWidgetNarration(builder);
         }
     }
 
     static {
         DATE_FORMAT = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withZone(ZoneId.systemDefault());
-        ERROR_HIGHLIGHTED_TEXTURE = Identifier.ofVanilla("world_list/error_highlighted");
-        ERROR_TEXTURE = Identifier.ofVanilla("world_list/error");
-        MARKED_JOIN_HIGHLIGHTED_TEXTURE = Identifier.ofVanilla("world_list/marked_join_highlighted");
-        MARKED_JOIN_TEXTURE = Identifier.ofVanilla("world_list/marked_join");
-        WARNING_HIGHLIGHTED_TEXTURE = Identifier.ofVanilla("world_list/warning_highlighted");
-        WARNING_TEXTURE = Identifier.ofVanilla("world_list/warning");
-        JOIN_HIGHLIGHTED_TEXTURE = Identifier.ofVanilla("world_list/join_highlighted");
-        JOIN_TEXTURE = Identifier.ofVanilla("world_list/join");
+        ERROR_HIGHLIGHTED_TEXTURE = Identifier.withDefaultNamespace("world_list/error_highlighted");
+        ERROR_TEXTURE = Identifier.withDefaultNamespace("world_list/error");
+        MARKED_JOIN_HIGHLIGHTED_TEXTURE = Identifier.withDefaultNamespace("world_list/marked_join_highlighted");
+        MARKED_JOIN_TEXTURE = Identifier.withDefaultNamespace("world_list/marked_join");
+        WARNING_HIGHLIGHTED_TEXTURE = Identifier.withDefaultNamespace("world_list/warning_highlighted");
+        WARNING_TEXTURE = Identifier.withDefaultNamespace("world_list/warning");
+        JOIN_HIGHLIGHTED_TEXTURE = Identifier.withDefaultNamespace("world_list/join_highlighted");
+        JOIN_TEXTURE = Identifier.withDefaultNamespace("world_list/join");
         LOGGER = LogUtils.getLogger();
-        FROM_NEWER_VERSION_FIRST_LINE = Text.translatable("selectWorld.tooltip.fromNewerVersion1").formatted(Formatting.RED);
-        FROM_NEWER_VERSION_SECOND_LINE = Text.translatable("selectWorld.tooltip.fromNewerVersion2").formatted(Formatting.RED);
-        SNAPSHOT_FIRST_LINE = Text.translatable("selectWorld.tooltip.snapshot1").formatted(Formatting.GOLD);
-        SNAPSHOT_SECOND_LINE = Text.translatable("selectWorld.tooltip.snapshot2").formatted(Formatting.GOLD);
-        LOCKED_TEXT = Text.translatable("selectWorld.locked").formatted(Formatting.RED);
-        CONVERSION_TOOLTIP = Text.translatable("selectWorld.conversion.tooltip").formatted(Formatting.RED);
-        INCOMPATIBLE_TOOLTIP = Text.translatable("selectWorld.incompatible.tooltip").formatted(Formatting.RED);
-        EXPERIMENTAL_TEXT = Text.translatable("selectWorld.experimental");
+        FROM_NEWER_VERSION_FIRST_LINE = Component.translatable("selectWorld.tooltip.fromNewerVersion1").withStyle(ChatFormatting.RED);
+        FROM_NEWER_VERSION_SECOND_LINE = Component.translatable("selectWorld.tooltip.fromNewerVersion2").withStyle(ChatFormatting.RED);
+        SNAPSHOT_FIRST_LINE = Component.translatable("selectWorld.tooltip.snapshot1").withStyle(ChatFormatting.GOLD);
+        SNAPSHOT_SECOND_LINE = Component.translatable("selectWorld.tooltip.snapshot2").withStyle(ChatFormatting.GOLD);
+        LOCKED_TEXT = Component.translatable("selectWorld.locked").withStyle(ChatFormatting.RED);
+        CONVERSION_TOOLTIP = Component.translatable("selectWorld.conversion.tooltip").withStyle(ChatFormatting.RED);
+        INCOMPATIBLE_TOOLTIP = Component.translatable("selectWorld.incompatible.tooltip").withStyle(ChatFormatting.RED);
+        EXPERIMENTAL_TEXT = Component.translatable("selectWorld.experimental");
     }
 
     @Environment(EnvType.CLIENT)
-    public abstract static class Entry extends AlwaysSelectedEntryListWidget.Entry<Entry> implements AutoCloseable {
+    public abstract static class Entry extends ObjectSelectionList.Entry<FnafWorldListWidget.Entry> implements AutoCloseable {
         public void close() {
         }
 
@@ -327,18 +324,18 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
 
     @Environment(EnvType.CLIENT)
     public static final class EmptyListEntry extends Entry {
-        private final TextWidget widget;
+        private final StringWidget widget;
 
-        public EmptyListEntry(Text text, TextRenderer textRenderer) {
-            this.widget = new TextWidget(text, textRenderer);
+        public EmptyListEntry(Component text, Font textRenderer) {
+            this.widget = new StringWidget(text, textRenderer);
         }
 
-        public Text getNarration() {
+        public Component getNarration() {
             return this.widget.getMessage();
         }
 
-        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
-            this.widget.setPosition(this.getContentMiddleX() - this.widget.getWidth() / 2, this.getContentMiddleY() - this.widget.getHeight() / 2);
+        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+            this.widget.setPosition(this.getContentXMiddle() - this.widget.getWidth() / 2, this.getContentYMiddle() - this.widget.getHeight() / 2);
             this.widget.render(context, mouseX, mouseY, deltaTicks);
         }
     }
@@ -348,51 +345,51 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
         private static final int field_32435 = 32;
         private static final int field_32436 = 32;
         private final FnafWorldListWidget parent;
-        private final MinecraftClient client;
+        private final Minecraft client;
         private final Screen screen;
         final LevelSummary level;
-        private final WorldIcon icon;
-        private final TextWidget displayNameWidget;
-        private final TextWidget nameWidget;
-        private final TextWidget detailsWidget;
+        private final FaviconTexture icon;
+        private final StringWidget displayNameWidget;
+        private final StringWidget nameWidget;
+        private final StringWidget detailsWidget;
         @Nullable
         private Path iconPath;
 
         public WorldEntry(FnafWorldListWidget parent, LevelSummary summary) {
             this.parent = parent;
-            this.client = parent.client;
+            this.client = parent.minecraft;
             this.screen = parent.getParent();
             this.level = summary;
-            this.icon = WorldIcon.forWorld(this.client.getTextureManager(), summary.getName());
-            this.iconPath = summary.getIconPath();
+            this.icon = FaviconTexture.forWorld(this.client.getTextureManager(), summary.getLevelId());
+            this.iconPath = summary.getIcon();
             int i = parent.getRowWidth() - this.getTextX() - 2;
-            Text text = Text.literal(summary.getDisplayName());
-            this.displayNameWidget = new TextWidget(text, this.client.textRenderer);
+            Component text = Component.literal(summary.getLevelName());
+            this.displayNameWidget = new StringWidget(text, this.client.font);
             this.displayNameWidget.setMaxWidth(i);
-            if (this.client.textRenderer.getWidth(text) > i) {
-                this.displayNameWidget.setTooltip(Tooltip.of(text));
+            if (this.client.font.width(text) > i) {
+                this.displayNameWidget.setTooltip(Tooltip.create(text));
             }
 
-            String string = summary.getName();
+            String string = summary.getLevelId();
             long l = summary.getLastPlayed();
             if (l != -1L) {
                 string = string + " (" + FnafWorldListWidget.DATE_FORMAT.format(Instant.ofEpochMilli(l)) + ")";
             }
 
-            Text text2 = Text.literal(string);
+            Component text2 = Component.literal(string);
             //.setTextColor(-8355712)
-            this.nameWidget = (new TextWidget(text2, this.client.textRenderer));
+            this.nameWidget = (new StringWidget(text2, this.client.font));
             this.nameWidget.setMaxWidth(i);
-            if (this.client.textRenderer.getWidth(string) > i) {
-                this.nameWidget.setTooltip(Tooltip.of(text2));
+            if (this.client.font.width(string) > i) {
+                this.nameWidget.setTooltip(Tooltip.create(text2));
             }
 
-            Text text3 = summary.getDetails();
+            Component text3 = summary.getInfo();
             //.setTextColor(-8355712)
-            this.detailsWidget = (new TextWidget(text3, this.client.textRenderer));
+            this.detailsWidget = (new StringWidget(text3, this.client.font));
             this.detailsWidget.setMaxWidth(i);
-            if (this.client.textRenderer.getWidth(text3) > i) {
-                this.detailsWidget.setTooltip(Tooltip.of(text3));
+            if (this.client.font.width(text3) > i) {
+                this.detailsWidget.setTooltip(Tooltip.create(text3));
             }
 
             this.validateIconPath();
@@ -404,9 +401,9 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
                 try {
                     BasicFileAttributes basicFileAttributes = Files.readAttributes(this.iconPath, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
                     if (basicFileAttributes.isSymbolicLink()) {
-                        List<SymlinkEntry> list = this.client.getSymlinkFinder().validate(this.iconPath);
+                        List<ForbiddenSymlinkInfo> list = this.client.directoryValidator().validateSymlink(this.iconPath);
                         if (!list.isEmpty()) {
-                            FnafWorldListWidget.LOGGER.warn("{}", SymlinkValidationException.getMessage(this.iconPath, list));
+                            FnafWorldListWidget.LOGGER.warn("{}", ContentValidationException.getMessage(this.iconPath, list));
                             this.iconPath = null;
                         } else {
                             basicFileAttributes = Files.readAttributes(this.iconPath, BasicFileAttributes.class);
@@ -426,37 +423,37 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
             }
         }
 
-        public Text getNarration() {
-            Text text = Text.translatable("narrator.select.world_info", new Object[]{this.level.getDisplayName(), Text.of(new Date(this.level.getLastPlayed())), this.level.getDetails()});
+        public Component getNarration() {
+            Component text = Component.translatable("narrator.select.world_info", new Object[]{this.level.getLevelName(), Component.translationArg(new Date(this.level.getLastPlayed())), this.level.getInfo()});
             if (this.level.isLocked()) {
-                text = ScreenTexts.joinSentences(new Text[]{text, FnafWorldListWidget.LOCKED_TEXT});
+                text = CommonComponents.joinForNarration(new Component[]{text, FnafWorldListWidget.LOCKED_TEXT});
             }
 
             if (this.level.isExperimental()) {
-                text = ScreenTexts.joinSentences(new Text[]{text, FnafWorldListWidget.EXPERIMENTAL_TEXT});
+                text = CommonComponents.joinForNarration(new Component[]{text, FnafWorldListWidget.EXPERIMENTAL_TEXT});
             }
 
-            return Text.translatable("narrator.select", new Object[]{text});
+            return Component.translatable("narrator.select", new Object[]{text});
         }
 
-        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
             int i = this.getTextX();
             this.displayNameWidget.setPosition(i, this.getContentY() + 1);
             this.displayNameWidget.render(context, mouseX, mouseY, deltaTicks);
-            TextWidget var10000 = this.nameWidget;
+            StringWidget var10000 = this.nameWidget;
             int var10002 = this.getContentY();
-            Objects.requireNonNull(this.client.textRenderer);
+            Objects.requireNonNull(this.client.font);
             var10000.setPosition(i, var10002 + 9 + 3);
             this.nameWidget.render(context, mouseX, mouseY, deltaTicks);
             var10000 = this.detailsWidget;
             var10002 = this.getContentY();
-            Objects.requireNonNull(this.client.textRenderer);
+            Objects.requireNonNull(this.client.font);
             var10002 += 9;
-            Objects.requireNonNull(this.client.textRenderer);
+            Objects.requireNonNull(this.client.font);
             var10000.setPosition(i, var10002 + 9 + 3);
             this.detailsWidget.render(context, mouseX, mouseY, deltaTicks);
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, this.icon.getTextureId(), this.getContentX(), this.getContentY(), 0.0F, 0.0F, 32, 32, 32, 32);
-            if (this.parent.worldListType == FnafWorldListWidget.WorldListType.SINGLEPLAYER && ((Boolean)this.client.options.getTouchscreen().getValue() || hovered)) {
+            context.blit(RenderPipelines.GUI_TEXTURED, this.icon.textureLocation(), this.getContentX(), this.getContentY(), 0.0F, 0.0F, 32, 32, 32, 32);
+            if (this.parent.worldListType == FnafWorldListWidget.WorldListType.SINGLEPLAYER && ((Boolean)this.client.options.touchscreen().get() || hovered)) {
                 context.fill(this.getContentX(), this.getContentY(), this.getContentX() + 32, this.getContentY() + 32, -1601138544);
                 int j = mouseX - this.getContentX();
                 boolean bl = j < 32;
@@ -464,42 +461,42 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
                 Identifier identifier2 = bl ? FnafWorldListWidget.WARNING_HIGHLIGHTED_TEXTURE : FnafWorldListWidget.WARNING_TEXTURE;
                 Identifier identifier3 = bl ? FnafWorldListWidget.ERROR_HIGHLIGHTED_TEXTURE : FnafWorldListWidget.ERROR_TEXTURE;
                 Identifier identifier4 = bl ? FnafWorldListWidget.MARKED_JOIN_HIGHLIGHTED_TEXTURE : FnafWorldListWidget.MARKED_JOIN_TEXTURE;
-                if (this.level instanceof LevelSummary.SymlinkLevelSummary || this.level instanceof LevelSummary.RecoveryWarning) {
-                    context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
-                    context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier4, this.getContentX(), this.getContentY(), 32, 32);
+                if (this.level instanceof LevelSummary.SymlinkLevelSummary || this.level instanceof LevelSummary.CorruptedLevelSummary) {
+                    context.blitSprite(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
+                    context.blitSprite(RenderPipelines.GUI_TEXTURED, identifier4, this.getContentX(), this.getContentY(), 32, 32);
                     return;
                 }
 
                 if (this.level.isLocked()) {
-                    context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
+                    context.blitSprite(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
                     if (bl) {
-                        context.drawTooltip(this.client.textRenderer.wrapLines(FnafWorldListWidget.LOCKED_TEXT, 175), mouseX, mouseY);
+                        context.setTooltipForNextFrame(this.client.font.split(FnafWorldListWidget.LOCKED_TEXT, 175), mouseX, mouseY);
                     }
-                } else if (this.level.requiresConversion()) {
-                    context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
+                } else if (this.level.requiresManualConversion()) {
+                    context.blitSprite(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
                     if (bl) {
-                        context.drawTooltip(this.client.textRenderer.wrapLines(FnafWorldListWidget.CONVERSION_TOOLTIP, 175), mouseX, mouseY);
+                        context.setTooltipForNextFrame(this.client.font.split(FnafWorldListWidget.CONVERSION_TOOLTIP, 175), mouseX, mouseY);
                     }
-                } else if (!this.level.isVersionAvailable()) {
-                    context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
+                } else if (!this.level.isCompatible()) {
+                    context.blitSprite(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
                     if (bl) {
-                        context.drawTooltip(this.client.textRenderer.wrapLines(FnafWorldListWidget.INCOMPATIBLE_TOOLTIP, 175), mouseX, mouseY);
+                        context.setTooltipForNextFrame(this.client.font.split(FnafWorldListWidget.INCOMPATIBLE_TOOLTIP, 175), mouseX, mouseY);
                     }
-                } else if (this.level.shouldPromptBackup()) {
-                    context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier4, this.getContentX(), this.getContentY(), 32, 32);
-                    if (this.level.wouldBeDowngraded()) {
-                        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
+                } else if (this.level.shouldBackup()) {
+                    context.blitSprite(RenderPipelines.GUI_TEXTURED, identifier4, this.getContentX(), this.getContentY(), 32, 32);
+                    if (this.level.isDowngrade()) {
+                        context.blitSprite(RenderPipelines.GUI_TEXTURED, identifier3, this.getContentX(), this.getContentY(), 32, 32);
                         if (bl) {
-                            context.drawTooltip(ImmutableList.of(FnafWorldListWidget.FROM_NEWER_VERSION_FIRST_LINE.asOrderedText(), FnafWorldListWidget.FROM_NEWER_VERSION_SECOND_LINE.asOrderedText()), mouseX, mouseY);
+                            context.setTooltipForNextFrame(ImmutableList.of(FnafWorldListWidget.FROM_NEWER_VERSION_FIRST_LINE.getVisualOrderText(), FnafWorldListWidget.FROM_NEWER_VERSION_SECOND_LINE.getVisualOrderText()), mouseX, mouseY);
                         }
-                    } else if (!SharedConstants.getGameVersion().stable()) {
-                        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier2, this.getContentX(), this.getContentY(), 32, 32);
+                    } else if (!SharedConstants.getCurrentVersion().stable()) {
+                        context.blitSprite(RenderPipelines.GUI_TEXTURED, identifier2, this.getContentX(), this.getContentY(), 32, 32);
                         if (bl) {
-                            context.drawTooltip(ImmutableList.of(FnafWorldListWidget.SNAPSHOT_FIRST_LINE.asOrderedText(), FnafWorldListWidget.SNAPSHOT_SECOND_LINE.asOrderedText()), mouseX, mouseY);
+                            context.setTooltipForNextFrame(ImmutableList.of(FnafWorldListWidget.SNAPSHOT_FIRST_LINE.getVisualOrderText(), FnafWorldListWidget.SNAPSHOT_SECOND_LINE.getVisualOrderText()), mouseX, mouseY);
                         }
                     }
                 } else {
-                    context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier, this.getContentX(), this.getContentY(), 32, 32);
+                    context.blitSprite(RenderPipelines.GUI_TEXTURED, identifier, this.getContentX(), this.getContentY(), 32, 32);
                 }
             }
 
@@ -509,9 +506,9 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
             return this.getContentX() + 32 + 3;
         }
 
-        public boolean mouseClicked(Click click, boolean doubled) {
+        public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
             if (this.allowConfirmationByKeyboard() && (doubled || click.x() - (double)this.parent.getRowLeft() <= (double)32.0F && this.parent.worldListType == FnafWorldListWidget.WorldListType.SINGLEPLAYER)) {
-                this.client.getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                this.client.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 Consumer<WorldEntry> consumer = this.parent.confirmationCallback;
                 if (consumer != null) {
                     consumer.accept(this);
@@ -522,9 +519,9 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
             return super.mouseClicked(click, doubled);
         }
 
-        public boolean keyPressed(KeyInput input) {
-            if (input.isEnterOrSpace() && this.allowConfirmationByKeyboard()) {
-                this.client.getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        public boolean keyPressed(KeyEvent input) {
+            if (input.isSelection() && this.allowConfirmationByKeyboard()) {
+                this.client.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 Consumer<WorldEntry> consumer = this.parent.confirmationCallback;
                 if (consumer != null) {
                     consumer.accept(this);
@@ -536,19 +533,19 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
         }
 
         public boolean allowConfirmationByKeyboard() {
-            return this.level.isSelectable() || this.parent.worldListType == FnafWorldListWidget.WorldListType.UPLOAD_WORLD;
+            return this.level.primaryActionActive() || this.parent.worldListType == FnafWorldListWidget.WorldListType.UPLOAD_WORLD;
         }
 
         public void play() {
-            if (this.level.isSelectable()) {
+            if (this.level.primaryActionActive()) {
                 if (this.level instanceof LevelSummary.SymlinkLevelSummary) {
-                    this.client.setScreen(SymlinkWarningScreen.world(() -> this.client.setScreen(this.screen)));
+                    this.client.setScreen(NoticeWithLinkScreen.createWorldSymlinkWarningScreen(() -> this.client.setScreen(this.screen)));
                 } else {
-                    IntegratedServerLoader var10000 = this.client.createIntegratedServerLoader();
-                    String var10001 = this.level.getName();
+                    WorldOpenFlows var10000 = this.client.createWorldOpenFlows();
+                    String var10001 = this.level.getLevelId();
                     FnafWorldListWidget var10002 = this.parent;
                     Objects.requireNonNull(var10002);
-                    var10000.start(var10001, var10002::refresh);
+                    var10000.openWorld(var10001, var10002::refresh);
                 }
             }
         }
@@ -561,17 +558,17 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
                 }
 
                 this.parent.refresh();
-            }, Text.translatable("selectWorld.deleteQuestion"), Text.translatable("selectWorld.deleteWarning", new Object[]{this.level.getDisplayName()}), Text.translatable("selectWorld.deleteButton"), ScreenTexts.CANCEL));
+            }, Component.translatable("selectWorld.deleteQuestion"), Component.translatable("selectWorld.deleteWarning", new Object[]{this.level.getLevelName()}), Component.translatable("selectWorld.deleteButton"), CommonComponents.GUI_CANCEL));
         }
 
         public void delete() {
-            LevelStorage levelStorage = this.client.getLevelStorage();
-            String string = this.level.getName();
+            LevelStorageSource levelStorage = this.client.getLevelSource();
+            String string = this.level.getLevelId();
 
-            try (LevelStorage.Session session = levelStorage.createSessionWithoutSymlinkCheck(string)) {
-                session.deleteSessionLock();
+            try (LevelStorageSource.LevelStorageAccess session = levelStorage.createAccess(string)) {
+                session.deleteLevel();
             } catch (IOException iOException) {
-                SystemToast.addWorldDeleteFailureToast(this.client, string);
+                SystemToast.onWorldDeleteFailure(this.client, string);
                 FnafWorldListWidget.LOGGER.error("Failed to delete world {}", string, iOException);
             }
 
@@ -579,31 +576,31 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
 
         public void edit() {
             this.openReadingWorldScreen();
-            String string = this.level.getName();
+            String string = this.level.getLevelId();
 
-            LevelStorage.Session session;
+            LevelStorageSource.LevelStorageAccess session;
             try {
-                session = this.client.getLevelStorage().createSession(string);
+                session = this.client.getLevelSource().validateAndCreateAccess(string);
             } catch (IOException iOException) {
-                SystemToast.addWorldAccessFailureToast(this.client, string);
+                SystemToast.onWorldAccessFailure(this.client, string);
                 FnafWorldListWidget.LOGGER.error("Failed to access level {}", string, iOException);
                 this.parent.load();
                 return;
-            } catch (SymlinkValidationException symlinkValidationException) {
+            } catch (ContentValidationException symlinkValidationException) {
                 FnafWorldListWidget.LOGGER.warn("{}", symlinkValidationException.getMessage());
-                this.client.setScreen(SymlinkWarningScreen.world(() -> this.client.setScreen(this.screen)));
+                this.client.setScreen(NoticeWithLinkScreen.createWorldSymlinkWarningScreen(() -> this.client.setScreen(this.screen)));
                 return;
             }
 
             EditWorldScreen editWorldScreen;
             try {
                 editWorldScreen = EditWorldScreen.create(this.client, session, (edited) -> {
-                    session.tryClose();
+                    session.safeClose();
                     this.parent.refresh();
                 });
-            } catch (NbtException | NbtCrashException | IOException exception) {
-                session.tryClose();
-                SystemToast.addWorldAccessFailureToast(this.client, string);
+            } catch (NbtException | ReportedNbtException | IOException exception) {
+                session.safeClose();
+                SystemToast.onWorldAccessFailure(this.client, string);
                 FnafWorldListWidget.LOGGER.error("Failed to load world data {}", string, exception);
                 this.parent.load();
                 return;
@@ -615,59 +612,59 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
         public void recreate() {
             this.openReadingWorldScreen();
 
-            try (LevelStorage.Session session = this.client.getLevelStorage().createSession(this.level.getName())) {
-                Pair<LevelInfo, GeneratorOptionsHolder> pair = this.client.createIntegratedServerLoader().loadForRecreation(session);
-                LevelInfo levelInfo = (LevelInfo)pair.getFirst();
-                GeneratorOptionsHolder generatorOptionsHolder = (GeneratorOptionsHolder)pair.getSecond();
-                Path path = CreateWorldScreen.copyDataPack(session.getDirectory(WorldSavePath.DATAPACKS), this.client);
-                generatorOptionsHolder.initializeIndexedFeaturesLists();
-                if (generatorOptionsHolder.generatorOptions().isLegacyCustomizedType()) {
+            try (LevelStorageSource.LevelStorageAccess session = this.client.getLevelSource().validateAndCreateAccess(this.level.getLevelId())) {
+                Pair<LevelSettings, WorldCreationContext> pair = this.client.createWorldOpenFlows().recreateWorldData(session);
+                LevelSettings levelInfo = (LevelSettings)pair.getFirst();
+                WorldCreationContext generatorOptionsHolder = (WorldCreationContext)pair.getSecond();
+                Path path = CreateWorldScreen.createTempDataPackDirFromExistingWorld(session.getLevelPath(LevelResource.DATAPACK_DIR), this.client);
+                generatorOptionsHolder.validate();
+                if (generatorOptionsHolder.options().isOldCustomizedWorld()) {
                     this.client.setScreen(new ConfirmScreen((confirmed) -> {
-                        MinecraftClient var10000 = this.client;
+                        Minecraft var10000 = this.client;
                         Object var5;
                         if (confirmed) {
-                            MinecraftClient var10001 = this.client;
+                            Minecraft var10001 = this.client;
                             FnafWorldListWidget var10002 = this.parent;
                             Objects.requireNonNull(var10002);
-                            var5 = CreateWorldScreen.create(var10001, var10002::refresh, levelInfo, generatorOptionsHolder, path);
+                            var5 = CreateWorldScreen.createFromExisting(var10001, var10002::refresh, levelInfo, generatorOptionsHolder, path);
                         } else {
                             var5 = this.screen;
                         }
 
                         var10000.setScreen((Screen)var5);
-                    }, Text.translatable("selectWorld.recreate.customized.title"), Text.translatable("selectWorld.recreate.customized.text"), ScreenTexts.PROCEED, ScreenTexts.CANCEL));
+                    }, Component.translatable("selectWorld.recreate.customized.title"), Component.translatable("selectWorld.recreate.customized.text"), CommonComponents.GUI_PROCEED, CommonComponents.GUI_CANCEL));
                 } else {
-                    MinecraftClient var10000 = this.client;
-                    MinecraftClient var10001 = this.client;
+                    Minecraft var10000 = this.client;
+                    Minecraft var10001 = this.client;
                     FnafWorldListWidget var10002 = this.parent;
                     Objects.requireNonNull(var10002);
-                    var10000.setScreen(CreateWorldScreen.create(var10001, var10002::refresh, levelInfo, generatorOptionsHolder, path));
+                    var10000.setScreen(CreateWorldScreen.createFromExisting(var10001, var10002::refresh, levelInfo, generatorOptionsHolder, path));
                 }
-            } catch (SymlinkValidationException symlinkValidationException) {
+            } catch (ContentValidationException symlinkValidationException) {
                 FnafWorldListWidget.LOGGER.warn("{}", symlinkValidationException.getMessage());
-                this.client.setScreen(SymlinkWarningScreen.world(() -> this.client.setScreen(this.screen)));
+                this.client.setScreen(NoticeWithLinkScreen.createWorldSymlinkWarningScreen(() -> this.client.setScreen(this.screen)));
             } catch (Exception exception) {
                 FnafWorldListWidget.LOGGER.error("Unable to recreate world", exception);
-                this.client.setScreen(new NoticeScreen(() -> this.client.setScreen(this.screen), Text.translatable("selectWorld.recreate.error.title"), Text.translatable("selectWorld.recreate.error.text")));
+                this.client.setScreen(new AlertScreen(() -> this.client.setScreen(this.screen), Component.translatable("selectWorld.recreate.error.title"), Component.translatable("selectWorld.recreate.error.text")));
             }
 
         }
 
         private void openReadingWorldScreen() {
-            this.client.setScreenAndRender(new MessageScreen(Text.translatable("selectWorld.data_read")));
+            this.client.setScreenAndShow(new GenericMessageScreen(Component.translatable("selectWorld.data_read")));
         }
 
         private void loadIcon() {
             boolean bl = this.iconPath != null && Files.isRegularFile(this.iconPath, new LinkOption[0]);
             if (bl) {
                 try (InputStream inputStream = Files.newInputStream(this.iconPath)) {
-                    this.icon.load(NativeImage.read(inputStream));
+                    this.icon.upload(NativeImage.read(inputStream));
                 } catch (Throwable throwable) {
-                    FnafWorldListWidget.LOGGER.error("Invalid icon for world {}", this.level.getName(), throwable);
+                    FnafWorldListWidget.LOGGER.error("Invalid icon for world {}", this.level.getLevelId(), throwable);
                     this.iconPath = null;
                 }
             } else {
-                this.icon.destroy();
+                this.icon.clear();
             }
 
         }
@@ -680,7 +677,7 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
         }
 
         public String getLevelDisplayName() {
-            return this.level.getDisplayName();
+            return this.level.getLevelName();
         }
 
         public LevelSummary getLevel() {
@@ -690,35 +687,35 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
 
     @Environment(EnvType.CLIENT)
     public static class LoadingEntry extends Entry {
-        private static final Text LOADING_LIST_TEXT = Text.translatable("selectWorld.loading_list");
-        private final MinecraftClient client;
+        private static final Component LOADING_LIST_TEXT = Component.translatable("selectWorld.loading_list");
+        private final Minecraft client;
 
-        public LoadingEntry(MinecraftClient client) {
+        public LoadingEntry(Minecraft client) {
             this.client = client;
         }
 
-        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
-            int i = (this.client.currentScreen.width - this.client.textRenderer.getWidth(LOADING_LIST_TEXT)) / 2;
+        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+            int i = (this.client.screen.width - this.client.font.width(LOADING_LIST_TEXT)) / 2;
             int var10000 = this.getContentY();
             int var10001 = this.getContentHeight();
-            Objects.requireNonNull(this.client.textRenderer);
+            Objects.requireNonNull(this.client.font);
             int j = var10000 + (var10001 - 9) / 2;
-            context.drawTextWithShadow(this.client.textRenderer, LOADING_LIST_TEXT, i, j, -1);
-            String string = LoadingDisplay.get(Util.getMeasuringTimeMs());
-            int k = (this.client.currentScreen.width - this.client.textRenderer.getWidth(string)) / 2;
-            Objects.requireNonNull(this.client.textRenderer);
+            context.drawString(this.client.font, LOADING_LIST_TEXT, i, j, -1);
+            String string = LoadingDotsText.get(Util.getMillis());
+            int k = (this.client.screen.width - this.client.font.width(string)) / 2;
+            Objects.requireNonNull(this.client.font);
             int l = j + 9;
-            context.drawTextWithShadow(this.client.textRenderer, string, k, l, -8355712);
+            context.drawString(this.client.font, string, k, l, -8355712);
         }
 
-        public Text getNarration() {
+        public Component getNarration() {
             return LOADING_LIST_TEXT;
         }
     }
 
     @Environment(EnvType.CLIENT)
     public static class Builder {
-        private final MinecraftClient client;
+        private final Minecraft client;
         private final Screen parent;
         private int width;
         private int height;
@@ -731,7 +728,7 @@ public class FnafWorldListWidget extends AlwaysSelectedEntryListWidget<FnafWorld
         @Nullable
         private Consumer<WorldEntry> confirmationCallback;
 
-        public Builder(MinecraftClient client, Screen parent) {
+        public Builder(Minecraft client, Screen parent) {
             this.worldListType = FnafWorldListWidget.WorldListType.SINGLEPLAYER;
             this.predecessor = null;
             this.selectionCallback = null;

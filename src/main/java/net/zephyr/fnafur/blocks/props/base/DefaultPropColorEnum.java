@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.props.base;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 
-public enum DefaultPropColorEnum implements StringIdentifiable, ColorEnumInterface {
+public enum DefaultPropColorEnum implements StringRepresentable, ColorEnumInterface {
     DEFAULT("default", 0),
     DEFAULT_2("default2", 0);
     private final String name;
@@ -12,7 +12,7 @@ public enum DefaultPropColorEnum implements StringIdentifiable, ColorEnumInterfa
         this.index = index;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

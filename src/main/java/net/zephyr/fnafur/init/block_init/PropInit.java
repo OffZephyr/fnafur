@@ -2,25 +2,25 @@ package net.zephyr.fnafur.init.block_init;
 
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.entity.ai.pathing.PathNodeType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.state.property.Properties;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons.OfficeButtons;
 import net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons.light_switch.LightSwitch;
@@ -112,73 +112,73 @@ public class PropInit {
     public static final Block FNAF_1_DESK = registerGeoProp(
             "fnaf1desk",
             Fnaf1Desk::new,
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fnaf1desk.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fnaf1desk.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision()
     );
 
     public static final Block FILING_CABINET = registerGeoProp(
             "filing_cabinet",
             FilingCabinet::new,
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/filing_cabinet.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/filing_cabinet"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/props/filing_cabinet.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/filing_cabinet"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision()
     );
     public static final Block FLYING_V_GUITAR = registerGeoProp(
             "flying_v_guitar",
             FlyingVGuitar::new,
             FlyingVGuitarItem::new,
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/flying_v_guitar.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/flying_v_guitar"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/props/flying_v_guitar.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/flying_v_guitar"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision()
     );
     public static final Block STAR_PLASTIC_CHAIR = registerGeoProp(
             "star_plastic_chair",
             StarPlasticChair::new,
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fnaf1chair.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1chair"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fnaf1chair.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1chair"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision()
     );
     public static final Block COSMO_GIFT = registerGeoProp(
             "cosmo_gift",
             CosmoGift::new,
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/gift_boxes/cosmo_gift.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/giftbox"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/cosmo_gift"),
-            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/props/gift_boxes/cosmo_gift.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/giftbox"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/cosmo_gift"),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision()
 
     );
@@ -186,991 +186,991 @@ public class PropInit {
     public static final Block PLUSHIE = registerGeoProp(
             "freddy_plush",
             PlushieBlock::new,
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/freddy_plush.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/freddy_plush"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
-            AbstractBlock.Settings.copy(Blocks.BROWN_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/props/plushies/freddy_plush.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/freddy_plush"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/fnaf1desk"),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
 
     public static final Block BEPH_PLUSHIE = registerBlock(
             "beph_plushie",
             BephPlushieBlock::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision()
     );
     public static final Block STANDING_MICROPHONE = registerBlock(
             "standing_microphone",
             StandingMicrophone::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block STANDING_SPEAKER = registerBlock(
             "standing_speaker",
             StandingSpeaker::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block STANDING_PIANO = registerBlock(
             "standing_piano",
             StandingPiano::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
 
     public static final Block PARTY_TABLE = registerBlock(
             "party_table",
             TableBlock::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
     );
     public static final Block PARTY_TABLE_CONFETTI = registerBlock(
             "party_table_confetti",
             TableBlock::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
     );
 
     public static final Block WALL_CLOUDS = registerBlock(
             "wall_clouds",
             WallClouds::new,
-            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block STAGE_SUN = registerBlock(
             "stage_sun",
             StageSun::new,
-            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
 
     public static final Block WALL_PIZZA = registerBlock(
             "wall_pizza",
             WallPizza::new,
-            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
 
     public static final Block HANGING_STARS = registerBlock(
             "hanging_stars",
             HangingStarsBlock::new,
-            AbstractBlock.Settings.copy(Blocks.COBWEB)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.COBWEB)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block FLOOR_MONITORS = registerBlock(
             "floor_monitors",
             FloorMonitors::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block WOODEN_SHELF = registerBlock(
             "wooden_shelf",
             WoodenShelf::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision()
     );
     public static final Block AC_UNIT = registerBlock(
             "ac_unit",
            AcUnit::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision()
     );
     public static final Block RETRO_TABLE = registerBlock(
             "retro_table",
            RetroTableBlock::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
     );
     public static final Block RETRO_STOOL = registerBlock(
             "retro_stool",
            RetroStool::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block OFFICE_BUTTONS = registerBlock(
             "office_buttons",
             OfficeButtons::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block CEILING_TILE_VENT = registerBlock(
             "ceiling_tile_vent",
             CeilingTileVent::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block CEILING_TILE_VENT_BLACK = registerBlock(
             "ceiling_tile_vent_black",
             CeilingTileVentBlack::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block RESTROOM_SIGN = registerBlock(
             "restroom_sign",
             RestroomSign::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block POSTER = registerBlock(
             "poster",
             Poster::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .sounds(BlockSoundGroup.COBWEB),
+                    .sound(SoundType.COBWEB),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block WALL_PAPERS = registerBlock(
             "wall_papers",
             WallPapers::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .sounds(BlockSoundGroup.COBWEB),
+                    .sound(SoundType.COBWEB),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block FNAF1_RULES = registerBlock(
             "fnaf1_rules",
             FNaF1Rules::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .sounds(BlockSoundGroup.COBWEB),
+                    .sound(SoundType.COBWEB),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block BROOM = registerBlock(
             "broom",
             Broom::new,
-            AbstractBlock.Settings.copy(Blocks.STONE)
-                    .nonOpaque()
-                    .sounds(BlockSoundGroup.LILY_PAD)
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
+                    .noOcclusion()
+                    .sound(SoundType.LILY_PAD)
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block MOP_BUCKET = registerBlock(
             "mop_bucket",
             MopBucket::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block TRASH_BIN = registerBlock(
             "trash_bin",
             TrashBin::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block WATER_DISPENSER = registerBlock(
             "water_dispenser",
             WaterDispenser::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block WET_FLOOR_SIGN = registerBlock(
             "wet_floor_sign",
             WetFloorSign::new,
-            AbstractBlock.Settings.copy(Blocks.BAMBOO)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
-                    .offset(AbstractBlock.OffsetType.NONE)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
                     .noCollision()
     );
     public static final Block STANDING_MENU = registerBlock(
             "standing_menu",
             StandingMenu::new,
-            AbstractBlock.Settings.copy(Blocks.BAMBOO)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
-                    .offset(AbstractBlock.OffsetType.NONE)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
                     .noCollision()
     );
     public static final Block WALL_MENU = registerBlock(
             "wall_menu",
             WallMenu::new,
-            AbstractBlock.Settings.copy(Blocks.BAMBOO)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
-                    .offset(AbstractBlock.OffsetType.NONE)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
                     .noCollision()
     );
     public static final Block PRESENT_STACK = registerBlock(
             "present_stack",
             PresentStack::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block WOODEN_CHAIR = registerBlock(
             "wooden_chair",
             WoodenChair::new,
-            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block WOODEN_STOOL = registerBlock(
             "wooden_stool",
             WoodenStool::new,
-            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block WOODEN_CRATE = registerBlock(
             "wooden_crate",
             WoodenCrate::new,
-            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
 
     public static final Block SCONCE = registerBlock(
             "sconce",
             Sconce::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_CHAIN)
-                    .nonOpaque()
-                    .luminance(Blocks.createLightLevelFromLitBlockState(10))
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_CHAIN)
+                    .noOcclusion()
+                    .lightLevel(Blocks.litBlockEmission(10))
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block HANGING_LIGHT = registerBlock(
             "hanging_light",
             ChainLight::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_CHAIN)
-                    .nonOpaque()
-                    .luminance(state -> (state.get(Properties.LIT) && !state.get(ChainLight.CHAIN)) ? 12 : 0 )
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_CHAIN)
+                    .noOcclusion()
+                    .lightLevel(state -> (state.getValue(BlockStateProperties.LIT) && !state.getValue(ChainLight.CHAIN)) ? 12 : 0 )
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block SPOT_LIGHT = registerBlock(
             "spot_light",
             HorizontalFacingLight::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_CHAIN)
-                    .nonOpaque()
-                    .luminance(Blocks.createLightLevelFromLitBlockState(12))
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_CHAIN)
+                    .noOcclusion()
+                    .lightLevel(Blocks.litBlockEmission(12))
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block HANGING_LIGHTBULB = registerBlock(
             "hanging_lightbulb",
             ChainLight::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_CHAIN)
-                    .nonOpaque()
-                    .luminance(state -> (state.get(Properties.LIT) && !state.get(ChainLight.CHAIN)) ? 10 : 0 )
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_CHAIN)
+                    .noOcclusion()
+                    .lightLevel(state -> (state.getValue(BlockStateProperties.LIT) && !state.getValue(ChainLight.CHAIN)) ? 10 : 0 )
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block EXIT_SIGN = registerBlock(
             "exit_sign",
             ExitSign::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BARS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block EXIT_ARROW = registerBlock(
             "exit_arrow",
             ExitArrow::new,
-            AbstractBlock.Settings.copy(Blocks.BAMBOO)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .offset(AbstractBlock.OffsetType.NONE),
+                    .offsetType(BlockBehaviour.OffsetType.NONE),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block WALL_OUTLET = registerBlock(
             "wall_outlet",
             WallOutlet::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BARS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block LIGHT_SWITCH = registerBlock(
             "light_switch",
             LightSwitch::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BARS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block AIR_VENT = registerBlock(
             "air_vent",
             AirVent::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BARS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block FLOOR_MAT = registerBlock(
             "floor_mat",
             FloorMat::new,
-            AbstractBlock.Settings.copy(Blocks.BLUE_CARPET)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_CARPET)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block PIZZA_OVEN = registerBlock(
             "pizza_oven",
             PizzaOven::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block ICE_CREAM_DISPENSER = registerBlock(
             "ice_cream_dispenser",
             IceCreamDispenser::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block DOUBLE_DOOR_FRIDGE = registerGeoProp(
             "double_door_fridge",
             DoubleDoorFridge::new,
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/double_fridge.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/double_door_fridge"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/double_door_fridge"),
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/props/double_fridge.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/double_door_fridge"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/double_door_fridge"),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block FRIDGE = registerGeoProp(
             "fridge",
             Fridge::new,
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fridge.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fridge"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/fridge"),
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/props/fridge.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/fridge"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/fridge"),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block WOODEN_CLOCK = registerGeoProp(
             "wooden_clock",
             WoodenClock::new,
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/props/wooden_clock.png"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/wall_clock"),
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/wall_clock"),
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/props/wooden_clock.png"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/wall_clock"),
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/wall_clock"),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block KITCHEN_PREP_TABLE = registerBlock(
             "kitchen_prep_table",
             KitchenPrepTable::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .offset(AbstractBlock.OffsetType.NONE)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block CONDIMENT_COUNTER = registerBlock(
             "condiment_counter",
             CondimentCounter::new,
-            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .offset(AbstractBlock.OffsetType.NONE)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block UTENSILS_BOX = registerBlock(
             "utensils_box",
             UtensilsBox::new,
-            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .offset(AbstractBlock.OffsetType.NONE)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block FOOD_DISPLAY_CASE = registerBlock(
             "food_display_case",
             FoodDisplayCase::new,
-            AbstractBlock.Settings.copy(Blocks.GLASS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .offset(AbstractBlock.OffsetType.NONE)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
+                    .instabreak()
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block RECEPTION_COUNTER = registerBlock(
             "reception_counter",
             ReceptionCounter::new,
-            AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .offset(AbstractBlock.OffsetType.NONE)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block SKEEBALL_ARCADE = registerBlock(
             "skeeball_arcade",
             SkeeballArcade::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block ARCADE_CABINET = registerBlock(
             "arcade_cabinet",
             ArcadeCabinet::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision(),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
     public static final Block ATM = registerBlock(
             "atm",
             Atm::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block POTS_AND_PANS_RACK = registerBlock(
             "pots_and_pans_rack",
             PotsAndPansRack::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
     );
     public static final Block PUNCH_IN_CARDS = registerBlock(
             "punch_in_cards",
             PunchInCards::new,
-            AbstractBlock.Settings.copy(Blocks.BAMBOO)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .offset(AbstractBlock.OffsetType.NONE)
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
     );
     public static final Block BULLETIN_BOARD = registerBlock(
             "bulletin_board",
             BulletinBoard::new,
-            AbstractBlock.Settings.copy(Blocks.BAMBOO)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .offset(AbstractBlock.OffsetType.NONE)
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
     );
     public static final Block TOOL_WALL_MOUNT = registerBlock(
             "tool_wall_mount",
             ToolWallMount::new,
-            AbstractBlock.Settings.copy(Blocks.BAMBOO)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .offset(AbstractBlock.OffsetType.NONE)
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
     );
     public static final Block PARTY_HAT = registerBlock(
             "party_hats",
             PartyHats::new,
-            AbstractBlock.Settings.copy(Blocks.BAMBOO)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .offset(AbstractBlock.OffsetType.NONE)
-                    .sounds(BlockSoundGroup.COBWEB),
+                    .offsetType(BlockBehaviour.OffsetType.NONE)
+                    .sound(SoundType.COBWEB),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
 
     );
     public static final Block TOILET_PAPER_ROLL = registerBlock(
             "toilet_paper_roll",
             ToiletPaperRoll::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .sounds(BlockSoundGroup.COBWEB)
+                    .sound(SoundType.COBWEB)
 
     );
     public static final Block TOILET = registerBlock(
             "toilet",
             Toilet::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
 
     );
     public static final Block URINAL = registerBlock(
             "urinal",
             Urinal::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
 
     );
     public static final Block BATHROOM_SINK = registerBlock(
             "bathroom_sink",
             BathroomSink::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
 
     );
     public static final Block SPEAKER = registerBlock(
             "speaker",
             Speaker::new,
-            AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
 
     );
     public static final Block FLOOR_TRASH = registerBlock(
             "floor_trash",
             FloorTrash::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .sounds(BlockSoundGroup.COBWEB),
+                    .sound(SoundType.COBWEB),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
 
     );
     public static final Block SERIOUS_CUTOUT = registerBlock(
             "serious_cutout",
             SeriousCutout::new,
-            AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
-                    .nonOpaque()
-                    .allowsSpawning(Blocks::never)
-                    .solidBlock(Blocks::never)
-                    .suffocates(Blocks::never)
-                    .blockVision(Blocks::never)
-                    .breakInstantly()
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL)
+                    .noOcclusion()
+                    .isValidSpawn(Blocks::never)
+                    .isRedstoneConductor(Blocks::never)
+                    .isSuffocating(Blocks::never)
+                    .isViewBlocking(Blocks::never)
+                    .instabreak()
                     .noCollision()
-                    .sounds(BlockSoundGroup.BAMBOO),
+                    .sound(SoundType.BAMBOO),
             List.of(
-                    Text.translatable("fnafur.symbol.paintbrush")
+                    Component.translatable("fnafur.symbol.paintbrush")
             )
     );
 
-    private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+    private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings) {
         return registerBlock(name, factory, settings, List.of());
     }
-    private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, List<Text> description) {
-        final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
-        final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
+    private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings, List<Component> description) {
+        final Identifier identifier = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, name);
+        final ResourceKey<Block> registryKey = ResourceKey.create(Registries.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
         if(description.isEmpty()){
-            PROPS.add(Items.register(block));
+            PROPS.add(Items.registerBlock(block));
         }
         else{
-            PROPS.add(Items.register(block, BlockItem::new, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description))));
+            PROPS.add(Items.registerBlock(block, BlockItem::new, new net.minecraft.world.item.Item.Properties().component(DataComponents.LORE, new ItemLore(description))));
         }
         return block;
     }
-    private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings) {
+    private static Block registerGeoProp(String name, Function<BlockBehaviour.Properties, Block> factory, Identifier texture, Identifier model, Identifier animations, BlockBehaviour.Properties settings) {
         return registerGeoProp(name, factory, texture, model, animations, settings, List.of());
     }
-    private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings, List<Text> description) {
+    private static Block registerGeoProp(String name, Function<BlockBehaviour.Properties, Block> factory, Identifier texture, Identifier model, Identifier animations, BlockBehaviour.Properties settings, List<Component> description) {
         return registerGeoProp(name, factory, BlockItem::new, texture, model, animations, settings, description);
     }
-    private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, BiFunction<Block, Item.Settings, Item> factory2, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings) {
+    private static Block registerGeoProp(String name, Function<BlockBehaviour.Properties, Block> factory, BiFunction<Block, net.minecraft.world.item.Item.Properties, Item> factory2, Identifier texture, Identifier model, Identifier animations, BlockBehaviour.Properties settings) {
         return registerGeoProp(name, factory, factory2, texture, model, animations, settings, List.of());
     }
-    private static Block registerGeoProp(String name, Function<AbstractBlock.Settings, Block> factory, BiFunction<Block, Item.Settings, Item> factory2, Identifier texture, Identifier model, Identifier animations, AbstractBlock.Settings settings, List<Text> description) {
-        final Identifier identifier = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
-        final RegistryKey<Block> registryKey = RegistryKey.of(RegistryKeys.BLOCK, identifier);
+    private static Block registerGeoProp(String name, Function<BlockBehaviour.Properties, Block> factory, BiFunction<Block, net.minecraft.world.item.Item.Properties, Item> factory2, Identifier texture, Identifier model, Identifier animations, BlockBehaviour.Properties settings, List<Component> description) {
+        final Identifier identifier = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, name);
+        final ResourceKey<Block> registryKey = ResourceKey.create(Registries.BLOCK, identifier);
 
         final Block block = Blocks.register(registryKey, factory, settings);
         ((GeoPropBlock)block).setModelInfo(texture, model, animations);
         if(description.isEmpty()){
-            GEO_PROPS.add(Items.register(block, factory2));
+            GEO_PROPS.add(Items.registerBlock(block, factory2));
         }
         else{
-            GEO_PROPS.add(Items.register(block, factory2, new Item.Settings().component(DataComponentTypes.LORE, new LoreComponent(description))));
+            GEO_PROPS.add(Items.registerBlock(block, factory2, new net.minecraft.world.item.Item.Properties().component(DataComponents.LORE, new ItemLore(description))));
         }
         return block;
     }
 
     public static void registerPropsOnClient() {
-        BlockColors colors = MinecraftClient.getInstance().getBlockColors();
+        BlockColors colors = Minecraft.getInstance().getBlockColors();
 
-        BlockEntityRendererFactories.register(BlockEntityInit.GEO_PROPS, GeoPropRenderer::new);
-        BlockEntityRendererFactories.register(BlockEntityInit.GEO_CLOCK_PROP, GeoClockPropRenderer::new);
-        BlockEntityRendererFactories.register(BlockEntityInit.GALAXY_GEO_PROPS, GalaxyLayerGeoPropRenderer::new);
+        BlockEntityRenderers.register(BlockEntityInit.GEO_PROPS, GeoPropRenderer::new);
+        BlockEntityRenderers.register(BlockEntityInit.GEO_CLOCK_PROP, GeoClockPropRenderer::new);
+        BlockEntityRenderers.register(BlockEntityInit.GALAXY_GEO_PROPS, GalaxyLayerGeoPropRenderer::new);
 
         for (Item item : PROPS) {
             SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
-            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.CUTOUT);
+            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), ChunkSectionLayer.CUTOUT);
         }
         for (Item item : GEO_PROPS) {
             SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
-            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.CUTOUT);
+            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), ChunkSectionLayer.CUTOUT);
         }
         for (Item item : GEO_PROPS_TRANSLUCENT) {
             SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
-            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), BlockRenderLayer.TRANSLUCENT);
+            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), ChunkSectionLayer.TRANSLUCENT);
         }
 
         AVOIDED_PROPS.add(PARTY_TABLE);
         AVOIDED_PROPS.add(PARTY_TABLE_CONFETTI);
 
-        BlockRenderLayerMap.putBlock(FOOD_DISPLAY_CASE, BlockRenderLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(CONDIMENT_COUNTER, BlockRenderLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(FOOD_DISPLAY_CASE, ChunkSectionLayer.TRANSLUCENT);
+        BlockRenderLayerMap.putBlock(CONDIMENT_COUNTER, ChunkSectionLayer.TRANSLUCENT);
 
         FnafUniverseRebuilt.LOGGER.info("Registering Props On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }

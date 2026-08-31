@@ -3,33 +3,37 @@ package net.zephyr.fnafur.particles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SingleQuadParticle.Layer;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.SimpleParticleType;
 
 import java.util.Random;
 
-public class FogParticle extends BillboardParticle {
+public class FogParticle extends SingleQuadParticle {
 
-    protected FogParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Sprite sprite) {
+    protected FogParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, TextureAtlasSprite sprite) {
         super(world, x, y, z, velocityX, velocityY, velocityZ, sprite);
 
-        this.velocityMultiplier = 0.6f;
+        this.friction = 0.6f;
         this.x = x;
         this.y = y;
         this.z = z;
         Random random = new Random();
         float speed = 0.5f;
-        this.velocityX = random.nextDouble(-speed, speed);
-        this.velocityY = random.nextDouble(-speed, speed);
-        this.velocityZ = random.nextDouble(-speed, speed);
-        this.scale *= random.nextFloat(2f, 5f);
-        this.maxAge = 20;
+        this.xd = random.nextDouble(-speed, speed);
+        this.yd = random.nextDouble(-speed, speed);
+        this.zd = random.nextDouble(-speed, speed);
+        this.quadSize *= random.nextFloat(2f, 5f);
+        this.lifetime = 20;
         this.sprite = sprite;
 
-        this.red = 1f;
-        this.green = 1f;
-        this.blue = 1f;
+        this.rCol = 1f;
+        this.gCol = 1f;
+        this.bCol = 1f;
     }
 
     @Override
@@ -39,24 +43,24 @@ public class FogParticle extends BillboardParticle {
     }
 
     private void fadeOut(){
-        this.alpha = (-(1/(float)maxAge) * age + 1);
+        this.alpha = (-(1/(float) lifetime) * age + 1);
     }
 
     @Override
-    protected RenderType getRenderType() {
-        return RenderType.PARTICLE_ATLAS_TRANSLUCENT;
+    protected Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
     @Environment(EnvType.CLIENT)
-    public static class Factory implements ParticleFactory<SimpleParticleType> {
-        private final SpriteProvider spriteProvider;
+    public static class Factory implements ParticleProvider<SimpleParticleType> {
+        private final SpriteSet spriteProvider;
 
-        public Factory(SpriteProvider spriteProvider) {
+        public Factory(SpriteSet spriteProvider) {
             this.spriteProvider = spriteProvider;
         }
 
-        public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i, net.minecraft.util.math.random.Random random) {
-            return new FogParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider.getSprite(random));
+        public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double d, double e, double f, double g, double h, double i, net.minecraft.util.RandomSource random) {
+            return new FogParticle(clientWorld, d, e, f, g, h, i, this.spriteProvider.get(random));
         }
     }
 }

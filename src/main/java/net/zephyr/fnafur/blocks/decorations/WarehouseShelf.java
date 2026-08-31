@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.decorations;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 
-public enum WarehouseShelf implements StringIdentifiable {
+public enum WarehouseShelf implements StringRepresentable {
     SINGLE("single"),
     LEFT("left"),
     RIGHT("right")
@@ -13,7 +13,7 @@ public enum WarehouseShelf implements StringIdentifiable {
         this.NAME = name;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return NAME;
     }
 }

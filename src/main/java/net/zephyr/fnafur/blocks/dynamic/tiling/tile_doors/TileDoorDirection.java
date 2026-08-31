@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 
-public enum TileDoorDirection implements StringIdentifiable {
+public enum TileDoorDirection implements StringRepresentable {
     UP("up", 0),
     DOWN("down", 180),
     LEFT("left", 270),
@@ -19,13 +19,13 @@ public enum TileDoorDirection implements StringIdentifiable {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return NAME;
     }
 
     public static TileDoorDirection getDirection(String name){
         for(TileDoorDirection d : values()){
-            if(d.asString().equals(name)) return d;
+            if(d.getSerializedName().equals(name)) return d;
         }
         return null;
     }

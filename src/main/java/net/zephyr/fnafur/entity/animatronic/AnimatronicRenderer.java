@@ -1,13 +1,16 @@
 package net.zephyr.fnafur.entity.animatronic;
 
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import net.zephyr.fnafur.entity.animatronic.voice.EntityVoiceSoundInstance;
 import net.zephyr.fnafur.util.CustomDataTickets;
@@ -30,25 +33,25 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
          "eyeleft",
          "eyeright"
     );
-    OrderedRenderCommandQueue renderTasks;
+    SubmitNodeCollector renderTasks;
     VertexConsumer buffer2;
 
-    public AnimatronicRenderer(EntityRendererFactory.Context renderManager) {
+    public AnimatronicRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new AnimatronicModel<>());
     }
 
     @Override
-    public void render(R renderState, MatrixStack poseStack, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraState) {
+    public void submit(R renderState, PoseStack poseStack, SubmitNodeCollector renderTasks, CameraRenderState cameraState) {
 
         float scale = 1;
         if(Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW)) && renderState.hasGeckolibData(CustomDataTickets.RENDER_SCALE)){
             scale = renderState.getGeckolibData(CustomDataTickets.RENDER_SCALE);
         }
-        poseStack.push();
+        poseStack.pushPose();
         poseStack.scale(scale, scale, scale);
         this.renderTasks = renderTasks;
-        super.render(renderState, poseStack, renderTasks, cameraState);
-        poseStack.pop();
+        super.submit(renderState, poseStack, renderTasks, cameraState);
+        poseStack.popPose();
     }
 
     @Override
@@ -60,38 +63,38 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
     public R fillRenderState(T animatable, Void relatedObject, R renderState, float partialTick) {
 
         if(animatable.isFrozen){
-            renderState.bodyYaw = animatable.frozenBodyYaw;
+            renderState.bodyRot = animatable.frozenBodyYaw;
 //            renderState.relativeHeadYaw = MathHelper.wrapDegrees(animatable.frozenHeadYaw - renderState.bodyYaw);
-            renderState.relativeHeadYaw = MathHelper.wrapDegrees(animatable.frozenHeadYaw - renderState.bodyYaw);
-            renderState.pitch = (float) animatable.frozenPitch;
+            renderState.yRot = Mth.wrapDegrees(animatable.frozenHeadYaw - renderState.bodyRot);
+            renderState.xRot = (float) animatable.frozenPitch;
         }
 
         super.fillRenderState(animatable, relatedObject, renderState, partialTick);
 
         if(animatable.isMenu){
-            renderState.addGeckolibData(DataTickets.PACKED_LIGHT, LightmapTextureManager.MAX_LIGHT_COORDINATE);
-            renderState.addGeckolibData(DataTickets.PACKED_OVERLAY, OverlayTexture.DEFAULT_UV);
+            renderState.addGeckolibData(DataTickets.PACKED_LIGHT, LightTexture.FULL_BRIGHT);
+            renderState.addGeckolibData(DataTickets.PACKED_OVERLAY, OverlayTexture.NO_OVERLAY);
             renderState.addGeckolibData(DataTickets.RENDER_COLOR, 0xFFFFFFFF);
         }
 
         renderState.addGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW, animatable.isMenu);
         renderState.addGeckolibData(CustomDataTickets.RENDER_SCALE,AnimatronicDataHandler.getPreviewScale(animatable.getChara(), animatable.getAlt()));
-        renderState.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.getEntityWorld()));
-        renderState.addGeckolibData(CustomDataTickets.EYE_TEXTURE, animatable.getEyeTexture(animatable.getEntityWorld()));
-        renderState.addGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE, animatable.getEyeMapTexture(animatable.getEntityWorld()));
+        renderState.addGeckolibData(CustomDataTickets.TEXTURE, animatable.getTexture(animatable.level()));
+        renderState.addGeckolibData(CustomDataTickets.EYE_TEXTURE, animatable.getEyeTexture(animatable.level()));
+        renderState.addGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE, animatable.getEyeMapTexture(animatable.level()));
         renderState.addGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE, animatable.getEyesGlowColor().getIdentifier());
-        renderState.addGeckolibData(CustomDataTickets.SUIT_MAP_TEXTURE, animatable.getEyeTexture(animatable.getEntityWorld()));
+        renderState.addGeckolibData(CustomDataTickets.SUIT_MAP_TEXTURE, animatable.getEyeTexture(animatable.level()));
         renderState.addGeckolibData(CustomDataTickets.EYE_NONE, animatable.isEmptyEye());
         renderState.addGeckolibData(CustomDataTickets.EYES_GLOW, animatable.shouldEyesGlow());
         renderState.addGeckolibData(CustomDataTickets.EYES_GLOW_MODE, animatable.getEyesGlowMode());
-        renderState.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.getEntityWorld()));
-        renderState.addGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE, animatable.getReRenderTexture(animatable.getEntityWorld()));
-        renderState.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.getEntityWorld()));
-        renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.getRenderType(animatable.getTexture(animatable.getEntityWorld())));
+        renderState.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.level()));
+        renderState.addGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE, animatable.getReRenderTexture(animatable.level()));
+        renderState.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.level()));
+        renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.getRenderType(animatable.getTexture(animatable.level())));
 
         renderState.addGeckolibData(CustomDataTickets.ANIMATRONIC_POSE, animatable.getAnimatronicPose());
-        renderState.addGeckolibData(CustomDataTickets.FORCED_HEAD_YAW, MathHelper.wrapDegrees(animatable.getHeadYaw() - renderState.bodyYaw));
-        renderState.addGeckolibData(CustomDataTickets.FORCED_PITCH, animatable.getPitch());
+        renderState.addGeckolibData(CustomDataTickets.FORCED_HEAD_YAW, Mth.wrapDegrees(animatable.getYHeadRot() - renderState.bodyRot));
+        renderState.addGeckolibData(CustomDataTickets.FORCED_PITCH, animatable.getXRot());
         renderState.addGeckolibData(CustomDataTickets.IS_FROZEN, animatable.isFrozen);
 
         return renderState;
@@ -109,8 +112,8 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
 
             boolean isFrozen = renderPassInfo.renderState().hasGeckolibData(CustomDataTickets.IS_FROZEN) && renderPassInfo.renderState().hasGeckolibData(CustomDataTickets.FORCED_HEAD_YAW) && Boolean.TRUE.equals(renderPassInfo.renderState().getGeckolibData(CustomDataTickets.IS_FROZEN));
 
-            float pitch = -renderPassInfo.renderState().pitch * MathHelper.RADIANS_PER_DEGREE;
-            float yaw = -renderPassInfo.renderState().relativeHeadYaw * MathHelper.RADIANS_PER_DEGREE;
+            float pitch = -renderPassInfo.renderState().xRot * Mth.DEG_TO_RAD;
+            float yaw = -renderPassInfo.renderState().yRot * Mth.DEG_TO_RAD;
 
             if (head_main != null) {
                 snapshots.get(head_main).setRotation(pitch / 2f, yaw / 4f, 0);
@@ -121,8 +124,8 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
                 snapshots.get(torso_main).setRotation(halfPitch, halfYaw, 0);
             }
 
-            float eyeYaw = !isFrozen ? yaw / 4f : -Math.clamp(renderPassInfo.renderState().getGeckolibData(CustomDataTickets.FORCED_HEAD_YAW), -45f, 45f) * MathHelper.RADIANS_PER_DEGREE;
-            float eyePitch = !isFrozen ? pitch / 2f : -Math.clamp(renderPassInfo.renderState().getGeckolibData(CustomDataTickets.FORCED_PITCH), -30f, 30f) * MathHelper.RADIANS_PER_DEGREE;
+            float eyeYaw = !isFrozen ? yaw / 4f : -Math.clamp(renderPassInfo.renderState().getGeckolibData(CustomDataTickets.FORCED_HEAD_YAW), -45f, 45f) * Mth.DEG_TO_RAD;
+            float eyePitch = !isFrozen ? pitch / 2f : -Math.clamp(renderPassInfo.renderState().getGeckolibData(CustomDataTickets.FORCED_PITCH), -30f, 30f) * Mth.DEG_TO_RAD;
 
             eyeYaw -= yaw/2f;
 
@@ -139,12 +142,12 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
     }
 
     @Override
-    protected boolean canBeCulled(T entity) {
+    protected boolean affectedByCulling(T entity) {
         return false;
     }
 
     @Override
-    public @Nullable RenderLayer getRenderType(R renderState, Identifier texture) {
+    public @Nullable RenderType getRenderType(R renderState, Identifier texture) {
         if(renderState.hasGeckolibData(CustomDataTickets.EYE_NONE) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.EYE_NONE))) return CustomRenderingPipelines.getAnimatronicNoEyes(texture, renderState.getGeckolibData(CustomDataTickets.EYE_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_MAP_TEXTURE), renderState.getGeckolibData(CustomDataTickets.EYE_GLOW_COLOR_TEXTURE));
 
         if(renderState.hasGeckolibData(CustomDataTickets.EYES_GLOW) && Boolean.TRUE.equals(renderState.getGeckolibData(CustomDataTickets.EYES_GLOW))) {

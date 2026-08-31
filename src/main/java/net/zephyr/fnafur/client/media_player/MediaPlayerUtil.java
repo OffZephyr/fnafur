@@ -4,7 +4,7 @@ public class MediaPlayerUtil {
 //    private static final Map<Identifier, Path> VIDEO_CACHE = new HashMap<>();
 //
 //    public static FFmpegFrameGrabber fromIdentifier(Identifier id) throws IOException {
-//        var resourceManager = MinecraftClient.getInstance().getResourceManager();
+//        var resourceManager = Minecraft.getInstance().getResourceManager();
 //
 //        List<Resource> list = resourceManager.getAllResources(
 //                Identifier.of(id.getNamespace(), "videos/" + id.getPath() + ".mp4")

@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.linking.links;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.BlockPos;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -20,8 +20,8 @@ public abstract class LinkSourceTargetBlockEntity extends LinkSourceBlockEntity 
         LinkTarget.allTargets.add((IEntityDataSaver) this);
     }
     @Override
-    public void markRemoved() {
-        super.markRemoved();
+    public void setRemoved() {
+        super.setRemoved();
         LinkSource.allSources.remove((IEntityDataSaver) this);
         cleanSources();
     }

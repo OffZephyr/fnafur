@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.wall_props.restroom_sign;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum RestroomSignSkins implements ColorEnumInterface, StringIdentifiable {
+public enum RestroomSignSkins implements ColorEnumInterface, StringRepresentable {
     MEN("men", 0),
     WOMEN("women", 1),
     NEUTRAL("neutral", 2);
@@ -15,7 +15,7 @@ public enum RestroomSignSkins implements ColorEnumInterface, StringIdentifiable 
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return name;
     }
 

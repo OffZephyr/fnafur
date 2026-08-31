@@ -4,15 +4,15 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.command.SummonCommand;
-import net.minecraft.text.Text;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.commands.SummonCommand;
+import net.minecraft.network.chat.Component;
 import net.zephyr.fnafur.entity.other.bear5.Bear5Entity;
 import net.zephyr.fnafur.init.entity_init.EntityInit;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
@@ -21,24 +21,24 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import java.util.Collection;
 
 public class Bear5Command {
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("bear5").requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK)).executes(context -> trigger(context, context.getSource().getPlayer()))
-                .then(CommandManager.argument("players", EntityArgumentType.players()).executes(context -> trigger(context, EntityArgumentType.getPlayers(context, "players")))));
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(Commands.literal("bear5").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(context -> trigger(context, context.getSource().getPlayer()))
+                .then(Commands.argument("players", EntityArgument.players()).executes(context -> trigger(context, EntityArgument.getPlayers(context, "players")))));
     }
-    public static int trigger(CommandContext<ServerCommandSource> context, Collection<? extends PlayerEntity> players) throws CommandSyntaxException {
+    public static int trigger(CommandContext<CommandSourceStack> context, Collection<? extends Player> players) throws CommandSyntaxException {
 
-        for(PlayerEntity player : players) {
+        for(Player player : players) {
             trigger(context, player);
         }
         return 0;
     }
-    public static int trigger(CommandContext<ServerCommandSource> context, PlayerEntity player) throws CommandSyntaxException {
-        player.sendMessage(Text.literal("§9Something §1§lTERRIBLE §r§9is on its way..."), false);
+    public static int trigger(CommandContext<CommandSourceStack> context, Player player) throws CommandSyntaxException {
+        player.displayClientMessage(Component.literal("§9Something §1§lTERRIBLE §r§9is on its way..."), false);
 
-        Bear5Entity entity = EntityInit.BEAR5.create(player.getEntityWorld(), SpawnReason.COMMAND);
-        entity.setPosition(player.getEntityPos().offset(player.getFacing().getOpposite(), 20));
-        ((IEntityDataSaver) entity).getPersistentData().putString("TargetID", player.getUuid().toString());
-        player.getEntityWorld().spawnEntity(entity);
+        Bear5Entity entity = EntityInit.BEAR5.create(player.level(), EntitySpawnReason.COMMAND);
+        entity.setPos(player.position().relative(player.getNearestViewDirection().getOpposite(), 20));
+        ((IEntityDataSaver) entity).getPersistentData().putString("TargetID", player.getUUID().toString());
+        player.level().addFreshEntity(entity);
         return 0;
     }
 }

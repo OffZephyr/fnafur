@@ -1,25 +1,25 @@
 package net.zephyr.fnafur.util;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.LoreComponent;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 
 import java.util.Arrays;
 
 public class ItemUtil {
-    public static NbtCompound getNbt(ItemStack stack){
-        return stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT).copyNbt();
+    public static CompoundTag getNbt(ItemStack stack){
+        return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
     }
-    public static ItemStack setNbt(ItemStack stack, NbtCompound nbt){
-        stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
+    public static ItemStack setNbt(ItemStack stack, CompoundTag nbt){
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
         return stack;
     }
 
-    public static ItemStack setLore(ItemStack stack, Text... lore){
-        stack.set(DataComponentTypes.LORE,new LoreComponent(Arrays.asList(lore)));
+    public static ItemStack setLore(ItemStack stack, Component... lore){
+        stack.set(DataComponents.LORE,new ItemLore(Arrays.asList(lore)));
         return stack;
     }
 

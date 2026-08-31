@@ -1,69 +1,65 @@
 package net.zephyr.fnafur.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.client.render.command.OrderedRenderCommandQueueImpl;
-import net.minecraft.client.render.state.WorldRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.SubmitNodeStorage;
+import net.minecraft.client.renderer.state.LevelRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.client.gui.screens.InWorldScreen;
-import net.zephyr.fnafur.client.gui.screens.crafting.CpuConfigScreen;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.EasingMathUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
-import net.zephyr.fnafur.util.mixinAccessing.IWorldRendererAccessor;
 import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public class ClientHook {
     public static float tickTransitionToScreen = 0;
-    static Vec3d lastScreenPos;
+    static Vec3 lastScreenPos;
     static Vector3f lastScreenAngle;
     static boolean wasHudHidden = false;
-    public static void openScreen(String index, NbtCompound nbt, long l){
+    public static void openScreen(String index, CompoundTag nbt, long l){
         /*if (ScreenUtils.getScreens().containsKey(index)) {
             Screen screen = ScreenUtils.getScreens().get(index).create(Text.translatable("screen." + index + ".title"), nbt, l);
-            if(MinecraftClient.getInstance().currentScreen == null || MinecraftClient.getInstance().currentScreen.getClass() != screen.getClass()) {
-                MinecraftClient.getInstance().setScreen(screen);
+            if(Minecraft.getInstance().currentScreen == null || Minecraft.getInstance().currentScreen.getClass() != screen.getClass()) {
+                Minecraft.getInstance().setScreen(screen);
             }
         }*/
     }
 
-    public static<T extends BlockEntity, R extends BlockEntityRenderState & GeoRenderState> void renderWorldBlockEntity(BlockEntityRenderer<T, R> blockEntityRenderer, R state, MatrixStack matrices, WorldRenderState renderStates, OrderedRenderCommandQueueImpl queue){
+    public static<T extends BlockEntity, R extends BlockEntityRenderState & GeoRenderState> void renderWorldBlockEntity(BlockEntityRenderer<T, R> blockEntityRenderer, R state, PoseStack matrices, LevelRenderState renderStates, SubmitNodeStorage queue){
 
-        MatrixStack.Entry pos = state.getGeckolibData(CustomDataTickets.ENTITY_RENDER_MATRIX_ENTRY);
-        matrices.push();
+        PoseStack.Pose pos = state.getGeckolibData(CustomDataTickets.ENTITY_RENDER_MATRIX_ENTRY);
+        matrices.pushPose();
         //matrices.multiplyPositionMatrix(pos.getPositionMatrix());
-        matrices.translate(MinecraftClient.getInstance().gameRenderer.getCamera().pos.multiply(-1));
+        matrices.translate(Minecraft.getInstance().gameRenderer.getMainCamera().position.scale(-1));
 
         if(blockEntityRenderer != null){
             if(state.hasGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW) && Boolean.TRUE.equals(state.getGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW))){
                 ((GeoPropRenderer<GeoPropBlockEntity, R>)blockEntityRenderer).renderPreview(state, matrices, queue, renderStates.cameraRenderState);
             }
         }
-        matrices.pop();
+        matrices.popPose();
     }
 
-    public static boolean updateCamera(Camera camera, World area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickProgress) {
+    public static boolean updateCamera(Camera camera, Level area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickProgress) {
 
 //        if (true) return false;
-        float progress = MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks()/20f;
+        float progress = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks()/20f;
         if(tickTransitionToScreen == 0){
-            wasHudHidden = MinecraftClient.getInstance().options.hudHidden;
+            wasHudHidden = Minecraft.getInstance().options.hideGui;
         }
 
-        if (MinecraftClient.getInstance().currentScreen instanceof InWorldScreen screen) {
+        if (Minecraft.getInstance().screen instanceof InWorldScreen screen) {
             tickTransitionToScreen = Math.clamp(tickTransitionToScreen + (progress * 1.1f), 0, 1);
 
             camera.setRotation(screen.getCameraAngle().x, screen.getCameraAngle().y);
@@ -74,19 +70,19 @@ public class ClientHook {
         }
 
         if(lastScreenPos == null){
-            lastScreenPos = new Vec3d(focusedEntity.getX(), focusedEntity.getEyeY(), focusedEntity.getZ());
+            lastScreenPos = new Vec3(focusedEntity.getX(), focusedEntity.getEyeY(), focusedEntity.getZ());
         }
         if(lastScreenAngle == null){
-            lastScreenAngle = new Vector3f(((focusedEntity.getYaw(tickProgress) + 180f)%360f) + 180 + 360, focusedEntity.getPitch(tickProgress), 0);
+            lastScreenAngle = new Vector3f(((focusedEntity.getViewYRot(tickProgress) + 180f)%360f) + 180 + 360, focusedEntity.getViewXRot(tickProgress), 0);
         }
 
         float index = (float) EasingMathUtil.easeInOutQuad(tickTransitionToScreen);
 
-        double entity_x = MathHelper.lerp((double) tickProgress, focusedEntity.lastX, focusedEntity.getX());
-        double entity_y = MathHelper.lerp((double) tickProgress, focusedEntity.lastY + focusedEntity.getEyeY() - focusedEntity.getY(), focusedEntity.getEyeY());
-        double entity_z = MathHelper.lerp((double) tickProgress, focusedEntity.lastZ, focusedEntity.getZ());
+        double entity_x = Mth.lerp((double) tickProgress, focusedEntity.xo, focusedEntity.getX());
+        double entity_y = Mth.lerp((double) tickProgress, focusedEntity.yo + focusedEntity.getEyeY() - focusedEntity.getY(), focusedEntity.getEyeY());
+        double entity_z = Mth.lerp((double) tickProgress, focusedEntity.zo, focusedEntity.getZ());
 
-        float entity_yaw = focusedEntity.getYaw(tickProgress);
+        float entity_yaw = focusedEntity.getViewYRot(tickProgress);
         while(entity_yaw < 0){
             entity_yaw += 360f;
         }
@@ -95,21 +91,21 @@ public class ClientHook {
         float start = entity_yaw%360f;
         float end = lastScreenAngle.x%360f;
         end = start > 180 && end < 180 ? end + 360 : end;
-        float entity_pitch = focusedEntity.getPitch(tickProgress);
+        float entity_pitch = focusedEntity.getViewXRot(tickProgress);
 
-        double x = MathHelper.lerp(index, entity_x, lastScreenPos.x);
-        double y = MathHelper.lerp(index, entity_y, lastScreenPos.y);
-        double z = MathHelper.lerp(index, entity_z, lastScreenPos.z);
+        double x = Mth.lerp(index, entity_x, lastScreenPos.x);
+        double y = Mth.lerp(index, entity_y, lastScreenPos.y);
+        double z = Mth.lerp(index, entity_z, lastScreenPos.z);
 
 
-        float yaw = MathHelper.lerp(index, start, end);
-        float pitch = MathHelper.lerp(index, entity_pitch, lastScreenAngle.y);
-        float roll = MathHelper.lerp(index, 0, lastScreenAngle.z);
+        float yaw = Mth.lerp(index, start, end);
+        float pitch = Mth.lerp(index, entity_pitch, lastScreenAngle.y);
+        float roll = Mth.lerp(index, 0, lastScreenAngle.z);
 
-        ((IEditCamera) camera).setPosition(x, y, z);
+        ((IEditCamera) camera).setPos(x, y, z);
         ((IEditCamera) camera).setRotation(yaw, pitch, roll);
         ((IEditCamera) camera).setThirsPerson(tickTransitionToScreen > 0.85f);
-        MinecraftClient.getInstance().options.hudHidden = wasHudHidden || tickTransitionToScreen > 0;
+        Minecraft.getInstance().options.hideGui = wasHudHidden || tickTransitionToScreen > 0;
 
         return tickTransitionToScreen > 0;
     }

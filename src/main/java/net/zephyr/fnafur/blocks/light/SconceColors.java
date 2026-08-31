@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.light;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum SconceColors implements StringIdentifiable, ColorEnumInterface {
+public enum SconceColors implements StringRepresentable, ColorEnumInterface {
     BLACK_PURPLE("black_purple"),
     BROWN_RED("brown_red"),
     BLACK("black"),
@@ -30,7 +30,7 @@ public enum SconceColors implements StringIdentifiable, ColorEnumInterface {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return NAME;
     }
 

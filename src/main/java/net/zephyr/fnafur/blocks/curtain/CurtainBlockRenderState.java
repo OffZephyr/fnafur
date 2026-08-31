@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.curtain;
 
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 
 public class CurtainBlockRenderState extends BlockEntityRenderState {
     CurtainData front;
@@ -12,8 +12,8 @@ public class CurtainBlockRenderState extends BlockEntityRenderState {
     boolean isLast = false;
 
     public int height = 0;
-    BlockPos previous = BlockPos.ORIGIN;
-    BlockPos next = BlockPos.ORIGIN;
+    BlockPos previous = BlockPos.ZERO;
+    BlockPos next = BlockPos.ZERO;
     Direction facing = Direction.SOUTH;
     Direction nextFacing = Direction.SOUTH;
     boolean isOpening = false;

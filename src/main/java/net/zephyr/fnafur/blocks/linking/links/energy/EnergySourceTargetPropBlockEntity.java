@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.linking.links.energy;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.BlockPos;
 import net.zephyr.fnafur.blocks.linking.EnergySource;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
@@ -23,8 +23,8 @@ public abstract class EnergySourceTargetPropBlockEntity<T extends BlockEntityTyp
         LinkTarget.allTargets.add((IEntityDataSaver) this);
     }
     @Override
-    public void markRemoved() {
-        super.markRemoved();
+    public void setRemoved() {
+        super.setRemoved();
         LinkSource.allSources.remove((IEntityDataSaver) this);
         cleanSources();
     }

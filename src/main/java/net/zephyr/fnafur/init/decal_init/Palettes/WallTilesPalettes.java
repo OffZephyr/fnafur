@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.init.decal_init.Palettes;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.init.block_init.Palettes.PaletteEnum;
 
 import java.util.Locale;
 
 public enum WallTilesPalettes implements PaletteEnum {
-    RED(Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/decals/tiles/red_trim.png"))
+    RED(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/decals/tiles/red_trim.png"))
     ;
 
     public final Identifier PALETTE;

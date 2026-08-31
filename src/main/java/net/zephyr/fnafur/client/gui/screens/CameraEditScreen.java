@@ -1,16 +1,16 @@
 package net.zephyr.fnafur.client.gui.screens;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 
@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CameraEditScreen extends GoopyScreen {
-    Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/gui/camera/camera_edit.png");
+    Identifier texture = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/camera/camera_edit.png");
     boolean isActive = false;
-    private TextFieldWidget nameField;
-    private TextFieldWidget actionName;
+    private EditBox nameField;
+    private EditBox actionName;
     boolean holding = false;
     byte modeX = 0;
     byte modeY = 0;
@@ -44,8 +44,8 @@ public class CameraEditScreen extends GoopyScreen {
     boolean sneaking = false;
     boolean renameActionButton = false;
 
-    public CameraEditScreen(Text text, NbtCompound nbtCompound, Object o) {
-        super(text, nbtCompound, o);
+    public CameraEditScreen(Component text, CompoundTag CompoundTag, Object o) {
+        super(text, CompoundTag, o);
     }
 
     @Override
@@ -72,26 +72,26 @@ public class CameraEditScreen extends GoopyScreen {
         this.nightvision = getNbtData().getByte("NightVision").get();
 
 
-        this.nameField = new TextFieldWidget(this.textRenderer, i, j, 82, 12, Text.translatable("container.repair"));
-        this.nameField.setFocusUnlocked(true);
-        this.nameField.setEditableColor(-1);
-        this.nameField.setUneditableColor(-1);
-        this.nameField.setDrawsBackground(false);
+        this.nameField = new EditBox(this.font, i, j, 82, 12, Component.translatable("container.repair"));
+        this.nameField.setCanLoseFocus(true);
+        this.nameField.setTextColor(-1);
+        this.nameField.setTextColorUneditable(-1);
+        this.nameField.setBordered(false);
         this.nameField.setMaxLength(50);
-        this.nameField.setChangedListener(this::onRenamed);
-        this.nameField.setText(getNbtData().getString("Name").get());
-        this.addSelectableChild(this.nameField);
+        this.nameField.setResponder(this::onRenamed);
+        this.nameField.setValue(getNbtData().getString("Name").get());
+        this.addWidget(this.nameField);
         this.nameField.setEditable(true);
 
-        this.actionName = new TextFieldWidget(this.textRenderer, this.width / 3, this.height / 2 + 25, this.width/3, 15, Text.translatable("container.repair"));
-        this.actionName.setFocusUnlocked(false);
-        this.actionName.setEditableColor(-1);
-        this.actionName.setUneditableColor(-1);
-        this.actionName.setDrawsBackground(true);
+        this.actionName = new EditBox(this.font, this.width / 3, this.height / 2 + 25, this.width/3, 15, Component.translatable("container.repair"));
+        this.actionName.setCanLoseFocus(false);
+        this.actionName.setTextColor(-1);
+        this.actionName.setTextColorUneditable(-1);
+        this.actionName.setBordered(true);
         this.actionName.setMaxLength(24);
-        this.actionName.setChangedListener(this::onActionRenamed);
-        this.actionName.setText(getNbtData().getString("ActionName").get());
-        this.addSelectableChild(this.actionName);
+        this.actionName.setResponder(this::onActionRenamed);
+        this.actionName.setValue(getNbtData().getString("ActionName").get());
+        this.addWidget(this.actionName);
         this.actionName.setEditable(true);
 
         this.holding = false;
@@ -100,28 +100,28 @@ public class CameraEditScreen extends GoopyScreen {
 
     @Override
     public void tick() {
-//        if(!(MinecraftClient.getInstance().world.getBlockEntity(getBlockPos()) instanceof CameraBlockEntity)) {
-//            MinecraftClient.getInstance().setScreen(null);
+//        if(!(Minecraft.getInstance().level.getBlockEntity(getBlockPos()) instanceof CameraBlockEntity)) {
+//            Minecraft.getInstance().setScreen(null);
 //        }
         super.tick();
     }
 
     private void onRenamed(String name){
-        NbtCompound newData = getNbtData().copy();
+        CompoundTag newData = getNbtData().copy();
         newData.putString("Name", name);
         compileData(newData);
     }
     private void onActionRenamed(String name){
-        NbtCompound newData = getNbtData().copy();
+        CompoundTag newData = getNbtData().copy();
         newData.putString("ActionName", name);
         compileData(newData);
     }
 
     private void compileData(){
-        NbtCompound newData = getNbtData().copy();
+        CompoundTag newData = getNbtData().copy();
         compileData(newData);
     }
-    private void compileData(NbtCompound nbt){
+    private void compileData(CompoundTag nbt){
         nbt.putBoolean("Active", this.isActive);
         nbt.putByte("ModeX", this.modeX);
         nbt.putByte("ModeY", this.modeY);
@@ -142,7 +142,7 @@ public class CameraEditScreen extends GoopyScreen {
 
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         this.holding = true;
 
         double mouseX = click.x();
@@ -152,8 +152,8 @@ public class CameraEditScreen extends GoopyScreen {
         if(!this.actionName.isMouseOver(mouseX, mouseY)) {
             this.actionName.setFocused(false);
             this.renameActionButton = false;
-            this.actionName.setFocusUnlocked(false);
-            this.nameField.setFocusUnlocked(true);
+            this.actionName.setCanLoseFocus(false);
+            this.nameField.setCanLoseFocus(true);
         }
         if(!this.nameField.isMouseOver(mouseX, mouseY)) this.nameField.setFocused(false);
 
@@ -162,7 +162,7 @@ public class CameraEditScreen extends GoopyScreen {
             if (mouseX > this.width / 2f - 77 && mouseX < this.width / 2f - 66 && mouseY > this.height / 2f + 6 && mouseY < this.height / 2f + 20) {
                 this.isActive = !this.isActive;
                 float pitch = this.isActive ? 1f : 0.85f;
-                MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, pitch);
+                Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, pitch);
                 compileData();
                 return super.mouseClicked(click, doubled);
             }
@@ -191,7 +191,7 @@ public class CameraEditScreen extends GoopyScreen {
                     int xOffset = i * 13;
                     if (isOnButton(mouseX, mouseY, this.width / 2 - 47 + xOffset, this.height / 2 - 8, 11, 11)) {
                         if (this.modeX != i) {
-                            MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
+                            Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
                             this.modeX = i;
                             compileData();
                         }
@@ -201,7 +201,7 @@ public class CameraEditScreen extends GoopyScreen {
                     int xOffset = i * 13;
                     if (isOnButton(mouseX, mouseY, this.width / 2 + 10 + xOffset, this.height / 2 - 8, 11, 11)) {
                         if (this.modeY != i) {
-                            MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
+                            Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
                             this.modeY = i;
                             compileData();
                         }
@@ -240,28 +240,28 @@ public class CameraEditScreen extends GoopyScreen {
                     }
                 }
                 if (isOnButton(mouseX, mouseY, this.width / 2 - 77, this.height / 2 - 28, 10, 8)) {
-                    MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
+                    Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
                     this.flashlight = !flashlight;
                     compileData();
                 }
                 if (isOnButton(mouseX, mouseY, this.width / 2 - 77, this.height / 2 - 19, 10, 8)) {
-                    MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
+                    Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
                     this.action = !action;
                     compileData();
                 }
                 if (isOnButton(mouseX, mouseY, this.width / 2 - 77, this.height / 2 - 10, 10, 8)) {
-                    MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
+                    Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
                     this.nightvision = nightvision - 1 < 0 ? 2 : (byte) (nightvision - 1);
                     compileData();
                 }
 
                 if (action) {
                     if (isOnButton(mouseX, mouseY, this.width / 2 - 87, this.height / 2 - 18, 6, 7)) {
-                        MinecraftClient.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
+                        Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.5f, 1);
                         this.renameActionButton = true;
                         this.nameField.setFocused(false);
-                        this.nameField.setFocusUnlocked(false);
-                        this.actionName.setFocusUnlocked(true);
+                        this.nameField.setCanLoseFocus(false);
+                        this.actionName.setCanLoseFocus(true);
                         this.actionName.setFocused(true);
                     }
                 }
@@ -275,7 +275,7 @@ public class CameraEditScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean mouseDragged(Click click, double offsetX, double offsetY) {
+    public boolean mouseDragged(MouseButtonEvent click, double offsetX, double offsetY) {
         double deltaX = click.x() + offsetX;
         if(this.holdingXSlider){
             double comp = this.xSlider + deltaX;
@@ -305,7 +305,7 @@ public class CameraEditScreen extends GoopyScreen {
     }
 
     @Override
-    public boolean mouseReleased(Click click) {
+    public boolean mouseReleased(MouseButtonEvent click) {
         this.holding = false;
         if (this.holdingXSlider ||
                 this.holdingYSlider ||
@@ -350,18 +350,18 @@ public class CameraEditScreen extends GoopyScreen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
 
-        renderInGameBackground(context);
+        renderTransparentBackground(context);
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, this.width/2 - 81, this.height/2 - 36, 0, 0, 146, 72, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, texture, this.width/2 - 81, this.height/2 - 36, 0, 0, 146, 72, 256, 256);
 
         if(this.isActive){
             if (mouseX > this.width / 2 - 77 && mouseX < this.width / 2 - 66 && mouseY > this.height / 2 + 6 && mouseY < this.height / 2 + 20) {
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, this.width / 2 - 77, this.height / 2 + 6, 77, 72, 11, 15, 256, 256);
+                context.blit(RenderPipelines.GUI_TEXTURED, texture, this.width / 2 - 77, this.height / 2 + 6, 77, 72, 11, 15, 256, 256);
             }
             else {
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, this.width / 2 - 77, this.height / 2 + 6, 66, 72, 11, 15, 256, 256);
+                context.blit(RenderPipelines.GUI_TEXTURED, texture, this.width / 2 - 77, this.height / 2 + 6, 66, 72, 11, 15, 256, 256);
             }
 
             if(flashlight){
@@ -432,34 +432,34 @@ public class CameraEditScreen extends GoopyScreen {
         }
         else {
             if (mouseX > this.width / 2 - 77 && mouseX < this.width / 2 - 66 && mouseY > this.height / 2 + 6 && mouseY < this.height / 2 + 20) {
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, this.width / 2 - 77, this.height / 2 + 6, 55, 72, 11, 15, 256, 256);
+                context.blit(RenderPipelines.GUI_TEXTURED, texture, this.width / 2 - 77, this.height / 2 + 6, 55, 72, 11, 15, 256, 256);
             }
         }
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, this.width / 2 - 46, this.height / 2 - 29, 154, 0, 94, 16, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, texture, this.width / 2 - 46, this.height / 2 - 29, 154, 0, 94, 16, 256, 256);
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, this.width/2 + 51, this.height / 2 + 9, 146, speedX * 7, 7, 7, 256, 256);
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, this.width/2 + 51, this.height / 2 + 21, 146, speedY * 7, 7, 7, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, texture, this.width/2 + 51, this.height / 2 + 9, 146, speedX * 7, 7, 7, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, texture, this.width/2 + 51, this.height / 2 + 21, 146, speedY * 7, 7, 7, 256, 256);
 
-        String key = "§l" + MinecraftClient.getInstance().options.sneakKey.getBoundKeyLocalizedText().getString();
-        Text tooltips = Text.translatable("fnafur.screens.camera_edit.tooltip", key);
-        Text renameAction = Text.translatable("fnafur.screens.camera_edit.renameAction", key);
+        String key = "§l" + Minecraft.getInstance().options.keyShift.getTranslatedKeyMessage().getString();
+        Component tooltips = Component.translatable("fnafur.screens.camera_edit.tooltip", key);
+        Component renameAction = Component.translatable("fnafur.screens.camera_edit.renameAction", key);
 
         if(renameActionButton){
-            renderInGameBackground(context);
-            context.drawCenteredTextWithShadow(textRenderer, renameAction, this.width/2, this.height / 2 - 32, 0xFFFFFFFF);
+            renderTransparentBackground(context);
+            context.drawCenteredString(font, renameAction, this.width/2, this.height / 2 - 32, 0xFFFFFFFF);
 
-            int width = textRenderer.getWidth(this.actionName.getText() + 10);
+            int width = font.width(this.actionName.getValue() + 10);
             int height = 30;
             int x = this.width / 2 - width/2;
             int y = this.height / 2 - height/2;
             context.fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xFFFFFFFF);
             context.fill(x, y, x + width, y + height, 0xFF666666);
-            context.drawCenteredTextWithShadow(textRenderer, this.actionName.getText(), this.width / 2, this.height / 2 - 4, 0xFFFFFFFF);
+            context.drawCenteredString(font, this.actionName.getValue(), this.width / 2, this.height / 2 - 4, 0xFFFFFFFF);
             this.actionName.render(context, mouseX, mouseY, delta);
         }
         else {
-            context.drawCenteredTextWithShadow(textRenderer, tooltips, this.width/2, this.height / 2 + 42, 0xFFFFFFFF);
+            context.drawCenteredString(font, tooltips, this.width/2, this.height / 2 + 42, 0xFFFFFFFF);
 
             this.nameField.render(context, mouseX, mouseY, delta);
         }
@@ -467,8 +467,8 @@ public class CameraEditScreen extends GoopyScreen {
         drawTooltip(context, mouseX, mouseY);super.render(context, mouseX, mouseY, delta);
     }
 
-    void drawTooltip(DrawContext context, int mouseX, int mouseY){
-        TextRenderer render = MinecraftClient.getInstance().textRenderer;
+    void drawTooltip(GuiGraphics context, int mouseX, int mouseY){
+        Font render = Minecraft.getInstance().font;
 
         boolean speedBL1 = isOnButton(mouseX, mouseY, this.width/2 + 51, this.height / 2 + 9, 7, 7);
         boolean speedBL2 = isOnButton(mouseX, mouseY, this.width/2 + 51, this.height / 2 + 21, 7, 7);
@@ -596,35 +596,35 @@ public class CameraEditScreen extends GoopyScreen {
             case Y -> argTitle = "§lY";
         }
 
-        Text name = Text.translatable("fnafur.screens.camera_edit." + button + ".title", argTitle);
+        Component name = Component.translatable("fnafur.screens.camera_edit." + button + ".title", argTitle);
         String desc = "fnafur.screens.camera_edit." + button + ".description";
 
         if(this.sneaking && (speedBL1 || speedBL2 || sliderBL1 || sliderBL2 || mode0BL1 || mode0BL2 || mode1BL1 || mode1BL2 || mode2BL1 || mode2BL2 || nameBL || flashlightBL || actionBL || nightvisionBL || powerBL)) {
-            List<Text> tooltip = new ArrayList<>();
+            List<Component> tooltip = new ArrayList<>();
             tooltip.add(name);
             for(int i = 0; i < descriptionLength; i++){
-                tooltip.add(Text.translatable(desc + i));
+                tooltip.add(Component.translatable(desc + i));
             }
-            context.drawTooltip(render, tooltip, mouseX, mouseY);
+            context.setComponentTooltipForNextFrame(render, tooltip, mouseX, mouseY);
         }
     }
 
     @Override
-    public boolean keyPressed(KeyInput input) {
-        this.sneaking = MinecraftClient.getInstance().options.sneakKey.matchesKey(input);
+    public boolean keyPressed(KeyEvent input) {
+        this.sneaking = Minecraft.getInstance().options.keyShift.matches(input);
         return super.keyPressed(input);
     }
 
     @Override
-    public boolean keyReleased(KeyInput input) {
-        if(sneaking && MinecraftClient.getInstance().options.sneakKey.matchesKey(input)){
+    public boolean keyReleased(KeyEvent input) {
+        if(sneaking && Minecraft.getInstance().options.keyShift.matches(input)){
             this.sneaking = false;
         }
         return super.keyReleased(input);
     }
 
     @Override
-    public boolean shouldPause() {
+    public boolean isPauseScreen() {
         return false;
     }
 }

@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.energy.blocks.switches.office_buttons;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum OfficeButtonsColors implements StringIdentifiable, ColorEnumInterface {
+public enum OfficeButtonsColors implements StringRepresentable, ColorEnumInterface {
     DEFAULT("both", 0, true),
     DOOR("door", 1, true),
     LIGHT("light", 2, false),
@@ -18,7 +18,7 @@ public enum OfficeButtonsColors implements StringIdentifiable, ColorEnumInterfac
         this.door = isDoor;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

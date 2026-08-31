@@ -1,12 +1,12 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.gl.PostEffectProcessor;
-import net.minecraft.client.render.FrameGraphBuilder;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import net.minecraft.client.renderer.PostChain;
+import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.client.gui.screens.CameraTabletScreen;
 import net.zephyr.fnafur.client.media_player.MediaPlayerUtil;
 import net.zephyr.fnafur.client.media_player.VideoInstance;
@@ -26,13 +26,13 @@ import java.util.Map;
 public class GameRendererMixin implements IPostProcessorLoader {
 
     @Shadow
-    MinecraftClient client;
+    Minecraft minecraft;
     @Shadow
-    private Identifier postProcessorId;
-    private Map<Framebuffer, PostEffectProcessor> monitorPostProcessors = new HashMap<>();
+    private Identifier postEffectId;
+    private Map<RenderTarget, PostChain> monitorPostProcessors = new HashMap<>();
 
     @Shadow
-    private void setPostProcessor(Identifier id) {
+    private void setPostEffect(Identifier id) {
 
     }
     /*@Inject(method = "render", at = @At(value = "HEAD"))
@@ -42,25 +42,25 @@ public class GameRendererMixin implements IPostProcessorLoader {
         }
     }*/
 
-    @Inject(method = "getFov(Lnet/minecraft/client/render/Camera;FZ)F", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getFov(Lnet/minecraft/client/Camera;FZ)F", at = @At("RETURN"), cancellable = true)
     public void getZoomLevel(CallbackInfoReturnable<Float> callbackInfo) {
-        if(MinecraftClient.getInstance().currentScreen instanceof CameraTabletScreen) {
+        if(Minecraft.getInstance().screen instanceof CameraTabletScreen) {
             float fov = 45;
             callbackInfo.setReturnValue(fov);
         }
     }
-    @Inject(method = "onResized", at = @At(value = "HEAD"))
+    @Inject(method = "resize", at = @At(value = "HEAD"))
     private void illusions$onResized$HEAD(int width, int height, CallbackInfo ci) {
         //CameraRenderer.onResize(width, height);
         //TODO CamRenderer
     }
     @Inject(method = "render", at = @At(value = "TAIL"))
-    private void illusions$onResized$HEAD(RenderTickCounter tickCounter, boolean tick, CallbackInfo ci) {
+    private void illusions$onResized$HEAD(DeltaTracker tickCounter, boolean tick, CallbackInfo ci) {
         //MediaPlayerUtil.renderVideo(((GameRenderer) (Object) this));
     }
 
-    public void resizePostProcessor(Framebuffer framebuffer, int width, int height){
-        PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(framebuffer);
+    public void resizePostProcessor(RenderTarget framebuffer, int width, int height){
+        PostChain monitorPostProcessor = monitorPostProcessors.get(framebuffer);
         if(monitorPostProcessor != null) {
            // monitorPostProcessor.setupDimensions(width, height);
         }
@@ -68,11 +68,11 @@ public class GameRendererMixin implements IPostProcessorLoader {
 
     @Override
     public void loadPostProcessor(Identifier id) {
-        setPostProcessor(id);
+        setPostEffect(id);
     }
 
     @Override
-    public void render(FrameGraphBuilder builder, int textureWidth, int textureHeight, PostEffectProcessor.FramebufferSet framebufferSet) {
+    public void render(FrameGraphBuilder builder, int textureWidth, int textureHeight, PostChain.TargetBundle framebufferSet) {
 
         //PostEffectProcessor postProcessor = this.client.getShaderLoader().loadPostEffect(this.postProcessorId, DefaultFramebufferSet.MAIN_ONLY);
         //if(postProcessor != null){
@@ -80,14 +80,14 @@ public class GameRendererMixin implements IPostProcessorLoader {
         //}
     }
     @Override
-    public void setMonitorPostProcessor(Identifier id, Framebuffer framebuffer) {
+    public void setMonitorPostProcessor(Identifier id, RenderTarget framebuffer) {
         /*if(monitorPostProcessors.get(framebuffer) == null || !monitorPostProcessors.get(framebuffer).getName().equals(id.toString())) {
             System.out.println(id);
             loadMonitorPostProcessor(id, framebuffer);
         }*/
     }
     @Override
-    public void renderMonitor(float delta, boolean bool, Framebuffer framebuffer) {
+    public void renderMonitor(float delta, boolean bool, RenderTarget framebuffer) {
         //PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(framebuffer);
         //if(bool && monitorPostProcessor != null){
         //    RenderSystem.disableBlend();
@@ -98,21 +98,21 @@ public class GameRendererMixin implements IPostProcessorLoader {
     }
 
     @Override
-    public void setMonitorUniform(Framebuffer buffer, String uniform, float value1, float value2, float value3) {
-        PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(buffer);
+    public void setMonitorUniform(RenderTarget buffer, String uniform, float value1, float value2, float value3) {
+        PostChain monitorPostProcessor = monitorPostProcessors.get(buffer);
         if(monitorPostProcessor != null) {
             ((IPostProcessorUniform) monitorPostProcessor).set3FloatUniforms(uniform, value1, value2, value3);
         }
     }
     @Override
-    public void setMonitorUniform(Framebuffer buffer, String uniform, float value1, float value2) {
-        PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(buffer);
+    public void setMonitorUniform(RenderTarget buffer, String uniform, float value1, float value2) {
+        PostChain monitorPostProcessor = monitorPostProcessors.get(buffer);
         if(monitorPostProcessor != null) {
             ((IPostProcessorUniform) monitorPostProcessor).set2FloatUniforms(uniform, value1, value2);
         }
     }
     @Override
-    public void setMonitorUniform(Framebuffer buffer, String uniform, float value1) {
+    public void setMonitorUniform(RenderTarget buffer, String uniform, float value1) {
         //PostEffectProcessor monitorPostProcessor = monitorPostProcessors.get(buffer);
         //if(monitorPostProcessor != null) {
         //    monitorPostProcessor.setUniforms(uniform, value1);
@@ -127,7 +127,7 @@ public class GameRendererMixin implements IPostProcessorLoader {
         //}
     }
     @Override
-    public PostEffectProcessor getMonitorPostProcessor(Framebuffer framebuffer) {
+    public PostChain getMonitorPostProcessor(RenderTarget framebuffer) {
         return this.monitorPostProcessors.get(framebuffer);
     }
 

@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.utility_blocks.animatronics.trigger_block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 
 public class TriggerBlockEntity extends BlockEntity {
@@ -11,7 +11,7 @@ public class TriggerBlockEntity extends BlockEntity {
         super(BlockEntityInit.TRIGGER_BLOCK, pos, state);
     }
 
-    public void tick(World world, BlockPos blockPos, BlockState state, TriggerBlockEntity entity) {
+    public void tick(Level world, BlockPos blockPos, BlockState state, TriggerBlockEntity entity) {
 
     }
 }

@@ -1,24 +1,24 @@
 package net.zephyr.fnafur.init;
 
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.media_player.VideoAudioToSoundEvent;
 import net.zephyr.fnafur.client.media_player.VideoEntry;
 
 public class VideoInit {
     public static final VideoEntry IGNITED_BONER = makeInstance(
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "ignited_boner")
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "ignited_boner")
     );
     public static final VideoEntry CHINESE = makeInstance(
-            Identifier.of(FnafUniverseRebuilt.MOD_ID, "golden_freddy")
+            Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "golden_freddy")
     );
 
     static VideoEntry makeInstance(Identifier id){
-        SoundEvent event = SoundEvent.of(id);
-        Registry.register(Registries.SOUND_EVENT, id, event);
+        SoundEvent event = SoundEvent.createVariableRangeEvent(id);
+        Registry.register(BuiltInRegistries.SOUND_EVENT, id, event);
         return new VideoEntry(id, event);
     }
 

@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.energy.blocks.generators;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.links.energy.EnergySourcePropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
@@ -19,7 +19,7 @@ public class GeneratorBlockEntity extends EnergySourcePropBlockEntity {
     }
 
     @Override
-    public void tick(World world, BlockPos blockPos, BlockState state, EnergySourcePropBlockEntity entity) {
+    public void tick(Level world, BlockPos blockPos, BlockState state, EnergySourcePropBlockEntity entity) {
         super.tick(world, blockPos, state, entity);
     }
 

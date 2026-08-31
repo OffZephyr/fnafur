@@ -1,17 +1,17 @@
 package net.zephyr.fnafur.rendering.decals;
 
-import net.minecraft.datafixer.DataFixTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.PersistentState;
-import net.minecraft.world.PersistentStateType;
+import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecalWorldState extends PersistentState {
+public class DecalWorldState extends SavedData {
 
-    public static final PersistentStateType<DecalWorldState> TYPE =
-            new PersistentStateType<>(
+    public static final SavedDataType<DecalWorldState> TYPE =
+            new SavedDataType<>(
                     "fnafur_decals",
                     DecalWorldState::new,
                     DecalStateData.CODEC
@@ -45,19 +45,19 @@ public class DecalWorldState extends PersistentState {
         List<DecalInstance> newList = new ArrayList<>(data.decals());
         newList.add(decal);
         data = new DecalStateData(List.copyOf(newList));
-        markDirty();
+        setDirty();
     }
 
     public void removeDecal(DecalInstance decal) {
         List<DecalInstance> newList = new ArrayList<>(data.decals());
         if (newList.remove(decal)) {
             data = new DecalStateData(List.copyOf(newList));
-            markDirty();
+            setDirty();
         }
     }
 
-    public static DecalWorldState get(ServerWorld world) {
-        return world.getPersistentStateManager().getOrCreate(
+    public static DecalWorldState get(ServerLevel world) {
+        return world.getDataStorage().computeIfAbsent(
                 DecalWorldState.TYPE
         );
     }

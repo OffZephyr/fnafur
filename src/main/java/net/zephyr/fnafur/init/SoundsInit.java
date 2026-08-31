@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.init;
 
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 import java.util.HashMap;
@@ -89,8 +89,8 @@ public class SoundsInit {
         return registerSoundEvent(name, false);
     }
     public static SoundEvent registerSoundEvent(String name, boolean repeats){
-        Identifier id = Identifier.of(FnafUniverseRebuilt.MOD_ID, name);
-        SoundEvent sound = Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
+        Identifier id = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, name);
+        SoundEvent sound = Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
         sounds.put(name, sound);
         soundKeys.put(sound, name);
         soundRepeats.put(sound, repeats);

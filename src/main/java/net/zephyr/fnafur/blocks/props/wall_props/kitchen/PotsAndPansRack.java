@@ -1,30 +1,31 @@
 package net.zephyr.fnafur.blocks.props.wall_props.kitchen;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.blocks.props.wall_props.restroom_sign.RestroomSignSkins;
 
 public class PotsAndPansRack extends WallPropBlock<DefaultPropColorEnum> {
-    public PotsAndPansRack(Settings settings) {
+    public PotsAndPansRack(Properties settings) {
         super(settings);
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        VoxelShape shape = switch (state.get(FACING)){
-            default -> VoxelShapes.cuboid(-0.4, -0.2, 0, 1.4, 0.8f, 0.4f);
-            case SOUTH -> VoxelShapes.cuboid(-0.4, -0.2, 0.6f, 1.4, 0.8f, 1f);
-            case WEST -> VoxelShapes.cuboid(0, -0.2, -0.4, 0.4f, 0.8f, 1.4f);
-            case EAST -> VoxelShapes.cuboid(0.6, -0.2, -0.4, 1.01f, 0.8f, 1.4f);
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = switch (state.getValue(FACING)){
+            default -> Shapes.box(-0.4, -0.2, 0, 1.4, 0.8f, 0.4f);
+            case SOUTH -> Shapes.box(-0.4, -0.2, 0.6f, 1.4, 0.8f, 1f);
+            case WEST -> Shapes.box(0, -0.2, -0.4, 0.4f, 0.8f, 1.4f);
+            case EAST -> Shapes.box(0.6, -0.2, -0.4, 1.01f, 0.8f, 1.4f);
         };
-        return drawingOutline ? shape : VoxelShapes.fullCube();
+        return drawingOutline ? shape : Shapes.block();
     }
 
     @Override
@@ -37,7 +38,7 @@ public class PotsAndPansRack extends WallPropBlock<DefaultPropColorEnum> {
     }
 
     @Override
-    public boolean goesOnFloor(BlockStateComponent state) {
+    public boolean goesOnFloor(BlockItemStateProperties state) {
         return false;
     }
 }

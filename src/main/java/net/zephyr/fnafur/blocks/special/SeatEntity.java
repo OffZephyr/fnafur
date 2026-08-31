@@ -1,38 +1,39 @@
 package net.zephyr.fnafur.blocks.special;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 
 public class SeatEntity extends Entity {
-    public SeatEntity(EntityType<?> type, World world) {
+    public SeatEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
     }
 
     @Override
-    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel world, DamageSource source, float amount) {
         return false;
     }
 
 
     @Override
-    public Vec3d getPassengerRidingPos(Entity passenger) {
-        return this.getEntityPos();
+    public Vec3 getPassengerRidingPosition(Entity passenger) {
+        return this.position();
     }
 
     @Override
@@ -41,24 +42,24 @@ public class SeatEntity extends Entity {
     }
 
     @Override
-    protected void readCustomData(ReadView view) {
+    protected void readAdditionalSaveData(ValueInput view) {
 
     }
 
     @Override
-    protected void writeCustomData(WriteView view) {
+    protected void addAdditionalSaveData(ValueOutput view) {
 
     }
 
     @Override
     public void tick() {
 
-        BlockPos pos = BlockPos.fromLong(((IEntityDataSaver) this).getPersistentData().getLong("chair").orElse(0L));
+        BlockPos pos = BlockPos.of(((IEntityDataSaver) this).getPersistentData().getLong("chair").orElse(0L));
         int timer = ((IEntityDataSaver) this).getPersistentData().getInt("despawnTimer").orElse(0);
-        if (!hasPassengers() || getEntityWorld().getBlockState(pos).isOf(Blocks.AIR)) {
+        if (!isVehicle() || level().getBlockState(pos).is(Blocks.AIR)) {
             if (timer >= 5) {
 
-                if (getEntityWorld().getBlockEntity(pos) instanceof BlockEntity ent) {
+                if (level().getBlockEntity(pos) instanceof BlockEntity ent) {
                     ((IEntityDataSaver) ent).getPersistentData().putBoolean("playerSitting", false);
                 }
                 remove(RemovalReason.DISCARDED);
@@ -74,13 +75,13 @@ public class SeatEntity extends Entity {
     }
 
     @Override
-    public void onRemove(RemovalReason reason) {
+    public void onRemoval(RemovalReason reason) {
 
-        BlockPos pos = BlockPos.fromLong(((IEntityDataSaver)this).getPersistentData().getLong("chair").orElse(0L));
-        if(getEntityWorld().getBlockEntity(pos) instanceof BlockEntity ent){
+        BlockPos pos = BlockPos.of(((IEntityDataSaver)this).getPersistentData().getLong("chair").orElse(0L));
+        if(level().getBlockEntity(pos) instanceof BlockEntity ent){
             ((IEntityDataSaver)ent).getPersistentData().putBoolean("playerSitting", false);
         }
-        super.onRemove(reason);
+        super.onRemoval(reason);
     }
 
     /*@Override

@@ -1,11 +1,11 @@
 package net.zephyr.fnafur.init.block_init.Palettes;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.NativeImageBackedTexture;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.client.Minecraft;
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 import java.util.HashMap;
@@ -37,8 +37,8 @@ public class PaletteManager {
 
         for (int y = 0; y < height - 1; y += 2) {
             for (int x = 0; x < width; x++) {
-                int refAbgr = palette.getColorArgb(x, y);
-                int repAbgr = palette.getColorArgb(x, y + 1);
+                int refAbgr = palette.getPixel(x, y);
+                int repAbgr = palette.getPixel(x, y + 1);
 
                 int refAlpha = (refAbgr >>> 24) & 0xFF;
                 if (refAlpha == 0) continue; // skip transparent
@@ -57,11 +57,11 @@ public class PaletteManager {
 
         for (int y = 0; y < base.getHeight(); y++) {
             for (int x = 0; x < base.getWidth(); x++) {
-                int srcAbgr = base.getColorArgb(x, y);
+                int srcAbgr = base.getPixel(x, y);
 
                 int replacement = paletteMap.getOrDefault(srcAbgr, srcAbgr);
 
-                result.setColorArgb(x, y, replacement);
+                result.setPixel(x, y, replacement);
             }
         }
 
@@ -72,15 +72,15 @@ public class PaletteManager {
             Identifier id,
             NativeImage image
     ) {
-        NativeImageBackedTexture texture =
-                new NativeImageBackedTexture(() -> "Generated palette texture: " + id, image);
+        DynamicTexture texture =
+                new DynamicTexture(() -> "Generated palette texture: " + id, image);
 
-        MinecraftClient.getInstance()
+        Minecraft.getInstance()
                 .getTextureManager()
-                .registerTexture(id, texture);
+                .register(id, texture);
     }
 
     public static Identifier getRecoloredIdentifier(String block, PaletteEnum paletteEnum) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/" + block + "_" + paletteEnum.getName());
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/" + block + "_" + paletteEnum.getName());
     }
 }

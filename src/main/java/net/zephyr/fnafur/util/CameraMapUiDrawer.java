@@ -1,13 +1,13 @@
 package net.zephyr.fnafur.util;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ColorHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.ARGB;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.joml.Matrix3x2fStack;
@@ -20,14 +20,14 @@ public class CameraMapUiDrawer {
     public int mapHeight = 0;
     public int mapMultiplier = 1;
     public float mapAlpha = 100;
-    public void drawMap(DrawContext context, int mouseX, int mouseY, float delta, NbtCompound data, int mapEndPosX, int mapEndPosY, int mapCornerPosX, int mapCornerPosY, float mapAlpha, boolean isMonitor, boolean nvOutline, long currentCam){
+    public void drawMap(GuiGraphics context, int mouseX, int mouseY, float delta, CompoundTag data, int mapEndPosX, int mapEndPosY, int mapCornerPosX, int mapCornerPosY, float mapAlpha, boolean isMonitor, boolean nvOutline, long currentCam){
         List<Long> cams = new ArrayList<>();
         long[] camsData = data.getLongArray("Cameras").get();
         for (long cam : camsData) {
             if(false) cams.add(cam);
         }
-        BlockPos minPos = BlockPos.fromLong(data.getLong("mapMinCorner").get());
-        BlockPos maxPos = BlockPos.fromLong(data.getLong("mapMaxCorner").get());
+        BlockPos minPos = BlockPos.of(data.getLong("mapMinCorner").get());
+        BlockPos maxPos = BlockPos.of(data.getLong("mapMaxCorner").get());
 
         boolean bl = data.getList("CamMap").get().isEmpty();
         if(!bl) {
@@ -35,7 +35,7 @@ public class CameraMapUiDrawer {
             int mapMaxWidth = mapEndPosX - mapCornerPosX;
             int mapMaxHeight = mapEndPosY - mapCornerPosY;
 
-            NbtList mapNbt = data.getList("CamMap").get().copy();
+            ListTag mapNbt = data.getList("CamMap").get().copy();
 
             mapWidth = Math.abs(maxPos.getX() - minPos.getX());
             mapHeight = Math.abs(maxPos.getZ() - minPos.getZ());
@@ -58,13 +58,13 @@ public class CameraMapUiDrawer {
             }
             int alpha = isMonitor ? (int)this.mapAlpha : (int)mapAlpha;
 
-            int color = ColorHelper.getArgb(alpha, 255, 255, 255);
+            int color = ARGB.color(alpha, 255, 255, 255);
             //context.fill(bg1, bg2, mapEndPosX + (mapMultiplier*2), mapEndPosY + (mapMultiplier*2), 0x55000000);
 
             for(int i = 0; i < mapNbt.size(); i++) {
-                if (mapNbt.get(i).getType() == NbtElement.LONG_ARRAY_TYPE) {
-                    BlockPos pos1 = BlockPos.fromLong(mapNbt.getLongArray(i).get()[0]);
-                    BlockPos pos2 = BlockPos.fromLong(mapNbt.getLongArray(i).get()[1]);
+                if (mapNbt.get(i).getId() == Tag.TAG_LONG_ARRAY) {
+                    BlockPos pos1 = BlockPos.of(mapNbt.getLongArray(i).get()[0]);
+                    BlockPos pos2 = BlockPos.of(mapNbt.getLongArray(i).get()[1]);
 
                     int x1 = (Math.min(pos1.getX(), pos2.getX())- minPos.getX()) * mapMultiplier;
                     int z1 = (Math.min(pos1.getZ(), pos2.getZ())- minPos.getZ()) * mapMultiplier;
@@ -81,12 +81,12 @@ public class CameraMapUiDrawer {
             }
 
             float camScale = 0.25f;
-            Matrix3x2fStack matrices = context.getMatrices();
+            Matrix3x2fStack matrices = context.pose();
 
             matrices.pushMatrix();
             matrices.scale(camScale, camScale);
             for (Long cam : cams) {
-                BlockPos pos = BlockPos.fromLong(cam);
+                BlockPos pos = BlockPos.of(cam);
 
                 int x = (pos.getX() - minPos.getX()) * mapMultiplier;
                 int z = (pos.getZ() - minPos.getZ()) * mapMultiplier;
@@ -100,20 +100,20 @@ public class CameraMapUiDrawer {
                 z *= (int)(1 / camScale);
 
                 if(isMonitor){
-                    if (bl2 && MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().world.getBlockEntity(pos) != null) {
-                        String name = ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(pos)).getPersistentData().getString("Name").get();
+                    if (bl2 && Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) != null) {
+                        String name = ((IEntityDataSaver) Minecraft.getInstance().level.getBlockEntity(pos)).getPersistentData().getString("Name").get();
                         matrices.popMatrix();
-                        context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(name), mouseX, mouseY);
+                        context.setTooltipForNextFrame(Minecraft.getInstance().font, Component.literal(name), mouseX, mouseY);
                         matrices.pushMatrix();
                         matrices.scale(camScale, camScale);
                     }
                 }
 
-                int camColor = ColorHelper.getArgb(alpha, 100, 100, 100);
-                int camOutline = ColorHelper.getArgb(alpha, 255, 255, 255);
+                int camColor = ARGB.color(alpha, 100, 100, 100);
+                int camOutline = ARGB.color(alpha, 255, 255, 255);
                 if(isMonitor){
-                    camColor = bl2 || cam == currentCam ? ColorHelper.getArgb(alpha, 75, 255, 75) : ColorHelper.getArgb(alpha, 100, 100, 100);
-                    camOutline = nvOutline && cam == currentCam ? ColorHelper.getArgb(alpha, 133, 210, 255) : ColorHelper.getArgb(alpha, 255, 255, 255);
+                    camColor = bl2 || cam == currentCam ? ARGB.color(alpha, 75, 255, 75) : ARGB.color(alpha, 100, 100, 100);
+                    camOutline = nvOutline && cam == currentCam ? ARGB.color(alpha, 133, 210, 255) : ARGB.color(alpha, 255, 255, 255);
                 }
 
                 context.fill(x - (mapMultiplier / 2) * (int)(1 / camScale), z - (mapMultiplier / 2) * (int)(1 / camScale), x + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), z + mapMultiplier * (int)(1 / camScale) + ((mapMultiplier / 2) * (int)(1 / camScale)), camOutline);

@@ -1,12 +1,12 @@
 package net.zephyr.fnafur.item.masks;
 
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -22,7 +22,7 @@ public class VanniMaskRenderLayer<T extends Item & GeoAnimatable, O, R extends G
 
     @Override
     protected Identifier getTextureResource(R renderState) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/item/masks/vanni_mask_e.png");
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/item/masks/vanni_mask_e.png");
     }
 
 //    @Override

@@ -5,10 +5,10 @@ import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.gl.GpuSampler;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.BlockRenderLayerGroup;
-import net.minecraft.client.render.SectionRenderState;
+import com.mojang.blaze3d.textures.GpuSampler;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayerGroup;
+import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 
 import java.util.List;
@@ -18,13 +18,13 @@ import java.util.OptionalInt;
 public final class PositionPrepassRenderer {
     private PositionPrepassRenderer() {}
 
-    public static void renderOpaquePosition(SectionRenderState state, BlockRenderLayerGroup group, GpuSampler terrainSampler) {
+    public static void renderOpaquePosition(ChunkSectionsToRender state, ChunkSectionLayerGroup group, GpuSampler terrainSampler) {
         // Only for opaque group (same as normals prepass)
-        if (group != BlockRenderLayerGroup.OPAQUE) return;
+        if (group != ChunkSectionLayerGroup.OPAQUE) return;
 
-        RenderSystem.ShapeIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.DrawMode.QUADS);
-        GpuBuffer idxBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexBuffer(state.maxIndicesRequired());
-        VertexFormat.IndexType indexType = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexType();
+        RenderSystem.AutoStorageIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+        GpuBuffer idxBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getBuffer(state.maxIndicesRequired());
+        VertexFormat.IndexType indexType = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.type();
 
         try (RenderPass pass = RenderSystem.getDevice()
                 .createCommandEncoder()
@@ -44,12 +44,12 @@ public final class PositionPrepassRenderer {
             pass.bindTexture("Sampler0", state.textureView(), terrainSampler);
 
             // Draw SOLID/CUTOUT only (same rule as your shadow pass)
-            for (BlockRenderLayer layer : group.getLayers()) {
-                if (layer == BlockRenderLayer.TRANSLUCENT) continue;
+            for (ChunkSectionLayer layer : group.layers()) {
+                if (layer == ChunkSectionLayer.TRANSLUCENT) continue;
 
                 @SuppressWarnings("unchecked")
-                List<RenderPass.RenderObject<GpuBufferSlice[]>> list =
-                        (List<RenderPass.RenderObject<GpuBufferSlice[]>>) state.drawsPerLayer().get(layer);
+                List<RenderPass.Draw<GpuBufferSlice[]>> list =
+                        (List<RenderPass.Draw<GpuBufferSlice[]>>) state.drawsPerLayer().get(layer);
 
                 if (list.isEmpty()) continue;
 

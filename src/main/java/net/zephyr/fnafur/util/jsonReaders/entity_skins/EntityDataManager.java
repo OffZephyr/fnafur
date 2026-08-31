@@ -3,14 +3,14 @@ package net.zephyr.fnafur.util.jsonReaders.entity_skins;
 import com.google.gson.Gson;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.EntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.resource.Resource;
-import net.minecraft.resource.ResourceManager;
-import net.minecraft.resource.SinglePreparationResourceReloader;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.profiler.Profiler;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 import java.io.BufferedReader;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Environment(EnvType.CLIENT)
-public class EntityDataManager extends SinglePreparationResourceReloader<Map<EntityType<?>, DefaultEntityData>> {
+public class EntityDataManager extends SimplePreparableReloadListener<Map<EntityType<?>, DefaultEntityData>> {
     static final Gson GSON = new Gson();
     private Map<EntityType<?>, List<EntitySkin>> Skins = new HashMap<>();
     private Map<EntityType<?>, DefaultEntityData> EntityData = new HashMap<>();
@@ -49,19 +49,19 @@ public class EntityDataManager extends SinglePreparationResourceReloader<Map<Ent
     }
 
     @Override
-    protected Map<EntityType<?>, DefaultEntityData> prepare(ResourceManager resourceManager, Profiler profiler) {
+    protected Map<EntityType<?>, DefaultEntityData> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         Map<EntityType<?>, DefaultEntityData> data = new HashMap<>();
-        for (String string : resourceManager.getAllNamespaces()) {
+        for (String string : resourceManager.getNamespaces()) {
             try {
-                for(EntityType<?> entityType : Registries.ENTITY_TYPE) {
-                    String path = "entitydata/" + Registries.ENTITY_TYPE.getId(entityType).getPath() + "_data.json";
-                    List<Resource> list = resourceManager.getAllResources(Identifier.of(string, path));
+                for(EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
+                    String path = "entitydata/" + BuiltInRegistries.ENTITY_TYPE.getKey(entityType).getPath() + "_data.json";
+                    List<Resource> list = resourceManager.getResourceStack(Identifier.fromNamespaceAndPath(string, path));
                     for (Resource resource : list) {
-                        try (BufferedReader reader = resource.getReader();) {
-                            DefaultEntityData skinEntry = JsonHelper.deserialize(GSON, reader, DefaultEntityData.class);
+                        try (BufferedReader reader = resource.openAsReader();) {
+                            DefaultEntityData skinEntry = GsonHelper.fromJson(GSON, reader, DefaultEntityData.class);
                             data.put(entityType, skinEntry);
                         } catch (RuntimeException runtimeException) {
-                            FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", "entity_skins.json", resource.getPackId(), runtimeException);
+                            FnafUniverseRebuilt.LOGGER.warn("Invalid {} in resourcepack: '{}'", "entity_skins.json", resource.sourcePackId(), runtimeException);
                         }
                     }
                 }
@@ -73,7 +73,7 @@ public class EntityDataManager extends SinglePreparationResourceReloader<Map<Ent
     }
 
     @Override
-    protected void apply(Map<EntityType<?>, DefaultEntityData> prepared, ResourceManager manager, Profiler profiler) {
+    protected void apply(Map<EntityType<?>, DefaultEntityData> prepared, ResourceManager manager, ProfilerFiller profiler) {
         this.EntityData.clear();
         this.Skins.clear();
         this.EntityData = prepared;

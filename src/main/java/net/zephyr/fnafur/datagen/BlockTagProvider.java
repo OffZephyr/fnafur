@@ -2,12 +2,12 @@ package net.zephyr.fnafur.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.data.tag.ProvidedTagBuilder;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
+import net.minecraft.data.tags.TagAppender;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.init.block_init.BlockInit;
 import net.zephyr.fnafur.init.block_init.GeoBlockInit;
 import net.zephyr.fnafur.init.block_init.PropInit;
@@ -15,12 +15,12 @@ import net.zephyr.fnafur.init.block_init.PropInit;
 import java.util.concurrent.CompletableFuture;
 
 public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
-    public BlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public BlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+    protected void addTags(HolderLookup.Provider wrapperLookup) {
         valueLookupBuilder(BlockTags.PLANKS)
                 .add(PropInit.WOODEN_SHELF)
                 .add(PropInit.RETRO_TABLE)
@@ -59,7 +59,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
        ;
 
-        valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
+        valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(PropInit.AC_UNIT)
                 .add(BlockInit.CPU_CONFIG_PANEL)
                 .add(BlockInit.TRIGGER_BLOCK)

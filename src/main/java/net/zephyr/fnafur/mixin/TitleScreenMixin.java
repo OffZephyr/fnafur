@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.mixin;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.client.gui.screens.main_menu.FnafTitleScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +15,7 @@ public class TitleScreenMixin {
     @Inject(method = "init", at = @At("HEAD"))
     public void newScreen(CallbackInfo ci){
         if(!FnafUniverseRebuilt.DISABLE_MAIN_MENU) {
-            MinecraftClient.getInstance().setScreen(new FnafTitleScreen());
+            Minecraft.getInstance().setScreen(new FnafTitleScreen());
         }
     }
 }

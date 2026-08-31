@@ -2,10 +2,10 @@ package net.zephyr.fnafur.init;
 
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.particles.FogParticle;
 
@@ -13,7 +13,7 @@ public class ParticlesInit {
     public static final SimpleParticleType FOG_PARTICLE = FabricParticleTypes.simple();
 
     public static void registerParticles() {
-        Registry.register(Registries.PARTICLE_TYPE, Identifier.of(FnafUniverseRebuilt.MOD_ID, "fog"),
+        Registry.register(BuiltInRegistries.PARTICLE_TYPE, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "fog"),
                 FOG_PARTICLE);
     }
 

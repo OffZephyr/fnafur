@@ -1,22 +1,22 @@
 package net.zephyr.fnafur.item.masks;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.command.RenderCommandQueue;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.entity.model.PlayerEntityModel;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.model.player.PlayerModel;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
@@ -33,8 +33,8 @@ import software.bernie.geckolib.util.RenderUtil;
 import java.util.List;
 
 public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends GeoRenderState> extends GeoItemRenderer<T> {
-    MatrixStack.Entry leftStack;
-    MatrixStack.Entry rightStack;
+    PoseStack.Pose leftStack;
+    PoseStack.Pose rightStack;
     public VanniMaskItemRenderer() {
         super(new VanniMaskItemModel<>());
     }
@@ -53,7 +53,7 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
 //        if (renderType == null)
 //            return;
 //
-//        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
+//        AbstractClientPlayerEntity abstractClientPlayerEntity = Minecraft.getInstance().player;
 //        Identifier identifier = abstractClientPlayerEntity.getSkin().body().texturePath();
 //
 //        renderTasks.submitCustom(poseStack, getRenderType(renderState, identifier), (pose, vertexConsumer) -> {
@@ -77,10 +77,10 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
 
     @Override
     public void addRenderData(T animatable, RenderData relatedObject, GeoRenderState renderState, float partialTick) {
-        if(relatedObject.itemOwner() != null && relatedObject.itemOwner().getEntity() instanceof PlayerEntity p){
+        if(relatedObject.itemOwner() != null && relatedObject.itemOwner().asLivingEntity() instanceof Player p){
             renderState.addGeckolibData(CustomDataTickets.IS_MASK_ON, ((IUniversePlayer)p).hasVanniMaskOn());
             renderState.addGeckolibData(CustomDataTickets.CAN_ANIMATE_MASK, ((IUniversePlayer)p).canAnimateMask());
-            renderState.addGeckolibData(CustomDataTickets.IS_IN_MASK_SLOT, p.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET).equals(relatedObject.itemStack()));
+            renderState.addGeckolibData(CustomDataTickets.IS_IN_MASK_SLOT, p.getInventory().getItem(FnafInventoryScreen.SLOTS_OFFSET).equals(relatedObject.itemStack()));
         }
         super.addRenderData(animatable, relatedObject, renderState, partialTick);
     }
@@ -90,8 +90,8 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
 //
 //        super.renderBone(renderState, poseStack, bone, buffer, cameraState, packedLight, packedOverlay, renderColor);
 //
-//        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
-//        PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher()
+//        AbstractClientPlayerEntity abstractClientPlayerEntity = Minecraft.getInstance().player;
+//        PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) Minecraft.getInstance().getEntityRenderDispatcher()
 //                .<AbstractClientPlayerEntity>getRenderer(abstractClientPlayerEntity);
 //
 //        if((bone.getName().contains("left") || bone.getName().contains("right"))){
@@ -129,8 +129,8 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
 //    public void postRender(GeoRenderState renderState, MatrixStack poseStack, BakedGeoModel model, OrderedRenderCommandQueue renderTasks, CameraRenderState cameraState, int packedLight, int packedOverlay, int renderColor) {
 //        super.postRender(renderState, poseStack, model, renderTasks, cameraState, packedLight, packedOverlay, renderColor);
 //
-////        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
-////        PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher()
+////        AbstractClientPlayerEntity abstractClientPlayerEntity = Minecraft.getInstance().player;
+////        PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer) Minecraft.getInstance().getEntityRenderDispatcher()
 ////                .<AbstractClientPlayerEntity>getRenderer(abstractClientPlayerEntity);
 ////        Identifier identifier = abstractClientPlayerEntity.getSkin().body().texturePath();
 //
@@ -138,10 +138,10 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
 //
 //    }
 
-    void renderArm(MatrixStack matrices, VertexConsumer buffer, int light, PlayerEntityModel playerEntityModel, Arm arm, boolean sleeveVisible){
+    void renderArm(PoseStack matrices, VertexConsumer buffer, int light, PlayerModel playerEntityModel, HumanoidArm arm, boolean sleeveVisible){
 
-        ModelPart part = arm == Arm.RIGHT ? playerEntityModel.rightArm : playerEntityModel.leftArm;
-        part.resetTransform();
+        ModelPart part = arm == HumanoidArm.RIGHT ? playerEntityModel.rightArm : playerEntityModel.leftArm;
+        part.resetPose();
         part.visible = true;
         playerEntityModel.leftSleeve.visible = sleeveVisible;
         playerEntityModel.rightSleeve.visible = sleeveVisible;
@@ -167,17 +167,17 @@ public class VanniMaskItemRenderer<T extends Item & GeoAnimatable, O, R extends 
         //    }
         //    //cuboid.renderCuboid(entry, buffer, light, OverlayTexture.DEFAULT_UV, 0xFFFFFFFF);
         //}
-        part.render(matrices, buffer, light, OverlayTexture.DEFAULT_UV);
+        part.render(matrices, buffer, light, OverlayTexture.NO_OVERLAY);
     }
-    private void renderArm(MatrixStack matrices, PlayerEntityModel playerEntityModel, OrderedRenderCommandQueue queue, int light, Identifier skinTexture, Arm arm, boolean sleeveVisible) {
+    private void renderArm(PoseStack matrices, PlayerModel playerEntityModel, SubmitNodeCollector queue, int light, Identifier skinTexture, HumanoidArm arm, boolean sleeveVisible) {
 
-        ModelPart part = arm == Arm.RIGHT ? playerEntityModel.rightArm : playerEntityModel.leftArm;
-        part.resetTransform();
+        ModelPart part = arm == HumanoidArm.RIGHT ? playerEntityModel.rightArm : playerEntityModel.leftArm;
+        part.resetPose();
         part.visible = true;
         playerEntityModel.leftSleeve.visible = sleeveVisible;
         playerEntityModel.rightSleeve.visible = sleeveVisible;
-        playerEntityModel.leftArm.roll = -0.1F;
-        playerEntityModel.rightArm.roll = 0.1F;
-        queue.submitModelPart(part, matrices, RenderLayers.entityTranslucent(skinTexture), light, OverlayTexture.DEFAULT_UV, null);
+        playerEntityModel.leftArm.zRot = -0.1F;
+        playerEntityModel.rightArm.zRot = 0.1F;
+        queue.submitModelPart(part, matrices, RenderTypes.entityTranslucent(skinTexture), light, OverlayTexture.NO_OVERLAY, null);
     }
 }

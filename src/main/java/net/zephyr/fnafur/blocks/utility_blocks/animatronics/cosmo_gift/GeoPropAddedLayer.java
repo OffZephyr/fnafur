@@ -1,14 +1,14 @@
 package net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift;
 
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 import software.bernie.geckolib.renderer.base.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 public class GeoPropAddedLayer<T extends GeoPropBlockEntity, O, R extends GeoRenderState> extends GeoRenderLayer<T, O, R> {
-    final RenderLayer layer;
-    public GeoPropAddedLayer(GeoRenderer<T, O, R> entityRendererIn, RenderLayer layer) {
+    final RenderType layer;
+    public GeoPropAddedLayer(GeoRenderer<T, O, R> entityRendererIn, RenderType layer) {
         super(entityRendererIn);
         this.layer = layer;
     }

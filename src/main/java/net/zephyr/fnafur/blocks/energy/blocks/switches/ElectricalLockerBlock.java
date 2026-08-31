@@ -1,29 +1,39 @@
 package net.zephyr.fnafur.blocks.energy.blocks.switches;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.*;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.zephyr.fnafur.blocks.CallableByMesurer;
 import net.zephyr.fnafur.blocks.energy.enums.EnergyNodeType;
 import net.zephyr.fnafur.blocks.energy.enums.EnergyNode;
@@ -37,34 +47,34 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntityProvider, EnergyNode, CallableByMesurer {
+public class ElectricalLockerBlock extends BaseEntityBlock implements EntityBlock, EnergyNode, CallableByMesurer {
     public static final String KEY_OPEN = "open";
-    public static final BooleanProperty OPEN = BooleanProperty.of(KEY_OPEN);
-    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
-    public static final BooleanProperty MAIN = BooleanProperty.of("main");
-    public static final BooleanProperty SIDE = BooleanProperty.of("side");
+    public static final BooleanProperty OPEN = BooleanProperty.create(KEY_OPEN);
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty MAIN = BooleanProperty.create("main");
+    public static final BooleanProperty SIDE = BooleanProperty.create("side");
     public static final List<BooleanProperty> LEVERS = List.of(
-            BooleanProperty.of("lever_0"),
-            BooleanProperty.of("lever_1"),
-            BooleanProperty.of("lever_2"),
-            BooleanProperty.of("lever_3"),
-            BooleanProperty.of("lever_4"),
-            BooleanProperty.of("lever_5")
+            BooleanProperty.create("lever_0"),
+            BooleanProperty.create("lever_1"),
+            BooleanProperty.create("lever_2"),
+            BooleanProperty.create("lever_3"),
+            BooleanProperty.create("lever_4"),
+            BooleanProperty.create("lever_5")
     );
 
     List<VoxelShape> leverShapes = new ArrayList<>();
-    public Box[] levers;
+    public AABB[] levers;
 
-    public ElectricalLockerBlock(Settings settings) {
+    public ElectricalLockerBlock(Properties settings) {
         super(settings);
-        setDefaultState(getDefaultState().with(MAIN, false).with(SIDE, false).with(OPEN, false));
+        registerDefaultState(defaultBlockState().setValue(MAIN, false).setValue(SIDE, false).setValue(OPEN, false));
         for(BooleanProperty p : LEVERS){
-            setDefaultState(getDefaultState().with(p, false));
+            registerDefaultState(defaultBlockState().setValue(p, false));
         }
     }
 
     @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
         return null;
     }
 
@@ -85,22 +95,22 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
 
 
     @Override
-    public ActionResult ExecuteAction(ItemUsageContext context) {
-        return ActionResult.SUCCESS;
+    public InteractionResult ExecuteAction(UseOnContext context) {
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public ActionResult addNode(World world, BlockPos pos, BlockPos toAdd, Vec3d hit) {
+    public InteractionResult addNode(Level world, BlockPos pos, BlockPos toAdd, Vec3 hit) {
         return null;
     }
 
     @Override
-    public ActionResult remNode(World world, BlockPos pos, BlockPos toRem, Vec3d hit) {
+    public InteractionResult remNode(Level world, BlockPos pos, BlockPos toRem, Vec3 hit) {
         return null;
     }
 
     @Override
-    public boolean isPowered(BlockView world, BlockPos pos) {
+    public boolean isPowered(BlockGetter world, BlockPos pos) {
         return false;
     }
 
@@ -111,95 +121,95 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
 
     @Nullable
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        BlockPos sidePos = pos.offset(state.get(FACING).rotateYCounterclockwise());
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        BlockPos sidePos = pos.relative(state.getValue(FACING).getCounterClockWise());
 
-        BlockPos mainPos = pos.up();
+        BlockPos mainPos = pos.above();
 
-        world.setBlockState(sidePos, state.with(MAIN, false).with(SIDE, true));
-        world.setBlockState(pos.up(), state.with(MAIN, true));
-        world.setBlockState(sidePos.up(), state.with(MAIN, false).with(SIDE, true));
-        world.setBlockState(pos.up().up(), state.with(MAIN, false));
-        world.setBlockState(sidePos.up().up(), state.with(MAIN, false).with(SIDE, true));
+        world.setBlockAndUpdate(sidePos, state.setValue(MAIN, false).setValue(SIDE, true));
+        world.setBlockAndUpdate(pos.above(), state.setValue(MAIN, true));
+        world.setBlockAndUpdate(sidePos.above(), state.setValue(MAIN, false).setValue(SIDE, true));
+        world.setBlockAndUpdate(pos.above().above(), state.setValue(MAIN, false));
+        world.setBlockAndUpdate(sidePos.above().above(), state.setValue(MAIN, false).setValue(SIDE, true));
 
         ((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().putLong("mainBlock", mainPos.asLong());
-        ((IEntityDataSaver)world.getBlockEntity(pos.up())).getPersistentData().putLong("mainBlock", mainPos.asLong());
-        ((IEntityDataSaver)world.getBlockEntity(pos.up().up())).getPersistentData().putLong("mainBlock", mainPos.asLong());
+        ((IEntityDataSaver)world.getBlockEntity(pos.above())).getPersistentData().putLong("mainBlock", mainPos.asLong());
+        ((IEntityDataSaver)world.getBlockEntity(pos.above().above())).getPersistentData().putLong("mainBlock", mainPos.asLong());
         ((IEntityDataSaver)world.getBlockEntity(sidePos)).getPersistentData().putLong("mainBlock", mainPos.asLong());
-        ((IEntityDataSaver)world.getBlockEntity(sidePos.up())).getPersistentData().putLong("mainBlock", mainPos.asLong());
-        ((IEntityDataSaver)world.getBlockEntity(sidePos.up().up())).getPersistentData().putLong("mainBlock", mainPos.asLong());
+        ((IEntityDataSaver)world.getBlockEntity(sidePos.above())).getPersistentData().putLong("mainBlock", mainPos.asLong());
+        ((IEntityDataSaver)world.getBlockEntity(sidePos.above().above())).getPersistentData().putLong("mainBlock", mainPos.asLong());
 
-        if(!world.isClient()) {
+        if(!world.isClientSide()) {
             GoopyNetworkingUtils.saveBlockNbt(pos, ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData(), world);
-            GoopyNetworkingUtils.saveBlockNbt(pos.up(), ((IEntityDataSaver) world.getBlockEntity(pos.up())).getPersistentData(), world);
-            GoopyNetworkingUtils.saveBlockNbt(pos.up().up(), ((IEntityDataSaver) world.getBlockEntity(pos.up().up())).getPersistentData(), world);
+            GoopyNetworkingUtils.saveBlockNbt(pos.above(), ((IEntityDataSaver) world.getBlockEntity(pos.above())).getPersistentData(), world);
+            GoopyNetworkingUtils.saveBlockNbt(pos.above().above(), ((IEntityDataSaver) world.getBlockEntity(pos.above().above())).getPersistentData(), world);
             GoopyNetworkingUtils.saveBlockNbt(sidePos, ((IEntityDataSaver) world.getBlockEntity(sidePos)).getPersistentData(), world);
-            GoopyNetworkingUtils.saveBlockNbt(sidePos.up(), ((IEntityDataSaver) world.getBlockEntity(sidePos.up())).getPersistentData(), world);
-            GoopyNetworkingUtils.saveBlockNbt(sidePos.up().up(), ((IEntityDataSaver) world.getBlockEntity(sidePos.up().up())).getPersistentData(), world);
+            GoopyNetworkingUtils.saveBlockNbt(sidePos.above(), ((IEntityDataSaver) world.getBlockEntity(sidePos.above())).getPersistentData(), world);
+            GoopyNetworkingUtils.saveBlockNbt(sidePos.above().above(), ((IEntityDataSaver) world.getBlockEntity(sidePos.above().above())).getPersistentData(), world);
         }
 
-        super.onPlaced(world, pos, state, placer, itemStack);
+        super.setPlacedBy(world, pos, state, placer, itemStack);
     }
 
     @Override
-    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("mainBlock").orElse(0L));
-        BlockPos sidePos = mainPos.offset(state.get(FACING).rotateYCounterclockwise());
+    public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+        BlockPos mainPos = BlockPos.of(((IEntityDataSaver)world.getBlockEntity(pos)).getPersistentData().getLong("mainBlock").orElse(0L));
+        BlockPos sidePos = mainPos.relative(state.getValue(FACING).getCounterClockWise());
 
-        world.setBlockState(mainPos.down(), Blocks.AIR.getDefaultState());
-        world.setBlockState(sidePos.down(), Blocks.AIR.getDefaultState());
-        world.setBlockState(mainPos, Blocks.AIR.getDefaultState());
-        world.setBlockState(sidePos, Blocks.AIR.getDefaultState());
-        world.setBlockState(mainPos.up(), Blocks.AIR.getDefaultState());
-        world.setBlockState(sidePos.up(), Blocks.AIR.getDefaultState());
+        world.setBlockAndUpdate(mainPos.below(), Blocks.AIR.defaultBlockState());
+        world.setBlockAndUpdate(sidePos.below(), Blocks.AIR.defaultBlockState());
+        world.setBlockAndUpdate(mainPos, Blocks.AIR.defaultBlockState());
+        world.setBlockAndUpdate(sidePos, Blocks.AIR.defaultBlockState());
+        world.setBlockAndUpdate(mainPos.above(), Blocks.AIR.defaultBlockState());
+        world.setBlockAndUpdate(sidePos.above(), Blocks.AIR.defaultBlockState());
 
-        return super.onBreak(world, pos, state, player);
+        return super.playerWillDestroy(world, pos, state, player);
     }
 
     @Override
-    protected BlockRenderType getRenderType(BlockState state) {
-        return state.get(MAIN) ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
+    protected RenderShape getRenderShape(BlockState state) {
+        return state.getValue(MAIN) ? RenderShape.MODEL : RenderShape.INVISIBLE;
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return BlockEntityInit.ENERGY.instantiate(pos, state);
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return BlockEntityInit.ENERGY.create(pos, state);
     }
 
     @Override
-    protected BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
     @Override
-    protected BlockState mirror(BlockState state, BlockMirror mirror) {
-        return state.rotate(mirror.getRotation(state.get(FACING)));
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
 
         if(world.getBlockEntity(pos) instanceof BlockEntity entity) {
-            BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver) entity).getPersistentData().getLong("mainBlock").orElse(0L));
-            if (!state.get(MAIN)) return this.onUse(world.getBlockState(mainPos), world, mainPos, player, hit);
-            BlockPos sidePos = mainPos.offset(state.get(FACING).rotateYCounterclockwise());
+            BlockPos mainPos = BlockPos.of(((IEntityDataSaver) entity).getPersistentData().getLong("mainBlock").orElse(0L));
+            if (!state.getValue(MAIN)) return this.useWithoutItem(world.getBlockState(mainPos), world, mainPos, player, hit);
+            BlockPos sidePos = mainPos.relative(state.getValue(FACING).getCounterClockWise());
 
             buildLevers();
 
             // open the locker
-            if (state.get(OPEN)) {
+            if (state.getValue(OPEN)) {
 
-                float[][] leverOffsets = getLeverOffsets(state.get(FACING));
+                float[][] leverOffsets = getLeverOffsets(state.getValue(FACING));
                 for (int i = 0; i < 6; i++) {
-                    Box box = new Box(pos.getX() + leverOffsets[i][0], pos.getY() + leverOffsets[i][1], pos.getZ() + leverOffsets[i][2], pos.getX() + leverOffsets[i][0] + 0.25f, pos.getY() + leverOffsets[i][1] + 0.25f, pos.getZ() + leverOffsets[i][2] + 0.25f).expand(0.025f);
+                    AABB box = new AABB(pos.getX() + leverOffsets[i][0], pos.getY() + leverOffsets[i][1], pos.getZ() + leverOffsets[i][2], pos.getX() + leverOffsets[i][0] + 0.25f, pos.getY() + leverOffsets[i][1] + 0.25f, pos.getZ() + leverOffsets[i][2] + 0.25f).inflate(0.025f);
 
-                    if (box.contains(hit.getPos())) {
-                        world.setBlockState(pos, state.cycle(LEVERS.get(i)));
-                        return ActionResult.SUCCESS;
+                    if (box.contains(hit.getLocation())) {
+                        world.setBlockAndUpdate(pos, state.cycle(LEVERS.get(i)));
+                        return InteractionResult.SUCCESS;
                     }
                 }
 
@@ -213,33 +223,33 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
                 if (!voxel.contains(blockHit.getPos())) continue;
 
                 System.out.println("clicked!");
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
              */
             }
             // close the locker
-            world.setBlockState(pos, state.cycle(OPEN));
+            world.setBlockAndUpdate(pos, state.cycle(OPEN));
 
-            BlockState newState = world.getBlockState(pos).with(MAIN, false);
+            BlockState newState = world.getBlockState(pos).setValue(MAIN, false);
 
-            world.setBlockState(pos.down(), newState);
-            world.setBlockState(pos.up(), newState);
-            world.setBlockState(sidePos.down(), newState.with(SIDE, true));
-            world.setBlockState(sidePos, newState.with(SIDE, true));
-            world.setBlockState(sidePos.up(), newState.with(SIDE, true));
+            world.setBlockAndUpdate(pos.below(), newState);
+            world.setBlockAndUpdate(pos.above(), newState);
+            world.setBlockAndUpdate(sidePos.below(), newState.setValue(SIDE, true));
+            world.setBlockAndUpdate(sidePos, newState.setValue(SIDE, true));
+            world.setBlockAndUpdate(sidePos.above(), newState.setValue(SIDE, true));
 
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         for(BooleanProperty p : LEVERS){
             builder = builder.add(p);
         }
 
-        super.appendProperties(builder
+        super.createBlockStateDefinition(builder
                 .add(OPEN)
                 .add(MAIN)
                 .add(FACING)
@@ -248,35 +258,35 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        float thickness = state.get(OPEN) ? 0.25f : 0.675f;
-        float sideThickness = state.get(SIDE) ? 0.5f : 1;
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        float thickness = state.getValue(OPEN) ? 0.25f : 0.675f;
+        float sideThickness = state.getValue(SIDE) ? 0.5f : 1;
 
         VoxelShape shape;
         if(world.getBlockEntity(pos) instanceof BlockEntity ent) {
-            BlockPos mainPos = BlockPos.fromLong(((IEntityDataSaver)ent).getPersistentData().getLong("mainBlock").orElse(0L));
+            BlockPos mainPos = BlockPos.of(((IEntityDataSaver)ent).getPersistentData().getLong("mainBlock").orElse(0L));
 
-            Vec3d offset = Vec3d.of(mainPos.add(pos.multiply(-1)));
+            Vec3 offset = Vec3.atLowerCornerOf(mainPos.offset(pos.multiply(-1)));
 
             int[] leverPos = new int[18];
-            switch (state.get(FACING)) {
+            switch (state.getValue(FACING)) {
 
-                default -> shape = VoxelShapes.cuboid(1 - sideThickness, 0, 1 - thickness, 1, 1, 1);
-                case SOUTH -> shape = VoxelShapes.cuboid(0, 0, 0, sideThickness, 1, thickness);
-                case WEST -> shape = VoxelShapes.cuboid(1 - thickness, 0, 0, 1, 1, sideThickness);
-                case EAST ->  shape = VoxelShapes.cuboid(0, 0, 1 - sideThickness, thickness, 1, 1);
+                default -> shape = Shapes.box(1 - sideThickness, 0, 1 - thickness, 1, 1, 1);
+                case SOUTH -> shape = Shapes.box(0, 0, 0, sideThickness, 1, thickness);
+                case WEST -> shape = Shapes.box(1 - thickness, 0, 0, 1, 1, sideThickness);
+                case EAST ->  shape = Shapes.box(0, 0, 1 - sideThickness, thickness, 1, 1);
 
             };
 
-            float[][] leverOffsets = getLeverOffsets(state.get(FACING));
+            float[][] leverOffsets = getLeverOffsets(state.getValue(FACING));
 
             for(int i = 0; i < 6; i++){
-                shape = VoxelShapes.union(shape, VoxelShapes.cuboid(0, 0, 0, 0.25f, 0.25f, 0.25f).offset(leverOffsets[i][0], leverOffsets[i][1], leverOffsets[i][2]).offset(offset));
+                shape = Shapes.or(shape, Shapes.box(0, 0, 0, 0.25f, 0.25f, 0.25f).move(leverOffsets[i][0], leverOffsets[i][1], leverOffsets[i][2]).move(offset));
             }
 
             return shape;
         }
-        return VoxelShapes.empty();
+        return Shapes.empty();
     }
 
     private float[][] getLeverOffsets(Direction direction){
@@ -322,7 +332,7 @@ public class ElectricalLockerBlock extends BlockWithEntity implements BlockEntit
     }
 
     @Override
-    protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        return super.canPlaceAt(state, world, pos);
+    protected boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+        return super.canSurvive(state, world, pos);
     }
 }

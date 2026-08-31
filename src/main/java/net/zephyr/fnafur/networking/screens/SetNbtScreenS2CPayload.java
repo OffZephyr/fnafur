@@ -1,20 +1,21 @@
 package net.zephyr.fnafur.networking.screens;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 
-public record SetNbtScreenS2CPayload(String index, NbtCompound data) implements CustomPayload {
+public record SetNbtScreenS2CPayload(String index, CompoundTag data) implements CustomPacketPayload {
 
-    public static final Id<SetNbtScreenS2CPayload> ID = new Id<>(ScreenPayloads.SetNbtScreen);
+    public static final Type<SetNbtScreenS2CPayload> ID = new Type<>(ScreenPayloads.SetNbtScreen);
 
-    public static final PacketCodec<RegistryByteBuf, SetNbtScreenS2CPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.STRING, SetNbtScreenS2CPayload::index,
-            PacketCodecs.NBT_COMPOUND, SetNbtScreenS2CPayload::data,
+    public static final StreamCodec<RegistryFriendlyByteBuf, SetNbtScreenS2CPayload> CODEC = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8, SetNbtScreenS2CPayload::index,
+            ByteBufCodecs.COMPOUND_TAG, SetNbtScreenS2CPayload::data,
             SetNbtScreenS2CPayload::new);
 
     public static void receive(SetNbtScreenS2CPayload payload, ClientPlayNetworking.Context context) {
@@ -24,5 +25,5 @@ public record SetNbtScreenS2CPayload(String index, NbtCompound data) implements 
     }
 
     @Override
-    public Id<? extends CustomPayload> getId() { return ID; }
+    public Type<? extends CustomPacketPayload> type() { return ID; }
 }

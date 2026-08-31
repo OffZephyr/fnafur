@@ -1,26 +1,26 @@
 package net.zephyr.fnafur.client.gui.screens;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.render.entity.EntityRenderManager;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.texture.AbstractTexture;
-import net.minecraft.client.texture.TextureManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ColorHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.ARGB;
 import org.joml.Matrix3x2fStack;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -30,15 +30,15 @@ import java.util.List;
 
 public abstract class GoopyScreen extends Screen {
     public static List<GUIButton> BUTTONS = new ArrayList<>();
-    BlockPos blockPos = BlockPos.ORIGIN;
+    BlockPos blockPos = BlockPos.ZERO;
     int entityID = 0;
     public int windowSizeX = 256, windowSizeY = 256;
     public int windowX, windowY;
     String itemSlot = "";
-    NbtCompound nbtData = new NbtCompound();
+    CompoundTag nbtData = new CompoundTag();
     private boolean holding;
 
-    public void putNbtData(NbtCompound nbt){
+    public void putNbtData(CompoundTag nbt){
         nbtData = nbt.copy();
     }
     public void putBlockPos(BlockPos newPos){
@@ -47,7 +47,7 @@ public abstract class GoopyScreen extends Screen {
     public void putEntityID(int id){
         entityID = id;
     }
-    public NbtCompound getNbtData(){
+    public CompoundTag getNbtData(){
         return nbtData;
     }
     public BlockPos getBlockPos(){
@@ -55,28 +55,28 @@ public abstract class GoopyScreen extends Screen {
     }
     public int getEntityID(){ return entityID; }
     public String getItemSlot(){ return itemSlot; }
-    public GoopyScreen(Text title) {
+    public GoopyScreen(Component title) {
         super(title);
         BUTTONS.clear();
     }
-    public GoopyScreen(Text title, NbtCompound nbt, long l) {
+    public GoopyScreen(Component title, CompoundTag nbt, long l) {
         this(title);
         this.nbtData = nbt;
-        this.blockPos = BlockPos.fromLong(l);
+        this.blockPos = BlockPos.of(l);
         this.entityID = l < Integer.MAX_VALUE ? (int) l : Integer.MAX_VALUE;
     }
-    public GoopyScreen(Text text, NbtCompound nbtCompound, Object o) {
+    public GoopyScreen(Component text, CompoundTag CompoundTag, Object o) {
         this(text);
-        this.nbtData = nbtCompound;
+        this.nbtData = CompoundTag;
         if(o instanceof BlockPos pos) this.blockPos = pos;
         else if(o instanceof Integer num) this.entityID = num;
         else if(o instanceof String slot) this.itemSlot = slot;
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        windowX = (MinecraftClient.getInstance().getWindow().getScaledWidth()/2) - (windowSizeX/2);
-        windowY = (MinecraftClient.getInstance().getWindow().getScaledHeight()/2) - (windowSizeY/2);
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        windowX = (Minecraft.getInstance().getWindow().getGuiScaledWidth()/2) - (windowSizeX/2);
+        windowY = (Minecraft.getInstance().getWindow().getGuiScaledHeight()/2) - (windowSizeY/2);
 
         for(GUIButton button : BUTTONS){
             if(button instanceof GUIToggle toggle){
@@ -90,7 +90,7 @@ public abstract class GoopyScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         this.holding = true;
         for(GUIButton guiButton : BUTTONS){
             int x = windowX + guiButton.x;
@@ -112,12 +112,12 @@ public abstract class GoopyScreen extends Screen {
     }
 
     @Override
-    public boolean mouseReleased(Click click) {
+    public boolean mouseReleased(MouseButtonEvent click) {
         this.holding = false;
         return super.mouseReleased(click);
     }
 
-    public void renderButton(DrawContext context, double mouseX, double mouseY, GUIButton button) {
+    public void renderButton(GuiGraphics context, double mouseX, double mouseY, GUIButton button) {
         int x = windowX + button.x;
         int y = windowY + button.y;
         int w = button.width;
@@ -135,7 +135,7 @@ public abstract class GoopyScreen extends Screen {
         }
         drawRecolorableTexture(context, texture.texture, x, y, w, h, texture.u, texture.v, texture.textureWidth, texture.textureHeight, texture.color);
     }
-    public void renderToggle(DrawContext context, double mouseX, double mouseY, GUIToggle button) {
+    public void renderToggle(GuiGraphics context, double mouseX, double mouseY, GUIToggle button) {
         int x = windowX + button.x;
         int y = windowY + button.y;
         int w = button.width;
@@ -159,56 +159,56 @@ public abstract class GoopyScreen extends Screen {
         return (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height);
     }
 
-    public void renderButton(Identifier texture, DrawContext context, int x, int y, int u, int v, int u2, int v2, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY){
+    public void renderButton(Identifier texture, GuiGraphics context, int x, int y, int u, int v, int u2, int v2, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY){
         if(isOnButton(mouseX, mouseY, x, y, width, height)){
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
+            context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
         }
         else {
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
+            context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
-    public void renderButton(Identifier texture, DrawContext context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding){
+    public void renderButton(Identifier texture, GuiGraphics context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding){
         if(isOnButton(mouseX, mouseY, x, y, width, height)) {
             if(holding){
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
+                context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
             }
             else {
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
+                context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
             }
         }
         else {
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
+            context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
-    public void renderButton(Identifier texture, DrawContext context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding, boolean condition){
+    public void renderButton(Identifier texture, GuiGraphics context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding, boolean condition){
         if(condition){
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
+            context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
         }
         else if(isOnButton(mouseX, mouseY, x, y, width, height)) {
             if(holding){
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
+                context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
             }
             else {
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
+                context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
             }
         }
         else {
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
+            context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
 
-    public static void drawRecolorableTexture(DrawContext context, Identifier texture, int x, int y, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, int color) {
-        drawRecolorableTexture(context, texture, x, y, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight, ColorHelper.getRed(color) / 256f, ColorHelper.getGreen(color) / 256f,ColorHelper.getBlue(color) / 256f,ColorHelper.getAlpha(color) / 256f);
+    public static void drawRecolorableTexture(GuiGraphics context, Identifier texture, int x, int y, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, int color) {
+        drawRecolorableTexture(context, texture, x, y, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight, ARGB.red(color) / 256f, ARGB.green(color) / 256f, ARGB.blue(color) / 256f, ARGB.alpha(color) / 256f);
     }
 
-    public static void drawOutline(DrawContext context, int x, int y, int width, int height, int color){
+    public static void drawOutline(GuiGraphics context, int x, int y, int width, int height, int color){
         context.fill(x, y, x + width + 1, y + 1, color);
         context.fill(x, y + height, x + width + 1, y + height + 1, color);
         context.fill(x, y + 1, x + 1, y + height, color);
         context.fill(x + width, y + 1, x + width + 1, y + height, color);
     }
 
-    public static void drawRecolorableTexture(DrawContext context, Identifier texture, int x, int y, int z, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, float red, float green, float blue, float alpha) {
+    public static void drawRecolorableTexture(GuiGraphics context, Identifier texture, int x, int y, int z, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, float red, float green, float blue, float alpha) {
         float u1 = (u + 0.0f) /textureWidth;
         float u2 = (u + regionWidth) / textureWidth;
         float v1 = (v + 0.0f) / textureHeight;
@@ -219,11 +219,11 @@ public abstract class GoopyScreen extends Screen {
         int x2 = x + (int)regionWidth;
         int y2 = y + (int)regionHeight;
 
-        TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
+        TextureManager textureManager = Minecraft.getInstance().getTextureManager();
         AbstractTexture abstractTexture = textureManager.getTexture(texture);
         //RenderSystem.setShaderTexture(0, abstractTexture.getGlTexture());
 
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, (int) regionWidth, (int) regionHeight, (int) textureWidth, (int) textureHeight, ColorHelper.getArgb((int)(alpha * 255),(int)(red * 255),(int)(green * 255),(int)(blue * 255)));
+        context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, (int) regionWidth, (int) regionHeight, (int) textureWidth, (int) textureHeight, ARGB.color((int)(alpha * 255),(int)(red * 255),(int)(green * 255),(int)(blue * 255)));
         //RenderPipeline renderPipeline = RenderPipelines.GUI_TEXTURED;
         //renderPass.setPipeline(renderPipeline);
         //RenderSystem.setShader(RenderPipelines.POSITION_TEX);
@@ -241,94 +241,94 @@ public abstract class GoopyScreen extends Screen {
 
 
     }
-    public static void drawResizableText(DrawContext context, TextRenderer textRenderer, Text text, float scale, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
+    public static void drawResizableText(GuiGraphics context, Font textRenderer, Component text, float scale, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
 
         x = x / scale;
         y = y / scale;
-        if(centered) x -= (textRenderer.getWidth(text) / 2f);
+        if(centered) x -= (textRenderer.width(text) / 2f);
 
-        Matrix3x2fStack matrices = context.getMatrices();
+        Matrix3x2fStack matrices = context.pose();
 
         matrices.pushMatrix();
         matrices.scale(scale, scale);
-        context.drawText(textRenderer, text, (int)x, (int)y, color, false);
+        context.drawString(textRenderer, text, (int)x, (int)y, color, false);
         //textRenderer.draw(text, x, y, color, shadow, matrices.peek().getPositionMatrix(), vertices, TextRenderer.TextLayerType.NORMAL, backgroundColor, 0xF000F0);
         matrices.popMatrix();
     }
-    public void drawAutoResizedText(DrawContext context, TextRenderer textRenderer, Text text, float baseScale, float maxTextWidth, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
-        float scale = (textRenderer.getWidth(text) * baseScale) > maxTextWidth ? (baseScale / textRenderer.getWidth(text)) * maxTextWidth : baseScale;
+    public void drawAutoResizedText(GuiGraphics context, Font textRenderer, Component text, float baseScale, float maxTextWidth, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
+        float scale = (textRenderer.width(text) * baseScale) > maxTextWidth ? (baseScale / textRenderer.width(text)) * maxTextWidth : baseScale;
         drawResizableText(context, textRenderer, text, scale, x, y + (1 / scale), color, backgroundColor, shadow, centered);
     }
-    public static float getResizedTextHeight(TextRenderer textRenderer, Text text, float baseScale, float maxTextWidth){
-        float scale = (textRenderer.getWidth(text) * baseScale) > maxTextWidth ? (baseScale / textRenderer.getWidth(text)) * maxTextWidth : baseScale;
+    public static float getResizedTextHeight(Font textRenderer, Component text, float baseScale, float maxTextWidth){
+        float scale = (textRenderer.width(text) * baseScale) > maxTextWidth ? (baseScale / textRenderer.width(text)) * maxTextWidth : baseScale;
         return 8 * scale;
     }
 
-    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity) {
+    public static void drawEntity(GuiGraphics context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity) {
         drawEntity(context, x1, y1, x2, y2, size, scale,rotation, entity, 0, false);
     }
-    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset) {
+    public static void drawEntity(GuiGraphics context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset) {
         drawEntity(context, x1, y1, x2, y2, size, scale,rotation, entity, entityYOffset, false);
     }
-    public static void drawEntity(DrawContext context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset, boolean entity2) {
+    public static void drawEntity(GuiGraphics context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset, boolean entity2) {
         context.enableScissor(x1, y1, x2, y2);
         Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI);
         Quaternionf quaternionf2 = rotation;
         quaternionf.mul(quaternionf2);
 
-        float k = entity.getYaw();
-        float l = entity.getPitch();
-        entity.setYaw(0);
-        entity.setPitch(0);
+        float k = entity.getYRot();
+        float l = entity.getXRot();
+        entity.setYRot(0);
+        entity.setXRot(0);
 
         float j = 0;
         float m = 0;
         float n = 0;
         float o = 1;
         if(entity instanceof LivingEntity ent) {
-            j = ent.bodyYaw;
-            m = ent.lastHeadYaw;
-            n = ent.headYaw;
-            ent.bodyYaw = 0;
-            ent.headYaw = entity.getYaw();
-            ent.lastHeadYaw = entity.getYaw();
+            j = ent.yBodyRot;
+            m = ent.yHeadRotO;
+            n = ent.yHeadRot;
+            ent.yBodyRot = 0;
+            ent.yHeadRot = entity.getYRot();
+            ent.yHeadRotO = entity.getYRot();
             o = ent.getScale();
         }
 
-        Vector3f vector3f = new Vector3f(0.0F, entityYOffset + (entity.getHeight() / 2.0F + scale * o), 0.0F);
+        Vector3f vector3f = new Vector3f(0.0F, entityYOffset + (entity.getBbHeight() / 2.0F + scale * o), 0.0F);
         float p = size / o;
 
         float f = (float)(x1 + x2) / 2.0F;
         float g = (float)(y1 + y2) / 2.0F;
 
 
-        EntityRenderManager entityRenderManager = MinecraftClient.getInstance().getEntityRenderDispatcher();
+        EntityRenderDispatcher entityRenderManager = Minecraft.getInstance().getEntityRenderDispatcher();
         EntityRenderer<? super Entity, ?> entityRenderer = entityRenderManager.getRenderer(entity);
-        EntityRenderState entityRenderState = entityRenderer.getAndUpdateRenderState(entity, 1.0F);
-        entityRenderState.light = 15728880;
+        EntityRenderState entityRenderState = entityRenderer.createRenderState(entity, 1.0F);
+        entityRenderState.lightCoords = 15728880;
         entityRenderState.shadowPieces.clear();
         entityRenderState.outlineColor = 0;
 
             if (entityRenderState instanceof LivingEntityRenderState livingEntityRenderState) {
-                livingEntityRenderState.bodyYaw = 0;
-                livingEntityRenderState.relativeHeadYaw = 0;
-                livingEntityRenderState.pitch = entity.getPitch();
+                livingEntityRenderState.bodyRot = 0;
+                livingEntityRenderState.yRot = 0;
+                livingEntityRenderState.xRot = entity.getXRot();
 
-                livingEntityRenderState.width /= livingEntityRenderState.baseScale;
-                livingEntityRenderState.height /= livingEntityRenderState.baseScale;
-                livingEntityRenderState.baseScale = 1.0F;
+                livingEntityRenderState.boundingBoxWidth /= livingEntityRenderState.scale;
+                livingEntityRenderState.boundingBoxHeight /= livingEntityRenderState.scale;
+                livingEntityRenderState.scale = 1.0F;
             }
 
-            context.addEntity(entityRenderState, (float)p, vector3f, quaternionf, quaternionf2, x1, y1, x2, y2);
+            context.submitEntityRenderState(entityRenderState, (float)p, vector3f, quaternionf, quaternionf2, x1, y1, x2, y2);
             //InventoryScreen.drawEntity(context, x1, y1, x2, y2, size, scale, f, g, entity);
             //InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
 
-        entity.setYaw(k);
-        entity.setPitch(l);
+        entity.setYRot(k);
+        entity.setXRot(l);
         if(entity instanceof LivingEntity ent) {
-            ent.bodyYaw = j;
-            ent.lastHeadYaw = m;
-            ent.headYaw = n;
+            ent.yBodyRot = j;
+            ent.yHeadRotO = m;
+            ent.yHeadRot = n;
         }
         context.disableScissor();
     }

@@ -1,22 +1,25 @@
 package net.zephyr.fnafur.blocks.curtain;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.client.render.command.ModelCommandRenderer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.EasingMathUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -28,13 +31,13 @@ import java.util.function.Function;
 
 public class CurtainBlockEntityRenderer implements BlockEntityRenderer<CurtainBlockEntity, CurtainBlockRenderState> {
 
-    static Identifier TEXTURE = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/block/curtain_test.png");
-    MinecraftClient client;
+    static Identifier TEXTURE = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/block/curtain_test.png");
+    Minecraft client;
     int light = 0;
     int height = 0;
 
-    public CurtainBlockEntityRenderer(BlockEntityRendererFactory.Context context){
-        client = MinecraftClient.getInstance();
+    public CurtainBlockEntityRenderer(BlockEntityRendererProvider.Context context){
+        client = Minecraft.getInstance();
     }
 
     @Override
@@ -43,8 +46,8 @@ public class CurtainBlockEntityRenderer implements BlockEntityRenderer<CurtainBl
     }
 
     @Override
-    public void updateRenderState(CurtainBlockEntity blockEntity, CurtainBlockRenderState state, float tickProgress, Vec3d cameraPos, @Nullable ModelCommandRenderer.CrumblingOverlayCommand crumblingOverlay) {
-        NbtCompound nbt = ((IEntityDataSaver)blockEntity).getPersistentData();
+    public void extractRenderState(CurtainBlockEntity blockEntity, CurtainBlockRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        CompoundTag nbt = ((IEntityDataSaver)blockEntity).getPersistentData();
 
         float openIndex = nbt.getFloat("openIndex").orElse(0f);
         float prevOpenIndex = nbt.getFloat("prevOpenIndex").orElse(0f);
@@ -54,44 +57,44 @@ public class CurtainBlockEntityRenderer implements BlockEntityRenderer<CurtainBl
 //        nbt.putFloat("prevOpenIndex", openIndex);
 
         state.height = nbt.getInt("height").orElse(1);
-        state.previous = blockEntity.isFirst() ? null : BlockPos.fromLong(nbt.getLong("previous").orElse(0L));
-        state.next = blockEntity.isLast() ? null :BlockPos.fromLong(nbt.getLong("next").orElse(0L));
+        state.previous = blockEntity.isFirst() ? null : BlockPos.of(nbt.getLong("previous").orElse(0L));
+        state.next = blockEntity.isLast() ? null : BlockPos.of(nbt.getLong("next").orElse(0L));
         state.facing = blockEntity.getFacing();
         state.nextFacing = blockEntity.getNextFacing();
-        state.isOpening = nbt.getBoolean("isOpenning", false) || nbt.getBoolean("isOpen", false);
-        state.openIndex = MathHelper.lerp(MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(false), prevOpenIndex, openIndex)/20f;
+        state.isOpening = nbt.getBooleanOr("isOpenning", false) || nbt.getBooleanOr("isOpen", false);
+        state.openIndex = Mth.lerp(Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false), prevOpenIndex, openIndex)/20f;
 
         state.isLast = blockEntity.isLast();
         state.front = blockEntity.frontCurtain;
         state.back = blockEntity.backCurtain;
         state.prev_front = blockEntity.prevFrontCurtain;
         state.prev_back = blockEntity.prevBackCurtain;
-        BlockEntityRenderer.super.updateRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
+        BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
     }
 
     @Override
-    public void render(CurtainBlockRenderState state, MatrixStack matrices, OrderedRenderCommandQueue queue, CameraRenderState cameraState) {
+    public void submit(CurtainBlockRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
 
-        matrices.push();
+        matrices.pushPose();
         //matrices.translate(cameraState.pos.multiply(-1));
         //matrices.translate(0, 1.5f, 0);
-        //matrices.multiply(MinecraftClient.getInstance().gameRenderer.getCamera().getRotation());
+        //matrices.multiply(Minecraft.getInstance().gameRenderer.getCamera().getRotation());
 
-        queue.submitCustom(matrices, RenderLayers.entityCutoutNoCull(TEXTURE), (entry, vertexConsumer) -> {
-            renderCurtain(entry, vertexConsumer, state.isLast, state.lightmapCoordinates, state.front, state.prev_front);
-            renderCurtain(entry, vertexConsumer, state.isLast, state.lightmapCoordinates, state.back, state.prev_back);
+        queue.submitCustomGeometry(matrices, RenderTypes.entityCutoutNoCull(TEXTURE), (entry, vertexConsumer) -> {
+            renderCurtain(entry, vertexConsumer, state.isLast, state.lightCoords, state.front, state.prev_front);
+            renderCurtain(entry, vertexConsumer, state.isLast, state.lightCoords, state.back, state.prev_back);
         });
-        matrices.pop();
+        matrices.popPose();
     }
 
-    void renderCurtain(MatrixStack.Entry entry, VertexConsumer vertexConsumer, boolean isLast, int light, CurtainData data, CurtainData prevData) {
+    void renderCurtain(PoseStack.Pose entry, VertexConsumer vertexConsumer, boolean isLast, int light, CurtainData data, CurtainData prevData) {
 
 //        float startX = 0.5f + backOffset * state.facing.getOffsetX();
 //        float startZ = 0.5f + backOffset * state.facing.getOffsetZ();
 //        float endX = 0.5f + backOffset * state.facing.getOffsetX();
 //        float endZ = 0.5f + backOffset * state.facing.getOffsetZ();
 //
-//        //state.openIndex += MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks();
+//        //state.openIndex += Minecraft.getInstance().getRenderTickCounter().getDynamicDeltaTicks();
 //        float yOffset = 0.25f;
 
         if (!isLast) {
@@ -202,54 +205,54 @@ public class CurtainBlockEntityRenderer implements BlockEntityRenderer<CurtainBl
 
                     int height = data.height;
 
-                    double prog = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(false);
-                    x1 = (float) (MathHelper.lerp(prog, prev_x1, x1));
-                    x2 = (float) (MathHelper.lerp(prog, prev_x2, x2));
-                    y1 = (float) (MathHelper.lerp(prog, prev_y1, y1));
-                    y2 = (float) (MathHelper.lerp(prog, prev_y2, y2));
-                    z1 = (float) (MathHelper.lerp(prog, prev_z1, z1));
-                    z2 = (float) (MathHelper.lerp(prog, prev_z2, z2));
+                    double prog = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+                    x1 = (float) (Mth.lerp(prog, prev_x1, x1));
+                    x2 = (float) (Mth.lerp(prog, prev_x2, x2));
+                    y1 = (float) (Mth.lerp(prog, prev_y1, y1));
+                    y2 = (float) (Mth.lerp(prog, prev_y2, y2));
+                    z1 = (float) (Mth.lerp(prog, prev_z1, z1));
+                    z2 = (float) (Mth.lerp(prog, prev_z2, z2));
 
-                    u = (float) (MathHelper.lerp(prog, prev_u, u));
-                    uWidth = (float) (MathHelper.lerp(prog, prev_uWidth, uWidth));
+                    u = (float) (Mth.lerp(prog, prev_u, u));
+                    uWidth = (float) (Mth.lerp(prog, prev_uWidth, uWidth));
 
                     for (int i = 0; i < height; i++) {
                         float v = i == height - 1 ? 0.5f : 0;
 
-                        Vec3d vert1 = new Vec3d(x1, -i + y1, z1);
-                        Vec3d vert2 = new Vec3d(x1, -i + 1 + y1, z1);
-                        Vec3d vert3 = new Vec3d(x2, -i + 1 + y2, z2);
-                        Vec3d dir = vert2.add(vert1.multiply(-1)).crossProduct(vert3.add(vert1.multiply(-1)));
-                        Vec3d normal = dir.normalize();
+                        Vec3 vert1 = new Vec3(x1, -i + y1, z1);
+                        Vec3 vert2 = new Vec3(x1, -i + 1 + y1, z1);
+                        Vec3 vert3 = new Vec3(x2, -i + 1 + y2, z2);
+                        Vec3 dir = vert2.add(vert1.scale(-1)).cross(vert3.add(vert1.scale(-1)));
+                        Vec3 normal = dir.normalize();
 
                         vertexConsumer
-                                .vertex(entry.getPositionMatrix(), x1, -i + y1, z1)
-                                .texture(u + uWidth, 0.5f + v)
-                                .light(light)
-                                .overlay(OverlayTexture.DEFAULT_UV)
-                                .normal((float) normal.x, (float) normal.y, (float) normal.z)
-                                .color(color);
+                                .addVertex(entry.pose(), x1, -i + y1, z1)
+                                .setUv(u + uWidth, 0.5f + v)
+                                .setLight(light)
+                                .setOverlay(OverlayTexture.NO_OVERLAY)
+                                .setNormal((float) normal.x, (float) normal.y, (float) normal.z)
+                                .setColor(color);
                         vertexConsumer
-                                .vertex(entry.getPositionMatrix(), x1, -i + 1 + y1, z1)
-                                .texture(u + uWidth, 0 + v)
-                                .light(light)
-                                .overlay(OverlayTexture.DEFAULT_UV)
-                                .normal((float) normal.x, (float) normal.y, (float) normal.z)
-                                .color(color);
+                                .addVertex(entry.pose(), x1, -i + 1 + y1, z1)
+                                .setUv(u + uWidth, 0 + v)
+                                .setLight(light)
+                                .setOverlay(OverlayTexture.NO_OVERLAY)
+                                .setNormal((float) normal.x, (float) normal.y, (float) normal.z)
+                                .setColor(color);
                         vertexConsumer
-                                .vertex(entry.getPositionMatrix(), x2, -i + 1 + y2, z2)
-                                .texture(u, 0 + v)
-                                .light(light)
-                                .overlay(OverlayTexture.DEFAULT_UV)
-                                .normal((float) normal.x, (float) normal.y, (float) normal.z)
-                                .color(color);
+                                .addVertex(entry.pose(), x2, -i + 1 + y2, z2)
+                                .setUv(u, 0 + v)
+                                .setLight(light)
+                                .setOverlay(OverlayTexture.NO_OVERLAY)
+                                .setNormal((float) normal.x, (float) normal.y, (float) normal.z)
+                                .setColor(color);
                         vertexConsumer
-                                .vertex(entry.getPositionMatrix(), x2, -i + y2, z2)
-                                .texture(u, 0.5f + v)
-                                .light(light)
-                                .overlay(OverlayTexture.DEFAULT_UV)
-                                .normal((float) normal.x, (float) normal.y, (float) normal.z)
-                                .color(color);
+                                .addVertex(entry.pose(), x2, -i + y2, z2)
+                                .setUv(u, 0.5f + v)
+                                .setLight(light)
+                                .setOverlay(OverlayTexture.NO_OVERLAY)
+                                .setNormal((float) normal.x, (float) normal.y, (float) normal.z)
+                                .setColor(color);
                     }
 
                 }
@@ -257,23 +260,23 @@ public class CurtainBlockEntityRenderer implements BlockEntityRenderer<CurtainBl
         }
     }
 
-    Pair<Function<Double, Double>, Function<Double, Double>> getEasing(CurtainBlockRenderState state){
+    Tuple<Function<Double, Double>, Function<Double, Double>> getEasing(CurtainBlockRenderState state){
         Direction direction = state.facing;
         Direction nextDirection = state.nextFacing;
 
-        Pair<Function<Double, Double>, Function<Double, Double>> pair = new Pair<>((index) -> index, (index) -> index);
+        Tuple<Function<Double, Double>, Function<Double, Double>> pair = new Tuple<>((index) -> index, (index) -> index);
 
 
         if(direction == nextDirection) {
-            if((direction.getAxis() == Direction.Axis.X && state.pos.getX() == state.next.getX()) || (direction.getAxis() == Direction.Axis.Z && state.pos.getZ() == state.next.getZ())){
+            if((direction.getAxis() == Direction.Axis.X && state.blockPos.getX() == state.next.getX()) || (direction.getAxis() == Direction.Axis.Z && state.blockPos.getZ() == state.next.getZ())){
                 return pair;
             }
-            return new Pair<>(EasingMathUtil::easeOutCirc, EasingMathUtil::easeInCirc);
+            return new Tuple<>(EasingMathUtil::easeOutCirc, EasingMathUtil::easeInCirc);
         }
         return switch (direction.getAxis()){
             default -> pair;
-            case X -> new Pair<>(EasingMathUtil::easeInCirc, EasingMathUtil::easeOutCirc);
-            case Z -> new Pair<>(EasingMathUtil::easeOutCirc, EasingMathUtil::easeInCirc);
+            case X -> new Tuple<>(EasingMathUtil::easeInCirc, EasingMathUtil::easeOutCirc);
+            case Z -> new Tuple<>(EasingMathUtil::easeOutCirc, EasingMathUtil::easeInCirc);
         };
     }
 }

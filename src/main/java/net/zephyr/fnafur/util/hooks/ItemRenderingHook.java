@@ -1,31 +1,31 @@
 package net.zephyr.fnafur.util.hooks;
 
-import net.minecraft.block.SkullBlock;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.entity.SkullBlockEntityModel;
-import net.minecraft.client.render.block.entity.SkullBlockEntityRenderer;
-import net.minecraft.client.render.command.ModelCommandRenderer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
-import net.minecraft.client.render.entity.feature.HeadFeatureRenderer;
-import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.entity.model.ModelWithHead;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.render.item.HeldItemRenderer;
-import net.minecraft.client.render.item.ItemRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerModelPart;
-import net.minecraft.item.ItemDisplayContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
+import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.model.object.skull.SkullModelBase;
+import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HeadedModel;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.entity.player.PlayerModelPart;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.Direction;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.masks.VanniMaskItem;
 import net.zephyr.fnafur.util.mixinAccessing.IHeadFeatureRendererAccessor;
@@ -36,50 +36,50 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class ItemRenderingHook {
     public static boolean renderFirstPersonItem(
-            AbstractClientPlayerEntity player,
+            AbstractClientPlayer player,
             float tickProgress,
             float pitch,
-            Hand hand,
+            InteractionHand hand,
             float swingProgress,
             ItemStack item,
             float equipProgress,
-            MatrixStack matrices,
-            OrderedRenderCommandQueue orderedRenderCommandQueue,
+            PoseStack matrices,
+            SubmitNodeCollector orderedRenderCommandQueue,
             int light,
-            HeldItemRenderer renderer
+            ItemInHandRenderer renderer
     ) {
         if(!((IUniversePlayer)player).hasVanniMaskEquipped()){
             ((IUniversePlayer)player).setMaskDelta(0);
         }
-        ItemStack maskStack = player.getInventory().getStack(FnafInventoryScreen.SLOTS_OFFSET);
+        ItemStack maskStack = player.getInventory().getItem(FnafInventoryScreen.SLOTS_OFFSET);
         if (((IUniversePlayer)player).hasVanniMaskEquipped()) {
-            boolean bl = hand == Hand.MAIN_HAND;
+            boolean bl = hand == InteractionHand.MAIN_HAND;
             if (!bl) {
                 return true;
             }
 
             if(!((IUniversePlayer)player).hasVanniMaskOn()){
-                ((IUniversePlayer)player).setMaskDelta(Math.clamp(((IUniversePlayer)player).getMaskDelta() - (MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks() / 20f), 0, 1f));
+                ((IUniversePlayer)player).setMaskDelta(Math.clamp(((IUniversePlayer)player).getMaskDelta() - (Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks() / 20f), 0, 1f));
             }
             else{
-                ((IUniversePlayer)player).setMaskDelta(Math.clamp(((IUniversePlayer)player).getMaskDelta() + (MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks() / 20f), 0, 1.5f));
+                ((IUniversePlayer)player).setMaskDelta(Math.clamp(((IUniversePlayer)player).getMaskDelta() + (Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks() / 20f), 0, 1.5f));
             }
 
             if(((IUniversePlayer)player).getMaskDelta() > 1.42f){
                 return false;
             }
-            matrices.push();
-            Arm arm = player.getMainArm();
+            matrices.pushPose();
+            HumanoidArm arm = player.getMainArm();
 
-            boolean bl2 = arm == Arm.RIGHT;
+            boolean bl2 = arm == HumanoidArm.RIGHT;
             int l = bl2 ? 1 : -1;
 
-            matrices.push();
-            renderArm(matrices, orderedRenderCommandQueue, light, Arm.LEFT);
-            matrices.pop();
-            matrices.push();
-            renderArm(matrices, orderedRenderCommandQueue, light, Arm.RIGHT);
-            matrices.pop();
+            matrices.pushPose();
+            renderArm(matrices, orderedRenderCommandQueue, light, HumanoidArm.LEFT);
+            matrices.popPose();
+            matrices.pushPose();
+            renderArm(matrices, orderedRenderCommandQueue, light, HumanoidArm.RIGHT);
+            matrices.popPose();
 
 
             ((IHeldItemAccessor)renderer).doSwingArm(0, 0, matrices, l, arm);
@@ -87,7 +87,7 @@ public class ItemRenderingHook {
             renderer.renderItem(
                     player, maskStack, bl2 ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND, matrices, orderedRenderCommandQueue, light
             );
-            matrices.pop();
+            matrices.popPose();
 
             if(((IUniversePlayer)player).hasVanniMaskOn() && !((IUniversePlayer)player).isUsingVanniMask()){
                 return true;
@@ -99,12 +99,12 @@ public class ItemRenderingHook {
         return false;
     }
 
-    public static void renderArm(MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light, Arm arm){
-        boolean bl = arm != Arm.LEFT;
+    public static void renderArm(PoseStack matrices, SubmitNodeCollector orderedRenderCommandQueue, int light, HumanoidArm arm){
+        boolean bl = arm != HumanoidArm.LEFT;
 
-        AbstractClientPlayerEntity abstractClientPlayerEntity = MinecraftClient.getInstance().player;
-        PlayerEntityRenderer playerEntityRenderer = (PlayerEntityRenderer)MinecraftClient.getInstance().getEntityRenderDispatcher()
-                .<AbstractClientPlayerEntity>getRenderer(abstractClientPlayerEntity);
+        AbstractClientPlayer abstractClientPlayerEntity = Minecraft.getInstance().player;
+        AvatarRenderer playerEntityRenderer = (AvatarRenderer) Minecraft.getInstance().getEntityRenderDispatcher()
+                .<AbstractClientPlayer>getRenderer(abstractClientPlayerEntity);
         Identifier identifier = abstractClientPlayerEntity.getSkin().body().texturePath();
         if (bl) {
             //playerEntityRenderer.renderRightArm(matrices, vertexConsumers, light, identifier, abstractClientPlayerEntity.isPartVisible(PlayerModelPart.RIGHT_SLEEVE));
@@ -113,34 +113,34 @@ public class ItemRenderingHook {
         }
     }
 
-    public static <S extends LivingEntityRenderState, M extends EntityModel<S> & ModelWithHead> void renderOnHead(HeadFeatureRenderer<S, M> fRenderer, MatrixStack matrixStack, OrderedRenderCommandQueue orderedRenderCommandQueue, int i, S livingEntityRenderState, float f, float g){
-        ItemRenderState maskItemRenderState = ((ILivingEntityMaskRenderState)livingEntityRenderState).getState();
+    public static <S extends LivingEntityRenderState, M extends EntityModel<S> & HeadedModel> void renderOnHead(CustomHeadLayer<S, M> fRenderer, PoseStack matrixStack, SubmitNodeCollector orderedRenderCommandQueue, int i, S livingEntityRenderState, float f, float g){
+        ItemStackRenderState maskItemRenderState = ((ILivingEntityMaskRenderState)livingEntityRenderState).getState();
 
         if (!maskItemRenderState.isEmpty()) {
 
-            if(MinecraftClient.getInstance().player != null && ((IUniversePlayer)MinecraftClient.getInstance().player).hasVanniMaskEquipped() && !((IUniversePlayer)MinecraftClient.getInstance().player).hasVanniMaskOn()){
+            if(Minecraft.getInstance().player != null && ((IUniversePlayer) Minecraft.getInstance().player).hasVanniMaskEquipped() && !((IUniversePlayer) Minecraft.getInstance().player).hasVanniMaskOn()){
                 return;
             }
 
-            matrixStack.push();
+            matrixStack.pushPose();
             matrixStack.scale(((IHeadFeatureRendererAccessor)fRenderer).getHeadTransformation().horizontalScale(), 1.0F,  ((IHeadFeatureRendererAccessor)fRenderer).getHeadTransformation().horizontalScale());
-            M entityModel = fRenderer.getContextModel();
-            entityModel.getRootPart().applyTransform(matrixStack);
-            entityModel.getHead().applyTransform(matrixStack);
-            if (livingEntityRenderState.wearingSkullType != null) {
+            M entityModel = fRenderer.getParentModel();
+            entityModel.root().translateAndRotate(matrixStack);
+            entityModel.getHead().translateAndRotate(matrixStack);
+            if (livingEntityRenderState.wornHeadType != null) {
                 matrixStack.translate(0.0F,  ((IHeadFeatureRendererAccessor)fRenderer).getHeadTransformation().skullYOffset(), 0.0F);
                 matrixStack.scale(1.1875F, -1.1875F, -1.1875F);
                 matrixStack.translate(-0.5, 0.0, -0.5);
-                SkullBlock.SkullType skullType = livingEntityRenderState.wearingSkullType;
-                SkullBlockEntityModel skullBlockEntityModel = (SkullBlockEntityModel) ((IHeadFeatureRendererAccessor)fRenderer).getHeadModels().apply(skullType);
-                RenderLayer renderLayer = fRenderer.getRenderLayer(livingEntityRenderState, skullType);
-                SkullBlockEntityRenderer.render((Direction)null, 180.0F, livingEntityRenderState.headItemAnimationProgress, matrixStack, orderedRenderCommandQueue, i, skullBlockEntityModel, renderLayer, livingEntityRenderState.outlineColor, (ModelCommandRenderer.CrumblingOverlayCommand)null);
+                SkullBlock.Type skullType = livingEntityRenderState.wornHeadType;
+                SkullModelBase skullBlockEntityModel = (SkullModelBase) ((IHeadFeatureRendererAccessor)fRenderer).getHeadModels().apply(skullType);
+                RenderType renderLayer = fRenderer.resolveSkullRenderType(livingEntityRenderState, skullType);
+                SkullBlockRenderer.submitSkull((Direction)null, 180.0F, livingEntityRenderState.wornHeadAnimationPos, matrixStack, orderedRenderCommandQueue, i, skullBlockEntityModel, renderLayer, livingEntityRenderState.outlineColor, (ModelFeatureRenderer.CrumblingOverlay)null);
             } else {
                 ((IHeadFeatureRendererAccessor)fRenderer).doTranslate(matrixStack, ((IHeadFeatureRendererAccessor)fRenderer).getHeadTransformation());
-                maskItemRenderState.render(matrixStack, orderedRenderCommandQueue, i, OverlayTexture.DEFAULT_UV, livingEntityRenderState.outlineColor);
+                maskItemRenderState.submit(matrixStack, orderedRenderCommandQueue, i, OverlayTexture.NO_OVERLAY, livingEntityRenderState.outlineColor);
             }
 
-            matrixStack.pop();
+            matrixStack.popPose();
         }
     }
 }

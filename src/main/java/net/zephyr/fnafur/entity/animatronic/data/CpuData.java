@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.entity.animatronic.data;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 import java.math.BigDecimal;
@@ -904,7 +904,7 @@ public class CpuData {
 
         GlowingEyesColor(String name) {
             NAME = name;
-            IDENTIFIER = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/entity/animatronics/eye_colors/" + name + ".png");
+            IDENTIFIER = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/entity/animatronics/eye_colors/" + name + ".png");
         }
 
         @Override
@@ -1697,8 +1697,8 @@ public class CpuData {
         return this;
     }
 
-    public NbtCompound toNbt() {
-        NbtCompound nbt = new NbtCompound();
+    public CompoundTag toNbt() {
+        CompoundTag nbt = new CompoundTag();
         for (CpuDataArgument argument : DefaultList) {
             CpuDataArgument arg = DATA_LIST.get(argument.getKey());
             if (arg != null) {
@@ -1716,26 +1716,26 @@ public class CpuData {
         return nbt;
     }
 
-    public static CpuData fromNbt(NbtCompound nbt) {
+    public static CpuData fromNbt(CompoundTag nbt) {
 
         CpuData data = new CpuData();
 
         for (CpuDataArgument argument : data.DefaultList) {
             if (argument instanceof CpuDataRangeArgument range) {
-                int value = nbt.getInt(range.getKey(), range.getValue());
+                int value = nbt.getIntOr(range.getKey(), range.getValue());
                 range.setValue(value);
                 data.DATA_LIST.put(range.getKey(), range);
             } else if (argument instanceof CpuDataFloatRangeArgument range) {
-                float value = nbt.getFloat(range.getKey(), range.getValue());
+                float value = nbt.getFloatOr(range.getKey(), range.getValue());
                 range.setValue(value);
                 data.DATA_LIST.put(range.getKey(), range);
             } else {
-                String name = nbt.getString(argument.getKey(), argument.getName());
+                String name = nbt.getStringOr(argument.getKey(), argument.getName());
                 data.DATA_LIST.put(argument.getKey(), argument.getFromName(name));
             }
         }
-        data.Animation = nbt.getString("animation", data.Animation);
-        data.AmbientSound = nbt.getString("ambient_sound", data.AmbientSound);
+        data.Animation = nbt.getStringOr("animation", data.Animation);
+        data.AmbientSound = nbt.getStringOr("ambient_sound", data.AmbientSound);
         return data;
     }
 

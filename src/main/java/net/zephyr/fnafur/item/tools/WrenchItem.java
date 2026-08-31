@@ -1,19 +1,20 @@
 package net.zephyr.fnafur.item.tools;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.linking.EnergyTarget;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
@@ -23,18 +24,18 @@ import net.zephyr.fnafur.util.mixinAccessing.IUniversePlayer;
 import org.jetbrains.annotations.Nullable;
 
 public class WrenchItem extends Item {
-    public WrenchItem(Settings settings) {
+    public WrenchItem(Properties settings) {
         super(settings);
     }
 
     @Override
-    public boolean canMine(ItemStack stack, BlockState state, World world, BlockPos pos, LivingEntity user) {
+    public boolean canDestroyBlock(ItemStack stack, BlockState state, Level world, BlockPos pos, LivingEntity user) {
         return false;
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        if(context.getPlayer() != null && ((IUniversePlayer)context.getPlayer()).isUsingVanniMask() && context.getWorld().getBlockEntity(context.getBlockPos()) instanceof LinkTarget t && !t.getSources().isEmpty()){
+    public InteractionResult useOn(UseOnContext context) {
+        if(context.getPlayer() != null && ((IUniversePlayer)context.getPlayer()).isUsingVanniMask() && context.getLevel().getBlockEntity(context.getClickedPos()) instanceof LinkTarget t && !t.getSources().isEmpty()){
             for (int i = 0; i < t.getSources().size(); i++){
                 if(t.getSources().get(i) instanceof IEntityDataSaver ent){
                     t.removeSource(ent);
@@ -42,13 +43,13 @@ public class WrenchItem extends Item {
 
                     if(t instanceof EnergyTarget e) {
                         BlockEntity ent2 = (BlockEntity) t;
-                        e.updateStatus(ent2.getWorld(), ent2.getPos(), ent);
+                        e.updateStatus(ent2.getLevel(), ent2.getBlockPos(), ent);
                     }
                 }
             }
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        else if(context.getPlayer() != null && ((IUniversePlayer)context.getPlayer()).isUsingVanniMask() && context.getWorld().getBlockEntity(context.getBlockPos()) instanceof LinkSource s && !s.getTargets().isEmpty()){
+        else if(context.getPlayer() != null && ((IUniversePlayer)context.getPlayer()).isUsingVanniMask() && context.getLevel().getBlockEntity(context.getClickedPos()) instanceof LinkSource s && !s.getTargets().isEmpty()){
             for (int i = 0; i < s.getTargets().size(); i++){
                 if(s.getTargets().get(i) instanceof IEntityDataSaver ent && ent instanceof LinkTarget){
 
@@ -57,19 +58,19 @@ public class WrenchItem extends Item {
 
                     if(ent instanceof EnergyTarget e) {
                         BlockEntity ent2 = (BlockEntity) s;
-                        e.updateStatus(ent2.getWorld(), ent2.getPos(), ((IEntityDataSaver) s));
+                        e.updateStatus(ent2.getLevel(), ent2.getBlockPos(), ((IEntityDataSaver) s));
                     }
                 }
             }
-            return ActionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return super.useOnBlock(context);
+        return super.useOn(context);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
-        if(entity instanceof PlayerEntity p && (!((IUniversePlayer)p).isUsingVanniMask() || !p.getMainHandStack().equals(stack))){
-            NbtCompound nbt = ItemUtil.getNbt(stack);
+    public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, @Nullable EquipmentSlot slot) {
+        if(entity instanceof Player p && (!((IUniversePlayer)p).isUsingVanniMask() || !p.getMainHandItem().equals(stack))){
+            CompoundTag nbt = ItemUtil.getNbt(stack);
             if(nbt.contains("startLink")){
                 nbt.remove("startLink");
                 ItemUtil.setNbt(stack, nbt);

@@ -1,15 +1,16 @@
 package net.zephyr.fnafur.blocks.energy.blocks.generators;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class BaseGeneratorBlock extends FloorPropBlock<DefaultPropColorEnum> {
 
-    public BaseGeneratorBlock(Settings settings) {
+    public BaseGeneratorBlock(Properties settings) {
         super(settings);
     }
 
@@ -34,29 +35,29 @@ public class BaseGeneratorBlock extends FloorPropBlock<DefaultPropColorEnum> {
 
     @Nullable
     @Override
-    public <Q extends BlockEntity> BlockEntityTicker<Q> getTicker(World world, BlockState state, BlockEntityType<Q> type) {
+    public <Q extends BlockEntity> BlockEntityTicker<Q> getTicker(Level world, BlockState state, BlockEntityType<Q> type) {
 
-        return validateTicker(type, BlockEntityInit.GENERATOR,
+        return createTickerHelper(type, BlockEntityInit.GENERATOR,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
 
     }
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
 
         if(world.getBlockEntity(pos) instanceof GeneratorBlockEntity ent){
-            ActionResult result = ent.tryStartLink(player, pos);
+            InteractionResult result = ent.tryStartLink(player, pos);
             if(result != null) return result;
         }
 
-        return super.onUse(state, world, pos, player, hit);
+        return super.useWithoutItem(state, world, pos, player, hit);
     }
 
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GeneratorBlockEntity(pos, state);
     }
 
-    public boolean isPowered(BlockView world, BlockPos pos) {
+    public boolean isPowered(BlockGetter world, BlockPos pos) {
         return true;
     }
 }

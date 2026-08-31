@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.floor_props.chairs;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum RetroStoolColors implements StringIdentifiable, ColorEnumInterface {
+public enum RetroStoolColors implements StringRepresentable, ColorEnumInterface {
     COLOR_0("color_0", 0),
     COLOR_1("color_1", 1),
     COLOR_2("color_2", 2),
@@ -27,7 +27,7 @@ public enum RetroStoolColors implements StringIdentifiable, ColorEnumInterface {
         this.index = index;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

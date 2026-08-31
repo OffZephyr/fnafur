@@ -1,20 +1,26 @@
 package net.zephyr.fnafur.client.rendering;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Style;
-import net.minecraft.text.StyleSpriteSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.FontDescription;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.linking.LinkSource;
 import net.zephyr.fnafur.blocks.linking.LinkTarget;
@@ -36,40 +42,40 @@ public class LinkRenderer {
 
 
     public static void renderLinks(WorldRenderContext worldRenderContext) {
-        MatrixStack matrices = worldRenderContext.matrices();
-        matrices.push();
-        Vec3d camPos = MinecraftClient.getInstance().gameRenderer.getCamera().getCameraPos();
-        matrices.translate(camPos.multiply(-1));
+        PoseStack matrices = worldRenderContext.matrices();
+        matrices.pushPose();
+        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
+        matrices.translate(camPos.scale(-1));
         render(matrices, worldRenderContext.commandQueue(), worldRenderContext.consumers());
-        matrices.pop();
+        matrices.popPose();
     }
 
-    public static void render(MatrixStack matrices, OrderedRenderCommandQueue queue, VertexConsumerProvider vertexConsumers) {
+    public static void render(PoseStack matrices, SubmitNodeCollector queue, MultiBufferSource vertexConsumers) {
 
-        moveLerp += MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks();
+        moveLerp += Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks();
         int cutLerp = (int) moveLerp / 5;
         frameCount = cutLerp - ((cutLerp / 4) * 4);
 
-        if (MinecraftClient.getInstance().player != null && !((IUniversePlayer) MinecraftClient.getInstance().player).isUsingVanniMask()) {
+        if (Minecraft.getInstance().player != null && !((IUniversePlayer) Minecraft.getInstance().player).isUsingVanniMask()) {
             return;
         }
 
-        Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
-        matrices.push();
-        BlockPos selectPos = BlockPos.ORIGIN;
-        if (MinecraftClient.getInstance().player != null && MinecraftClient.getInstance().player.getMainHandStack().getItem() instanceof WrenchItem) {
-            NbtCompound nbt = ItemUtil.getNbt(MinecraftClient.getInstance().player.getMainHandStack());
-            if (nbt.contains("startLink")) selectPos = nbt.get("startLink", BlockPos.CODEC).orElse(BlockPos.ORIGIN);
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+        matrices.pushPose();
+        BlockPos selectPos = BlockPos.ZERO;
+        if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.getMainHandItem().getItem() instanceof WrenchItem) {
+            CompoundTag nbt = ItemUtil.getNbt(Minecraft.getInstance().player.getMainHandItem());
+            if (nbt.contains("startLink")) selectPos = nbt.read("startLink", BlockPos.CODEC).orElse(BlockPos.ZERO);
 
             IEntityDataSaver ent = null;
             for (IEntityDataSaver ent2 : LinkSource.allSources) {
                 if (ent2 instanceof BlockEntity bent) {
-                    if (bent.getPos().equals(selectPos)) {
+                    if (bent.getBlockPos().equals(selectPos)) {
                         ent = ent2;
                         break;
                     }
                 } else if (ent2 instanceof Entity ent3) {
-                    if (ent3.getBlockPos().equals(selectPos)) {
+                    if (ent3.blockPosition().equals(selectPos)) {
                         ent = (IEntityDataSaver) ent3;
                         break;
                     }
@@ -77,27 +83,27 @@ public class LinkRenderer {
             }
 
             if (ent != null) {
-                matrices.push();
+                matrices.pushPose();
 
                 matrices.translate(0, 0.25, 0);
 
-                Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/link_" + frameCount + ".png");
+                Identifier texture = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/other/link/link_" + frameCount + ".png");
 
-                Vec3d vec1;
+                Vec3 vec1;
                 if (ent instanceof BlockEntity bent) {
-                    vec1 = bent.getPos().toCenterPos();
+                    vec1 = bent.getBlockPos().getCenter();
                 } else {
                     Entity ent2 = (Entity) ent;
-                    vec1 = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
+                    vec1 = new Vec3(ent2.getX(), ent2.getEyeY(), ent2.getZ());
                 }
-                assert MinecraftClient.getInstance().crosshairTarget != null;
-                Vec3d vec2 = MinecraftClient.getInstance().crosshairTarget.getPos();
+                assert Minecraft.getInstance().hitResult != null;
+                Vec3 vec2 = Minecraft.getInstance().hitResult.getLocation();
 
-                queue.submitCustom(matrices, RenderLayers.outlineNoCull(texture), ((matricesEntry, vertexConsumer) -> {
+                queue.submitCustomGeometry(matrices, RenderTypes.outline(texture), ((matricesEntry, vertexConsumer) -> {
                     drawLink(vec1, vec2, vertexConsumer, matricesEntry, true);
                 }));
 
-                matrices.pop();
+                matrices.popPose();
             }
         }
 
@@ -108,58 +114,58 @@ public class LinkRenderer {
                 IEntityDataSaver target = ((LinkSource) ent).getTargets().get(i);
 
 
-                matrices.push();
+                matrices.pushPose();
 
                 matrices.translate(0, 0.25, 0);
 
-                Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/link_" + frameCount + ".png");
+                Identifier texture = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/other/link/link_" + frameCount + ".png");
 
-                queue.submitCustom(matrices, RenderLayers.outlineNoCull(texture), ((matricesEntry, vertexConsumer) -> {
+                queue.submitCustomGeometry(matrices, RenderTypes.outline(texture), ((matricesEntry, vertexConsumer) -> {
 
-                    Vec3d vec1 = Vec3d.ZERO;
+                    Vec3 vec1 = Vec3.ZERO;
                     if (ent instanceof BlockEntity bent) {
-                        vec1 = bent.getPos().toCenterPos();
+                        vec1 = bent.getBlockPos().getCenter();
                     } else if (ent instanceof Entity ent2) {
-                        vec1 = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
+                        vec1 = new Vec3(ent2.getX(), ent2.getEyeY(), ent2.getZ());
                     }
-                    Vec3d vec2 = Vec3d.ZERO;
+                    Vec3 vec2 = Vec3.ZERO;
                     if (target instanceof BlockEntity bent) {
-                        vec2 = bent.getPos().toCenterPos();
+                        vec2 = bent.getBlockPos().getCenter();
                     } else if (target instanceof Entity ent2) {
-                        vec2 = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
+                        vec2 = new Vec3(ent2.getX(), ent2.getEyeY(), ent2.getZ());
                     }
 
                     drawLink(vec1, vec2, vertexConsumer, matricesEntry, false);
                 }));
 
-                matrices.pop();
+                matrices.popPose();
             }
         }
 
         for (IEntityDataSaver ent : LinkSource.allSources) {
 
-            matrices.push();
+            matrices.pushPose();
 
-            Vec3d vec;
-            BlockPos checkPos = BlockPos.ORIGIN;
+            Vec3 vec;
+            BlockPos checkPos = BlockPos.ZERO;
             if (ent instanceof BlockEntity bent) {
-                vec = bent.getPos().toCenterPos();
-                checkPos = bent.getPos();
+                vec = bent.getBlockPos().getCenter();
+                checkPos = bent.getBlockPos();
             } else if (ent instanceof Entity ent2) {
-                vec = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
-                checkPos = ent2.getBlockPos();
+                vec = new Vec3(ent2.getX(), ent2.getEyeY(), ent2.getZ());
+                checkPos = ent2.blockPosition();
             } else {
-                vec = Vec3d.ZERO;
+                vec = Vec3.ZERO;
             }
 
-            boolean bl = !(selectPos != BlockPos.ORIGIN && selectPos.equals(checkPos));
+            boolean bl = !(selectPos != BlockPos.ZERO && selectPos.equals(checkPos));
 
             boolean isTarget = ent instanceof LinkTarget;
             String name = isTarget ? "source_target_" : "source_";
             String color = ((LinkSource) ent).getTargets().isEmpty() && bl ? "red" : "blue";
             String t = "textures/other/link/" + name + color;
             if (isTarget) t = isTarget && !((LinkTarget) ent).getSources().isEmpty() ? t + "_link" : t;
-            Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, t + ".png");
+            Identifier texture = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, t + ".png");
 
             float offset = (float) Math.cos(moveLerp / 20f);
             matrices.translate(0, (offset / 10) - 0.25f, 0);
@@ -167,93 +173,93 @@ public class LinkRenderer {
             float distance2 = 0;
             for (IEntityDataSaver ent2 : ((LinkSource) ent).getTargets()) {
                 if (ent2 instanceof BlockEntity bent) {
-                    distance2 = Math.max(distance2, (float) camera.getCameraPos().distanceTo(bent.getPos().toCenterPos()));
+                    distance2 = Math.max(distance2, (float) camera.position().distanceTo(bent.getBlockPos().getCenter()));
                 } else if (ent2 instanceof Entity ent3) {
-                    distance2 = Math.max(distance2, (float) camera.getCameraPos().distanceTo(new Vec3d(ent3.getX(), ent3.getEyeY(), ent3.getZ())));
+                    distance2 = Math.max(distance2, (float) camera.position().distanceTo(new Vec3(ent3.getX(), ent3.getEyeY(), ent3.getZ())));
                 }
             }
 
-            float distance = (float) camera.getCameraPos().distanceTo(vec);
+            float distance = (float) camera.position().distanceTo(vec);
             float scale = Math.clamp(4 - distance, 0, 1.2f);
             float scale2 = !bl ? 1.2f : distance2 == 0 ? 0 : Math.clamp(4 - distance2, 0, 1.2f);
 
-            queue.submitCustom(matrices, RenderLayers.outlineNoCull(texture), ((matricesEntry, vertexConsumer) -> {
+            queue.submitCustomGeometry(matrices, RenderTypes.outline(texture), ((matricesEntry, vertexConsumer) -> {
             }));
-            drawIcon(matrices, vec, queue, RenderLayers.outlineNoCull(texture), Math.max(scale, scale2));
+            drawIcon(matrices, vec, queue, RenderTypes.outline(texture), Math.max(scale, scale2));
 
             if (ent.getPersistentData().contains("connectionIndex")) {
-                int index = ent.getPersistentData().getInt("connectionIndex", 0);
+                int index = ent.getPersistentData().getIntOr("connectionIndex", 0);
 
-                StyleSpriteSource spriteFont = new StyleSpriteSource.Font(Identifier.of(FnafUniverseRebuilt.MOD_ID, "metropolis"));
+                FontDescription spriteFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "metropolis"));
                 Style style = Style.EMPTY.withFont(spriteFont);
-                Text text = Text.literal("" + index).setStyle(style);
+                Component text = Component.literal("" + index).setStyle(style);
 
                 for (IEntityDataSaver target : ((LinkSource) ent).getTargets()) {
                     if (target instanceof BlockEntity) {
-                        int textColor = target.getPersistentData().getInt("usedConnectionIndex", 0) == index ? 0xFF48A7E7 : 0xFFE53E32;
+                        int textColor = target.getPersistentData().getIntOr("usedConnectionIndex", 0) == index ? 0xFF48A7E7 : 0xFFE53E32;
                         drawText(text, matrices, vec, vertexConsumers, Math.max(scale, scale2), textColor);
                     }
                 }
             }
 
-            matrices.pop();
+            matrices.popPose();
 
             blueTargets.addAll(((LinkSource) ent).getTargets());
         }
         for (int i = 0; i < LinkTarget.allTargets.size(); i++) {
             IEntityDataSaver ent = LinkTarget.allTargets.get(i);
 
-            if (ent instanceof Entity ent2 && !(MinecraftClient.getInstance().world.getEntityById(ent2.getId()) instanceof Entity))
+            if (ent instanceof Entity ent2 && !(Minecraft.getInstance().level.getEntity(ent2.getId()) instanceof Entity))
                 continue;
             if (ent instanceof LinkSource) continue;
-            matrices.push();
+            matrices.pushPose();
 
             String name = "target_";
             String color = blueTargets.contains(ent) ? "blue" : "red";
-            Identifier texture = Identifier.of(FnafUniverseRebuilt.MOD_ID, "textures/other/link/" + name + color + ".png");
+            Identifier texture = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/other/link/" + name + color + ".png");
 
             float offset = (float) Math.sin(moveLerp / 20f);
             matrices.translate(0, (offset / 10) - 0.25f, 0);
 
-            Vec3d vec = Vec3d.ZERO;
+            Vec3 vec = Vec3.ZERO;
             if (ent instanceof BlockEntity bent) {
-                vec = bent.getPos().toCenterPos();
+                vec = bent.getBlockPos().getCenter();
             } else if (ent instanceof Entity ent2) {
-                vec = new Vec3d(ent2.getX(), ent2.getEyeY(), ent2.getZ());
+                vec = new Vec3(ent2.getX(), ent2.getEyeY(), ent2.getZ());
             }
 
             float distance2 = 0;
             for (IEntityDataSaver ent2 : ((LinkTarget) ent).getSources()) {
                 if (ent2 instanceof BlockEntity bent) {
-                    distance2 = Math.max(distance2, (float) camera.getCameraPos().distanceTo(bent.getPos().toCenterPos()));
+                    distance2 = Math.max(distance2, (float) camera.position().distanceTo(bent.getBlockPos().getCenter()));
                 } else if (ent2 instanceof Entity ent3) {
-                    distance2 = Math.max(distance2, (float) camera.getCameraPos().distanceTo(new Vec3d(ent3.getX(), ent3.getEyeY(), ent3.getZ())));
+                    distance2 = Math.max(distance2, (float) camera.position().distanceTo(new Vec3(ent3.getX(), ent3.getEyeY(), ent3.getZ())));
                 }
             }
 
-            float distance = (float) camera.getCameraPos().distanceTo(vec);
+            float distance = (float) camera.position().distanceTo(vec);
             float scale = Math.clamp(4 - distance, 0, 1.2f);
             float scale2 = distance2 == 0 ? 0 : Math.clamp(4 - distance2, 0, 1.2f);
 
-            drawIcon(matrices, vec, queue, RenderLayers.outlineNoCull(texture), Math.max(scale, scale2));
+            drawIcon(matrices, vec, queue, RenderTypes.outline(texture), Math.max(scale, scale2));
 
-            matrices.pop();
+            matrices.popPose();
         }
-        matrices.pop();
+        matrices.popPose();
     }
 
-    private static void drawLink(Vec3d vec1, Vec3d vec2, VertexConsumer buffer, MatrixStack.Entry entry, boolean forceScale) {
+    private static void drawLink(Vec3 vec1, Vec3 vec2, VertexConsumer buffer, PoseStack.Pose entry, boolean forceScale) {
 
-        Vec3d length = (vec2.add(vec1.multiply(-1)));
+        Vec3 length = (vec2.add(vec1.scale(-1)));
 
         double lengthD = length.length();
 
-        Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vector3f normal = new Vector3f(0, 0, 1);
 
 
-        float distance1 = (float) camera.getCameraPos().distanceTo(vec1);
-        float distance2 = (float) camera.getCameraPos().distanceTo(vec2);
+        float distance1 = (float) camera.position().distanceTo(vec1);
+        float distance2 = (float) camera.position().distanceTo(vec2);
 
         float scale1 = Math.clamp(4 - distance1 , 0, 1.2f);
         float scale2 = forceScale ? 1.2f : Math.clamp(4 - distance2 , 0, 1.2f);
@@ -266,124 +272,124 @@ public class LinkRenderer {
             float tHeight = 0.5f;
             float vHeight = 0.5f * scale;
 
-            buffer.vertex(entry.getPositionMatrix(), (float) vec1.x, (float) vec1.y + vHeight, (float) vec1.z)
-                    .texture(0.5f - tWidth + offset, 0.5f - tHeight)
-                    .color(0xFFFFFFFF)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                    .overlay(OverlayTexture.DEFAULT_UV)
-                    .normal(normal.x(), normal.y(), normal.z())
+            buffer.addVertex(entry.pose(), (float) vec1.x, (float) vec1.y + vHeight, (float) vec1.z)
+                    .setUv(0.5f - tWidth + offset, 0.5f - tHeight)
+                    .setColor(0xFFFFFFFF)
+                    .setLight(LightTexture.FULL_BRIGHT)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setNormal(normal.x(), normal.y(), normal.z())
             ;
-            buffer.vertex(entry.getPositionMatrix(), (float) vec1.x, (float) vec1.y - vHeight, (float) vec1.z)
-                    .texture(0.5f - tWidth + offset, 0.5f + tHeight)
-                    .color(0xFFFFFFFF)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                    .overlay(OverlayTexture.DEFAULT_UV)
-                    .normal(normal.x(), normal.y(), normal.z())
+            buffer.addVertex(entry.pose(), (float) vec1.x, (float) vec1.y - vHeight, (float) vec1.z)
+                    .setUv(0.5f - tWidth + offset, 0.5f + tHeight)
+                    .setColor(0xFFFFFFFF)
+                    .setLight(LightTexture.FULL_BRIGHT)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setNormal(normal.x(), normal.y(), normal.z())
             ;
 
-            buffer.vertex(entry.getPositionMatrix(), (float) vec2.x, (float) vec2.y - vHeight, (float) vec2.z)
-                    .texture(0.5f + tWidth + offset, 0.5f + tHeight)
-                    .color(0xFFFFFFFF)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                    .overlay(OverlayTexture.DEFAULT_UV)
-                    .normal(normal.x(), normal.y(), normal.z())
+            buffer.addVertex(entry.pose(), (float) vec2.x, (float) vec2.y - vHeight, (float) vec2.z)
+                    .setUv(0.5f + tWidth + offset, 0.5f + tHeight)
+                    .setColor(0xFFFFFFFF)
+                    .setLight(LightTexture.FULL_BRIGHT)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setNormal(normal.x(), normal.y(), normal.z())
             ;
-            buffer.vertex(entry.getPositionMatrix(), (float) vec2.x, (float) vec2.y + vHeight, (float) vec2.z)
-                    .texture(0.5f + tWidth + offset, 0.5f - tHeight)
-                    .color(0xFFFFFFFF)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                    .overlay(OverlayTexture.DEFAULT_UV)
-                    .normal(normal.x(), normal.y(), normal.z())
+            buffer.addVertex(entry.pose(), (float) vec2.x, (float) vec2.y + vHeight, (float) vec2.z)
+                    .setUv(0.5f + tWidth + offset, 0.5f - tHeight)
+                    .setColor(0xFFFFFFFF)
+                    .setLight(LightTexture.FULL_BRIGHT)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setNormal(normal.x(), normal.y(), normal.z())
             ;
         }
     }
 
-    static void drawIcon(MatrixStack matrices, Vec3d vec, OrderedRenderCommandQueue queue, RenderLayer layer, float scale){
-        matrices.push();
+    static void drawIcon(PoseStack matrices, Vec3 vec, SubmitNodeCollector queue, RenderType layer, float scale){
+        matrices.pushPose();
         matrices.translate(vec);
 
-        Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vector3f normal = new Vector3f(0, 0, 1);
 
         matrices.translate(0, 0.25f, 0);
-        matrices.multiply(new Quaternionf().rotationXYZ(0, (float) -Math.toRadians(camera.getCameraYaw()), (float) Math.PI));
+        matrices.mulPose(new Quaternionf().rotationXYZ(0, (float) -Math.toRadians(camera.yaw()), (float) Math.PI));
         matrices.translate(0, -0.25f, 0);
 
 
         if(scale > 0){
-            queue.submitCustom(matrices, layer, ((matricesEntry, vertexConsumer) -> {
+            queue.submitCustomGeometry(matrices, layer, ((matricesEntry, vertexConsumer) -> {
                 drawQuad(matricesEntry, vertexConsumer, normal, scale);
             }));
         }
-        matrices.pop();
+        matrices.popPose();
     }
-    static void drawText(Text text, MatrixStack matrices, Vec3d vec, VertexConsumerProvider vertexConsumers, float scale, int color){
-        matrices.push();
+    static void drawText(Component text, PoseStack matrices, Vec3 vec, MultiBufferSource vertexConsumers, float scale, int color){
+        matrices.pushPose();
         matrices.translate(vec);
 
-        Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
 
         matrices.translate(0, 1, 0);
         matrices.scale(0.05f * scale, 0.05f * scale, 0.05f * scale);
         matrices.translate(0, 0.25f, 0);
-        matrices.multiply(new Quaternionf().rotationXYZ(0, (float) -Math.toRadians(camera.getCameraYaw()), (float) Math.PI));
+        matrices.mulPose(new Quaternionf().rotationXYZ(0, (float) -Math.toRadians(camera.yaw()), (float) Math.PI));
         matrices.translate(0, -0.25f, 0);
 
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+        Font textRenderer = Minecraft.getInstance().font;
 
-        float width = textRenderer.getWidth(text);
+        float width = textRenderer.width(text);
         if(scale > 0){
-            textRenderer.draw(
+            textRenderer.drawInBatch(
                             text,
                             0.0f - width/2f,
                             -8,
                     color,
                             false,
-                            matrices.peek().getPositionMatrix(),
+                            matrices.last().pose(),
                             vertexConsumers,
-                            TextRenderer.TextLayerType.SEE_THROUGH,
+                            Font.DisplayMode.SEE_THROUGH,
                             0,
-                            LightmapTextureManager.MAX_LIGHT_COORDINATE
+                            LightTexture.FULL_BRIGHT
                     );
         }
 
-        matrices.pop();
+        matrices.popPose();
     }
 
-    public static void drawQuad(MatrixStack.Entry entry, VertexConsumer buffer, Vector3f normal, float scale){
+    public static void drawQuad(PoseStack.Pose entry, VertexConsumer buffer, Vector3f normal, float scale){
 
         float tWidth = 0.5f;
         float tHeight = 0.5f;
         float vWidth = 0.5f * scale;
         float vHeight1 = 0.75f * scale;
         float vHeight2 = 0.25f * scale;
-        buffer.vertex(entry.getPositionMatrix(), -vWidth , -vHeight1, 0.0f)
-                .texture(0.5f - tWidth, 0.5f - tHeight)
-                .color(0xFFFFFFFF)
-                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                .overlay(OverlayTexture.DEFAULT_UV)
-                .normal(normal.x(), normal.y(), normal.z())
+        buffer.addVertex(entry.pose(), -vWidth , -vHeight1, 0.0f)
+                .setUv(0.5f - tWidth, 0.5f - tHeight)
+                .setColor(0xFFFFFFFF)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setNormal(normal.x(), normal.y(), normal.z())
         ;
-        buffer.vertex(entry.getPositionMatrix(), -vWidth, vHeight2, 0.0f)
-                .texture(0.5f - tWidth, 0.5f + tHeight)
-                .color(0xFFFFFFFF)
-                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                .overlay(OverlayTexture.DEFAULT_UV)
-                .normal(normal.x(), normal.y(), normal.z())
+        buffer.addVertex(entry.pose(), -vWidth, vHeight2, 0.0f)
+                .setUv(0.5f - tWidth, 0.5f + tHeight)
+                .setColor(0xFFFFFFFF)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setNormal(normal.x(), normal.y(), normal.z())
         ;
-        buffer.vertex(entry.getPositionMatrix(), vWidth, vHeight2, 0.0f)
-                .texture(0.5f + tWidth, 0.5f + tHeight)
-                .color(0xFFFFFFFF)
-                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                .overlay(OverlayTexture.DEFAULT_UV)
-                .normal(normal.x(), normal.y(), normal.z())
+        buffer.addVertex(entry.pose(), vWidth, vHeight2, 0.0f)
+                .setUv(0.5f + tWidth, 0.5f + tHeight)
+                .setColor(0xFFFFFFFF)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setNormal(normal.x(), normal.y(), normal.z())
         ;
-        buffer.vertex(entry.getPositionMatrix(), vWidth, -vHeight1, 0.0f)
-                .texture(0.5f + tWidth, 0.5f - tHeight)
-                .color(0xFFFFFFFF)
-                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
-                .overlay(OverlayTexture.DEFAULT_UV)
-                .normal(normal.x(), normal.y(), normal.z())
+        buffer.addVertex(entry.pose(), vWidth, -vHeight1, 0.0f)
+                .setUv(0.5f + tWidth, 0.5f - tHeight)
+                .setColor(0xFFFFFFFF)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setNormal(normal.x(), normal.y(), normal.z())
         ;
     }
 }

@@ -1,14 +1,14 @@
 package net.zephyr.fnafur.rendering.lighting;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -28,23 +28,23 @@ public interface ILightHolder {
     }
 
     default Identifier getLightTexture(){
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/lighting/default_full");
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/lighting/default_full");
     }
 
     Identifier getLightMaskTexture();
 
     default Vector4f getUVs(Identifier texture){
 
-        Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager().spriteHolder.getSprite(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, texture));
+        TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, texture));
 
-        float u0 = sprite.getMinU();
-        float v0 = sprite.getMinV();
-        float u1 = sprite.getMaxU();
-        float v1 = sprite.getMaxV();
+        float u0 = sprite.getU0();
+        float v0 = sprite.getV0();
+        float u1 = sprite.getU1();
+        float v1 = sprite.getV1();
         return new Vector4f(u0, v0, u1, v1);
     }
 
-    Vec3d getLightWorldPos();
+    Vec3 getLightWorldPos();
     Vector3f getLightRotation();
     float getLength();
     float getIntensity();
@@ -118,10 +118,10 @@ public interface ILightHolder {
         }
     }
 
-    default NbtCompound getNbt(){
+    default CompoundTag getNbt(){
         if(this instanceof IEntityDataSaver data){
             return data.getPersistentData();
         }
-        return new NbtCompound();
+        return new CompoundTag();
     }
 }

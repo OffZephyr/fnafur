@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.base.geo;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
@@ -15,7 +15,7 @@ public interface GeoPropBlock {
     public Identifier getTexture(BlockState state, BlockPos pos);
     public Identifier getModel(BlockState state, BlockPos pos);
     public Identifier getAnimations(BlockState state, BlockPos pos);
-    default RenderLayer getRenderType(BlockState state, BlockPos pos){
+    default RenderType getRenderType(BlockState state, BlockPos pos){
         return null;
     }
     public RawAnimation getCurrentAnimation(BlockState state, BlockPos pos);

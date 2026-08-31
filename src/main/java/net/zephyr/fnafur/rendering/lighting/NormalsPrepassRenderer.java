@@ -5,10 +5,10 @@ import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.gl.GpuSampler;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.BlockRenderLayerGroup;
-import net.minecraft.client.render.SectionRenderState;
+import com.mojang.blaze3d.textures.GpuSampler;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayerGroup;
+import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 
 import java.util.List;
@@ -20,15 +20,15 @@ public final class NormalsPrepassRenderer {
     private NormalsPrepassRenderer() {}
 
     public static void renderOpaqueNormalsDepth(
-            SectionRenderState state,
-            BlockRenderLayerGroup group,
+            ChunkSectionsToRender state,
+            ChunkSectionLayerGroup group,
             GpuSampler sampler
     ) {
         // We only want opaque geometry contributing to the gbuffer.
         // Skip translucent.
-        RenderSystem.ShapeIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.DrawMode.QUADS);
-        GpuBuffer idxBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexBuffer(state.maxIndicesRequired());
-        VertexFormat.IndexType indexType = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexType();
+        RenderSystem.AutoStorageIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+        GpuBuffer idxBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getBuffer(state.maxIndicesRequired());
+        VertexFormat.IndexType indexType = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.type();
 
         try (RenderPass pass = RenderSystem.getDevice()
                 .createCommandEncoder()
@@ -49,12 +49,12 @@ public final class NormalsPrepassRenderer {
 
             pass.setPipeline(CustomRenderingPipelines.NORMALS_PREPASS);
 
-            for (BlockRenderLayer layer : group.getLayers()) {
-                if (layer == BlockRenderLayer.TRANSLUCENT) continue;
+            for (ChunkSectionLayer layer : group.layers()) {
+                if (layer == ChunkSectionLayer.TRANSLUCENT) continue;
 
                 @SuppressWarnings("unchecked")
-                List<RenderPass.RenderObject<GpuBufferSlice[]>> list =
-                        (List<RenderPass.RenderObject<GpuBufferSlice[]>>) state.drawsPerLayer().get(layer);
+                List<RenderPass.Draw<GpuBufferSlice[]>> list =
+                        (List<RenderPass.Draw<GpuBufferSlice[]>>) state.drawsPerLayer().get(layer);
 
                 if (list.isEmpty()) continue;
 

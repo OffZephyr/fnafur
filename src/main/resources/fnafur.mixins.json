@@ -3,32 +3,32 @@
   "package": "net.zephyr.fnafur.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "AbstractBlockMixin",
+    "BlockBehaviourMixin",
     "BlockEntityMixin",
     "CameraMixin",
-    "CreativeInventoryScreenMixin",
+    "CreativeModeInventoryScreenMixin",
     "DeathScreenMixin",
     "DebugRendererMixin",
     "EntityMixin",
-    "GameOptionsMixin",
+    "OptionsMixin",
     "GameRendererMixin",
-    "HeadFeatureRendererMixin",
-    "HeldItemRendererMixin",
+    "CustomHeadLayerMixin",
+    "ItemInHandRendererMixin",
     "InventoryScreenMixin",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
     "LivingEntityRenderStateMixin",
-    "MinecraftClientMixin",
+    "MinecraftMixin",
     "ModEntityDataSaverMixin",
-    "PlayerEntityMixin",
-    "PlayerEntityRendererMixin",
-    "PlayerInventoryMixin",
-    "PlayerScreenHandlerMixin",
-    "PostEffectProcessorMixin",
-    "ScreenHandlerMixin",
-    "SplashOverlayMixin",
+    "PlayerMixin",
+    "AvatarRendererMixin",
+    "InventoryMixin",
+    "InventoryMenuMixin",
+    "PostChainMixin",
+    "AbstractContainerMenuMixin",
+    "LoadingOverlayMixin",
     "TitleScreenMixin",
-    "WorldRendererMixin"
+    "LevelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -36,6 +36,6 @@
   "client": [
     "GuiRendererMixin",
     "RenderPipelinesMixin",
-    "SectionRenderStateMixin"
+    "ChunkSectionsToRenderMixin"
   ]
 }

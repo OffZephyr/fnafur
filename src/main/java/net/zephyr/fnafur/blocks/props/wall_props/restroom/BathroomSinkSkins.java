@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.wall_props.restroom;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum BathroomSinkSkins implements ColorEnumInterface, StringIdentifiable {
+public enum BathroomSinkSkins implements ColorEnumInterface, StringRepresentable {
     DEFAULT("default", 0),
     STAINS_1("stains_1", 1);
     private final String name;
@@ -14,7 +14,7 @@ public enum BathroomSinkSkins implements ColorEnumInterface, StringIdentifiable 
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return name;
     }
 

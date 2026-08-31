@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
@@ -43,12 +43,12 @@ public class GalaxyLayerGeoPropEntity extends GeoPropBlockEntity implements GeoB
     }
 
     @Override
-    public Identifier getReRenderModel(World world) {
-        return Identifier.of(FnafUniverseRebuilt.MOD_ID, "block/props/giftbox_overlay");
+    public Identifier getReRenderModel(Level world) {
+        return Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/props/giftbox_overlay");
     }
 
     @Override
-    public Identifier getReRenderTexture(World world) {
+    public Identifier getReRenderTexture(Level world) {
         return super.getReRenderTexture(world);
     }
 }

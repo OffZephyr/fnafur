@@ -1,92 +1,93 @@
 package net.zephyr.fnafur.blocks.dynamic.tiling.vent;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.block.WireOrientation;
-import net.minecraft.world.tick.ScheduledTickView;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.redstone.Orientation;
+import net.minecraft.world.level.ScheduledTickAccess;
 import org.jspecify.annotations.Nullable;
 
 public class VentBlock extends Block {
-    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
-    public static final EnumProperty<VentPosition> VENT_POSITION = EnumProperty.of("position", VentPosition.class);
-    public static final EnumProperty<VentShape> VENT_SHAPE = EnumProperty.of("shape", VentShape.class);
-    public static final EnumProperty<VentOffset> VENT_OFFSET = EnumProperty.of("offset", VentOffset.class);
-    public static final BooleanProperty IS_FLOOR = BooleanProperty.of("floor");
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<VentPosition> VENT_POSITION = EnumProperty.create("position", VentPosition.class);
+    public static final EnumProperty<VentShape> VENT_SHAPE = EnumProperty.create("shape", VentShape.class);
+    public static final EnumProperty<VentOffset> VENT_OFFSET = EnumProperty.create("offset", VentOffset.class);
+    public static final BooleanProperty IS_FLOOR = BooleanProperty.create("floor");
 
-    public VentBlock(Settings settings) {
+    public VentBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
-        Direction d = ctx.getSide().getAxis() == Direction.Axis.Y ? ctx.getHorizontalPlayerFacing() : ctx.getSide();
-        return getWorldVentBlockstate(getDefaultState().with(FACING, d), ctx.getBlockPos(), ctx.getWorld());
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        Direction d = ctx.getClickedFace().getAxis() == Direction.Axis.Y ? ctx.getHorizontalDirection() : ctx.getClickedFace();
+        return getWorldVentBlockstate(defaultBlockState().setValue(FACING, d), ctx.getClickedPos(), ctx.getLevel());
     }
 
     @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
 
-        if(!world.isClient()) {
+        if(!world.isClientSide()) {
             if (placer != null) {
-                Direction facing = state.get(FACING);
-                BlockPos prev = pos.offset(facing.getOpposite());
-                BlockPos next = pos.offset(facing);
-                BlockPos leftPos = pos.offset(facing.rotateYCounterclockwise(), 2);
-                BlockPos rightPos = pos.offset(facing.rotateYClockwise(), 2);
+                Direction facing = state.getValue(FACING);
+                BlockPos prev = pos.relative(facing.getOpposite());
+                BlockPos next = pos.relative(facing);
+                BlockPos leftPos = pos.relative(facing.getCounterClockWise(), 2);
+                BlockPos rightPos = pos.relative(facing.getClockWise(), 2);
                 BlockPos usedPos = world.getBlockState(prev).getBlock() instanceof VentBlock ? prev : next;
                 if (world.getBlockState(usedPos).getBlock() instanceof VentBlock) {
                     BlockState checkedState = world.getBlockState(usedPos);
-                    state = state.with(IS_FLOOR, checkedState.get(IS_FLOOR));
+                    state = state.setValue(IS_FLOOR, checkedState.getValue(IS_FLOOR));
                     if(world.getBlockState(leftPos).getBlock() instanceof VentBlock || world.getBlockState(rightPos).getBlock() instanceof VentBlock){
 
                     }
-                    placeVentAtPos(state, VentPosition.getCenter(checkedState.get(VENT_POSITION), pos, checkedState.get(FACING)), world);
+                    placeVentAtPos(state, VentPosition.getCenter(checkedState.getValue(VENT_POSITION), pos, checkedState.getValue(FACING)), world);
                 }
                 else{
-                    boolean isFloor = world.getBlockState(pos.down().offset(facing.getOpposite())).isFullCube(world, pos.down().offset(facing.getOpposite()));
+                    boolean isFloor = world.getBlockState(pos.below().relative(facing.getOpposite())).isCollisionShapeFullBlock(world, pos.below().relative(facing.getOpposite()));
 
-                    state = state.with(IS_FLOOR, isFloor);
+                    state = state.setValue(IS_FLOOR, isFloor);
                     placeVentAtPos(state, pos, world);
                 }
             }
         }
-        super.onPlaced(world, pos, state, placer, itemStack);
+        super.setPlacedBy(world, pos, state, placer, itemStack);
     }
 
     @Override
-    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, @Nullable WireOrientation wireOrientation, boolean notify) {
-        super.neighborUpdate(state, world, pos, sourceBlock, wireOrientation, notify);
+    protected void neighborChanged(BlockState state, Level world, BlockPos pos, Block sourceBlock, @Nullable Orientation wireOrientation, boolean notify) {
+        super.neighborChanged(state, world, pos, sourceBlock, wireOrientation, notify);
     }
 
     @Override
-    protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
+    protected BlockState updateShape(BlockState state, LevelReader world, ScheduledTickAccess tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 //        return super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
         return getWorldVentBlockstate(state, pos, world);
     }
 
-    private BlockState getWorldVentBlockstate(BlockState state, BlockPos blockPos, WorldView world){
-        Direction facing = state.get(FACING);
-        VentPosition pos = state.get(VENT_POSITION);
-        VentOffset offset = state.get(VENT_OFFSET);
-        VentShape shape = state.get(VENT_SHAPE);
+    private BlockState getWorldVentBlockstate(BlockState state, BlockPos blockPos, LevelReader world){
+        Direction facing = state.getValue(FACING);
+        VentPosition pos = state.getValue(VENT_POSITION);
+        VentOffset offset = state.getValue(VENT_OFFSET);
+        VentShape shape = state.getValue(VENT_SHAPE);
 
-        BlockPos prev = blockPos.offset(facing.getOpposite());
-        BlockPos next = blockPos.offset(facing);
-        BlockPos leftPos = blockPos.offset(facing.rotateYCounterclockwise(), 2);
-        BlockPos rightPos = blockPos.offset(facing.rotateYClockwise(), 2);
+        BlockPos prev = blockPos.relative(facing.getOpposite());
+        BlockPos next = blockPos.relative(facing);
+        BlockPos leftPos = blockPos.relative(facing.getCounterClockWise(), 2);
+        BlockPos rightPos = blockPos.relative(facing.getClockWise(), 2);
         BlockState prevPosState = world.getBlockState(prev);
         BlockState nextPosState = world.getBlockState(next);
         BlockState leftPosState = world.getBlockState(leftPos);
@@ -100,32 +101,32 @@ public class VentBlock extends Block {
 
 
         if(back){
-            if (state.get(FACING).getAxis() == prevPosState.get(FACING).getAxis()){
-                state = state.with(FACING, prevPosState.get(FACING));
+            if (state.getValue(FACING).getAxis() == prevPosState.getValue(FACING).getAxis()){
+                state = state.setValue(FACING, prevPosState.getValue(FACING));
             }
 
-            if(prevPosState.get(VENT_OFFSET) == VentOffset.EVEN || prevPosState.get(VENT_OFFSET) == VentOffset.END_EVEN || prevPosState.get(VENT_OFFSET) == VentOffset.SINGLE){
-                state = state.with(VENT_OFFSET, VentOffset.END_ODD);
+            if(prevPosState.getValue(VENT_OFFSET) == VentOffset.EVEN || prevPosState.getValue(VENT_OFFSET) == VentOffset.END_EVEN || prevPosState.getValue(VENT_OFFSET) == VentOffset.SINGLE){
+                state = state.setValue(VENT_OFFSET, VentOffset.END_ODD);
             }
-            else if(prevPosState.get(VENT_OFFSET) == VentOffset.ODD || prevPosState.get(VENT_OFFSET) == VentOffset.END_ODD){
-                state = state.with(VENT_OFFSET, VentOffset.END_EVEN);
+            else if(prevPosState.getValue(VENT_OFFSET) == VentOffset.ODD || prevPosState.getValue(VENT_OFFSET) == VentOffset.END_ODD){
+                state = state.setValue(VENT_OFFSET, VentOffset.END_EVEN);
             }
             if(left || right){
                 if(!front){
-                    state = state.with(VENT_SHAPE, VentShape.CORNER);
+                    state = state.setValue(VENT_SHAPE, VentShape.CORNER);
                 }
                 else{
 
                 }
             }
             else{
-                if(state.get(VENT_OFFSET) != VentOffset.SINGLE){
+                if(state.getValue(VENT_OFFSET) != VentOffset.SINGLE){
                     if(front){
-                        if(state.get(VENT_OFFSET) == VentOffset.END_EVEN){
-                            state = state.with(VENT_OFFSET, VentOffset.EVEN);
+                        if(state.getValue(VENT_OFFSET) == VentOffset.END_EVEN){
+                            state = state.setValue(VENT_OFFSET, VentOffset.EVEN);
                         }
-                        else if(state.get(VENT_OFFSET) == VentOffset.END_ODD){
-                            state = state.with(VENT_OFFSET, VentOffset.ODD);
+                        else if(state.getValue(VENT_OFFSET) == VentOffset.END_ODD){
+                            state = state.setValue(VENT_OFFSET, VentOffset.ODD);
                         }
                     }
                 }
@@ -135,11 +136,11 @@ public class VentBlock extends Block {
         return state;
     }
 
-    void placeVentAtPos(BlockState state, BlockPos centerPos, World world){
-        Direction facing = state.get(FACING);
+    void placeVentAtPos(BlockState state, BlockPos centerPos, Level world){
+        Direction facing = state.getValue(FACING);
         for(int x = -1; x <= 1; x++){
             for(int y = -1; y <= 1; y++){
-                BlockPos placePos = centerPos.offset(Direction.UP, y).offset(facing.rotateYCounterclockwise(), x);
+                BlockPos placePos = centerPos.relative(Direction.UP, y).relative(facing.getCounterClockWise(), x);
 
                 boolean floor = false;
                 VentPosition position = VentPosition.C;
@@ -177,20 +178,20 @@ public class VentBlock extends Block {
                     }
                 }
 
-                state = state.with(VENT_POSITION, position);
+                state = state.setValue(VENT_POSITION, position);
 
-                world.setBlockState(placePos, state, 3);
+                world.setBlock(placePos, state, 3);
             }
         }
     }
 
     @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder.add(FACING, IS_FLOOR, VENT_SHAPE, VENT_OFFSET, VENT_POSITION));
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(FACING, IS_FLOOR, VENT_SHAPE, VENT_OFFSET, VENT_POSITION));
     }
 
     @Override
-    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        return super.onBreak(world, pos, state, player);
+    public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+        return super.playerWillDestroy(world, pos, state, player);
     }
 }

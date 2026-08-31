@@ -1,10 +1,10 @@
 package net.zephyr.fnafur.blocks.dynamic.tiling.vent;
 
-import net.minecraft.util.StringIdentifiable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 
-public enum VentOffset implements StringIdentifiable {
+public enum VentOffset implements StringRepresentable {
     SINGLE("single"),
     EVEN("even"),
     ODD("odd"),
@@ -20,7 +20,7 @@ public enum VentOffset implements StringIdentifiable {
     //TODO this is 🔥
     //TO-DO this aint it chief
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return NAME;
     }
 }

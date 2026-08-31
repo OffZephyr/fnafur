@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.blocks.dynamic.tiling.vent;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 
-public enum VentShape implements StringIdentifiable {
+public enum VentShape implements StringRepresentable {
     STRAIGHT("straight", Type.STRAIGHT),
     TRANSITION("transition", Type.STRAIGHT),
     TRANSITION_END("transition_end", Type.STRAIGHT),
@@ -20,7 +20,7 @@ public enum VentShape implements StringIdentifiable {
     }
 
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return NAME;
     }
     public Type getType() {

@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.blocks.props.wall_props.clocks;
 
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.StringRepresentable;
 import net.zephyr.fnafur.blocks.props.base.ColorEnumInterface;
 
-public enum WoodenClockColorEnum implements StringIdentifiable, ColorEnumInterface {
+public enum WoodenClockColorEnum implements StringRepresentable, ColorEnumInterface {
     DEFAULT("default", 0),
     SECONDS("seconds", 1);
     private final String name;
@@ -13,7 +13,7 @@ public enum WoodenClockColorEnum implements StringIdentifiable, ColorEnumInterfa
         this.index = index;
     }
     @Override
-    public String asString() {
+    public String getSerializedName() {
         return this.name;
     }
     public int getIndex(){

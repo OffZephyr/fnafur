@@ -3,23 +3,23 @@ package net.zephyr.fnafur.networking.nbt_updates;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 
 public class NbtPayloads {
-    public static final Identifier C2SBlockUpdate = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_block_update");
-    public static final Identifier C2SBlockSync = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_block_sync");
-    public static final Identifier S2CBlockUpdatePong = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_block_client_update");
-    public static final Identifier S2CBlockUpdateServer = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_block_server_update");
-    public static final Identifier S2CBlockUpdateClient = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_block_client_update");
-    public static final Identifier C2SEntityUpdate = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_entity_update");
-    public static final Identifier C2SEntityUpdateServer = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_entity_server_update");
-    public static final Identifier C2SEntitySync = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_entity_sync");
-    public static final Identifier S2CEntityUpdatePong = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_entity_update");
-    public static final Identifier C2SItemUpdate = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_item_update");
-    public static final Identifier S2CMoneyID = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_money_sync");
-    public static final Identifier C2SMoneyID = Identifier.of(FnafUniverseRebuilt.MOD_ID, "s2c_money_sync");
-    public static final Identifier C2SCrawlUpdate = Identifier.of(FnafUniverseRebuilt.MOD_ID, "c2s_crawl_update");
+    public static final Identifier C2SBlockUpdate = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "c2s_block_update");
+    public static final Identifier C2SBlockSync = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "c2s_block_sync");
+    public static final Identifier S2CBlockUpdatePong = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "s2c_block_client_update");
+    public static final Identifier S2CBlockUpdateServer = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "s2c_block_server_update");
+    public static final Identifier S2CBlockUpdateClient = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "s2c_block_client_update");
+    public static final Identifier C2SEntityUpdate = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "c2s_entity_update");
+    public static final Identifier C2SEntityUpdateServer = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "c2s_entity_server_update");
+    public static final Identifier C2SEntitySync = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "c2s_entity_sync");
+    public static final Identifier S2CEntityUpdatePong = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "s2c_entity_update");
+    public static final Identifier C2SItemUpdate = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "c2s_item_update");
+    public static final Identifier S2CMoneyID = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "c2s_money_sync");
+    public static final Identifier C2SMoneyID = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "s2c_money_sync");
+    public static final Identifier C2SCrawlUpdate = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "c2s_crawl_update");
     public static void registerPayloads() {
         PayloadTypeRegistry.playC2S().register(UpdateBlockNbtC2SPayload.ID, UpdateBlockNbtC2SPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(SyncBlockNbtC2SPayload.ID, SyncBlockNbtC2SPayload.CODEC);

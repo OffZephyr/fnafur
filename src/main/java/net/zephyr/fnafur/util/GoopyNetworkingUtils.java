@@ -5,16 +5,16 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.networking.nbt_updates.*;
 import net.zephyr.fnafur.networking.nbt_updates.UpdateEntityNbtS2CPongPayload;
@@ -31,115 +31,115 @@ public class GoopyNetworkingUtils {
         ScreenList.put(id, screen);
     }
 
-    public static void setScreen(PlayerEntity player, String index, NbtCompound nbt, BlockPos pos) {
-        if(player instanceof ServerPlayerEntity p){
+    public static void setScreen(Player player, String index, CompoundTag nbt, BlockPos pos) {
+        if(player instanceof ServerPlayer p){
             ServerPlayNetworking.send(p, new SetBlockScreenS2CPayload(index, nbt, pos.asLong()));
         }
         else {
             setClientScreen(index, nbt, pos);
         }
     }
-    public static void setScreen(PlayerEntity player, String index, NbtCompound nbt, Integer id) {
-        if(player instanceof ServerPlayerEntity p){
+    public static void setScreen(Player player, String index, CompoundTag nbt, Integer id) {
+        if(player instanceof ServerPlayer p){
             ServerPlayNetworking.send(p, new SetEntityScreenS2CPayload(index, nbt, id));
         }
         else {
             setClientScreen(index, nbt, id);
         }
     }
-    public static void setScreen(PlayerEntity player, String index, NbtCompound nbt, String slot) {
-        if(player instanceof ServerPlayerEntity p){
+    public static void setScreen(Player player, String index, CompoundTag nbt, String slot) {
+        if(player instanceof ServerPlayer p){
             ServerPlayNetworking.send(p, new SetItemScreenS2CPayload(index, nbt, slot));
         }
         else {
             setClientScreen(index, nbt, slot);
         }
     }
-    public static void setScreen(PlayerEntity player, String index, NbtCompound nbt) {
-        if(player instanceof ServerPlayerEntity p){
+    public static void setScreen(Player player, String index, CompoundTag nbt) {
+        if(player instanceof ServerPlayer p){
             ServerPlayNetworking.send(p, new SetNbtScreenS2CPayload(index, nbt));
         }
         else {
             setClientScreen(index, nbt, 0);
         }
     }
-    public static void setScreen(PlayerEntity player, String index) {
-        if(player instanceof ServerPlayerEntity p){
+    public static void setScreen(Player player, String index) {
+        if(player instanceof ServerPlayer p){
             ServerPlayNetworking.send(p, new SetScreenS2CPayload(index));
         }
         else {
-            setClientScreen(index, new NbtCompound(), 0);
+            setClientScreen(index, new CompoundTag(), 0);
         }
     }
     @Environment(EnvType.CLIENT)
-    public static void setClientScreen(String index, NbtCompound nbt, Object value3) {
+    public static void setClientScreen(String index, CompoundTag nbt, Object value3) {
         if (ScreenList.containsKey(index)) {
-            GoopyScreen screen = ScreenList.get(index).create(Text.translatable("screen." + index + ".title"), nbt, value3);
-            MinecraftClient.getInstance().setScreen(screen);
+            GoopyScreen screen = ScreenList.get(index).create(Component.translatable("screen." + index + ".title"), nbt, value3);
+            Minecraft.getInstance().setScreen(screen);
         }
     }
 
     @Environment(EnvType.CLIENT)
     public static void getNbtFromServer(BlockPos pos){
-        if(MinecraftClient.getInstance().world.getBlockEntity(pos) != null) {
+        if(Minecraft.getInstance().level.getBlockEntity(pos) != null) {
             ClientPlayNetworking.send(new SyncBlockNbtC2SPayload(pos.asLong()));
         }
     }
     @Environment(EnvType.CLIENT)
     public static void getEntityNbtFromServer(int ID){
-        if(MinecraftClient.getInstance().world.getEntityById(ID) != null) {
+        if(Minecraft.getInstance().level.getEntity(ID) != null) {
             ClientPlayNetworking.send(new SyncEntityNbtC2SPayload(ID));
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public static void saveBlockNbt(BlockPos pos, NbtCompound nbt){
-        if(MinecraftClient.getInstance().world.getBlockEntity(pos) != null) {
-            ((IEntityDataSaver) MinecraftClient.getInstance().world.getBlockEntity(pos)).getPersistentData().copyFrom(nbt);
+    public static void saveBlockNbt(BlockPos pos, CompoundTag nbt){
+        if(Minecraft.getInstance().level.getBlockEntity(pos) != null) {
+            ((IEntityDataSaver) Minecraft.getInstance().level.getBlockEntity(pos)).getPersistentData().merge(nbt);
             ClientPlayNetworking.send(new UpdateBlockNbtC2SPayload(pos.asLong(), nbt));
-            MinecraftClient.getInstance().world.getBlockEntity(pos).markDirty();
+            Minecraft.getInstance().level.getBlockEntity(pos).setChanged();
 
 
             ClientPlayNetworking.send(new SyncBlockNbtC2SPayload(pos.asLong()));
         }
     }
     @Environment(EnvType.CLIENT)
-    public static void saveItemNbt(String slot, NbtCompound nbt){
-        ItemStack stack = MinecraftClient.getInstance().player.getEquippedStack(EquipmentSlot.byName(slot));
+    public static void saveItemNbt(String slot, CompoundTag nbt){
+        ItemStack stack = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.byName(slot));
         ItemUtil.setNbt(stack, nbt);
         ClientPlayNetworking.send(new UpdateItemNbtC2SPayload(slot, nbt));
     }
     @Environment(EnvType.CLIENT)
-    public static void saveEntityData(int entityID, NbtCompound nbt){
-        Entity entity = MinecraftClient.getInstance().world.getEntityById(entityID);
+    public static void saveEntityData(int entityID, CompoundTag nbt){
+        Entity entity = Minecraft.getInstance().level.getEntity(entityID);
         if(entity != null) {
-            ((IEntityDataSaver) entity).getPersistentData().copyFrom(nbt);
+            ((IEntityDataSaver) entity).getPersistentData().merge(nbt);
             ClientPlayNetworking.send(new UpdateEntityNbtC2SPayload(entityID, nbt));
         }
     }
-    public static void saveEntityNbt(int entityID, NbtCompound nbt, World world){
-        Entity entity = world.getEntityById(entityID);
+    public static void saveEntityNbt(int entityID, CompoundTag nbt, Level world){
+        Entity entity = world.getEntity(entityID);
         if(entity != null) {
-            if(world.isClient()){
+            if(world.isClientSide()){
                 saveEntityData(entityID, nbt);
             }
             else {
-                ((IEntityDataSaver) entity).getPersistentData().copyFrom(nbt);
-                for(ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
+                ((IEntityDataSaver) entity).getPersistentData().merge(nbt);
+                for(ServerPlayer p : PlayerLookup.all(world.getServer())) {
                     ServerPlayNetworking.send(p, new UpdateEntityNbtS2CPongPayload(entityID, nbt));
                 }
             }
         }
     }
 
-    public static void saveBlockNbt(BlockPos pos, NbtCompound nbt, World world) {
+    public static void saveBlockNbt(BlockPos pos, CompoundTag nbt, Level world) {
         if (world != null) {
-            if (world.isClient()) {
+            if (world.isClientSide()) {
                 saveBlockNbt(pos, nbt);
             } else {
-                ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().copyFrom(nbt);
+                ((IEntityDataSaver) world.getBlockEntity(pos)).getPersistentData().merge(nbt);
 
-                for (ServerPlayerEntity p : PlayerLookup.all(world.getServer())) {
+                for (ServerPlayer p : PlayerLookup.all(world.getServer())) {
                     ServerPlayNetworking.send(p, new UpdateBlockNbtS2CPongPayload(pos.asLong(), nbt));
 
                 }
@@ -148,6 +148,6 @@ public class GoopyNetworkingUtils {
     }
     @FunctionalInterface
     public interface ScreenFactory<T extends GoopyScreen> {
-        T create(Text title, NbtCompound value2, Object value3);
+        T create(Component title, CompoundTag value2, Object value3);
     }
 }

@@ -1,18 +1,18 @@
 package net.zephyr.fnafur.util;
 
-import net.minecraft.client.sound.EntityTrackingSoundInstance;
-import net.minecraft.entity.Entity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.client.resources.sounds.EntityBoundSoundInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
 
-public class CustomSoundInstance extends EntityTrackingSoundInstance {
-    public CustomSoundInstance(SoundEvent sound, SoundCategory category, float volume, float pitch, Entity entity, long seed, boolean repeat) {
+public class CustomSoundInstance extends EntityBoundSoundInstance {
+    public CustomSoundInstance(SoundEvent sound, SoundSource category, float volume, float pitch, Entity entity, long seed, boolean repeat) {
         super(sound, category, volume, pitch, entity, seed);
-        this.repeat = repeat;
+        this.looping = repeat;
     }
 
     @Override
-    public boolean shouldAlwaysPlay() {
+    public boolean canStartSilent() {
         return true;
     }
 }

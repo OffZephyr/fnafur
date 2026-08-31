@@ -13,7 +13,7 @@ public class AnimatronicColoredEyeLayer<T extends AnimatronicEntity, O, R extend
 //    @Override
 //    public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
 //
-//        NbtCompound altNbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA).getCompound("alt").orElse(new NbtCompound());
+//        CompoundTag altNbt = renderState.getGeckolibData(CustomDataTickets.ENTITY_DATA).getCompound("alt").orElse(new CompoundTag());
 //
 //        if(altNbt.isEmpty()) return;
 //

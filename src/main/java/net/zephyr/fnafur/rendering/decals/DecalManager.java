@@ -9,19 +9,19 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.SharedConstants;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.gl.GpuSampler;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.BlockRenderLayerGroup;
-import net.minecraft.client.render.SectionRenderState;
-import net.minecraft.client.texture.Sprite;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.Minecraft;
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.textures.GpuSampler;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayerGroup;
+import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.RandomSource;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import org.joml.Vector3f;
 import org.lwjgl.system.MemoryUtil;
@@ -50,42 +50,42 @@ public class DecalManager {
 
     public static GpuBufferSlice decal_slice = new GpuBufferSlice(decal_buffer, 0, uboSize);
 
-    public static void DecalRenderHook(SectionRenderState state, BlockRenderLayerGroup group, GpuSampler sampler) {
+    public static void DecalRenderHook(ChunkSectionsToRender state, ChunkSectionLayerGroup group, GpuSampler sampler) {
 
-        RenderSystem.ShapeIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.DrawMode.QUADS);
-        GpuBuffer gpuBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexBuffer(state.maxIndicesRequired());
-        VertexFormat.IndexType indexType = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getIndexType();
-        BlockRenderLayer[] blockRenderLayers = group.getLayers();
-        MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        boolean bl = SharedConstants.HOTKEYS && minecraftClient.wireFrame;
-        Framebuffer framebuffer = group.getFramebuffer();
+        RenderSystem.AutoStorageIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+        GpuBuffer gpuBuffer = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.getBuffer(state.maxIndicesRequired());
+        VertexFormat.IndexType indexType = state.maxIndicesRequired() == 0 ? null : shapeIndexBuffer.type();
+        ChunkSectionLayer[] blockRenderLayers = group.layers();
+        Minecraft client = Minecraft.getInstance();
+        boolean bl = SharedConstants.DEBUG_HOTKEYS && client.wireframe;
+        RenderTarget framebuffer = group.outputTarget();
 
         GpuBufferSlice decalBuffer = getDecalData();
 
         try (RenderPass renderPass = RenderSystem.getDevice()
                 .createCommandEncoder()
                 .createRenderPass(
-                        () -> "Section layers for " + group.getName(),
-                        framebuffer.getColorAttachmentView(),
+                        () -> "Section layers for " + group.label(),
+                        framebuffer.getColorTextureView(),
                         OptionalInt.empty(),
-                        framebuffer.getDepthAttachmentView(),
+                        framebuffer.getDepthTextureView(),
                         OptionalDouble.empty()
                 )) {
             RenderSystem.bindDefaultUniforms(renderPass);
             renderPass.bindTexture(
-                    "Sampler2", minecraftClient.gameRenderer.getLightmapTextureManager().getGlTextureView(), RenderSystem.getSamplerCache().get(FilterMode.LINEAR)
+                    "Sampler2", client.gameRenderer.lightTexture().getTextureView(), RenderSystem.getSamplerCache().getClampToEdge(FilterMode.LINEAR)
             );
 
-            for (BlockRenderLayer blockRenderLayer : blockRenderLayers) {
-                List<RenderPass.RenderObject<GpuBufferSlice[]>> list = (List<RenderPass.RenderObject<GpuBufferSlice[]>>) state.drawsPerLayer().get(blockRenderLayer);
+            for (ChunkSectionLayer blockRenderLayer : blockRenderLayers) {
+                List<RenderPass.Draw<GpuBufferSlice[]>> list = (List<RenderPass.Draw<GpuBufferSlice[]>>) state.drawsPerLayer().get(blockRenderLayer);
                 if (!list.isEmpty()) {
-                    if (blockRenderLayer == BlockRenderLayer.TRANSLUCENT) {
+                    if (blockRenderLayer == ChunkSectionLayer.TRANSLUCENT) {
                         list = list.reversed();
                     }
 
-                    Sprite sprite = MinecraftClient.getInstance().getBlockRenderManager()
-                            .getModels()
-                            .getModel(Blocks.STONE.getDefaultState()).getParts(Random.create()).getFirst().getQuads(Direction.NORTH).getFirst().sprite();
+                    TextureAtlasSprite sprite = client.getInstance().getBlockRenderer()
+                            .getBlockModelShaper()
+                            .getBlockModel(Blocks.STONE.defaultBlockState()).collectParts(RandomSource.create()).getFirst().getQuads(Direction.NORTH).getFirst().sprite();
 
                     RenderPipeline pipeline = switch (blockRenderLayer){
                         case SOLID -> CustomRenderingPipelines.COOL_SOLID_TERRAIN;
@@ -169,8 +169,8 @@ public class DecalManager {
         List<DecalInstance> list = new ArrayList<>();
 
         for(DecalInstance instance : WORLD_DECALS){
-            Vec3d vec1 = instance.getStartPos().add(MinecraftClient.getInstance().gameRenderer.getCamera().pos.multiply(-1));
-            Vec3d vec2 = instance.getEndPos().add(MinecraftClient.getInstance().gameRenderer.getCamera().pos.multiply(-1));
+            Vec3 vec1 = instance.getStartPos().add(Minecraft.getInstance().gameRenderer.getMainCamera().position.scale(-1));
+            Vec3 vec2 = instance.getEndPos().add(Minecraft.getInstance().gameRenderer.getMainCamera().position.scale(-1));
             if(vec1.length() < MAX_DISTANCE && vec2.length() < MAX_DISTANCE){
                 list.add(instance);
             }
@@ -191,7 +191,7 @@ public class DecalManager {
         return list;
     }
 
-    public static DecalInstance getClickedDecal(Vec3d pos, Direction direction){
+    public static DecalInstance getClickedDecal(Vec3 pos, Direction direction){
         List<DecalInstance> checkedInstances = new ArrayList<>();
         for(DecalInstance instance : WORLD_DECALS){
             if(isVecInside(instance.getStartPos(), instance.getEndPos(), pos)){
@@ -206,7 +206,7 @@ public class DecalManager {
 
         for(DecalInstance instance : checkedInstances){
             System.out.println("TEST");
-            if(instance.getHitbox().expand(0.1f).contains(pos)){
+            if(instance.getHitbox().inflate(0.1f).contains(pos)){
                 System.out.println("GAVE INSTANCE");
                 return instance;
             }
@@ -216,8 +216,8 @@ public class DecalManager {
         return null;
     }
 
-    public static boolean isVecInside(Vec3d start, Vec3d end, Vec3d point) {
-        Box box = new Box(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ()).expand(0.55f);
+    public static boolean isVecInside(Vec3 start, Vec3 end, Vec3 point) {
+        AABB box = new AABB(start.x(), start.y(), start.z(), end.x(), end.y(), end.z()).inflate(0.55f);
 
         return box.contains(point);
     }

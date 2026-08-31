@@ -1,24 +1,26 @@
 package net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.block.BlockModelRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.client.render.command.ModelCommandRenderer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.FallingBlockEntityRenderer;
-import net.minecraft.client.render.model.BlockStateModel;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.FallingBlockRenderer;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.blocks.common_block_entity.CommonBlockEntityRenderState;
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
@@ -26,27 +28,27 @@ import org.jetbrains.annotations.Nullable;
 
 public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoorBlockEntity, CommonBlockEntityRenderState> {
 
-    public TileDoorBlockEntityRenderer(BlockEntityRendererFactory.Context context){
+    public TileDoorBlockEntityRenderer(BlockEntityRendererProvider.Context context){
 
     }
 
-    Vec3d getOffset(TileDoorDirection direction, float delta, float height, float width, boolean invertX){
+    Vec3 getOffset(TileDoorDirection direction, float delta, float height, float width, boolean invertX){
         switch (direction){
             default: {
-                float translateHeight = MathHelper.lerp(delta, 0, height);
-                return new Vec3d(0, translateHeight, 0);
+                float translateHeight = Mth.lerp(delta, 0, height);
+                return new Vec3(0, translateHeight, 0);
             }
             case DOWN: {
-                float translateHeight = MathHelper.lerp(delta, 0, -height);
-                return new Vec3d(0, translateHeight, 0);
+                float translateHeight = Mth.lerp(delta, 0, -height);
+                return new Vec3(0, translateHeight, 0);
             }
             case LEFT: {
-                float translateWidth = MathHelper.lerp(delta, 0, invertX ? -width : width);
-                return new Vec3d(translateWidth, 0, 0);
+                float translateWidth = Mth.lerp(delta, 0, invertX ? -width : width);
+                return new Vec3(translateWidth, 0, 0);
             }
             case RIGHT: {
-                float translateWidth = MathHelper.lerp(delta, 0, invertX ? width : -width);
-                return new Vec3d(translateWidth, 0, 0);
+                float translateWidth = Mth.lerp(delta, 0, invertX ? width : -width);
+                return new Vec3(translateWidth, 0, 0);
             }
         }
     }
@@ -57,79 +59,79 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
     }
 
     @Override
-    public void updateRenderState(TileDoorBlockEntity blockEntity, CommonBlockEntityRenderState state, float tickProgress, Vec3d cameraPos, @Nullable ModelCommandRenderer.CrumblingOverlayCommand crumblingOverlay) {
-        BlockEntityRenderer.super.updateRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
+    public void extractRenderState(TileDoorBlockEntity blockEntity, CommonBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
 
         if(((IEntityDataSaver)blockEntity).getPersistentData().isEmpty()){
-            GoopyNetworkingUtils.getNbtFromServer(blockEntity.getPos());
+            GoopyNetworkingUtils.getNbtFromServer(blockEntity.getBlockPos());
         }
         state.nbt = ((IEntityDataSaver) blockEntity).getPersistentData();
     }
 
     @Override
-    public void render(CommonBlockEntityRenderState state, MatrixStack matrices, OrderedRenderCommandQueue queue, CameraRenderState cameraState) {
+    public void submit(CommonBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
 
         BlockState blockState = state.blockState;
 
-        if(blockState.getBlock() instanceof TileDoorBlock b && blockState.get(TileDoorBlock.MAIN)){
+        if(blockState.getBlock() instanceof TileDoorBlock b && blockState.getValue(TileDoorBlock.MAIN)){
             int width = state.nbt.getInt("width").orElse(0);
             int height = state.nbt.getInt("height").orElse(0);
 
             float openDelta = state.nbt.getFloat("openDelta").orElse(0f);
             float speed = Math.clamp(state.nbt.getFloat("speed").orElse(0f), 1, 5);
-            if(blockState.get(TileDoorBlock.OPEN) && openDelta != 1) {
-                state.nbt.putFloat("openDelta", Math.clamp(openDelta + (MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks()/20f) * speed, 0, 1));
+            if(blockState.getValue(TileDoorBlock.OPEN) && openDelta != 1) {
+                state.nbt.putFloat("openDelta", Math.clamp(openDelta + (Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks()/20f) * speed, 0, 1));
             }
-            else if(!blockState.get(TileDoorBlock.OPEN) && openDelta != 0){
-                state.nbt.putFloat("openDelta", Math.clamp(openDelta - (MinecraftClient.getInstance().getRenderTickCounter().getDynamicDeltaTicks()/20f) * speed, 0, 1));
+            else if(!blockState.getValue(TileDoorBlock.OPEN) && openDelta != 0){
+                state.nbt.putFloat("openDelta", Math.clamp(openDelta - (Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks()/20f) * speed, 0, 1));
             }
 
             float translateMaxHeight = height > 1 ? height + 0.5f : height + 0.8f;
             float translateMaxWidth = width > 1 ? width + 0.5f : width + 0.8f;
 
-            BlockPos testPos = state.pos.offset(blockState.get(TileDoorBlock.FACING).rotateYCounterclockwise());
-            Direction direction = MinecraftClient.getInstance().world.getBlockState(testPos).getBlock() instanceof TileDoorBlock ? blockState.get(TileDoorBlock.FACING).rotateYCounterclockwise() : blockState.get(TileDoorBlock.FACING).rotateYClockwise();
+            BlockPos testPos = state.blockPos.relative(blockState.getValue(TileDoorBlock.FACING).getCounterClockWise());
+            Direction direction = Minecraft.getInstance().level.getBlockState(testPos).getBlock() instanceof TileDoorBlock ? blockState.getValue(TileDoorBlock.FACING).getCounterClockWise() : blockState.getValue(TileDoorBlock.FACING).getClockWise();
 
-            matrices.push();
-            TileDoorDirection doorDirection = TileDoorDirection.getDirection(state.nbt.getString("direction").orElse(b.doorDirection.asString()));
-            Vec3d offset = getOffset(doorDirection, openDelta, translateMaxHeight, translateMaxWidth, direction.getAxis() == Direction.Axis.Z);
+            matrices.pushPose();
+            TileDoorDirection doorDirection = TileDoorDirection.getDirection(state.nbt.getString("direction").orElse(b.doorDirection.getSerializedName()));
+            Vec3 offset = getOffset(doorDirection, openDelta, translateMaxHeight, translateMaxWidth, direction.getAxis() == Direction.Axis.Z);
 
-            double xO = direction.getAxis() == Direction.Axis.X ? offset.getX() : offset.getZ();
-            double zO = direction.getAxis() == Direction.Axis.X ? offset.getZ() : offset.getX();
-            matrices.translate(xO, offset.getY(), zO);
+            double xO = direction.getAxis() == Direction.Axis.X ? offset.x() : offset.z();
+            double zO = direction.getAxis() == Direction.Axis.X ? offset.z() : offset.x();
+            matrices.translate(xO, offset.y(), zO);
 
             for (int x = 0; x <= width; x++) {
-                boolean bl1 = x - offset.getX() < - 1 || x - offset.getX() > width + 1;
-                boolean bl2 = x + offset.getX() < - 1 || x + offset.getX() > width + 1;
+                boolean bl1 = x - offset.x() < - 1 || x - offset.x() > width + 1;
+                boolean bl2 = x + offset.x() < - 1 || x + offset.x() > width + 1;
                 boolean check = direction == Direction.NORTH || direction == Direction.WEST ? bl1 : bl2;
                 if(check) continue;
 
                 for (int y = 0; y <= height; y++) {
-                    if(y + offset.getY() < - 1 || y + offset.getY() > height + 1) continue;
+                    if(y + offset.y() < - 1 || y + offset.y() > height + 1) continue;
 
-                    BlockPos updatePos = state.pos.up(y).offset(direction, x);
+                    BlockPos updatePos = state.blockPos.above(y).relative(direction, x);
 
-                    BlockState posState = MinecraftClient.getInstance().world.getBlockState(updatePos);
-                    BlockStateModel model = MinecraftClient.getInstance().getBakedModelManager().getBlockModels().getModel(posState);
+                    BlockState posState = Minecraft.getInstance().level.getBlockState(updatePos);
+                    BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(posState);
 
-                    matrices.push();
-                    matrices.translate(updatePos.getX() - state.pos.getX(),updatePos.getY() - state.pos.getY(),updatePos.getZ() - state.pos.getZ());
+                    matrices.pushPose();
+                    matrices.translate(updatePos.getX() - state.blockPos.getX(),updatePos.getY() - state.blockPos.getY(),updatePos.getZ() - state.blockPos.getZ());
 
-                    //dfmatrices.translate(MinecraftClient.getInstance().gameRenderer.getCamera().pos.multiply(-1));
-                    queue.submitCustom(matrices, BlockRenderLayers.getMovingBlockLayer(posState), (stack, layer) ->{
-                        BlockModelRenderer.render(stack, layer, model, 1, 1, 1,  getLightLevel(MinecraftClient.getInstance().world, state.pos), OverlayTexture.DEFAULT_UV);
+                    //dfmatrices.translate(Minecraft.getInstance().gameRenderer.getCamera().pos.multiply(-1));
+                    queue.submitCustomGeometry(matrices, ItemBlockRenderTypes.getMovingBlockRenderType(posState), (stack, layer) ->{
+                        ModelBlockRenderer.renderModel(stack, layer, model, 1, 1, 1,  getLightLevel(Minecraft.getInstance().level, state.blockPos), OverlayTexture.NO_OVERLAY);
                     });
-                    matrices.pop();
+                    matrices.popPose();
 
                 }
             }
-            matrices.pop();
+            matrices.popPose();
         }
     }
 
-    private int getLightLevel(World world, BlockPos pos){
-        int bLight = world.getLightLevel(LightType.BLOCK, pos);
-        int sLight = world.getLightLevel(LightType.SKY, pos);
-        return LightmapTextureManager.pack(bLight, sLight);
+    private int getLightLevel(Level world, BlockPos pos){
+        int bLight = world.getBrightness(LightLayer.BLOCK, pos);
+        int sLight = world.getBrightness(LightLayer.SKY, pos);
+        return LightTexture.pack(bLight, sLight);
     }
 }

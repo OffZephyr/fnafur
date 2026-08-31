@@ -1,17 +1,18 @@
 package net.zephyr.fnafur.blocks.props.wall_props.clocks;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.type.BlockStateComponent;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.DefaultPropColorEnum;
 import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
@@ -25,19 +26,19 @@ public class WoodenClock extends WallPropBlock<WoodenClockColorEnum> implements 
     private Identifier texture;
     private Identifier model;
     private Identifier animations;
-    public WoodenClock(Settings settings) {
+    public WoodenClock(Properties settings) {
         super(settings);
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        VoxelShape shape = switch (state.get(FACING)){
-            default -> VoxelShapes.cuboid(0, 0, 0, 1, 1, 0.1f);
-            case SOUTH -> VoxelShapes.cuboid(0, 0, 0.9f, 1, 1, 1);
-            case WEST -> VoxelShapes.cuboid(0, 0, 0, 0.1f, 1, 1);
-            case EAST -> VoxelShapes.cuboid(0.9f, 0, 0, 1, 1, 1);
+    protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = switch (state.getValue(FACING)){
+            default -> Shapes.box(0, 0, 0, 1, 1, 0.1f);
+            case SOUTH -> Shapes.box(0, 0, 0.9f, 1, 1, 1);
+            case WEST -> Shapes.box(0, 0, 0, 0.1f, 1, 1);
+            case EAST -> Shapes.box(0.9f, 0, 0, 1, 1, 1);
         };
-        return drawingOutline ? shape : getRaycastShape(state, world, pos);
+        return drawingOutline ? shape : getInteractionShape(state, world, pos);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class WoodenClock extends WallPropBlock<WoodenClockColorEnum> implements 
     }
 
     @Override
-    public boolean goesOnFloor(BlockStateComponent state) {
+    public boolean goesOnFloor(BlockItemStateProperties state) {
         return false;
     }
 
@@ -75,12 +76,12 @@ public class WoodenClock extends WallPropBlock<WoodenClockColorEnum> implements 
 
     @Override
     public Identifier getModel(BlockState state, BlockPos pos) {
-        Identifier noSeconds = Identifier.of(FnafUniverseRebuilt.MOD_ID,"block/props/wall_clock");
-        Identifier seconds = Identifier.of(FnafUniverseRebuilt.MOD_ID,"block/props/wall_clock_seconds");
+        Identifier noSeconds = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID,"block/props/wall_clock");
+        Identifier seconds = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID,"block/props/wall_clock_seconds");
 
-        this.model = state.get(COLOR_PROPERTY()) == WoodenClockColorEnum.SECONDS ? seconds : noSeconds;
+        this.model = state.getValue(COLOR_PROPERTY()) == WoodenClockColorEnum.SECONDS ? seconds : noSeconds;
 
-        return switch (state.get(COLOR_PROPERTY())){
+        return switch (state.getValue(COLOR_PROPERTY())){
             default -> noSeconds;
             case SECONDS -> seconds;
         };
@@ -96,13 +97,13 @@ public class WoodenClock extends WallPropBlock<WoodenClockColorEnum> implements 
         return null;
     }
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GeoClockPropBlockEntity(pos, state, this);
     }
 
     @Override
-    public @Nullable BlockEntityTicker<GeoPropBlockEntity> getTicker(World world, BlockState state, BlockEntityType type) {
-        return validateTicker(type, BlockEntityInit.GEO_CLOCK_PROP,
+    public @Nullable BlockEntityTicker<GeoPropBlockEntity> getTicker(Level world, BlockState state, BlockEntityType type) {
+        return createTickerHelper(type, BlockEntityInit.GEO_CLOCK_PROP,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1, blockEntity));
     }
 }

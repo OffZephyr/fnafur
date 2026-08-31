@@ -1,11 +1,11 @@
 package net.zephyr.fnafur.blocks.special;
 
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
 public class SeatEntityRenderer extends EntityRenderer<SeatEntity, EntityRenderState> {
-    public SeatEntityRenderer(EntityRendererFactory.Context context) {
+    public SeatEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
