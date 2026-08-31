@@ -4,8 +4,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.core.BlockPos;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
+import com.geckolib.animation.RawAnimation;
+import com.geckolib.renderer.layer.GeoRenderLayer;
 
 import java.util.List;
 import java.util.Map;

@@ -9,11 +9,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.cache.model.BakedGeoModel;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.base.GeoRenderer;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.cache.model.BakedGeoModel;
+import com.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderer;
+import com.geckolib.renderer.layer.GeoRenderLayer;
 
 public class VanniMaskRenderLayer<T extends Item & GeoAnimatable, O, R extends GeoRenderState> extends GeoRenderLayer<T, O, R> {
     public VanniMaskRenderLayer(GeoRenderer<T, O, R> renderer) {

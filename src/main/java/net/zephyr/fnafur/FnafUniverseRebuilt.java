@@ -3,7 +3,7 @@ package net.zephyr.fnafur;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityLevelChangeEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -82,7 +82,7 @@ public class FnafUniverseRebuilt implements ModInitializer {
             ServerPlayNetworking.send(player, new FetchAllDecalsS2CPayload(state.getDecals()));
         });
 
-        ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(
+        ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register(
                 (player, origin, destination) -> {
 
                     DecalWorldState state = DecalWorldState.get(destination);

@@ -1,39 +1,32 @@
 package net.zephyr.fnafur.blocks.props.base;
 
-import io.netty.util.internal.SuppressJava6Requirement;
-import jdk.jshell.Diag;
-import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperUnbakedGroupedBlockStateModel;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.renderer.v1.mesh.ShadeMode;
-import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
+import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperUnbakedRootBlockStateModel;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.ShadeMode;
+import net.fabricmc.fabric.api.client.renderer.v1.model.ModelHelper;
 import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
-import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrameModel;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class PropBlockModel extends WrapperUnbakedGroupedBlockStateModel implements BlockStateModel {
+public class PropBlockModel extends WrapperUnbakedRootBlockStateModel implements BlockStateModel {
 
     public BlockStateModel ORIGINAL_MODEL;
     public PropBlockModel(BlockStateModel.UnbakedRoot wrapped){
@@ -41,8 +34,18 @@ public class PropBlockModel extends WrapperUnbakedGroupedBlockStateModel impleme
     }
 
     @Override
-    public void collectParts(RandomSource random, List<BlockModelPart> parts) {
+    public void collectParts(RandomSource random, List<BlockStateModelPart> output) {
 
+    }
+
+    @Override
+    public Material.Baked particleMaterial() {
+        return ORIGINAL_MODEL.particleMaterial();
+    }
+
+    @Override
+    public @BakedQuad.MaterialFlags int materialFlags() {
+        return 0;
     }
 
     @Override
@@ -52,14 +55,7 @@ public class PropBlockModel extends WrapperUnbakedGroupedBlockStateModel impleme
     }
 
     @Override
-    public TextureAtlasSprite particleIcon() {
-        return ORIGINAL_MODEL.particleIcon();
-
-    }
-
-    @Override
-    public void emitQuads(QuadEmitter emitter, BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random, Predicate<@Nullable Direction> cullTest) {
-
+    public void emitQuads(QuadEmitter emitter, BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, Predicate<@org.jspecify.annotations.Nullable Direction> cullTest) {
         if(ORIGINAL_MODEL != null) {
 
             if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof PropBlockEntity ent) {
@@ -75,7 +71,9 @@ public class PropBlockModel extends WrapperUnbakedGroupedBlockStateModel impleme
 
                     Vec3 offsetPos = new Vec3(offsetX, offsetY, offsetZ);
 
-                    for (BlockModelPart part : ORIGINAL_MODEL.collectParts(RandomSource.create())) {
+                    List<BlockStateModelPart> parts = new ArrayList<>();
+                    ORIGINAL_MODEL.collectParts(RandomSource.create(), parts);
+                    for (BlockStateModelPart part : parts) {
 
                         final TriState ao = part.useAmbientOcclusion() ? TriState.DEFAULT : TriState.FALSE;
                         for (int i = 0; i <= ModelHelper.NULL_FACE_ID; i++) {
@@ -169,7 +167,9 @@ public class PropBlockModel extends WrapperUnbakedGroupedBlockStateModel impleme
                 }
             }
 
-            for (BlockModelPart part : ORIGINAL_MODEL.collectParts(RandomSource.create())) {
+            List<BlockStateModelPart> parts = new ArrayList<>();
+            ORIGINAL_MODEL.collectParts(RandomSource.create(), parts);
+            for (BlockStateModelPart part : parts) {
                 final TriState ao = part.useAmbientOcclusion() ? TriState.DEFAULT : TriState.FALSE;
                 for (int i = 0; i <= ModelHelper.NULL_FACE_ID; i++) {
                     final Direction cullFace = ModelHelper.faceFromIndex(i);
@@ -195,10 +195,5 @@ public class PropBlockModel extends WrapperUnbakedGroupedBlockStateModel impleme
             }
         }
         //BlockStateModel.super.emitQuads(emitter, blockView, pos, state, random, cullTest);
-    }
-
-    @Override
-    public TextureAtlasSprite particleSprite(BlockAndTintGetter blockView, BlockPos pos, BlockState state) {
-        return ORIGINAL_MODEL.particleIcon();
     }
 }

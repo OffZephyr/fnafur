@@ -4,8 +4,8 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.constant.dataticket.DataTicket;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.constant.dataticket.DataTicket;
+import com.geckolib.renderer.base.GeoRenderState;
 
 import java.util.Map;
 

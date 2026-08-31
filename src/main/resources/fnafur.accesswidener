@@ -1,12 +1,12 @@
-accessWidener v2 named
+accessWidener v2 official
 # Methods
 accessible method net/minecraft/client/renderer/GameRenderer setPostEffect (Lnet/minecraft/resources/Identifier;)V
 # accessible method net/minecraft/client/render/model/UnbakedModel getTransformation ()Lnet/minecraft/client/render/model/json/ModelTransformation;
 
 # Classes
-transitive-accessible class net/minecraft/client/resources/model/AtlasManager$AtlasEntry
-transitive-extendable class net/minecraft/client/resources/model/AtlasManager$AtlasEntry
-extendable class net/minecraft/client/renderer/block/ModelBlockRenderer$AmbientOcclusionRenderStorage
+# transitive-accessible class net/minecraft/client/resources/model/AtlasManager$AtlasEntry
+# transitive-extendable class net/minecraft/client/resources/model/AtlasManager$AtlasEntry
+# extendable class net/minecraft/client/renderer/block/ModelBlockRenderer$AmbientOcclusionRenderStorage
 # transitive-accessible class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
 # transitive-accessible class net/minecraft/client/render/RenderPhase$Texture
 # transitive-accessible class net/minecraft/client/render/RenderPhase$Target
@@ -35,9 +35,9 @@ accessible method net/minecraft/world/inventory/AbstractContainerMenu addSlot (L
 # transitive-accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;ILnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
 # transitive-accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
 # transitive-accessible method net/minecraft/client/render/RenderLayer of (Lnet/minecraft/client/render/RenderPhase$ShaderProgram;)Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
-transitive-accessible method net/minecraft/client/renderer/GameRenderer getFov (Lnet/minecraft/client/Camera;FZ)F
+# transitive-accessible method net/minecraft/client/renderer/GameRenderer getFov (Lnet/minecraft/client/Camera;FZ)F
 transitive-accessible method net/minecraft/client/Camera setRotation (FF)V
-accessible method net/minecraft/client/renderer/LevelRenderer renderHitOutline (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;DDDLnet/minecraft/client/renderer/state/BlockOutlineRenderState;IF)V
+accessible method net/minecraft/client/renderer/LevelRenderer renderHitOutline (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;DDDLnet/minecraft/client/renderer/state/level/BlockOutlineRenderState;IF)V
 # transitive-accessible field net/minecraft/client/render/RenderPhase ENTITY_TRANSLUCENT_PROGRAM Lnet/minecraft/client/render/RenderPhase$ShaderProgram;
 # transitive-accessible field net/minecraft/client/render/RenderPhase TRANSLUCENT_TRANSPARENCY Lnet/minecraft/client/render/RenderPhase$Transparency;
 # transitive-accessible field net/minecraft/client/render/RenderPhase DISABLE_CULLING Lnet/minecraft/client/render/RenderPhase$Cull;
@@ -46,12 +46,22 @@ accessible method net/minecraft/client/renderer/LevelRenderer renderHitOutline (
 # transitive-accessible field net/minecraft/client/render/RenderPhase SOLID_PROGRAM Lnet/minecraft/client/render/RenderPhase$ShaderProgram;
 # transitive-accessible field net/minecraft/client/render/RenderPhase MIPMAP_BLOCK_ATLAS_TEXTURE Lnet/minecraft/client/render/RenderPhase$Texture;
 
-transitive-accessible field net/minecraft/client/renderer/LevelRenderer capturedFrustum Lnet/minecraft/client/renderer/culling/Frustum;
+# transitive-accessible field net/minecraft/client/renderer/LevelRenderer capturedFrustum Lnet/minecraft/client/renderer/culling/Frustum;
 transitive-accessible field net/minecraft/client/Camera position Lnet/minecraft/world/phys/Vec3;
 
 transitive-accessible field com/mojang/blaze3d/systems/RenderSystem modelViewStack Lorg/joml/Matrix4fStack;
 transitive-mutable field com/mojang/blaze3d/systems/RenderSystem modelViewStack Lorg/joml/Matrix4fStack;
 
 accessible method net/minecraft/client/renderer/entity/layers/CustomHeadLayer resolveSkullRenderType (Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lnet/minecraft/world/level/block/SkullBlock$Type;)Lnet/minecraft/client/renderer/rendertype/RenderType;
-accessible field net/minecraft/client/renderer/block/BlockRenderDispatcher materials Lnet/minecraft/client/resources/model/MaterialSet;
-transitive-accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen onMouseClickAction (Lnet/minecraft/world/inventory/Slot;Lnet/minecraft/world/inventory/ClickType;)V
+# accessible field net/minecraft/client/renderer/block/BlockRenderDispatcher materials Lnet/minecraft/client/resources/model/MaterialSet;
+accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen onMouseClickAction (Lnet/minecraft/world/inventory/Slot;Lnet/minecraft/world/inventory/ContainerInput;)V
+accessible field net/minecraft/client/renderer/blockentity/state/BlockEntityRenderState blockState Lnet/minecraft/world/level/block/state/BlockState;
+
+accessible method net/minecraft/world/item/Items registerBlock (Lnet/minecraft/world/level/block/Block;Ljava/util/function/BiFunction;)Lnet/minecraft/world/item/Item;
+accessible method net/minecraft/world/item/Items registerBlock (Lnet/minecraft/world/level/block/Block;Ljava/util/function/BiFunction;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;
+accessible method net/minecraft/world/item/Items registerItem (Ljava/lang/String;Ljava/util/function/Function;)Lnet/minecraft/world/item/Item;
+accessible method net/minecraft/world/item/Items registerItem (Ljava/lang/String;Ljava/util/function/Function;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;
+accessible method net/minecraft/world/item/Items registerItem (Ljava/lang/String;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;
+accessible method net/minecraft/world/item/Items registerBlock (Lnet/minecraft/world/level/block/Block;)Lnet/minecraft/world/item/Item;
+accessible method net/minecraft/world/item/Items registerBlock (Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;
+accessible method net/minecraft/world/item/Items registerBlock (Lnet/minecraft/world/level/block/Block;Ljava/util/function/UnaryOperator;)Lnet/minecraft/world/item/Item;

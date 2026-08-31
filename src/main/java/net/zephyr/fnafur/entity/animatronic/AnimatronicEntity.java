@@ -83,18 +83,18 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityPathfindingHeightOverride;
 import org.apache.commons.lang3.RandomUtils;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.state.AnimationTest;
-import software.bernie.geckolib.animation.object.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.animation.state.KeyFrameEvent;
-import software.bernie.geckolib.cache.animation.keyframeevent.CustomInstructionKeyframeData;
-import software.bernie.geckolib.cache.animation.keyframeevent.SoundKeyframeData;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.animatable.GeoEntity;
+import com.geckolib.animatable.instance.AnimatableInstanceCache;
+import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.AnimationController;
+import com.geckolib.animation.state.AnimationTest;
+import com.geckolib.animation.object.PlayState;
+import com.geckolib.animation.RawAnimation;
+import com.geckolib.animation.state.KeyFrameEvent;
+import com.geckolib.cache.animation.keyframeevent.CustomInstructionKeyframeData;
+import com.geckolib.cache.animation.keyframeevent.SoundKeyframeData;
+import com.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -153,7 +153,7 @@ public class AnimatronicEntity extends PathfinderMob implements GeoEntity, Vibra
         this.vibrationListenerData = new VibrationSystem.Data();
         this.gameEventHandler = new DynamicGameEventListener<>(new VibrationSystem.Listener(this));
 
-        this.setPathfindingMalus(PathType.DANGER_FIRE, 16);
+        this.setPathfindingMalus(PathType.FIRE, 16);
         this.setPathfindingMalus(PathType.STICKY_HONEY, 24);
         this.setPathfindingMalus(PathType.COCOA, 8);
 
@@ -176,7 +176,7 @@ public class AnimatronicEntity extends PathfinderMob implements GeoEntity, Vibra
 
 
     @Override
-    public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         //if(!player.getMainHandStack().isEmpty()) return InteractionResult.PASS;
 
         if(level().isClientSide()){
@@ -200,7 +200,7 @@ public class AnimatronicEntity extends PathfinderMob implements GeoEntity, Vibra
                 }
             }
         }
-        return super.interactAt(player, hitPos, hand);
+        return super.interact(player, hand, location);
     }
 
     public void resetAnimatronic(CpuData.OnReset mode){
@@ -749,7 +749,7 @@ public class AnimatronicEntity extends PathfinderMob implements GeoEntity, Vibra
             boolean run = runChase || runBase;
             if(canRunCheck != run){
             canRunCheck = run;
-            for(ServerPlayer p : PlayerLookup.world((ServerLevel) level())){
+            for(ServerPlayer p : PlayerLookup.level((ServerLevel) level())){
                 ServerPlayNetworking.send(p, new SetEntityRunS2CPayload(getId(), canRunCheck));
             }
             }
@@ -963,7 +963,7 @@ public class AnimatronicEntity extends PathfinderMob implements GeoEntity, Vibra
             setData(CPUItem.getCpuData(stack));
             canGlowCheck = !canGlowCheck;
             canRunCheck = !canRunCheck;
-            entity.displayClientMessage(Component.literal("UPDATED_DATA"), true);
+            entity.sendSystemMessage(Component.literal("UPDATED_DATA"));
         }
     }
 
@@ -1212,7 +1212,7 @@ public class AnimatronicEntity extends PathfinderMob implements GeoEntity, Vibra
             Minecraft.getInstance().getSoundManager().play(currentVoiceSound);
         }
         else{
-            for(ServerPlayer p : PlayerLookup.world((ServerLevel) level())){
+            for(ServerPlayer p : PlayerLookup.level((ServerLevel) level())){
                 ServerPlayNetworking.send(p, new PlayVoiceSoundS2CPayload(getId(), name, sound, volume));
             }
         }
@@ -1452,11 +1452,11 @@ public class AnimatronicEntity extends PathfinderMob implements GeoEntity, Vibra
         }
 
         private static boolean areChunksTickingAround(Level world, BlockPos pos) {
-            ChunkPos chunkPos = new ChunkPos(pos);
+            ChunkPos chunkPos = new ChunkPos(pos.getX(), pos.getZ());
 
-            for (int i = chunkPos.x - 1; i <= chunkPos.x + 1; i++) {
-                for (int j = chunkPos.z - 1; j <= chunkPos.z + 1; j++) {
-                    if (!world.shouldTickBlocksAt(ChunkPos.asLong(i, j)) || world.getChunkSource().getChunkNow(i, j) == null) {
+            for (int i = chunkPos.x() - 1; i <= chunkPos.x() + 1; i++) {
+                for (int j = chunkPos.z() - 1; j <= chunkPos.z() + 1; j++) {
+                    if (!world.shouldTickBlocksAt(ChunkPos.pack(i, j)) || world.getChunkSource().getChunkNow(i, j) == null) {
                         return false;
                     }
                 }

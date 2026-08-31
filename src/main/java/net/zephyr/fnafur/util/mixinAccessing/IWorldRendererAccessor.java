@@ -10,7 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderState;
 
 import java.util.List;
 import java.util.Map;

@@ -1,27 +1,27 @@
 package net.zephyr.fnafur.entity.animatronic;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import net.zephyr.fnafur.entity.animatronic.voice.EntityVoiceSoundInstance;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.model.GeoBone;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.renderer.base.BoneSnapshots;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.base.RenderPassInfo;
+import com.geckolib.cache.model.GeoBone;
+import com.geckolib.constant.DataTickets;
+import com.geckolib.renderer.GeoEntityRenderer;
+import com.geckolib.renderer.base.BoneSnapshots;
+import com.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.RenderPassInfo;
 
 import java.util.List;
 
@@ -72,7 +72,7 @@ public class AnimatronicRenderer<T extends AnimatronicEntity, R extends LivingEn
         super.fillRenderState(animatable, relatedObject, renderState, partialTick);
 
         if(animatable.isMenu){
-            renderState.addGeckolibData(DataTickets.PACKED_LIGHT, LightTexture.FULL_BRIGHT);
+            renderState.addGeckolibData(DataTickets.PACKED_LIGHT, LightCoordsUtil.FULL_BRIGHT);
             renderState.addGeckolibData(DataTickets.PACKED_OVERLAY, OverlayTexture.NO_OVERLAY);
             renderState.addGeckolibData(DataTickets.RENDER_COLOR, 0xFFFFFFFF);
         }

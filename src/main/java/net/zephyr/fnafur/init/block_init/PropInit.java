@@ -1,7 +1,5 @@
 package net.zephyr.fnafur.init.block_init;
 
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -1153,24 +1151,24 @@ public class PropInit {
         BlockEntityRenderers.register(BlockEntityInit.GEO_CLOCK_PROP, GeoClockPropRenderer::new);
         BlockEntityRenderers.register(BlockEntityInit.GALAXY_GEO_PROPS, GalaxyLayerGeoPropRenderer::new);
 
-        for (Item item : PROPS) {
-            SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
-            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), ChunkSectionLayer.CUTOUT);
-        }
-        for (Item item : GEO_PROPS) {
-            SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
-            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), ChunkSectionLayer.CUTOUT);
-        }
-        for (Item item : GEO_PROPS_TRANSLUCENT) {
-            SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
-            BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), ChunkSectionLayer.TRANSLUCENT);
-        }
+        //for (Item item : PROPS) {
+        //    SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
+        //    BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), ChunkSectionLayer.CUTOUT);
+        //}
+        //for (Item item : GEO_PROPS) {
+        //    SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
+        //    BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), ChunkSectionLayer.CUTOUT);
+        //}
+        //for (Item item : GEO_PROPS_TRANSLUCENT) {
+        //    SOFT_AVOIDED_PROPS.add(((BlockItem)item).getBlock());
+        //    BlockRenderLayerMap.putBlock(((BlockItem)item).getBlock(), ChunkSectionLayer.TRANSLUCENT);
+        //}
 
         AVOIDED_PROPS.add(PARTY_TABLE);
         AVOIDED_PROPS.add(PARTY_TABLE_CONFETTI);
 
-        BlockRenderLayerMap.putBlock(FOOD_DISPLAY_CASE, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(CONDIMENT_COUNTER, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(FOOD_DISPLAY_CASE, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(CONDIMENT_COUNTER, ChunkSectionLayer.TRANSLUCENT);
 
         FnafUniverseRebuilt.LOGGER.info("Registering Props On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }

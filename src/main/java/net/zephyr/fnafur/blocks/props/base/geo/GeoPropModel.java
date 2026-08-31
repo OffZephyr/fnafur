@@ -4,8 +4,8 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.model.GeoModel;
+import com.geckolib.renderer.base.GeoRenderState;
 
 public class GeoPropModel<T extends GeoPropBlockEntity> extends GeoModel<T> {
 

@@ -2,9 +2,9 @@ package net.zephyr.fnafur.client.gui.screens;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -74,19 +74,19 @@ public abstract class GoopyScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         windowX = (Minecraft.getInstance().getWindow().getGuiScaledWidth()/2) - (windowSizeX/2);
         windowY = (Minecraft.getInstance().getWindow().getGuiScaledHeight()/2) - (windowSizeY/2);
 
         for(GUIButton button : BUTTONS){
             if(button instanceof GUIToggle toggle){
-                renderToggle(context, mouseX, mouseY, toggle);
+                renderToggle(graphics, mouseX, mouseY, toggle);
             }
             else {
-                renderButton(context, mouseX, mouseY, button);
+                renderButton(graphics, mouseX, mouseY, button);
             }
         }
-        super.render(context, mouseX, mouseY, delta);
+        super.extractRenderState(graphics, mouseX, mouseY, a);
     }
 
     @Override
@@ -117,7 +117,7 @@ public abstract class GoopyScreen extends Screen {
         return super.mouseReleased(click);
     }
 
-    public void renderButton(GuiGraphics context, double mouseX, double mouseY, GUIButton button) {
+    public void renderButton(GuiGraphicsExtractor context, double mouseX, double mouseY, GUIButton button) {
         int x = windowX + button.x;
         int y = windowY + button.y;
         int w = button.width;
@@ -135,7 +135,7 @@ public abstract class GoopyScreen extends Screen {
         }
         drawRecolorableTexture(context, texture.texture, x, y, w, h, texture.u, texture.v, texture.textureWidth, texture.textureHeight, texture.color);
     }
-    public void renderToggle(GuiGraphics context, double mouseX, double mouseY, GUIToggle button) {
+    public void renderToggle(GuiGraphicsExtractor context, double mouseX, double mouseY, GUIToggle button) {
         int x = windowX + button.x;
         int y = windowY + button.y;
         int w = button.width;
@@ -159,7 +159,7 @@ public abstract class GoopyScreen extends Screen {
         return (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height);
     }
 
-    public void renderButton(Identifier texture, GuiGraphics context, int x, int y, int u, int v, int u2, int v2, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY){
+    public void renderButton(Identifier texture, GuiGraphicsExtractor context, int x, int y, int u, int v, int u2, int v2, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY){
         if(isOnButton(mouseX, mouseY, x, y, width, height)){
             context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u2, v2, width, height, textureWidth, textureHeight);
         }
@@ -167,7 +167,7 @@ public abstract class GoopyScreen extends Screen {
             context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
-    public void renderButton(Identifier texture, GuiGraphics context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding){
+    public void renderButton(Identifier texture, GuiGraphicsExtractor context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding){
         if(isOnButton(mouseX, mouseY, x, y, width, height)) {
             if(holding){
                 context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
@@ -180,7 +180,7 @@ public abstract class GoopyScreen extends Screen {
             context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
         }
     }
-    public void renderButton(Identifier texture, GuiGraphics context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding, boolean condition){
+    public void renderButton(Identifier texture, GuiGraphicsExtractor context, int x, int y, int u, int v, int u2, int v2, int u3, int v3, int width, int height, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean holding, boolean condition){
         if(condition){
             context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u3, v3, width, height, textureWidth, textureHeight);
         }
@@ -197,18 +197,18 @@ public abstract class GoopyScreen extends Screen {
         }
     }
 
-    public static void drawRecolorableTexture(GuiGraphics context, Identifier texture, int x, int y, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, int color) {
+    public static void drawRecolorableTexture(GuiGraphicsExtractor context, Identifier texture, int x, int y, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, int color) {
         drawRecolorableTexture(context, texture, x, y, 0, regionWidth, regionHeight, u, v, textureWidth, textureHeight, ARGB.red(color) / 256f, ARGB.green(color) / 256f, ARGB.blue(color) / 256f, ARGB.alpha(color) / 256f);
     }
 
-    public static void drawOutline(GuiGraphics context, int x, int y, int width, int height, int color){
+    public static void drawOutline(GuiGraphicsExtractor context, int x, int y, int width, int height, int color){
         context.fill(x, y, x + width + 1, y + 1, color);
         context.fill(x, y + height, x + width + 1, y + height + 1, color);
         context.fill(x, y + 1, x + 1, y + height, color);
         context.fill(x + width, y + 1, x + width + 1, y + height, color);
     }
 
-    public static void drawRecolorableTexture(GuiGraphics context, Identifier texture, int x, int y, int z, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, float red, float green, float blue, float alpha) {
+    public static void drawRecolorableTexture(GuiGraphicsExtractor context, Identifier texture, int x, int y, int z, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight, float red, float green, float blue, float alpha) {
         float u1 = (u + 0.0f) /textureWidth;
         float u2 = (u + regionWidth) / textureWidth;
         float v1 = (v + 0.0f) / textureHeight;
@@ -241,7 +241,7 @@ public abstract class GoopyScreen extends Screen {
 
 
     }
-    public static void drawResizableText(GuiGraphics context, Font textRenderer, Component text, float scale, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
+    public static void drawResizableText(GuiGraphicsExtractor context, Font textRenderer, Component text, float scale, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
 
         x = x / scale;
         y = y / scale;
@@ -251,11 +251,11 @@ public abstract class GoopyScreen extends Screen {
 
         matrices.pushMatrix();
         matrices.scale(scale, scale);
-        context.drawString(textRenderer, text, (int)x, (int)y, color, false);
+        context.text(textRenderer, text, (int)x, (int)y, color, false);
         //textRenderer.draw(text, x, y, color, shadow, matrices.peek().getPositionMatrix(), vertices, TextRenderer.TextLayerType.NORMAL, backgroundColor, 0xF000F0);
         matrices.popMatrix();
     }
-    public void drawAutoResizedText(GuiGraphics context, Font textRenderer, Component text, float baseScale, float maxTextWidth, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
+    public void drawAutoResizedText(GuiGraphicsExtractor context, Font textRenderer, Component text, float baseScale, float maxTextWidth, float x, float y, int color, int backgroundColor, boolean shadow, boolean centered){
         float scale = (textRenderer.width(text) * baseScale) > maxTextWidth ? (baseScale / textRenderer.width(text)) * maxTextWidth : baseScale;
         drawResizableText(context, textRenderer, text, scale, x, y + (1 / scale), color, backgroundColor, shadow, centered);
     }
@@ -264,13 +264,13 @@ public abstract class GoopyScreen extends Screen {
         return 8 * scale;
     }
 
-    public static void drawEntity(GuiGraphics context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity) {
+    public static void drawEntity(GuiGraphicsExtractor context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity) {
         drawEntity(context, x1, y1, x2, y2, size, scale,rotation, entity, 0, false);
     }
-    public static void drawEntity(GuiGraphics context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset) {
+    public static void drawEntity(GuiGraphicsExtractor context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset) {
         drawEntity(context, x1, y1, x2, y2, size, scale,rotation, entity, entityYOffset, false);
     }
-    public static void drawEntity(GuiGraphics context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset, boolean entity2) {
+    public static void drawEntity(GuiGraphicsExtractor context, int x1, int y1, int x2, int y2, int size, float scale, Quaternionf rotation, Entity entity, float entityYOffset, boolean entity2) {
         context.enableScissor(x1, y1, x2, y2);
         Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI);
         Quaternionf quaternionf2 = rotation;
@@ -319,7 +319,7 @@ public abstract class GoopyScreen extends Screen {
                 livingEntityRenderState.scale = 1.0F;
             }
 
-            context.submitEntityRenderState(entityRenderState, (float)p, vector3f, quaternionf, quaternionf2, x1, y1, x2, y2);
+            context.entity(entityRenderState, (float)p, vector3f, quaternionf, quaternionf2, x1, y1, x2, y2);
             //InventoryScreen.drawEntity(context, x1, y1, x2, y2, size, scale, f, g, entity);
             //InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternionf, quaternionf2, entity);
 

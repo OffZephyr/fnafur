@@ -3,7 +3,7 @@ package net.zephyr.fnafur.client.gui.screens.editing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -72,7 +72,7 @@ public class DecalBookEditScreen extends GoopyScreen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
         context.fill(RenderPipelines.GUI, 0, 0, width, height,0x66000000);
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY, 0, 0, 256, 187, 256, 256);
 
@@ -140,10 +140,10 @@ public class DecalBookEditScreen extends GoopyScreen {
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 256 - 30, cornerY + 189, u3, 188, 18, 10, 256, 256);
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 256 - 9, cornerY + 190, u1, 188, 9, 9, 256, 256);
 
-        super.render(context, mouseX, mouseY, delta);
+        super.extractRenderState(context, mouseX, mouseY, delta);
     }
 
-    void renderPage(GuiGraphics context, int page, String category, int mouseX, int mouseY){
+    void renderPage(GuiGraphicsExtractor context, int page, String category, int mouseX, int mouseY){
         int xOffset = page % 2 == 0 ? 0 : 129;
 
         List<DecalInit.Decal> list = DecalInit.CATEGORIES.get(category);

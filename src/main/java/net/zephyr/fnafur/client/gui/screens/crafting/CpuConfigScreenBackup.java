@@ -2,7 +2,7 @@ package net.zephyr.fnafur.client.gui.screens.crafting;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -130,7 +130,7 @@ public class CpuConfigScreenBackup extends GoopyScreen {
     }
 
     @Override
-    public void renderToggle(GuiGraphics context, double mouseX, double mouseY, GUIToggle button) {
+    public void renderToggle(GuiGraphicsExtractor context, double mouseX, double mouseY, GUIToggle button) {
 
         printTape(context, Component.literal(button.setting), button.x, windowY + button.y + 3, 0.75f, button.leftText);
 
@@ -138,7 +138,7 @@ public class CpuConfigScreenBackup extends GoopyScreen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
         drawRecolorableTexture(context, TEXTURE, windowX, windowY, 256, 256, 0, 0, 512, 512, 0xFFFFFFFF);
 
         printTape(context, Component.literal("Behavior"), 2, windowY + 17, 0.85f, false);
@@ -150,18 +150,18 @@ public class CpuConfigScreenBackup extends GoopyScreen {
 
         renderDial(context, Component.literal("stalkLength"), windowX + 85, windowY + 142, stalk % 2 == 0);
         renderDial(context, Component.literal("sightRange"), windowX + 85, windowY + 156, sight % 2 == 0);
-        super.render(context, mouseX, mouseY, delta);
+        super.extractRenderState(context, mouseX, mouseY, delta);
 
     }
 
-    public void renderDial(GuiGraphics context, Component label, int x, int y, boolean isInverted) {
+    public void renderDial(GuiGraphicsExtractor context, Component label, int x, int y, boolean isInverted) {
         int v = isInverted ? 98 : 85;
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 270, v, 11, 13, 512, 512);
 
         printTape(context, label, x - windowX + 14, y + 3, 0.75f, false);
     }
 
-    void printTape(GuiGraphics context, Component text, int x, int y, float textScale, boolean left){
+    void printTape(GuiGraphicsExtractor context, Component text, int x, int y, float textScale, boolean left){
 
         int width = (int)((font.width(text) + 2) * textScale);
 

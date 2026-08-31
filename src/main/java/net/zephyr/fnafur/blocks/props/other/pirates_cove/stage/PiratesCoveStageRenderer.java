@@ -4,18 +4,18 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.blocks.common_block_entity.CommonBlockEntityRenderState;
 import net.zephyr.fnafur.init.block_init.GeoBlockInit;
 import net.zephyr.fnafur.util.CustomDataTickets;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.GeoBlockRenderer;
+import com.geckolib.renderer.base.GeoRenderState;
 
 public class PiratesCoveStageRenderer<R extends BlockEntityRenderState & GeoRenderState> extends GeoBlockRenderer<PiratesCoveStageBlockEntity, R> {
     public PiratesCoveStageRenderer(BlockEntityRendererProvider.Context context) {
-        super(new PiratesCoveStageModel());
+        super(context, new PiratesCoveStageModel());
     }
 
 

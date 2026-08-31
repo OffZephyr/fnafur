@@ -6,7 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.resources.metadata.texture.TextureMetadataSection;
@@ -57,7 +57,7 @@ public class FnafSplashOverlay extends LoadingOverlay {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
         int width = context.guiWidth();
         int height = context.guiHeight();
 
@@ -75,13 +75,13 @@ public class FnafSplashOverlay extends LoadingOverlay {
                 if(this.client.screen instanceof FnafTitleScreen title){
                     title.tab = FnafUniverseRebuilt.DISABLE_DISCLAIMER ? 0 : -1;
                 }
-                this.client.screen.render(context, mouseX, mouseY, delta);
+                this.client.screen.extractRenderState(context, mouseX, mouseY, delta);
             }
 
             h = 1.0F - Mth.clamp(f - 1.0F, 0.0F, 1.0F);
         } else if (this.reloading) {
             if (this.client.screen != null && g < 1.0F) {
-                this.client.screen.render(context, mouseX, mouseY, delta);
+                this.client.screen.extractRenderState(context, mouseX, mouseY, delta);
             }
 
             h = Mth.clamp(g, 0.0F, 1.0F);

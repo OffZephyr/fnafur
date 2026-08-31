@@ -1,13 +1,12 @@
 package net.zephyr.fnafur.client.rendering;
 
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -60,7 +59,7 @@ public class TileDoorPlacingRenderer {
                             boolean left = state.getValue(TileDoorBlock.FACING).getAxis() == Direction.Axis.Z ? x != 0 : x != h;
                             state = state.setValue(TileDoorBlock.TYPE, VerticalTileStates.get(y != v, right, y != 0, left));
 
-                            BlockStateModel model = client.getModelManager().getBlockModelShaper().getBlockModel(state);
+                            BlockStateModel model = client.getModelManager().getBlockStateModelSet().get(state);
 
                             Vec3i pos = new Vec3i(
                                     h == distance.getZ() ? pos1.getX() : minPos.getX() + (Math.abs(dir.getUnitVec3i().getZ()) * x),
@@ -71,7 +70,7 @@ public class TileDoorPlacingRenderer {
                             matrices.pushPose();
                             matrices.translate(pos.getX(), pos.getY(), pos.getZ());
 
-                            ModelBlockRenderer.renderModel(matrices.last(), vertexConsumers.getBuffer(ItemBlockRenderTypes.getMovingBlockRenderType(state)), model, 1, 1, 1, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY);
+                            ModelBlockRenderer.renderModel(matrices.last(), vertexConsumers.getBuffer(ItemBlockRenderTypes.getMovingBlockRenderType(state)), model, 1, 1, 1, LightCoordsUtil.FULL_BLOCK, OverlayTexture.NO_OVERLAY);
 
                             matrices.popPose();
                         }

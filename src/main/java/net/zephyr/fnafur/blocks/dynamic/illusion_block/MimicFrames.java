@@ -69,7 +69,7 @@ public class MimicFrames extends BlockWithSticker {
     }
 
     @Override
-    protected int getLightBlock(BlockState state) {
+    protected int getLightDampening(BlockState state) {
         return state.getValue(IS_FULL) ? 15 : 0;
     }
 

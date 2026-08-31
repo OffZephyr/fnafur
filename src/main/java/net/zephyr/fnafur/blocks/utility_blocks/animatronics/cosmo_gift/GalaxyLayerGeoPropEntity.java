@@ -8,13 +8,13 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.object.PlayState;
-import software.bernie.geckolib.animation.state.AnimationTest;
-import software.bernie.geckolib.animation.*;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.animatable.GeoBlockEntity;
+import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.AnimationController;
+import com.geckolib.animation.object.PlayState;
+import com.geckolib.animation.state.AnimationTest;
+import com.geckolib.animation.*;
 
 public class GalaxyLayerGeoPropEntity extends GeoPropBlockEntity implements GeoBlockEntity {
     public GalaxyLayerGeoPropEntity(BlockPos pos, BlockState state) {

@@ -1,35 +1,19 @@
 package net.zephyr.fnafur.mixin;
 
+import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.Camera;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.SubmitNodeStorage;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.state.BlockOutlineRenderState;
-import net.minecraft.client.renderer.state.LevelRenderState;
+import net.minecraft.client.renderer.state.level.BlockOutlineRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import com.mojang.math.Axis;
-import net.minecraft.world.phys.Vec3;
-import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFrame;
-import net.zephyr.fnafur.blocks.props.base.FloorPropBlock;
 import net.zephyr.fnafur.blocks.props.base.PropBlock;
-import net.zephyr.fnafur.blocks.props.base.WallPropBlock;
 import net.zephyr.fnafur.client.ClientHook;
-import net.zephyr.fnafur.util.CustomDataTickets;
-import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import net.zephyr.fnafur.util.mixinAccessing.IWorldRendererAccessor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,14 +21,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderState;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Mixin(LevelRenderer.class)
@@ -79,11 +59,11 @@ public class LevelRendererMixin<R extends BlockEntityRenderState & GeoRenderStat
     }
 
     @Inject(method = "submitBlockEntities", at = @At("TAIL"))
-    void renderBlockEntities(PoseStack matrices, LevelRenderState renderStates, SubmitNodeStorage queue, CallbackInfo ci){
+    void renderBlockEntities(final PoseStack poseStack, final LevelRenderState levelRenderState, final SubmitNodeStorage submitNodeStorage, CallbackInfo ci){
 
         if(!getEntityRenderStates().isEmpty()) {
             for (R renderState : getEntityRenderStates().keySet()) {
-                ClientHook.renderWorldBlockEntity(getBlockEntityRenderer(renderState), renderState, matrices, renderStates, queue);
+                ClientHook.renderWorldBlockEntity(getBlockEntityRenderer(renderState), renderState, poseStack, levelRenderState, submitNodeStorage);
             }
         }
         clearStates();

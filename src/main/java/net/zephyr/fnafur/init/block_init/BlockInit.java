@@ -1,6 +1,5 @@
 package net.zephyr.fnafur.init.block_init;
 
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.component.DataComponents;
@@ -1465,36 +1464,36 @@ public class BlockInit {
 
     public static void registerBlocksOnClient() {
 
-        BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_DIAGONAL, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.CPU_CONFIG_PANEL, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.TRIGGER_BLOCK, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.CHIP_READER, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.SERVER_MONITOR, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.WORKBENCH, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_DIAGONAL, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.CPU_CONFIG_PANEL, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.TRIGGER_BLOCK, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.CHIP_READER, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.SERVER_MONITOR, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.WORKBENCH, ChunkSectionLayer.CUTOUT);
 
         PropInit.PROPS.add(BlockInit.FUEL_GENERATOR.asItem());
         PropInit.PROPS.add(BlockInit.REDSTONE_CONVERTER.asItem());
         PropInit.PROPS.add(BlockInit.WORKBENCH.asItem());
 
-        BlockRenderLayerMap.putBlock(BlockInit.FUEL_GENERATOR, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.ELECTRICAL_LOCKER, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.WAREHOUSE_SHELF, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.BACKSTAGE_SHELF, ChunkSectionLayer.CUTOUT);
-
-        BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_2x2, ChunkSectionLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_4x4, ChunkSectionLayer.CUTOUT);
-
-        BlockRenderLayerMap.putBlock(BlockInit.STICKER_BLOCK, ChunkSectionLayer.CUTOUT);
-
-        BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS_SLIT, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS_COLORED, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS_SLIT_COLORED, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(BlockInit.BIG_WINDOW, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(BlockInit.BIG_WINDOW_WHITE, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(BlockInit.BIG_WINDOW_DARK, ChunkSectionLayer.TRANSLUCENT);
-        BlockRenderLayerMap.putBlock(BlockInit.DIRTY_GLASS, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(BlockInit.FUEL_GENERATOR, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.ELECTRICAL_LOCKER, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.WAREHOUSE_SHELF, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.BACKSTAGE_SHELF, ChunkSectionLayer.CUTOUT);
+//
+        //BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_2x2, ChunkSectionLayer.CUTOUT);
+        //BlockRenderLayerMap.putBlock(BlockInit.MIMIC_FRAME_4x4, ChunkSectionLayer.CUTOUT);
+//
+        //BlockRenderLayerMap.putBlock(BlockInit.STICKER_BLOCK, ChunkSectionLayer.CUTOUT);
+//
+        //BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS_SLIT, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS_COLORED, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(BlockInit.TILED_GLASS_SLIT_COLORED, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(BlockInit.BIG_WINDOW, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(BlockInit.BIG_WINDOW_WHITE, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(BlockInit.BIG_WINDOW_DARK, ChunkSectionLayer.TRANSLUCENT);
+        //BlockRenderLayerMap.putBlock(BlockInit.DIRTY_GLASS, ChunkSectionLayer.TRANSLUCENT);
         
         BlockEntityRenderers.register(BlockEntityInit.FOG_BLOCK, FogBlockRenderer::new);
         BlockEntityRenderers.register(BlockEntityInit.CURTAIN, CurtainBlockEntityRenderer::new);

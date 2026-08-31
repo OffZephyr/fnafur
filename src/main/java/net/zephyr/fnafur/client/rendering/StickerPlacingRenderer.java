@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.client.rendering;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -131,28 +131,28 @@ public class StickerPlacingRenderer {
                             vertexConsumer.addVertex(matrices.last().pose(), -vWidth, y, -vHeight)
                                     .setUv(0.5f - tWidth, 0.5f - tHeight)
                                     .setColor(0xFFFFFFFF)
-                                    .setLight(LightTexture.FULL_BRIGHT)
+                                    .setLight(LightCoordsUtil.FULL_BRIGHT)
                                     .setOverlay(OverlayTexture.NO_OVERLAY)
                                     .setNormal(normal.x(), normal.y(), normal.z())
                             ;
                             vertexConsumer.addVertex(matrices.last().pose(), -vWidth, y, vHeight)
                                     .setUv(0.5f - tWidth, 0.5f + tHeight)
                                     .setColor(0xFFFFFFFF)
-                                    .setLight(LightTexture.FULL_BRIGHT)
+                                    .setLight(LightCoordsUtil.FULL_BRIGHT)
                                     .setOverlay(OverlayTexture.NO_OVERLAY)
                                     .setNormal(normal.x(), normal.y(), normal.z())
                             ;
                             vertexConsumer.addVertex(matrices.last().pose(), vWidth, 0.0f, vHeight)
                                     .setUv(0.5f + tWidth, 0.5f + tHeight)
                                     .setColor(0xFFFFFFFF)
-                                    .setLight(LightTexture.FULL_BRIGHT)
+                                    .setLight(LightCoordsUtil.FULL_BRIGHT)
                                     .setOverlay(OverlayTexture.NO_OVERLAY)
                                     .setNormal(normal.x(), normal.y(), normal.z())
                             ;
                             vertexConsumer.addVertex(matrices.last().pose(), vWidth, 0.0f, -vHeight)
                                     .setUv(0.5f + tWidth, 0.5f - tHeight)
                                     .setColor(0xFFFFFFFF)
-                                    .setLight(LightTexture.FULL_BRIGHT)
+                                    .setLight(LightCoordsUtil.FULL_BRIGHT)
                                     .setOverlay(OverlayTexture.NO_OVERLAY)
                                     .setNormal(normal.x(), normal.y(), normal.z())
                             ;

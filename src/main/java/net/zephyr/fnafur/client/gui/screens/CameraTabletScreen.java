@@ -3,7 +3,7 @@ package net.zephyr.fnafur.client.gui.screens;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -98,7 +98,7 @@ public class CameraTabletScreen extends GoopyScreen {
         super.init();
     }
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
 
         doubleClick = doubleClick - delta > 0 ? doubleClick - delta : 0;
 
@@ -151,10 +151,10 @@ public class CameraTabletScreen extends GoopyScreen {
 
         drawRecolorableTexture(context, overlay, 0, 0, 0, this.width, this.height, 0, 0, this.width, this.height, 1, 1, 1, 1);
 
-        super.render(context, mouseX, mouseY, delta);
+        super.extractRenderState(context, mouseX, mouseY, delta);
     }
 
-    void drawSlider(GuiGraphics context, int mouseX, int mouseY, int x, int y, int width, int height, float delta){
+    void drawSlider(GuiGraphicsExtractor context, int mouseX, int mouseY, int x, int y, int width, int height, float delta){
         BlockEntity ent = Minecraft.getInstance().level.getBlockEntity(BlockPos.of(currentCam));
         if(ent != null) {
             CompoundTag nbt = ((IEntityDataSaver)ent).getPersistentData();
@@ -250,7 +250,7 @@ public class CameraTabletScreen extends GoopyScreen {
         }
     }
 
-    void drawActionButton(GuiGraphics context, int mouseX, int mouseY){
+    void drawActionButton(GuiGraphicsExtractor context, int mouseX, int mouseY){
         if(Minecraft.getInstance().level.getBlockEntity(BlockPos.of(currentCam)) != null) {
             CompoundTag nbt = ((IEntityDataSaver) Minecraft.getInstance().level.getBlockEntity(BlockPos.of(currentCam))).getPersistentData().copy();
             if (nbt.getBoolean("Action").get()) {
@@ -264,7 +264,7 @@ public class CameraTabletScreen extends GoopyScreen {
                 boolean bl = isOnButton(mouseX, mouseY, x, y, width, height);
                 int color = bl ? holding ? ARGB.color(255, 75, 255, 75) : ARGB.color(255, 150, 150, 150) : ARGB.color(255, 100, 100, 100);
                 context.fill(x, y, x + width, y + height, color);
-                context.drawCenteredString(font, nbt.getString("ActionName").get(), x + width / 2, (y + (height / 2)) - 4, 0xFFFFFFFF);
+                context.centeredText(font, nbt.getString("ActionName").get(), x + width / 2, (y + (height / 2)) - 4, 0xFFFFFFFF);
             }
         }
     }
@@ -283,7 +283,7 @@ public class CameraTabletScreen extends GoopyScreen {
             setPowered(bl && holding);
         }
     }
-    void drawMap(GuiGraphics context, int mouseX, int mouseY, float delta){
+    void drawMap(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta){
         CompoundTag data = getNbtData();
 
         boolean bl = data.getList("CamMap").get().isEmpty();

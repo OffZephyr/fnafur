@@ -2,9 +2,9 @@ package net.zephyr.fnafur.blocks.utility_blocks.animatronics.cosmo_gift;
 
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.base.GeoRenderer;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
+import com.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderer;
+import com.geckolib.renderer.layer.GeoRenderLayer;
 
 public class GeoPropAddedLayer<T extends GeoPropBlockEntity, O, R extends GeoRenderState> extends GeoRenderLayer<T, O, R> {
     final RenderType layer;

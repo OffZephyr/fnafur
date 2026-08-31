@@ -2,8 +2,8 @@ package net.zephyr.fnafur.blocks.props.floor_props.instruments.flying_v_guitar;
 
 import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.model.GeoModel;
+import com.geckolib.renderer.base.GeoRenderState;
 
 public class FlyingVGuitarItemModel extends GeoModel<FlyingVGuitarItem> {
     @Override

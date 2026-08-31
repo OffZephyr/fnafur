@@ -5,16 +5,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.zephyr.fnafur.blocks.common_block_entity.CommonBlockEntityRenderState;
 import net.zephyr.fnafur.util.CustomDataTickets;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.GeoBlockRenderer;
+import com.geckolib.renderer.base.GeoRenderState;
 
 public class GeoDoorRenderer<R extends BlockEntityRenderState & GeoRenderState> extends GeoBlockRenderer<GeoDoorEntity, R> {
     public GeoDoorRenderer(BlockEntityRendererProvider.Context context) {
-        super(new DoorModel());
+        super(context, new DoorModel());
         //addRenderLayer(new GeoDoorWindowLayer(this));
     }
 

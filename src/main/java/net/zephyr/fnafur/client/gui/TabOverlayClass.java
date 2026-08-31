@@ -1,10 +1,10 @@
 package net.zephyr.fnafur.client.gui;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -12,9 +12,9 @@ import net.zephyr.fnafur.networking.payloads.MoneySyncDataC2SPayload;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.joml.Matrix3x2fStack;
 
-public class TabOverlayClass implements HudRenderCallback {
+public class TabOverlayClass implements HudElement {
     @Override
-    public void onHudRender(GuiGraphics drawContext, DeltaTracker tickCounter) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 
         Minecraft client = Minecraft.getInstance();
         int width = client.getWindow().getGuiScaledWidth();
@@ -39,7 +39,7 @@ public class TabOverlayClass implements HudRenderCallback {
                 String HourDisplay = renderClock()[0];
                 String day = renderClock()[1];
 
-                Matrix3x2fStack matrices = drawContext.pose();
+                Matrix3x2fStack matrices = graphics.pose();
                 //VertexConsumerProvider verticies = ((IDCVertexConsumersAcc)drawContext).getVertexConsumers();
 
                 //matrices.pushMatrix();
@@ -57,7 +57,7 @@ public class TabOverlayClass implements HudRenderCallback {
         Level world = client.level;
 
         if (world != null) {
-            long dayTime = (world.getDayTime());
+            long dayTime = (world.getOverworldClockTime());
             double currentDay = dayTime / 24000d;
 
             long hour = (dayTime / 1000) - ((24000 * (dayTime / 24000)) / 1000);

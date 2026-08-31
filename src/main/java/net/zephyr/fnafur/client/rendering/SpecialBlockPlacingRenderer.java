@@ -1,6 +1,5 @@
 package net.zephyr.fnafur.client.rendering;
 
-import net.fabricmc.fabric.api.renderer.v1.render.RenderLayerHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -10,7 +9,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.phys.BlockHitResult;
@@ -41,7 +40,7 @@ public class SpecialBlockPlacingRenderer {
                         BlockState state = block.defaultBlockState();
                         VoxelShape shape = state.getShape(client.level, pos, CollisionContext.empty());
 
-                        BlockStateModel model = client.getModelManager().getBlockModelShaper().getBlockModel(state);
+                        BlockStateModel model = client.getModelManager().getBlockStateModelSet().get(state);
 
                         if(!client.level.isUnobstructed(state, pos, CollisionContext.of(client.player)) || !client.level.getBlockState(pos).canBeReplaced()) return;
 
@@ -56,7 +55,7 @@ public class SpecialBlockPlacingRenderer {
                             ((IEntityDataSaver)entity).getPersistentData().merge(ItemUtil.getNbt(client.player.getMainHandItem()));
 
                             m.forceEnt = entity;
-                            client.getBlockRenderer().getModelRenderer().render(client.level, m, state, pos, matrices, RenderLayerHelper.movingDelegate(vertexConsumers), false, 0, OverlayTexture.NO_OVERLAY);
+                            //client.getBlockRenderer().getModelRenderer().render(client.level, m, state, pos, matrices, RenderLayerHelper.movingDelegate(vertexConsumers), false, 0, OverlayTexture.NO_OVERLAY);
                             m.forceEnt = null;
 
 

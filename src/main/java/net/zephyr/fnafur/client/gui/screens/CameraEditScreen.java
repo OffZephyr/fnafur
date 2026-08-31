@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.nbt.CompoundTag;
@@ -350,9 +350,8 @@ public class CameraEditScreen extends GoopyScreen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
-
-        renderTransparentBackground(context);
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        extractTransparentBackground(context);
 
         context.blit(RenderPipelines.GUI_TEXTURED, texture, this.width/2 - 81, this.height/2 - 36, 0, 0, 146, 72, 256, 256);
 
@@ -446,8 +445,8 @@ public class CameraEditScreen extends GoopyScreen {
         Component renameAction = Component.translatable("fnafur.screens.camera_edit.renameAction", key);
 
         if(renameActionButton){
-            renderTransparentBackground(context);
-            context.drawCenteredString(font, renameAction, this.width/2, this.height / 2 - 32, 0xFFFFFFFF);
+            extractTransparentBackground(context);
+            context.centeredText(font, renameAction, this.width/2, this.height / 2 - 32, 0xFFFFFFFF);
 
             int width = font.width(this.actionName.getValue() + 10);
             int height = 30;
@@ -455,19 +454,20 @@ public class CameraEditScreen extends GoopyScreen {
             int y = this.height / 2 - height/2;
             context.fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xFFFFFFFF);
             context.fill(x, y, x + width, y + height, 0xFF666666);
-            context.drawCenteredString(font, this.actionName.getValue(), this.width / 2, this.height / 2 - 4, 0xFFFFFFFF);
-            this.actionName.render(context, mouseX, mouseY, delta);
+            context.centeredText(font, this.actionName.getValue(), this.width / 2, this.height / 2 - 4, 0xFFFFFFFF);
+            this.actionName.extractRenderState(context, mouseX, mouseY, delta);
         }
         else {
-            context.drawCenteredString(font, tooltips, this.width/2, this.height / 2 + 42, 0xFFFFFFFF);
+            context.centeredText(font, tooltips, this.width/2, this.height / 2 + 42, 0xFFFFFFFF);
 
-            this.nameField.render(context, mouseX, mouseY, delta);
+            this.nameField.extractRenderState(context, mouseX, mouseY, delta);
         }
 
-        drawTooltip(context, mouseX, mouseY);super.render(context, mouseX, mouseY, delta);
+        drawTooltip(context, mouseX, mouseY);
+        super.extractRenderState(context, mouseX, mouseY, delta);
     }
 
-    void drawTooltip(GuiGraphics context, int mouseX, int mouseY){
+    void drawTooltip(GuiGraphicsExtractor context, int mouseX, int mouseY){
         Font render = Minecraft.getInstance().font;
 
         boolean speedBL1 = isOnButton(mouseX, mouseY, this.width/2 + 51, this.height / 2 + 9, 7, 7);

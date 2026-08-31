@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.blocks.geo_doors;
 
-import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
+import com.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.layer.GeoRenderLayer;
 
 public class GeoDoorWindowLayer extends GeoRenderLayer<GeoDoorEntity, Void, GeoRenderState> {
     public GeoDoorWindowLayer(GeoDoorRenderer entityRendererIn) {

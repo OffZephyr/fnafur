@@ -3,8 +3,8 @@ package net.zephyr.fnafur.blocks.geo_doors;
 import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.CustomDataTickets;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.model.GeoModel;
+import com.geckolib.renderer.base.GeoRenderState;
 
 public class DoorModel extends GeoModel<GeoDoorEntity> {
 

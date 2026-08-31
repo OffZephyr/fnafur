@@ -1,8 +1,7 @@
 package net.zephyr.fnafur.init.block_init;
 
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.fabricmc.fabric.api.registry.LandPathNodeTypesRegistry;
+import net.fabricmc.fabric.api.registry.LandPathTypeRegistry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
@@ -211,9 +210,9 @@ public class BlockEntityInit {
 
 
         for (Block block : PropInit.AVOIDED_PROPS) {
-            LandPathNodeTypesRegistry.register(block, PathType.COCOA, PathType.COCOA);
-            LandPathNodeTypesRegistry.register(block, PathType.DANGER_FIRE, PathType.DANGER_FIRE);
-            LandPathNodeTypesRegistry.register(block, PathType.DANGER_OTHER, PathType.DANGER_OTHER);
+            LandPathTypeRegistry.register(block, PathType.COCOA, PathType.COCOA);
+            LandPathTypeRegistry.register(block, PathType.FIRE, PathType.FIRE);
+            LandPathTypeRegistry.register(block, PathType.BLOCKED, PathType.BLOCKED);
         }
 
         FnafUniverseRebuilt.LOGGER.info("Registering Block Entities for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());

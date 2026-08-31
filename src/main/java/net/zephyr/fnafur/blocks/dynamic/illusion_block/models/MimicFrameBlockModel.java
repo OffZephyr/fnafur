@@ -1,16 +1,16 @@
 package net.zephyr.fnafur.blocks.dynamic.illusion_block.models;
 
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.client.renderer.block.model.BlockStateModel.UnbakedRoot;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.Identifier;
@@ -18,7 +18,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
@@ -26,6 +25,7 @@ import net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal.DiagonalMimicFra
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockModel;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MimicFrameBlockModel extends StickerBlockModel {
@@ -95,21 +95,22 @@ public class MimicFrameBlockModel extends StickerBlockModel {
         }
     }
 
-    @Override
-    public TextureAtlasSprite particleSprite(BlockAndTintGetter blockView, BlockPos pos, BlockState state) {
-        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+    public TextureAtlasSprite getParticleSprite() {
+        return Minecraft.getInstance().getAtlasManager().get(new SpriteId(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 
+
     @Override
-    public TextureAtlasSprite particleIcon() {
-        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+    public Material.Baked particleMaterial() {
+        TextureAtlasSprite sprite =  Minecraft.getInstance().getAtlasManager().get(new SpriteId(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+        return new Material.Baked(sprite, false);
     }
 
     public void emitSide(QuadEmitter emitter, CompoundTag nbt, Direction direction, Block sideBlock, BlockPos pos, boolean reColor, int matrixSize, int x, int y, int z, int colorIndex) {
 
         int frameSize = matrixSize * matrixSize;
 
-        TextureAtlasSprite frame = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_" + frameSize)));
+        TextureAtlasSprite frame = Minecraft.getInstance().getAtlasManager().get(new SpriteId(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_" + frameSize)));
 
         if (frame == null) return;
 
@@ -150,15 +151,16 @@ public class MimicFrameBlockModel extends StickerBlockModel {
         TextureAtlasSprite sprite;
         if(sideBlock != null){
             BlockState textureState = sideBlock.defaultBlockState();
-            BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(textureState);
-            List<BlockModelPart> parts = model.collectParts(RandomSource.create());
-            sprite = parts.get(0).getQuads(direction).get(0).sprite();
+            BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(textureState);
+            List<BlockStateModelPart> parts = new ArrayList<>();
+            model.collectParts(RandomSource.create(), parts);
+            sprite = parts.get(0).getQuads(direction).get(0).materialInfo().sprite();
         }
         else{
             sprite = frame;
         }
 
-        emitter.spriteBake(sprite, MutableQuadView.BAKE_LOCK_UV);
+        emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_LOCK_UV);
         int color = reColor ? getColor(direction, colorIndex) : 0xFFFFFFFF;
         emitter.color(color, color, color, color);
         emitter.emit();
@@ -204,7 +206,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                                 0;
                 int num = dirPos % decal.getTextures().length;
                 Identifier identifier = decal.getTextures()[num];
-                TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, identifier));
+                TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasManager().get(new SpriteId(TextureAtlas.LOCATION_BLOCKS, identifier));
 
                 float Offset = offset_list.getFloat(i).orElse(0f);
                 float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;
@@ -256,7 +258,7 @@ public class MimicFrameBlockModel extends StickerBlockModel {
                         .uv(1, u, v)
                         .uv(2, u2, v)
                         .uv(3, u2, v2)
-                        .spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE)
+                        .materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE)
                         .color(-1, -1, -1, -1)
                         .emit();
             }

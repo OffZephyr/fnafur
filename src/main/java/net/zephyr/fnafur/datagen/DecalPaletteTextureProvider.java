@@ -2,7 +2,7 @@ package net.zephyr.fnafur.datagen;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.DataProvider;
@@ -22,9 +22,9 @@ import java.util.concurrent.CompletableFuture;
 public class DecalPaletteTextureProvider implements DataProvider {
 
     private final PackOutput.PathProvider texturePathResolver;
-    private final FabricDataOutput output;
+    private final FabricPackOutput output;
 
-    public DecalPaletteTextureProvider(FabricDataOutput output) {
+    public DecalPaletteTextureProvider(FabricPackOutput output) {
         this.texturePathResolver = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "textures/block/decals/");
         this.output = output;
     }

@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.datagen;
 
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -10,21 +10,16 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.data.*;
-import net.minecraft.client.renderer.block.model.Variant;
-import net.minecraft.client.data.models.MultiVariant;
-import net.minecraft.world.item.Item;
-import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.init.block_init.BlockInit;
-import net.zephyr.fnafur.init.block_init.Palettes.PaletteManager;
 import net.zephyr.fnafur.init.item_init.ItemInit;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModelProvider extends FabricModelProvider {
-    public ModelProvider(FabricDataOutput output) {
+    public ModelProvider(FabricPackOutput output) {
         super(output);
     }
 
@@ -257,7 +252,7 @@ public class ModelProvider extends FabricModelProvider {
         for (int i = 1; i <= variantLength; i++) {
             String suffix = "";
             if(i != 1) suffix = "_" + i;
-            Variant modelVariant = blockStateModelGenerator.plainModel(ModelTemplates.CUBE_ALL.createWithSuffix(block, suffix, new TextureMapping().put(TextureSlot.ALL, TextureMapping.getBlockTexture(block, suffix)), blockStateModelGenerator.modelOutput));
+            Variant modelVariant = BlockModelGenerators.plainModel(ModelTemplates.CUBE_ALL.createWithSuffix(block, suffix, new TextureMapping().put(TextureSlot.ALL, TextureMapping.getBlockTexture(block, suffix)), blockStateModelGenerator.modelOutput));
             modelVariants.add(modelVariant);
         }
 
@@ -267,7 +262,7 @@ public class ModelProvider extends FabricModelProvider {
                 .accept(
                         MultiVariantGenerator.dispatch(
                                 block,
-                                blockStateModelGenerator.variants(
+                                BlockModelGenerators.variants(
                                         variantsArray
                                 )
                         )
@@ -279,25 +274,25 @@ public class ModelProvider extends FabricModelProvider {
         for (int i = 1; i <= variantLength; i++) {
             String suffix = "";
             if(i != 1) suffix = "_" + i;
-            Variant modelVariant = blockStateModelGenerator.plainModel(TexturedModel.CUBE.createWithSuffix(block, suffix, blockStateModelGenerator.modelOutput));
+            Variant modelVariant = BlockModelGenerators.plainModel(TexturedModel.CUBE.createWithSuffix(block, suffix, blockStateModelGenerator.modelOutput));
 
             List<Variant> list = List.of(
                     modelVariant,
-                    modelVariant.with(blockStateModelGenerator.X_ROT_90),
-                    modelVariant.with(blockStateModelGenerator.X_ROT_180),
-                    modelVariant.with(blockStateModelGenerator.X_ROT_270),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_90),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_90.then(blockStateModelGenerator.X_ROT_90)),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_90.then(blockStateModelGenerator.X_ROT_180)),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_90.then(blockStateModelGenerator.X_ROT_270)),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_180),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_180.then(blockStateModelGenerator.X_ROT_90)),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_180.then(blockStateModelGenerator.X_ROT_180)),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_180.then(blockStateModelGenerator.X_ROT_270)),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_270),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_270.then(blockStateModelGenerator.X_ROT_90)),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_270.then(blockStateModelGenerator.X_ROT_180)),
-                    modelVariant.with(blockStateModelGenerator.Y_ROT_270.then(blockStateModelGenerator.X_ROT_270))
+                    modelVariant.with(BlockModelGenerators.X_ROT_90),
+                    modelVariant.with(BlockModelGenerators.X_ROT_180),
+                    modelVariant.with(BlockModelGenerators.X_ROT_270),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_90),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_90.then(BlockModelGenerators.X_ROT_90)),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_90.then(BlockModelGenerators.X_ROT_180)),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_90.then(BlockModelGenerators.X_ROT_270)),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_180),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_180.then(BlockModelGenerators.X_ROT_90)),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_180.then(BlockModelGenerators.X_ROT_180)),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_180.then(BlockModelGenerators.X_ROT_270)),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_270),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_270.then(BlockModelGenerators.X_ROT_90)),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_270.then(BlockModelGenerators.X_ROT_180)),
+                    modelVariant.with(BlockModelGenerators.Y_ROT_270.then(BlockModelGenerators.X_ROT_270))
             );
 
             modelVariants.addAll(list);
@@ -309,7 +304,7 @@ public class ModelProvider extends FabricModelProvider {
                 .accept(
                         MultiVariantGenerator.dispatch(
                                 block,
-                                blockStateModelGenerator.variants(
+                                BlockModelGenerators.variants(
                                         variantsArray
                                 )
                         )
@@ -318,29 +313,29 @@ public class ModelProvider extends FabricModelProvider {
 
     public void generateRotatingModel(BlockModelGenerators blockStateModelGenerator, Block block) {
 
-        Variant modelVariant = blockStateModelGenerator.plainModel(TexturedModel.CUBE.create(block, blockStateModelGenerator.modelOutput));
+        Variant modelVariant = BlockModelGenerators.plainModel(TexturedModel.CUBE.create(block, blockStateModelGenerator.modelOutput));
 
         blockStateModelGenerator.blockStateOutput
                 .accept(
                         MultiVariantGenerator.dispatch(
                                 block,
-                                blockStateModelGenerator.variants(
+                                BlockModelGenerators.variants(
                                         modelVariant,
-                                        modelVariant.with(blockStateModelGenerator.X_ROT_90),
-                                        modelVariant.with(blockStateModelGenerator.X_ROT_180),
-                                        modelVariant.with(blockStateModelGenerator.X_ROT_270),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_90),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_90.then(blockStateModelGenerator.X_ROT_90)),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_90.then(blockStateModelGenerator.X_ROT_180)),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_90.then(blockStateModelGenerator.X_ROT_270)),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_180),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_180.then(blockStateModelGenerator.X_ROT_90)),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_180.then(blockStateModelGenerator.X_ROT_180)),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_180.then(blockStateModelGenerator.X_ROT_270)),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_270),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_270.then(blockStateModelGenerator.X_ROT_90)),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_270.then(blockStateModelGenerator.X_ROT_180)),
-                                        modelVariant.with(blockStateModelGenerator.Y_ROT_270.then(blockStateModelGenerator.X_ROT_270))
+                                        modelVariant.with(BlockModelGenerators.X_ROT_90),
+                                        modelVariant.with(BlockModelGenerators.X_ROT_180),
+                                        modelVariant.with(BlockModelGenerators.X_ROT_270),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_90),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_90.then(BlockModelGenerators.X_ROT_90)),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_90.then(BlockModelGenerators.X_ROT_180)),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_90.then(BlockModelGenerators.X_ROT_270)),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_180),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_180.then(BlockModelGenerators.X_ROT_90)),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_180.then(BlockModelGenerators.X_ROT_180)),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_180.then(BlockModelGenerators.X_ROT_270)),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_270),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_270.then(BlockModelGenerators.X_ROT_90)),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_270.then(BlockModelGenerators.X_ROT_180)),
+                                        modelVariant.with(BlockModelGenerators.Y_ROT_270.then(BlockModelGenerators.X_ROT_270))
                                 )
                         )
                 );

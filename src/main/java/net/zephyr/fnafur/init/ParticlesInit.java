@@ -1,6 +1,6 @@
 package net.zephyr.fnafur.init;
 
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,6 +18,6 @@ public class ParticlesInit {
     }
 
     public static void registerParticlesClient() {
-        ParticleFactoryRegistry.getInstance().register(FOG_PARTICLE, FogParticle.Factory::new);
+        ParticleProviderRegistry.getInstance().register(FOG_PARTICLE, FogParticle.Factory::new);
     }
 }

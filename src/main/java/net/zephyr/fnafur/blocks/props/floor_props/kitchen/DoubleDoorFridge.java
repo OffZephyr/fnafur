@@ -28,7 +28,7 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animation.RawAnimation;
+import com.geckolib.animation.RawAnimation;
 
 public class DoubleDoorFridge extends FloorPropBlock<DefaultPropColorEnum> implements GeoPropBlock {
     private Identifier texture;

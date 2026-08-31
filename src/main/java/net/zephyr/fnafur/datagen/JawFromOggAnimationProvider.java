@@ -4,7 +4,7 @@ package net.zephyr.fnafur.datagen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.CachedOutput;
@@ -43,9 +43,9 @@ public final class JawFromOggAnimationProvider implements DataProvider {
     private static final float LOUD_THRESHOLD = 0.80f;
     private static final float HEAD_THRESHOLD = 0.20f;
 
-    private final FabricDataOutput output;
+    private final FabricPackOutput output;
 
-    public JawFromOggAnimationProvider(FabricDataOutput output) {
+    public JawFromOggAnimationProvider(FabricPackOutput output) {
         this.output = output;
     }
 

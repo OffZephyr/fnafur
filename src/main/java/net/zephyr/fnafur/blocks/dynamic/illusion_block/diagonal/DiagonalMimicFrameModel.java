@@ -1,19 +1,21 @@
 package net.zephyr.fnafur.blocks.dynamic.illusion_block.diagonal;
 
-import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperUnbakedGroupedBlockStateModel;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperUnbakedRootBlockStateModel;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +23,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.blocks.stickers_blocks.StickerBlockEntity;
@@ -31,22 +32,18 @@ import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateModel implements BlockStateModel {
+public class DiagonalMimicFrameModel extends WrapperUnbakedRootBlockStateModel implements BlockStateModel {
     public static TextureAtlasSprite FRAME;
     public DiagonalMimicFrameModel(BlockStateModel.UnbakedRoot wrapped){
         super(wrapped);
     }
     @Override
-    public void collectParts(RandomSource random, List<BlockModelPart> parts) {
+    public void collectParts(RandomSource random, List<BlockStateModelPart> parts) {
 
-    }
-
-    @Override
-    public TextureAtlasSprite particleIcon() {
-        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
     }
 
     @Override
@@ -58,7 +55,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
     public void emitQuads(QuadEmitter emitter, BlockAndTintGetter blockView, BlockPos pos, BlockState state, RandomSource random, Predicate<@Nullable Direction> cullTest) {
 
 
-        TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+        TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).getSprite(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1"));
 
         if(blockView.getBlockEntity(pos) instanceof StickerBlockEntity ent) {
             CompoundTag nbt = ((IEntityDataSaver) ent).getPersistentData();
@@ -68,8 +65,10 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                     Block block = blockItem.getBlock();
 
                     BlockState textureState = block.defaultBlockState();
-                    BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(textureState);
-                    sprite = model.collectParts(RandomSource.create()).get(0).getQuads(Direction.UP).get(0).sprite();
+                    BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(textureState);
+                    List<BlockStateModelPart> parts = new ArrayList();
+                    model.collectParts(RandomSource.create(), parts);
+                    sprite = parts.get(0).getQuads(Direction.UP).get(0).materialInfo().sprite();
                 }
             }
 
@@ -120,7 +119,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
 
                     emitter.uv(i, u * 16, v * 16);
                 }
-                emitter.spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE);
+                emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE);
                 emitter.emit();
 
                 if(freeUp) {
@@ -135,7 +134,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                     for (int i = 0; i < 3; i++) {
                         emitter.uv(i, emitter.x(i) * 16, emitter.z(i) * 16);
                     }
-                    emitter.spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE);
+                    emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE);
                     emitter.emit();
                 }
 
@@ -150,7 +149,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                     for (int i = 0; i < 4; i++) {
                         emitter.uv(i, emitter.x(i) * 16, 16 - (emitter.z(i) * 16));
                     }
-                    emitter.spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE);
+                    emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE);
                     emitter.emit();
                 }
 
@@ -165,7 +164,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                     int v = i == 1 || i == 2 ? 1 : 0;
                     emitter.uv(i, u * 16, v * 16);
                 }
-                emitter.spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE);
+                emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE);
                 emitter.emit();
 
                 if (freeUp) {
@@ -174,7 +173,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                         emitter.uv(i, emitter.x(i) * 16, (emitter.z(i) * 16));
                     }
 
-                    emitter.spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE);
+                    emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE);
                     emitter.emit();
                 }
 
@@ -184,7 +183,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                         emitter.uv(i, emitter.x(i) * 16, 16 - (emitter.z(i) * 16));
                     }
 
-                    emitter.spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE);
+                    emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE);
                     emitter.emit();
                 }
             }
@@ -196,7 +195,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                         emitter.uv(i, emitter.x(i) * 16, (emitter.z(i) * 16));
                     }
 
-                    emitter.spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE);
+                    emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE);
                     emitter.emit();
                 }
 
@@ -206,7 +205,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                         emitter.uv(i, emitter.x(i) * 16, 16 - (emitter.z(i) * 16));
                     }
 
-                    emitter.spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE);
+                    emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE);
                     emitter.emit();
                 }
             }
@@ -239,7 +238,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                     int num = dirPos % decal.getTextures().length;
                     Identifier identifier = decal.getTextures()[num];
 
-                    TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, identifier));
+                    TextureAtlasSprite sprite = client.getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).getSprite(identifier);
 
                     float Offset = offset_list.getFloat(i).orElse(0f);
                     float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;
@@ -293,7 +292,7 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
 
                                     emitter.uv(j, u * 16, v);
                                 }
-                                emitter.spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE)
+                                emitter.materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE)
                                         .color(-1, -1, -1, -1)
                                         .emit();
                                 continue;
@@ -311,15 +310,28 @@ public class DiagonalMimicFrameModel extends WrapperUnbakedGroupedBlockStateMode
                             .uv(1, 0, v1)
                             .uv(2, 16, v1)
                             .uv(3, 16, v2)
-                            .spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE)
+                            .materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE)
                             .color(-1, -1, -1, -1)
                             .emit();
                 }
             }
         }
     }
+
     @Override
-    public TextureAtlasSprite particleSprite(BlockAndTintGetter blockView, BlockPos pos, BlockState state) {
-        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+    public Material.Baked particleMaterial() {
+        TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).getSprite(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1"));
+        return  new Material.Baked(sprite, false);
+    }
+
+    @Override
+    public @BakedQuad.MaterialFlags int materialFlags() {
+        return 0;
+    }
+
+    @Override
+    public Material.Baked particleMaterial(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+        TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(TextureAtlas.LOCATION_BLOCKS).getSprite(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1"));
+        return  new Material.Baked(sprite, false);
     }
 }

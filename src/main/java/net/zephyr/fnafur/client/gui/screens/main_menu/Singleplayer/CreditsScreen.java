@@ -3,7 +3,7 @@ package net.zephyr.fnafur.client.gui.screens.main_menu.Singleplayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -75,11 +75,11 @@ public class CreditsScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
         TITLE_SCREEN.width = this.width;
         TITLE_SCREEN.height = this.height;
 
-        TITLE_SCREEN.renderBackgroundRender(context, (int) (width/2f), (int) (height/2f), deltaTicks);
+        TITLE_SCREEN.renderBackgroundextractRenderState(context, (int) (width/2f), (int) (height/2f), deltaTicks);
         scrollY = Mth.lerp(deltaTicks, scrollY, scrollIndex);
         currentR = Mth.lerp(deltaTicks/5f, currentR, goalR);
         currentG = Mth.lerp(deltaTicks/5f, currentG, goalG);
@@ -128,7 +128,7 @@ public class CreditsScreen extends Screen {
             context.pose().pushMatrix();
             context.pose().translate((float)x, y);
             context.pose().scale(scale);
-            context.drawString(font, text, 0, (int) (scale * -1), text_color, false);
+            context.text(font, text, 0, (int) (scale * -1), text_color, false);
             context.pose().popMatrix();
         }
 
@@ -160,9 +160,9 @@ public class CreditsScreen extends Screen {
                 context.pose().pushMatrix();
                 context.pose().translate(commentX + (int) onHeight(63), commentY + (int) onHeight(63));
                 context.pose().scale(onHeight(comment_scale));
-                context.drawString(font, intro, 0, 0, inverted_color, false);
+                context.text(font, intro, 0, 0, inverted_color, false);
                 context.pose().translate(0, (int) onHeight(141 - 63));
-                context.drawWordWrap(font, comment, 0, 0, (int)(900 / comment_scale), inverted_color, false);
+                context.textWithWordWrap(font, comment, 0, 0, (int)(900 / comment_scale), inverted_color, false);
                 context.pose().popMatrix();
 
             }
@@ -201,7 +201,7 @@ public class CreditsScreen extends Screen {
         context.pose().pushMatrix();
         context.pose().translate(width/2f, height - onHeight(75));
         context.pose().scale(1.25f);
-        context.drawString(font, rolesText, -(font.width(rolesText)/2), -3, inverted_color, false);
+        context.text(font, rolesText, -(font.width(rolesText)/2), -3, inverted_color, false);
         context.pose().popMatrix();
 
 
@@ -211,13 +211,13 @@ public class CreditsScreen extends Screen {
                 context.pose().pushMatrix();
                 context.pose().translate(width / 2f, onHeight(75));
                 context.pose().scale(1.25f);
-                context.drawString(font, quote_text, -(font.width(quote_text) / 2), -3, inverted_color, false);
+                context.text(font, quote_text, -(font.width(quote_text) / 2), -3, inverted_color, false);
                 context.pose().popMatrix();
             }
         }
 
         TITLE_SCREEN.renderForeground(context, (int) (width/2f), (int) (height/2f), deltaTicks, 0.5f);
-        super.render(context, mouseX, mouseY, deltaTicks);
+        super.extractRenderState(context, mouseX, mouseY, deltaTicks);
     }
 
     @Override

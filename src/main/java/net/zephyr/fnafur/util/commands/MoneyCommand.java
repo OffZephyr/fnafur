@@ -4,12 +4,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,8 +31,6 @@ public class MoneyCommand {
     public static int set(CommandContext<CommandSourceStack> context, int amount, Player player) throws CommandSyntaxException {
         if(player instanceof ServerPlayer p) {
             ((IEntityDataSaver)p).getPersistentData().putInt("Credits", amount);
-            FriendlyByteBuf buf = PacketByteBufs.create();
-            buf.writeInt(amount);
             ServerPlayNetworking.send(p, new MoneySyncDataS2CPayload(amount));
             context.getSource().sendSuccess(() -> Component.translatable("fnafur.commands.money.set", p.getName(), amount), true);
             return amount;
@@ -48,8 +44,6 @@ public class MoneyCommand {
 
             int money = ((IEntityDataSaver)p).getPersistentData().getInt("Credits").get();
             ((IEntityDataSaver)p).getPersistentData().putInt("Credits", money + amount);
-            FriendlyByteBuf buf = PacketByteBufs.create();
-            buf.writeInt(money + amount);
             ServerPlayNetworking.send(p, new MoneySyncDataS2CPayload(amount));
             context.getSource().sendSuccess(() -> Component.translatable("fnafur.commands.money.set", p.getName(), money + amount), true);
             return money + amount;

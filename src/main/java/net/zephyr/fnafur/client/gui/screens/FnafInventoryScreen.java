@@ -1,19 +1,13 @@
 package net.zephyr.fnafur.client.gui.screens;
 
-import com.google.common.primitives.Shorts;
-import com.google.common.primitives.SignedBytes;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.protocol.game.ServerboundContainerClickPacket;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.ClickType;
 import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
-import net.zephyr.fnafur.util.mixinAccessing.IUniverseScreenHandler;
-import org.jetbrains.annotations.Nullable;
 
 public class FnafInventoryScreen extends InventoryScreen {
     public static final int SLOTS_OFFSET = 46;
@@ -34,21 +28,15 @@ public class FnafInventoryScreen extends InventoryScreen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
-        super.render(context, mouseX, mouseY, deltaTicks);
-    }
-
-    @Override
-    protected void renderBg(GuiGraphics context, float deltaTicks, int mouseX, int mouseY) {
-        super.renderBg(context, deltaTicks, mouseX, mouseY);
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractBackground(graphics, mouseX, mouseY, a);
         int i = this.leftPos;
         int j = this.topPos;
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
     }
 
     @Override
-    protected void slotClicked(Slot slot, int slotId, int button, ClickType actionType) {
-
-        super.slotClicked(slot, slotId, button, actionType);
+    protected void slotClicked(Slot slot, int slotId, int buttonNum, ContainerInput containerInput) {
+        super.slotClicked(slot, slotId, buttonNum, containerInput);
     }
 }

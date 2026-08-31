@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.mixin;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.server.packs.resources.ReloadInstance;
@@ -34,7 +34,7 @@ public class LoadingOverlayMixin {
         this.reloading = reloading;
     }
     @Inject(method = "render", at = @At("HEAD"))
-    public void newOverlay(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    public void newOverlay(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (!(Minecraft.getInstance().getOverlay() instanceof FnafSplashOverlay)) {
             Minecraft.getInstance().setOverlay(new FnafSplashOverlay(client, reload, exceptionHandler, reloading));
         }

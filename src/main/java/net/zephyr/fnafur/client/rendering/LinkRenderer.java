@@ -1,9 +1,9 @@
 package net.zephyr.fnafur.client.rendering;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
 import net.minecraft.client.Camera;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -41,12 +41,12 @@ public class LinkRenderer {
 
 
 
-    public static void renderLinks(WorldRenderContext worldRenderContext) {
-        PoseStack matrices = worldRenderContext.matrices();
+    public static void renderLinks(LevelRenderContext worldRenderContext) {
+        PoseStack matrices = worldRenderContext.poseStack();
         matrices.pushPose();
         Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().position();
         matrices.translate(camPos.scale(-1));
-        render(matrices, worldRenderContext.commandQueue(), worldRenderContext.consumers());
+        render(matrices, worldRenderContext.submitNodeCollector(), worldRenderContext.bufferSource());
         matrices.popPose();
     }
 
@@ -275,14 +275,14 @@ public class LinkRenderer {
             buffer.addVertex(entry.pose(), (float) vec1.x, (float) vec1.y + vHeight, (float) vec1.z)
                     .setUv(0.5f - tWidth + offset, 0.5f - tHeight)
                     .setColor(0xFFFFFFFF)
-                    .setLight(LightTexture.FULL_BRIGHT)
+                    .setLight(LightCoordsUtil.FULL_BRIGHT)
                     .setOverlay(OverlayTexture.NO_OVERLAY)
                     .setNormal(normal.x(), normal.y(), normal.z())
             ;
             buffer.addVertex(entry.pose(), (float) vec1.x, (float) vec1.y - vHeight, (float) vec1.z)
                     .setUv(0.5f - tWidth + offset, 0.5f + tHeight)
                     .setColor(0xFFFFFFFF)
-                    .setLight(LightTexture.FULL_BRIGHT)
+                    .setLight(LightCoordsUtil.FULL_BRIGHT)
                     .setOverlay(OverlayTexture.NO_OVERLAY)
                     .setNormal(normal.x(), normal.y(), normal.z())
             ;
@@ -290,14 +290,14 @@ public class LinkRenderer {
             buffer.addVertex(entry.pose(), (float) vec2.x, (float) vec2.y - vHeight, (float) vec2.z)
                     .setUv(0.5f + tWidth + offset, 0.5f + tHeight)
                     .setColor(0xFFFFFFFF)
-                    .setLight(LightTexture.FULL_BRIGHT)
+                    .setLight(LightCoordsUtil.FULL_BRIGHT)
                     .setOverlay(OverlayTexture.NO_OVERLAY)
                     .setNormal(normal.x(), normal.y(), normal.z())
             ;
             buffer.addVertex(entry.pose(), (float) vec2.x, (float) vec2.y + vHeight, (float) vec2.z)
                     .setUv(0.5f + tWidth + offset, 0.5f - tHeight)
                     .setColor(0xFFFFFFFF)
-                    .setLight(LightTexture.FULL_BRIGHT)
+                    .setLight(LightCoordsUtil.FULL_BRIGHT)
                     .setOverlay(OverlayTexture.NO_OVERLAY)
                     .setNormal(normal.x(), normal.y(), normal.z())
             ;
@@ -349,7 +349,7 @@ public class LinkRenderer {
                             vertexConsumers,
                             Font.DisplayMode.SEE_THROUGH,
                             0,
-                            LightTexture.FULL_BRIGHT
+                            LightCoordsUtil.FULL_BRIGHT
                     );
         }
 
@@ -366,28 +366,28 @@ public class LinkRenderer {
         buffer.addVertex(entry.pose(), -vWidth , -vHeight1, 0.0f)
                 .setUv(0.5f - tWidth, 0.5f - tHeight)
                 .setColor(0xFFFFFFFF)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setNormal(normal.x(), normal.y(), normal.z())
         ;
         buffer.addVertex(entry.pose(), -vWidth, vHeight2, 0.0f)
                 .setUv(0.5f - tWidth, 0.5f + tHeight)
                 .setColor(0xFFFFFFFF)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setNormal(normal.x(), normal.y(), normal.z())
         ;
         buffer.addVertex(entry.pose(), vWidth, vHeight2, 0.0f)
                 .setUv(0.5f + tWidth, 0.5f + tHeight)
                 .setColor(0xFFFFFFFF)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setNormal(normal.x(), normal.y(), normal.z())
         ;
         buffer.addVertex(entry.pose(), vWidth, -vHeight1, 0.0f)
                 .setUv(0.5f + tWidth, 0.5f - tHeight)
                 .setColor(0xFFFFFFFF)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setNormal(normal.x(), normal.y(), normal.z())
         ;

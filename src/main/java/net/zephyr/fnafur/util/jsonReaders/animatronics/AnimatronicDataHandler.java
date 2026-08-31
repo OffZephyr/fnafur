@@ -1,11 +1,11 @@
 package net.zephyr.fnafur.util.jsonReaders.animatronics;
 
+import com.geckolib.cache.animation.BakedAnimations;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Tuple;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
-import software.bernie.geckolib.cache.GeckoLibResources;
-import software.bernie.geckolib.loading.object.BakedAnimations;
+import com.geckolib.cache.GeckoLibResources;
 
 import java.util.*;
 

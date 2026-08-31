@@ -7,7 +7,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.ClickType;
 import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.client.gui.screens.FnafInventoryScreen;
 import net.zephyr.fnafur.item.DeathCoin;
@@ -22,8 +21,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InventoryMenu.class)
 public class InventoryMenuMixin {
 
-    @Inject(method = "<init>", at = @At("TAIL"))
-    void fnafInit(Inventory inventory, boolean onServer, Player owner, CallbackInfo callbackInfo) {
+    @Inject(method = "<init>(Lnet/minecraft/world/entity/player/Inventory;ZLnet/minecraft/world/entity/player/Player;)V", at = @At("TAIL"))
+    void fnafInit(final Inventory inventory, final boolean active, final Player owner, CallbackInfo callbackInfo) {
 
         ((InventoryMenu) (Object) this).addSlot(
                 new Slot(inventory, FnafInventoryScreen.SLOTS_OFFSET, 77, 8) {

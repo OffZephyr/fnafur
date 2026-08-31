@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.client;
 
 import com.mojang.blaze3d.pipeline.BlendFunction;
+import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.platform.PolygonMode;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -65,9 +65,7 @@ public class CustomRenderingPipelines {
                     RenderPipeline.builder(POSITION_PREPASS_SNIPPET)
                             .withLocation("pipeline/position_prepass")
                             // Only write where depth already matches
-                            .withDepthTestFunction(DepthTestFunction.EQUAL_DEPTH_TEST)
-                            .withDepthWrite(false)
-                            .withColorWrite(true)
+                            .withDepthStencilState(DepthStencilState.DEFAULT)
                             .build()
             );
 
@@ -148,7 +146,6 @@ public class CustomRenderingPipelines {
     public static final RenderPipeline COOL_TRANSLUCENT = RenderPipelines.register(
             RenderPipeline.builder(COOL_TERRAIN_SNIPPET)
                     .withLocation("pipeline/translucent_terrain")
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .withShaderDefine("ALPHA_CUTOUT", 0.01F)
                     .build()
     );
@@ -156,7 +153,6 @@ public class CustomRenderingPipelines {
             RenderPipeline.builder(COOL_TERRAIN_SNIPPET)
                     .withLocation("pipeline/tripwire_terrain")
                     .withShaderDefine("ALPHA_CUTOUT", 0.1F)
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .build()
     );
 
@@ -186,7 +182,7 @@ public class CustomRenderingPipelines {
             .withFragmentShader("core/animatronic")
             .withSampler("Sampler0")
             .withSampler("Sampler2")
-            .withVertexFormat(DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS)
+            .withVertexFormat(DefaultVertexFormat.ENTITY, VertexFormat.Mode.QUADS)
             .buildSnippet();
 
     public static final RenderPipeline ANIMATRONIC_TRANSLUCENT = RenderPipelines.register(
@@ -199,7 +195,6 @@ public class CustomRenderingPipelines {
                     .withSampler("Sampler4")
                     .withSampler("Sampler5")
                     .withSampler("SamplerEyeColor")
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
     );
@@ -213,7 +208,6 @@ public class CustomRenderingPipelines {
                     .withSampler("Sampler3")
                     .withSampler("Sampler4")
                     .withSampler("Sampler5")
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
     );
@@ -227,7 +221,6 @@ public class CustomRenderingPipelines {
                     .withSampler("Sampler3")
                     .withSampler("Sampler4")
                     .withSampler("Sampler5")
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
     );
@@ -241,7 +234,6 @@ public class CustomRenderingPipelines {
                     .withSampler("Sampler3")
                     .withSampler("Sampler4")
                     .withSampler("Sampler5")
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
     );
@@ -256,7 +248,6 @@ public class CustomRenderingPipelines {
                     .withSampler("Sampler3")
                     .withSampler("Sampler4")
                     .withSampler("Sampler5")
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
     );
@@ -270,7 +261,6 @@ public class CustomRenderingPipelines {
                     .withSampler("Sampler3")
                     .withSampler("Sampler4")
                     .withSampler("Sampler5")
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
     );
@@ -285,7 +275,6 @@ public class CustomRenderingPipelines {
                     .withSampler("Sampler3")
                     .withSampler("Sampler4")
                     .withSampler("Sampler5")
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
     );
@@ -294,7 +283,7 @@ public class CustomRenderingPipelines {
             .withFragmentShader("core/animatronic_suit")
             .withSampler("Sampler0")
             .withSampler("Sampler2")
-            .withVertexFormat(DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS)
+            .withVertexFormat(DefaultVertexFormat.ENTITY, VertexFormat.Mode.QUADS)
             .buildSnippet();
 
     public static final RenderPipeline ANIMATRONIC_SUIT_TRANSLUCENT = RenderPipelines.register(
@@ -305,7 +294,6 @@ public class CustomRenderingPipelines {
                     .withShaderDefine("NO_EYES")
                     .withSampler("Sampler1")
                     .withSampler("Sampler3")
-                    .withBlend(BlendFunction.TRANSLUCENT)
                     .withCull(false)
                     .build()
     );

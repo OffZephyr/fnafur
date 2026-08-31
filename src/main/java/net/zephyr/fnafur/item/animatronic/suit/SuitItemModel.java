@@ -6,8 +6,8 @@ import net.zephyr.fnafur.client.CustomRenderingPipelines;
 import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.model.GeoModel;
+import com.geckolib.renderer.base.GeoRenderState;
 
 public class SuitItemModel extends GeoModel<SuitItem> {
     @Override

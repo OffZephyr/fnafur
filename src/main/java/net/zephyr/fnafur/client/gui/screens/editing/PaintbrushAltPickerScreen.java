@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +24,7 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.client.gui.screens.GoopyScreen;
 import net.zephyr.fnafur.networking.block.UpdatePropAltC2SPayload;
 import org.joml.Quaternionf;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderState;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class PaintbrushAltPickerScreen<T extends Enum<T> & ColorEnumInterface & 
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
 
         rotationIndex += delta;
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, (this.width / 2) + 64, (this.height / 2) - 40, 0, 32, 128, 128, 128, 128, 256, 256);
@@ -116,10 +116,10 @@ public class PaintbrushAltPickerScreen<T extends Enum<T> & ColorEnumInterface & 
                 scrollAmount = Mth.lerp(delta, scrollAmount, 0);
             }
         }
-        super.render(context, mouseX, mouseY, delta);
+        super.extractRenderState(context, mouseX, mouseY, delta);
     }
 
-    public void renderBlock(GuiGraphics context, int x1, int y1, int x2, int y2, int scale, int index, boolean offset) {
+    public void renderBlock(GuiGraphicsExtractor context, int x1, int y1, int x2, int y2, int scale, int index, boolean offset) {
         BlockState selectedState = Minecraft.getInstance().level.getBlockState(getBlockPos()).getBlock().defaultBlockState();
         if(selectedState.hasProperty(altEnumProperty)){
             selectedState = selectedState.setValue(altEnumProperty, alts.get(Math.clamp(index, 0, alts.size()-1)));
@@ -133,7 +133,7 @@ public class PaintbrushAltPickerScreen<T extends Enum<T> & ColorEnumInterface & 
             float size = scale/10f;
             context.pose().pushMatrix();
             context.pose().scale(size);
-            context.renderItem(block.getCloneItemStack(Minecraft.getInstance().level, getBlockPos(), selectedState, false), (int) (((x1 + x2 - (16*size)) / 2f) / size), (int) (((y1 + y2 - (16*size)) / 2f) / size));
+            context.item(block.getCloneItemStack(Minecraft.getInstance().level, getBlockPos(), selectedState, false), (int) (((x1 + x2 - (16*size)) / 2f) / size), (int) (((y1 + y2 - (16*size)) / 2f) / size));
             context.pose().popMatrix();
         }
         else {

@@ -3,7 +3,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -35,7 +35,7 @@ public class DoorEditScreen extends GoopyScreen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX, cornerY, 0, 0, 184, 88, 256, 256);
 
         int adjustedSpeed = (int) (speed * 4);
@@ -84,7 +84,7 @@ public class DoorEditScreen extends GoopyScreen {
             context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, cornerX + 160, cornerY + 68, 216, 0, 10, 10, 256, 256, color);
         }
 
-        super.render(context, mouseX, mouseY, delta);
+        super.extractRenderState(context, mouseX, mouseY, delta);
     }
 
     @Override

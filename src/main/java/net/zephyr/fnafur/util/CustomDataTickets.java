@@ -7,7 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.core.Direction;
 import net.zephyr.fnafur.entity.animatronic.AnimatronicEntity;
 import net.zephyr.fnafur.entity.animatronic.data.CpuData;
-import software.bernie.geckolib.constant.dataticket.DataTicket;
+import com.geckolib.constant.dataticket.DataTicket;
 
 public class CustomDataTickets {
     public static final DataTicket<Identifier> TEXTURE = DataTicket.create("texture", Identifier.class);

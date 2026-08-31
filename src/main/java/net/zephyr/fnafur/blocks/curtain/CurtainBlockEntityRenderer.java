@@ -1,17 +1,14 @@
 package net.zephyr.fnafur.blocks.curtain;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,7 +21,6 @@ import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.util.EasingMathUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import java.util.function.Function;
@@ -80,7 +76,7 @@ public class CurtainBlockEntityRenderer implements BlockEntityRenderer<CurtainBl
         //matrices.translate(0, 1.5f, 0);
         //matrices.multiply(Minecraft.getInstance().gameRenderer.getCamera().getRotation());
 
-        queue.submitCustomGeometry(matrices, RenderTypes.entityCutoutNoCull(TEXTURE), (entry, vertexConsumer) -> {
+        queue.submitCustomGeometry(matrices, RenderTypes.entityCutout(TEXTURE), (entry, vertexConsumer) -> {
             renderCurtain(entry, vertexConsumer, state.isLast, state.lightCoords, state.front, state.prev_front);
             renderCurtain(entry, vertexConsumer, state.isLast, state.lightCoords, state.back, state.prev_back);
         });

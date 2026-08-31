@@ -1,6 +1,5 @@
 package net.zephyr.fnafur.init.block_init;
 
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -250,10 +249,10 @@ public class GeoBlockInit {
         BlockEntityRenderers.register(GeoBlockEntityInit.GEO_DOOR, GeoDoorRenderer::new);
         //BlockRenderLayerMap.INSTANCE.putBlock(PIRATES_COVE_STAGE, RenderLayer.getCutout());
 
-        BlockRenderLayerMap.putBlock(TWO_FIVE_RED_DOOR_WINDOW, ChunkSectionLayer.TRANSLUCENT);
-        for (GeoDoor block : DOORS) {
-            BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.TRANSLUCENT);
-        }
+        //BlockRenderLayerMap.putBlock(TWO_FIVE_RED_DOOR_WINDOW, ChunkSectionLayer.TRANSLUCENT);
+        //for (GeoDoor block : DOORS) {
+        //    BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.TRANSLUCENT);
+        //}
 
         FnafUniverseRebuilt.LOGGER.info("Registering Geo Blocks On CLIENT for " + FnafUniverseRebuilt.MOD_ID.toUpperCase());
     }

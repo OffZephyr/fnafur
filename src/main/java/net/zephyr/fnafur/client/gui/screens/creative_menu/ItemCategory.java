@@ -1,7 +1,6 @@
 package net.zephyr.fnafur.client.gui.screens.creative_menu;
 
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.impl.itemgroup.FabricItemGroupBuilderImpl;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -31,7 +30,7 @@ public class ItemCategory {
 
     void createSearchItems() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, ID),
-                FabricItemGroup.builder()
+                FabricCreativeModeTab.builder()
                         .title(Component.translatable(FnafUniverseRebuilt.MOD_ID + "." + ID))
                         .hideTitle()
                         .icon(() -> new ItemStack(Blocks.STONE))

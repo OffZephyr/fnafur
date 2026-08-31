@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -178,7 +178,7 @@ public class TriggerBlockScreen extends InWorldScreen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
 
         if(ClientHook.tickTransitionToScreen == 1){
             age += delta/20f;
@@ -302,11 +302,11 @@ public class TriggerBlockScreen extends InWorldScreen {
             }
 
         }
-        super.render(context, mouseX, mouseY, delta);
+        super.extractRenderState(context, mouseX, mouseY, delta);
     }
 
     @Override
-    protected void renderMenuBackground(GuiGraphics context) {
+    protected void extractMenuBackground(GuiGraphicsExtractor context) {
         float index = Math.clamp(ClientHook.tickTransitionToScreen, 0, 1);
         int color = ARGB.color((int) (Mth.lerp(index, 0, 0.6f) * 255f), 0, 0, 0);
         context.fill(0, 0, width, height, color);

@@ -5,17 +5,17 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -28,28 +28,22 @@ import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import software.bernie.geckolib.cache.model.GeoQuad;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.cache.model.GeoQuad;
+import com.geckolib.constant.DataTickets;
+import com.geckolib.model.GeoModel;
+import com.geckolib.renderer.GeoBlockRenderer;
+import com.geckolib.renderer.base.GeoRenderState;
 
 @Environment(EnvType.CLIENT)
 public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntityRenderState & GeoRenderState> extends GeoBlockRenderer<T, R> implements BlockEntityRenderer<T, R> {
     Minecraft client;
-    BlockRenderDispatcher manager;
+    ModelManager manager;
     float delta = 0;
     boolean loadedLayers = false;
     public GeoPropRenderer(BlockEntityRendererProvider.Context context) {
-        super(new GeoPropModel<>());
+        super(context, new GeoPropModel<>());
         client = Minecraft.getInstance();
-        manager = client.getBlockRenderer();
-    }
-
-    public GeoPropRenderer(GeoModel<T> animatronicBlockEntityAnimatronicBlockModel) {
-        super(animatronicBlockEntityAnimatronicBlockModel);
-        client = Minecraft.getInstance();
-        manager = client.getBlockRenderer();
+        manager = client.getModelManager();
     }
 
     @Override
@@ -74,7 +68,7 @@ public class GeoPropRenderer<T extends GeoPropBlockEntity, R extends BlockEntity
         renderState.addGeckolibData(CustomDataTickets.MODEL, animatable.getModel(animatable.getLevel()));
         renderState.addGeckolibData(CustomDataTickets.RE_RENDER_TEXTURE, animatable.getReRenderTexture(animatable.getLevel()));
         renderState.addGeckolibData(CustomDataTickets.RE_RENDER_MODEL, animatable.getReRenderModel(animatable.getLevel()));
-        renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.item ? RenderTypes.itemEntityTranslucentCull(animatable.getTexture(animatable.getLevel())) : animatable.getRenderType());
+        renderState.addGeckolibData(CustomDataTickets.RENDER_LAYER, animatable.item ? RenderTypes.itemTranslucent(animatable.getTexture(animatable.getLevel())) : animatable.getRenderType());
 
         return renderState;
     }

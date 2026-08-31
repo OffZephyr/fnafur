@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.ListTag;
@@ -20,7 +20,7 @@ public class CameraMapUiDrawer {
     public int mapHeight = 0;
     public int mapMultiplier = 1;
     public float mapAlpha = 100;
-    public void drawMap(GuiGraphics context, int mouseX, int mouseY, float delta, CompoundTag data, int mapEndPosX, int mapEndPosY, int mapCornerPosX, int mapCornerPosY, float mapAlpha, boolean isMonitor, boolean nvOutline, long currentCam){
+    public void drawMap(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CompoundTag data, int mapEndPosX, int mapEndPosY, int mapCornerPosX, int mapCornerPosY, float mapAlpha, boolean isMonitor, boolean nvOutline, long currentCam){
         List<Long> cams = new ArrayList<>();
         long[] camsData = data.getLongArray("Cameras").get();
         for (long cam : camsData) {

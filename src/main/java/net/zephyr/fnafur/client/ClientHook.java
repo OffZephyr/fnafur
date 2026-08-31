@@ -1,12 +1,12 @@
 package net.zephyr.fnafur.client;
 
+import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.SubmitNodeStorage;
-import net.minecraft.client.renderer.state.LevelRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +20,7 @@ import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.EasingMathUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEditCamera;
 import org.joml.Vector3f;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderState;
 
 public class ClientHook {
     public static float tickTransitionToScreen = 0;

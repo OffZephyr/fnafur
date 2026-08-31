@@ -1,9 +1,12 @@
 package net.zephyr.fnafur.client.rendering;
 
+import com.mojang.blaze3d.vertex.QuadInstance;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -16,9 +19,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.BlockItemStateProperties;
@@ -37,8 +39,9 @@ import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.mixinAccessing.IGetClientManagers;
 import net.zephyr.fnafur.util.mixinAccessing.IWorldRendererAccessor;
 import org.joml.Vector2f;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderState;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRenderState> {
@@ -223,7 +226,7 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
                                 placementEntity.item = true;
                                 R renderState = geo.fillRenderState(placementEntity, null, geo.createRenderState(), Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false));
 
-                                renderState.lightCoords = LightTexture.FULL_BRIGHT;
+                                renderState.lightCoords = LightCoordsUtil.FULL_BRIGHT;
 
                                 renderState.addGeckolibData(CustomDataTickets.IS_ENTITY_PREVIEW, true);
                                 renderState.addGeckolibData(CustomDataTickets.ENTITY_RENDER_MATRIX_ENTRY, matrices.last());
@@ -243,11 +246,11 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
                             matrices.popPose();
                         } else {
 
-                            BlockStateModel model = client.getModelManager().getBlockModelShaper().getBlockModel(state);
+                            BlockStateModel model = client.getModelManager().getBlockStateModelSet().get(state);
                             if (model instanceof PropBlockModel pModel) {
                                 model = pModel.ORIGINAL_MODEL;
                             }
-                            renderBakedModel(matrices.last(), vertexConsumers.getBuffer(RenderTypes.translucentMovingBlock()), model, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+                            renderBakedModel(matrices.last(), vertexConsumers.getBuffer(RenderTypes.translucentMovingBlock()), model, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
 
                         }
 
@@ -272,7 +275,9 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
     public static void renderBakedModel(
             PoseStack.Pose entry, VertexConsumer vertexConsumer, BlockStateModel model, int light, int overlay
     ) {
-        for (BlockModelPart blockModelPart : model.collectParts(RandomSource.create(42L))) {
+        List<BlockStateModelPart> parts = new ArrayList<>();
+        model.collectParts(RandomSource.create(42L), parts);
+        for (BlockStateModelPart blockModelPart : parts) {
             for (Direction direction : DIRECTIONS) {
                 renderQuads(entry, vertexConsumer, blockModelPart.getQuads(direction), light, overlay);
             }
@@ -288,7 +293,13 @@ public class FloorPropPlacingRenderer<R extends BlockEntityRenderState & GeoRend
             double time = (System.currentTimeMillis() - ((IGetClientManagers)Minecraft.getInstance()).getStartTime()) / 200.0;
             double index = Math.sin(time);
             float alpha = 0.5f + (0.25f * (float)index);
-            vertexConsumer.putBulkData(entry, bakedQuad, 1, 1, 1, alpha, light, overlay);
+
+            QuadInstance instance = new QuadInstance();
+            instance.setColor(ARGB.colorFromFloat(alpha, 1, 1, 1));
+            instance.setLightCoords(light);
+            instance.setOverlayCoords(overlay);
+
+            vertexConsumer.putBakedQuad(entry, bakedQuad, instance);
         }
     }
 

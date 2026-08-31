@@ -11,7 +11,7 @@ import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.LogoRenderer;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.multiplayer.SafetyScreen;
@@ -215,7 +215,7 @@ public class FnafTitleScreen extends Screen {
         l += 36;
         textIconButtonWidget.setPosition(var10001, l);
         this.addRenderableWidget(
-                Button.builder(Component.translatable("menu.options"), button -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options)))
+                Button.builder(Component.translatable("menu.options"), button -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options, false)))
                         .bounds(this.width / 2 - 100, l, 98, 20)
                         .build()
         );
@@ -366,11 +366,11 @@ public class FnafTitleScreen extends Screen {
         }
     }
 
-    public void renderForeground(GuiGraphics context, int mouseX, int mouseY, float delta){
+    public void renderForeground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta){
         renderForeground(context, mouseX, mouseY, delta, 1);
 
     }
-    public void renderForeground(GuiGraphics context, int mouseX, int mouseY, float delta, float opacity){
+    public void renderForeground(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, float opacity){
 
         int deltaAmount2 = 10;
         float largeWidth2 = width + onWidth(bgDeltaAmount);
@@ -388,7 +388,7 @@ public class FnafTitleScreen extends Screen {
         GoopyScreen.drawRecolorableTexture(context, PIXELS, 0, 0, 0, width, height, 0, 0, width, height, 1, 1, 1, 0.05f * opacity);
 
     }
-    public void renderBackgroundRender(GuiGraphics context, int mouseX, int mouseY, float delta){
+    public void renderBackgroundextractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta){
         if (minecraft.getOverlay() == null && bgFadeTimer < bgFadeTimerGoal) {
             if(FnafUniverseRebuilt.MENU_REDUCE_MOVEMENTS) bgFadeTimer = bgFadeTimerGoal;
             else bgFadeTimer = Math.clamp(bgFadeTimer + delta / 20f, 0, bgFadeTimerGoal);
@@ -458,9 +458,9 @@ public class FnafTitleScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
 
-        renderBackgroundRender(context, mouseX, mouseY, delta);
+        renderBackgroundextractRenderState(context, mouseX, mouseY, delta);
 
         float sprite_width = onHeight(2048);
         float sprite_height = onHeight(2048);
@@ -531,7 +531,7 @@ public class FnafTitleScreen extends Screen {
             FontDescription spriteFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "metropolis"));
             Style style = Style.EMPTY.withFont(spriteFont);
             Component version_text = Component.literal(FnafUniverseRebuilt.MOD_VERSION).setStyle(style);
-            context.drawString(font, version_text, width / 2 - font.width(version_text) / 2, height - font.lineHeight - 1, 0x88FFFFFF, false);
+            context.text(font, version_text, width / 2 - font.width(version_text) / 2, height - font.lineHeight - 1, 0x88FFFFFF, false);
 
             if (tab == -1) {
 
@@ -598,7 +598,7 @@ public class FnafTitleScreen extends Screen {
         bgFadeStart = bgFadeGoal;
         bgFadeGoal = opacity;
     }
-    public void renderTransition(GuiGraphics context, int mouseX, int mouseY, float delta){
+    public void renderTransition(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta){
         float index = 1 - Mth.lerp(transitionFadeTimer / transitionFadeTimerGoal, transitionFadeStart, transitionFadeGoal);
 
         int scale = (int) onHeight(1400);
@@ -651,13 +651,12 @@ public class FnafTitleScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
     }
 
-
     @Override
-    protected void renderPanorama(GuiGraphics context, float deltaTicks) {
-        super.renderPanorama(context, deltaTicks);
+    protected void extractPanorama(GuiGraphicsExtractor graphics, float a) {
+        super.extractPanorama(graphics, a);
     }
 
     @Override
@@ -731,7 +730,7 @@ public class FnafTitleScreen extends Screen {
                 SoundInstance instance = new SimpleSoundInstance(SoundsInit.CAM_SWITCH, SoundSource.MASTER, 1, 1f, RandomSource.create(), BlockPos.ZERO);
                 Minecraft.getInstance().getSoundManager().play(instance);
 
-                this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options));
+                this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options, false));
             }
             if(GoopyScreen.isOnButton((double) mouseX, (double) mouseY, (int) onWidth(715), (int) onHeight(938), (int) onWidth(490), (int) onHeight(85))){
                 this.minecraft.stop();

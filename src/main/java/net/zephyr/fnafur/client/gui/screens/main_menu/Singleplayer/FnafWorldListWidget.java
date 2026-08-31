@@ -37,7 +37,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.worldselection.*;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.ErrorScreen;
 import net.minecraft.client.gui.screens.LoadingDotsText;
@@ -153,7 +153,7 @@ public class FnafWorldListWidget extends ObjectSelectionList<FnafWorldListWidget
         this.levelsFuture = this.loadLevels();
     }
 
-    public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
+    public void renderWidget(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
         List<LevelSummary> list = this.tryGet();
         if (list != this.levels) {
             this.show(list);
@@ -334,7 +334,7 @@ public class FnafWorldListWidget extends ObjectSelectionList<FnafWorldListWidget
             return this.widget.getMessage();
         }
 
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void renderContent(GuiGraphicsExtractor context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
             this.widget.setPosition(this.getContentXMiddle() - this.widget.getWidth() / 2, this.getContentYMiddle() - this.widget.getHeight() / 2);
             this.widget.render(context, mouseX, mouseY, deltaTicks);
         }
@@ -436,7 +436,7 @@ public class FnafWorldListWidget extends ObjectSelectionList<FnafWorldListWidget
             return Component.translatable("narrator.select", new Object[]{text});
         }
 
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void renderContent(GuiGraphicsExtractor context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
             int i = this.getTextX();
             this.displayNameWidget.setPosition(i, this.getContentY() + 1);
             this.displayNameWidget.render(context, mouseX, mouseY, deltaTicks);
@@ -694,18 +694,18 @@ public class FnafWorldListWidget extends ObjectSelectionList<FnafWorldListWidget
             this.client = client;
         }
 
-        public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void renderContent(GuiGraphicsExtractor context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
             int i = (this.client.screen.width - this.client.font.width(LOADING_LIST_TEXT)) / 2;
             int var10000 = this.getContentY();
             int var10001 = this.getContentHeight();
             Objects.requireNonNull(this.client.font);
             int j = var10000 + (var10001 - 9) / 2;
-            context.drawString(this.client.font, LOADING_LIST_TEXT, i, j, -1);
+            context.text(this.client.font, LOADING_LIST_TEXT, i, j, -1);
             String string = LoadingDotsText.get(Util.getMillis());
             int k = (this.client.screen.width - this.client.font.width(string)) / 2;
             Objects.requireNonNull(this.client.font);
             int l = j + 9;
-            context.drawString(this.client.font, string, k, l, -8355712);
+            context.text(this.client.font, string, k, l, -8355712);
         }
 
         public Component getNarration() {

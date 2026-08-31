@@ -3,32 +3,28 @@ package net.zephyr.fnafur.blocks.props.wall_props.clocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.util.Mth;
 import com.mojang.math.Axis;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
 import net.zephyr.fnafur.util.CustomDataTickets;
-import software.bernie.geckolib.cache.model.GeoBone;
-import software.bernie.geckolib.renderer.base.BoneSnapshots;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.base.RenderPassInfo;
+import com.geckolib.cache.model.GeoBone;
+import com.geckolib.renderer.base.BoneSnapshots;
+import com.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.RenderPassInfo;
 
 import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class GeoClockPropRenderer<T extends GeoClockPropBlockEntity, R extends BlockEntityRenderState & GeoRenderState> extends GeoPropRenderer<T, R> {
     Minecraft client;
-    BlockRenderDispatcher manager;
     public GeoClockPropRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
         client = Minecraft.getInstance();
-        manager = client.getBlockRenderer();
     }
 
     @Override

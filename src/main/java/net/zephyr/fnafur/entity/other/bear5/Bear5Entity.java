@@ -53,9 +53,8 @@ public class Bear5Entity extends PathfinderMob {
     public boolean isInLiquid() {
         return false;
     }
-
     @Override
-    public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double speed) {
+    protected boolean updateFluidInteraction() {
         return false;
     }
 

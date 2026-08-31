@@ -45,7 +45,7 @@ public class DecalBookItem extends Item {
             CompoundTag nbt = ItemUtil.getNbt(user.getMainHandItem());
             nbt.putString("activeDecal", "");
             ItemUtil.setNbt(user.getMainHandItem(), nbt);
-            user.displayClientMessage(Component.translatable("decal_book.clear"), true);
+            user.sendOverlayMessage(Component.translatable("decal_book.clear"));
             return InteractionResult.SUCCESS;
         }
         CompoundTag nbt = ItemUtil.getNbt(user.getMainHandItem());

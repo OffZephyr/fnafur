@@ -1,16 +1,11 @@
 package net.zephyr.fnafur.rendering.lighting;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 public interface ILightItem {
 

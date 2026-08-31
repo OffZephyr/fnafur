@@ -1,7 +1,7 @@
 package net.zephyr.fnafur.datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.HolderLookup;
@@ -14,8 +14,8 @@ import net.zephyr.fnafur.init.block_init.PropInit;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
-    public BlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+public class BlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
+    public BlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

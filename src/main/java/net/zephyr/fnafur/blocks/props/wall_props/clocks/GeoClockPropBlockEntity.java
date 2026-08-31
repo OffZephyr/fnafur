@@ -13,12 +13,12 @@ import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlock;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropBlockEntity;
 import net.zephyr.fnafur.client.gui.TabOverlayClass;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animation.*;
-import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import com.geckolib.animatable.GeoBlockEntity;
+import com.geckolib.animatable.instance.AnimatableInstanceCache;
+import com.geckolib.animatable.manager.AnimatableManager;
+import com.geckolib.animation.*;
+import com.geckolib.constant.DataTickets;
+import com.geckolib.util.GeckoLibUtil;
 
 public class GeoClockPropBlockEntity extends GeoPropBlockEntity implements GeoBlockEntity {
     public float deltaHour = 0;
@@ -38,7 +38,7 @@ public class GeoClockPropBlockEntity extends GeoPropBlockEntity implements GeoBl
 
     @Override
     public void tick(Level world, BlockPos blockPos, BlockState state, PropBlockEntity entity) {
-        long dayTime = (world.getDayTime());
+        long dayTime = (world.getOverworldClockTime());
         double currentDay = dayTime / 24000d;
 
         float minute = ((dayTime / 1000f) * 60f);

@@ -5,7 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -15,6 +15,7 @@ import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
+import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.world.level.WorldDataConfiguration;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -122,7 +123,7 @@ public class FnafSelectWorldScreen extends Screen {
                     }
                 }
 
-                LevelSettings levelInfo = new LevelSettings("DEBUG world", GameType.SPECTATOR, false, Difficulty.NORMAL, true, new GameRules(WorldDataConfiguration.DEFAULT.enabledFeatures()), WorldDataConfiguration.DEFAULT);
+                LevelSettings levelInfo = new LevelSettings("DEBUG world", GameType.SPECTATOR, LevelSettings.DifficultySettings.DEFAULT, true, WorldDataConfiguration.DEFAULT);
                 String string2 = FileUtil.findAvailableName(this.minecraft.getLevelSource().getBaseDir(), "DEBUG world", "");
                 this.minecraft.createWorldOpenFlows().createFreshLevel(string2, levelInfo, DEBUG_GENERATOR_OPTIONS, WorldPresets::createNormalWorldDimensions, this);
             } catch (IOException iOException) {
@@ -133,11 +134,11 @@ public class FnafSelectWorldScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
         parent.width = this.width;
         parent.height = this.height;
-        parent.renderBackgroundRender(context, mouseX, mouseY, deltaTicks);
-        super.render(context, mouseX, mouseY, deltaTicks);
+        parent.renderBackgroundextractRenderState(context, mouseX, mouseY, deltaTicks);
+        super.extractRenderState(context, mouseX, mouseY, deltaTicks);
         parent.renderForeground(context, mouseX, mouseY, deltaTicks);
     }
 

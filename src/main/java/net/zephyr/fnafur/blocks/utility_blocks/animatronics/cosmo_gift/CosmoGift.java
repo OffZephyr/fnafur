@@ -29,7 +29,7 @@ import net.zephyr.fnafur.util.IHasArmPos;
 import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animation.RawAnimation;
+import com.geckolib.animation.RawAnimation;
 
 import java.util.List;
 

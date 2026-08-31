@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Style;
@@ -92,7 +92,7 @@ public class SuitMakingScreen extends InWorldScreen {
     }
 
     @Override
-    protected void renderMenuBackground(GuiGraphics context) {
+    protected void extractMenuBackground(GuiGraphicsExtractor context) {
         float index = Math.clamp(ClientHook.tickTransitionToScreen, 0, 1);
         int color = ARGB.color((int) (Mth.lerp(index, 0, 0.4f) * 255f), 0, 0, 0);
         context.fill(0, 0, width, height, color);
@@ -147,12 +147,12 @@ public class SuitMakingScreen extends InWorldScreen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
         if(ClientHook.tickTransitionToScreen != 1) return;
         float startAnimationIndex = Math.clamp(age /1f, 0, 1);
         preview.force_age += delta;
         icon_preview.force_age += delta;
-        super.render(context, mouseX, mouseY, delta);
+        super.extractRenderState(context, mouseX, mouseY, delta);
 
         float deltaTicks = delta/20f;
 
@@ -264,10 +264,10 @@ public class SuitMakingScreen extends InWorldScreen {
                 }
             }
         }
-        //super.render(context, mouseX, mouseY, delta);
+        //super.extractRenderState(context, mouseX, mouseY, delta);
     }
 
-    void renderList(String title, GuiGraphics context, int mouseX, int mouseY, int offsetX, int offsetY, float deltaTicks, List<String> arraylist, float index, String name_prefix, GetMissing missingCheck, DrawTitle drawTitle, boolean show_icons) {
+    void renderList(String title, GuiGraphicsExtractor context, int mouseX, int mouseY, int offsetX, int offsetY, float deltaTicks, List<String> arraylist, float index, String name_prefix, GetMissing missingCheck, DrawTitle drawTitle, boolean show_icons) {
 
         int front_x = (int) Mth.lerp(EasingMathUtil.easeInOutQuad(back_offset_index), (width / 2f) - 128, (width / 2f) - 192);
 
@@ -330,9 +330,9 @@ public class SuitMakingScreen extends InWorldScreen {
 
                     context.pose().pushMatrix();
                     context.pose().translate(list_x + (int) (34 * size), icon_y);
-                    context.drawString(font, eyes_text,0, 4, 0xFFFFFFFF, false);
+                    context.text(font, eyes_text,0, 4, 0xFFFFFFFF, false);
                     context.pose().translate(0, - (int) (32 * size));
-                    context.drawString(font, alts_text,0, 4, 0xFFFFFFFF, false);
+                    context.text(font, alts_text,0, 4, 0xFFFFFFFF, false);
                     context.pose().popMatrix();
                 }
                 else{
@@ -347,13 +347,13 @@ public class SuitMakingScreen extends InWorldScreen {
                     float diff = (1f / textWidth) * 76;
                     context.pose().scale(diff);
                 }
-                context.drawString(font, text, -(textWidth / 2), -4, color, false);
+                context.text(font, text, -(textWidth / 2), -4, color, false);
                 context.pose().popMatrix();
             }
         }
     }
 
-    void drawCategoryTitle(GuiGraphics context, int x, int y, String extra, float scale){
+    void drawCategoryTitle(GuiGraphicsExtractor context, int x, int y, String extra, float scale){
         Identifier category_name = Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/workbench/" + extra + "_list_select.png");
         context.blit(RenderPipelines.GUI_TEXTURED, category_name, x - 64, y - 16, 0, 0, 128, 48, 128, 48);
 
@@ -364,7 +364,7 @@ public class SuitMakingScreen extends InWorldScreen {
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
     }
 
-    void drawSuitTitle(GuiGraphics context, int x, int y, String extra, float scale) {
+    void drawSuitTitle(GuiGraphicsExtractor context, int x, int y, String extra, float scale) {
 
         float size = 1f;
         int U = 256 + 32;
@@ -373,7 +373,7 @@ public class SuitMakingScreen extends InWorldScreen {
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
         drawAltTitle(context, x, y, extra, scale);
     }
-    void drawEyesTitle(GuiGraphics context, int x, int y, String extra, float scale) {
+    void drawEyesTitle(GuiGraphicsExtractor context, int x, int y, String extra, float scale) {
 
         float size = 1f;
         int U = 256 + 64;
@@ -382,7 +382,7 @@ public class SuitMakingScreen extends InWorldScreen {
         context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 124 - (int) (32 * size), y + y2, U * size, 128 * size, (int) (32 * size), (int) (32 * size), (int) (512 * size), (int) (512 * size));
         drawAltTitle(context, x, y, extra, scale);
     }
-    void drawAltTitle(GuiGraphics context, int x, int y, String extra, float scale){
+    void drawAltTitle(GuiGraphicsExtractor context, int x, int y, String extra, float scale){
 
         FontDescription spriteFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "lemon_bold"));
         Style style = Style.EMPTY.withFont(spriteFont);
@@ -392,7 +392,7 @@ public class SuitMakingScreen extends InWorldScreen {
         context.pose().translate(x, y);
         context.pose().translate(-(font.width(text)/2f)*scale, 0);
         context.pose().scale(scale);
-        context.drawString(font, text, 0, 0, 0xFFFFFFFF, false);
+        context.text(font, text, 0, 0, 0xFFFFFFFF, false);
         context.pose().popMatrix();
     }
 
@@ -669,7 +669,7 @@ public class SuitMakingScreen extends InWorldScreen {
 
     @FunctionalInterface
     public interface DrawTitle {
-        void draw(GuiGraphics context, int x, int y, String extra, float scale);
+        void draw(GuiGraphicsExtractor context, int x, int y, String extra, float scale);
     }
     @FunctionalInterface
     public interface GetMissing {

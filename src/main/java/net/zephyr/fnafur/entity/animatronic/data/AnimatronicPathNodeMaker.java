@@ -466,23 +466,23 @@ public class AnimatronicPathNodeMaker extends NodeEvaluator {
                 case WALKABLE:
                     var10000 = PathType.OPEN;
                     break;
-                case DAMAGE_FIRE:
-                    var10000 = PathType.DAMAGE_FIRE;
+                case FIRE:
+                    var10000 = PathType.FIRE;
                     break;
-                case DAMAGE_OTHER:
-                    var10000 = PathType.DAMAGE_OTHER;
+                case BLOCKED:
+                    var10000 = PathType.BLOCKED;
                     break;
                 case STICKY_HONEY:
                     var10000 = PathType.STICKY_HONEY;
                     break;
                 case POWDER_SNOW:
-                    var10000 = PathType.DANGER_POWDER_SNOW;
+                    var10000 = PathType.POWDER_SNOW;
                     break;
                 case DAMAGE_CAUTIOUS:
                     var10000 = PathType.DAMAGE_CAUTIOUS;
                     break;
                 case TRAPDOOR:
-                    var10000 = PathType.DANGER_TRAPDOOR;
+                    var10000 = PathType.TRAPDOOR;
                     break;
                 default:
                     var10000 = getNodeTypeFromNeighbors(context, i, j, k, PathType.WALKABLE);
@@ -500,12 +500,12 @@ public class AnimatronicPathNodeMaker extends NodeEvaluator {
                 for(int k = -1; k <= 1; ++k) {
                     if (i != 0 || k != 0) {
                         PathType pathNodeType = context.getPathTypeFromState(x + i, y + j, z + k);
-                        if (pathNodeType == PathType.DAMAGE_OTHER) {
-                            return PathType.DANGER_OTHER;
+                        if (pathNodeType == PathType.BLOCKED) {
+                            return PathType.BLOCKED;
                         }
 
-                        if (pathNodeType == PathType.DAMAGE_FIRE || pathNodeType == PathType.LAVA) {
-                            return PathType.DANGER_FIRE;
+                        if (pathNodeType == PathType.FIRE || pathNodeType == PathType.LAVA) {
+                            return PathType.FIRE;
                         }
 
                         if (pathNodeType == PathType.WATER) {
@@ -543,7 +543,7 @@ public class AnimatronicPathNodeMaker extends NodeEvaluator {
                     if (fluidState.is(FluidTags.LAVA)) {
                         return PathType.LAVA;
                     } else if (isBurningBlock(blockState)) {
-                        return PathType.DAMAGE_FIRE;
+                        return PathType.FIRE;
                     } else if (block instanceof DoorBlock) {
                         DoorBlock doorBlock = (DoorBlock)block;
                         if ((Boolean)blockState.getValue(DoorBlock.OPEN)) {
@@ -566,7 +566,7 @@ public class AnimatronicPathNodeMaker extends NodeEvaluator {
                     return PathType.DAMAGE_CAUTIOUS;
                 }
             } else {
-                return PathType.DAMAGE_OTHER;
+                return PathType.BLOCKED;
             }
         } else {
             return PathType.TRAPDOOR;

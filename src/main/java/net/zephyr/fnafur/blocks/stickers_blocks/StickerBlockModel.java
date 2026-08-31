@@ -1,19 +1,21 @@
 package net.zephyr.fnafur.blocks.stickers_blocks;
 
-import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperUnbakedGroupedBlockStateModel;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.fabricmc.fabric.api.client.model.loading.v1.wrapper.WrapperUnbakedRootBlockStateModel;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.BlockItem;
@@ -24,17 +26,16 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.zephyr.fnafur.FnafUniverseRebuilt;
 import net.zephyr.fnafur.blocks.dynamic.illusion_block.MimicFrames;
 import net.zephyr.fnafur.init.decal_init.DecalInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel implements BlockStateModel {
+public class StickerBlockModel extends WrapperUnbakedRootBlockStateModel implements BlockStateModel {
 
     public StickerBlockModel(BlockStateModel.UnbakedRoot wrapped){
         super(wrapped);
@@ -49,18 +50,18 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
     RandomSource random = RandomSource.create();
 
     @Override
-    public void collectParts(RandomSource random, List<BlockModelPart> parts) {
+    public void collectParts(RandomSource random, List<BlockStateModelPart> parts) {
 
     }
 
     @Override
-    public List<BlockModelPart> collectParts(RandomSource random) {
-        return BlockStateModel.super.collectParts(random);
+    public Material.Baked particleMaterial() {
+        return null;
     }
 
     @Override
-    public TextureAtlasSprite particleIcon() {
-        return Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "block/mimic_frame_1")));
+    public @BakedQuad.MaterialFlags int materialFlags() {
+        return 0;
     }
 
     @Override
@@ -83,13 +84,8 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
         }
     }
 
-    @Override
-    public TextureAtlasSprite particleSprite(BlockAndTintGetter blockView, BlockPos pos, BlockState state) {
-        Minecraft client = Minecraft.getInstance();
-        BlockStateModel model = client.getModelManager().getBlockModelShaper().getBlockModel(state);
-        if(model != null && model.particleIcon() != null){
-            particlesprite = model.particleIcon();
-        }
+
+    public TextureAtlasSprite getParticlesprite() {
         return particlesprite;
     }
 
@@ -103,7 +99,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
     }
     public void emitBaseCube(BlockState baseState, BlockState state, BlockPos pos, QuadEmitter emitter, CompoundTag nbt){
         Minecraft client = Minecraft.getInstance();
-        BlockStateModel model = client.getModelManager().getBlockModelShaper().getBlockModel(state);
+        BlockStateModel model = client.getModelManager().getBlockStateModelSet().get(state);
 
         for(Direction direction : Direction.values()) {
 
@@ -111,7 +107,9 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
             if (pos != BlockPos.ZERO && !(sideState.getBlock() instanceof MimicFrames) && sideState.isSolidRender() && client.level.getBlockState(pos.relative(direction)).isFaceSturdy(client.level, pos.relative(direction), direction.getOpposite())) continue;
             if (pos != BlockPos.ZERO && sideState.getBlock() instanceof MimicFrames frame && MimicFrames.isSideFull(direction.getOpposite(), client.level, pos.relative(direction), frame.getMatrixSize())) continue;
 
-            List<BlockModelPart> parts = model.collectParts(RandomSource.create());
+            List<BlockStateModelPart> parts = new ArrayList<>();
+            model.collectParts(RandomSource.create(), parts);
+
             if(!parts.isEmpty()){
                 List<BakedQuad> quadList = parts.get(0).getQuads(direction);
 
@@ -147,7 +145,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
                     int num = dirPos % decal.getTextures().length;
                     Identifier identifier = decal.getTextures()[num];
 
-                    TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().materials.get(new Material(TextureAtlas.LOCATION_BLOCKS, identifier));
+                    TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasManager().get(new SpriteId(TextureAtlas.LOCATION_BLOCKS, identifier));
 
                     float Offset = offset_list.getFloat(i).orElse(0f);
                     float xOffset = decal.getDirection() == DecalInit.Movable.HORIZONTAL ? Offset : 0;
@@ -175,7 +173,7 @@ public class StickerBlockModel extends WrapperUnbakedGroupedBlockStateModel impl
                             .uv(1, 0, v)
                             .uv(2, 16, v)
                             .uv(3, 16, v2)
-                            .spriteBake(sprite, MutableQuadView.BAKE_ROTATE_NONE)
+                            .materialBake(new Material.Baked(sprite, false), MutableQuadView.BAKE_ROTATE_NONE)
                             .color(-1, -1, -1, -1)
                             .emit();
                 }

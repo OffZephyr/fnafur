@@ -1,6 +1,6 @@
 package net.zephyr.fnafur.init.item_init;
 
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,7 +18,7 @@ public class ItemGroupsInit {
 
     Item icon = new Item(new Item.Properties());
     public static final CreativeModeTab FNAF_PROPS = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "props"),
-            FabricItemGroup.builder()
+            FabricCreativeModeTab.builder()
                     .title(Component.translatable(FnafUniverseRebuilt.MOD_ID + ".props"))
                     .hideTitle()
                     .icon(() -> new ItemStack(PropInit.PRESENT_STACK))
@@ -124,7 +124,7 @@ public class ItemGroupsInit {
 
                     }).build());
     public static final CreativeModeTab FNAF_TECHNICAL = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "technical"),
-            FabricItemGroup.builder()
+            FabricCreativeModeTab.builder()
                     .title(Component.translatable(FnafUniverseRebuilt.MOD_ID + ".technical"))
                     .hideTitle()
                     .icon(() -> new ItemStack(ItemInit.PIPE_WRENCH))
@@ -169,7 +169,7 @@ public class ItemGroupsInit {
                         entries.accept(BlockInit.ELECTRICAL_LOCKER);
                     }).build());
 //    public static final ItemGroup FNAF_BLOCKS = Registry.register(Registries.ITEM_GROUP, Identifier.of(FnafUniverseRebuilt.MOD_ID, "blocks"),
-//            FabricItemGroup.builder()
+//            FabricCreativeModeTab.builder()
 //                    .displayName(Text.translatable(FnafUniverseRebuilt.MOD_ID + ".blocks"))
 //                    .noRenderedName()
 //                    .icon(() -> new ItemStack(BlockInit.BLACK_WHITE_TILES))
@@ -346,7 +346,7 @@ public class ItemGroupsInit {
 //                        entries.add(BlockInit.CHEESE_BLOCK_WHITE);
 //                    }).build());
     public static final CreativeModeTab FNAF = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, FnafUniverseRebuilt.MOD_ID),
-            FabricItemGroup.builder()
+            FabricCreativeModeTab.builder()
                     .title(Component.literal(FnafUniverseRebuilt.MOD_ID))
                     .hideTitle()
                     .backgroundTexture(Identifier.fromNamespaceAndPath(FnafUniverseRebuilt.MOD_ID, "textures/gui/tabs_fnaf.png"))

@@ -23,7 +23,7 @@ import net.zephyr.fnafur.blocks.special.SeatBlock;
 import net.zephyr.fnafur.init.block_init.BlockEntityInit;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animation.RawAnimation;
+import com.geckolib.animation.RawAnimation;
 
 public class StarPlasticChair extends FloorPropBlock<DefaultPropColorEnum> implements GeoPropBlock, SeatBlock {
     private Identifier texture;

@@ -1,19 +1,19 @@
 package net.zephyr.fnafur.blocks.dynamic.tiling.tile_doors;
 
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.LightTexture;
+import net.fabricmc.fabric.api.client.renderer.v1.render.ChunkSectionLayerHelper;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.LightCoordsUtil;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.entity.FallingBlockRenderer;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,6 +25,9 @@ import net.zephyr.fnafur.blocks.common_block_entity.CommonBlockEntityRenderState
 import net.zephyr.fnafur.util.GoopyNetworkingUtils;
 import net.zephyr.fnafur.util.mixinAccessing.IEntityDataSaver;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoorBlockEntity, CommonBlockEntityRenderState> {
 
@@ -112,15 +115,20 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
                     BlockPos updatePos = state.blockPos.above(y).relative(direction, x);
 
                     BlockState posState = Minecraft.getInstance().level.getBlockState(updatePos);
-                    BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(posState);
+                    BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(posState);
 
                     matrices.pushPose();
                     matrices.translate(updatePos.getX() - state.blockPos.getX(),updatePos.getY() - state.blockPos.getY(),updatePos.getZ() - state.blockPos.getZ());
 
                     //dfmatrices.translate(Minecraft.getInstance().gameRenderer.getCamera().pos.multiply(-1));
-                    queue.submitCustomGeometry(matrices, ItemBlockRenderTypes.getMovingBlockRenderType(posState), (stack, layer) ->{
-                        ModelBlockRenderer.renderModel(stack, layer, model, 1, 1, 1,  getLightLevel(Minecraft.getInstance().level, state.blockPos), OverlayTexture.NO_OVERLAY);
-                    });
+
+                    //queue.submitCustomGeometry(matrices, ItemBlockRenderTypes.getMovingBlockRenderType(posState), (stack, layer) ->{
+                    //    ModelBlockRenderer.renderModel(stack, layer, model, 1, 1, 1,  getLightLevel(Minecraft.getInstance().level, state.blockPos), OverlayTexture.NO_OVERLAY);
+                    //});
+
+                    List<BlockStateModelPart> parts = new ArrayList<>();
+                    model.collectParts(RandomSource.create(), parts);
+                    queue.submitBlockModel(matrices, _ -> ChunkSectionLayerHelper.getMovingBlockRenderType(ChunkSectionLayer.SOLID), false, parts, null, new int[0], getLightLevel(Minecraft.getInstance().level, state.blockPos), OverlayTexture.NO_OVERLAY, 0xFF000000);
                     matrices.popPose();
 
                 }
@@ -132,6 +140,6 @@ public class TileDoorBlockEntityRenderer implements BlockEntityRenderer<TileDoor
     private int getLightLevel(Level world, BlockPos pos){
         int bLight = world.getBrightness(LightLayer.BLOCK, pos);
         int sLight = world.getBrightness(LightLayer.SKY, pos);
-        return LightTexture.pack(bLight, sLight);
+        return LightCoordsUtil.pack(bLight, sLight);
     }
 }

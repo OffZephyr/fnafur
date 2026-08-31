@@ -10,11 +10,11 @@ import net.zephyr.fnafur.util.CustomDataTickets;
 import net.zephyr.fnafur.util.ItemUtil;
 import net.zephyr.fnafur.util.jsonReaders.animatronics.AnimatronicDataHandler;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.model.BakedGeoModel;
-import software.bernie.geckolib.cache.model.GeoBone;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.base.RenderPassInfo;
+import com.geckolib.cache.model.BakedGeoModel;
+import com.geckolib.cache.model.GeoBone;
+import com.geckolib.renderer.GeoItemRenderer;
+import com.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.RenderPassInfo;
 
 public class SuitItemRenderer extends GeoItemRenderer<SuitItem> {
 

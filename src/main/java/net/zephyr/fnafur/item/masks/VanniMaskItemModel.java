@@ -5,9 +5,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.resources.Identifier;
 import net.zephyr.fnafur.FnafUniverseRebuilt;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.animatable.GeoAnimatable;
+import com.geckolib.model.GeoModel;
+import com.geckolib.renderer.base.GeoRenderState;
 
 public class VanniMaskItemModel<T extends Item & GeoAnimatable> extends GeoModel<T> {
     @Override

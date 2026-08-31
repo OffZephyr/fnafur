@@ -29,10 +29,11 @@
 		"fnafur.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.10",
-		"minecraft": "~1.21.11",
-		"java": ">=21",
-		"fabric-api": "*"
+		"fabricloader": ">=0.18.6",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*",
+		"geckolib": "5.5"
 	},
 	"suggests": {
 		"another-mod": "*"

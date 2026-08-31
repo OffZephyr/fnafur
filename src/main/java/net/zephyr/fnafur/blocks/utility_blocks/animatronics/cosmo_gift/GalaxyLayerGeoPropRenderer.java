@@ -5,13 +5,13 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.phys.Vec3;
 import net.zephyr.fnafur.blocks.common_block_entity.CommonBlockEntityRenderState;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropModel;
 import net.zephyr.fnafur.blocks.props.base.geo.GeoPropRenderer;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderState;
 
 @Environment(EnvType.CLIENT)
 public class GalaxyLayerGeoPropRenderer<T extends GalaxyLayerGeoPropEntity, R extends CommonBlockEntityRenderState & GeoRenderState> extends GeoPropRenderer<T, R> implements BlockEntityRenderer<T, R> {

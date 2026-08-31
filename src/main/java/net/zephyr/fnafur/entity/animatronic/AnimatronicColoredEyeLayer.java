@@ -1,8 +1,8 @@
 package net.zephyr.fnafur.entity.animatronic;
 
-import software.bernie.geckolib.renderer.base.GeoRenderState;
-import software.bernie.geckolib.renderer.base.GeoRenderer;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
+import com.geckolib.renderer.base.GeoRenderState;
+import com.geckolib.renderer.base.GeoRenderer;
+import com.geckolib.renderer.layer.GeoRenderLayer;
 
 public class AnimatronicColoredEyeLayer<T extends AnimatronicEntity, O, R extends GeoRenderState> extends GeoRenderLayer<T, O, R> {
 
